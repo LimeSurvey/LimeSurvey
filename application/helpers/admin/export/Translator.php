@@ -20,8 +20,7 @@ class Translator
         if (isset($this->headerTranslationKeys[$column]))
         {
             return $this->headerTranslationKeys[$column];
-        }
-        else
+        } else
         {
             return false;
         }

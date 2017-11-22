@@ -24,8 +24,7 @@
                     );
             $statistics .= "</div>";
             $list .= "<div class='col-md-5 col-sm-10 col-xs-10 ls-custom-padding five'>";
-        }
-        else
+        } else
         {
             $statistics = "";
             $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";

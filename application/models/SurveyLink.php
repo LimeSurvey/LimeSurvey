@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -201,8 +203,7 @@ class SurveyLink extends LSActiveRecord
             $date = new DateTime($this->isSubmitted);
             $submittedAt = $date->format($this->dateFormat);
             return $submittedAt;
-        } 
-        else {
+        } else {
             return '&#8211;';
         }
     }

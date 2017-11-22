@@ -109,15 +109,15 @@ class WipeCommand extends CConsoleCommand
             $surveyidresult = dbGetTablesLike("survey\_%");
             foreach ($surveyidresult as $sv)
             {
-                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false)
-                    Yii::app()->db->createCommand("drop table ".$sv)->execute();
+                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+                                    Yii::app()->db->createCommand("drop table ".$sv)->execute();
+                }
             }
             $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
-        }
-        else
+        } else
         {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
@@ -130,10 +130,16 @@ class WipeCommand extends CConsoleCommand
 
 
 function SureRemoveDir($dir, $DeleteMe) {
-    if (!$dh = @opendir($dir)) return;
+    if (!$dh = @opendir($dir)) {
+        return;
+    }
     while (false !== ($obj = readdir($dh))) {
-        if ($obj == '.' || $obj == '..') continue;
-        if (!@unlink($dir.'/'.$obj)) SureRemoveDir($dir.'/'.$obj, true);
+        if ($obj == '.' || $obj == '..') {
+            continue;
+        }
+        if (!@unlink($dir.'/'.$obj)) {
+            SureRemoveDir($dir.'/'.$obj, true);
+        }
     }
     closedir($dh);
     if ($DeleteMe) {

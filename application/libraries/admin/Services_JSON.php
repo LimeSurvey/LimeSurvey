@@ -739,8 +739,9 @@ class Services_JSON
                             array_pop($stk);
                             $c++;
 
-                            for ($i = $top['where']; $i <= $c; ++$i)
-                            $chrs = substr_replace($chrs, ' ', $i, 1);
+                            for ($i = $top['where']; $i <= $c; ++$i) {
+                                                        $chrs = substr_replace($chrs, ' ', $i, 1);
+                            }
 
                             //print("Found end of comment at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 

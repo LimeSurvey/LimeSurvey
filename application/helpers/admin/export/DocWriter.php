@@ -59,15 +59,13 @@ class DocWriter extends Writer
         {
             //No headers at all, only output values.
             $this->output .= implode($this->separator, $values).PHP_EOL;
-        }
-        elseif ($oOptions->answerFormat == 'long')
+        } elseif ($oOptions->answerFormat == 'long')
         {
             //Output each record, one per page, with a header preceding every value.
             if ($this->isBeginning)
             {
                 $this->isBeginning = false;
-            }
-            else
+            } else
             {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
@@ -86,8 +84,7 @@ class DocWriter extends Writer
                 $counter++;
             }
             $this->output .= "</table>".PHP_EOL;
-        }
-        else
+        } else
         {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }

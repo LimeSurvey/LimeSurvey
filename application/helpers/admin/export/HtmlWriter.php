@@ -148,8 +148,7 @@
             {
                 $this->out(CHtml::closeTag(array_pop($this->stack)));
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }

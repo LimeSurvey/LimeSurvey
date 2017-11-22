@@ -48,8 +48,7 @@ class PdfWriter extends Writer
                 $pdfstring .= $value.' | ';
             }
             $this->pdf->intopdf($pdfstring);
-        }
-        elseif ($oOptions->answerFormat == 'long')
+        } elseif ($oOptions->answerFormat == 'long')
         {
             if ($this->rowCounter != 1)
             {
@@ -70,8 +69,7 @@ class PdfWriter extends Writer
                     }
                 }
             }
-        }
-        else
+        } else
         {
             safeDie('An invalid answer format was encountered: '.$oOptions->answerFormat);
         }
@@ -84,8 +82,7 @@ class PdfWriter extends Writer
         {
             //Save to file on filesystem.
             $filename = $this->filename;
-        }
-        else
+        } else
         {
             //Presuming this else branch is a send to client via HTTP.
             $filename = $this->translate($this->surveyName, $this->languageCode).'.pdf';

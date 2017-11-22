@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if ( ! defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -37,10 +39,10 @@ class TemplateManifest extends TemplateConfiguration
     public function actualizeLastUpdate()
     {
         libxml_disable_entity_loader(false);
-        $config = simplexml_load_file(realpath ($this->xmlFile));
+        $config = simplexml_load_file(realpath($this->xmlFile));
         $config->metadatas->last_update = date("Y-m-d H:i:s");
-        $config->asXML( realpath ($this->xmlFile) );                // Belt
-        touch ( $this->path );                                      // & Suspenders ;-)
+        $config->asXML(realpath($this->xmlFile)); // Belt
+        touch($this->path); // & Suspenders ;-)
         libxml_disable_entity_loader(true);
     }
 
@@ -52,7 +54,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
      * @return  array   array       ( [screen name] => array([files]) )
      */
-    public function getValidScreenFiles($sType = "view", $sScreen=null)
+    public function getValidScreenFiles($sType = "view", $sScreen = null)
     {
         $aScreenFiles = array();
 
@@ -62,8 +64,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
-        foreach( $filesFromXML as $file){
-            if ( $file->attributes()->type == $sType ){
+        foreach ($filesFromXML as $file) {
+            if ($file->attributes()->type == $sType) {
                 $aScreenFiles[] = (string) $file;
             }
         }
@@ -86,9 +88,9 @@ class TemplateManifest extends TemplateConfiguration
 
         $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
-        foreach( $filesFromXML as $file){
+        foreach ($filesFromXML as $file) {
 
-            if ( $file->attributes()->role == "layout" ){
+            if ($file->attributes()->role == "layout") {
                 return (string) $file;
             }
         }
@@ -102,12 +104,12 @@ class TemplateManifest extends TemplateConfiguration
      *
      * @param string $sFile relative path to the file to edit
      */
-    public function getFilePathForEdition($sFile, $aAllowedFiles=null)
+    public function getFilePathForEdition($sFile, $aAllowedFiles = null)
     {
 
         // Check if the file is allowed for edition ($aAllowedFiles is produced via getValidScreenFiles() )
-        if (is_array($aAllowedFiles)){
-            if (!in_array($sFile, $aAllowedFiles)){
+        if (is_array($aAllowedFiles)) {
+            if (!in_array($sFile, $aAllowedFiles)) {
                 return false;
             }
         }
@@ -116,29 +118,29 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-    * Copy a file from mother template to local directory and edit manifest if needed
-    *
-    * @return string template url
-    */
+     * Copy a file from mother template to local directory and edit manifest if needed
+     *
+     * @return string template url
+     */
     public function extendsFile($sFile)
     {
-        if( !file_exists($this->path.$sFile) && !file_exists($this->viewPath.$sFile) ){
+        if (!file_exists($this->path.$sFile) && !file_exists($this->viewPath.$sFile)) {
 
             // Copy file from mother template to local directory
             $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.$sFile;
-            copy ( $sRfilePath,  $sLfilePath );
+            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath.$sFile : $this->path.$sFile;
+            copy($sRfilePath, $sLfilePath);
 
             // If it's a css or js file from config... must update DB and XML too....
             $sExt = pathinfo($sLfilePath, PATHINFO_EXTENSION);
-            if ($sExt == "css" || $sExt == "js"){
+            if ($sExt == "css" || $sExt == "js") {
 
                 // Check if that CSS/JS file is in DB/XML
                 $aFiles = $this->getFilesForPackages($sExt, $this);
                 $sFile  = str_replace('./', '', $sFile);
 
                 // The CSS/JS file is a configuration one....
-                if(in_array($sFile, $aFiles)){
+                if (in_array($sFile, $aFiles)) {
                     $this->addFileReplacement($sFile, $sExt);
                     $this->addFileReplacementInDB($sFile, $sExt);
                 }
@@ -148,17 +150,17 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-    * Get the files (css or js) defined in the manifest of a template and its mother templates
-    *
-    * @param  string $type       css|js
-    * @param string $oRTemplate template from which the recurrence should start
-    * @return array
-    */
+     * Get the files (css or js) defined in the manifest of a template and its mother templates
+     *
+     * @param  string $type       css|js
+     * @param string $oRTemplate template from which the recurrence should start
+     * @return array
+     */
     public function getFilesForPackages($type, $oRTemplate)
     {
         $aFiles = array();
-        while(is_a($oRTemplate, 'TemplateManifest')){
-            $aTFiles = isset($oRTemplate->config->files->$type->filename)?(array) $oRTemplate->config->files->$type->filename:array();
+        while (is_a($oRTemplate, 'TemplateManifest')) {
+            $aTFiles = isset($oRTemplate->config->files->$type->filename) ? (array) $oRTemplate->config->files->$type->filename : array();
             $aFiles  = array_merge($aTFiles, $aFiles);
             $oRTemplate = $oRTemplate->oMotherTemplate;
         }
@@ -177,7 +179,7 @@ class TemplateManifest extends TemplateConfiguration
     public function addFileReplacementInDB($sFile, $sType)
     {
         $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('template_name'=>$this->sTemplateName));
-        foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
+        foreach ($oTemplateConfigurationModels as $oTemplateConfigurationModel) {
             $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
     }
@@ -190,16 +192,16 @@ class TemplateManifest extends TemplateConfiguration
     {
         $otherfiles = array();
 
-        if (!empty($this->oMotherTemplate)){
+        if (!empty($this->oMotherTemplate)) {
             $otherfiles = $this->oMotherTemplate->getOtherFiles();
         }
 
-        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)){
+        if (file_exists($this->filesPath) && $handle = opendir($this->filesPath)) {
 
-            while (false !== ($file = readdir($handle))){
+            while (false !== ($file = readdir($handle))) {
                 if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
-                    if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
-                        $otherfiles[$file] = $this->filesPath . DIRECTORY_SEPARATOR . $file;
+                    if (!is_dir($this->viewPath.DIRECTORY_SEPARATOR.$file)) {
+                        $otherfiles[$file] = $this->filesPath.DIRECTORY_SEPARATOR.$file;
                     }
                 }
             }
@@ -238,7 +240,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $sLoadLink = '';
 
-        $sLoadLink .=  "<a
+        $sLoadLink .= "<a
                 id='template_options_link_".$this->sTemplateName."'
                 href='".$sLoadUrl."'
                 class='btn btn-default '>
@@ -246,7 +248,7 @@ class TemplateManifest extends TemplateConfiguration
                     ".gT('Install')."
                 </a>";
 
-        $sDeleteLink =  "<a
+        $sDeleteLink = "<a
                 id='template_options_link_".$this->sTemplateName."'
                 href='".$sDeleteUrl."'
                 class='btn btn-danger '>
@@ -264,13 +266,13 @@ class TemplateManifest extends TemplateConfiguration
      * @return boolean true on success | exception
      * @throws Exception
      */
-    public static function importManifest($sTemplateName, $aDatas=array()  )
+    public static function importManifest($sTemplateName, $aDatas = array())
     {
         $oTemplate                  = Template::getTemplateConfiguration($sTemplateName, null, null, true);
         $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadatas->extends;
 
-        if ($bExtends && !Template::model()->findByPk($bExtends)){
-            Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends ), 'error');
+        if ($bExtends && !Template::model()->findByPk($bExtends)) {
+            Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends), 'error');
             Yii::app()->getController()->redirect(array("admin/themeoptions"));
         }
 
@@ -284,7 +286,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
-        $oREngineTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'engine' )  : $oTemplate;
+        $oREngineTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'engine') : $oTemplate;
 
 
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
@@ -302,7 +304,7 @@ class TemplateManifest extends TemplateConfiguration
             $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
             $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
             $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
-        }else{
+        } else{
             $aDatas['files_css'] = $aDatas['files_js'] = $aDatas['files_print_css'] = null;
         }
 
@@ -326,7 +328,7 @@ class TemplateManifest extends TemplateConfiguration
                     // Think about what to do..
                     throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
                 }
-            }else{
+            } else{
                 throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
             }
         }
@@ -345,7 +347,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function formatArrayFields($oTemplate, $sFieldPath, $sFieldName)
     {
-        return ( empty($oTemplate->config->$sFieldPath->$sFieldName->value) && empty($oTemplate->config->$sFieldPath->$sFieldName) )?array():$oTemplate->config->$sFieldPath->$sFieldName;
+        return (empty($oTemplate->config->$sFieldPath->$sFieldName->value) && empty($oTemplate->config->$sFieldPath->$sFieldName)) ? array() : $oTemplate->config->$sFieldPath->$sFieldName;
     }
 
     /**
@@ -381,9 +383,9 @@ class TemplateManifest extends TemplateConfiguration
      * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
      * @param string        $sDate         The wanted date, if empty the current date with config time adjustment will be used
      */
-    public static function changeDateInDOM($oNewManifest, $sDate='')
+    public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $date           = (empty($date))?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")):$date;
+        $date           = (empty($date)) ?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $date;
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
         $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
@@ -401,10 +403,10 @@ class TemplateManifest extends TemplateConfiguration
      * @param string $sOldName The old name of the template
      * @param string $sNewName The newname of the template
      */
-    public static function rename($sOldName,$sNewName)
+    public static function rename($sOldName, $sNewName)
     {
         libxml_disable_entity_loader(false);
-        $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
+        $sConfigPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
@@ -426,9 +428,9 @@ class TemplateManifest extends TemplateConfiguration
         //$aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
         $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
 
-        foreach($aNodesToDelete as $node){
+        foreach ($aNodesToDelete as $node) {
             // If extended template already extend another template, it will not have those nodes
-            if (is_a( $node, 'DOMNode')){
+            if (is_a($node, 'DOMNode')) {
                 $oConfig->removeChild($node);
             }
         }
@@ -477,7 +479,7 @@ class TemplateManifest extends TemplateConfiguration
         // We test if mother template already extends another template
         if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
             $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
-        }else{
+        } else{
             $oMetadatas->appendChild($oExtendsNode);
         }
     }
@@ -501,7 +503,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function extendsConfig($sToExtends, $sNewName)
     {
-        $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
+        $sConfigPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
 
         // First we get the XML file
         libxml_disable_entity_loader(false);
@@ -525,11 +527,11 @@ class TemplateManifest extends TemplateConfiguration
     private function readManifest()
     {
         $this->xmlFile         = $this->path.'config.xml';
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->config          = simplexml_load_string($sXMLConfigFile); // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
 
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
     }
 
     /**
@@ -539,7 +541,7 @@ class TemplateManifest extends TemplateConfiguration
     private function setPath()
     {
         // If the template is standard, its root is based on standardthemerootdir, else, it is a user template, its root is based on userthemerootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+        $this->path = ($this->isStandard) ?Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
@@ -547,7 +549,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
-            if(!$this->iSurveyId){
+            if (!$this->iSurveyId) {
                 setGlobalSetting('defaulttheme', 'default');
             }
         }
@@ -567,7 +569,7 @@ class TemplateManifest extends TemplateConfiguration
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
-      */
+     */
     private function setTemplateName($sTemplateName='', $iSurveyId='')
     {
 
@@ -606,22 +608,22 @@ class TemplateManifest extends TemplateConfiguration
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         $this->setBasics($sTemplateName, $iSurveyId);
-        $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
-        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
+        $this->setMotherTemplates(); // Recursive mother templates configuration
+        $this->setThisTemplate(); // Set the main config values of this template
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
         return $this;
     }
 
 
-    public function setBasics($sTemplateName='', $iSurveyId='')
+    public function setBasics($sTemplateName = '', $iSurveyId = '')
     {
-        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
-        $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->setPath();                                                       // Check and set path
-        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->setTemplateName($sTemplateName, $iSurveyId); // Check and set template name
+        $this->setIsStandard(); // Check if  it is a CORE template
+        $this->setPath(); // Check and set path
+        $this->readManifest(); // Check and read the manifest to set local params
     }
 
     /**
@@ -640,15 +642,15 @@ class TemplateManifest extends TemplateConfiguration
 
         $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
         $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
-        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
+        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0); // Only for the insert before statement
 
-        if (is_null($oFiles)){
-            $oFiles    = $oNewManifest->createElement('files');
+        if (is_null($oFiles)) {
+            $oFiles = $oNewManifest->createElement('files');
         }
 
         $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
-        if (is_null($oAssetType)){
-            $oAssetType   = $oNewManifest->createElement($sType);
+        if (is_null($oAssetType)) {
+            $oAssetType = $oNewManifest->createElement($sType);
             $oFiles->appendChild($oAssetType);
         }
 
@@ -659,7 +661,7 @@ class TemplateManifest extends TemplateConfiguration
         $replaceAttribute->value = $sFile;
         $oAssetElem->appendChild($replaceAttribute);
         $oAssetType->appendChild($oAssetElem);
-        $oConfig->insertBefore($oFiles,$oOptions);
+        $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path."config.xml");
         libxml_disable_entity_loader(true);
     }
@@ -673,9 +675,9 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFilesToLoad($oTemplate, $sType)
     {
         $aFiles = array();
-        $oRFilesTemplate  = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'files' )   : $oTemplate;
+        $oRFilesTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'files') : $oTemplate;
 
-        if(isset($oRFilesTemplate->config->files->$sType->add)){
+        if (isset($oRFilesTemplate->config->files->$sType->add)) {
             // TODO: "replace" and "remove"
             $aFiles = (array) $oTemplate->config->files->$sType->add;
         }
@@ -688,10 +690,10 @@ class TemplateManifest extends TemplateConfiguration
      * @param $aSettings array    array of local setting
      * @return array
      */
-    protected function changeMotherConfiguration( $sType, $aSettings )
+    protected function changeMotherConfiguration($sType, $aSettings)
     {
-        foreach( $aSettings as $key => $aSetting){
-            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
+        foreach ($aSettings as $key => $aSetting) {
+            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])) {
                 $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace']);
                 unset($aSettings[$key]);
             }
@@ -711,9 +713,9 @@ class TemplateManifest extends TemplateConfiguration
      * @param $aSettings        array    array of local setting
      * @return array
      */
-    protected function removeFileFromPackage( $sPackageName, $sType, $aSetting )
+    protected function removeFileFromPackage($sPackageName, $sType, $aSetting)
     {
-        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting );
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting);
     }
 
     /**
@@ -722,7 +724,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     protected function setMotherTemplates()
     {
-        if (isset($this->config->metadatas->extends)){
+        if (isset($this->config->metadatas->extends)) {
             $sMotherTemplateName   = (string) $this->config->metadatas->extends;
             $this->oMotherTemplate = new TemplateManifest;
             $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
@@ -751,7 +753,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  : null;
+        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion : null;
 
 
         $this->viewPath           = $this->path.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
@@ -762,9 +764,9 @@ class TemplateManifest extends TemplateConfiguration
         if (!empty($this->config->xpath("//options"))){
             $aOptions = $this->config->xpath("//options");
             $this->oOptions = $aOptions[0];
-        }elseif(!empty($this->oMotherTemplate->oOptions)){
+        } elseif(!empty($this->oMotherTemplate->oOptions)){
             $this->oOptions = $this->oMotherTemplate->oOptions;
-        }else{
+        } else{
             $this->oOptions = "";
         }
 
@@ -779,7 +781,7 @@ class TemplateManifest extends TemplateConfiguration
 
     protected function addMotherTemplatePackage($packages)
     {
-        if (isset($this->config->metadatas->extends)){
+        if (isset($this->config->metadatas->extends)) {
             $sMotherTemplateName = (string) $this->config->metadatas->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
@@ -792,13 +794,13 @@ class TemplateManifest extends TemplateConfiguration
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return array
      */
-    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
+    protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
     {
         $aAssetsToRemove = array();
-        if (!empty($this->cssFramework->$sType) && !empty($this->cssFramework->$sType->attributes()->replace)){
-            $aAssetsToRemove =  (array) $this->cssFramework->$sType->attributes()->replace ;
-            if($bInlcudeRemove){
-                $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );
+        if (!empty($this->cssFramework->$sType) && !empty($this->cssFramework->$sType->attributes()->replace)) {
+            $aAssetsToRemove = (array) $this->cssFramework->$sType->attributes()->replace;
+            if ($bInlcudeRemove) {
+                $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove);
             }
         }
         return $aAssetsToRemove;
@@ -809,17 +811,17 @@ class TemplateManifest extends TemplateConfiguration
      * @param string  $sType            css|js the type of file
      * @return array
      */
-    protected function getFrameworkAssetsReplacement( $sType )
+    protected function getFrameworkAssetsReplacement($sType)
     {
         $aAssetsToRemove = array();
-        if (!empty($this->cssFramework->$sType)){
+        if (!empty($this->cssFramework->$sType)) {
             $nodes = (array) $this->config->xpath('//cssframework/'.$sType.'[@replace]');
-            if (!empty($nodes)){
-                foreach ($nodes as $key => $node){
-                    $nodes[$key] =  (string) $node[0];
+            if (!empty($nodes)) {
+                foreach ($nodes as $key => $node) {
+                    $nodes[$key] = (string) $node[0];
                 }
 
-                $aAssetsToRemove =  $nodes ;
+                $aAssetsToRemove = $nodes;
             }
         }
         return $aAssetsToRemove;
