@@ -132,10 +132,10 @@
                     <?php eT('Advanced');?>
                 </li>
                 <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
-                    <!-- Template Editor -->
+                    <!-- Theme Editor -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/themeoptions"); ?>">
-                            <?php eT("Template list");?>
+                            <?php eT("Themes");?>
                         </a>
                     </li>
                     <?php endif;?>
