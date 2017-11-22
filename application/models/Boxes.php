@@ -117,8 +117,9 @@ class Boxes extends CActiveRecord
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
-            if (!is_object($oUsergroup))
-                return gT("Can't find user group!");
+            if (!is_object($oUsergroup)) {
+                            return gT("Can't find user group!");
+            }
 
             return $oUsergroup->name;
         }

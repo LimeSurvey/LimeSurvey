@@ -13,8 +13,9 @@
 * Template Options controller
 */
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 class themeoptions  extends Survey_Common_Action
 {

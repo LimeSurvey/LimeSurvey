@@ -67,8 +67,7 @@ class PluginDynamic extends LSActiveRecord
     {
         if ($this->_md !== null) {
             return $this->_md;
-        }
-        else {
+        } else {
             /** @var CActiveRecordMetaData $md */
             $md = self::model($this->tableName())->_md;
             return $this->_md = $md;

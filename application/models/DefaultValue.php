@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -87,10 +89,12 @@ class DefaultValue extends LSActiveRecord
     function insertRecords($data)
     {
         $oRecord = new self;
-        foreach ($data as $k => $v)
-            $oRecord->$k = $v;
-        if ($oRecord->validate())
-            return $oRecord->save();
+        foreach ($data as $k => $v) {
+                    $oRecord->$k = $v;
+        }
+        if ($oRecord->validate()) {
+                    return $oRecord->save();
+        }
         tracevar($oRecord->getErrors());
     }
 }

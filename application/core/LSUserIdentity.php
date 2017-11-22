@@ -160,12 +160,10 @@ class LSUserIdentity extends CUserIdentity {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
-        }
-        else if ($user->lang == 'auto' || $user->lang == '')
+        } else if ($user->lang == 'auto' || $user->lang == '')
         {
             $sLanguage = getBrowserLanguage();
-        }
-        else
+        } else
         {
             $sLanguage = $user->lang;
         }

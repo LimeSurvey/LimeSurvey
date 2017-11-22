@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -506,8 +508,9 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file) {
         $checkImage = getimagesize($this->filesPath.$file['name']);
-        if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])))
-            return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+        if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
+                    return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+        }
     }
 
     protected function getOptionPageAttributes() {
@@ -517,8 +520,9 @@ class TemplateConfiguration extends TemplateConfig
         foreach ($fileList as $file) {
             $isImage = $this->_filterImages($file);
 
-            if ($isImage)
-                $aData['brandlogoFileList'][] = $isImage;
+            if ($isImage) {
+                            $aData['brandlogoFileList'][] = $isImage;
+            }
         };
         return $aData;
     }
@@ -686,8 +690,9 @@ class TemplateConfiguration extends TemplateConfig
         $this->packages = $this->getDependsPackages($this);
         if (!empty($this->packages_to_load)) {
             $templateToLoadPackages = json_decode($this->packages_to_load);
-            if (is_array($templateToLoadPackages))
-                $this->packages = array_merge($templateToLoadPackages, $this->getDependsPackages($this));
+            if (is_array($templateToLoadPackages)) {
+                            $this->packages = array_merge($templateToLoadPackages, $this->getDependsPackages($this));
+            }
         }
 
         // Add depend package according to packages

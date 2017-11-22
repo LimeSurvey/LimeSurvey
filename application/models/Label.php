@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -109,8 +111,9 @@ class Label extends LSActiveRecord
     function insertRecords($data)
     {
         $lbls = new self;
-        foreach ($data as $k => $v)
-            $lbls->$k = $v;
+        foreach ($data as $k => $v) {
+                    $lbls->$k = $v;
+        }
         $lbls->save();
     }
 

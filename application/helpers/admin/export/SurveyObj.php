@@ -121,16 +121,14 @@ class SurveyObj
                 if (mb_substr($fieldName, -1) == 0)
                 {
                     $answers = $this->getAnswers($questionId, 0);
-                }
-                else
+                } else
                 {
                     $answers = $this->getAnswers($questionId, 1);
                 }
                 if (array_key_exists($answerCode, $answers))
                 {
                     $fullAnswer = $answers[$answerCode]['answer'];
-                }
-                else
+                } else
                 {
                     $fullAnswer = null;
                 }
@@ -141,14 +139,12 @@ class SurveyObj
                 if (mb_substr($fieldName, -5, 5) == 'other')
                 {
                     $fullAnswer = $answerCode;
-                }
-                else
+                } else
                 {
                     if ($answerCode == '-oth-')
                     {
                         $fullAnswer = $translator->translate('Other', $sLanguageCode);
-                    }
-                    else
+                    } else
                     {
                         $fullAnswer = $answer;
                     }
@@ -160,8 +156,7 @@ class SurveyObj
                 {
                     //This is one of the dropdown list options.
                     $fullAnswer = $answer;
-                }
-                else
+                } else
                 {
                     //This is a comment.
                     $fullAnswer = $answerCode;

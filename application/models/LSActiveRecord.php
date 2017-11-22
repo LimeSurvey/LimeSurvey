@@ -31,8 +31,7 @@ class LSActiveRecord extends CActiveRecord
         $sDriverName = Yii::app()->db->getDriverName();
         if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
             $sTimestampExpression = new CDbExpression('GETDATE()');
-        }
-        else {
+        } else {
             $sTimestampExpression = new CDbExpression('NOW()');
         }
         $aBehaviors['CTimestampBehavior'] = array(

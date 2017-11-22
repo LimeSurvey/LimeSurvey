@@ -228,7 +228,9 @@ abstract class Token extends Dynamic
 
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
-        if (count($tkresult) === 0) return array(0, 0);
+        if (count($tkresult) === 0) {
+            return array(0, 0);
+        }
 
 
         //Add some criteria to select only the token field

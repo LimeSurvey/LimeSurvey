@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -93,8 +95,9 @@ class QuotaLanguageSetting extends LSActiveRecord
     function insertRecords($data)
     {
         $settings = new self;
-        foreach ($data as $k => $v)
-            $settings->$k = $v;
+        foreach ($data as $k => $v) {
+                    $settings->$k = $v;
+        }
         return $settings->save();
     }
 }

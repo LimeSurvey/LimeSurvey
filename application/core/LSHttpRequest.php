@@ -146,7 +146,9 @@ class LSHttpRequest extends CHttpRequest
     protected function normalizeRequest() {
         parent::normalizeRequest();
 
-        if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') return;
+        if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') {
+            return;
+        }
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
         if ($this->enableCsrfValidation) {
@@ -168,29 +170,33 @@ class LSHttpRequest extends CHttpRequest
         {
             $pathInfo = $this->getRequestUri();
 
-            if (($pos = strpos($pathInfo, '?')) !== false)
-                $pathInfo = substr($pathInfo, 0, $pos);
+            if (($pos = strpos($pathInfo, '?')) !== false) {
+                            $pathInfo = substr($pathInfo, 0, $pos);
+            }
 
             $pathInfo = $this->decodePathInfo($pathInfo);
 
             $scriptUrl = $this->getScriptUrl();
             $baseUrl = $this->getBaseUrl();
-            if (strpos($pathInfo, $scriptUrl) === 0)
-                $pathInfo = substr($pathInfo, strlen($scriptUrl));
-            elseif ($baseUrl === '' || strpos($pathInfo, $baseUrl) === 0)
-                $pathInfo = substr($pathInfo, strlen($baseUrl));
-            elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
-                $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
-            else
-                throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
+            if (strpos($pathInfo, $scriptUrl) === 0) {
+                            $pathInfo = substr($pathInfo, strlen($scriptUrl));
+            } elseif ($baseUrl === '' || strpos($pathInfo, $baseUrl) === 0) {
+                            $pathInfo = substr($pathInfo, strlen($baseUrl));
+            } elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0) {
+                            $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+            } else {
+                            throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
+            }
 
-            if ($pathInfo === '/')
-                $pathInfo = '';
-            elseif (!empty($pathInfo) && $pathInfo[0] === '/')
-                $pathInfo = substr($pathInfo, 1);
+            if ($pathInfo === '/') {
+                            $pathInfo = '';
+            } elseif (!empty($pathInfo) && $pathInfo[0] === '/') {
+                            $pathInfo = substr($pathInfo, 1);
+            }
 
-            if (($posEnd = strlen($pathInfo) - 1) > 0 && $pathInfo[$posEnd] === '/')
-                $pathInfo = substr($pathInfo, 0, $posEnd);
+            if (($posEnd = strlen($pathInfo) - 1) > 0 && $pathInfo[$posEnd] === '/') {
+                            $pathInfo = substr($pathInfo, 0, $posEnd);
+            }
 
             $this->_pathInfo = $pathInfo;
         }

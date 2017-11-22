@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -31,8 +33,7 @@ class LSDbCriteria extends CDbCriteria
         if ($partialMatch && Yii::app()->db->getDriverName() == 'pgsql')
         {
             $this->addSearchCondition($column, $value, true, $operator, 'ILIKE');
-        }
-        else
+        } else
         {
             parent::compare($column, $value, $partialMatch, $operator, $escape);
         }

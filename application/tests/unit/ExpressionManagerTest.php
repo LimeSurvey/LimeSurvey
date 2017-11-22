@@ -740,16 +740,14 @@ EOD;
                     $varDesc[] = $v;
                 }
                 $body .= '<td>'.implode(',<br/>', $varDesc)."</td>\n";
-            }
-            else {
+            } else {
                 $body .= "<td>&nbsp;</td>\n";
             }
             $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
             if ($jsEqn == '')
             {
                 $body .= "<td>&nbsp;</td>\n";
-            }
-            else
+            } else
             {
                 $body .= '<td>'.$jsEqn."</td>\n";
             }
