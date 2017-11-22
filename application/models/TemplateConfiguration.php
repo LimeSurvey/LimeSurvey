@@ -146,7 +146,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Gets an instance of a templateconfiguration by name
      *
-     * @param [String] $sTemplateName
+     * @param string $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromTemplateName($sTemplateName) {
@@ -160,8 +160,8 @@ class TemplateConfiguration extends TemplateConfig
      * Returns a TemplateConfiguration Object based on a surveygroup ID
      * If no instance is existing, it will create one.
      *
-     * @param [Integer] $iSurveyGroupId
-     * @param [String] $sTemplateName
+     * @param integer $iSurveyGroupId
+     * @param string $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null) {
@@ -195,7 +195,7 @@ class TemplateConfiguration extends TemplateConfig
      * If no instance is existing, it will create one.
      *
      * @param integer $iSurveyId
-     * @param [String] $sTemplateName
+     * @param string $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null) {
@@ -228,8 +228,8 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Get an instance of a fitting TemplateConfiguration
      *
-     * @param [String] $sTemplateName
-     * @param [Integer] $iSurveyGroupId
+     * @param string $sTemplateName
+     * @param integer $iSurveyGroupId
      * @param integer $iSurveyId
      * @return TemplateConfiguration
      */

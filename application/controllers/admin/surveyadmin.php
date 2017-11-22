@@ -958,8 +958,8 @@ class SurveyAdmin extends Survey_Common_Action
      * New system of rendering content
      * Based on yii submenu rendering
      *
-     * @param [int] $iSurveyID
-     * @param [string] $subaction
+     * @param int $iSurveyID
+     * @param string $subaction
      * @return void
      */
         public function rendersidemenulink($iSurveyID, $subaction) {
