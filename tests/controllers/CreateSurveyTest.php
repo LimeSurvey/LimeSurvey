@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\ElementNotVisibleException;
 
 /**
  * Login and create a survey, add a group
@@ -236,6 +237,8 @@ class CreateSurveyTest extends TestBaseClassWeb
                 end($windowHandles)
             );
 
+            sleep(1);
+
             // New tab with active survey.
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
@@ -338,6 +341,12 @@ class CreateSurveyTest extends TestBaseClassWeb
                 self::$testHelper->javaTrace($ex)
             );
         } catch (TimeOutException $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        } catch (ElementNotVisibleException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
