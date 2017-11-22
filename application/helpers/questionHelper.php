@@ -1567,8 +1567,8 @@ class questionHelper
             'inputtype'=>'question_template',
             'options'=>array(),
             'default' => "core",
-            "help"=>gT('Use a customized question template for this question'),
-            "caption"=>gT('Question template')
+            "help"=>gT('Use a customized question theme for this question'),
+            "caption"=>gT('Question theme')
         );
 
         /**

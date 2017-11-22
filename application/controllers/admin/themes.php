@@ -360,7 +360,7 @@ class themes extends Survey_Common_Action
         // This can happen if the global default template is deleted
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
-            Yii::app()->setFlashMessage(sprintf(gT('Template %s does not exist.'), htmlspecialchars($templatename, ENT_QUOTES)), 'error');
+            Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars($templatename, ENT_QUOTES)), 'error');
             $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>'default'));
         }
 
@@ -625,7 +625,7 @@ class themes extends Survey_Common_Action
                     in_array($relativePathEditfile, $cssfiles) === false &&
                     in_array($relativePathEditfile, $jsfiles) === false
                     ) {
-                        Yii::app()->user->setFlash('error', gT('Invalid template name'));
+                        Yii::app()->user->setFlash('error', gT('Invalid theme name'));
                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
@@ -1065,7 +1065,7 @@ class themes extends Survey_Common_Action
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor($sLayoutFile, array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
         } catch (Twig_Error_Syntax $ex) {
             $myoutput = sprintf(
-                gT('No Twig output due to error in Twig template: %s'),
+                gT('No Twig output due to error in Twig theme: %s'),
                 $ex->getMessage()
             );
             Yii::app()->user->setFlash(
@@ -1131,11 +1131,11 @@ class themes extends Survey_Common_Action
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $not = new UniqueNotification(array(
             'user_id'    => $user->uid,
-            'title'      => gT('LimeSurvey 3.0 template editor'),
+            'title'      => gT('LimeSurvey 3.0 theme editor'),
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                gT('Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
                 '<a target="_blank" href="http://manual.limesurvey.org/Templating">', '</a>',
                 '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
             )

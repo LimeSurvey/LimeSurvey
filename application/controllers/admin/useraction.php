@@ -757,7 +757,7 @@ class UserAction extends Survey_Common_Action
                 } catch (Exception $ex) {
                     Yii::app()->setFlashMessage(
                         sprintf(
-                            gT('Could not save template %s: %s'),
+                            gT('Could not save theme %s: %s'),
                             $tp,
                             $ex->getMessage()
                         ),
