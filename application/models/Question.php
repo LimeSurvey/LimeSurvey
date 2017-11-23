@@ -805,7 +805,9 @@ class Question extends LSActiveRecord
             $position = 0;
             foreach ($ansresult as $answer) {
                 if (($answer['title'] == trim($exclude_all_others))) {
-                    if ($position == $answer['question_order'] - 1) break; //already in the right position
+                    if ($position == $answer['question_order'] - 1) { //already in the right position
+                        break; 
+                    }
                     $tmp = array_splice($ansresult, $position, 1);
                     array_splice($ansresult, $answer['question_order'] - 1, 0, $tmp);
                     break;

@@ -242,8 +242,7 @@ class GlobalSettings extends Survey_Common_Action
         if (!Yii::app()->getConfig('demoMode'))
         {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList()))// Filter template name
-            {
+            if (array_key_exists($sTemplate, getTemplateList())) { // Filter template name
                 setGlobalSetting('defaulttheme', $sTemplate);
             }
             setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
@@ -253,7 +252,6 @@ class GlobalSettings extends Survey_Common_Action
         $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
         setGlobalSetting('admintheme', $sAdmintheme);
 
-        //setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {

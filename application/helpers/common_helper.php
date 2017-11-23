@@ -1239,8 +1239,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     $survey = Survey::model()->findByPk($iSurveyID);
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
-    if (strpos($sFieldCode, "{$iSurveyID}X") === 0) //Only check if it looks like a real fieldcode
-    {
+    if (strpos($sFieldCode, "{$iSurveyID}X") === 0) { //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode]))
         {
@@ -1757,8 +1756,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $groupSeq = -1;
     $_groupOrder = -1;
 
-    foreach ($questions as $arow) //With each question, create the appropriate field(s))
-    {
+    foreach ($questions as $arow) { //With each question, create the appropriate field(s))
         ++$questionSeq;
 
         // fix fact taht group_order may have gaps
@@ -2031,8 +2029,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
         }
-        else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
-        {
+        else { // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
             //MULTI ENTRY
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow)
@@ -2622,8 +2619,8 @@ function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities =
             $sNicetext = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $sNicetext);
         }
     }
-    elseif (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1)// unify newlines to \r\n
-    {
+    elseif (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {  
+        // unify newlines to \r\n
         $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities == true)
@@ -2666,15 +2663,12 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid = "", $output = 
         }
     }
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
+    foreach ($grows as $qrow) { // Cycle through questions to see if any have list_filter attributes
         $qidtotitle[$qrow['qid']] = $qrow['title'];
         $qresult = QuestionAttribute::model()->getQuestionAttributes($qrow['qid']);
-        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
-        {
+        if (isset($qresult['array_filter_exclude'])) { // We Found a array_filter attribute
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
-            {
+            foreach ($grows as $avalue) { // Cycle through all the other questions in this group until we find the source question for this array_filter
                 if ($avalue['title'] == $val)
                 {
                     /* This question ($avalue) is the question that provides the source information we use
@@ -5159,12 +5153,10 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 */
 function getIPAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
-    {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) { //check ip from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
     }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
-    {
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //to check ip is pass from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     elseif (!empty($_SERVER['REMOTE_ADDR']))
@@ -5320,12 +5312,10 @@ function decodeTokenAttributes($oTokenAttributeData) {
     if (substr($oTokenAttributeData, 0, 1) != '{' && substr($oTokenAttributeData, 0, 1) != '[')
     {
         $sSerialType = getSerialClass($oTokenAttributeData);
-        if ($sSerialType == 'array') // Safe to decode
-        {
+        if ($sSerialType == 'array') { // Safe to decode
             $aReturnData = @unserialize($oTokenAttributeData);
         }
-        else // Something else, might be unsafe
-        {
+        else { // Something else, might be unsafe
             return array();
         }
     }

@@ -122,8 +122,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $gheight = 320;
         }
 
-        if (!$type) // Bar chart
-        {
+        if (!$type) { // Bar chart
             $DataSet = new pData;
             $counter = 0;
             $maxyvalue = 0;
@@ -394,8 +393,7 @@ function buildSelects($allfields, $surveyid, $language) {
                     */
                     if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
-                    {
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") { //pull out just the fieldnames
                         //put together some SQL here
                         $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
@@ -682,8 +680,7 @@ class statistics_helper {
         }
 
         //S - Short Free Text and T - Long Free Text
-        elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
-        {
+        elseif ($firstletter == "T" || $firstletter == "S") { //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
             $fielddata = $fieldmap[$fld];
@@ -772,8 +769,7 @@ class statistics_helper {
             }
         }
 
-        else if ($firstletter == "|") // File UPload
-        {
+        else if ($firstletter == "|") { // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -894,8 +890,7 @@ class statistics_helper {
 
         //N = numerical input
         //K = multiple numerical input
-        elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
-        {
+        elseif ($firstletter == "N" || $firstletter == "K") { //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
             {
@@ -1677,18 +1672,15 @@ class statistics_helper {
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                     {
                         // mssql cannot compare text blobs so we have to cast here
-                        //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
                         . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
                         . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
                     }
-                    else
-                        //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                    else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR ".sanitize_int($rt)." = '' "
                         . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
                         . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                    }
                 }
             }
 

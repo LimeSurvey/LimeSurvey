@@ -208,8 +208,7 @@ class SurveyObj
                     {
                         $fullAnswer = $translator->translate('Yes', $sLanguageCode);
                     }
-                    elseif ($answerCode == 'N' || $answerCode === '')   // Strict check for empty string to find null values
-                    {
+                    elseif ($answerCode == 'N' || $answerCode === '') { // Strict check for empty string to find null values
                         $fullAnswer = $translator->translate('No', $sLanguageCode);
                     } else {
                         $fullAnswer = $translator->translate('N/A', $sLanguageCode);

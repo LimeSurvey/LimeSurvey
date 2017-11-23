@@ -1322,15 +1322,12 @@ class ExpressionManager {
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
-        foreach ($this->GetVarsUsed() as $var) {
-            // this function wants to see the NAOK suffix
-        {
+        foreach ($this->GetVarsUsed() as $var) { // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '')
                 {
                     $nonNAvarsUsed[] = $var;
-        }
                 }
             }
         }

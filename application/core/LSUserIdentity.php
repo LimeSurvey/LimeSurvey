@@ -139,8 +139,7 @@ class LSUserIdentity extends CUserIdentity {
             $not->save();
         }
 
-        if ((int) App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
-        {
+        if ((int) App()->request->getPost('width', '1220') < 1220) { // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
             Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
         }
 

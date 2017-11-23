@@ -126,8 +126,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $gheight = 320;
         }
 
-        if (!$type) // Bar chart
-        {
+        if (!$type) { // Bar chart
             $DataSet = new pData;
             $counter = 0;
             $maxyvalue = 0;

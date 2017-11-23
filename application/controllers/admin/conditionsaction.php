@@ -144,7 +144,9 @@ class conditionsaction extends Survey_Common_Action {
     if (!isset($p_cqid))
     {
         $p_cqid = returnGlobal('cqid');
-        if ($p_cqid == '') $p_cqid = 0; // we are not using another question as source of condition
+        if ($p_cqid == '') { // we are not using another question as source of condition 
+            $p_cqid = 0; 
+        }
     }
     
     if (!isset($p_cid)) { $p_cid = returnGlobal('cid'); }
@@ -1369,8 +1371,7 @@ protected function getPostQuestionList($qid, array $qrows)
 {
     $position = "before";
     $postquestionlist = array();
-    foreach ($qrows as $qrow) //Go through each question until we reach the current one
-    {
+    foreach ($qrows as $qrow) { //Go through each question until we reach the current one
         if ($qrow["qid"] == $qid)
         {
             $position = "after";
