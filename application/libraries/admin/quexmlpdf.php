@@ -2412,7 +2412,7 @@ class quexmlpdf extends pdf {
     if (isset($question['helptextbefore']))
     {
         //Leave a border at the top of the Help Before text
-        if ($this->helpBeforeBorderTop > 0) //question border
+        if ($this->helpBeforeBorderTop > 0) 
         $this->SetY($this->GetY() + $this->helpBeforeBorderTop, false); //new line
 
         $this->setBackground('question');
@@ -2420,7 +2420,7 @@ class quexmlpdf extends pdf {
         $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
         //Leave a border at the bottom of the Help Before text
-        if ($this->helpBeforeBorderBottom > 0) //question border
+        if ($this->helpBeforeBorderBottom > 0) 
         $this->SetY($this->GetY() + $this->helpBeforeBorderBottom, false); //new line
     }
 
@@ -2618,7 +2618,7 @@ class quexmlpdf extends pdf {
     }
 
     //Leave a border at the bottom of the question
-    if ($this->questionBorderBottom > 0) //question border
+    if ($this->questionBorderBottom > 0) 
         $this->SetY($this->GetY() + $this->questionBorderBottom, false); //new line
     }
 
@@ -3013,9 +3013,15 @@ class quexmlpdf extends pdf {
 
     for ($i = 0; $i < $lines; $i++)
     {
-        if ($lines == 1) $cells = $width; //one line only
-        else if (($i + 1 == $lines)) $cells = ($width - ($textResponsesPerLine * $i)); //last line
-        else $cells = $textResponsesPerLine; //middle line
+        if ($lines == 1) { //one line only
+            $cells = $width; 
+        }
+        else if (($i + 1 == $lines)) { //last line
+            $cells = ($width - ($textResponsesPerLine * $i)); 
+        }
+        else { //middle line
+            $cells = $textResponsesPerLine; 
+        }
 
 
         //add another box group if moving on to another line
@@ -3061,8 +3067,7 @@ class quexmlpdf extends pdf {
         $this->SetY($currentY, false); //new line
 
 
-        if (!(($i + 1) == $lines) && $this->textResponseLineSpacing > 0) //if there should be a gap between text responses and not the last
-        {
+        if (!(($i + 1) == $lines) && $this->textResponseLineSpacing > 0) { //if there should be a gap between text responses and not the last
         $this->SetX($this->getColumnX(), false);
         $this->setBackground('question');
         $this->Cell($this->getColumnWidth(), $this->textResponseLineSpacing, '', '', 0, '', true, '', 0, false, 'T', 'C');
@@ -3091,10 +3096,12 @@ class quexmlpdf extends pdf {
     for ($j = 0; $j < $cells; $j++)
     {
         //draw text cells
-        if ($cells == 1) //only
-        $border = array('LTR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
-        else if ($j == 0) //first
-        $border = array('LT' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
+        if ($cells == 1) { //only
+            $border = array('LTR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
+        }
+        else if ($j == 0){ //first
+             $border = array('LT' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
+        }
         else if (($j + 1) == $cells) //last
         {
         $border = array('TR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));

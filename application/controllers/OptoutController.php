@@ -81,8 +81,7 @@ class OptoutController extends LSYii_Controller {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
-        {
+        if (!$iSurveyID) { //IF there is no survey id, redirect back to the default public page
             $this->redirect(array('/'));
         }
         $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
@@ -140,8 +139,7 @@ class OptoutController extends LSYii_Controller {
         $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
-        if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
-        {
+        if (!$iSurveyID) { //IF there is no survey id, redirect back to the default public page
             $this->redirect(array('/'));
         }
         $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
