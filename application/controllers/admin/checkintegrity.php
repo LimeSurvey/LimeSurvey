@@ -497,16 +497,18 @@ class CheckIntegrity extends Survey_Common_Action
                     }
                 }
             }
+            //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
-                //Only do this if there actually is a 'cfieldname'
-            {
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) { // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
+                // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
+                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) { 
+                    
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
-            }
+
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid'=>$gid)));
                     if (QuestionGroup::model()->hasErrors()) {
                         safeDie(QuestionGroup::model()->getError());
                     }
+
                     if (!$iRowCount)
                     {
                         $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching CFIELDNAME group!')." ($gid) ({$condition['cfieldname']})");
