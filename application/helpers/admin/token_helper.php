@@ -24,10 +24,11 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
 {
     Yii::app()->loadHelper('common');
     $oSurvey = Survey::model()->findByPk($iSurveyID);
-    if (getEmailFormat($iSurveyID) == 'html')
-        $bHtml = true;
-    else
-        $bHtml = false;
+    if (getEmailFormat($iSurveyID) == 'html') {
+            $bHtml = true;
+    } else {
+            $bHtml = false;
+    }
 
     $attributes = array_keys(getTokenFieldsAndNames($iSurveyID));
     $oSurveyLocale = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
@@ -69,18 +70,21 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
 
         //Populate attributes
         $fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_title'];
-        if ($fieldsarray["{SURVEYNAME}"] == '')
-            $fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_title'];
+        if ($fieldsarray["{SURVEYNAME}"] == '') {
+                    $fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_title'];
+        }
 
         $fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_description'];
-        if ($fieldsarray["{SURVEYDESCRIPTION}"] == '')
-            $fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
+        if ($fieldsarray["{SURVEYDESCRIPTION}"] == '') {
+                    $fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
+        }
 
         $fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
         $fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
         $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
-        if (empty($fieldsarray["{ADMINEMAIL}"]))
-            $fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
+        if (empty($fieldsarray["{ADMINEMAIL}"])) {
+                    $fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
+        }
         $from = $fieldsarray["{ADMINNAME}"].' <'.$fieldsarray["{ADMINEMAIL}"].'>';
 
         foreach ($attributes as $attributefield)
@@ -153,16 +157,14 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid yet');
 
-        }
-        elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
+        } elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
         {
             $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                 'email'=>$fieldsarray["{EMAIL}"],
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid anymore');
 
-        }
-        else
+        } else
         {
             if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders))
             {
@@ -170,8 +172,9 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                                                     'email'=>$fieldsarray["{EMAIL}"],
                                                     'status'=>'OK');
 
-                if ($sType == 'invite' || $sType == 'register')
-                    $oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
+                if ($sType == 'invite' || $sType == 'register') {
+                                    $oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
+                }
 
                 if ($sType == 'remind')
                 {
@@ -180,8 +183,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                     $oTokens->updateByPk($aTokenRow['tid'], array('remindercount' => $iRCount));
                     }
 
-            }
-            else
+            } else
             {
 
                 $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],

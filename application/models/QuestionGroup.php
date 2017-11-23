@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -142,8 +144,7 @@ class QuestionGroup extends LSActiveRecord
         }
         if (!$group->save()) {
             return false;
-        }
-        else {
+        } else {
             return $group->gid;
         }
     }
@@ -305,8 +306,7 @@ class QuestionGroup extends LSActiveRecord
                 onclick="'.$confirm.'">
                 <span class="text-danger fa fa-trash"></span>
                 </a>';
-            }
-            else {
+            } else {
                 $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'\'); return false;';
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
                 onclick="'.$alert.'">

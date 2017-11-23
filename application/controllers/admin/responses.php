@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * LimeSurvey
@@ -149,8 +151,7 @@ class responses extends Survey_Common_Action
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             $quexmlpdf->Output("$iSurveyID-$iId-queXML.pdf", 'D');
-        }
-        else
+        } else
         {
             $aData = array();
             $aData['surveyid'] = $iSurveyID;
@@ -220,27 +221,27 @@ class responses extends Survey_Common_Action
                 if ($field['type'] != "|")
                 {
                     $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field), 'code'=>viewHelper::getFieldCode($field, array('LEMcompat'=>true)));
-                }
-                elseif ($field['aid'] !== 'filecount')
+                } elseif ($field['aid'] !== 'filecount')
                 {
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
 
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
                         $filenum = sprintf(gT("File %s"), $i + 1);
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Title').")", 'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
+                        if ($qidattributes['show_title'] == 1) {
+                                                    $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Title').")", 'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
+                        }
 
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")", 'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
+                        if ($qidattributes['show_comment'] == 1) {
+                                                    $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")", 'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
+                        }
 
                         $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")", 'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i, 'qid'=>$field['qid']);
                         $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")", 'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
-                }
-                else
+                } else
                 {
                     $fnames[] = array($field['fieldname'], gT("File count"));
                 }
@@ -331,11 +332,10 @@ class responses extends Survey_Common_Action
                                             $answervalue = htmlspecialchars(strip_tags(stripJavaScript($phparray[$index][$metadata])));
                                     }
                                     $aData['bHasFile'] = true;
+                                } else {
+                                                                    $answervalue = "";
                                 }
-                                else
-                                    $answervalue = "";
-                            }
-                            else
+                            } else
                             {
                                 $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $sBrowseLanguage))), ENT_QUOTES);
                             }
@@ -361,8 +361,7 @@ class responses extends Survey_Common_Action
             $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyID);
 
             $this->_renderWrappedTemplate('', $aViewUrls, $aData);
-        }
-        else
+        } else
         {
             $aData = array();
             $aData['surveyid'] = $iSurveyID;
@@ -417,8 +416,7 @@ class responses extends Survey_Common_Action
             Yii::app()->user->setState('responsesGridSwitchDisplayState', 'extended');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue', 1000);
             Yii::app()->user->setState('defaultEllipsizeQuestionValue', 1000);
-        }
-        else
+        } else
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState', 'compact');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue', Yii::app()->params['defaultEllipsizeHeaderValue']);

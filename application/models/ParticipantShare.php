@@ -121,8 +121,7 @@ class ParticipantShare extends LSActiveRecord
     {
         if ($this->share_uid == -1) {
             return gT('Everybody');
-        }
-        else {
+        } else {
             return $this->shared_by['full_name'];
         }
     }
@@ -137,8 +136,7 @@ class ParticipantShare extends LSActiveRecord
             . ($this->can_edit ? "checked" : "")
             . "/>";
             return  $inputHtml;
-        }
-        else {
+        } else {
             return ($this->can_edit ? gT("Yes") : gT('No'));
         }
     }
@@ -165,8 +163,7 @@ class ParticipantShare extends LSActiveRecord
             return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"".$url."\"); })'>"
                 . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
                 . "</a>";
-        } 
-        else {
+        } else {
             return '';
         }
     }
@@ -187,8 +184,7 @@ class ParticipantShare extends LSActiveRecord
 
         if ($isOwner || $isSuperAdmin) {
             $html = "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='".$participantIdAndShareUid."' >";
-        }
-        else {
+        } else {
             $html = '';
         }
 

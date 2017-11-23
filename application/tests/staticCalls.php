@@ -11,8 +11,10 @@ iterateList($dir);
 function ignore($entry)
 {
     // Check if directory is ignored.
-    if (substr($entry, -9, 9) == 'libraries') return true;
-}
+    if (substr($entry, -9, 9) == 'libraries') {
+        return true;
+    }
+    }
 
 function iterateList(Iterator $i)
 {
@@ -22,8 +24,7 @@ function iterateList(Iterator $i)
         if ($i->hasChildren() && !ignore($entry))
         {
             iterateList($i->getChildren());
-        }
-        else
+        } else
         {
             if (substr($entry, -4, 4) == '.php')
             {

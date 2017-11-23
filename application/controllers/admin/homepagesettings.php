@@ -15,8 +15,9 @@
 * Inspired by ACL pattern, see : https://en.wikipedia.org/wiki/Access_control_list
 */
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 class homepagesettings extends Survey_Common_Action
 {
@@ -68,13 +69,11 @@ class homepagesettings extends Survey_Common_Action
                 if (isset($_POST['saveandclose']))
                 {
                     $this->getController()->redirect(array('admin/homepagesettings'));
-                }
-                else
+                } else
                 {
                     $this->getController()->redirect(array('admin/homepagesettings/sa/update/id/'.$model->id));
                 }
-            }
-            else
+            } else
             {
                 Yii::app()->user->setFlash('error', gT('Could not create new box'));
             }
@@ -120,8 +119,7 @@ class homepagesettings extends Survey_Common_Action
                 {
                     $this->getController()->redirect(array('admin/homepagesettings', 'id'=>$model->id));
                 }
-            }
-            else
+            } else
             {
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
@@ -194,8 +192,9 @@ class homepagesettings extends Survey_Common_Action
     {
         $model = new Boxes('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Boxes']))
-            $model->attributes = $_GET['Boxes'];
+        if (isset($_GET['Boxes'])) {
+                    $model->attributes = $_GET['Boxes'];
+        }
 
         $this->_renderWrappedTemplate('homepagesettings', 'admin', array(
             'model'=>$model,
@@ -212,8 +211,9 @@ class homepagesettings extends Survey_Common_Action
     public function loadModel($id)
     {
         $model = Boxes::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -33,8 +35,7 @@ class Index extends Survey_Common_Action
             $iSurveyID = $lastsurvey;
             $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title."(".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
-        }
-        else
+        } else
         {
             $aData['showLastSurvey'] = false;
         }
@@ -68,13 +69,11 @@ class Index extends Survey_Common_Action
                     $aData['last_question_name'] .= ' : '.$qrrow['question'];
                 }
                 $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
-            }
-            else
+            } else
             {
                 $aData['showLastQuestion'] = false;
             }
-        }
-        else
+        } else
         {
             $aData['showLastQuestion'] = false;
         }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -70,8 +72,9 @@ function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
  */
 function quoteText($sText, $sEscapeMode = 'html')
 {
-    if ($sEscapeMode === null)
-        $sEscapeMode = 'html';
+    if ($sEscapeMode === null) {
+            $sEscapeMode = 'html';
+    }
 
     switch ($sEscapeMode)
     {
@@ -191,8 +194,7 @@ function getSurveyList($returnarray = false, $surveyid = false)
             if (!empty($result->defaultlanguage))
             {
                 $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
-            }
-            elseif (!($bCheckIntegrity))
+            } elseif (!($bCheckIntegrity))
             {
                 $bCheckIntegrity = true;
                 Yii::app()->setFlashMessage(
@@ -210,7 +212,9 @@ function getSurveyList($returnarray = false, $surveyid = false)
         $surveynames = $cached;
     }
     $surveyselecter = "";
-    if ($returnarray === true) return $surveynames;
+    if ($returnarray === true) {
+        return $surveynames;
+    }
     $activesurveys = '';
     $inactivesurveys = '';
     $expiredsurveys = '';
@@ -322,8 +326,7 @@ function getGidPrevious($surveyid, $gid)
         $i += 1;
     }
 
-    if ($iPrev >= 0) {$GidPrev = $qresult[$iPrev]->gid; }
-    else {$GidPrev = ""; }
+    if ($iPrev >= 0) {$GidPrev = $qresult[$iPrev]->gid; } else {$GidPrev = ""; }
     return $GidPrev;
 }
 
@@ -451,8 +454,7 @@ function getMaxGroupOrder($surveyid)
     {
         $current_max += 1;
         return $current_max;
-    }
-    else
+    } else
     {
         return 0;
     }
@@ -479,9 +481,10 @@ function getGroupOrder($surveyid, $gid)
     if ($group_order == "")
     {
         return "0";
+    } else {
+        return $group_order;
     }
-    else return $group_order;
-}
+    }
 
 /**
 * getMaxQuestionOrder($gid) queries the database for the maximum sortorder of a question.
@@ -499,9 +502,10 @@ function getMaxQuestionOrder($gid, $surveyid)
     if ($current_max == "")
     {
         return "0";
+    } else {
+        return $current_max;
     }
-    else return $current_max;
-}
+    }
 
 /**
 * getQuestionClass() returns a class name for a given question type to allow custom styling for each question type.
@@ -610,8 +614,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
         if ($column_style == 'ul')
         {
             $ul = '-ul';
-        }
-        else
+        } else
         {
             $ul = '';
         }
@@ -619,8 +622,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
         $class = ' class="'.$wrapperclass.' cols-'.$columns.$ul.'"';
         $class_last_ul = ' class="'.$wrapperclass.' cols-'.$columns.$ul.' last"';
         $class_last_table = ' class="'.$wrapperclass.' cols-'.$columns.' last"';
-    }
-    else
+    } else
     {
         $class = ' class="'.$wrapperclass.'"';
         $class_last_ul = ' class="'.$wrapperclass.'"';
@@ -717,8 +719,7 @@ function alternation($alternate = '', $type = 'col')
     if ($alternate == $odd)
     {
         $alternate = $even;
-    }
-    else
+    } else
     {
         $alternate = $odd;
     };
@@ -775,8 +776,7 @@ function getGroupList($gid, $surveyid)
     }
     if ($groupselecter)
     {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; }
-        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
     }
     return $groupselecter;
 }
@@ -843,8 +843,7 @@ function getGroupListLang($gid, $language, $surveyid)
     if ($groupselecter)
     {
         $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; }
-        else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n"; }
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n"; }
     }
     return $groupselecter;
 }
@@ -868,8 +867,7 @@ function getUserList($outputformat = 'fullinfoarray')
             if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == "dblib")
             {
                 $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
-            }
-            else
+            } else
             {
                 $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
             }
@@ -917,19 +915,16 @@ function getUserList($outputformat = 'fullinfoarray')
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
                 $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
-            }
-            else
+            } else
             {
                 $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id']);
             }
-        }
-        else
+        } else
         {
             if ($srow['uid'] != Yii::app()->session['loginID'])
             {
                 $userlist[] = $srow['uid'];
-            }
-            else
+            } else
             {
                 $userlist[0] = $srow['uid'];
             }
@@ -1091,8 +1086,7 @@ function groupOrderThenQuestionOrder($a, $b)
     if (isset($a['group_order']) && isset($b['group_order']))
     {
         $GroupResult = strnatcasecmp($a['group_order'], $b['group_order']);
-    }
-    else
+    } else
     {
         $GroupResult = "";
     }
@@ -1135,8 +1129,9 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
  */
 function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = NULL) //Function rewrites the cfieldname for a question after group change
 {
-    if (!isset($iSurveyID))
-        $iSurveyID = Yii::app()->getConfig('sid');
+    if (!isset($iSurveyID)) {
+            $iSurveyID = Yii::app()->getConfig('sid');
+    }
     $qid = sanitize_int($qid);
     $oldgid = sanitize_int($oldgid);
     $newgid = sanitize_int($newgid);
@@ -1178,16 +1173,14 @@ function returnGlobal($stringname, $bRestrictToString = false)
             } else {
                 return sanitize_int($urlParam);
             }
-        }
-        elseif ($stringname == "lang" || $stringname == "adminlang")
+        } elseif ($stringname == "lang" || $stringname == "adminlang")
         {
             if ($bUrlParamIsArray) {
                 return array_map("sanitize_languagecode", $urlParam);
             } else {
                 return sanitize_languagecode($urlParam);
             }
-        }
-        elseif ($stringname == "htmleditormode" ||
+        } elseif ($stringname == "htmleditormode" ||
         $stringname == "subaction" ||
         $stringname == "questionselectormode" ||
         $stringname == "templateeditormode"
@@ -1198,8 +1191,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
             } else {
                 return sanitize_paranoid_string($urlParam);
             }
-        }
-        elseif ($stringname == "cquestions")
+        } elseif ($stringname == "cquestions")
         {
             if ($bUrlParamIsArray) {
                 return array_map("sanitize_cquestions", $urlParam);
@@ -1208,8 +1200,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
             }
         }
         return $urlParam;
-    }
-    else
+    } else
     {
         return NULL;
     }
@@ -1401,8 +1392,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     if (isset($this_answer))
     {
         return $this_answer." [$sValue]";
-    }
-    else
+    } else
     {
         return $sValue;
     }
@@ -1463,8 +1453,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage) {
         $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
-        if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages))
-            $sLanguage = $oSurvey->language;
+        if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
+                    $sLanguage = $oSurvey->language;
+        }
 
         switch ($flt['type'])
                 {
@@ -1719,8 +1710,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     {
         if ($dv['specialtype'] != '') {
             $sq = $dv['specialtype'];
-        }
-        else {
+        } else {
             $sq = $dv['sqid'];
         }
         $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
@@ -1741,8 +1731,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     {
         if ($dv['specialtype'] != '') {
             $sq = $dv['specialtype'];
-        }
-        else {
+        } else {
             $sq = $dv['sqid'];
         }
         $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
@@ -1792,7 +1781,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
         if ($qtypes[$arow['type']]['subquestions'] == 0 && $arow['type'] != "R" && $arow['type'] != "|")
         {
-            if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+            if (isset($fieldmap[$fieldname])) {
+                $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+            }
 
             $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             
@@ -1817,7 +1808,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if ($arow['other'] == "Y")
                     {
                         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
-                        if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                        if (isset($fieldmap[$fieldname])) {
+                            $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                        }
 
                         $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
                         'type'=>$arow['type'],
@@ -1845,7 +1838,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     break;
                 case "O": //DROPDOWN LIST WITH COMMENT
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    if (isset($fieldmap[$fieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    }
 
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
                     'type'=>$arow['type'],
@@ -1894,7 +1889,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 foreach ($answerset as $answer)
                 {
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['title']}";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    if (isset($fieldmap[$fieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    }
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
                     'type'=>$arow['type'],
                     'sid'=>$surveyid,
@@ -1920,14 +1917,15 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             unset($answerset);
-        }
-        elseif ($arow['type'] == "1")
+        } elseif ($arow['type'] == "1")
         {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow)
             {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                if (isset($fieldmap[$fieldname])) {
+                    $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
                 if ($style == "full")
                 {
@@ -1945,7 +1943,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
 
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                if (isset($fieldmap[$fieldname])) {
+                    $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
                 if ($style == "full")
                 {
@@ -1962,9 +1962,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
-        }
-
-        elseif ($arow['type'] == "R")
+        } elseif ($arow['type'] == "R")
         {
             // Sub question by answer number OR attribute
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
@@ -1973,7 +1971,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             for ($i = 1; $i <= $columnsCount; $i++)
             {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                if (isset($fieldmap[$fieldname])) {
+                    $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
                 if ($style == "full")
                 {
@@ -1988,8 +1988,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
             }
-        }
-        elseif ($arow['type'] == "|")
+        } elseif ($arow['type'] == "|")
         {
             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
@@ -2040,7 +2039,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
 
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                if (isset($fieldmap[$fieldname])) {
+                    $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
                 'sid'=>$surveyid,
@@ -2069,7 +2070,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if ($arow['type'] == "P")
                 {
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    if (isset($fieldmap[$fieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    }
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']."comment");
                     if ($style == "full")
                     {
@@ -2088,7 +2091,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             if ($arow['other'] == "Y" && ($arow['type'] == "M" || $arow['type'] == "P"))
             {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                if (isset($fieldmap[$fieldname])) {
+                    $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
                 if ($style == "full")
                 {
@@ -2106,7 +2111,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if ($arow['type'] == "P")
                 {
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    if (isset($fieldmap[$fieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
+                    }
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
                     if ($style == "full")
                     {
@@ -2136,14 +2143,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap[$fieldname]['help'] = $arow['help'];
 
             // Set typeName
-        }
-        else
+        } else
         {
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
 
-        if (isset($fieldmap[$fieldname]['typename']))
-            $fieldmap[$fieldname]['typename'] = $typename[$fieldname] = $arow['typename'];
+        if (isset($fieldmap[$fieldname]['typename'])) {
+                    $fieldmap[$fieldname]['typename'] = $typename[$fieldname] = $arow['typename'];
+        }
     }
     App()->setLanguage($sOldLanguage);
 
@@ -2320,12 +2327,10 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
     if ($language == '' && isset($questionAttributeArray[$attributeName]))
     {
         return $questionAttributeArray[$attributeName];
-    }
-    elseif ($language != '' && isset($questionAttributeArray[$attributeName][$language]))
+    } elseif ($language != '' && isset($questionAttributeArray[$attributeName][$language]))
     {
         return $questionAttributeArray[$attributeName][$language];
-    }
-    else
+    } else
     {
         return '';
     }
@@ -2449,8 +2454,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     if (is_null($bouncemail))
     {
         $sender = $from;
-    }
-    else
+    } else
     {
         $sender = $bouncemail;
     }
@@ -2465,8 +2469,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     }
     $mail->CharSet = $emailcharset;
     if (isset($emailsmtpssl) && trim($emailsmtpssl) !== '' && $emailsmtpssl !== 0) {
-        if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; }
-        else {$mail->SMTPSecure = $emailsmtpssl; }
+        if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; } else {$mail->SMTPSecure = $emailsmtpssl; }
     }
 
     $fromname = '';
@@ -2496,8 +2499,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             {
                 $mail->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
                 $mail->Port = substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
-            }
-            else {
+            } else {
                 $mail->Host = $emailsmtphost;
             }
             $mail->Username = $emailsmtpuser;
@@ -2525,8 +2527,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             $toemail = substr($singletoemail, strpos($singletoemail, '<') + 1, strpos($singletoemail, '>') - 1 - strpos($singletoemail, '<'));
             $toname = trim(substr($singletoemail, 0, strpos($singletoemail, '<') - 1));
             $mail->AddAddress($toemail, $toname);
-        }
-        else
+        } else
         {
             $mail->AddAddress($singletoemail);
         }
@@ -2549,8 +2550,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $mail->msgHTML($body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
         $html = new \Html2Text\Html2Text($body);
         $mail->AltBody = $html->getText();
-    }
-    else
+    } else
     {
         $mail->IsHTML(false);
         $mail->Body = $body;
@@ -2564,8 +2564,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             if (is_array($attachment))
             {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
-            }
-            else
+            } else
             { // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
@@ -2608,8 +2607,7 @@ function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities =
     if ($bKeepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext, '<span><table><tr><td><th>');
-    }
-    else {
+    } else {
         $sNicetext = strip_tags($sNicetext);
     }
     // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt - only available since PCRE 7.0
@@ -2771,8 +2769,12 @@ function languageDropdown($surveyid, $selected)
     foreach ($slangs as $lang)
     {
         $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
-        if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang, false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        if ($lang == $selected) {
+            $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        }
+        if ($lang != $selected) {
+            $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        }
     }
     $html .= "</select>";
     return $html;
@@ -2794,8 +2796,12 @@ function languageDropdownClean($surveyid, $selected)
     $html = "<select class='form-control listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang)
     {
-        if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang, false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='$lang'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        if ($lang == $selected) {
+            $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        }
+        if ($lang != $selected) {
+            $html .= "\t<option value='$lang'>".getLanguageNameFromCode($lang, false)."</option>\n";
+        }
     }
     $html .= "</select>";
     return $html;
@@ -2866,16 +2872,14 @@ function incompleteAnsFilterState()
     if ($letsfilter != '')
     { // use the read value if not empty
         Yii::app()->session['incompleteanswers'] = $letsfilter;
-    }
-    elseif (empty(Yii::app()->session['incompleteanswers']))
+    } elseif (empty(Yii::app()->session['incompleteanswers']))
     { // sets default variable value from config file
         Yii::app()->session['incompleteanswers'] = Yii::app()->getConfig('filterout_incomplete_answers');
     }
 
     if (Yii::app()->session['incompleteanswers'] == 'complete' || Yii::app()->session['incompleteanswers'] == 'all' || Yii::app()->session['incompleteanswers'] == 'incomplete') {
         return Yii::app()->session['incompleteanswers'];
-    }
-    else
+    } else
     { // last resort is to prevent filtering
         return false;
     }
@@ -2899,8 +2903,7 @@ function isCaptchaEnabled($screen, $captchamode = '')
             $captchamode == 'R')
             {
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -2912,8 +2915,7 @@ function isCaptchaEnabled($screen, $captchamode = '')
             $captchamode == 'X')
             {
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -2957,8 +2959,7 @@ function isTokenCompletedDatestamped($thesurvey)
     if ($thesurvey['anonymized'] == 'Y' && tableExists('tokens_'.$thesurvey['sid']))
     {
         return false;
-    }
-    else
+    } else
     {
         return true;
     }
@@ -2992,8 +2993,7 @@ function getBounceEmail($surveyid)
     if ($surveyInfo['bounce_email'] == '')
     {
         return null; // will be converted to from in MailText
-    }
-    else
+    } else
     {
         return $surveyInfo['bounce_email'];
     }
@@ -3007,8 +3007,7 @@ function getEmailFormat($surveyid)
     if ($surveyInfo['htmlemail'] == 'Y')
     {
         return 'html';
-    }
-    else
+    } else
     {
         return 'text';
     }
@@ -3041,14 +3040,12 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
         return preg_replace('/'.$sPattern.'/u', $sReplace, $sString);
-    }
-    elseif ($sType == 'label')
+    } elseif ($sType == 'label')
     {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace("/".$sPattern."/u", $sReplace, $sString);
-    }
-    else // unknown type
+    } else // unknown type
     {
         return $sString;
     }
@@ -3076,8 +3073,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
 
     if ($iOldSID == $iNewSID) {
         $forceRefresh = true; // otherwise grabs the cached copy and throws undefined index exceptions
-    }
-    else {
+    } else {
         $forceRefresh = false;
     }
     $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language);
@@ -3115,12 +3111,10 @@ function hasResources($id, $type = 'survey')
     if ($type == 'survey')
     {
         $dirname .= "/surveys/$id";
-    }
-    elseif ($type == 'label')
+    } elseif ($type == 'label')
     {
         $dirname .= "/labels/$id";
-    }
-    else
+    } else
     {
         return false;
     }
@@ -3136,8 +3130,7 @@ function hasResources($id, $type = 'survey')
             }
         }
         closedir($dh);
-    }
-    else
+    } else
     {
         return false;
     }
@@ -3181,8 +3174,7 @@ function conditionalNewlineToBreak($mytext, $ishtml, $encoded = '')
             $mytext = str_replace('&#10;', '<br />', $mytext);
         }
         return str_replace("\n", '<br />', $mytext);
-    }
-    else
+    } else
     {
         return $mytext;
     }
@@ -3236,9 +3228,12 @@ function fixCKeditorText($str)
  */
 function filterForAttributes($fieldname)
 {
-    if (strpos($fieldname, 'attribute_') === false) return false;
-    else return true;
-}
+    if (strpos($fieldname, 'attribute_') === false) {
+        return false;
+    } else {
+        return true;
+    }
+    }
 
 /**
 * Retrieves the attribute field names from the related token table
@@ -3249,8 +3244,9 @@ function filterForAttributes($fieldname)
 function getAttributeFieldNames($iSurveyID)
 {
     $survey = Survey::model()->findByPk($iSurveyID);
-    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
-        return Array();
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName)) {
+            return Array();
+    }
 
     return array_filter(array_keys($table->columns), 'filterForAttributes');
 
@@ -3266,8 +3262,9 @@ function getAttributeFieldNames($iSurveyID)
 function getParticipantAttributes($iSurveyID)
 {
     $survey = Survey::model()->findByPk($iSurveyID);
-    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
-        return Array();
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName)) {
+            return Array();
+    }
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
@@ -3355,8 +3352,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'N',
             'cpdbmap'=>''
             );
-        }
-        elseif (empty($aSavedExtraTokenFields[$sField]['description']))
+        } elseif (empty($aSavedExtraTokenFields[$sField]['description']))
         {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
@@ -3364,8 +3360,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
     if ($bOnlyAttributes)
     {
         return $aSavedExtraTokenFields;
-    }
-    else
+    } else
     {
         return array_merge($aBasicTokenFields, $aSavedExtraTokenFields);
     }
@@ -3473,8 +3468,7 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
         $oDate           = new DateTime($sDate); // We generate the Date object (PHP will deal with the format of the string)
         $sDate           = $oDate->format($usedDatetime); // We apply it to the Date object to generate a string date
         return $sDate; // We return the string date
-    }
-    catch (Exception $e) {
+    } catch (Exception $e) {
         $oDate           = new DateTime('1/1/1980 00:00'); // We generate the Date object (PHP will deal with the format of the string)
         $sDate           = $oDate->format($usedDatetime); // We apply it to the Date object to generate a string date
         return $sDate; // We return the string date
@@ -3552,7 +3546,9 @@ function getSubQuestions($sid, $qid, $sLanguage) {
         }
         $subquestions[$sid][$sLanguage] = $resultset;
     }
-    if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
+    if (isset($subquestions[$sid][$sLanguage][$qid])) {
+        return $subquestions[$sid][$sLanguage][$qid];
+    }
     return array();
 }
 
@@ -3602,8 +3598,7 @@ function enforceSSLMode()
     if (Yii::app()->getConfig('ssl_emergency_override') !== true)
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
-    }
-    else
+    } else
     {
         $force_ssl = 'off';
     };
@@ -3680,29 +3675,30 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
                     $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']] = array($fname['question'], '', '');
-                }
-                else
+                } else
                 {
                     $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
                     $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                     continue;
                 }
             }
-        }
-        else
+        } else
         {
             $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
             $aResultTable[$fname['fieldname']] = array($question, '', $answer);
             continue;
         }
-        if (isset($fname['subquestion']))
-            $subquestion = "[{$fname['subquestion']}]";
+        if (isset($fname['subquestion'])) {
+                    $subquestion = "[{$fname['subquestion']}]";
+        }
 
-        if (isset($fname['subquestion1']))
-            $subquestion = "[{$fname['subquestion1']}]";
+        if (isset($fname['subquestion1'])) {
+                    $subquestion = "[{$fname['subquestion1']}]";
+        }
 
-        if (isset($fname['subquestion2']))
-            $subquestion .= "[{$fname['subquestion2']}]";
+        if (isset($fname['subquestion2'])) {
+                    $subquestion .= "[{$fname['subquestion2']}]";
+        }
 
         $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode);
         $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
@@ -3718,10 +3714,11 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
  */
 function isNumericInt($mStr)
 {
-    if (is_int($mStr))
-        return true;
-    elseif (is_string($mStr))
-        return preg_match("/^[0-9]+$/", $mStr);
+    if (is_int($mStr)) {
+            return true;
+    } elseif (is_string($mStr)) {
+            return preg_match("/^[0-9]+$/", $mStr);
+    }
     return false;
 }
 
@@ -4051,7 +4048,9 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
     {
         $availlangs = sanitize_languagecodeS($availlangs);
         $langs = explode(" ", $availlangs);
-        if ($langs[count($langs) - 1] == "") array_pop($langs);
+        if ($langs[count($langs) - 1] == "") {
+            array_pop($langs);
+        }
     }
 
     $sqllang = "language <> '".$baselang."' ";
@@ -4278,8 +4277,7 @@ function switchMSSQLIdentityInsert($table, $state)
         {
             // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
             Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');
-        }
-        else
+        } else
         {
             // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
             Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
@@ -4299,8 +4297,7 @@ function getLastInsertID($sTableName)
     if ($sDBDriver == 'mysql' || $sDBDriver == 'mysqli')
     {
         return Yii::app()->db->getLastInsertID();
-    }
-    else
+    } else
     {
         return Yii::app()->db->getCommandBuilder()->getLastInsertID($sTableName);
     }
@@ -4538,8 +4535,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
     {
         $newgid = sanitize_int($newgid);
         $newgorder = getGroupOrder($sid, $newgid);
-    }
-    else
+    } else
     {
         $neworder = ""; // Not used in this case
     }
@@ -4577,8 +4573,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
             {
                 $resarray['notAbove'][] = Array($targetgid, $targetgorder, $depqid, $condid);
             }
-        }
-        else
+        } else
         { // get all moves constraints
             $resarray['notAbove'][] = Array($targetgid, $targetgorder, $depqid, $condid);
         }
@@ -4614,8 +4609,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
             {
                 $resarray['notBelow'][] = Array($depgid, $depgorder, $depqid, $condid);
             }
-        }
-        else
+        } else
         { // get all moves constraints
             $resarray['notBelow'][] = Array($depgid, $depgorder, $depqid, $condid);
         }
@@ -4666,8 +4660,7 @@ function getUserGroupList($ugid = NULL, $outputformat = 'optionlist')
     if ($outputformat == 'simplegidarray')
     {
         return $simplegidarray;
-    }
-    else
+    } else
     {
         return $selecter;
     }
@@ -4767,8 +4760,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
                 {   Yii::app()->db->createCommand($command)->query(); //Checked
                     $command = htmlspecialchars($command);
                     $modifyoutput .= ". ";
-                }
-                catch (CDbException $e)
+                } catch (CDbException $e)
                 {
                     $command = htmlspecialchars($command);
                     $modifyoutput .= "<br />".sprintf(gT("SQL command failed: %s"), "<span style='font-size:10px;'>".$command."</span>", "<span style='color:#ee0000;font-size:10px;'></span><br/>");
@@ -4820,8 +4812,9 @@ function getLabelSets($languages = null)
 
     $result = LabelSet::model()->findAll($criteria);
     $labelsets = array();
-    foreach ($result as $row)
-        $labelsets[] = array($row->lid, $row->label_name);
+    foreach ($result as $row) {
+            $labelsets[] = array($row->lid, $row->label_name);
+    }
     return $labelsets;
 }
 
@@ -4840,12 +4833,10 @@ function getHeader($meta = false)
     if (Yii::app()->session['survey_'.$surveyid]['s_lang'])
     {
         $languagecode = Yii::app()->session['survey_'.$surveyid]['s_lang'];
-    }
-    elseif (isset($surveyid) && $surveyid && Survey::model()->findByPk($surveyid))
+    } elseif (isset($surveyid) && $surveyid && Survey::model()->findByPk($surveyid))
     {
         $languagecode = Survey::model()->findByPk($surveyid)->language;
-    }
-    else
+    } else
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
@@ -4863,8 +4854,9 @@ function getHeader($meta = false)
     $header .= " class=\"{$class}\">\n";
     $header .= "\t<head>\n";
     Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
-    if ($meta)
-        $header .= $meta;
+    if ($meta) {
+            $header .= $meta;
+    }
     return $header;
 }
 
@@ -4949,8 +4941,7 @@ function getSurveyUserList($bIncludeOwner = true, $bIncludeSuperAdmins = true, $
 
     if ($svexist) {
         $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
-    }
-    else {
+    } else {
         $surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;
     }
 
@@ -5001,16 +4992,14 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
 
     if ($svexist) {
         $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
-    }
-    else {
+    } else {
         $surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;
     }
 
     if ($outputformat == 'simpleugidarray')
     {
         return $simpleugidarray;
-    }
-    else
+    } else
     {
         return $surveyselecter;
     }
@@ -5236,8 +5225,9 @@ function array_diff_assoc_recursive($array1, $array2) {
                 $difference[$key] = $value;
             } else {
                 $new_diff = array_diff_assoc_recursive($value, $array2[$key]);
-                if (!empty($new_diff))
-                    $difference[$key] = $new_diff;
+                if (!empty($new_diff)) {
+                                    $difference[$key] = $new_diff;
+                }
             }
         } else if (!array_key_exists($key, $array2) || $array2[$key] !== $value) {
             $difference[$key] = $value;

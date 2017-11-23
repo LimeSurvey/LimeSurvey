@@ -72,8 +72,7 @@ class Statistics_userController extends SurveyController {
         if (!isset($iSurveyID))
         {
             $iSurveyID = returnGlobal('sid');
-        }
-        else
+        } else
         {
             $iSurveyID = (int) $iSurveyID;
         }
@@ -88,8 +87,7 @@ class Statistics_userController extends SurveyController {
         if (count($actresult) == 0)
         {
             throw new CHttpException(404, 'You have to provide a valid survey ID.');
-        }
-        else
+        } else
         {
             $surveyinfo = getSurveyInfo($iSurveyID);
             // CHANGE JSW_NZ - let's get the survey title for display
@@ -126,12 +124,10 @@ class Statistics_userController extends SurveyController {
             if (isset($_SERVER['REDIRECT_REMOTE_USER']))
             {
                 $currentuser = $_SERVER['REDIRECT_REMOTE_USER'];
-            }
-            else if (session_id())
+            } else if (session_id())
             {
                 $currentuser = substr(session_id(), 0, 15);
-            }
-            else
+            } else
             {
                 $currentuser = "standard";
             }
@@ -140,8 +136,7 @@ class Statistics_userController extends SurveyController {
         if ($sLanguage == null || !in_array($sLanguage, Survey::model()->findByPk($iSurveyID)->getAllLanguages()))
         {
             $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
+        } else
         {
             $sLanguage = sanitize_languagecode($sLanguage);
         }
@@ -166,8 +161,7 @@ class Statistics_userController extends SurveyController {
         if ($databasetype == 'mssql' || $databasetype == "sqlsrv" || $databasetype == "dblib")
         {
             $query .= " AND CAST(CAST(qa.value as varchar) as int)='1'\n";
-        }
-        else
+        } else
         {
             $query .= " AND qa.value='1'\n";
         }
@@ -297,7 +291,9 @@ class Statistics_userController extends SurveyController {
             {
 
                 //update progress bar
-                if ($process_status < 100) $process_status++;
+                if ($process_status < 100) {
+                    $process_status++;
+                }
                 //~ $prb->moveStep($process_status);
 
             }    // end foreach -> loop through all questions

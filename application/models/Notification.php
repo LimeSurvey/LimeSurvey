@@ -33,8 +33,7 @@ class Notification extends LSActiveRecord
         if (is_string($options) || is_null($options)) {
             parent::__construct($options); // $options = scenario in this case
             return;
-        }
-        else {
+        } else {
             // Why not Zoidberg? (\/) (°,,,°) (\/)
             parent::__construct();
         }
@@ -90,8 +89,7 @@ class Notification extends LSActiveRecord
         if (isset($options['survey_id'])) {
             $options['entity'] = 'survey';
             $options['entity_id'] = $options['survey_id'];
-        }
-        elseif (isset($options['user_id'])) {
+        } elseif (isset($options['user_id'])) {
             $options['entity'] = 'user';
             $options['entity_id'] = $options['user_id'];
         }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -52,8 +54,9 @@ class quotas extends Survey_Common_Action
         array_unshift($aData['aLangs'], $aData['sBaseLang']);
 
         $aData['action'] = $action = Yii::app()->request->getParam('action');
-        if (!isset($action))
-            $aData['action'] = 'quotas';
+        if (!isset($action)) {
+                    $aData['action'] = 'quotas';
+        }
 
         return $aData;
     }
@@ -74,8 +77,7 @@ class quotas extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read'))
         {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
-        }
-        else
+        } else
         {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
@@ -96,11 +98,9 @@ class quotas extends Survey_Common_Action
                 if (in_array($action, array('activate', 'deactivate'))) {
                     $oQuota->active = ($action == 'activate' ? 1 : 0);
                     $oQuota->save();
-                }
-                elseif ($action == 'delete') {
+                } elseif ($action == 'delete') {
                     $oQuota->delete();
-                }
-                elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
+                } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
                     $oQuotaLanguageSettings = $oQuota->languagesettings;
                     foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
                         $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
@@ -242,8 +242,7 @@ class quotas extends Survey_Common_Action
             foreach ($oQuota->languagesettings as $languagesetting) {
                 $aData['aQuotaLanguageSettings'][$languagesetting->quotals_language] = $languagesetting;
             }
-        }
-        else
+        } else
         {
             // No quotas have been set for this survey
             //$aViewUrls[] = 'viewquotasempty_view';
@@ -256,8 +255,7 @@ class quotas extends Survey_Common_Action
         if ($quickreport == false)
         {
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
-        }
-        else
+        } else
         {
             /* Export a quickly done csv file */
             header("Content-Disposition: attachment; filename=quotas-survey".$iSurveyId.".csv");
@@ -290,8 +288,7 @@ class quotas extends Survey_Common_Action
                 $_POST['subaction'] = "new_answer";
                 $sSubAction = "new_answer";
                 self::new_answer($iSurveyId, $sSubAction);
-            }
-            else
+            } else
             {
                 self::_redirectToIndex($iSurveyId);
             }
@@ -421,8 +418,9 @@ class quotas extends Survey_Common_Action
             $x = 0;
 
             foreach ($aQuestionAnswers as $aQACheck) {
-                if (isset($aQACheck['rowexists']))
-                    $x++;
+                if (isset($aQACheck['rowexists'])) {
+                                    $x++;
+                }
             }
 
             reset($aQuestionAnswers);
@@ -606,8 +604,7 @@ class quotas extends Survey_Common_Action
         if (empty($aAnswerList))
         {
             return array();
-        }
-        else
+        } else
         {
             // Now we mark answers already used in this quota as such
             $aExistsingAnswers = QuotaMember::model()->findAllByAttributes(array('sid' => $iSurveyId, 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));

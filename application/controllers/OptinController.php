@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -46,8 +48,7 @@ class OptinController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
+        } else
         {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
@@ -59,8 +60,7 @@ class OptinController extends LSYii_Controller {
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
             throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
+        } else
         {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $token, false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
@@ -68,20 +68,17 @@ class OptinController extends LSYii_Controller {
             if (!isset($oToken))
             {
                 $sMessage = gT('You are not a participant in this survey.');
-            }
-            else
+            } else
             {
                 if ($oToken->emailstatus == 'OptOut')
                 {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
                     $sMessage = gT('You have been successfully added back to this survey.');
-                }
-                elseif ($oToken->emailstatus == 'OK')
+                } elseif ($oToken->emailstatus == 'OK')
                 {
                     $sMessage = gT('You are already a part of this survey.');
-                }
-                else
+                } else
                 {
                     $sMessage = gT('You have been already removed from this survey.');
                 }

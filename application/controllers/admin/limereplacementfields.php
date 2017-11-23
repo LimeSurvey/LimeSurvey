@@ -145,16 +145,14 @@ class limereplacementfields extends Survey_Common_Action
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
             $isPreviousPageQuestion = true;
-        }
-        elseif ($surveyformat == "G")
+        } elseif ($surveyformat == "G")
         {
             if ($isPreviousPageQuestion === true) { // Last question was on a previous page
                 if ($field["gid"] == $gid) { // This question is on same page
                     $isPreviousPageQuestion = false;
                 }
             }
-        }
-        elseif ($surveyformat == "A")
+        } elseif ($surveyformat == "A")
         {
             $isPreviousPageQuestion = false;
         }
@@ -195,8 +193,9 @@ class limereplacementfields extends Survey_Common_Action
     {
 
         $replFields = array();
-        if (!$surveyid)
-            return array($replFields, false);
+        if (!$surveyid) {
+                    return array($replFields, false);
+        }
         switch ($fieldtype)
         {
             case 'survey-desc':
