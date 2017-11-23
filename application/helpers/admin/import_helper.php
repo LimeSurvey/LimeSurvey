@@ -2326,7 +2326,6 @@ function TSVImportSurvey($sFullFilePath)
                         if (isset($row['default']) && $row['default'] != "")
                         {
                             $insertdata = array();
-                }
                             $insertdata['qid'] = $qid;
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
