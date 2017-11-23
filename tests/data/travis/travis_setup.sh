@@ -1,0 +1,34 @@
+#!/bin/sh
+
+phpenv global 7.0 2>/dev/null
+phpenv global 7.0
+
+#phpenv config-rm xdebug.ini
+#phpunit --version
+touch enabletests
+composer install
+chmod -R 776 tmp
+chmod -R 776 tmp/runtime
+chmod -R 776 upload
+chmod -R 776 themes
+mkdir -p tests/tmp/runtime
+chmod -R 776 tests/tmp
+chmod -R 776 tests/tmp/runtime
+php application/commands/console.php install admin password TravisLS no@email.com verbose
+cp application/config/config-sample-mysql.php application/config/config.php
+
+sudo apt-get update > /dev/null
+sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs chromium-browser
+sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+sudo a2enmod rewrite actions fastcgi alias
+echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
+sudo chown -R travis:travis /var/lib/apache2/fastcgi
+~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
+sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+sudo service apache2 restart
+
+wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
