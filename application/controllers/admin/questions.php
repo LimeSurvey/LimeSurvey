@@ -941,8 +941,7 @@ class questions extends Survey_Common_Action
                 if (ctype_digit($currentCharacter)) { // check if it's numerical
                     $numericSuffix = $currentCharacter.$numericSuffix; // store it in a string
                     $n = $n + 1;
-                }
-                else
+                } else
                 {
                     $numeric = false; // At first non numeric character found, the loop is stoped
                 }
@@ -1227,9 +1226,9 @@ class questions extends Survey_Common_Action
                 {
                     if (!array_key_exists($esrow->language, $questlangs)) { // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();
+                    } else {
+                                            $questlangs[$esrow->language] = 99;
                     }
-                    else
-                        $questlangs[$esrow->language] = 99;
 
                     if ($esrow->language == $baselang)
                     {
@@ -1924,8 +1923,9 @@ class questions extends Survey_Common_Action
 
         // Prefill question/answer from defaultvalues
         foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $field) {
-                    if (isset($field['defaultvalue']))
-                $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
+                    if (isset($field['defaultvalue'])) {
+                                    $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
+                    }
         }
 
         App()->setLanguage($language);

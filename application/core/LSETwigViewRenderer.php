@@ -292,7 +292,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if (!empty($aDatas['aSurveyInfo']['sid'])) {
             if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang']) {
                 $languagecode = Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-            }elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
+            } elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
                 $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
             }
         }
@@ -341,8 +341,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $sandbox    = new Twig_Extension_Sandbox($policy, true);
 
                 $this->_twig->addExtension($sandbox);
-            }
-            else {
+            } else {
                 $this->_twig->addExtension(new $extName());
             }
         }

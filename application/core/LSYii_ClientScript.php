@@ -381,8 +381,9 @@ class LSYii_ClientScript extends CClientScript {
         {
             foreach ($jsFilesPositioned as $position=>$fileArray) {
                 if (isset($this->scriptFiles[$position])) {
-                                    foreach ($this->scriptFiles[$position] as $url => $value)
-                        $fileArray[$url] = $value;
+                                    foreach ($this->scriptFiles[$position] as $url => $value) {
+                                                            $fileArray[$url] = $value;
+                                    }
                 }
                 $this->scriptFiles[$position] = $fileArray;
             }

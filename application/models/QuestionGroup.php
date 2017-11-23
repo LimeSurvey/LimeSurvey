@@ -375,8 +375,7 @@ class QuestionGroup extends LSActiveRecord
                 return false;
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

@@ -68,8 +68,7 @@ class responses extends Survey_Common_Action
         if (!$thissurvey) { // Already done in Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
-        }
-        elseif ($thissurvey['active'] != 'Y')
+        } elseif ($thissurvey['active'] != 'Y')
         {
             Yii::app()->session['flashmessage'] = gT("This survey has not been activated. There are no results to browse.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -674,22 +673,21 @@ class responses extends Survey_Common_Action
                 $aResponseId = $oSurvey->getCommandBuilder()
                 ->createFindCommand($oSurvey->tableSchema, $oCriteria)
                 ->queryColumn();
-            }
-            else
+            } else
             {
                 $aResponseId = explode(",", $sResponseId);
             }
             if (!empty($aResponseId))
             {
                 // Now, zip all the files in the filelist
-                if (count($aResponseId) == 1)
-                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
-                else
-                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                if (count($aResponseId) == 1) {
+                                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                } else {
+                                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                }
 
                 $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
-            }
-            else
+            } else
             {
                 // No response : redirect to browse with a alert
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."), 'error');

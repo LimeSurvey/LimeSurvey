@@ -212,16 +212,13 @@ class Save
         {
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
             return;
-        }
-        elseif (!empty($duplicate) && $duplicate->count() > 0) { // OK - AR count
+        } elseif (!empty($duplicate) && $duplicate->count() > 0) { // OK - AR count
             $this->aSaveErrors[] = gT("This name has already been used for this survey. You must use a unique save name.");
             return;
-        }
-        elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail'])) { // Check if the email address is valid
+        } elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail'])) { // Check if the email address is valid
             $errormsg .= gT("This is not a valid email address. Please provide a valid email address or leave it empty.")."<br />\n";
             return;
-        }
-        else
+        } else
         {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
             if (!isset($_SESSION['survey_'.$surveyid]['srid']))
@@ -236,8 +233,7 @@ class Save
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
-                }
-                else
+                } else
                 {
                     safeDie("Unable to insert record into survey table.<br /><br />");
                 }

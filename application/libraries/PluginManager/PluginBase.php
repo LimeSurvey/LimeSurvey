@@ -181,8 +181,7 @@ abstract class PluginBase implements iPlugin {
             {
                 $url = \Yii::getPathOfAlias('webroot').$fileName;
 
-            }
-            else 
+            } else 
             {    // This is a plugin relative path. 
                 $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
