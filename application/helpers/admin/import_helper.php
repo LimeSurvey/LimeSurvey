@@ -1850,16 +1850,14 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 if (!$bExistingsId) {// If not exist : allways import it
                     $oSurvey->id = $aResponses[$iIdKey];
                     $iMaxId = ($aResponses[$iIdKey] > $iMaxId) ? $aResponses[$iIdKey] : $iMaxId;
-                }
-                elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers') {
+                } elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers') {
                     // Set it depending with some options
                     $oSurvey->id = $aResponses[$iIdKey];
                 }
             }
             if ($aOptions['bNotFinalized']) {
                 $oSurvey->submitdate = new CDbExpression('NULL');
-            }
-            elseif (is_int($iSubmitdateKey)) {
+            } elseif (is_int($iSubmitdateKey)) {
                 if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim($aResponses[$iSubmitdateKey] == '')) {
                     $oSurvey->submitdate = new CDbExpression('NULL');
                 } else {

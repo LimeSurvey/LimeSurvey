@@ -262,32 +262,25 @@ class printablesurvey extends Survey_Common_Action
                                 if ($distinctrow['method'] == '==')
                                 {
                                     $sExplanation .= gT("Answer was")." ";
-                                }
-                                elseif ($distinctrow['method'] == '!=')
+                                } elseif ($distinctrow['method'] == '!=')
                                 {
                                     $sExplanation .= gT("Answer was NOT")." ";
-                                }
-                                elseif ($distinctrow['method'] == '<')
+                                } elseif ($distinctrow['method'] == '<')
                                 {
                                     $sExplanation .= gT("Answer was less than")." ";
-                                }
-                                elseif ($distinctrow['method'] == '<=')
+                                } elseif ($distinctrow['method'] == '<=')
                                 {
                                     $sExplanation .= gT("Answer was less than or equal to")." ";
-                                }
-                                elseif ($distinctrow['method'] == '>=')
+                                } elseif ($distinctrow['method'] == '>=')
                                 {
                                     $sExplanation .= gT("Answer was greater than or equal to")." ";
-                                }
-                                elseif ($distinctrow['method'] == '>')
+                                } elseif ($distinctrow['method'] == '>')
                                 {
                                     $sExplanation .= gT("Answer was greater than")." ";
-                                }
-                                elseif ($distinctrow['method'] == 'RX')
+                                } elseif ($distinctrow['method'] == 'RX')
                                 {
                                     $sExplanation .= gT("Answer matched (regexp)")." ";
-                                }
-                                else
+                                } else
                                 {
                                     $sExplanation .= gT("Answer was")." ";
                                 }
@@ -546,8 +539,7 @@ class printablesurvey extends Survey_Common_Action
                             if (isset($qidattributes['printable_help'][$sLanguageCode]) && $qidattributes['printable_help'][$sLanguageCode] != '')
                             {
                                 $sExplanation = $qidattributes['printable_help'][$sLanguageCode];
-                            }
-                            elseif ($sExplanation == '') {// There is only a relevance equation without conditions
+                            } elseif ($sExplanation == '') {// There is only a relevance equation without conditions
                                 $sExplanation = $sEquation;
                                 $sEquation = '&nbsp;'; // No need to show it twice
                             }
@@ -1523,8 +1515,7 @@ class printablesurvey extends Survey_Common_Action
                                                 ,-1
                                                 ,$replace_count
                                                 );
-                }
-                else {
+                } else {
                     // Server version of PHP is older than 5.1.0
                     $survey_output['GROUPS'] = preg_replace(
                     array(

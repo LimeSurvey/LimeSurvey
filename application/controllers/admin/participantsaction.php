@@ -1063,8 +1063,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getPost('searchcondition', '') !== '') { // if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition', ''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        }
-        else
+        } else
         {
             $search = null;
         }
@@ -1874,8 +1873,7 @@ class participantsaction extends Survey_Common_Action
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') { // If operation is delete , it will delete, otherwise edit it
             ParticipantShare::model()->deleteRow($shareIds);
-        }
-        else
+        } else
         {
             $aData = array(
                 'participant_id' => Yii::app()->request->getPost('participant_id'),
@@ -1960,10 +1958,9 @@ class participantsaction extends Survey_Common_Action
             echo $participantid; //echo the participant id's
         } else {// if no search condition
             $participantid = ""; // initiallise the participant id to blank
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read'))             { //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { //If super admin all the participants will be visible
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
-            }
-            else {// get participants on which the user has right on
+            } else {// get participants on which the user has right on
                 $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
@@ -2392,8 +2389,7 @@ class participantsaction extends Survey_Common_Action
         foreach ($tokenAttributes as $attributeId => $attribute) {  // attributeId like 'attribute_1'
             if (is_numeric($attributeId[10])) { //Assumes that if the 11th character is a number, it must be a token-table created attribute
                 $selectedattribute[$attributeId] = $attribute['description'];
-            }
-            else
+            } else
             {
                 array_push($alreadymappedattid, substr($attributeId, 15));
             }

@@ -889,8 +889,7 @@ class userstatistics_helper {
             if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=")
             {
                 //DO NOTHING
-            }
-            else
+            } else
             {
                 $showem = array();
                 $fld = substr($rt, 1, strlen($rt));

@@ -51,12 +51,10 @@ class UploaderController extends SurveyController {
             if (substr($sFileGetContent, 0, 6) == 'futmp_')
             {
                 $sFileDir = $tempdir.'/upload/';
-            }
-            elseif (substr($sFileGetContent, 0, 3) == 'fu_') {
+            } elseif (substr($sFileGetContent, 0, 3) == 'fu_') {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
-            }
-            else
+            } else
             {
                 throw new CHttpException(400); // See for debug > 1
             }
@@ -68,23 +66,19 @@ class UploaderController extends SurveyController {
                 header('Content-Type: '.$mimeType);
                 readfile($sFileDir.$sFileGetContent);
                 Yii::app()->end();
-            }
-            else
+            } else
             {
                 Yii::app()->end();
             }
-        }
-        elseif ($bDelete) {
+        } elseif ($bDelete) {
             if (substr($sFileName, 0, 6) == 'futmp_')
             {
                 $sFileDir = $tempdir.'/upload/';
-            }
-            elseif (substr($sFileName, 0, 3) == 'fu_')
+            } elseif (substr($sFileName, 0, 3) == 'fu_')
             {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
-            }
-            else
+            } else
             {
                 throw new CHttpException(400); // See for debug > 1
             }
