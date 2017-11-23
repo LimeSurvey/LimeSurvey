@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Use this script file if you have a Travis docker image setup on your
+# local system, as described here: https://docs.travis-ci.com/user/common-build-problems/#Troubleshooting-Locally-in-a-Docker-Image
+
 phpenv global 7.0 2>/dev/null
 phpenv global 7.0
 
@@ -32,3 +35,5 @@ sudo service apache2 restart
 
 wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
+
+# TODO: For firefox, export MOZ_HEADLESS=1, install selenium.
