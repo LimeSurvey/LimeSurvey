@@ -34,7 +34,9 @@ function stripTagsFull($string) {
 * @return bool
 */
 function isNumericExtended($value) {
-    if (empty($value)) return true;
+    if (empty($value)) {
+        return true;
+    }
     $eng_or_world = preg_match('/^[+-]?'.// start marker and sign prefix
     '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'.// american
     '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'.// world
@@ -100,8 +102,12 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
             {
                 $i = 1;
                 foreach ($fields as $field) {
-                    if (!$field['hide']) echo $q.strtoupper($field['sql_name']).$q;
-                    if ($i < $num_fields && !$field['hide']) echo ',';
+                    if (!$field['hide']) {
+                        echo $q.strtoupper($field['sql_name']).$q;
+                    }
+                    if ($i < $num_fields && !$field['hide']) {
+                        echo ',';
+                    }
                     $i++;
                 }
                 echo("\n");
@@ -206,8 +212,12 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     default:
                         $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                         if (trim($strTmp) != '') {
-                            if ($q == '\'') $strTemp = str_replace(array("'", "\n", "\r"), array("''", ' ', ' '), trim($strTmp));
-                            if ($q == '"') $strTemp = str_replace(array('"', "\n", "\r"), array('""', ' ', ' '), trim($strTmp));
+                            if ($q == '\'') {
+                                $strTemp = str_replace(array("'", "\n", "\r"), array("''", ' ', ' '), trim($strTmp));
+                            }
+                            if ($q == '"') {
+                                $strTemp = str_replace(array('"', "\n", "\r"), array('""', ' ', ' '), trim($strTmp));
+                            }
                             /*
                             * Temp quick fix for replacing decimal dots with comma's
                             if (isNumericExtended($strTemp)) {
@@ -220,7 +230,9 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                         }
                 }
             }
-            if ($i < $num_fields && !$field['hide']) echo ',';
+            if ($i < $num_fields && !$field['hide']) {
+                echo ',';
+            }
             $i++;
         }
         echo "\n";
@@ -254,7 +266,9 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language) {
             $query = "SELECT {{answers}}.code, {{answers}}.answer,
             {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
 
-            if (isset($field['scale_id'])) $query .= " {{answers}}.scale_id = ".(int) $field['scale_id']." AND";
+            if (isset($field['scale_id'])) {
+                $query .= " {{answers}}.scale_id = ".(int) $field['scale_id']." AND";
+            }
 
             $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
             and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
@@ -674,8 +688,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     if ($tagname != '')
     {
         $TableName = $tagname;
-    }
-    else
+    } else
     {
         $TableName = $MatchResults[1];
     }
@@ -696,7 +709,9 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             $aColumninfo = array_keys($result[0]);
             foreach ($aColumninfo as $fieldname)
             {
-                if (!isset($exclude[$fieldname])) $xmlwriter->writeElement('fieldname', $fieldname);
+                if (!isset($exclude[$fieldname])) {
+                    $xmlwriter->writeElement('fieldname', $fieldname);
+                }
             }
             $xmlwriter->endElement(); // close columns
             $xmlwriter->startElement('rows');
@@ -798,8 +813,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
-    }
-    else {
+    } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
@@ -904,8 +918,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     if ($sFileName == '')
     {
         $xml->openMemory();
-    }
-    else
+    } else
     {
         $bOK = $xml->openURI($sFileName);
     }
@@ -930,8 +943,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     if ($sFileName = '')
     {
         return $xml->outputMemory(true);
-    }
-    else
+    } else
     {
         return $bOK;
     }
@@ -1023,10 +1035,11 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     App()->setLanguage($quexmllang);
 
-    if ($labels)
-        $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
-    else
-        $Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+    if ($labels) {
+            $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
+    } else {
+            $Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+    }
 
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
@@ -1085,7 +1098,9 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
         $fixed->appendChild($category);
     }
 
-    if ($rotate) $fixed->setAttribute("rotate", "true");
+    if ($rotate) {
+        $fixed->setAttribute("rotate", "true");
+    }
 
     return $fixed;
 }
@@ -1096,19 +1111,21 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 function quexml_get_lengthth($qid, $attribute, $default, $quexmllang = false)
 {
     global $dom;
-    if ($quexmllang != false)
-        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='$attribute'";
-    else
-        $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute='$attribute'";
+    if ($quexmllang != false) {
+            $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='$attribute'";
+    } else {
+            $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute='$attribute'";
+    }
 
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
     $Row = $QueryResult->read();
-    if ($Row && !empty($Row['value']))
-        return $Row['value'];
-    else
-        return $default;
+    if ($Row && !empty($Row['value'])) {
+            return $Row['value'];
+    } else {
+            return $default;
+    }
 
 }
 
@@ -1124,7 +1141,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 
 
     $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
-    if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
+    if ($scale_id != false) {
+        $Query .= " AND scale_id = $scale_id ";
+    }
     $Query .= " ORDER BY question_order ASC";
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
@@ -1154,9 +1173,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $fixed->appendChild($category);
 
             $response->appendChild($fixed);
+        } else {
+                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
         }
-        else
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
 
@@ -1183,10 +1202,11 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
         $value = $dom->createElement("value", $yesvalue);
 
         //Get next code
-        if (is_numeric($nextcode))
-            $nextcode++;
-        else if (is_string($nextcode))
-                $nextcode = chr(ord($nextcode) + 1);
+        if (is_numeric($nextcode)) {
+                    $nextcode++;
+        } else if (is_string($nextcode)) {
+                        $nextcode = chr(ord($nextcode) + 1);
+        }
 
         $category->appendChild($label);
         $category->appendChild($value);
@@ -1500,7 +1520,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $qid = $RowQ['qid'];
 
             $other = false;
-            if ($RowQ['other'] == 'Y') $other = true;
+            if ($RowQ['other'] == 'Y') {
+                $other = true;
+            }
 
             $sgq = $RowQ['title'];
 
@@ -1516,9 +1538,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     if ($type == ":") {
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
                         $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
-                        if ($mcb != -1)
-                            quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1);
-                        else
+                        if ($mcb != -1) {
+                                                    quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1);
+                        } else
                         {
                             //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen(quexml_get_lengthth($qid, 'multiflexible_max', 1)));
@@ -1811,8 +1833,7 @@ function groupGetXMLStructure($xml, $gid)
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
-    }
-    else {
+    } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
@@ -1909,8 +1930,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
-    }
-    else {
+    } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
@@ -1998,8 +2018,9 @@ function tokensExport($iSurveyID)
     foreach ($attrfieldnames as $attr_name)
     {
         $tokenoutput .= ", $attr_name";
-        if (isset($attrfielddescr[$attr_name]))
-            $tokenoutput .= " <".str_replace(",", " ", $attrfielddescr[$attr_name]['description']).">";
+        if (isset($attrfielddescr[$attr_name])) {
+                    $tokenoutput .= " <".str_replace(",", " ", $attrfielddescr[$attr_name]['description']).">";
+        }
     }
     $tokenoutput .= "\n";
     echo $tokenoutput;

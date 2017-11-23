@@ -64,20 +64,17 @@ class AdminController extends LSYii_Controller
         if (!empty($sURL) && !is_array($sURL))
         {
             $sTitle = gT('Back');
-        }
-        elseif (!empty($sURL['url']))
+        } elseif (!empty($sURL['url']))
         {
             if (!empty($sURL['title']))
             {
                 $sTitle = $sURL['title'];
-            }
-            else
+            } else
             {
                 $sTitle = gT('Back');
             }
             $sURL = $sURL['url'];
-        }
-        else
+        } else
         {
             $sTitle = gT('Main Admin Screen');
             $sURL = $this->createUrl('/admin');
@@ -147,8 +144,9 @@ class AdminController extends LSYii_Controller
         {
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol")
             {
-                if (!empty($action) && $action != 'index')
-                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+                if (!empty($action) && $action != 'index') {
+                                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+                }
 
                 App()->user->setReturnUrl(App()->request->requestUri);
 
@@ -161,8 +159,7 @@ class AdminController extends LSYii_Controller
                 }
 
                 $this->redirect(array('/admin/authentication/sa/login'));
-            }
-            elseif (!empty($this->user_id) && $action != "remotecontrol")
+            } elseif (!empty($this->user_id) && $action != "remotecontrol")
             {
                 if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
                 {
@@ -263,10 +260,11 @@ class AdminController extends LSYii_Controller
 
         $oUser = User::model()->findByAttributes(array('parent_id' => 0));
 
-        if (!is_null($oUser) && $oUser->uid == $loginID)
-            Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
-        else
-            Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
+        if (!is_null($oUser) && $oUser->uid == $loginID) {
+                    Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
+        } else {
+                    Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
+        }
     }
 
     /**
@@ -294,8 +292,7 @@ class AdminController extends LSYii_Controller
         {
             $aData['languageRTL'] = " dir=\"rtl\" ";
             $aData['bIsRTL'] = true;
-        }
-        else
+        } else
         {
             $aData['languageRTL'] = " dir=\"ltr\" ";
             $aData['bIsRTL'] = false;
@@ -313,8 +310,9 @@ class AdminController extends LSYii_Controller
         $aData['sitename'] = Yii::app()->getConfig("sitename");
         $aData['firebug'] = useFirebug();
 
-        if (!empty(Yii::app()->session['dateformat']))
-            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+        if (!empty(Yii::app()->session['dateformat'])) {
+                    $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+        }
 
         // Register admin theme package with asset manager
         $oAdminTheme = AdminTheme::getInstance();
@@ -332,8 +330,7 @@ class AdminController extends LSYii_Controller
         if ($return)
         {
             return $sOutput;
-        }
-        else
+        } else
         {
             echo $sOutput;
         }
@@ -363,8 +360,7 @@ class AdminController extends LSYii_Controller
             $aData['versionnumber'] = "";
             $aData['versiontitle'] = "";
             $aData['buildtext'] = "";
-        }
-        else
+        } else
         {
             $aData['versiontitle'] = gT('Version');
         }
@@ -396,11 +392,13 @@ class AdminController extends LSYii_Controller
     public function _loadEndScripts()
     {
         static $bRendered = false;
-        if ($bRendered)
-            return true;
+        if ($bRendered) {
+                    return true;
+        }
         $bRendered = true;
-        if (empty(Yii::app()->session['metaHeader']))
-            Yii::app()->session['metaHeader'] = '';
+        if (empty(Yii::app()->session['metaHeader'])) {
+                    Yii::app()->session['metaHeader'] = '';
+        }
 
         unset(Yii::app()->session['metaHeader']);
 

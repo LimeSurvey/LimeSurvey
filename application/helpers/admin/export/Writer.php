@@ -106,8 +106,9 @@ abstract class Writer implements IWriter
             $aField = $oSurvey->fieldMap[$fieldName];
             $aField['question'] = '';
             $subHeading = trim(viewHelper::getFieldText($aField, array('separator'=>array('[', ']'), 'abbreviated'=>$oOptions->headingTextLength, 'ellipsis'=>".. ")));
-            if ($subHeading)
-                return " {$subHeading}";
+            if ($subHeading) {
+                            return " {$subHeading}";
+            }
         }
         return false;
     }
@@ -143,8 +144,7 @@ abstract class Writer implements IWriter
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
             return viewHelper::getFieldCode($oSurvey->fieldMap[$fieldName], array('separator'=>array('[', ']'), 'LEMcompat'=>$oOptions->useEMCode));
-        }
-        else
+        } else
         {
             return $fieldName;
         }
@@ -163,12 +163,10 @@ abstract class Writer implements IWriter
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
             $textHead = $this->getFullQuestionHeading($oSurvey, $oOptions, $fieldName).$this->getFullFieldSubHeading($oSurvey, $oOptions, $fieldName);
-        }
-        elseif (isset($oSurvey->tokenFields[$fieldName]))
+        } elseif (isset($oSurvey->tokenFields[$fieldName]))
         {
             $textHead = $oSurvey->tokenFields[$fieldName]['description'];
-        }
-        else
+        } else
         {
             $textHead = $fieldName;
         }
@@ -241,8 +239,7 @@ abstract class Writer implements IWriter
             if (($value == 'N' || ($value == '' && !is_null($value))) && $oOptions->convertN)
             {
                 return $oOptions->nValue;
-            }
-            else if ($value == 'Y' && $oOptions->convertY)
+            } else if ($value == 'Y' && $oOptions->convertY)
                 {
                     return $oOptions->yValue;
                 }

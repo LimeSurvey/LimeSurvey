@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -155,9 +157,9 @@ class UserGroup extends LSActiveRecord {
                         ->query();
             }
             return $id;
+        } else {
+                    return -1;
         }
-        else
-            return -1;
 
         }
 
@@ -174,10 +176,11 @@ class UserGroup extends LSActiveRecord {
         $group->name = $name;
         $group->description = $description;
         $group->save();
-        if ($group->getErrors())
-            return false;
-        else
-            return true;
+        if ($group->getErrors()) {
+                    return false;
+        } else {
+                    return true;
+        }
     }
 
     /**
@@ -239,10 +242,11 @@ class UserGroup extends LSActiveRecord {
         $group = UserGroup::model()->find($sCondition, $aParams);
         $group->delete();
 
-        if ($group->getErrors())
-            return false;
-        else
-            return true;
+        if ($group->getErrors()) {
+                    return false;
+        } else {
+                    return true;
+        }
     }
 
     /**

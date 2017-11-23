@@ -26,7 +26,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
 
 
-    if ($xml === false || $xml->LimeSurveyDocType != 'Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+    if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
+        safeDie('This is not a valid LimeSurvey group structure XML file.');
+    }
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -81,11 +83,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         if (isset($aGIDReplacements[$oldgid])) {
             $insertdata['gid'] = $aGIDReplacements[$oldgid];
         }
-        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups', true);
+        if (isset($insertdata['gid'])) {
+            switchMSSQLIdentityInsert('groups', true);
+        }
 
         Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
 
-        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups', false);
+        if (isset($insertdata['gid'])) {
+            switchMSSQLIdentityInsert('groups', false);
+        }
 
         if (!isset($aGIDReplacements[$oldgid])) {
             $newgid = getLastInsertID('{{groups}}');
@@ -122,10 +128,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             if (isset($aQIDReplacements[$oldqid])) {
                 $insertdata['qid'] = $aQIDReplacements[$oldqid];
             }
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions', true);
+            if (isset($insertdata['qid'])) {
+                switchMSSQLIdentityInsert('questions', true);
+            }
 
             Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions', false);
+            if (isset($insertdata['qid'])) {
+                switchMSSQLIdentityInsert('questions', false);
+            }
             if (!isset($aQIDReplacements[$oldqid])) {
                 $newqid = getLastInsertID('{{questions}}');
                 $aQIDReplacements[$oldqid] = $newqid; // add old and new qid to the mapping array
@@ -156,11 +166,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             if (isset($aQIDReplacements[$oldsqid])) {
                 $insertdata['qid'] = $aQIDReplacements[$oldsqid];
             }
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions', true);
+            if (isset($insertdata['qid'])) {
+                switchMSSQLIdentityInsert('questions', true);
+            }
 
             Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid = getLastInsertID('{{questions}}');
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions', true);
+            if (isset($insertdata['qid'])) {
+                switchMSSQLIdentityInsert('questions', true);
+            }
 
             if (!isset($insertdata['qid'])) {
                 $aQIDReplacements[$oldsqid] = $newsqid; // add old and new qid to the mapping array
@@ -309,7 +323,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
-    if ($xml->LimeSurveyDocType != 'Question') safeDie('This is not a valid LimeSurvey question structure XML file.');
+    if ($xml->LimeSurveyDocType != 'Question') {
+        safeDie('This is not a valid LimeSurvey question structure XML file.');
+    }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $aSQIDReplacements = array(0=>0);
@@ -417,11 +433,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             if (isset($aQIDReplacements[$oldsqid])) {
                 $insertdata['qid'] = $aQIDReplacements[$oldsqid];
             }
-            if ($insertdata)
-                XSSFilterArray($insertdata);
+            if ($insertdata) {
+                            XSSFilterArray($insertdata);
+            }
             $ques = new Question;
-            foreach ($insertdata as $k => $v)
-                $ques->$k = $v;
+            foreach ($insertdata as $k => $v) {
+                            $ques->$k = $v;
+            }
             $result = $ques->save();
             if ($result) {
                 $newsqid = getLastInsertID($ques->tableName());
@@ -447,10 +465,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
 
             // now translate any links
             $answers = new Answer;
-            if ($insertdata)
-                XSSFilterArray($insertdata);
-            foreach ($insertdata as $k => $v)
-                $answers->$k = $v;
+            if ($insertdata) {
+                            XSSFilterArray($insertdata);
+            }
+            foreach ($insertdata as $k => $v) {
+                            $answers->$k = $v;
+            }
 
             $answers->save();
             $results['answers']++;
@@ -476,21 +496,24 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 {
                     $insertdata['language'] = $sLanguage;
                     $attributes = new QuestionAttribute;
-                    if ($insertdata)
-                        XSSFilterArray($insertdata);
-                    foreach ($insertdata as $k => $v)
-                        $attributes->$k = $v;
+                    if ($insertdata) {
+                                            XSSFilterArray($insertdata);
+                    }
+                    foreach ($insertdata as $k => $v) {
+                                            $attributes->$k = $v;
+                    }
 
                     $attributes->save();
                 }
-            }
-            else
+            } else
             {
                 $attributes = new QuestionAttribute;
-                if ($insertdata)
-                    XSSFilterArray($insertdata);
-                foreach ($insertdata as $k => $v)
-                    $attributes->$k = $v;
+                if ($insertdata) {
+                                    XSSFilterArray($insertdata);
+                }
+                foreach ($insertdata as $k => $v) {
+                                    $attributes->$k = $v;
+                }
 
                 $attributes->save();
             }
@@ -547,7 +570,9 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
-    if ($xml->LimeSurveyDocType != 'Label set') safeDie('This is not a valid LimeSurvey label set structure XML file.');
+    if ($xml->LimeSurveyDocType != 'Label set') {
+        safeDie('This is not a valid LimeSurvey label set structure XML file.');
+    }
     $csarray = buildLabelSetCheckSumArray();
     $aLSIDReplacements = array();
     $results['labelsets'] = 0;
@@ -565,8 +590,9 @@ function XMLImportLabelsets($sFullFilePath, $options)
         $oldlsid = $insertdata['lid'];
         unset($insertdata['lid']); // save the old qid
 
-        if ($insertdata)
-            XSSFilterArray($insertdata);
+        if ($insertdata) {
+                    XSSFilterArray($insertdata);
+        }
         // Insert the new question
         Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
@@ -579,15 +605,17 @@ function XMLImportLabelsets($sFullFilePath, $options)
     // Import labels table ===================================================================================
 
 
-    if (isset($xml->labels->rows->row))
-        foreach ($xml->labels->rows->row as $row) {
+    if (isset($xml->labels->rows->row)) {
+            foreach ($xml->labels->rows->row as $row) {
             $insertdata = array();
+    }
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
-            if ($insertdata)
-                XSSFilterArray($insertdata);
+            if ($insertdata) {
+                            XSSFilterArray($insertdata);
+            }
 
             Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
             $results['labels']++;
@@ -656,9 +684,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 
     if ($sExtension == 'lss') {
         return XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
-    }elseif ($sExtension == 'txt' || $sExtension == 'tsv') {
+    } elseif ($sExtension == 'txt' || $sExtension == 'tsv') {
         return TSVImportSurvey($sFullFilePath);
-    }elseif ($sExtension == 'lsa') {
+    } elseif ($sExtension == 'lsa') {
             // Import a survey archive
         Yii::import("application.libraries.admin.pclzip.pclzip", true);
         $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
@@ -798,7 +826,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
         }
 
         if ($iDBVersion < 145) {
-            if (isset($insertdata['private'])) $insertdata['anonymized'] = $insertdata['private'];
+            if (isset($insertdata['private'])) {
+                $insertdata['anonymized'] = $insertdata['private'];
+            }
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }
@@ -874,13 +904,27 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
 
         if ($bTranslateInsertansTags) {
             $insertdata['surveyls_title'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_title']);
-            if (isset($insertdata['surveyls_description'])) $insertdata['surveyls_description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_description']);
-            if (isset($insertdata['surveyls_welcometext'])) $insertdata['surveyls_welcometext'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_welcometext']);
-            if (isset($insertdata['surveyls_urldescription']))$insertdata['surveyls_urldescription'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_urldescription']);
-            if (isset($insertdata['surveyls_email_invite'])) $insertdata['surveyls_email_invite'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_invite']);
-            if (isset($insertdata['surveyls_email_remind'])) $insertdata['surveyls_email_remind'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_remind']);
-            if (isset($insertdata['surveyls_email_register'])) $insertdata['surveyls_email_register'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_register']);
-            if (isset($insertdata['surveyls_email_confirm'])) $insertdata['surveyls_email_confirm'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
+            if (isset($insertdata['surveyls_description'])) {
+                $insertdata['surveyls_description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_description']);
+            }
+            if (isset($insertdata['surveyls_welcometext'])) {
+                $insertdata['surveyls_welcometext'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_welcometext']);
+            }
+            if (isset($insertdata['surveyls_urldescription'])) {
+                $insertdata['surveyls_urldescription'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_urldescription']);
+            }
+            if (isset($insertdata['surveyls_email_invite'])) {
+                $insertdata['surveyls_email_invite'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_invite']);
+            }
+            if (isset($insertdata['surveyls_email_remind'])) {
+                $insertdata['surveyls_email_remind'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_remind']);
+            }
+            if (isset($insertdata['surveyls_email_register'])) {
+                $insertdata['surveyls_email_register'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_register']);
+            }
+            if (isset($insertdata['surveyls_email_confirm'])) {
+                $insertdata['surveyls_email_confirm'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
+            }
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
@@ -1048,7 +1092,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if (!in_array($insertdata['language'], $aLanguagesSupported) || $insertdata['gid'] == 0) continue;
+            if (!in_array($insertdata['language'], $aLanguagesSupported) || $insertdata['gid'] == 0) {
+                continue;
+            }
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory']) == '') {
                 $insertdata['mandatory'] = 'N';
             }
@@ -1061,7 +1107,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
             // now translate any links
             if ($bTranslateInsertansTags) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                if (isset($insertdata['help'])) $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
 
             if (isset($aQIDReplacements[$oldsqid])) {
@@ -1283,13 +1331,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
                 if (preg_match("/^\+/", $oldcsid))
                 {
                     $newcfieldname = '+'.$iNewSID."X".$aGIDReplacements[$oldcgid]."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldcqid));
-                }
-                else
+                } else
                 {
                     $newcfieldname = $iNewSID."X".$aGIDReplacements[$oldcgid]."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldcqid));
                 }
-            }
-            else
+            } else
             { // The cfieldname is a not a previous question cfield but a {XXXX} replacement field
                 $newcfieldname = $insertdata["cfieldname"];
             }
@@ -1575,7 +1621,9 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                     $aInsertData = array();
                     while ($oXMLReader->read() && $oXMLReader->name != 'row') {
                         $sFieldname = $oXMLReader->name;
-                        if ($sFieldname[0] == '_') $sFieldname = substr($sFieldname, 1);
+                        if ($sFieldname[0] == '_') {
+                            $sFieldname = substr($sFieldname, 1);
+                        }
                         $sFieldname = str_replace('-', '#', $sFieldname);
                         if (isset($aFieldReMap[$sFieldname]))
                         {
@@ -1660,11 +1708,11 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     foreach ($aRealFieldNames as $sFieldName) {
         if (in_array($sFieldName, $aCsvHeader)) { // First pass : simple associated
             $aKeyForFieldNames[$sFieldName] = array_search($sFieldName, $aCsvHeader);
-        }elseif (in_array($sFieldName, $aLemFieldNames)) { // Second pass : LEM associated
+        } elseif (in_array($sFieldName, $aLemFieldNames)) { // Second pass : LEM associated
             $sLemFieldName = array_search($sFieldName, $aLemFieldNames);
             if (in_array($sLemFieldName, $aCsvHeader)) {
                 $aKeyForFieldNames[$sFieldName] = array_search($sLemFieldName, $aCsvHeader);
-            }elseif ($aOptions['bForceImport']) {
+            } elseif ($aOptions['bForceImport']) {
                 // as fallback just map questions in order of apperance
 
                 // find out where the answer data columns start in CSV
@@ -1763,8 +1811,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         $oSurvey = false; // Remove existing survey : don't import again
                         break;
                 }
-            }
-            else
+            } else
             {
                 SurveyDynamic::sid($iSurveyId);
                 $oSurvey = new SurveyDynamic;
@@ -1841,8 +1888,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     switchMSSQLIdentityInsert('survey_'.$iSurveyId, false);
                     $bSwitched = false;
                 }
-            }
-            catch (Exception $oException) {
+            } catch (Exception $oException) {
                 $oTransaction->rollBack();
                 $aResponsesError[] = $aResponses[$iIdReponsesKey];
                 // Show some error to user ?
@@ -1919,7 +1965,9 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         $insertdata = array();
 
         foreach ($row as $key=>$value) {
-            if ($key[0] == '_') $key = substr($key, 1);
+            if ($key[0] == '_') {
+                $key = substr($key, 1);
+            }
             if (isset($aFieldReMap[substr($key, 0, -4)])) {
                 $key = $aFieldReMap[substr($key, 0, -4)].'time';
             }
@@ -2087,8 +2135,7 @@ function TSVImportSurvey($sFullFilePath)
         $insertdata['surveyls_language'] = $_lang;
         if (isset($insertdata['surveyls_title'])) {
             $_title = $insertdata['surveyls_title'];
-        }
-        else
+        } else
         {
             $insertdata['surveyls_title'] = $_title;
         }
@@ -2143,8 +2190,7 @@ function TSVImportSurvey($sFullFilePath)
                     $gid = $ginfo[$sGroupseq]['gid'];
                     $insertdata['gid'] = $gid;
                     $insertdata['group_order'] = $ginfo[$sGroupseq]['group_order'];
-                }
-                else
+                } else
                 {
                     $insertdata['group_order'] = $gseq;
                 }
@@ -2233,8 +2279,7 @@ function TSVImportSurvey($sFullFilePath)
                                 if ($aAttributeList[$qtype][$key]['i18n'])
                                 {
                                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                                }
-                                else
+                                } else
                                 {
                                     $insertdata['language'] = NULL;
                                 }
@@ -2281,6 +2326,7 @@ function TSVImportSurvey($sFullFilePath)
                         if (isset($row['default']) && $row['default'] != "")
                         {
                             $insertdata = array();
+                }
                             $insertdata['qid'] = $qid;
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
@@ -2293,8 +2339,7 @@ function TSVImportSurvey($sFullFilePath)
                             $results['defaultvalues']++;
                         }
                     }
-                }
-                else
+                } else
                 {
                     $insertdata = array();
                     $scale_id = (isset($row['type/scale']) ? $row['type/scale'] : 0);
@@ -2318,8 +2363,7 @@ function TSVImportSurvey($sFullFilePath)
                         $sqid = $sqinfo[$fullsqname]['sqid'];
                         $insertdata['question_order'] = $qseq;
                         $insertdata['qid'] = $sqid;
-                    }
-                    else
+                    } else
                     {
                         $insertdata['question_order'] = $qseq;
                     }

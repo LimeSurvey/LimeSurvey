@@ -191,8 +191,7 @@ abstract class PluginBase implements iPlugin {
                  */
                 $url = App()->assetManager->publish($path);
             }
-        }
-        else
+        } else
         {
             $url = $fileName;
         }
@@ -395,8 +394,7 @@ abstract class PluginBase implements iPlugin {
             {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
-            }
-            else if ($this->configIsNewVersion())
+            } else if ($this->configIsNewVersion())
             {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
@@ -411,8 +409,7 @@ abstract class PluginBase implements iPlugin {
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
-        }
-        else
+        } else
         {
             $this->log('Found no config file');
         }
@@ -437,8 +434,7 @@ abstract class PluginBase implements iPlugin {
             {
                 $pluginModel->active = 1;
                 $pluginModel->update();
-            }
-            else
+            } else
             {
                 // Failed. Popup error message.
                 $not = new \Notification(array(

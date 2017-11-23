@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -602,8 +604,7 @@ $config['forcedsuperadmin'] = array(1);
 if (!isset($argv[0]) && Yii::app() != null)
 {
     $config['publicurl'] = Yii::app()->baseUrl.'/'; // The public website location (url) of the public survey script
-}
-else
+} else
 {
     $config['publicurl'] = '/';
 }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -50,8 +52,7 @@
             if (isset($_SESSION['survey_'.$iSurveyID]['sid']))
             {
                 $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
-            }
-            else
+            } else
             {
                 //die('Invalid survey/session');
             }
@@ -60,12 +61,12 @@
             if (isset($_SESSION['survey_'.$iSurveyID]['s_lang']))
             {
                 $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
-            }
-            elseif (Survey::model()->findByPk($iSurveyID))// survey exist
+            } elseif (Survey::model()->findByPk($iSurveyID)) {
+                // survey exist
             {
                 $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
             }
-            else
+            } else
             {
                 $iSurveyID = 0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
@@ -135,8 +136,7 @@
             if (empty($sExportType))
             {
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
-            }
-            else if ($sExportType == 'pdf')
+            } else if ($sExportType == 'pdf')
             {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);

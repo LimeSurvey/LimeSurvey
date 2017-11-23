@@ -21,7 +21,7 @@ class FlushAssetsCommand extends CConsoleCommand
     public function run($aArguments)
     {
         $sCurrentDir = dirname(__FILE__);
-        $tmpFolder = realpath( $sCurrentDir.'/../../tmp/' );
+        $tmpFolder = realpath($sCurrentDir.'/../../tmp/');
         echo "Flushing assets in ".$tmpFolder;
         echo "\n";
 
@@ -29,7 +29,7 @@ class FlushAssetsCommand extends CConsoleCommand
         $this->_sureRemoveFiles($tmpFolder.'/runtime/cache/', false, ['index.html']);
 
     }
-    private function _sureRemoveFiles($dir, $DeleteMe, $exclude = array() ) {
+    private function _sureRemoveFiles($dir, $DeleteMe, $exclude = array()) {
         if (!$dh = @opendir($dir)) {
             return;
         }

@@ -390,7 +390,9 @@ class Participant extends LSActiveRecord
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            if ($attribute['visible'] == "FALSE") continue;
+            if ($attribute['visible'] == "FALSE") {
+                continue;
+            }
             $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
@@ -779,7 +781,9 @@ class Participant extends LSActiveRecord
         $selectValue[] = sprintf('(%s) survey', $subQuery->getText());
         array_push($joinValue, "left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach ($attid as $iAttributeID=>$aAttributeDetails) {
-            if ($iAttributeID == 0) continue;
+            if ($iAttributeID == 0) {
+                continue;
+            }
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == 'dblib') {
                 $selectValue[] = "cast(attribute".$iAttributeID.".value as varchar(max)) as a".$iAttributeID;
@@ -1062,7 +1066,9 @@ class Participant extends LSActiveRecord
         while ($i < $con && $con > 2) {
             //Special set just for the first query/condition
             if ($i < 3) {
-                if (is_numeric($condition[2])) $condition[2] = intval($condition[2]);
+                if (is_numeric($condition[2])) {
+                    $condition[2] = intval($condition[2]);
+                }
                 switch ($condition[1]) {
                     case 'equal':
                         $operator = "=";
@@ -1098,8 +1104,7 @@ class Participant extends LSActiveRecord
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
                     $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
                     $command->params = array(':param2'=>$condition[2]);
-                }
-                elseif ($condition[0] == "owner_name") {
+                } elseif ($condition[0] == "owner_name") {
                     $userid = Yii::app()->db->createCommand()
                         ->select('uid')
                         ->where('full_name '.$operator.' :condition_2')
@@ -1123,7 +1128,10 @@ class Participant extends LSActiveRecord
             }
             //This section deals with subsequent filter conditions that have boolean joiner
             else if ($condition[$i] != '') {
-                if (is_numeric($condition[$i + 3])) $condition[$i + 3] = intval($condition[$i + 3]); //Force the type of numeric values to be numeric
+                if (is_numeric($condition[$i + 3])) {
+                    $condition[$i + 3] = intval($condition[$i + 3]);
+                }
+                //Force the type of numeric values to be numeric
                 $booloperator = strtoupper($condition[$i]);
                 $condition1name = ":condition_".($i + 1);
                 $condition2name = ":condition_".($i + 3);
@@ -1183,8 +1191,7 @@ class Participant extends LSActiveRecord
                 }
 
                 $i = $i + 4;
-            }
-            else {
+            } else {
                 $i = $i + 4;
             }
         }
@@ -1273,8 +1280,7 @@ class Participant extends LSActiveRecord
 
             if ($sFieldname == "email") {
                 $command->addCondition('p.email '.$operator.' '.$param, $booloperator);
-            }
-            elseif ($sFieldname == "survey") {
+            } elseif ($sFieldname == "survey") {
                 $subQuery = Yii::app()->db->createCommand()
                     ->select('sl.participant_id')
                     ->from('{{survey_links}} sl')
@@ -1701,8 +1707,7 @@ class Participant extends LSActiveRecord
                         }
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
                     }
                 }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -52,7 +54,9 @@ class SurveyDynamic extends LSActiveRecord
         $model = parent::model(__CLASS__);
 
         //We need to refresh if we changed sid
-        if ($refresh === true) $model->refreshMetaData();
+        if ($refresh === true) {
+            $model->refreshMetaData();
+        }
 
         return $model;
     }
@@ -363,11 +367,15 @@ class SurveyDynamic extends LSActiveRecord
                     $sSurveyEntry .= '<td>'.sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)).'</td>';
 
                     if ($aQuestionAttributes['show_title']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title'] = '';
+                        if (!isset($aFilesInfo[$iFileIndex]['title'])) {
+                            $aFilesInfo[$iFileIndex]['title'] = '';
+                        }
                         $sSurveyEntry .= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['title'], ENT_QUOTES, 'UTF-8').'</td>';
                     }
                     if ($aQuestionAttributes['show_comment']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment'] = '';
+                        if (!isset($aFilesInfo[$iFileIndex]['comment'])) {
+                            $aFilesInfo[$iFileIndex]['comment'] = '';
+                        }
                         $sSurveyEntry .= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['comment'], ENT_QUOTES, 'UTF-8').'</td>';
                     }
                 }
@@ -417,8 +425,7 @@ class SurveyDynamic extends LSActiveRecord
         $next = false;
         if ($useFilterState && incompleteAnsFilterState() == 'incomplete') {
             $whereFilterState = 'submitdate IS NULL';
-        }
-        elseif ($useFilterState && incompleteAnsFilterState() == 'complete') {
+        } elseif ($useFilterState && incompleteAnsFilterState() == 'complete') {
             $whereFilterState = 'submitdate IS NOT NULL';
         } else {
             $whereFilterState = '1=1';
@@ -451,11 +458,9 @@ class SurveyDynamic extends LSActiveRecord
         $previous = false;
         if ($useFilterState && incompleteAnsFilterState() == 'incomplete') {
             $whereFilterState = 'submitdate IS NULL';
-        }
-        elseif ($useFilterState && incompleteAnsFilterState() == 'complete') {
+        } elseif ($useFilterState && incompleteAnsFilterState() == 'complete') {
             $whereFilterState = 'submitdate IS NOT NULL';
-        }
-        else {
+        } else {
             $whereFilterState = '1=1';
         }
 
@@ -744,7 +749,9 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['subquestions'] = array();
             foreach ($oQuestion->subquestions as $oSubquestion) {
                 //dont collect scale_id > 0
-                if ($oSubquestion->scale_id > 0) continue; 
+                if ($oSubquestion->scale_id > 0) {
+                    continue;
+                }
 
                 $subQuestionArray = $this->getQuestionArray($oSubquestion, $oResponses, $bHonorConditions, true);
                 if ($oQuestion->type == "P") {
@@ -857,7 +864,9 @@ class SurveyDynamic extends LSActiveRecord
             {
                 $aQuestionArray = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions);
 
-                if ($aQuestionArray === false) continue;
+                if ($aQuestionArray === false) {
+                    continue;
+                }
 
                 $aAnswersArray[$oQuestion->qid] = $aQuestionArray;
             }

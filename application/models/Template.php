@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -193,8 +194,7 @@ class Template extends LSActiveRecord
 
         if (self::isStandardTemplate($sTemplateName)) {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
-        }
-        else {
+        } else {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
     }
@@ -270,8 +270,7 @@ class Template extends LSActiveRecord
         if (is_object($oTemplate)) {
             if (self::isStandardTemplate($sTemplateName)) {
                 return $aTemplateUrl[$sTemplateName] = Yii::app()->getConfig("standardthemerooturl").'/'.$oTemplate->folder.'/';
-            }
-            else {
+            } else {
                 return $aTemplateUrl[$sTemplateName] = Yii::app()->getConfig("userthemerooturl").'/'.$oTemplate->folder.'/';
             }
         } else {
@@ -383,7 +382,7 @@ class Template extends LSActiveRecord
             // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
             if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
                 $bForceXML = true;
-            }elseif (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
+            } elseif (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
                 $bForceXML = false;
             }
         }
@@ -403,7 +402,9 @@ class Template extends LSActiveRecord
     public static function forceAssets()
     {
         // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) return;
+        if (App()->getAssetManager()->linkAssets) {
+            return;
+        }
 
         $standardTemplatesPath = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR;
         $Resource    = opendir($standardTemplatesPath);
