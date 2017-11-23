@@ -349,15 +349,15 @@ class SurveyAdmin extends Survey_Common_Action
         {
             // 
             case null:
-                $save = SettingsUser::setUserSetting(quickaction_state, 1);
+                $save = SettingsUser::setUserSetting('quickaction_state', 1);
                 break;
 
             case 0:
-                $save = SettingsUser::setUserSetting(quickaction_state, 1);
+                $save = SettingsUser::setUserSetting('quickaction_state', 1);
                 break;
 
             case 1:
-                $save = SettingsUser::setUserSetting(quickaction_state, 0);
+                $save = SettingsUser::setUserSetting('quickaction_state', 0);
                 break;
         }
         return Yii::app()->getController()->renderPartial(
