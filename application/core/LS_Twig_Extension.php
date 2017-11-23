@@ -241,6 +241,26 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * @var $sImagePath  string                 the image path relative to the template root
+     * @var $default     string                 an alternative image if the provided one cant be found 
+     * @return string
+     */
+    /* @TODO => implement the default in a secure way */
+    public static function imageSrc($sImagePath, $default = './files/pattern.png')
+    {
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($sImagePath);
+
+        if ($oTemplate) {
+            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
+        } else {
+            // TODO: publish a default image "not found"
+        }
+
+        return $sUrlImgAsset;
+    }
+
+    /**
      * @param string $sRessource
      */
     public static function getTemplateForRessource($sRessource)

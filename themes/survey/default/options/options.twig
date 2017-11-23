@@ -308,32 +308,6 @@
                 </div>
 
                 <div class='col-sm-12 col-md-6'>
-                    {# Background image #}
-                    <div class='form-group row'>
-                        <label for='simple_edit_options_backgroundimage' class='control-label'>Background image</label>
-                        <div class='col-sm-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type='radio' name='backgroundimage' value='on' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                    Yes
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='backgroundimage' value='off' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                    No
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
-                                        <input type='radio' name='backgroundimage' value='inherit' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                        Inherit
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='col-sm-12 col-md-6'>
                     {# Box container #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_backgroundimage' class='control-label'>Box container</label>
@@ -361,6 +335,51 @@
             </div>
             <div class='row action_hide_on_inherit'>
                 <hr/>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Background image #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_backgroundimage' class='control-label'>Background image</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='backgroundimage' value='on' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                    Yes
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='backgroundimage' value='off' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                    No
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='backgroundimage' value='inherit' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                        Inherit
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='col-sm-12 col-md-8'>
+                    {#  Background image file selector #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_backgroundimagefile' class='control-label'>Background image file</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <option value="inherit">Inherit</option>
+                                {% endif %}
+
+                                {% for image in templateConfiguration.imageFileList %}
+                                    <option value="{{image.filepath}}">{{image.filename}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class='row action_hide_on_inherit'>
                 <div class='col-sm-12 col-md-4'>
@@ -398,8 +417,8 @@
                                     <option value="inherit">Inherit</option>
                                 {% endif %}
 
-                                {% for brandlogo in templateConfiguration.brandlogoFileList %}
-                                    <option value="{{brandlogo.filepath}}">{{brandlogo.filename}}</option>
+                                {% for image in templateConfiguration.imageFileList %}
+                                    <option value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -547,5 +566,36 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div class='row action_hide_on_inherit'>
+        {# Upload an image #}
+        <div class="container-fluid ls-space margin bottom-15">
+            <div class="row ls-space margin bottom-15">
+                <div class="col-sm-6">
+                    {{ sprintf( gT("Upload an image (maximum size: %d MB):"), (templateConfiguration.maxFileSize/1024/1024) ) }}
+                </div>
+                <div class="col-sm-6">
+                {{ C.Html.form('admin/themes/sa/upload', 'post', { 'id' : 'upload_frontend', 'name' : 'upload_frontend', 'enctype' :'multipart/form-data' }) }}
+                    <span id="fileselector">
+                        <label class="btn btn-default col-xs-8" for="upload_image_frontend">
+                            <input class="hidden" id="upload_logo" name="upload_image_frontend" type="file">
+                            <i class="fa fa-upload ls-space margin right-10"></i><{{ gT("Upload") }}
+                        </label>
+                    </span>
+
+                        <input type='hidden' name='templatename' value='{{ templateConfiguration.name }}' />
+                        <input type='hidden' name='templateconfig' value='{{ templateConfiguration.id }}' />
+                        <input type='hidden' name='action' value='templateuploadimagefile' />
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="progress">
+                    <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span class="sr-only">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

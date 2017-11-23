@@ -49,6 +49,7 @@
         <brandlogofile>./files/logo.png</brandlogofile>
         <boxcontainer>on</boxcontainer>
         <backgroundimage>off</backgroundimage>
+        <backgroundimagefile>./files/pattern.png</backgroundimagefile>
         <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
         <animatequestion>off</animatequestion>

@@ -100,27 +100,26 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         <div class="container-fluid ls-space margin bottom-15">
             <div class="row ls-space margin bottom-15">
                 <div class="col-sm-6 h4">
-                    <?php printf(gT("Upload a logo (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
+                    <?php printf(gT("Upload an image (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </div>
                 <div class="col-sm-6">
-                <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>
+                <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'uploadimage', 'name'=>'uploadimage', 'enctype'=>'multipart/form-data')); ?>
                     <span id="fileselector">
-                        <label class="btn btn-default col-xs-8" for="upload_logo">
-                            <input class="hidden" id="upload_logo" name="upload_logo" type="file">
+                        <label class="btn btn-default col-xs-8" for="upload_image">
+                            <input class="hidden" id="upload_image" name="upload_image" type="file" >
                             <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                         </label>
                     </span>
 
                         <input type='hidden' name='templatename' value='<?php echo $model->template_name; ?>' />
                         <input type='hidden' name='templateconfig' value='<?php echo $model->id; ?>' />
-                        <input type='hidden' name='<?php echo Yii::app()->request->csrfTokenName; ?>' value='<?php echo Yii::app()->request->csrfToken; ?>' />
-                        <input type='hidden' name='action' value='templateuploadlogo' />
+                        <input type='hidden' name='action' value='templateuploadimagefile' />
                     </form>
                 </div>
             </div>
             <div class="row">
                 <div class="progress">
-                    <div id="logo_upload_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    <div id="upload_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                         <span class="sr-only">0%</span>
                     </div>
                 </div>
@@ -207,63 +206,74 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     </div>
 <?php endif; ?>
 
+<script>
+    var bindUpload = function(options){
+        var $activeForm = $(options.form);
+        var $activeInput = $(options.input);
+        var $progressBar = $(options.progress);
 
-<script type="text/javascript">
-var progressHandling = function(event){
-    var percent = 0;
-    var position = event.loaded || event.position;
-    var total = event.total;
-    var progress_bar_id = "#logo_upload_progress";
-    if (event.lengthComputable) {
-        percent = Math.ceil(position / total * 100);
-    }
-    // update progressbars classes so it fits your code
-    $(progress_bar_id).css("width", String(percent)+"%");
-    $(progress_bar_id).find('span.sr-only').text(percent + "%");
-}
-$(document).on('ready pjax:complete', function(e){
-    $('#upload_logo').on('change', function(e){
-        e.preventDefault();
-        var progress_bar_id = "#logo_upload_progress";
-        var formData = new FormData($('#uploadlogo')[0]);
+        var progressHandling = function(event){
+            var percent = 0;
+            var position = event.loaded || event.position;
+            var total = event.total;
+            if (event.lengthComputable) {
+                percent = Math.ceil(position / total * 100);
+            }
+            // update progressbars classes so it fits your code
+            $progressBar.css("width", String(percent)+"%");
+            $progressBar.find('span.sr-only').text(percent + "%");
+        };
 
-        // add assoc key values, this will be posts values
-        // formData.append("file", $('#upload_logo').prop('files')[0]);
+        $activeInput.on('change', function(e){
+            e.preventDefault();
+            var formData = new FormData($activeForm[0]);
+            console.log(JSON.stringify(formData));
+            // add assoc key values, this will be posts values
+             formData.append("file", $activeInput.prop('files')[0]);
 
-        $.ajax({
-            type: "POST",
-            url: $('#uploadlogo').attr('action'),
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', progressHandling, false);
-                }
-                return myXhr;
-            },
-            success: function (data) {
-                console.log(data);
-                if(data.success === true){
-                    $('#notif-container').append('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    $(progress_bar_id).css("width", "0%");
-                    $(progress_bar_id).find('span.sr-only').text('0%');
-                } else {
-                    $('#notif-container').append('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    $(progress_bar_id).css("width", "0%");
-                    $(progress_bar_id).find('span.sr-only').text('0%');
-                }
-            },
-            error: function (error) {
-                $(progress_bar_id).css("width", "0%");
-                $(progress_bar_id).find('span.sr-only').text('0%');
-                console.log(error);
-            },
-            async: true,
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            timeout: 60000
+            $.ajax({
+                type: "POST",
+                url: $activeForm.attr('action'),
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', progressHandling, false);
+                    }
+                    return myXhr;
+                },
+                success: function (data) {
+                    console.log(data);
+                    if(data.success === true){
+                        $('#notif-container').append('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        $progressBar.css("width", "0%");
+                        $progressBar.find('span.sr-only').text('0%');
+                    } else {
+                        $('#notif-container').append('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        $progressBar.css("width", "0%");
+                        $progressBar.find('span.sr-only').text('0%');
+                    }
+                },
+                error: function (error) {
+                    $progressBar.css("width", "0%");
+                    $progressBar.find('span.sr-only').text('0%');
+                    console.log(error);
+                },
+                async: true,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                timeout: 60000
+            });
         });
-    })
-});
+        return this;
+    };
+
+    $(document).on('ready pjax:scriptcomplete', function(){
+        var uploadImageBind = new bindUpload({
+            form: '#uploadimage',
+            input: '#upload_image',
+            progress: '#upload_progress'
+        });
+    });
 </script>

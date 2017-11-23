@@ -524,14 +524,16 @@ class TemplateConfiguration extends TemplateConfig
     protected function getOptionPageAttributes() {
         $aData = $this->attributes;
         $fileList = Template::getOtherFiles($this->filesPath);
-        $aData['brandlogoFileList'] = [];
+        $aData['maxFileSize'] = getMaximumFileUploadSize();
+        $aData['imageFileList'] = [];
         foreach ($fileList as $file) {
             $isImage = $this->_filterImages($file);
 
             if ($isImage) {
-                            $aData['brandlogoFileList'][] = $isImage;
+                            $aData['imageFileList'][] = $isImage;
             }
         };
+
         return $aData;
     }
 

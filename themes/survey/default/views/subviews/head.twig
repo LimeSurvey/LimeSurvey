@@ -35,5 +35,18 @@
 
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}/favicon.ico" />
 
+    {% if (aSurveyInfo.options.backgroundimage == "on") %}
+        <style>
+            body {
+                background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
+                background-attachment: fixed;
+                background-size: cover;
+            }
+
+            body .top-container {
+                background-color: rgba(236, 240, 241, 0.2);
+            }
+        </style>
+    {% endif %}
     {{ include('./subviews/google_analytics.twig') }}
 </head>

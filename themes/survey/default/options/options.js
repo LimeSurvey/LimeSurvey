@@ -94,6 +94,7 @@ var prepare = function(){
         });
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+            console.log(evt);
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -137,6 +138,8 @@ var prepare = function(){
 
     return deferred.promise();
 };
+
+
 $(document).on('ready pjax:scriptcomplete',function(){
     $('.simple-template-edit-loading').css('display','block');
     prepare().then(function(){
