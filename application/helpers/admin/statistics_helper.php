@@ -37,7 +37,6 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         return false;
     }
     $rootdir = Yii::app()->getConfig("rootdir");
-    $homedir = Yii::app()->getConfig("homedir");
     $admintheme = Yii::app()->getConfig("admintheme");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
@@ -661,7 +660,6 @@ class statistics_helper {
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
             $qquestion = flattenText($nresult->question);
-            $qlid = $nresult->parent_qid;
             $qother = $nresult->other;
 
             //1. Get list of answers
@@ -2034,9 +2032,9 @@ class statistics_helper {
                             case 6:
                             case 7:
                                 if (($results - $grawdata[5]) > 0) {
-                                    $percentage = $grawdata[$i] / $results * 100; // All results
+                                    $aggregatedPercentage = $grawdata[$i] / $results * 100; // All results
                                 } else {
-                                    $percentage = 0;
+                                    $aggregatedPercentage = 0;
                                 }
                                 break;
 
@@ -2203,8 +2201,7 @@ class statistics_helper {
 
 
             //-------------------------- PCHART OUTPUT ----------------------------
-            list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
-            $qsid = $surveyid;
+            list(, $qgid, $qqid) = explode("X", $rt, 3);
             $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
             //PCHART has to be enabled and we need some data
@@ -3084,11 +3081,9 @@ class statistics_helper {
                 if ($outputs['qtype'] == 'P')
                 {
                     $extraline .= "<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
-                    $sColumnNameForView = $ColumnName_RM[$i];
                 } else
                 {
                     $extraline .= "<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
-                    $sColumnNameForView = $sColumnName;
                 }
             }
 
@@ -3774,9 +3769,6 @@ class statistics_helper {
                     $sLanguageCode = $survey->language;
                 }
 
-
-                $surveylanguagecodes = $survey->allLanguages;
-
                 // Set language for questions and answers to base language of this survey
                 $language = $survey->language;
 
@@ -3897,7 +3889,6 @@ class statistics_helper {
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid = returnGlobal('sid'); }
-        $surveylanguagecodes = $survey->allLanguages;
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
