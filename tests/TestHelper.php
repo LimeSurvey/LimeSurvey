@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
+use Facebook\WebDriver\Exception\NoSuchDriverException;
 
 class TestHelper extends TestCase
 {
@@ -300,10 +301,14 @@ class TestHelper extends TestCase
     {
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
-        $screenshot = $webDriver->takeScreenshot();
-        $filename   = $folder . $name . date('YmdHis') . '.png';
-        $result     = file_put_contents($filename, $screenshot);
-        $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
+        try {
+            $screenshot = $webDriver->takeScreenshot();
+            $filename   = $folder . $name . date('YmdHis') . '.png';
+            $result     = file_put_contents($filename, $screenshot);
+            $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
+        } catch (NoSuchDriverException $ex) {
+            // No driver.
+        }
     }
 
     /**
