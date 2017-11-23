@@ -327,8 +327,7 @@ class ParticipantShare extends LSActiveRecord
         // CHeck if share already exists
         $arShare = self::findByPk(array('participant_id'=>$data['participant_id'], 'share_uid'=>$data['share_uid']));
         if ($ownerid['owner_uid'] == $data['share_uid']) return;
-        if (is_null($arShare))// A check to ensure that the participant is not added to it's owner
-        {
+        if (is_null($arShare)) { // A check to ensure that the participant is not added to it's owner
             Yii::app()->db->createCommand()->insert('{{participant_shares}}', $data);
         }
         else

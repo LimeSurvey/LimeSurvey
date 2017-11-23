@@ -182,8 +182,8 @@ abstract class PluginBase implements iPlugin {
                 $url = \Yii::getPathOfAlias('webroot').$fileName;
 
             }
-            else // This is a plugin relative path.
-            {
+            else 
+            {    // This is a plugin relative path. 
                 $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.

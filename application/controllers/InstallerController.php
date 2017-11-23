@@ -293,8 +293,10 @@ class InstallerController extends CController {
                     if ($bDBExists == true)
                     {
                         try {
-                            if ($dataReader = $this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0)  // DBLIB does not throw an exception on a missing table
-                            $bTablesDoNotExist = true;
+                            if ($dataReader = $this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
+                                 // DBLIB does not throw an exception on a missing table
+                                 $bTablesDoNotExist = true;
+                            }
                         } catch (Exception $e) {
                             $bTablesDoNotExist = true;
                         }
@@ -483,8 +485,7 @@ class InstallerController extends CController {
         }
 
         //$this->load->dbforge();
-        if ($bCreateDB) //Database has been successfully created
-        {
+        if ($bCreateDB) { //Database has been successfully created
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
@@ -1037,8 +1038,8 @@ class InstallerController extends CController {
             {
                 $sURLFormat = 'path';
             }
-            else // Apache
-            {
+            else 
+            { // Apache
                 $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
             }
             $sCharset = 'utf8';
@@ -1289,8 +1290,7 @@ class InstallerController extends CController {
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        if (!self::dbTest($aDbConfig, $aData))// Remove sDatabaseName from the connexion is not exist
-        {
+        if (!self::dbTest($aDbConfig, $aData)) { // Remove sDatabaseName from the connexion is not exist
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
             $bDbExist = false;
         }

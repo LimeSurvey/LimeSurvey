@@ -331,8 +331,7 @@ abstract class Writer implements IWriter
                             break;
                     }
                 }
-                else //Token table value
-                {
+                else { //Token table value
                     $elementArray[] = $value;
                 }
             }

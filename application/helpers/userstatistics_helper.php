@@ -104,8 +104,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         return  $cachefilename;
     }
 
-    if (array_sum($gdata) > 0) //Make sure that the percentages add up to more than 0
-    {
+    if (array_sum($gdata) > 0) { //Make sure that the percentages add up to more than 0
         $i = 0;
         foreach ($gdata as $data)
         {

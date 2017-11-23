@@ -1889,8 +1889,7 @@ class Participant extends LSActiveRecord
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
-            foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute
-            {
+            foreach ($aAttributesToBeCreated as $key => $value) { //creating new central attribute
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */

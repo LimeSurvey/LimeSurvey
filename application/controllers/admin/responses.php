@@ -63,8 +63,7 @@ class responses extends Survey_Common_Action
         $aData['action'] = Yii::app()->request->getParam('action');
         $aData['all'] = Yii::app()->request->getParam('all');
         $thissurvey = getSurveyInfo($iSurveyId);
-        if (!$thissurvey)// Already done in Survey_Common_Action
-        {
+        if (!$thissurvey) { // Already done in Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         }
@@ -185,8 +184,7 @@ class responses extends Survey_Common_Action
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
             $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_'.$iSurveyID); // Boolean : show (or not) the token
-            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) // If not allowed to read: remove it
-            {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {  // If not allowed to read: remove it
                 unset($fieldmap['token']);
                 $bHaveToken = false;
             }
@@ -671,8 +669,7 @@ class responses extends Survey_Common_Action
     {
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
-            if (!$sResponseId) // No response id : get all survey files
-            {
+            if (!$sResponseId) { // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
                 $oSurvey = SurveyDynamic::model($iSurveyId);
