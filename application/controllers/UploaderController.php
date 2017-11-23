@@ -19,8 +19,9 @@ class UploaderController extends SurveyController {
     {
         $surveyid = Yii::app()->session['LEMsid'];
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if (!$oSurvey)
-            throw new CHttpException(400);
+        if (!$oSurvey) {
+                    throw new CHttpException(400);
+        }
 
         $sLanguage = isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang'] : "";
         Yii::app()->setLanguage($sLanguage);

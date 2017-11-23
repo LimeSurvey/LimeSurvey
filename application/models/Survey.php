@@ -857,7 +857,7 @@ class Survey extends LSActiveRecord
                     SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
                     Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
                     // Remove all related plugin settings
-                    PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey',"model_id" => $iSurveyID));
+                    PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $iSurveyID));
                     // Delete all uploaded files.
                     rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$iSurveyID);
                 }
