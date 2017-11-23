@@ -2,8 +2,9 @@
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
 // use LimeSurvey\PluginManager\PluginEvent;
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -56,8 +57,7 @@ class Authentication extends Survey_Common_Action
             if ($succeeded) {
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
-            }
-            else if ($failed) {
+            } else if ($failed) {
                 ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
                 return;
             }
@@ -66,8 +66,7 @@ class Authentication extends Survey_Common_Action
         else {
             if ($succeeded) {
                 self::doRedirect();
-            }
-            else if ($failed) {
+            } else if ($failed) {
                 $message = $result[1];
                 App()->user->setFlash('error', $message);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
@@ -130,8 +129,7 @@ class Authentication extends Survey_Common_Action
             // @see: http://img.memecdn.com/knees-weak-arms-are-heavy_c_3011277.jpg
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
-            }
-            else {
+            } else {
                 // THen, it checks if the the user set a different default plugin auth in application/config/config.php
                 // eg: 'config'=>array()'debug'=>2,'debugsql'=>0, 'default_displayed_auth_method'=>'muh_auth_method')
                 if (App()->getPluginManager()->isPluginActive(Yii::app()->getConfig('default_displayed_auth_method'))) {
@@ -294,8 +292,7 @@ class Authentication extends Survey_Common_Action
             User::updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
-        }
-        else
+        } else
         {
             $sMessage = gT('Email failed');
         }
@@ -361,8 +358,7 @@ class Authentication extends Survey_Common_Action
         if ($failed_login_attempts->isLockedOut())
         {
             return $this->_getAuthenticationFailedErrorMessage();
-        }
-        else
+        } else
         {
             return true;
         }

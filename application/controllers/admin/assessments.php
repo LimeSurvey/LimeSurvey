@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -46,22 +48,25 @@ class Assessments extends Survey_Common_Action
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
 
-            if ($sAction == "assessmentadd")
-                $this->_add($iSurveyID);
+            if ($sAction == "assessmentadd") {
+                            $this->_add($iSurveyID);
+            }
 
-            if ($sAction == "assessmentupdate")
-                $this->_update($iSurveyID);
+            if ($sAction == "assessmentupdate") {
+                            $this->_update($iSurveyID);
+            }
 
-            if ($sAction == "assessmentdelete")
-                $this->_delete($iSurveyID, $_POST['id']);
+            if ($sAction == "assessmentdelete") {
+                            $this->_delete($iSurveyID, $_POST['id']);
+            }
 
-            if ($sAction == "asessementactivate")
-                $this->_activateAsessement($iSurveyID);
+            if ($sAction == "asessementactivate") {
+                            $this->_activateAsessement($iSurveyID);
+            }
 
 
             $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
-        }
-        else
+        } else
         {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array("admin/"));
@@ -159,8 +164,10 @@ class Assessments extends Survey_Common_Action
     private function _collectEditData(array $aData)
     {
         $oAssessment = Assessment::model()->find("id=:id", array(':id' => App()->request->getParam('id')));
-        if (!$oAssessment)
-            throw new CHttpException(500); // 404 ?
+        if (!$oAssessment) {
+                    throw new CHttpException(500);
+        }
+        // 404 ?
 
         $editData = $oAssessment->attributes;
         $aData['actiontitle'] = gT("Edit");
@@ -224,8 +231,9 @@ class Assessments extends Survey_Common_Action
 
     private function _getAssessmentPostData($iSurveyID, $language)
     {
-        if (!isset($_POST['gid']))
-            $_POST['gid'] = 0;
+        if (!isset($_POST['gid'])) {
+                    $_POST['gid'] = 0;
+        }
 
         return array(
             'sid' => $iSurveyID,

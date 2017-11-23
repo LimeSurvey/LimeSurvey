@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -134,8 +136,7 @@ class update extends Survey_Common_Action
                     Yii::app()->session['flashmessage'] = gT("Your key has been updated and validated! You can now use ComfortUpdate.");
                     // then, we render the what returned the server (views and key infos or error )
                     App()->getController()->redirect('admin/update/sa/managekey');
-                }
-                else
+                } else
                 {
                     switch ($check->error)
                     {
@@ -276,8 +277,7 @@ class update extends Survey_Common_Action
                     $aData['html_from_server'] = $changelog->html;
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
-                }
-                else
+                } else
                 {
                     return $this->_renderError($changelog);
                 }
@@ -357,18 +357,15 @@ class update extends Survey_Common_Action
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
 
-                    }
-                    else
+                    } else
                     {
                         $error = $backup->error;
                     }
-                }
-                else
+                } else
                 {
                     $error = "no_updates_infos";
                 }
-            }
-            else
+            } else
             {
                 $error = "unknown_destination_build";
             }
@@ -421,28 +418,23 @@ class update extends Survey_Common_Action
 
                                 // TODO : aData should contains information about each step
                                 return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
-                            }
-                            else
+                            } else
                             {
                                 $error = $remove->error;
                             }
-                        }
-                        else
+                        } else
                         {
                             $error = $unzip->error;
                         }
-                    }
-                    else
+                    } else
                     {
                         $error = $file->error;
                     }
-                }
-                else
+                } else
                 {
                     $error = "no_updates_infos";
                 }
-            }
-            else
+            } else
             {
                 $error = "unknown_destination_build";
             }
@@ -484,18 +476,15 @@ class update extends Survey_Common_Action
                             Yii::app()->session['update_result'] = null;
                             Yii::app()->session['next_update_check'] = null;
                             return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
-                        }
-                        else
+                        } else
                         {
                             $error = $unzip->error;
                         }
-                    }
-                    else
+                    } else
                     {
                         $error = $file->error;
                     }
-                }
-                else
+                } else
                 {
                     return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, false);
                 }
@@ -548,8 +537,7 @@ class update extends Survey_Common_Action
                 }
                 // then, we render the what returned the server (views and key infos or error )
                 echo $this->_renderWelcome($check);
-            }
-            else
+            } else
             {
                 return $this->_renderErrorString("key_null");
             }
@@ -568,8 +556,7 @@ class update extends Survey_Common_Action
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
-        }
-        else
+        } else
         {
             $aData['display']['header'] = true;
             $aViewUrls['output'] = CheckForDBUpgrades();
@@ -587,7 +574,9 @@ class update extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            if (!isset(Yii::app()->session['installlstep4b'])) die();
+            if (!isset(Yii::app()->session['installlstep4b'])) {
+                die();
+            }
             $aData = Yii::app()->session['installlstep4b'];
             unset (Yii::app()->session['installlstep4b']);
             $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
@@ -644,8 +633,7 @@ class update extends Survey_Common_Action
                     $sValidityDate = convertToGlobalSettingFormat($serverAnswer->key_infos->validuntil);
                 }
                 return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate), false, false);
-            }
-            else
+            } else
             {
                 $serverAnswer->result = FALSE;
                 $serverAnswer->error = "unknown_view";

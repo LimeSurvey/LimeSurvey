@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -990,13 +992,18 @@ class database extends Survey_Common_Action
                 unset($aURLParam['qid']);
                 unset($aURLParam['targetQuestionText']);
                 unset($aURLParam['sqid']);
-                if ($aURLParam['targetqid'] == '') $aURLParam['targetqid'] = NULL;
-                if ($aURLParam['targetsqid'] == '') $aURLParam['targetsqid'] = NULL;
+                if ($aURLParam['targetqid'] == '') {
+                    $aURLParam['targetqid'] = NULL;
+                }
+                if ($aURLParam['targetsqid'] == '') {
+                    $aURLParam['targetsqid'] = NULL;
+                }
                 $aURLParam['sid'] = $iSurveyID;
 
                 $param = new SurveyURLParameter;
-                foreach ($aURLParam as $k => $v)
-                    $param->$k = $v;
+                foreach ($aURLParam as $k => $v) {
+                                    $param->$k = $v;
+                }
                 $param->save();
             }
         }
@@ -1018,8 +1025,7 @@ class database extends Survey_Common_Action
                 false,
                 false
             );
-        }  
-        else 
+        } else 
         {
             ////////////////////////////////////////
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
@@ -1030,8 +1036,7 @@ class database extends Survey_Common_Action
             if ($referrer)
             {
                 $this->getController()->redirect(array($referrer));
-            } 
-            else 
+            } else 
             {
                 $this->getController()->redirect(array('/admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
             }
@@ -1223,8 +1228,9 @@ class database extends Survey_Common_Action
             $aErrors = $oQuestion->getErrors();
             if (count($aErrors)) {
                 foreach ($aErrors as $sAttribute=>$aStringErrors) {
-                    foreach ($aStringErrors as $sStringErrors)
-                        Yii::app()->setFlashMessage(sprintf(gT("Question could not be created with error on %s: %s"), $sAttribute, $sStringErrors), 'error');
+                    foreach ($aStringErrors as $sStringErrors) {
+                                            Yii::app()->setFlashMessage(sprintf(gT("Question could not be created with error on %s: %s"), $sAttribute, $sStringErrors), 'error');
+                    }
                 }
             }
             // Add other languages
@@ -1253,8 +1259,9 @@ class database extends Survey_Common_Action
                         $aErrors = $oQuestion->getErrors();
                         if (count($aErrors)) {
                             foreach ($aErrors as $sAttribute=>$aStringErrors) {
-                                foreach ($aStringErrors as $sStringErrors)
-                                    Yii::app()->setFlashMessage(sprintf(gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute, $sStringErrors), 'error');
+                                foreach ($aStringErrors as $sStringErrors) {
+                                                                    Yii::app()->setFlashMessage(sprintf(gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute, $sStringErrors), 'error');
+                                }
                             }
                         }
                         #                            if (!$langqid)
@@ -1354,8 +1361,7 @@ class database extends Survey_Common_Action
                 if (trim($startdate) == "")
                 {
                     $startdate = null;
-                }
-                else
+                } else
                 {
                     $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $startdate);
                     $startdate = $datetimeobj->format("Y-m-d H:i:s");
@@ -1364,8 +1370,7 @@ class database extends Survey_Common_Action
                 if (trim($expires) == "")
                 {
                     $expires = null;
-                }
-                else
+                } else
                 {
                     $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $expires);
                     $expires = $datetimeobj->format("Y-m-d H:i:s");
@@ -1384,13 +1389,11 @@ class database extends Survey_Common_Action
                                     if ($value != '')
                                     {
                                         QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                                    }
-                                    else
+                                    } else
                                     {
                                         QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
                                     }
-                                }
-                                elseif ($value != '')
+                                } elseif ($value != '')
                                 {
                                     $attribute = new QuestionAttribute;
                                     $attribute->qid = $this->iQuestionID;
@@ -1400,14 +1403,15 @@ class database extends Survey_Common_Action
                                     $attribute->save();
                                 }
                             }
-                        }
-                        else
+                        } else
                         {
                             $value = Yii::app()->request->getPost($validAttribute['name']);
 
                             if ($validAttribute['name'] == 'multiflexible_step' && trim($value) != '') {
                                 $value = floatval($value);
-                                if ($value == 0) $value = 1;
+                                if ($value == 0) {
+                                    $value = 1;
+                                }
                             };
 
                             $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID));
@@ -1416,13 +1420,11 @@ class database extends Survey_Common_Action
                                 if ($value != $validAttribute['default'] && trim($value) != "")
                                 {
                                     QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                                }
-                                else
+                                } else
                                 {
                                     QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                                 }
-                            }
-                            elseif ($value != $validAttribute['default'] && trim($value) != "")
+                            } elseif ($value != $validAttribute['default'] && trim($value) != "")
                             {
                                 $attribute = new QuestionAttribute;
                                 $attribute->qid = $this->iQuestionID;

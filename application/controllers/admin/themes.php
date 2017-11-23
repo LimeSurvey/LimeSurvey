@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -282,9 +283,9 @@ class themes extends Survey_Common_Action
             if ($action == "templateuploadfile") {
                 if (Yii::app()->getConfig('demoMode')) {
                     $uploadresult = gT("Demo mode: Uploading template files is disabled.");
-                }elseif ($filename != $_FILES['upload_file']['name']) {
+                } elseif ($filename != $_FILES['upload_file']['name']) {
                     $uploadresult = gT("This filename is not allowed to be uploaded.");
-                }elseif (!in_array(strtolower(substr(strrchr($filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
+                } elseif (!in_array(strtolower(substr(strrchr($filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
                     $uploadresult = gT("This file type is not allowed to be uploaded.");
                 } else {
                     //Uploads the file into the appropriate directory
@@ -388,8 +389,7 @@ class themes extends Survey_Common_Action
         if ($screenname != 'welcome')
         {
             Yii::app()->session['step'] = 1;
-        }
-        else
+        } else
         {
             unset(Yii::app()->session['step']);
         }
@@ -445,11 +445,11 @@ class themes extends Survey_Common_Action
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }elseif (file_exists($sNewDirectoryPath)) {
+                } elseif (file_exists($sNewDirectoryPath)) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("A template with that name already exists."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
+                } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("Maybe you don't have permission."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
@@ -505,7 +505,7 @@ class themes extends Survey_Common_Action
                     TemplateManifest::extendsConfig($copydir, $newname);
                     TemplateManifest::importManifest($newname, ['extends' => $copydir]);
                     $this->getController()->redirect(array("admin/themes/sa/view", 'templatename'=>$newname));
-                }elseif ($mkdirresult == 2) {
+                } elseif ($mkdirresult == 2) {
                     Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                     $this->getController()->redirect(array("admin/themes/sa/view", 'templatename'=>$copydir));
                 } else {

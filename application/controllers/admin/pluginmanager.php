@@ -94,8 +94,7 @@ class PluginManager extends Survey_Common_Action
         if ($type == "activate")
         {
             $this->activate($id);
-        }
-        else if ($type == "deactivate")
+        } else if ($type == "deactivate")
         {
             $this->deactivate($id);
         }
@@ -133,8 +132,7 @@ class PluginManager extends Survey_Common_Action
                     if ($customMessage)
                     {
                         Yii::app()->user->setFlash('error', $customMessage);
-                    }
-                    else
+                    } else
                     {
                         Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
                     }
@@ -178,8 +176,7 @@ class PluginManager extends Survey_Common_Action
                     if ($customMessage)
                     {
                         Yii::app()->user->setFlash('error', $customMessage);
-                    }
-                    else
+                    } else
                     {
                         Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
                     }

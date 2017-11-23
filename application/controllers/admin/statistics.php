@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -198,8 +200,7 @@ class statistics extends Survey_Common_Action {
             $grapherror = true;
             $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-        }
-        elseif (!function_exists("imageftbbox")) {
+        } elseif (!function_exists("imageftbbox")) {
             $grapherror = true;
             $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
@@ -217,14 +218,12 @@ class statistics extends Survey_Common_Action {
             $selecthide = "selected='selected'";
             $selectshow = "";
             $selectinc = "";
-        }
-        elseif (incompleteAnsFilterState() == "incomplete")
+        } elseif (incompleteAnsFilterState() == "incomplete")
         {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "selected='selected'";
-        }
-        else
+        } else
         {
             $selecthide = "";
             $selectshow = "selected='selected'";
@@ -504,8 +503,7 @@ class statistics extends Survey_Common_Action {
         {
             $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-        }
-        else if (!function_exists("imageftbbox")) {
+        } else if (!function_exists("imageftbbox")) {
             $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         }
