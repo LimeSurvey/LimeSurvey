@@ -51,20 +51,14 @@ class InstallCommand extends CConsoleCommand
             $this->connection->charset = 'utf8';
 
             switch ($this->connection->driverName) {
-                // NB: FALLTHRU
                 case 'mysql':
                 case 'mysqli':
                     $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                    $sql_file = 'mysql';
                     break;
                 case 'pgsql':
-                    $sql_file = 'pgsql';
-                    break;
-                // NB: FALLTHRU
                 case 'dblib':
                 case 'mssql':
                 case 'sqlsrv':
-                    $sql_file = 'mssql';
                     break;
                 default:
                     throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
@@ -135,7 +129,7 @@ class InstallCommand extends CConsoleCommand
 
     /**
      * Create database with name?
-     * @return void;
+     * @return void
      */
     protected function createDatabase()
     {

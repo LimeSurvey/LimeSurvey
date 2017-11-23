@@ -1083,7 +1083,7 @@ protected function copyConditions(array $args)
         } // while
         
         foreach ($copyconditionsto as $copyc) {
-            list($newsid, $newgid, $newqid) = explode("X", $copyc);
+            list(,,$newqid) = explode("X", $copyc);
             foreach ($proformaconditions as $pfc) {
 //TIBO
                 
