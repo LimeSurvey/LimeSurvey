@@ -892,8 +892,7 @@ class statistics_helper {
         //K = multiple numerical input
         elseif ($firstletter == "N" || $firstletter == "K") { //NUMERICAL TYPE
             //Zero handling
-            if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
-            {
+            if (!isset($excludezeros)){ //If this hasn't been set, set it to on as default:
                 $excludezeros = 1;
             }
             //check last character, greater/less/equals don't need special treatment
@@ -3585,8 +3584,7 @@ class statistics_helper {
                     $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
-                if ($cachefilename || $outputType == 'html') // Add the image only if constructed
-                {
+                if ($cachefilename || $outputType == 'html') { // Add the image only if constructed
                     //introduce new counter
                     if (!isset($ci)) {$ci = 0; }
 
@@ -3806,8 +3804,7 @@ class statistics_helper {
                 //$sOutputHTML .= $outputs['statisticsoutput']; // Nothing interesting for us in this output
                 //2. Collect and Display results #######################################################################
 
-                if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
-                {
+                if (isset($outputs['alist']) && $outputs['alist']) {//Make sure there really is an answerlist, and if so:
                     $count = $count + 1;
                     if ($count == 1)
                     {
@@ -4035,8 +4032,7 @@ class statistics_helper {
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 $sOutputHTML .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
-                if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
-                {
+                if (isset($outputs['alist']) && $outputs['alist']) { //Make sure there really is an answerlist, and if so:
                     $display = $this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
@@ -4389,8 +4385,7 @@ class statistics_helper {
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 $sOutputHTML .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
-                if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
-                {
+                if (isset($outputs['alist']) && $outputs['alist']) {//Make sure there really is an answerlist, and if so:
                     $display = $this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
@@ -4567,7 +4562,7 @@ class statistics_helper {
     {
         $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
-        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
+        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib')
         {
             $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }

@@ -1872,8 +1872,7 @@ class participantsaction extends Survey_Common_Action
     {
         $operation = Yii::app()->request->getPost('oper');
         $shareIds = Yii::app()->request->getPost('id');
-        if ($operation == 'del') // If operation is delete , it will delete, otherwise edit it
-        {
+        if ($operation == 'del') { // If operation is delete , it will delete, otherwise edit it
             ParticipantShare::model()->deleteRow($shareIds);
         }
         else
@@ -1959,16 +1958,12 @@ class participantsaction extends Survey_Common_Action
                 }
             }
             echo $participantid; //echo the participant id's
-        }
-        else// if no search condition
-        {
+        } else {// if no search condition
             $participantid = ""; // initiallise the participant id to blank
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) //If super admin all the participants will be visible
-            {
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read'))             { //If super admin all the participants will be visible
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
-            else // get participants on which the user has right on
-            {
+            else {// get participants on which the user has right on
                 $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
@@ -2394,10 +2389,8 @@ class participantsaction extends Survey_Common_Action
         $alreadymappedattid = array(); //List of fields already mapped to this tokens table
         $alreadymappedattname = array();
 
-        foreach ($tokenAttributes as $attributeId => $attribute)  // attributeId like 'attribute_1'
-        {
-            if (is_numeric($attributeId[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
-            {
+        foreach ($tokenAttributes as $attributeId => $attribute) {  // attributeId like 'attribute_1'
+            if (is_numeric($attributeId[10])) { //Assumes that if the 11th character is a number, it must be a token-table created attribute
                 $selectedattribute[$attributeId] = $attribute['description'];
             }
             else
@@ -2523,8 +2516,7 @@ class participantsaction extends Survey_Common_Action
     private function getAutomaticallyMappedAttributes(array $tokenAttributes, array $CPDBAttributes)
     {
         $result = array();
-        foreach ($tokenAttributes as $attributeId => $tokenAttribute)  // attributeId like 'attribute_1'
-        {
+        foreach ($tokenAttributes as $attributeId => $tokenAttribute) {  // attributeId like 'attribute_1'
             if ($tokenAttribute['cpdbmap'] !== '')
             {
                 foreach ($CPDBAttributes as $CPDBAttribute)

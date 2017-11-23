@@ -592,8 +592,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
     {
         $column_style = 'ul';
     };
-    if (!is_null($column_style) && $columns != 1) // Add a global class for all column.
-    {
+    if (!is_null($column_style) && $columns != 1) {// Add a global class for all column
         $wrapperclass .= " colstyle-{$column_style}";
     }
     if ($columns < 2)
@@ -706,13 +705,11 @@ function alternation($alternate = '', $type = 'col')
     // It has been left in case it becomes useful but probably should be
     // removed.
     */
-    if ($type == 'row')// Row is sub question OR Y Axis subquestion : it must be column for array by column
-    {
+    if ($type == 'row') {// Row is sub question OR Y Axis subquestion : it must be column for array by column
         $odd  = 'ls-odd';
         $even = 'ls-even';
     }
-    else // cols is answers part OR X axis subquestion : it must the row in array by column
-    {
+    else {// cols is answers part OR X axis subquestion : it must the row in array by column
         $odd  = 'ls-col-odd';
         $even = 'ls-col-even';
     };
@@ -899,9 +896,7 @@ function getUserList($outputformat = 'fullinfoarray')
 
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
-    if (count($uresult) == 0)
-    //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
-    {
+    if (count($uresult) == 0) {//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=".$myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -4099,7 +4094,9 @@ function fixLanguageConsistency($sid, $availlangs = '')
     } else {
         $langs = Survey::model()->findByPk($sid)->additionalLanguages;
     }
-    if (count($langs) == 0) return true; // Survey only has one language
+    if (count($langs) == 0) {
+        return true; // Survey only has one language
+    }
     $baselang = Survey::model()->findByPk($sid)->language;
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();

@@ -155,8 +155,7 @@ class printablesurvey extends Survey_Common_Action
             );
 
             $survey_output['FAX_TO'] = '';
-            if (!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
-            {
+            if (!empty($surveyfaxto) && $surveyfaxto != '000-00000000') {//If no fax number exists, don't display faxing information!
                 $survey_output['FAX_TO'] = gT("Please fax your completed survey to:")." $surveyfaxto";
             }
 
@@ -255,8 +254,7 @@ class printablesurvey extends Survey_Common_Action
                             {
                                 $sExplanation .= ' <em class="scenario-and-separator">'.gT('and').'</em> ';
                             }
-                            if (trim($distinctrow['method']) == '') //If there is no method chosen assume "equals"
-                            {
+                            if (trim($distinctrow['method']) == '') {//If there is no method chosen assume "equals"
                                 $distinctrow['method'] = '==';
                             }
 
@@ -549,8 +547,7 @@ class printablesurvey extends Survey_Common_Action
                             {
                                 $sExplanation = $qidattributes['printable_help'][$sLanguageCode];
                             }
-                            elseif ($sExplanation == '') // There is only a relevance equation without conditions
-                            {
+                            elseif ($sExplanation == '') {// There is only a relevance equation without conditions
                                 $sExplanation = $sEquation;
                                 $sEquation = '&nbsp;'; // No need to show it twice
                             }
@@ -1509,8 +1506,7 @@ class printablesurvey extends Survey_Common_Action
             while ($rounds < 1)
             {
                 $replace_count = 0;
-                if ($server_is_newer) // Server version of PHP is at least 5.1.0 or newer
-                {
+                if ($server_is_newer) {// Server version of PHP is at least 5.1.0 or newer
 
                     $survey_output['GROUPS'] = preg_replace(
                     array(
@@ -1528,8 +1524,8 @@ class printablesurvey extends Survey_Common_Action
                                                 ,$replace_count
                                                 );
                 }
-                else // Server version of PHP is older than 5.1.0
-                {
+                else {
+                    // Server version of PHP is older than 5.1.0
                     $survey_output['GROUPS'] = preg_replace(
                     array(
                                                 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'

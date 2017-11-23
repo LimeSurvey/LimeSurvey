@@ -1847,8 +1847,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         if ($oSurvey) {
             // First rule for id and submitdate
             if (is_int($iIdKey)) {  // Rule for id: only if id exists in vvimport file
-                if (!$bExistingsId) // If not exist : allways import it
-                {
+                if (!$bExistingsId) {// If not exist : allways import it
                     $oSurvey->id = $aResponses[$iIdKey];
                     $iMaxId = ($aResponses[$iIdKey] > $iMaxId) ? $aResponses[$iIdKey] : $iMaxId;
                 }

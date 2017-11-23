@@ -5974,8 +5974,7 @@ function do_array_dual($ia)
                 }
 
                 if (count($labelans1) > 0) {  // if second label set is used
-                    if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    {
+                    if ($shownoanswer) {// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;

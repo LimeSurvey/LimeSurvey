@@ -1330,12 +1330,10 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_CLASS'] = implode(" ", $aQuestionClass);
 
         $aMandatoryClass = array();
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
-        {
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
             $aMandatoryClass[] = 'mandatory';
         }
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_'.$iSurveyId]['maxstep'] != $_SESSION['survey_'.$iSurveyId]['step'])// This is working ?
-        {
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_'.$iSurveyId]['maxstep'] != $_SESSION['survey_'.$iSurveyId]['step']) {
             $aMandatoryClass[] = 'missing';
         }
         $aReplacement['QUESTION_MAN_CLASS'] = !empty($aMandatoryClass) ? " ".implode(" ", $aMandatoryClass) : "";

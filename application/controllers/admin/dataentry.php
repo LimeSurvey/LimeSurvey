@@ -681,7 +681,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= '<span class="five-point">';
                                 $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
                                 $aDataentryoutput .= '<label for="5-point-choice-'.$i.'">'.$i.'</label>';
-                                $aDataentryoutput .= '</span> Â Â ';
+                                $aDataentryoutput .= '</span> Ã‚Â Ã‚Â ';
                             }
                             break;
                         case "D": //DATE
@@ -1437,8 +1437,7 @@ class dataentry extends Survey_Common_Action
             $surveytable = $survey->responsesTableName;
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
             // restet token if user is not allowed to update
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) // If not allowed to read: remove it
-            {
+            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) { // If not allowed to read: remove it
                 unset($fieldmap['token']);
             }
             // unset timings
@@ -1753,8 +1752,7 @@ class dataentry extends Survey_Common_Action
 
                 $new_response->save();
                 $last_db_id = $new_response->getPrimaryKey();
-                if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
-                {
+                if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') { // submittoken
                     // get submit date
                     if (isset($_POST['closedate'])) {
                         $submitdate = $_POST['closedate'];
@@ -1835,8 +1833,7 @@ class dataentry extends Survey_Common_Action
                         //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
                         $tokens_table = "{{tokens_$surveyid}}";
-                        if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
-                        {
+                        if (tableExists($tokens_table)) { //If the query fails, assume no tokens table exists
                             $tkquery = "SELECT * FROM {$tokens_table}";
                             $tkresult = dbExecuteAssoc($tkquery);
                                 /*$tokendata = array (
@@ -2135,7 +2132,6 @@ class dataentry extends Survey_Common_Action
                             //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
                             $aDatatemp = '';
                             foreach ($dearesult->readAll() as $dearow)
-                            //                            while ($dearow = $dearesult->FetchRow())
                             {
                                 $aDatatemp .= "<option value='{$dearow['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}

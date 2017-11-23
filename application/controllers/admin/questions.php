@@ -1560,10 +1560,8 @@ class questions extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) 
         {
-            if ($oSurvey->active == 'N')                                                        // If survey is active it should not be possible to update
-            {
-                if ($iQuestionOrder == "")                                                        // If asked "at the endd"
-                {
+            if ($oSurvey->active == 'N') {// If survey is active it should not be possible to update
+                if ($iQuestionOrder == "") {// If asked "at the endd"
                     $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid, $oSurvey->sid));
 
                     // We get the last question order, so we want the number just after it

@@ -882,8 +882,7 @@ class userstatistics_helper {
         //K = multiple numerical input
         elseif ($firstletter == "N" || $firstletter == "K") { //NUMERICAL TYPE
             //Zero handling
-            if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
-            {
+            if (!isset($excludezeros)) { //If this hasn't been set, set it to on as default:
                 $excludezeros = 1;
             }
             //check last character, greater/less/equals don't need special treatment
