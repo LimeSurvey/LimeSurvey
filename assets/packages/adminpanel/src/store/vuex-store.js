@@ -66,6 +66,7 @@ const getAppState = function (userid) {
             },
             changeIsCollapsed(state, value) {
                 state.isCollapsed = value;
+                $(document).trigger('vue-sidemenu-update-link');
             },
             changeMaxHeight(state, newHeight) {
                 state.maxHeight = newHeight;

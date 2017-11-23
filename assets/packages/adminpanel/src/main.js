@@ -90,6 +90,7 @@ $(document).on('ready', function () {
     $(document).on('pjax:success', () => {
         $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});
         $('#pjax-file-load-container').find('div').css('width', '100%');
+        $(document).trigger('vue-sidemenu-update-link');
         setTimeout(function () {
             $('#pjax-file-load-container').find('div').css({
                 'width': '0%',

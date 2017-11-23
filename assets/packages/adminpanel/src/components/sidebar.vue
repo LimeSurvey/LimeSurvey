@@ -78,6 +78,7 @@ export default {
         controlActiveLink(){
             //get current location
             let currentUrl = window.location.href;
+
             //Check for corresponding menuItem
             let lastMenuItemObject = false;
             _.each(this.$store.state.sidemenus, (itm,i)=>{
@@ -85,6 +86,7 @@ export default {
                     lastMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastMenuItemObject;
                 });
             });
+
             //check for quickmenu menuLinks
             let lastQuickMenuItemObject = false;
             _.each(this.$store.state.collapsedmenus, (itm,i)=>{
@@ -92,12 +94,14 @@ export default {
                     lastQuickMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastQuickMenuItemObject;
                 });
             });
+
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
             _.each(this.$store.state.questiongroups, (itm,i)=>{
                 let regTest = new RegExp('questiongroups/sa/edit/surveyid/'+itm.sid+'/gid/'+itm.gid);
                 lastQuestionGroupObject =  (regTest.test(currentUrl) || _.endsWith(currentUrl,itm.link)) ? itm : lastQuestionGroupObject;
             });
+            
             //check for corresponding question group
             let lastQuestionObject = false;
              _.each(this.$store.state.questiongroups, (itm,i)=>{
@@ -275,6 +279,10 @@ export default {
         this.getCollapsedmenus();
         this.getTopmenus();
         this.getBottommenus();
+
+        $(document).on('vue-sidemenu-update-link', ()=>{
+            this.controlActiveLink();
+        });
 
         $(document).on('vue-redraw', ()=>{
             this.getQuestions();

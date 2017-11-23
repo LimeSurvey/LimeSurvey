@@ -36401,6 +36401,7 @@ $(document).on('ready', function () {
     $(document).on('pjax:success', () => {
         $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});
         $('#pjax-file-load-container').find('div').css('width', '100%');
+        $(document).trigger('vue-sidemenu-update-link');
         setTimeout(function () {
             $('#pjax-file-load-container').find('div').css({
                 'width': '0%',
@@ -36836,6 +36837,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getCollapsedmenus();
         this.getTopmenus();
         this.getBottommenus();
+
+        $(document).on('vue-sidemenu-update-link', () => {
+            this.controlActiveLink();
+        });
 
         $(document).on('vue-redraw', () => {
             this.getQuestions();
@@ -39384,6 +39389,7 @@ const getAppState = function (userid) {
             },
             changeIsCollapsed(state, value) {
                 state.isCollapsed = value;
+                $(document).trigger('vue-sidemenu-update-link');
             },
             changeMaxHeight(state, newHeight) {
                 state.maxHeight = newHeight;
