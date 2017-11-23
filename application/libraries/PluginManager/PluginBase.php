@@ -66,8 +66,7 @@ abstract class PluginBase implements iPlugin
         $basePath = $this->getDir().DIRECTORY_SEPARATOR.'locale';
 
         // No need to load a component if there is no locale files
-        if (!file_exists($basePath))
-        {
+        if (!file_exists($basePath)) {
             return;
         }
 
@@ -136,14 +135,11 @@ abstract class PluginBase implements iPlugin
     {
 
         $settings = $this->settings;
-        foreach ($settings as $name => &$setting)
-        {
-            if ($getValues)
-            {
+        foreach ($settings as $name => &$setting) {
+            if ($getValues) {
                 $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
             }
-            if ($setting['type'] == 'logo')
-            {
+            if ($setting['type'] == 'logo') {
                 $setting['path'] = $this->publish($setting['path']);
             }
         }
@@ -175,15 +171,13 @@ abstract class PluginBase implements iPlugin
     public function publish($fileName)
     {
         // Check if filename is relative.
-        if (strpos('//', $fileName) === false)
-        {
+        if (strpos('//', $fileName) === false) {
             // This is a limesurvey relative path.
-            if (strpos('/', $fileName) === 0)
-            {
+            if (strpos('/', $fileName) === 0) {
                 $url = \Yii::getPathOfAlias('webroot').$fileName;
 
-            } else 
-            {    // This is a plugin relative path. 
+            } else {
+// This is a plugin relative path. 
                 $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
@@ -191,8 +185,7 @@ abstract class PluginBase implements iPlugin
                  */
                 $url = App()->assetManager->publish($path);
             }
-        } else
-        {
+        } else {
             $url = $fileName;
         }
         return $url;
@@ -224,8 +217,7 @@ abstract class PluginBase implements iPlugin
      */
     public function saveSettings($settings)
     {
-        foreach ($settings as $name => $setting)
-        {
+        foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
     }
@@ -343,8 +335,7 @@ abstract class PluginBase implements iPlugin
         );
 
         // If we don't have a translation from the plugin, check core translations
-        if ($translation == $sToTranslate)
-        {
+        if ($translation == $sToTranslate) {
             $translationFromCore = \quoteText(
                 \Yii::t(
                     '',
@@ -385,32 +376,27 @@ abstract class PluginBase implements iPlugin
     public function readConfigFile()
     {
         $file = $this->getDir().DIRECTORY_SEPARATOR.'config.json';
-        if (file_exists($file))
-        {
+        if (file_exists($file)) {
             $json = file_get_contents($file);
             $this->config = json_decode($json);
 
-            if ($this->config === null)
-            {
+            if ($this->config === null) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
-            } else if ($this->configIsNewVersion())
-            {
+            } else if ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
                 $pluginModel = \Plugin::model()->findByPk($this->id);
 
                 // "Impossible"
-                if (empty($pluginModel))
-                {
+                if (empty($pluginModel)) {
                     throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
                 }
 
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
-        } else
-        {
+        } else {
             $this->log('Found no config file');
         }
     }
@@ -422,20 +408,17 @@ abstract class PluginBase implements iPlugin
      */
     protected function checkActive($pluginModel)
     {
-        if ($this->config->active == 1)
-        {
+        if ($this->config->active == 1) {
             // Activate plugin
             $result = App()->getPluginManager()->dispatchEvent(
                 new PluginEvent('beforeActivate', App()->getController()),
                 $this->getName()
             );
 
-            if ($result->get('success') !== false)
-            {
+            if ($result->get('success') !== false) {
                 $pluginModel->active = 1;
                 $pluginModel->update();
-            } else
-            {
+            } else {
                 // Failed. Popup error message.
                 $not = new \Notification(array(
                     'user_id' => App()->user->id,
@@ -476,8 +459,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function configIsNewVersion()
     {
-        if (empty($this->config))
-        {
+        if (empty($this->config)) {
             throw new \InvalidArgumentException('config is not set');
         }
 

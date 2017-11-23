@@ -32,8 +32,7 @@ class remotecontrol extends Survey_Common_Action
         $oHandler = new remotecontrol_handle($this->controller);
         $RPCType = Yii::app()->getConfig("RPCInterface");
         if (Yii::app()->getRequest()->isPostRequest) {
-            if ($RPCType == 'xml')
-            {
+            if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
                 set_include_path($cur_path.PATH_SEPARATOR.APPPATH.'helpers');
                 // Yii::import was causing problems for some odd reason
@@ -46,19 +45,15 @@ class remotecontrol extends Survey_Common_Action
                 $this->xmlrpc->setResponseClass('LSZend_XmlRpc_Response_Http');
                 $this->xmlrpc->setClass($oHandler);
                 $result = $this->xmlrpc->handle();
-                if ($result instanceof LSZend_XmlRpc_Response_Http)
-                {
+                if ($result instanceof LSZend_XmlRpc_Response_Http) {
                     $result->printXml();
-                } else
-                {
+                } else {
                     // a Zend_XmlRpc_Server_Fault with exception message from XMLRPC
                     echo $result;
                 }
-            } elseif ($RPCType == 'json')
-            {
+            } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('LSjsonRPCServer');
-                if (!isset($_SERVER['CONTENT_TYPE']))
-                {
+                if (!isset($_SERVER['CONTENT_TYPE'])) {
                     $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
                     $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
@@ -116,8 +111,7 @@ class remotecontrol extends Survey_Common_Action
         
 
         $sSessionKey = $client->call('get_session_key', array('admin', 'password'));
-        if (is_array($sSessionKey)) {echo $sSessionKey['status']; die(); } else
-        {
+        if (is_array($sSessionKey)) {echo $sSessionKey['status']; die(); } else {
             echo 'Retrieved session key'.'<br>';
         }
         
@@ -126,34 +120,28 @@ class remotecontrol extends Survey_Common_Action
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
         $aResult = $client->call('activate_survey', array($sSessionKey, $iSurveyID));
-        if ($aResult['status'] == 'OK')
-        {
+        if ($aResult['status'] == 'OK') {
             echo 'Survey '.$iSurveyID.' successfully activated.<br>';
         }
         $aResult = $client->call('activate_tokens', array($sSessionKey, $iSurveyID, array(1, 2)));
-        if ($aResult['status'] == 'OK')
-        {
+        if ($aResult['status'] == 'OK') {
             echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
         $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto'=>'0800-LIMESURVEY')));
-        if (!array_key_exists('status', $aResult))
-        {
+        if (!array_key_exists('status', $aResult)) {
             echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
         }
         $aResult = $client->call('add_language', array($sSessionKey, $iSurveyID, 'ar'));
-        if ($aResult['status'] == 'OK')
-        {
+        if ($aResult['status'] == 'OK') {
             echo 'Added Arabian as additional language'.'<br>';
         }
         $aResult = $client->call('set_language_properties', array($sSessionKey, $iSurveyID, array('surveyls_welcometext'=>'An Arabian welcome text!'), 'ar'));
-        if ($aResult['status'] == 'OK')
-        {
+        if ($aResult['status'] == 'OK') {
             echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
         }
 
         $aResult = $client->call('delete_language', array($sSessionKey, $iSurveyID, 'ar'));
-        if ($aResult['status'] == 'OK')
-        {
+        if ($aResult['status'] == 'OK') {
             echo 'Removed Arabian as additional language'.'<br>';
         }
 

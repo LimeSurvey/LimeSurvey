@@ -77,8 +77,7 @@ function themeoptions($optionarray, $selectedvalue)
     $return = '';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
-        if ($arkey == $selectedvalue)
-        {
+        if ($arkey == $selectedvalue) {
             $return .= " selected='selected'";
         }
         $return .= '>'.HTMLEscape($arkey)."</option>\n";
@@ -114,11 +113,9 @@ function recursive_in_array($needle, $haystack)
 */
 function is_template_editable($templatename)
 {
-    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true)
-    {
+    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true) {
         return false;
-    } else
-    {
+    } else {
         return true;
     }
 }

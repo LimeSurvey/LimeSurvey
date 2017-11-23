@@ -29,8 +29,7 @@ class saved extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $aViewUrls = array();
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
-        {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             die();
         }
 
@@ -41,8 +40,7 @@ class saved extends Survey_Common_Action
         $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
 
         // saved.js bugs if table is empty
-        if (count($aViewUrls['savedlist_view'][0]['aResults']))
-        {
+        if (count($aViewUrls['savedlist_view'][0]['aResults'])) {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'saved.js');
         }
@@ -96,8 +94,7 @@ class saved extends Survey_Common_Action
             'params' => array(':sid' => $iSurveyId),
         ));
 
-        if (!empty($aResults))
-        {
+        if (!empty($aResults)) {
             return compact('aResults');
         } else
         {return array('aResults'=>array()); }

@@ -42,8 +42,7 @@ class RSyntaxWriter extends Writer
         // R specific stuff
         Yii::app()->loadHelper("export");
         $tmpFieldmap = SPSSFieldMap($survey->id);
-        foreach ($tmpFieldmap as $field => $values)
-        {
+        foreach ($tmpFieldmap as $field => $values) {
             $fieldmap[$values['title']] = $values;
             if (array_key_exists('sql_name', $values)) {
                 $fieldmap[$values['sql_name']] = $values;
@@ -60,12 +59,10 @@ class RSyntaxWriter extends Writer
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $this->headers = $oOptions->selectedColumns;
-        foreach ($oOptions->selectedColumns as $id => $title)
-        {
+        foreach ($oOptions->selectedColumns as $id => $title) {
             $field = $this->customFieldmap[$title];
 
-            if (!isset($field['answers']))
-            {
+            if (!isset($field['answers'])) {
                 $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
 
                 $len = mb_strlen($strTmp);
@@ -74,10 +71,8 @@ class RSyntaxWriter extends Writer
                     $field['size'] = $len;
                 }
 
-                if (trim($strTmp) != '')
-                {
-                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $field['size'] > 16))
-                    {
+                if (trim($strTmp) != '') {
+                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $field['size'] > 16)) {
                         $field['SPSStype'] = 'A';
                     }
                 }
@@ -96,8 +91,7 @@ class RSyntaxWriter extends Writer
                             $field['size'] = '';
             }
 
-            if ($field['LStype'] == 'N' || $field['LStype'] == 'K')
-            {
+            if ($field['LStype'] == 'N' || $field['LStype'] == 'K') {
                 $field['size'] .= '.'.($field['size'] - 1);
             }
 
@@ -131,18 +125,15 @@ class RSyntaxWriter extends Writer
                 . '"');
 
                 // Create the value Labels!
-                if (isset($field['answers']))
-                {
+                if (isset($field['answers'])) {
                     $answers = $field['answers'];
 
                     //print out the value labels!
                     $str = 'data[, '.$i.'] <- factor(data[, '.$i.'], levels=c(';
                     foreach ($answers as $answer) {
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code']))
-                        {
+                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
                             $str .= "{$answer['code']},";
-                        } else
-                        {
+                        } else {
                             $str .= "\"{$answer['code']}\",";
                         }
                     }
@@ -156,11 +147,9 @@ class RSyntaxWriter extends Writer
 
                     $str = mb_substr($str, 0, -2);
 
-                    if ($field['scale'] !== '' && $field['scale'] == 2)
-                    {
+                    if ($field['scale'] !== '' && $field['scale'] == 2) {
                         $scale = ", ordered=TRUE";
-                    } else
-                    {
+                    } else {
                         $scale = "";
                     }
 
@@ -168,18 +157,15 @@ class RSyntaxWriter extends Writer
                 }
 
                 //Rename the Variables (in case somethings goes wrong, we still have the OLD values
-                if (isset($field['sql_name']))
-                {
+                if (isset($field['sql_name'])) {
                     $ftitle = $field['title'];
-                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle))
-                    {
+                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
                         $ftitle = "q_".$ftitle;
                     }
 
                     $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
 
-                    if ($ftitle != $field['title'])
-                    {
+                    if ($ftitle != $field['title']) {
                         $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 

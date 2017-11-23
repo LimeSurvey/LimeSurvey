@@ -80,10 +80,8 @@ class ProgressBar
  
         $defaults = array('width' => 0, 'height' => 0);
 
-        foreach ($defaults as $key => $val)
-        {
-            if (isset($params[$key]) && $params[$key] !== "")
-            {
+        foreach ($defaults as $key => $val) {
+            if (isset($params[$key]) && $params[$key] !== "") {
                 $defaults[$key] = $params[$key];
             }
         }

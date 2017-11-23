@@ -21,8 +21,7 @@ class DocWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         App()->setLanguage($sLanguageCode);
 
-        if ($oOptions->output == 'display')
-        {
+        if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
             header("Content-type: application/vnd.ms-word");
         }
@@ -55,37 +54,30 @@ class DocWriter extends Writer
      */
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        if ($oOptions->answerFormat == 'short')
-        {
+        if ($oOptions->answerFormat == 'short') {
             //No headers at all, only output values.
             $this->output .= implode($this->separator, $values).PHP_EOL;
-        } elseif ($oOptions->answerFormat == 'long')
-        {
+        } elseif ($oOptions->answerFormat == 'long') {
             //Output each record, one per page, with a header preceding every value.
-            if ($this->isBeginning)
-            {
+            if ($this->isBeginning) {
                 $this->isBeginning = false;
-            } else
-            {
+            } else {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
             $this->output .= "<table><tr><th colspan='2'>".gT("Survey response")."</th></tr>".PHP_EOL;
 
             $counter = 0;
-            foreach ($headers as $header)
-            {
+            foreach ($headers as $header) {
                 //if cell empty, output a space instead, otherwise the cell will be in 2pt font
                 $value = "&nbsp;";
-                if ($values[$counter] != "")
-                {
+                if ($values[$counter] != "") {
                     $value = $values[$counter];
                 }
                 $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
                 $counter++;
             }
             $this->output .= "</table>".PHP_EOL;
-        } else
-        {
+        } else {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
         if ($oOptions->output == 'display') {

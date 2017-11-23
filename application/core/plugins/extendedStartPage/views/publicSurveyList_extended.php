@@ -8,8 +8,7 @@
     $list .= "<div class='row'>";
     $divideToggle = true;
     /** @var Survey[] $publicSurveys */
-    foreach ($publicSurveys as $survey)
-    {
+    foreach ($publicSurveys as $survey) {
         $outputSurveys++;
         $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->isPublicStatistics) {
@@ -24,8 +23,7 @@
                     );
             $statistics .= "</div>";
             $list .= "<div class='col-md-5 col-sm-10 col-xs-10 ls-custom-padding five'>";
-        } else
-        {
+        } else {
             $statistics = "";
             $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";
         }
@@ -77,13 +75,11 @@
     $list .= "</div>";
     $list .= "</div>";
 
-    if (!empty($futureSurveys))
-    {
+    if (!empty($futureSurveys)) {
         $list .= "<div class=\"survey-list-heading\">".gT("Following survey(s) are not yet active but you can register for them.")."</div>";
         $list .= "<div class='container'>";
         $list .= "<div class='row'>";
-        foreach ($futureSurveys as $survey)
-        {
+        foreach ($futureSurveys as $survey) {
             $outputSurveys++;
             $list .= CHtml::openTag('div', array('class'=>'col-xs-12'));
             $list .= CHtml::link($survey->currentLanguageSettings->surveyls_title, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
@@ -138,8 +134,7 @@
                     </div>
                     ".$legendForSurvey."
                     </div>";
-    if ($outputSurveys == 0)
-    {
+    if ($outputSurveys == 0) {
         $list = CHtml::openTag('div', array('class'=>'col-xs-12')).gT("No available surveys").CHtml::closeTag('div');
     }
     $aReplacementData = array(

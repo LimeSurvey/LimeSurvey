@@ -13,11 +13,9 @@
 
         public function checkAccess($operation, $params = array(), $allowCaching = true)
         {
-            if ($operation == 'administrator')
-            {
+            if ($operation == 'administrator') {
                 return Permission::model()->hasGlobalPermission('superadmin', 'read');
-            } else
-            {
+            } else {
                 return parent::checkAccess($operation, $params, $allowCaching);
             }
 
@@ -52,11 +50,9 @@
          */
         public function getState($key, $defaultValue = null)
         {
-            if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
-            {
+            if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key)) {
                 return $defaultValue;
-            } else
-            {
+            } else {
                 return Hash::get($_SESSION[$this->sessionVariable], $key);
             }
         }
@@ -73,11 +69,9 @@
         public function setState($key, $value, $defaultValue = null)
         {
             $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
-            if ($value === $defaultValue)
-            {
+            if ($value === $defaultValue) {
                 $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
-            } else
-            {
+            } else {
                 $_SESSION[$this->sessionVariable] = Hash::insert($current, $key, $value);
             }
 
@@ -105,8 +99,7 @@
 
             $users = $oUsergroup->users;
             $aUids = array();
-            foreach ($users as $user)
-            {
+            foreach ($users as $user) {
                 $aUids[] = $user->uid;
             }
 

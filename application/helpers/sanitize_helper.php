@@ -187,8 +187,7 @@ function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = fal
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min = '', $max = '')
 {
-    if (isset($string))
-    {
+    if (isset($string)) {
         $string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
@@ -200,8 +199,7 @@ function sanitize_paranoid_string($string, $min = '', $max = '')
 
 function sanitize_cquestions($string, $min = '', $max = '')
 {
-    if (isset($string))
-    {
+    if (isset($string)) {
         $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
@@ -214,8 +212,7 @@ function sanitize_cquestions($string, $min = '', $max = '')
 // sanitize a string in prep for passing a single argument to system() (or similar)
 function sanitize_system_string($string, $min = '', $max = '')
 {
-    if (isset($string))
-    {
+    if (isset($string)) {
         $pattern = '/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
         // separate commands, nested execution, file redirection,
         // background processing, special commands (backspace, etc.), quotes
@@ -232,8 +229,7 @@ function sanitize_system_string($string, $min = '', $max = '')
 
 function sanitize_xss_string($string)
 {
-    if (isset($string))
-    {
+    if (isset($string)) {
         $bad = array('*', '^', '&', ';', '\"', '(', ')', '%', '$', '?');
         return str_replace($bad, '', $string);
     }
@@ -292,12 +288,10 @@ function sanitize_html_string($string)
 function sanitize_int($integer, $min = '', $max = '')
 {
     $int = preg_replace("#[^0-9]#", "", $integer);
-    if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
-    {
+    if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
         return FALSE;
     }
-    if ($int == '')
-    {
+    if ($int == '') {
         return null;
     }
     return $int;
@@ -338,18 +332,14 @@ function sanitize_float($float, $min = '', $max = '')
 {
     $float = str_replace(',', '.', $float);
     // GMP library allows for high precision and high value numbers
-    if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1)
-    {
+    if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
-        if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0))
-        {
+        if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0)) {
             return FALSE;
-        } else
-        {
+        } else {
             return gmp_strval($gNumber);
         }
-    } else
-    {
+    } else {
         $fNumber = str_replace(',', '.', $float);
         $fNumber = floatval($fNumber);
         if ((($min != '') && ($fNumber < $min)) || (($max != '') && ($fNumber > $max))) {
@@ -484,8 +474,7 @@ function sanitize_signedint($integer, $min = '', $max = '')
 {
     $int = (int) $integer;
 
-    if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
-    {
+    if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
         return FALSE; // Oops! Outside limits.
     }
 

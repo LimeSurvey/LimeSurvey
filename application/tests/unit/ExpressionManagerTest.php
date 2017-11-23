@@ -11,8 +11,7 @@
         {
             parent::setUp();
             Yii::import('application.helpers.expressions.em_core_helper', 'true');
-            if (!function_exists('gT'))
-            {
+            if (!function_exists('gT')) {
                 // Create gT function that ExpressionManager uses (but ideally should not).
                 eval('function gT() { }');
             }
@@ -86,8 +85,7 @@
                 "0 || 0" => false,
             );
 
-            foreach ($booleanExpressions as $expr => $expected)
-            {
+            foreach ($booleanExpressions as $expr => $expected) {
                 $this->assertEquals($expected, $this->em->ProcessBooleanExpression($expr), "Expression: '$expr'");
             }
         }
@@ -102,8 +100,7 @@
                 'acos(0.1)' => acos(0.1),
 				
             );
-            foreach ($functions as $function => $expected)
-            {
+            foreach ($functions as $function => $expected) {
                 $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{'.$function.'}'));
             }
         }
@@ -115,8 +112,7 @@
                 'x{1+1}' => 'x2',
                 'x{1+1\}' => 'x{1+1}',
             );
-            foreach ($strings as $escaped => $expected)
-            {
+            foreach ($strings as $escaped => $expected) {
                 $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
             }
         }
@@ -134,8 +130,7 @@
                 '"05" + "1"' => 6,
                 '"" + "1" + "2"' => 12
             );
-            foreach ($equalities as $expression => $expected)
-            {
+            foreach ($equalities as $expression => $expected) {
                 $result = $this->em->sProcessStringContainingExpressions('{'.$expression.'}');
                 $this->assertEquals($expected, $result);
             }
@@ -703,8 +698,7 @@ EOD;
         $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
         $i = 0;
         $javaScript = array();
-        foreach ($atests as $test)
-        {
+        foreach ($atests as $test) {
             ++$i;
             $values = explode("~", $test);
             $expectedResult = array_shift($values);
@@ -713,8 +707,7 @@ EOD;
             $em->groupSeq = 2;
             $em->questionSeq = 3;
             $status = $em->RDP_Evaluate($expr);
-            if ($status)
-            {
+            if ($status) {
                 $allJsVarnamesUsed = array_merge($allJsVarnamesUsed, $em->GetJsVarsUsed());
             }
             $result = $em->GetResult();
@@ -725,8 +718,7 @@ EOD;
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
-            if ($valToShow != $expectedToShow)
-            {
+            if ($valToShow != $expectedToShow) {
                 $resultStatus = 'error';
             }
             $body .= "<td class='".$resultStatus."'>".$valToShow."</td>\n";
@@ -744,11 +736,9 @@ EOD;
                 $body .= "<td>&nbsp;</td>\n";
             }
             $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
-            if ($jsEqn == '')
-            {
+            if ($jsEqn == '') {
                 $body .= "<td>&nbsp;</td>\n";
-            } else
-            {
+            } else {
                 $body .= '<td>'.$jsEqn."</td>\n";
             }
             $body .= '</tr>';
@@ -770,13 +760,11 @@ EOD;
         $i = 0;
         $LEMvarNameAttr = array();
         $LEMalias2varName = array();
-        foreach ($allJsVarnamesUsed as $jsVarName)
-        {
+        foreach ($allJsVarnamesUsed as $jsVarName) {
             ++$i;
             $pre .= "<tr><td>".$i."</td><td>".$jsVarName;
             foreach ($vars as $k => $v) {
-                if ($v['jsName'] == $jsVarName)
-                {
+                if ($v['jsName'] == $jsVarName) {
                     $value = $v['code'];
                 }
             }
@@ -858,8 +846,7 @@ EOD;
         $atests = explode("\n", $tests);
         array_push($atests, '"hi\nthere\nhow\nare\nyou?\n"');
 
-        foreach ($atests as $test)
-        {
+        foreach ($atests as $test) {
             $tokens = $em->asSplitStringOnExpressions($test);
             print '<b>'.$test.'</b><hr/>';
             print '<code>';
@@ -894,8 +881,7 @@ EOD;
 
         $em = new ExpressionManager();
 
-        foreach (explode("\n", $tests) as $test)
-        {
+        foreach (explode("\n", $tests) as $test) {
             $tokens = array(); //$em->RDP_Tokenize($test);
             print '<b>'.$test.'</b><hr/>';
             print '<code>';

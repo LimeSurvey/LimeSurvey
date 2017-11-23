@@ -37,23 +37,19 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     array_unshift($aSurveyLangs, $oSurvey->language);
 
     //Convert result to associative array to minimize SurveyLocale access attempts
-    foreach ($oSurveyLocale as $rows)
-    {
+    foreach ($oSurveyLocale as $rows) {
         $oTempObject = array();
-        foreach ($rows as $k=>$v)
-        {
+        foreach ($rows as $k=>$v) {
             $oTempObject[$k] = $v;
         }
         $aSurveyLocaleData[$rows['surveyls_language']] = $oTempObject;
     }
 
-    foreach ($aResultTokens as $aTokenRow)
-    {
+    foreach ($aResultTokens as $aTokenRow) {
         //Select language
         $aTokenRow['language'] = trim($aTokenRow['language']);
         $found = array_search($aTokenRow['language'], $aSurveyLangs);
-        if ($aTokenRow['language'] == '' || $found == false)
-        {
+        if ($aTokenRow['language'] == '' || $found == false) {
             $aTokenRow['language'] = $oSurvey->language;
         }
         $sTokenLanguage = $aTokenRow['language'];
@@ -62,8 +58,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         //Build recipient
         $to = array();
         $aEmailaddresses = explode(';', $aTokenRow['email']);
-        foreach ($aEmailaddresses as $sEmailaddress)
-        {
+        foreach ($aEmailaddresses as $sEmailaddress) {
             $to[] = ($aTokenRow['firstname']." ".$aTokenRow['lastname']." <{$sEmailaddress}>");
         }
 
@@ -87,8 +82,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         }
         $from = $fieldsarray["{ADMINNAME}"].' <'.$fieldsarray["{ADMINEMAIL}"].'>';
 
-        foreach ($attributes as $attributefield)
-        {
+        foreach ($attributes as $attributefield) {
             $fieldsarray['{'.strtoupper($attributefield).'}'] = $aTokenRow[$attributefield];
             $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}'] = $aTokenRow[$attributefield];
         }
@@ -98,14 +92,11 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/".trim($aTokenRow['language'])."/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
         $fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/".trim($aTokenRow['language'])."/");
 
-        if ($bHtml)
-        {
-            foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
-            {
+        if ($bHtml) {
+            foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
                 $url = $fieldsarray["{{$key}URL}"];
                 $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
-                if ($key == 'SURVEY')
-                {
+                if ($key == 'SURVEY') {
                     $barebone_link = $url;
                 }
             }
@@ -141,8 +132,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $modsubject = $sSubject;
         $modmessage = $sMessage;
 		
-        if (isset($barebone_link))
-        {
+        if (isset($barebone_link)) {
             $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
             $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
         }
@@ -150,24 +140,20 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $modsubject = ReplaceFields($modsubject, $fieldsarray);
         $modmessage = ReplaceFields($modmessage, $fieldsarray);
 
-        if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
-        {
+        if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                 'email'=>$fieldsarray["{EMAIL}"],
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid yet');
 
-        } elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
-        {
+        } elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                 'email'=>$fieldsarray["{EMAIL}"],
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid anymore');
 
-        } else
-        {
-            if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders))
-            {
+        } else {
+            if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders)) {
                 $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                     'email'=>$fieldsarray["{EMAIL}"],
                                                     'status'=>'OK');
@@ -176,15 +162,13 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                                     $oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
                 }
 
-                if ($sType == 'remind')
-                {
+                if ($sType == 'remind') {
                     $iRCount = $oTokens->findByPk($aTokenRow['tid'])->remindercount + 1;
                     $oTokens->updateByPk($aTokenRow['tid'], array('remindersent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
                     $oTokens->updateByPk($aTokenRow['tid'], array('remindercount' => $iRCount));
                     }
 
-            } else
-            {
+            } else {
 
                 $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                     'email'=>$fieldsarray["{EMAIL}"],

@@ -47,22 +47,18 @@ class ExpressionValidate extends Survey_Common_Action
                     throw new CHttpException(401, "401 Unauthorized");
         }
         $iQuotaId = $quota;
-        if (is_string($lang))
-        {
+        if (is_string($lang)) {
             $oValidator = new LSYii_Validators;
             $aLangs = array($oValidator->languageFilter($lang));
-        } else
-        {
+        } else {
             $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         }
         $aExpressions = array();
         $this->iSurveyId = $iSurveyId;
-        foreach ($aLangs as $sLang)
-        {
+        foreach ($aLangs as $sLang) {
             $oQuotaLanguageSetting = QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language", array(':quota_id'=>$iQuotaId, ':language'=>$sLang));
             // We don't need to go to step since new feature #8823, maybe need to be fixed ?
-            if ($oQuotaLanguageSetting)
-            {
+            if ($oQuotaLanguageSetting) {
                 $this->sLang = $sLang;
                 $aExpressions['name_'.$sLang] = array(
                     'title'=>sprintf(gT("Quota name (%s)"), $sLang),
@@ -186,13 +182,11 @@ class ExpressionValidate extends Survey_Common_Action
         $aReplacement["TOKEN:LASTNAME"] = gT("Last name from token");
         $aReplacement["TOKEN:TOKEN"] = gT("Token code for this participant");
         $aReplacement["TOKEN:LANGUAGE"] = gT("language of token");
-        foreach ($aAttributes as $sAttribute=>$aAttribute)
-        {
+        foreach ($aAttributes as $sAttribute=>$aAttribute) {
             $aReplacement['TOKEN:'.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
         }
 
-        switch ($sType)
-        {
+        switch ($sType) {
             case 'invitation' :
             case 'reminder' :
             case 'registration' :
@@ -204,8 +198,7 @@ class ExpressionValidate extends Survey_Common_Action
                 $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
-                foreach ($aAttributes as $sAttribute=>$aAttribute)
-                {
+                foreach ($aAttributes as $sAttribute=>$aAttribute) {
                     $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 break;
@@ -214,8 +207,7 @@ class ExpressionValidate extends Survey_Common_Action
                 $aReplacement["FIRSTNAME"] = gT("First name from token");
                 $aReplacement["LASTNAME"] = gT("Last name from token");
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
-                foreach ($aAttributes as $sAttribute=>$aAttribute)
-                {
+                foreach ($aAttributes as $sAttribute=>$aAttribute) {
                     $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
@@ -237,8 +229,7 @@ class ExpressionValidate extends Survey_Common_Action
         $aData = array();
         //$oSurveyLanguage=SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
         $aExpressions = array();
-        foreach ($aTypeAttributes[$sType] as $key=>$aAttribute)
-        {
+        foreach ($aTypeAttributes[$sType] as $key=>$aAttribute) {
             $sAttribute = $aAttribute['attribute'];
             // Email send do : templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
             // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
@@ -272,8 +263,7 @@ class ExpressionValidate extends Survey_Common_Action
         $LEM::SetPreviewMode('logic');
 
         $aReData = array();
-        if ($this->iSurveyId)
-        {
+        if ($this->iSurveyId) {
             $LEM::StartSurvey($this->iSurveyId, 'survey', array('hyperlinkSyntaxHighlighting'=>true)); // replace QCODE
             $aReData['thissurvey'] = getSurveyInfo($this->iSurveyId, $this->sLang);
         }

@@ -30,24 +30,21 @@ class LSCGettextMessageSource extends CGettextMessageSource
                     $messageFile .= self::PO_FILE_EXT;
         }
 
-        if ($this->cachingDuration > 0 && $this->cacheID !== false && ($cache = Yii::app()->getComponent($this->cacheID)) !== null)
-        {
+        if ($this->cachingDuration > 0 && $this->cacheID !== false && ($cache = Yii::app()->getComponent($this->cacheID)) !== null) {
             $key = self::CACHE_KEY_PREFIX.$messageFile.".".$category;
             if (($data = $cache->get($key)) !== false) {
                             return unserialize($data);
             }
         }
 
-        if (is_file($messageFile))
-        {
+        if (is_file($messageFile)) {
             if ($this->useMoFile) {
                             $file = new CGettextMoFile($this->useBigEndian);
             } else {
                             $file = new CGettextPoFile();
             }
             $messages = $file->load($messageFile, $category);
-            if (isset($cache))
-            {
+            if (isset($cache)) {
                 $dependency = new CFileCacheDependency($messageFile);
                 $cache->set($key, serialize($messages), $this->cachingDuration, $dependency);
             }

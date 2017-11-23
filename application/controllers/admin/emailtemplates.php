@@ -39,11 +39,9 @@ class emailtemplates extends Survey_Common_Action
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();
 
-        if (isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
-        {
+        if (isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html') {
             $ishtml = true;
-        } else
-        {
+        } else {
             $ishtml = false;
         }
 
@@ -55,15 +53,12 @@ class emailtemplates extends Survey_Common_Action
         $aData['attrib'] = array();
         $aData['bplangs'] = array();
         $aData['defaulttexts'] = array();
-        if ($ishtml)
-        {
+        if ($ishtml) {
             $sEscapeMode = 'html';
-        } else
-        {
+        } else {
             $sEscapeMode = 'unescaped';
         }
-        foreach ($grplangs as $key => $grouplang)
-        {
+        foreach ($grplangs as $key => $grouplang) {
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
@@ -76,8 +71,7 @@ class emailtemplates extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
-            {
+            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
                 unset($aData['surveybar']['savebutton']);
                 unset($aData['surveybar']['saveandclosebutton']);
             }
@@ -100,40 +94,30 @@ class emailtemplates extends Survey_Common_Action
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '')
-        {
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '') {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
             array_filter($languagelist);
-            foreach ($languagelist as $langname)
-            {
-                if (isset($_POST['attachments'][$langname]))
-                {
-                    foreach ($_POST['attachments'][$langname] as $template => &$attachments)
-                    {
-                        foreach ($attachments as  $index => &$attachment)
-                        {
+            foreach ($languagelist as $langname) {
+                if (isset($_POST['attachments'][$langname])) {
+                    foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
+                        foreach ($attachments as  $index => &$attachment) {
                             // We again take the real path.
                             $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
-                            if ($localName !== false)
-                            {
-                                if (strpos($localName, $uploadDir) === 0)
-                                {
+                            if ($localName !== false) {
+                                if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;
                                     $attachment['size'] = filesize($localName);
-                                } else
-                                {
+                                } else {
                                     unset($attachments[$index]);
                                 }
-                            } else
-                            {
+                            } else {
                                 unset($attachments[$index]);
                             }
                         }
                         unset($attachments);
                     }
-                } else
-                {
+                } else {
                     $_POST['attachments'][$langname] = array();
                 }
 
@@ -155,8 +139,7 @@ class emailtemplates extends Survey_Common_Action
                 $usquery = SurveyLanguageSetting::model()->updateAll($attributes, 'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
-            if (Yii::app()->request->getPost('close-after-save') == 'true')
-            {
+            if (Yii::app()->request->getPost('close-after-save') == 'true') {
                 $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
             }
 

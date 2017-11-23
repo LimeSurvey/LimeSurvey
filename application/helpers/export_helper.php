@@ -58,12 +58,10 @@ function isNumericExtended($value)
 */
 function strSplitUnicode($str, $l = 0)
 {
-    if ($l > 0)
-    {
+    if ($l > 0) {
         $ret = array();
         $len = mb_strlen($str, "UTF-8");
-        for ($i = 0; $i < $len; $i += $l)
-        {
+        for ($i = 0; $i < $len; $i += $l) {
             $ret[] = mb_substr($str, $i, $l, "UTF-8");
         }
         return $ret;
@@ -102,8 +100,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
         if ($rownr == 1) {
             $num_fields = count($row);
             // Add column headers (used by R export)
-            if ($header == TRUE)
-            {
+            if ($header == TRUE) {
                 $i = 1;
                 foreach ($fields as $field) {
                     if (!$field['hide']) {
@@ -121,8 +118,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
         //$row = $result->GetRowAssoc(true);    //Get assoc array, use uppercase
         reset($fields); //Jump to the first element in the field array
         $i = 1;
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             $fieldno = strtoupper($field['sql_name']);
             if ($field['SPSStype'] == 'DATETIME23.2') {
                 // convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
@@ -444,8 +440,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $fields = array();
     if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
         $tokenattributes = getTokenFieldsAndNames($iSurveyID, false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription)
-        {
+        foreach ($tokenattributes as $attributefield=>$attributedescription) {
             //Drop the token field, since it is in the survey too
             if ($attributefield != 'token') {
                 $iFieldNumber++;
@@ -669,8 +664,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
             break;
     }
 
-    if (!empty($limit) & !is_null($offset))
-    {
+    if (!empty($limit) & !is_null($offset)) {
         $query->limit((int) $limit, (int) $offset);
     }
     $query->order('id ASC');
@@ -691,11 +685,9 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
 
     preg_match('/\bfrom\b\s*{{(\w+)}}/i', $Query, $MatchResults);
-    if ($tagname != '')
-    {
+    if ($tagname != '') {
         $TableName = $tagname;
-    } else
-    {
+    } else {
         $TableName = $MatchResults[1];
     }
 
@@ -703,18 +695,15 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 
     // Read table in smaller chunks
     $iStart = 0;
-    do
-    {
+    do {
         $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
         $result = $QueryResult->readAll();
-        if ($iStart == 0 && count($result) > 0)
-        {
+        if ($iStart == 0 && count($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
             $xmlwriter->startElement('fields');
             $aColumninfo = array_keys($result[0]);
-            foreach ($aColumninfo as $fieldname)
-            {
+            foreach ($aColumninfo as $fieldname) {
                 if (!isset($exclude[$fieldname])) {
                     $xmlwriter->writeElement('fieldname', $fieldname);
                 }
@@ -722,19 +711,19 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             $xmlwriter->endElement(); // close columns
             $xmlwriter->startElement('rows');
         }
-        foreach ($result as $Row)
-        {
+        foreach ($result as $Row) {
             $xmlwriter->startElement('row');
-            foreach ($Row as $Key=>$Value)
-            {
+            foreach ($Row as $Key=>$Value) {
                 if (!isset($exclude[$Key])) {
-                    if (!(is_null($Value))) { // If the $value is null don't output an element at all
+                    if (!(is_null($Value))) {
+// If the $value is null don't output an element at all
                         if (is_numeric($Key[0])) {
                             // mask invalid element names with an underscore
                             $Key = '_'.$Key; 
                         }
                         $Key = str_replace('#', '-', $Key);
-                        if (!$xmlwriter->startElement($Key)) { // Remove invalid XML characters
+                        if (!$xmlwriter->startElement($Key)) {
+// Remove invalid XML characters
                             safeDie('Invalid element key: '.$Key);
                         }
                         
@@ -750,8 +739,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         }
         $iStart = $iStart + $iChunkSize;
     } while (count($result) == $iChunkSize);
-    if (count($result) > 0)
-    {
+    if (count($result) > 0) {
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
@@ -817,8 +805,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     //Question attributes
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib')
-    {
+    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
@@ -830,8 +817,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
     buildXMLFromQuery($xmlwriter, $query, 'question_attributes');
 
-    if (!isset($exclude['quotas']))
-    {
+    if (!isset($exclude['quotas'])) {
         //Quota
         $query = "SELECT {{quota}}.*
         FROM {{quota}}
@@ -901,8 +887,7 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->startElement('languages');
     $surveylanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $surveylanguages[] = Survey::model()->findByPk($iSurveyID)->language;
-    foreach ($surveylanguages as $surveylanguage)
-    {
+    foreach ($surveylanguages as $surveylanguage) {
         $xml->writeElement('language', $surveylanguage);
     }
     $xml->endElement();
@@ -924,11 +909,9 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName = '', $sFileName = '', $bSetIndent = true)
 {
     $xml = getXMLWriter();
-    if ($sFileName == '')
-    {
+    if ($sFileName == '') {
         $xml->openMemory();
-    } else
-    {
+    } else {
         $bOK = $xml->openURI($sFileName);
     }
     $xml->setIndent($bSetIndent);
@@ -939,8 +922,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->startElement('languages');
     $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aSurveyLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
-    foreach ($aSurveyLanguages as $sSurveyLanguage)
-    {
+    foreach ($aSurveyLanguages as $sSurveyLanguage) {
         $xml->writeElement('language', $sSurveyLanguage);
     }
     $xml->endElement();
@@ -949,11 +931,9 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     buildXMLFromQuery($xml, $aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
-    if ($sFileName = '')
-    {
+    if ($sFileName = '') {
         return $xml->outputMemory(true);
-    } else
-    {
+    } else {
         return $bOK;
     }
 }
@@ -997,8 +977,7 @@ function QueXMLFixedArray($array)
     global $dom;
     $fixed = $dom->createElement("fixed");
 
-    foreach ($array as $key => $v)
-    {
+    foreach ($array as $key => $v) {
         $category = $dom->createElement("category");
 
         $label = $dom->createElement("label", QueXMLCleanup("$key", ''));
@@ -1056,8 +1035,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     $nextcode = "";
 
-    foreach ($QueryResult->readAll() as $Row)
-    {
+    foreach ($QueryResult->readAll() as $Row) {
         $category = $dom->createElement("category");
 
         $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
@@ -1068,8 +1046,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
         $category->appendChild($value);
 
         $st = QueXMLSkipTo($qid, $Row['code']);
-        if ($st !== false)
-        {
+        if ($st !== false) {
             $quexml_skipto = $dom->createElement("quexml_skipto", $st);
             $category->appendChild($quexml_skipto);
         }
@@ -1079,8 +1056,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
         $nextcode = $Row['code'];
     }
 
-    if ($other)
-    {
+    if ($other) {
         $category = $dom->createElement("category");
 
         $label = $dom->createElement("label", quexml_get_lengthth($qid, "other_replace_text", gT("Other")));
@@ -1172,8 +1148,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $category->appendChild($value);
 
             $st = QueXMLSkipTo($qid, 'Y', " AND c.cfieldname LIKE '+$iSurveyID"."X".$Row['gid']."X".$qid.$Row['title']."' ");
-            if ($st !== false)
-            {
+            if ($st !== false) {
                 $quexml_skipto = $dom->createElement("skipTo", $st);
                 $category->appendChild($quexml_skipto);
             }
@@ -1200,8 +1175,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
         $question->appendChild($response);
     }
 
-    if ($other && $free == false)
-    {
+    if ($other && $free == false) {
         $response = $dom->createElement("response");
         $fixed = $dom->createElement("fixed");
         $category = $dom->createElement("category");
@@ -1264,8 +1238,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
     }
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
-    foreach ($QueryResult->readAll() as $Row)
-    {
+    foreach ($QueryResult->readAll() as $Row) {
         if ($use_answers) {
             $aid = $Row["aid"];
         }
@@ -1273,7 +1246,8 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $text = $dom->createElement("text", QueXMLCleanup($Row['question'], ''));
         $subQuestion->appendChild($text);
         $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
-        if ($use_answers == false && $aid != false) { //dual scale array questions
+        if ($use_answers == false && $aid != false) {
+//dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
@@ -1343,11 +1317,9 @@ function quexml_create_question($RowQ, $additional = false)
 
     //create a new text element for each new line
     $questiontext = explode('<br />', $RowQ['question']);
-    foreach ($questiontext as $qt)
-    {
+    foreach ($questiontext as $qt) {
         $txt = QueXMLCleanup($qt);
-        if (!empty($txt))
-        {
+        if (!empty($txt)) {
             $text = $dom->createElement("text", $txt);
             $question->appendChild($text);
         }
@@ -1360,8 +1332,7 @@ function quexml_create_question($RowQ, $additional = false)
     }
 
     //directive
-    if (!empty($RowQ['help']))
-    {
+    if (!empty($RowQ['help'])) {
         $directive = $dom->createElement("directive");
         $position = $dom->createElement("position", "during");
         $text = $dom->createElement("text", QueXMLCleanup($RowQ['help']));
@@ -1374,13 +1345,11 @@ function quexml_create_question($RowQ, $additional = false)
         $question->appendChild($directive);
     }
 
-    if (Yii::app()->getConfig('quexmlshowprintablehelp') == true)
-    {
+    if (Yii::app()->getConfig('quexmlshowprintablehelp') == true) {
 
         $RowQ['printable_help'] = quexml_get_lengthth($qid, "printable_help", "", $quexmllang);
 
-        if (!empty($RowQ['printable_help']))
-        {
+        if (!empty($RowQ['printable_help'])) {
             $directive = $dom->createElement("directive");
             $position = $dom->createElement("position", "before");
             $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
@@ -1433,8 +1402,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     $questionnaire->appendChild($dataCollector);
 
     //questionnaireInfo == welcome
-    if (!empty($Row['surveyls_welcometext']))
-    {
+    if (!empty($Row['surveyls_welcometext'])) {
         $questionnaireInfo = $dom->createElement("questionnaireInfo");
         $position = $dom->createElement("position", "before");
         $text = $dom->createElement("text", QueXMLCleanup($Row['surveyls_welcometext']));
@@ -1445,8 +1413,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         $questionnaire->appendChild($questionnaireInfo);
     }
 
-    if (!empty($Row['surveyls_endtext']))
-    {
+    if (!empty($Row['surveyls_endtext'])) {
         $questionnaireInfo = $dom->createElement("questionnaireInfo");
         $position = $dom->createElement("position", "after");
         $text = $dom->createElement("text", QueXMLCleanup($Row['surveyls_endtext']));
@@ -1466,14 +1433,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
     //for each section
-    foreach ($QueryResult->readAll() as $Row)
-    {
+    foreach ($QueryResult->readAll() as $Row) {
         $gid = $Row['gid'];
 
         $section = $dom->createElement("section");
 
-        if (!empty($Row['group_name']))
-        {
+        if (!empty($Row['group_name'])) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "title");
             $text = $dom->createElement("text", QueXMLCleanup($Row['group_name']));
@@ -1485,8 +1450,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
 
-        if (!empty($Row['description']))
-        {
+        if (!empty($Row['description'])) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
             $text = $dom->createElement("text", QueXMLCleanup($Row['description']));
@@ -1504,8 +1468,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         //boilerplate questions convert to sectionInfo elements
         $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
         $QR = Yii::app()->db->createCommand($Query)->query();
-        foreach ($QR->readAll() as $RowQ)
-        {
+        foreach ($QR->readAll() as $RowQ) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
             $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
@@ -1523,8 +1486,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         //foreach question
         $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
         $QR = Yii::app()->db->createCommand($Query)->query();
-        foreach ($QR->readAll() as $RowQ)
-        {
+        foreach ($QR->readAll() as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
@@ -1549,8 +1511,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
                         if ($mcb != -1) {
                                                     quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1);
-                        } else
-                        {
+                        } else {
                             //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen(quexml_get_lengthth($qid, 'multiflexible_max', 1)));
                             quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
@@ -1564,7 +1525,8 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     $section->appendChild($question);
                 }
 
-            } else if ($type == '1') { //dual scale array need to split into two questions
+            } else if ($type == '1') {
+//dual scale array need to split into two questions
                 $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
                 $QRE = Yii::app()->db->createCommand($Query)->query();
                 $QROW = $QRE->read();
@@ -1599,8 +1561,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $response->setAttribute("varName", $sgq);
 
 
-                switch ($type)
-                {
+                switch ($type) {
                     case "X": //BOILERPLATE QUESTION - none should appear
 
                         break;
@@ -1783,8 +1744,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->startElement('languages');
 
     $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language', 'group' => 'language'));
-    foreach ($lresult as $row)
-    {
+    foreach ($lresult as $row) {
         $xml->writeElement('language', $row->language);
     }
     $xml->endElement();
@@ -1837,8 +1797,7 @@ function groupGetXMLStructure($xml, $gid)
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib')
-    {
+    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
@@ -1891,8 +1850,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->startElement('languages');
     $aLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aLanguages[] = Survey::model()->findByPk($iSurveyID)->language;
-    foreach ($aLanguages as $sLanguage)
-    {
+    foreach ($aLanguages as $sLanguage) {
         $xml->writeElement('language', $sLanguage);
     }
     $xml->endElement();
@@ -1934,8 +1892,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib')
-    {
+    if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
@@ -1984,31 +1941,25 @@ function tokensExport($iSurveyID)
             $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
         }
     }
-    if ($iTokenStatus == 3 && $bIsNotAnonymous)
-    {
+    if ($iTokenStatus == 3 && $bIsNotAnonymous) {
         $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
     }
 
-    if ($iInvitationStatus == 1)
-    {
+    if ($iInvitationStatus == 1) {
         $oRecordSet->andWhere("sent<>'N'");
     }
-    if ($iInvitationStatus == 2)
-    {
+    if ($iInvitationStatus == 2) {
         $oRecordSet->andWhere("sent='N'");
     }
 
-    if ($iReminderStatus == 1)
-    {
+    if ($iReminderStatus == 1) {
         $oRecordSet->andWhere("remindersent<>'N'");
     }
-    if ($iReminderStatus == 2)
-    {
+    if ($iReminderStatus == 2) {
         $oRecordSet->andWhere("remindersent='N'");
     }
 
-    if ($sTokenLanguage != '')
-    {
+    if ($sTokenLanguage != '') {
         $oRecordSet->andWhere("language=".dbQuoteAll($sTokenLanguage));
     }
     $oRecordSet->order("tid");
@@ -2024,8 +1975,7 @@ function tokensExport($iSurveyID)
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
     $attrfielddescr = getTokenFieldsAndNames($iSurveyID, true);
-    foreach ($attrfieldnames as $attr_name)
-    {
+    foreach ($attrfieldnames as $attr_name) {
         $tokenoutput .= ", $attr_name";
         if (isset($attrfielddescr[$attr_name])) {
                     $tokenoutput .= " <".str_replace(",", " ", $attrfielddescr[$attr_name]['description']).">";
@@ -2090,10 +2040,8 @@ function CPDBExport($data, $filename)
     header("Pragma: cache");
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
 
-    foreach ($data as $key=>$value)
-    {
-        foreach ($value as $values)
-        {
+    foreach ($data as $key=>$value) {
+        foreach ($value as $values) {
             $tokenoutput .= trim($values).',';
         }
         $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma

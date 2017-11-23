@@ -43,8 +43,7 @@ class SurveysGroupsController extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['SurveysGroups']))
-        {
+        if (isset($_POST['SurveysGroups'])) {
             $model->attributes = $_POST['SurveysGroups'];
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
@@ -166,8 +165,7 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveys-groups-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveys-groups-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

@@ -177,7 +177,8 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' ls-hidden';
         }
 
-        if ($lemQuestionInfo['hidden']) { /* Can use aQuestionAttributes too */
+        if ($lemQuestionInfo['hidden']) {
+/* Can use aQuestionAttributes too */
             $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
             $aQuestionClass .= ' ls-hidden';
         }

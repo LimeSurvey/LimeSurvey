@@ -25,37 +25,31 @@
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
-        if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie->domain))
-        {
+        if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie->domain)) {
             $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
         }
 
         if (Yii::app()->getConfig('demoMode') === false &&
                 isset(Yii::app()->session['loginID']) &&
-                isset(Yii::app()->session['FileManagerContext']))
-        {
+                isset(Yii::app()->session['FileManagerContext'])) {
             // disable upload at survey creation time
             // because we don't know the sid yet
             if (preg_match('/^(create|edit):(question|group|answer)/', Yii::app()->session['FileManagerContext']) != 0 ||
                     preg_match('/^edit:survey/', Yii::app()->session['FileManagerContext']) != 0 ||
                     preg_match('/^edit:assessments/', Yii::app()->session['FileManagerContext']) != 0 ||
-                    preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0)
-            {
+                    preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0) {
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $surveyid = $contextarray[2];
 
-                if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
-                {
+                if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
                     $_SESSION['KCFINDER']['disabled'] = false;
-                    if (preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0)
-                    {
+                    if (preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0) {
                         // Uploadurl use public url or getBaseUrl(true);
                         // Maybe need external function
                         $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
                         $sPublicUrl = Yii::app()->getConfig("publicurl");
                         $aPublicUrl = parse_url($sPublicUrl);
-                        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
-                        {
+                        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
                             $sBaseAbsoluteUrl = $sPublicUrl;
                         }
                         $sBaseUrl = Yii::app()->getBaseUrl();
@@ -64,19 +58,16 @@
                             $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
                         }
                         $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl, "/").$sUploadUrl."/surveys/{$surveyid}/";
-                    } else
-                    {
+                    } else {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
                     $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
-            } elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
-            {
+            } elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0) {
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
                 // check if the user has label management right and labelid defined
-                if (Permission::model()->hasGlobalPermission('labelsets', 'update') && isset($labelid) && $labelid != '')
-                {
+                if (Permission::model()->hasGlobalPermission('labelsets', 'update') && isset($labelid) && $labelid != '') {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
                     $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
@@ -103,8 +94,7 @@
         );
         if (isset($aTranslationTable[$sLanguageCode])) {
             $sResultCode = $aTranslationTable[$sLanguageCode];
-        } else
-        {
+        } else {
             $sResultCode = strtolower($sLanguageCode);
         }
         return $sResultCode;
@@ -113,16 +103,13 @@
 
     function PrepareEditorScript($load = false, $controller = null)
     {
-        if ($controller == null)
-        {
+        if ($controller == null) {
             $controller = Yii::app()->getController();
         }
-        if ($load == false)
-        {
+        if ($load == false) {
 
             return $controller->renderPartial('/admin/survey/prepareEditorScript_view', array(), true);
-        } else
-        {
+        } else {
             $controller->renderPartial('/admin/survey/prepareEditorScript_view', array());
         }
     }
@@ -143,12 +130,12 @@
         } else {
             $htmleditormode = $session['htmleditormode'];
         }
-        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email-") { // email but survey as text email
+        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email-") {
+// email but survey as text email
             return '';
         }
 
-        if ($htmleditormode == 'popup' || ($fieldtype == 'editanswer' || $fieldtype == 'addanswer' || $fieldtype == 'editlabel' || $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
-        {
+        if ($htmleditormode == 'popup' || ($fieldtype == 'editanswer' || $fieldtype == 'addanswer' || $fieldtype == 'editlabel' || $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0)) {
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         } elseif ($htmleditormode == 'inline') {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
@@ -190,16 +177,13 @@
         if (($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
-        {
+        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0)) {
             $toolbaroption = ",toolbarStartupExpanded:true\n"
             .",toolbar:'popup'\n"
             .",toolbarCanCollapse:false\n";
-        } else
-        {
+        } else {
             $ckeditexpandtoolbar = Yii::app()->getConfig('ckeditexpandtoolbar');
-            if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true)
-            {
+            if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true) {
                 $toolbaroption = ",toolbarStartupExpanded:true\n"
                 .",toolbar:'inline'\n";
             }
@@ -210,13 +194,11 @@
         $fieldtype == 'email-confirmation' ||
         $fieldtype == 'email-admin_notification' ||
         $fieldtype == 'email-admin_detailed_notification' ||
-        $fieldtype == 'email-reminder')
-        {
+        $fieldtype == 'email-reminder') {
             $htmlformatoption = ",fullPage:true\n";
         }
 
-        if ($surveyID == '')
-        {
+        if ($surveyID == '') {
             $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
             $sFileBrowserAvailable = ",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserImageBrowseUrl:'{$sFakeBrowserURL}'

@@ -163,8 +163,7 @@ class statistics extends Survey_Common_Action
         $filters = array();
         $aGroups = array();
         $keyone = 0;
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             //store some column names in $filters array
 
             $filters[] = array($row['qid'],
@@ -174,8 +173,7 @@ class statistics extends Survey_Common_Action
             $row['group_name'],
             flattenText($row['question']));
 
-            if (!in_array($row['group_name'], $aGroups))
-            {
+            if (!in_array($row['group_name'], $aGroups)) {
                 //$aGroups[] = $row['group_name'];
                 $aGroups[$row['group_name']]['gid'] = $row['gid'];
                 $aGroups[$row['group_name']]['name'] = $row['group_name'];
@@ -207,25 +205,21 @@ class statistics extends Survey_Common_Action
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         }
 
-        if ($grapherror)
-        {
+        if ($grapherror) {
             $usegraph = 0;
         }
 
 
         //pre-selection of filter forms
-        if (incompleteAnsFilterState() == "complete")
-        {
+        if (incompleteAnsFilterState() == "complete") {
             $selecthide = "selected='selected'";
             $selectshow = "";
             $selectinc = "";
-        } elseif (incompleteAnsFilterState() == "incomplete")
-        {
+        } elseif (incompleteAnsFilterState() == "incomplete") {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "selected='selected'";
-        } else
-        {
+        } else {
             $selecthide = "";
             $selectshow = "selected='selected'";
             $selectinc = "";
@@ -264,8 +258,7 @@ class statistics extends Survey_Common_Action
 
         $currentgroup = '';
         $counter = 0;
-        foreach ($filters as $key1 => $flt)
-        {
+        foreach ($filters as $key1 => $flt) {
             //is there a previous question type set?
 
 
@@ -306,8 +299,7 @@ class statistics extends Survey_Common_Action
             /////////////////////////////////////////////////////////////////////////////////////////////////
 
             //let's switch through the question type for each question
-            switch ($flt[2])
-            {
+            switch ($flt[2]) {
                 case "K": // Multiple Numerical
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
@@ -359,8 +351,7 @@ class statistics extends Survey_Common_Action
                 case ";":  //ARRAY (Multi Flex) (Text)
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
                     $aData['result'][$key1] = $result;
-                    foreach ($result as $key => $row)
-                    {
+                    foreach ($result as $key => $row) {
                         $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order');
                         $aData['fresults'][$key1][$key] = $fresult;
                     }
@@ -369,8 +360,7 @@ class statistics extends Survey_Common_Action
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
                     $aData['result'][$key1] = $result;
-                    foreach ($result as $row)
-                    {
+                    foreach ($result as $row) {
                         $fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order, title');
                         $aData['fresults'][$key1] = $fresult;
                     }
@@ -387,8 +377,7 @@ class statistics extends Survey_Common_Action
                     $aData['result'][$key1] = $result;
 
                     //check all the answers
-                    foreach ($result as $row)
-                    {
+                    foreach ($result as $row) {
                         $fresult = Answer::model()->getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}'", 'sortorder, code');
                         $aData['fresults'][$key1] = $fresult;
                     }
@@ -411,8 +400,7 @@ class statistics extends Survey_Common_Action
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
                     $aData['result'][$key1] = $result;
                     //loop through answers
-                    foreach ($result as $key => $row)
-                    {
+                    foreach ($result as $key => $row) {
 
                         //check if there is a dualscale_headerA/B
                         $dshresult = QuestionAttribute::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
@@ -473,8 +461,7 @@ class statistics extends Survey_Common_Action
         $aData['usegraph'] = $usegraph;
 
         //Show Summary results
-        if (isset($summary) && $summary)
-        {
+        if (isset($summary) && $summary) {
             $outputType = Yii::app()->request->getPost('outputtype', 'html');
             switch ($outputType) {
                 case 'html':
@@ -500,8 +487,7 @@ class statistics extends Survey_Common_Action
 
 
         $error = '';
-        if (!function_exists("gd_info"))
-        {
+        if (!function_exists("gd_info")) {
             $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
             $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         } else if (!function_exists("imageftbbox")) {
@@ -514,8 +500,7 @@ class statistics extends Survey_Common_Action
         $aData['fresults'] = (isset($aData['fresults'])) ? $aData['fresults'] : false;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        if (!isset($aData['result']))
-        {
+        if (!isset($aData['result'])) {
             $aData['result'] = null;
         }
 
@@ -685,28 +670,22 @@ class statistics extends Survey_Common_Action
             usort($rows, 'groupOrderThenQuestionOrder');
 
         // The questions to display (all question)
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $type = $row['type'];
-            if ($type == "T" || $type == "N")
-            {
+            if ($type == "T" || $type == "N") {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
-            switch ($type)
-            {
+            switch ($type) {
 
                 // Double scale cases
                 case ":":
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
-                    if (!$qidattributes['input_boxes'])
-                    {
+                    if (!$qidattributes['input_boxes']) {
                         $qid = $row['qid'];
                         $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 0", 'question_order, title');
                         $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
-                        foreach ($results as $row1)
-                        {
-                            foreach ($fresults as $row2)
-                            {
+                        foreach ($results as $row1) {
+                            foreach ($fresults as $row2) {
                                 $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
                             }
                         }
@@ -716,8 +695,7 @@ class statistics extends Survey_Common_Action
                 case "1":
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}'", 'question_order, title');
-                    foreach ($results as $row1)
-                    {
+                    foreach ($results as $row1) {
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#0';
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#1';
                     }
@@ -729,8 +707,7 @@ class statistics extends Survey_Common_Action
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i = 1; $i <= $count; $i++)
-                    {
+                    for ($i = 1; $i <= $count; $i++) {
                         $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
                     }
                 break;
@@ -745,8 +722,7 @@ class statistics extends Survey_Common_Action
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-                    foreach ($results as $row1)
-                    {
+                    foreach ($results as $row1) {
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
                     }
                 break;
@@ -810,8 +786,7 @@ class statistics extends Survey_Common_Action
     public function setIncompleteanswers()
     {
         $sIncompleteAnswers = Yii::app()->request->getPost('state');
-        if (in_array($sIncompleteAnswers, array('all', 'complete', 'incomplete')))
-        {
+        if (in_array($sIncompleteAnswers, array('all', 'complete', 'incomplete'))) {
             Yii::app()->session['incompleteanswers'] = $sIncompleteAnswers;
         }
 

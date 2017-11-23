@@ -398,11 +398,9 @@ class themes extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         // This helps handle the load/save buttons)
-        if ($screenname != 'welcome')
-        {
+        if ($screenname != 'welcome') {
             Yii::app()->session['step'] = 1;
-        } else
-        {
+        } else {
             unset(Yii::app()->session['step']);
         }
     }
@@ -865,13 +863,11 @@ class themes extends Survey_Common_Action
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
-        if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages))
-        {
+        if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages)) {
             $sLanguageCode = Yii::app()->session['adminlang'];
         }
         $aAllTemplates = getTemplateList();
-        if (!isset($aAllTemplates[$templatename]))
-        {
+        if (!isset($aAllTemplates[$templatename])) {
             $templatename = Yii::app()->getConfig('defaulttheme');
         }
 
@@ -923,8 +919,7 @@ class themes extends Survey_Common_Action
         $files       = $oEditedTemplate->getValidScreenFiles("view", $screenname);
         $sLayoutFile = $oEditedTemplate->getLayoutForScreen($screenname);
 
-        switch ($screenname)
-        {
+        switch ($screenname) {
 
             case 'question':
                 $aReplacements = array(
@@ -1021,8 +1016,7 @@ class themes extends Survey_Common_Action
                 $sLayoutFile = "TODO";
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $questionoutput = array();
-                foreach (file("$templatedir/print_question.pstpl") as $op)
-                {
+                foreach (file("$templatedir/print_question.pstpl") as $op) {
                     $questionoutput[] = templatereplace($op, array(
                         'QUESTION_NUMBER' => '1',
                         'QUESTION_CODE' => 'Q1',
@@ -1122,8 +1116,7 @@ class themes extends Survey_Common_Action
 
         $this->showIntroNotification();
 
-        if ($showsummary)
-        {
+        if ($showsummary) {
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }

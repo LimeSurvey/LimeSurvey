@@ -26,8 +26,7 @@ function LS($class)
     $namespace = 'LS';
     $separator = '_';
 
-    if (0 !== strpos($class, $namespace.$separator))
-    {
+    if (0 !== strpos($class, $namespace.$separator)) {
         return;
     }
 

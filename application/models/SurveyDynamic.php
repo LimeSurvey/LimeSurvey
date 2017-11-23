@@ -293,13 +293,11 @@ class SurveyDynamic extends LSActiveRecord
         $responseHasFiles = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
 
         // Download icon
-        if (hasFileUploadQuestion(self::$sid) && $responseHasFiles)
-        {
+        if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
             if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
                 $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><i class="fa fa-download downloadfile text-success" ></i></a>';
             }
-        } else
-        {
+        } else {
             $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
         }
 
@@ -361,8 +359,7 @@ class SurveyDynamic extends LSActiveRecord
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .= '<tr>';
-                if (isset($aFilesInfo[$iFileIndex]))
-                {
+                if (isset($aFilesInfo[$iFileIndex])) {
                     $sSurveyEntry .= '<td>'.CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("/admin/responses", array("sa"=>"actionDownloadfile", "surveyid"=>self::$sid, "iResponseId"=>$this->id, "iQID"=>$oFieldMap->qid, "iIndex"=>$iFileIndex))).'</td>';
                     $sSurveyEntry .= '<td>'.sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)).'</td>';
 
@@ -616,8 +613,7 @@ class SurveyDynamic extends LSActiveRecord
         );
 
         // Join the token table and filter tokens if needed
-        if ($this->bHaveToken && $this->survey->anonymized != 'Y')
-        {
+        if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }
 
@@ -852,18 +848,15 @@ class SurveyDynamic extends LSActiveRecord
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));     
         $oGroupList = $oSurvey->groups;
 
-        foreach ($oGroupList as $oSurveyGroup)
-        {
+        foreach ($oGroupList as $oSurveyGroup) {
 
-            if (!(LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions == false))
-            {
+            if (!(LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions == false)) {
                 continue; 
             }
 
             $aAnswersArray = array();
 
-            foreach ($oSurveyGroup->questions as $oQuestion)
-            {
+            foreach ($oSurveyGroup->questions as $oQuestion) {
                 $aQuestionArray = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions);
 
                 if ($aQuestionArray === false) {

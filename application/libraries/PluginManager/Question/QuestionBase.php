@@ -90,8 +90,7 @@ namespace LimeSurvey\PluginManager;
             $this->api = $api;
             $this->responseId = $responseId;
             $this->questionId = $questionId;
-            if (isset($questionId))
-            {
+            if (isset($questionId)) {
                 $this->loadSubQuestions($questionId);
             }
             $this->defaultAttributes = array(
@@ -145,12 +144,10 @@ return $this->api->getGroupList($this->get('sid')); }
          */
         protected function get($key = null, $default = null, $language = null, $questionId = null)
         {
-            if (!isset($questionId) && isset($this->questionId))
-            {
+            if (!isset($questionId) && isset($this->questionId)) {
                 $questionId = $this->questionId;
                 return $this->plugin->getStore()->get($this->plugin, $key, 'Question', $questionId, $default, $language);
-            } else
-            {
+            } else {
                 return false;
             }
         }
@@ -165,30 +162,23 @@ return $this->api->getGroupList($this->get('sid')); }
         public function getAttributes($languages = null)
         {
             $allAttributes = array_merge($this->defaultAttributes, $this->attributes);
-            if (count($allAttributes) != count($this->defaultAttributes) + count($this->attributes))
-            {
+            if (count($allAttributes) != count($this->defaultAttributes) + count($this->attributes)) {
                 throw new Exception(get_class($this)." must not redefine default attributes");
             }
             
-            foreach ($allAttributes as $name => &$metaData)
-            {
+            foreach ($allAttributes as $name => &$metaData) {
                 $metaData = array_merge($this->defaultAttributeProperties, $metaData);
-                if (isset($this->questionId))
-                {
-                    if (is_array($languages))
-                    {
-                        foreach ($languages as $language)
-                        {
+                if (isset($this->questionId)) {
+                    if (is_array($languages)) {
+                        foreach ($languages as $language) {
                             $metaData['current'][$language] = $this->get($name, null, $language);
                         }
-                    } else
-                    {
+                    } else {
                         $metaData['current'] = $this->get($name, null, $languages);
                     }
                     
                     // Populate select fields with a list.
-                    if ($metaData['type'] == 'select' && is_callable($metaData['options']))
-                    {
+                    if ($metaData['type'] == 'select' && is_callable($metaData['options'])) {
                         $metaData['options'] = call_user_func($metaData['options'], $this);
                     }
                 }
@@ -221,15 +211,12 @@ return $this->api->getGroupList($this->get('sid')); }
          */
         public function getResponse()
         {
-            if (isset($this->responseId))
-            {
+            if (isset($this->responseId)) {
                 $surveyId = Question::model()->findFieldByPk($this->questionId, 'sid');
                 $response = SurveyDynamic::model($surveyId)->findByPk($this->responseId);
                 $columns = $this->getColumns();
-                foreach ($columns as &$column)
-                {
-                    if (isset($response->$column))
-                    {
+                foreach ($columns as &$column) {
+                    if (isset($response->$column)) {
                         $column['response'] = $response->$column;
                     }
                 }
@@ -239,8 +226,7 @@ return $this->api->getGroupList($this->get('sid')); }
         
         public function getVariables()
         {
-            if (isset($this->questionId))
-            {
+            if (isset($this->questionId)) {
                 return array(
                     $this->get('code') => array(
                         'id' => $this->questionId,
@@ -259,8 +245,7 @@ return $this->api->getGroupList($this->get('sid')); }
             $subQuestions = Question::model()->findAllByAttributes(array(
                 'parent_id' => $questionId
             ));
-            foreach ($subQuestions as $subQuestion)
-            {
+            foreach ($subQuestions as $subQuestion) {
                 /**
                  * @todo Alter this so that subquestion can be of another type.
                  */
@@ -272,25 +257,18 @@ return $this->api->getGroupList($this->get('sid')); }
         {
             $attributes = $this->getAttributes();
             $result = true;
-            foreach ($attributeValues as $key => $value)
-            {
+            foreach ($attributeValues as $key => $value) {
                 // Check if the attribute is valid for the question.
-                if (isset($attributes[$key]))
-                {
+                if (isset($attributes[$key])) {
                     // If the attribute is localized, save each language.
-                    if ($attributes[$key]['localized'])
-                    {
-                        foreach ($value as $language => $localizedValue)
-                        {
-                            if (!$this->set($key, $localizedValue, $language, $qid))
-                            {
+                    if ($attributes[$key]['localized']) {
+                        foreach ($value as $language => $localizedValue) {
+                            if (!$this->set($key, $localizedValue, $language, $qid)) {
                                 $result = false;
                             }
                         }
-                    } else
-                    {
-                        if (!$this->set($key, $value, $qid))
-                        {
+                    } else {
+                        if (!$this->set($key, $value, $qid)) {
                             $result = false;
                         }
                     }
@@ -311,12 +289,10 @@ return $this->api->getGroupList($this->get('sid')); }
          */
         protected function set($key, $value, $language = null, $questionId = null)
         {
-            if (!isset($questionId) && isset($this->questionId))
-            {
+            if (!isset($questionId) && isset($this->questionId)) {
                 $questionId = $this->questionId;
                 return $this->plugin->getStore()->set($this->plugin, $key, $value, 'Question', $questionId, $language);
-            } else
-            {
+            } else {
                 return false;
             }
             

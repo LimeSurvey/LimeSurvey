@@ -53,8 +53,7 @@ abstract class LSYii_Controller extends CController
     protected function _checkInstallation()
     {
         $file_name = Yii::app()->getConfig('rootdir').'/application/config/config.php';
-        if (!file_exists($file_name))
-        {
+        if (!file_exists($file_name)) {
             $this->redirect(array('/installer'));
         }
     }
@@ -102,7 +101,7 @@ abstract class LSYii_Controller extends CController
                     throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < 1200) { 
+        if (ini_get("max_execution_time") < 1200) {
             @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off 
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M')) {
@@ -114,8 +113,7 @@ abstract class LSYii_Controller extends CController
 
         //Every 50th time clean up the temp directory of old files (older than 1 day)
         //depending on the load the  probability might be set higher or lower
-        if (rand(1, 50) == 1)
-        {
+        if (rand(1, 50) == 1) {
             cleanTempDirectory();
         }
 
@@ -124,10 +122,12 @@ abstract class LSYii_Controller extends CController
 
         enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
-        if (Yii::app()->getConfig('debug') == 1) {//For debug purposes - switch on in config.php
+        if (Yii::app()->getConfig('debug') == 1) {
+//For debug purposes - switch on in config.php
             @ini_set("display_errors", 1);
             error_reporting(E_ALL);
-        } elseif (Yii::app()->getConfig('debug') == 2) {//For debug purposes - switch on in config.php
+        } elseif (Yii::app()->getConfig('debug') == 2) {
+//For debug purposes - switch on in config.php
             @ini_set("display_errors", 1);
             error_reporting(E_ALL | E_STRICT);
         } else {
@@ -138,8 +138,7 @@ abstract class LSYii_Controller extends CController
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
         if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {$timeadjust = '+'.$timeadjust; }
-        if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false)
-        {
+        if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false) {
             Yii::app()->setConfig("timeadjust", $timeadjust.' hours');
         }
         /* Set the default language, other controller can update if wanted */
@@ -160,8 +159,7 @@ abstract class LSYii_Controller extends CController
         // Control if public url are really public : need scheme and host
         // If yes: use it
         $aPublicUrl = parse_url($sPublicUrl);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
-        {
+        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
             $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
             $sActualBaseUrl = Yii::app()->getBaseUrl(true);
             if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {

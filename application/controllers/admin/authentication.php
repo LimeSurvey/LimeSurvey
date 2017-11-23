@@ -117,8 +117,7 @@ class Authentication extends Survey_Common_Action
         $identity = $beforeLogin->get('identity'); // Why here?
 
         // If the plugin private parameter "_stop" is false and the login form has not been submitted: render the login form
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
-        {
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit'))) {
             // First step: set the value of $aData['defaultAuth']
             // This variable will be used to select the default value of the Authentication method selector
             // which is shown only if there is more than one plugin auth on...
@@ -250,12 +249,10 @@ class Authentication extends Survey_Common_Action
     public static function runDbUpgrade()
     {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}'))
-        {
+        if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = getGlobalSetting('DBVersion');
         }
-        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
-        {
+        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
             Yii::app()->loadHelper('update/updatedb');
             if (!db_upgrade_all(intval($sDBVersion), true)) {
@@ -288,13 +285,11 @@ class Authentication extends Survey_Common_Action
         $body[] = $password;
         $body   = implode("\n", $body);
 
-        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
-        {
+        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
             User::updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
-        } else
-        {
+        } else {
             $sMessage = gT('Email failed');
         }
 
@@ -309,8 +304,7 @@ class Authentication extends Survey_Common_Action
      */
     private static function getSummary($sMethod = 'login', $sSummary = '')
     {
-        if (!empty($sSummary))
-        {
+        if (!empty($sSummary)) {
             return $sSummary;
         }
 
@@ -322,8 +316,7 @@ class Authentication extends Survey_Common_Action
             case 'login' :
             default :
                 $sSummary = '<br />'.sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']).'<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
-                {
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
                     . ' content="1;URL='.Yii::app()->session['redirect_after_login'].'" />';
                     $sSummary = '<p><font size="1"><i>'.gT('Reloading screen. Please wait.').'</i></font>';
@@ -340,8 +333,7 @@ class Authentication extends Survey_Common_Action
      */
     private function _redirectIfLoggedIn()
     {
-        if (!Yii::app()->user->getIsGuest())
-        {
+        if (!Yii::app()->user->getIsGuest()) {
             $this->runDbUpgrade();
             $this->getController()->redirect(array('/admin'));
         }
@@ -356,11 +348,9 @@ class Authentication extends Survey_Common_Action
         $failed_login_attempts = FailedLoginAttempt::model();
         $failed_login_attempts->cleanOutOldAttempts();
 
-        if ($failed_login_attempts->isLockedOut())
-        {
+        if ($failed_login_attempts->isLockedOut()) {
             return $this->_getAuthenticationFailedErrorMessage();
-        } else
-        {
+        } else {
             return true;
         }
     }

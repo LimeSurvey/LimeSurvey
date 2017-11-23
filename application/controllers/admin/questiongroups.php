@@ -40,14 +40,12 @@ class questiongroups extends Survey_Common_Action
         $iSurveyID = $surveyid = $aData['surveyid'] = (int) $_POST['sid'];
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import'))
-        {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
         }
 
-        if ($action == 'importgroup')
-        {
+        if ($action == 'importgroup') {
             $importgroup = "\n";
             $importgroup .= "\n";
 
@@ -55,11 +53,9 @@ class questiongroups extends Survey_Common_Action
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = $aPathInfo['extension'];
 
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2)
-            {
+            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
                 $fatalerror = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024).'<br>';
-            } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-            {
+            } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
             }
 
@@ -68,8 +64,7 @@ class questiongroups extends Survey_Common_Action
                             $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
             }
 
-            if (isset($fatalerror))
-            {
+            if (isset($fatalerror)) {
                 @unlink($sFullFilepath);
                 Yii::app()->user->setFlash('error', $fatalerror);
                 $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/'.$surveyid));
@@ -78,19 +73,16 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-            if (strtolower($sExtension) == 'lsg')
-            {
+            if (strtolower($sExtension) == 'lsg') {
                 $aImportResults = XMLImportGroup($sFullFilepath, $iSurveyID);
-            } else
-            {
+            } else {
                 Yii::app()->user->setFlash('error', gT("Unknown file extension"));
                 $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/'.$surveyid));
             }
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
             fixLanguageConsistency($iSurveyID);
 
-            if (isset($aImportResults['fatalerror']))
-            {
+            if (isset($aImportResults['fatalerror'])) {
                 unlink($sFullFilepath);
                 Yii::app()->user->setFlash('error', $aImportResults['fatalerror']);
                 $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/'.$surveyid));
@@ -120,8 +112,7 @@ class questiongroups extends Survey_Common_Action
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
@@ -136,8 +127,7 @@ class questiongroups extends Survey_Common_Action
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'importGroup_view', $aData);
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
         }
@@ -155,8 +145,7 @@ class questiongroups extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
@@ -180,8 +169,7 @@ class questiongroups extends Survey_Common_Action
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveybar']['saveandclosebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -196,13 +184,11 @@ class questiongroups extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
             Yii::app()->loadHelper('surveytranslator');
 
             $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
-            foreach ($sSurveyLanguages as $sLanguage)
-            {
+            foreach ($sSurveyLanguages as $sLanguage) {
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $surveyid;
                 if (isset($newGroupID)) {
@@ -221,8 +207,7 @@ class questiongroups extends Survey_Common_Action
                 if ($oGroup->save()) {
                     if (!isset($newGroupID)) {
                         $newGroupID = $oGroup->gid;
-                    } else
-                    {
+                    } else {
                         switchMSSQLIdentityInsert('groups', true);
                     }
                 } else {
@@ -237,23 +222,18 @@ class questiongroups extends Survey_Common_Action
 
             Yii::app()->setFlashMessage(gT("New question group was saved."));
             Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
-            if (Yii::app()->request->getPost('close-after-save') === 'true')
-            {
+            if (Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
-            } else if (Yii::app()->request->getPost('saveandnew', '') !== '')
-            {
+            } else if (Yii::app()->request->getPost('saveandnew', '') !== '') {
                 $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
-            } else if (Yii::app()->request->getPost('saveandnewquestion', '') !== '')
-            {
+            } else if (Yii::app()->request->getPost('saveandnewquestion', '') !== '') {
                 $this->getController()->redirect(array("admin/questions/sa/newquestion/", 'surveyid' => $surveyid, 'gid' => $newGroupID));
-            } else 
-            {
+            } else {
                 // After save, go to edit
                 $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
             }
 
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -269,15 +249,13 @@ class questiongroups extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
-        {
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
             $iGroupId = sanitize_int($iGroupId);
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
-            if ($iGroupsDeleted > 0)
-            {
+            if ($iGroupsDeleted > 0) {
                 fixSortOrderGroups($iSurveyId);
                 Yii::app()->setFlashMessage(gT('The question group was deleted.'));
             } else {
@@ -285,8 +263,7 @@ class questiongroups extends Survey_Common_Action
             }
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
             $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyId));
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -343,8 +320,7 @@ class questiongroups extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
@@ -360,16 +336,13 @@ class questiongroups extends Survey_Common_Action
 
             // Check out the intgrity of the language versions of this group
             $egresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
-            foreach ($egresult as $esrow)
-            {
+            foreach ($egresult as $esrow) {
                 $esrow = $esrow->attributes;
 
                 // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
-                if (!in_array($esrow['language'], $aLanguages))
-                {
+                if (!in_array($esrow['language'], $aLanguages)) {
                     QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
-                } else
-                {
+                } else {
                     $grplangs[$esrow['language']] = 'exists';
                 }
 
@@ -379,10 +352,8 @@ class questiongroups extends Survey_Common_Action
             }
 
             // Create groups in missing languages
-            while (list($key, $value) = each($grplangs))
-            {
-                if ($value != 'exists')
-                {
+            while (list($key, $value) = each($grplangs)) {
+                if ($value != 'exists') {
                     $basesettings['language'] = $key;
                     $group = new QuestionGroup;
                     foreach ($basesettings as $k => $v) {
@@ -394,13 +365,11 @@ class questiongroups extends Survey_Common_Action
                 }
             }
             $first = true;
-            foreach ($aLanguages as $sLanguage)
-            {
+            foreach ($aLanguages as $sLanguage) {
                 $oResult = $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
                 $aData['aGroupData'][$sLanguage] = $oResult->attributes;
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-                if ($first)
-                {
+                if ($first) {
                     $aTabTitles[$sLanguage] .= ' ('.gT("Base language").')';
                     $first = false;
                 }
@@ -429,8 +398,7 @@ class questiongroups extends Survey_Common_Action
             $aData['sidemenu']['explorer']['qid'] = false;
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'editGroup_view', $aData);
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -503,8 +471,7 @@ class questiongroups extends Survey_Common_Action
         $surveyid = $group->sid;
         $survey = Survey::model()->findByPk($surveyid);
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             Yii::app()->loadHelper('surveytranslator');
 
             foreach ($survey->allLanguages as $grplang) {
@@ -535,8 +502,7 @@ class questiongroups extends Survey_Common_Action
                                             $group->$k = $v;
                     }
                     $ugresult = $group->save();
-                    if ($ugresult)
-                    {
+                    if ($ugresult) {
                         $groupsummary = getGroupList($gid, $surveyid);
                     }
                 }
@@ -549,8 +515,7 @@ class questiongroups extends Survey_Common_Action
             }
 
             $this->getController()->redirect(array('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid));
-        } else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }

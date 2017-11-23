@@ -103,8 +103,7 @@ class InstallerController extends CController
      */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH.'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
+        if (file_exists(APPPATH.'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
         }
@@ -130,8 +129,7 @@ class InstallerController extends CController
     private function stepWelcome()
     {
 
-        if (!is_null(Yii::app()->request->getPost('installerLang')))
-        {
+        if (!is_null(Yii::app()->request->getPost('installerLang'))) {
             Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
         }
@@ -143,15 +141,13 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('on', 'off', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 10;
 
-        if (isset(Yii::app()->session['installerLang']))
-        {
+        if (isset(Yii::app()->session['installerLang'])) {
             $sCurrentLanguage = Yii::app()->session['installerLang'];
         } else {
                     $sCurrentLanguage = 'en';
         }
 
-        foreach (getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo)
-        {
+        foreach (getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo) {
             $aLanguages[htmlspecialchars($sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
         }
         $aData['languages'] = $aLanguages;
@@ -170,8 +166,7 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'on', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 15;
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post')
-        {
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             $this->redirect(array('installer/precheck'));
         }
         Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
@@ -209,13 +204,11 @@ class InstallerController extends CController
         $bProceed = $this->_check_requirements($aData);
         $aData['dbtypes'] = $oModel->supported_db_types;
 
-        if (count($aData['dbtypes']) == 0)
-        {
+        if (count($aData['dbtypes']) == 0) {
             $bProceed = false;
         }
         // after all check, if flag value is true, show next button and sabe step2 status.
-        if ($bProceed)
-        {
+        if ($bProceed) {
             $aData['next'] = true;
             Yii::app()->session['step2'] = true;
         }
@@ -236,16 +229,14 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
-        if (isset(Yii::app()->session['populateerror']))
-        {
+        if (isset(Yii::app()->session['populateerror'])) {
             $oModel->addError('dblocation', Yii::app()->session['populateerror']);
             $oModel->addError('dbpwd', '');
             $oModel->addError('dbuser', '');
             unset(Yii::app()->session['populateerror']);
         }
 
-        if (!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
+        if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             $oModel->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
@@ -257,32 +248,26 @@ class InstallerController extends CController
                 $sDatabasePrefix = $oModel->dbprefix;
                 $sDatabaseLocation = $oModel->dblocation;
                 $sDatabasePort = '';
-                if (strpos($sDatabaseLocation, ':') !== false)
-                {
+                if (strpos($sDatabaseLocation, ':') !== false) {
                     list($sDatabaseLocation, $sDatabasePort) = explode(':', $sDatabaseLocation, 2);
-                } else
-                {
+                } else {
                     $sDatabasePort = self::_getDbPort($sDatabaseType, $sDatabasePort);
                 }
                 $bDBConnectionWorks = false;
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
                 $bDBExists = self::dbTest($aDbConfig, $aData);
-                if (self::_dbConnect($aDbConfig, $aData))
-                {
+                if (self::_dbConnect($aDbConfig, $aData)) {
                     $bDBConnectionWorks = true;
-                } else
-                {
+                } else {
                     $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
                     $oModel->addError('dbpwd', '');
                     $oModel->addError('dbuser', '');
                 }
 
                 //if connection with database fail
-                if ($bDBConnectionWorks)
-                {
+                if ($bDBConnectionWorks) {
                     //saving the form data
-                    foreach (array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey)
-                    {
+                    foreach (array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
                         Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                     }
                     Yii::app()->session['dbport'] = $sDatabasePort;
@@ -292,8 +277,7 @@ class InstallerController extends CController
                     $bTablesDoNotExist = false;
 
                     // Check if the surveys table exists or not
-                    if ($bDBExists == true)
-                    {
+                    if ($bDBExists == true) {
                         try {
                             if ($dataReader = $this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
                                     // DBLIB does not throw an exception on a missing table
@@ -311,8 +295,7 @@ class InstallerController extends CController
                     Yii::app()->session['tablesexist'] = !$bTablesDoNotExist;
 
                     // If database is up to date, redirect to administration screen.
-                    if ($bDBExists && !$bTablesDoNotExist)
-                    {
+                    if ($bDBExists && !$bTablesDoNotExist) {
                         Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
                         Yii::app()->session['step3'] = true;
 
@@ -332,8 +315,7 @@ class InstallerController extends CController
                             $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
                         }
                         $sMySQLVersion = $this->connection->getServerVersion();
-                        if (version_compare($sMySQLVersion, '4.1', '<'))
-                        {
+                        if (version_compare($sMySQLVersion, '4.1', '<')) {
                             die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                         }
                         @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); //Checked
@@ -358,8 +340,7 @@ class InstallerController extends CController
                     $aValues['adminoutputForm'] = '';
 
                     //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                    if (!$bDBExists)
-                    {
+                    if (!$bDBExists) {
                         Yii::app()->session['databaseDontExist'] = true;
 
                         $aValues['dbname'] = $oModel->dbname;
@@ -385,8 +366,7 @@ class InstallerController extends CController
                             'label' => gT("Populate database", 'unescaped'),
                             'name' => 'createdbstep2',
                         );
-                    } elseif (!$bDBExistsButEmpty)
-                    {
+                    } elseif (!$bDBExistsButEmpty) {
                         //DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
                         //$this->connection->database = $model->dbname;
                         //$this->connection->createCommand("USE DATABASE `$databasename`")->execute();
@@ -415,8 +395,7 @@ class InstallerController extends CController
     function stepCreateDb()
     {
         // check status. to be called only when database don't exist else redirect to proper link.
-        if (!Yii::app()->session['databaseDontExist'])
-        {
+        if (!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
         }
 
@@ -435,51 +414,43 @@ class InstallerController extends CController
         $aData['adminoutputForm'] = '';
         // Yii doesn't have a method to create a database
         $bCreateDB = true; // We are thinking positive
-        switch ($sDatabaseType)
-        {
+        switch ($sDatabaseType) {
             case 'mysqli':
             case 'mysql':
-            try
-            {
+            try {
                 $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $bCreateDB = false;
             }
             break;
             case 'dblib':
             case 'mssql':
             case 'odbc':
-            try
-            {
+            try {
                 $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $bCreateDB = false;
             }
             break;
             case 'pgsql':
-            try
-            {
+            try {
                 $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $createdb = false;
             }
             break;
             default:
-            try
-            {
+            try {
                 $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $bCreateDB = false;
             }
             break;
         }
 
         //$this->load->dbforge();
-        if ($bCreateDB) { //Database has been successfully created
+        if ($bCreateDB) {
+//Database has been successfully created
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
@@ -496,8 +467,7 @@ class InstallerController extends CController
                 'label' => gT("Populate database"),
                 'name' => 'createdbstep2',
             );
-        } else
-        {
+        } else {
             $this->loadHelper('surveytranslator');
             $oModel = new InstallerConfigForm;
             $oModel->dbtype = $aDbConfig['sDatabaseType'];
@@ -530,8 +500,7 @@ class InstallerController extends CController
      */
     function stepPopulateDb()
     {
-        if (!Yii::app()->session['populatedatabase'])
-        {
+        if (!Yii::app()->session['populatedatabase']) {
             $this->redirect(array('installer/welcome'));
         }
 
@@ -548,8 +517,7 @@ class InstallerController extends CController
 
         /* @todo Use Yii as it supports various db types and would better handle this process */
 
-        switch ($sDatabaseType)
-        {
+        switch ($sDatabaseType) {
             case 'mysqli':
             case 'mysql':
                 $sql_file = 'mysql';
@@ -568,21 +536,17 @@ class InstallerController extends CController
 
         //checking DB Connection
         $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/create-database.php');
-        if ($aErrors === false)
-        {
+        if ($aErrors === false) {
             $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
             $this->render('/installer/dbconfig_view', $aData);
-        } elseif (count($aErrors) == 0)
-        {
+        } elseif (count($aErrors) == 0) {
             //$data1['adminoutput'] = '';
             //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
             //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
-        } else
-        {
+        } else {
             $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
-            foreach ($aErrors as $sError)
-            {
+            foreach ($aErrors as $sError) {
                 $sConfirmation .= '<li>'.htmlspecialchars($sError).'</li>';
             }
             $sConfirmation .= '</ul>';
@@ -618,8 +582,7 @@ class InstallerController extends CController
         $sDefaultSiteName = $model->siteName;
         $sDefaultSiteLanguage = $model->surveylang;
         $sDefaultAdminEmail = $model->adminEmail;
-        if (!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
+        if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
@@ -748,11 +711,9 @@ class InstallerController extends CController
          */
         function check_HTML_image($result)
         {
-            if ($result)
-            {
+            if ($result) {
                 return "<span class='fa fa-check text-success' alt='right'></span>";
-            } else
-            {
+            } else {
                 return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
             }
         }
@@ -767,8 +728,7 @@ class InstallerController extends CController
             while ($sFile = readdir($sFolder)) {
                             if ($sFile != '.' && $sFile != '..' &&
                     (!is_writable($sDirectory."/".$sFile) ||
-                        (is_dir($sDirectory."/".$sFile) && !is_writable_recursive($sDirectory."/".$sFile))))
-                    {
+                        (is_dir($sDirectory."/".$sFile) && !is_writable_recursive($sDirectory."/".$sFile)))) {
                         closedir($sFolder);
             }
                         return false;
@@ -816,15 +776,12 @@ class InstallerController extends CController
                 default:
                     throw new Exception('Invalid type given.');
             }
-            if ($exists)
-            {
+            if ($exists) {
                 $aData[$base.'Present'] = 'Found';
-                if ((!$bRecursive && is_writable($path)) || ($bRecursive && is_writable_recursive($path)))
-                {
+                if ((!$bRecursive && is_writable($path)) || ($bRecursive && is_writable_recursive($path))) {
                     $aData[$base.'Writable'] = 'Writable';
                     $bResult = true;
-                } else
-                {
+                } else {
                     $aData[$base.'Writable'] = 'Unwritable';
                 }
             }
@@ -1013,8 +970,7 @@ class InstallerController extends CController
     {
 
         //write config.php if database exists and has been populated.
-        if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
-        {
+        if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist']) {
 
             extract(self::_getDatabaseConfig());
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
@@ -1031,11 +987,10 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != ''))
-            {
+            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
                 $sURLFormat = 'path';
-            } else 
-            { // Apache
+            } else {
+// Apache
                 $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
             }
             $sCharset = 'utf8';
@@ -1087,8 +1042,7 @@ class InstallerController extends CController
                 ."\t\t"."'db' => array("."\n"
                 ."\t\t\t"."'connectionString' => '$sDsn',"."\n";
             }
-            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib')
-            {
+            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
                 $sConfig .= "\t\t\t"."'emulatePrepare' => true,"."\n";
 
             }
@@ -1171,8 +1125,7 @@ class InstallerController extends CController
     {
         $iTotalChar = 64; // number of chars in the sid
         $sResult = '';
-        for ($i = 0; $i < $iTotalChar; $i++)
-        {
+        for ($i = 0; $i < $iTotalChar; $i++) {
             $sResult .= chr(rand(33, 126));
         }
         return $sResult;
@@ -1198,16 +1151,14 @@ class InstallerController extends CController
                 }
                 break;
             case 'pgsql':
-                if (empty($sDatabasePwd))
-                {
+                if (empty($sDatabasePwd)) {
                     // If there's no password, we need to write password=""; instead of password=;,
                     // or PostgreSQL's libpq will consider the DSN string part after "password="
                     // (including the ";" and the potential dbname) as part of the password definition.
                     $sDatabasePwd = '""';
                 }
                 $sDSN = "pgsql:host={$sDatabaseLocation};port={$sDatabasePort};user={$sDatabaseUser};password={$sDatabasePwd};";
-                if ($sDatabaseName != '')
-                {
+                if ($sDatabaseName != '') {
                     $sDSN .= "dbname={$sDatabaseName};";
                 }
                 break;
@@ -1289,22 +1240,20 @@ class InstallerController extends CController
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        if (!self::dbTest($aDbConfig, $aData)) { // Remove sDatabaseName from the connexion is not exist
+        if (!self::dbTest($aDbConfig, $aData)) {
+// Remove sDatabaseName from the connexion is not exist
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
             $bDbExist = false;
         }
-        try
-        {
+        try {
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib')
-            {
+            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
                 $this->connection->emulatePrepare = true;
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -1321,27 +1270,21 @@ class InstallerController extends CController
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        try
-        {
+        try {
             $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        } catch (Exception $e)
-        {
-            if ($sDatabaseType == 'mysql' && $e->getCode() == 1049)
-            {
+        } catch (Exception $e) {
+            if ($sDatabaseType == 'mysql' && $e->getCode() == 1049) {
                 return false;
             }
-            if ($sDatabaseType == 'pgsql' && $e->getCode() == 7)
-            {
+            if ($sDatabaseType == 'pgsql' && $e->getCode() == 7) {
                 return false;
             }
             /* @todo : find the good error code for dblib and sqlsrv in exactly same situation : user can read the DB but DB don't exist*/
             /* using same behaviuor than before : test without dbname : db creation can break */
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
-            try
-            {
+            try {
                 $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 /* With pgsql : sending "" to tablename => tablename==username , we are unsure if this must be OK */
                 /* But Yii sedn exception in same condition : the show this error */
                 if (!empty($aData['model'])) {
@@ -1349,8 +1292,7 @@ class InstallerController extends CController
                     $aData['model']->addError('dblocation', gT('Reason:').' '.$e->getMessage());
                     $this->render('/installer/dbconfig_view', $aData);
                     Yii::app()->end();
-                } else
-                {
+                } else {
                     // Use same exception than Yii ? unclear
                     throw new DbConnection('CDbConnection failed to open the DB connection.', (int) $e->getCode(), $e->errorInfo);
                 }
@@ -1359,8 +1301,7 @@ class InstallerController extends CController
             return false;
         }
         $sMinimumMySQLVersion = '5.5.3';
-        if ($sDatabaseType == 'mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")), $sMinimumMySQLVersion) == -1)
-        {
+        if ($sDatabaseType == 'mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")), $sMinimumMySQLVersion) == -1) {
             if (!empty($aData['model'])) {
                 $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s). Found version: %s'), $sMinimumMySQLVersion, $testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION"))));
                 $this->render('/installer/dbconfig_view', $aData);

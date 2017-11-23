@@ -58,10 +58,8 @@ function fixNumbering($iQuestionID, $iSurveyID)
     foreach ($sResult->readAll() as $row) {
         $aSwitcher[] = array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
     }
-    if (isset($aSwitcher))
-    {
-        foreach ($aSwitcher as $aSwitch)
-        {
+    if (isset($aSwitcher)) {
+        foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
             cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
@@ -90,10 +88,9 @@ function checkGroup($postsid)
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
-    foreach ($groupresult as $row)
-    { //TIBO
-        if ($row['count'] == 0)
-        {
+    foreach ($groupresult as $row) {
+//TIBO
+        if ($row['count'] == 0) {
             $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
         }
     }
@@ -131,30 +128,23 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow)
-    {
-        if ($qtypes[$chkrow['type']]['subquestions'] > 0)
-        {
-            for ($i = 0; $i < $qtypes[$chkrow['type']]['subquestions']; $i++)
-            {
+    foreach ($chkresult as $chkrow) {
+        if ($qtypes[$chkrow['type']]['subquestions'] > 0) {
+            for ($i = 0; $i < $qtypes[$chkrow['type']]['subquestions']; $i++) {
                 $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} and scale_id={$i} ORDER BY question_order";
                 $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount = count($charesult);
-                if ($chacount == 0)
-                {
+                if ($chacount == 0) {
                     $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
                 }
             }
         }
-        if ($qtypes[$chkrow['type']]['answerscales'] > 0)
-        {
-            for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++)
-            {
+        if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
+            for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
                 $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
                 $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount = count($charesult);
-                if ($chacount == 0)
-                {
+                if ($chacount == 0) {
                     $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
                 }
             }
@@ -164,8 +154,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
     $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow)
-    {
+    foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
@@ -208,8 +197,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
     $conresult = Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid
-    foreach ($conresult as $conrow)
-    {
+    foreach ($conresult as $conrow) {
         $cqidfound = 0;
         $qidfound = 0;
         $b = 0;
@@ -260,12 +248,10 @@ function activateSurvey($iSurveyID, $simulate = false)
     App()->getPluginManager()->dispatchEvent($event);
     $success = $event->get('success');
     $message = $event->get('message');
-    if ($success === false)
-    {
+    if ($success === false) {
         Yii::app()->user->setFlash('error', $message);
         return array('error' => 'plugin');
-    } else if (!empty($message))
-    {
+    } else if (!empty($message)) {
         Yii::app()->user->setFlash('info', $message);
     }
 
@@ -284,10 +270,8 @@ function activateSurvey($iSurveyID, $simulate = false)
     //Get list of questions for the base language
     $sFieldMap = createFieldMap($oSurvey, 'full', true, false, $oSurvey->language);
     //For each question, create the appropriate field(s)
-    foreach ($sFieldMap as $j=>$aRow)
-    {
-        switch ($aRow['type'])
-        {
+    foreach ($sFieldMap as $j=>$aRow) {
+        switch ($aRow['type']) {
             case 'seed':
                 $aTableDefinition[$aRow['fieldname']] = "string(31)";
                 break;
@@ -319,11 +303,9 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "M":  //Multiple choice
             case "P":  //Multiple choice with comment
             case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false)
-                {
+                if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
                     $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                } else
-                {
+                } else {
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 }
                 break;
@@ -383,14 +365,14 @@ function activateSurvey($iSurveyID, $simulate = false)
                     "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $aRow['qid'])
                 );
-                if (empty($oQuestionAttribute))
-                {
+                if (empty($oQuestionAttribute)) {
                     $oQuestionAttribute = new QuestionAttribute();
                     $oQuestionAttribute->qid = $aRow['qid'];
                     $oQuestionAttribute->attribute = 'max_subquestions';
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();
-                } elseif (intval($oQuestionAttribute->value) < 1) { // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                } elseif (intval($oQuestionAttribute->value) < 1) {
+// Fix it if invalid : disallow 0, but need a sub question minimum for EM
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();
                 }
@@ -422,34 +404,27 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     $sTableName = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
-    try
-    {
+    try {
         Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-    } catch (CDbException $e)
-    {
-        if (App()->getConfig('debug'))
-        {
+    } catch (CDbException $e) {
+        if (App()->getConfig('debug')) {
             return array('error'=>$e->getMessage());
-        } else
-        {
+        } else {
             return array('error'=>'surveytablecreation');
         }
     }
-    try
-    {
+    try {
         if (isset($aTableDefinition['token'])) {
             Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1, 50000), $sTableName, 'token');
         }
-    } catch (CDbException $e)
-    {
+    } catch (CDbException $e) {
     }
 
     $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
     $iAutoNumberStart = Yii::app()->db->createCommand($sQuery)->queryScalar();
     //if there is an autonumber_start field, start auto numbering here
-    if ($iAutoNumberStart !== false && $iAutoNumberStart > 0)
-    {
+    if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
         if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
             mssql_drop_primary_index('survey_'.$iSurveyID);
             mssql_drop_constraint('id', 'survey_'.$iSurveyID);
@@ -460,12 +435,10 @@ function activateSurvey($iSurveyID, $simulate = false)
             // Add back the primaryKey
 
             Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $oSurvey->responsesTableName, 'id');
-        } elseif (Yii::app()->db->driverName == 'pgsql')
-        {
+        } elseif (Yii::app()->db->driverName == 'pgsql') {
             $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
             @Yii::app()->db->createCommand($sQuery)->execute();
-        } else
-        {
+        } else {
             $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
             @Yii::app()->db->createCommand($sQuery)->execute();
         }
@@ -481,12 +454,10 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
 
         $sTableName = "{{survey_{$iSurveyID}_timings}}";
-        try
-        {
+        try {
             Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        } catch (CDbException $e)
-        {
+        } catch (CDbException $e) {
             return array('error'=>'timingstablecreation');
         }
 
@@ -496,12 +467,9 @@ function activateSurvey($iSurveyID, $simulate = false)
         'pluginFeedback' => $event->get('pluginFeedback')
     );
     // create the survey directory where the uploaded files can be saved
-    if ($bCreateSurveyDir)
-    {
-        if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files"))
-        {
-            if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true)))
-            {
+    if ($bCreateSurveyDir) {
+        if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
+            if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
                 $aResult['warning'] = 'nouploadsurveydir';
             } else {
                 file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
@@ -532,8 +500,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
     $result = dbExecuteAssoc($dfquery)->read();
     $defaultname = $result['CONTRAINT_NAME'];
-    if ($defaultname != false)
-    {
+    if ($defaultname != false) {
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }
 }
@@ -552,8 +519,7 @@ function mssql_drop_primary_index($tablename)
     ."WHERE     (TABLE_NAME = '{{{$tablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
     $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
-    if ($primarykey !== false)
-    {
+    if ($primarykey !== false) {
         Yii::app()->db->createCommand("ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey[0]}")->execute();
     }
 }

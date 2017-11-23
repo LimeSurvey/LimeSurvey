@@ -68,16 +68,13 @@ class participantsaction extends Survey_Common_Action
         $aData['display']['menu_bars'] = false;
 
         // Add "_view" to urls
-        if (is_array($aViewUrls))
-        {
+        if (is_array($aViewUrls)) {
             array_walk($aViewUrls, function(&$url)
             {
 $url .= "_view"; });
-        } elseif (is_string($aViewUrls))
-        {
+        } elseif (is_string($aViewUrls)) {
             $aViewUrls .= "_view";
-        } else
-        {
+        } else {
             // Complete madness
             throw new \InvalidArgumentException("aViewUrls must be either string or array");
         }
@@ -172,8 +169,7 @@ $url .= "_view"; });
 
         Yii::app()->loadHelper('export');
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iUserID = null;
         } else {
             $iUserID = Yii::app()->session['loginID'];
@@ -190,10 +186,8 @@ $url .= "_view"; });
 
         $outputarray[0] = $fields; //fields written to output array
 
-        foreach ($aAttributeIDs as $value)
-        {
-            if ($value == 0)
-            {
+        foreach ($aAttributeIDs as $value) {
+            if ($value == 0) {
                 continue;
             }
             $fields[] = 'a'.$value;
@@ -203,8 +197,7 @@ $url .= "_view"; });
 
         $fieldNeededKeys = array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
-        foreach ($query as $field => $aData)
-        {
+        foreach ($query as $field => $aData) {
             $outputarray[] = array_merge($fieldNeededKeys, array_intersect_key($aData, $fieldKeys));
         }
         CPDBExport($outputarray, "central_".time());
@@ -218,15 +211,13 @@ $url .= "_view"; });
      */
     protected function csvExportCount($search = null)
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'export'))
-        {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'export')) {
             return 0;
         }
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iUserID = null;
         } else {
             $iUserID = Yii::app()->session['loginID'];
@@ -251,13 +242,11 @@ $url .= "_view"; });
         $iUserID = Yii::app()->session['loginID'];
 
         // if superadmin all the records in the cpdb will be displayed
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
         }
         // if not only the participants on which he has right on (shared and owned)
-        else
-        {
+        else {
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserID);
         }
         // gets the count of participants, their attributes and other such details
@@ -304,27 +293,23 @@ $url .= "_view"; });
         }
 
         // if superadmin all the records in the cpdb will be displayed
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
         }
         // if not only the participants on which he has right on (shared and owned)
-        else
-        {
+        else {
             $iUserId = Yii::app()->user->getId();
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
         $request = Yii::app()->request;
         $participantParam = $request->getPost('Participant');
-        if ($participantParam)
-        {
+        if ($participantParam) {
             $model->attributes = $participantParam;
         }
         $searchcondition = $request->getPost('searchcondition');
         $searchparams = array();
-        if ($searchcondition)
-        {
+        if ($searchcondition) {
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
         }
@@ -417,12 +402,10 @@ $url .= "_view"; });
     public function openEditParticipant()
     {
         $participant_id = Yii::app()->request->getPost('participant_id');
-        if ($participant_id)
-        {
+        if ($participant_id) {
             $model = Participant::model()->findByPk($participant_id);
             $operationType = "edit";
-        } else
-        {
+        } else {
             $model = new Participant;
             $operationType = "add";
         }
@@ -671,8 +654,7 @@ $url .= "_view"; });
     {
         $this->checkPermission('import');
 
-        if ($_FILES['the_file']['name'] == '')
-        {
+        if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
         }
@@ -680,19 +662,16 @@ $url .= "_view"; });
         $sFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2)
-        {
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             $bMoveFileResult = null; // Scrutinizer does not understand that this block halt execution
             $filterblankemails = null; // Same
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'csv')
-        {
+        } elseif (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
-        } else
-        {
+        } else {
             $bMoveFileResult = null; // Scrutinizer does not understand that this block halt execution
             $filterblankemails = null; // Same
             Yii::app()->setFlashMessage(gT("This is not a .csv file."), 'error');
@@ -700,21 +679,18 @@ $url .= "_view"; });
             Yii::app()->end();
         }
 
-        if (!$bMoveFileResult)
-        {
+        if (!$bMoveFileResult) {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
-        } else
-        {
+        } else {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
             $aFirstLine = fgets($oCSVFile);
             rewind($oCSVFile);
 
             $sSeparator = Yii::app()->request->getPost('separatorused');
-            if ($sSeparator == 'auto')
-            {
+            if ($sSeparator == 'auto') {
                 $aCount = array();
                 $aCount[','] = substr_count($aFirstLine, ',');
                 $aCount[';'] = substr_count($aFirstLine, ';');
@@ -725,11 +701,9 @@ $url .= "_view"; });
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
             $selectedcsvfields = array();
             $fieldlist = array();
-            foreach ($firstline as $key => $value)
-            {
+            foreach ($firstline as $key => $value) {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/', '', $value); //Remove invalid characters from string
-                if (!in_array(strtolower($testvalue), $regularfields))
-                {
+                if (!in_array(strtolower($testvalue), $regularfields)) {
                     array_push($selectedcsvfields, $value);
                 }
                 $fieldlist[] = $value;
@@ -809,13 +783,11 @@ $url .= "_view"; });
         /* The $newarray contains a list of fields that will be used
         to create attributes */
         $newarray = Yii::app()->request->getPost('newarray');
-        if (!empty($newarray))
-        {
+        if (!empty($newarray)) {
             /* Create a new entry in the lime_participant_attribute_names table,
             and it's associated lime_participant_attribute_names_lang table
             for each NEW attribute being created in this import process */
-            foreach ($newarray as $key => $value)
-            {
+            foreach ($newarray as $key => $value) {
                 $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
@@ -825,11 +797,11 @@ $url .= "_view"; });
                 $mappedarray[$insertid] = $value;
             }
         }
-        if (!isset($uploadcharset))
-        {
+        if (!isset($uploadcharset)) {
             $uploadcharset = 'auto';
         }
-        foreach ($tokenlistarray as $buffer) { //Iterate through the CSV file line by line
+        foreach ($tokenlistarray as $buffer) {
+//Iterate through the CSV file line by line
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             if ($recordcount == 0) {
                 //The first time we iterate through the file we look at the very
@@ -838,16 +810,13 @@ $url .= "_view"; });
                 $buffer = removeBOM($buffer);
                 $allowedfieldnames = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
                 $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
-                if (!empty($mappedarray))
-                {
-                    foreach ($mappedarray as $key => $value)
-                    {
+                if (!empty($mappedarray)) {
+                    foreach ($mappedarray as $key => $value) {
                         array_push($allowedfieldnames, strtolower($value));
                     }
                 }
                 //For Attributes
-                switch ($separator)
-                {
+                switch ($separator) {
                     case 'comma':
                         $separator = ',';
                         break;
@@ -867,19 +836,16 @@ $url .= "_view"; });
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
-                foreach ($firstline as $index => $fieldname)
-                {
+                foreach ($firstline as $index => $fieldname) {
                     $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
                     $fieldname = $firstline[$index];
-                    if (!in_array(strtolower($fieldname), $allowedfieldnames) && !in_array($fieldname, $mappedarray))
-                    {
+                    if (!in_array(strtolower($fieldname), $allowedfieldnames) && !in_array($fieldname, $mappedarray)) {
                         $ignoredcolumns[] = $fieldname;
                     } else {
                         $firstline[$index] = strtolower($fieldname);
                     }
                 }
-                if ((!in_array('firstname', $firstline) && !in_array('lastname', $firstline) && !in_array('email', $firstline)) && !in_array('participant_id', $firstline))
-                {
+                if ((!in_array('firstname', $firstline) && !in_array('lastname', $firstline) && !in_array('email', $firstline)) && !in_array('participant_id', $firstline)) {
                     $recordcount = count($tokenlistarray);
                     break;
                 }
@@ -887,16 +853,14 @@ $url .= "_view"; });
                 // After looking at the first line, we now import the actual values
                 $line = str_getcsv($buffer, $separator, '"');
                 // Discard lines where the number of fields do not match
-                if (count($firstline) != count($line))
-                {
+                if (count($firstline) != count($line)) {
                     $invalidformatlist[] = $recordcount.','.count($line).','.count($firstline);
                     $recordcount++;
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
                 //kick out ignored columns
-                foreach ($ignoredcolumns as $column)
-                {
+                foreach ($ignoredcolumns as $column) {
                     unset($writearray[$column]);
                 }
                 // Add aFilterDuplicateFields not in CSV to writearray : quick fix
@@ -922,8 +886,7 @@ $url .= "_view"; });
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
-                    if ($overwrite == "true")
-                    {
+                    if ($overwrite == "true") {
                         //Although this person already exists, we want to update the mapped attribute values
                         if (!empty($mappedarray)) {
                             //The mapped array contains the attributes we are
@@ -1012,8 +975,7 @@ $url .= "_view"; });
                         }
                     }
                     //If any of the mandatory fields are blank, then don't import this user
-                    if (!$dontimport)
-                    {
+                    if (!$dontimport) {
                         Participant::model()->insertParticipantCSV($writearray);
                         $imported++;
                     }
@@ -1062,11 +1024,11 @@ $url .= "_view"; });
     {
         $this->checkPermission('export');
 
-        if (Yii::app()->request->getPost('searchcondition', '') !== '') { // if there is a search condition then only the participants that match the search criteria are counted
+        if (Yii::app()->request->getPost('searchcondition', '') !== '') {
+// if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition', ''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        } else
-        {
+        } else {
             $search = null;
         }
 
@@ -1102,7 +1064,8 @@ $url .= "_view"; });
         $searchconditionurl = basename($searchconditionurl);
 
         $search = new CDbCriteria;
-        if ($searchconditionurl != 'getParticipants_json') { // if there is a search condition then only the participants that match the search criteria are counted
+        if ($searchconditionurl != 'getParticipants_json') {
+// if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("||", $searchcondition);
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
@@ -1135,12 +1098,10 @@ $url .= "_view"; });
     public function exporttocsvcountAll()
     {
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
-        if (!empty($chosenParticipants))
-        {
+        if (!empty($chosenParticipants)) {
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id", $chosenParticipants);
-        } else
-        {
+        } else {
             $search = null;
         }
         echo $this->csvExportCount($search);
@@ -1152,12 +1113,10 @@ $url .= "_view"; });
     public function exporttocsvAll()
     {
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
-        if (!empty($chosenParticipants))
-        {
+        if (!empty($chosenParticipants)) {
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id", $chosenParticipants);
-        } else
-        {
+        } else {
             $search = null;
         }
         $this->csvExport($search);
@@ -1191,18 +1150,15 @@ $url .= "_view"; });
     public function storeBlacklistValues()
     {
         $values = Array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
-        foreach ($values as $value)
-        {
-            if ($find = SettingGlobal::model()->findByPk($value))
-            {
+        foreach ($values as $value) {
+            if ($find = SettingGlobal::model()->findByPk($value)) {
                 SettingGlobal::model()->updateByPk(
                     $value,
                     array(
                         'stg_value' => Yii::app()->request->getPost($value) ? 'Y' : 'N'
                     )
                 );
-            } else
-            {
+            } else {
                 $stg = new SettingGlobal;
                 $stg ->stg_name = $value;
                 $stg ->stg_value = Yii::app()->request->getPost($value) ? 'Y' : 'N';
@@ -1241,8 +1197,7 @@ $url .= "_view"; });
     public function attributeControl()
     {
         $model = new ParticipantAttributeName();
-        if (Yii::app()->request->getParam('ParticipantAttributeName'))
-        {
+        if (Yii::app()->request->getParam('ParticipantAttributeName')) {
             $model->attributes = Yii::app()->request->getParam('ParticipantAttributeName');
         }
         // data to be passed to view
@@ -1256,11 +1211,9 @@ $url .= "_view"; });
             'debug' => Yii::app()->request->getParam('Attribute')
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeAttributes'))
-        {
+        if (Yii::app()->request->getParam('pageSizeAttributes')) {
             Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSizeAttributes'));
-        } else
-        {
+        } else {
             Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->params['defaultPageSize']);
         }
         $aData['pageSizeAttributes'] = Yii::app()->user->getState('pageSize');
@@ -1305,12 +1258,10 @@ $url .= "_view"; });
     public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
-        if ($attribute_id)
-        {
+        if ($attribute_id) {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
             $editType = "edit";
-        } else
-        {
+        } else {
             $model = new ParticipantAttributeName();
             $model->attribute_type = 'TB';
             $editType = "new";
@@ -1318,8 +1269,7 @@ $url .= "_view"; });
 
         // Generate HTML for alternative languages
         $languagesOfAttribute = array();
-        foreach ($model->participant_attribute_names_lang as $single_language)
-        {
+        foreach ($model->participant_attribute_names_lang as $single_language) {
             $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name'];
         }
 
@@ -1331,8 +1281,7 @@ $url .= "_view"; });
 
         $allLangDetailArray = getLanguageData(false, Yii::app()->language);
         $aData['languagesForDropdown'][''] = gT("Select language to add");
-        foreach ($allLangDetailArray as $key=>$languageDetail)
-        {
+        foreach ($allLangDetailArray as $key=>$languageDetail) {
             $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")";
         }
 
@@ -1387,12 +1336,10 @@ $url .= "_view"; });
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $operation = Yii::app()->request->getPost('oper');
-        if ($operation === 'edit')
-        {
+        if ($operation === 'edit') {
             $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk($AttributeNameAttributes['attribute_id']);
             $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
-        } else
-        {
+        } else {
             $ParticipantAttributNamesModel = new ParticipantAttributeName;
             $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
             $success[] = $ParticipantAttributNamesModel->save();
@@ -1400,10 +1347,8 @@ $url .= "_view"; });
         }
         if (is_array($ParticipantAttributeNamesDropdown)) {
             $ParticipantAttributNamesModel->clearAttributeValues();
-            foreach ($ParticipantAttributeNamesDropdown as $i=>$dropDownValue)
-            {
-                if ($dropDownValue !== "")
-                {
+            foreach ($ParticipantAttributeNamesDropdown as $i=>$dropDownValue) {
+                if ($dropDownValue !== "") {
                     $storeArray = array(
                         "attribute_id" => $ParticipantAttributNamesModel->attribute_id,
                         "value" => $dropDownValue
@@ -1412,10 +1357,8 @@ $url .= "_view"; });
                 }
             }
         }
-        if (is_array($AttributeNameLanguages))
-        {
-            foreach ($AttributeNameLanguages as $lnKey => $lnValue)
-            {
+        if (is_array($AttributeNameLanguages)) {
+            foreach ($AttributeNameLanguages as $lnKey => $lnValue) {
                 $savaLanguageArray = array(
                     'attribute_id' => $ParticipantAttributNamesModel->attribute_id,
                     'attribute_name' => $lnValue,
@@ -1438,12 +1381,10 @@ $url .= "_view"; });
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
-        if (count($AttributePackage->participant_attribute_names_lang) > 1)
-        {
+        if (count($AttributePackage->participant_attribute_names_lang) > 1) {
             ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
             ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
-        } else
-        {
+        } else {
             ls\ajax\AjaxHelper::outputError(gT("There has to be at least one language."));
         }
     }
@@ -1505,18 +1446,15 @@ $url .= "_view"; });
     {
         $operation = Yii::app()->request->getPost('oper');
 
-        if ($operation == 'del' && Yii::app()->request->getPost('id'))
-        {
+        if ($operation == 'del' && Yii::app()->request->getPost('id')) {
             $aAttributeIds = (array) explode(',', Yii::app()->request->getPost('id'));
             $aAttributeIds = array_map('trim', $aAttributeIds);
             $aAttributeIds = array_map('intval', $aAttributeIds);
 
-            foreach ($aAttributeIds as $iAttributeId)
-            {
+            foreach ($aAttributeIds as $iAttributeId) {
                 ParticipantAttributeName::model()->delAttribute($iAttributeId);
             }
-        } elseif ($operation == 'add' && Yii::app()->request->getPost('attribute_name'))
-        {
+        } elseif ($operation == 'add' && Yii::app()->request->getPost('attribute_name')) {
             $aData = array(
                 'defaultname' => Yii::app()->request->getPost('attribute_name'),
                 'attribute_name' => Yii::app()->request->getPost('attribute_name'),
@@ -1524,8 +1462,7 @@ $url .= "_view"; });
                 'visible' => Yii::app()->request->getPost('visible') ? 'TRUE' : 'FALSE'
             );
             echo ParticipantAttributeName::model()->storeAttribute($aData);
-        } elseif ($operation == 'edit' && Yii::app()->request->getPost('id'))
-        {
+        } elseif ($operation == 'edit' && Yii::app()->request->getPost('id')) {
             $aData = array(
                 'attribute_id' => Yii::app()->request->getPost('id'),
                 'attribute_name' => Yii::app()->request->getPost('attribute_name'),
@@ -1551,29 +1488,23 @@ $url .= "_view"; });
         $doneattributes = array(); //If the user has any actual attribute values, they'll be stored here
 
         /* Iterate through each attribute owned by this user */
-        foreach ($records as $row)
-        {
+        foreach ($records as $row) {
             $outputs[$i] = array("", $row['participant_id']."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], $row['value']);
             /* Collect allowed values for a DropDown attribute */
-            if ($row['attribute_type'] == "DD")
-            {
+            if ($row['attribute_type'] == "DD") {
                 $attvalues = ParticipantAttributeName::model()->getAttributesValues($row['attribute_id']);
-                if (!empty($attvalues))
-                {
+                if (!empty($attvalues)) {
                     $attval = "";
-                    foreach ($attvalues as $val)
-                    {
+                    foreach ($attvalues as $val) {
                         $attval .= $val['value'].":".$val['value'];
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
                     array_push($outputs[$i], $attval);
-                } else
-                {
+                } else {
                     array_push($outputs[$i], "");
                 }
-            } else
-            {
+            } else {
                 array_push($outputs[$i], "");
             }
             array_push($doneattributes, $row['attribute_id']);
@@ -1583,39 +1514,31 @@ $url .= "_view"; });
         /* Build a list of attribute names for which this user has NO values stored, keep it in $attributenotdone */
         $attributenotdone = array();
         /* The user has NO values stored against any attribute */
-        if (count($doneattributes) == 0)
-        {
+        if (count($doneattributes) == 0) {
             $attributenotdone = ParticipantAttributeName::model()->getCPDBAttributes();
         }
         /* The user has SOME values stored against attributes */
-        else
-        {
+        else {
             $attributenotdone = ParticipantAttributeName::model()->getNotAddedAttributes($doneattributes);
         }
 
         /* Go through the empty attributes and build an entry in the output for them */
-        foreach ($attributenotdone as $row)
-        {
+        foreach ($attributenotdone as $row) {
             $outputs[$i] = array("", $iParticipantId."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], "");
-            if ($row['attribute_type'] == "DD")
-            {
+            if ($row['attribute_type'] == "DD") {
                 $attvalues = ParticipantAttributeName::model()->getAttributesValues($row['attribute_id']);
-                if (!empty($attvalues))
-                {
+                if (!empty($attvalues)) {
                     $attval = "";
-                    foreach ($attvalues as $val)
-                    {
+                    foreach ($attvalues as $val) {
                         $attval .= $val['value'].":".$val['value'];
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
                     array_push($outputs[$i], $attval);
-                } else
-                {
+                } else {
                     array_push($outputs[$i], "");
                 }
-            } else
-            {
+            } else {
                 array_push($outputs[$i], "");
             }
             $i++;
@@ -1677,10 +1600,8 @@ $url .= "_view"; });
         Yii::app()->setFlashMessage(gT('Attribute was saved.'), 'info');
 
         // Save translations
-        if (isset($_POST['lang']))
-        {
-            foreach ($_POST['lang'] as $lang => $translation)
-            {
+        if (isset($_POST['lang'])) {
+            foreach ($_POST['lang'] as $lang => $translation) {
                 $langdata = array(
                     'attribute_id' => $iAttributeId,
                     'attribute_name' => $translation,
@@ -1692,8 +1613,7 @@ $url .= "_view"; });
         }
 
         // TODO: What's the Difference between lang and langdata?
-        if (Yii::app()->request->getPost('langdata'))
-        {
+        if (Yii::app()->request->getPost('langdata')) {
             $langdata = array(
                 'attribute_id' => $iAttributeId,
                 'attribute_name' => Yii::app()->request->getPost('attname'),
@@ -1704,14 +1624,11 @@ $url .= "_view"; });
         }
 
         /* New attribute value */
-        if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
-        {
+        if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0") {
             $i = 1;
             $attvaluename = 'attribute_value_name_'.$i;
-            while (array_key_exists($attvaluename, $_POST) && $_POST[$attvaluename] != "")
-            {
-                if ($_POST[$attvaluename] != "")
-                {
+            while (array_key_exists($attvaluename, $_POST) && $_POST[$attvaluename] != "") {
+                if ($_POST[$attvaluename] != "") {
                     $aDatavalues[$i] = array(
                         'attribute_id' => $iAttributeId,
                         'value' => Yii::app()->request->getPost($attvaluename)
@@ -1722,8 +1639,7 @@ $url .= "_view"; });
             ParticipantAttributeName::model()->storeAttributeValues($aDatavalues);
         }
         /* Save updated attribute values */
-        if (Yii::app()->request->getPost('editbox') || Yii::app()->request->getPost('editbox') == "0")
-        {
+        if (Yii::app()->request->getPost('editbox') || Yii::app()->request->getPost('editbox') == "0") {
             $editattvalue = array(
                 'attribute_id' => $iAttributeId,
                 'value_id' => Yii::app()->request->getPost('value_id'),
@@ -1750,12 +1666,10 @@ $url .= "_view"; });
      */
     public function editAttributevalue()
     {
-        if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue']))
-        {
+        if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue'])) {
             $pid = explode('_', Yii::app()->request->getPost('participant_id'));
             $iAttributeId = Yii::app()->request->getPost('attid');
-            if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && Participant::model()->is_owner($pid[0]))
-            {
+            if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && Participant::model()->is_owner($pid[0])) {
                 $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
                 ParticipantAttributeName::model()->editParticipantAttributeValue($aData);
             }
@@ -1770,8 +1684,7 @@ $url .= "_view"; });
     public function sharePanel()
     {
         $model = new ParticipantShare();
-        if (Yii::app()->request->getParam('ParticipantShare'))
-        {
+        if (Yii::app()->request->getParam('ParticipantShare')) {
             $model->attributes = Yii::app()->request->getParam('ParticipantShare');
         }
         // data to be passed to view
@@ -1785,11 +1698,9 @@ $url .= "_view"; });
             'debug' => Yii::app()->request->getParam('Participant')
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeShareParticipantView'))
-        {
+        if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
             Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSizeShareParticipantView'));
-        } else
-        {
+        } else {
             Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->params['defaultPageSize']);
         }
         $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
@@ -1873,10 +1784,10 @@ $url .= "_view"; });
     {
         $operation = Yii::app()->request->getPost('oper');
         $shareIds = Yii::app()->request->getPost('id');
-        if ($operation == 'del') { // If operation is delete , it will delete, otherwise edit it
+        if ($operation == 'del') {
+// If operation is delete , it will delete, otherwise edit it
             ParticipantShare::model()->deleteRow($shareIds);
-        } else
-        {
+        } else {
             $aData = array(
                 'participant_id' => Yii::app()->request->getPost('participant_id'),
                 'can_edit' => Yii::app()->request->getPost('can_edit'),
@@ -1902,20 +1813,16 @@ $url .= "_view"; });
         $aData->records = count($records);
         $aData->total = ceil($aData->records / 10);
         $i = 0;
-        foreach ($records as $row)
-        {
+        foreach ($records as $row) {
             $oSurvey = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByAttributes(array('sid' => $row['survey_id']));
-            foreach ($oSurvey->languagesettings as $oLanguageSetting)
-            {
+            foreach ($oSurvey->languagesettings as $oLanguageSetting) {
                 $surveyname = $oLanguageSetting->surveyls_title;
             }
             $surveylink = "";
             /* Check permissions of each survey before creating a link*/
-            if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
-            {
+            if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read')) {
                 $surveylink = $row['survey_id'];
-            } else
-            {
+            } else {
                 $surveylink = '<a href='.Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$row['survey_id']}").'>'.$row['survey_id'].'</a>';
             }
             $aData->rows[$i]['cell'] = array($surveyname, $surveylink, $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
@@ -1939,35 +1846,34 @@ $url .= "_view"; });
          * EG: fname||eq||jason||lname||ct||c
          *
          */
-        if ($sSearchURL != 'getParticipants_json') { // if there is a search condition present
+        if ($sSearchURL != 'getParticipants_json') {
+// if there is a search condition present
             $participantid = "";
             $condition = explode("||", $searchcondition); // explode the condition to the array
             $query = Participant::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
-            foreach ($query as $key => $value)
-            {
-                if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-                {
+            foreach ($query as $key => $value) {
+                if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                     $participantid .= ",".$value['participant_id']; // combine the participant id's in an string
-                } else
-                {
-                    if (Participant::model()->is_owner($value['participant_id']))
-                    {
+                } else {
+                    if (Participant::model()->is_owner($value['participant_id'])) {
                         $participantid .= ",".$value['participant_id']; // combine the participant id's in an string
                     }
                 }
             }
             echo $participantid; //echo the participant id's
-        } else {// if no search condition
+        } else {
+// if no search condition
             $participantid = ""; // initiallise the participant id to blank
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { //If super admin all the participants will be visible
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+//If super admin all the participants will be visible
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
-            } else {// get participants on which the user has right on
+            } else {
+// get participants on which the user has right on
                 $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
-            foreach ($query as $key => $value)
-            {
+            foreach ($query as $key => $value) {
                 $participantid = $participantid.",".$value['participant_id']; // combine the participant id's in an string
             }
             echo $participantid; //echo the participant id's
@@ -2001,8 +1907,7 @@ $url .= "_view"; });
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
-        foreach ($attid as $key => $value)
-        {
+        foreach ($attid as $key => $value) {
             array_push($participantfields, 'a'.$value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
@@ -2015,8 +1920,7 @@ $url .= "_view"; });
         $aData = new stdClass;
 
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iUserID = null;
         } else {
             $iUserID = Yii::app()->session['loginID'];
@@ -2031,8 +1935,7 @@ $url .= "_view"; });
 
 
         $aRowToAdd = array();
-        foreach ($records as $row)
-        {
+        foreach ($records as $row) {
             if (array_key_exists('can_edit', $row)) {
                 $sCanEdit = $row['can_edit'];
                 if (is_null($sCanEdit)) {
@@ -2048,10 +1951,8 @@ $url .= "_view"; });
             $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, htmlspecialchars($row['firstname']), htmlspecialchars($row['lastname']), htmlspecialchars($row['email']), $row['blacklisted'], $row['survey'], $row['language'], $row['ownername']);
             $aRowToAdd['id'] = $row['participant_id'];
             // add attribute values
-            foreach ($row as $key=>$attvalue)
-            {
-                if (preg_match('/^a\d+$/', $key))
-                {
+            foreach ($row as $key=>$attvalue) {
+                if (preg_match('/^a\d+$/', $key)) {
                     $aRowToAdd['cell'][] = $attvalue;
                 }
             }
@@ -2088,8 +1989,7 @@ $url .= "_view"; });
      */
     public function shareParticipants()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update'))
-        {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
             ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }
@@ -2098,23 +1998,19 @@ $url .= "_view"; });
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
 
-        if (!is_array($participantIds))
-        {
+        if (!is_array($participantIds)) {
             $participantIds = array($participantIds);
         }
 
         // Some input validation needed
-        if (empty($iShareUserId))
-        {
+        if (empty($iShareUserId)) {
             $iShareUserId = -1; // -1 = shared with all users
         }
 
         $i = 0;
         // $iShareUserId == 0 means any user
-        if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && $iShareUserId !== '')
-        {
-            foreach ($participantIds as $id)
-            {
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && $iShareUserId !== '') {
+            foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
                     'participant_id' => $id,
@@ -2322,27 +2218,22 @@ $url .= "_view"; });
         $options['createautomap'] = Yii::app()->request->getPost('createautomap') === 'true';
 
         // TODO: Why?
-        if (empty($newAttributes[0]))
-        {
+        if (empty($newAttributes[0])) {
             $newAttributes = array();
         }
 
-        if (empty($mappedAttributes))
-        {
+        if (empty($mappedAttributes)) {
             $mappedAttributes = array();
         }
 
-        try
-        {
+        try {
             $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $mappedAttributes, $newAttributes, $options);
         }
         // This exception carries error messages
-        catch (CPDBException $e)
-        {
+        catch (CPDBException $e) {
             echo $e->getMessage();
             return;
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
             return;
         }
@@ -2388,21 +2279,19 @@ $url .= "_view"; });
         $alreadymappedattid = array(); //List of fields already mapped to this tokens table
         $alreadymappedattname = array();
 
-        foreach ($tokenAttributes as $attributeId => $attribute) {  // attributeId like 'attribute_1'
-            if (is_numeric($attributeId[10])) { //Assumes that if the 11th character is a number, it must be a token-table created attribute
+        foreach ($tokenAttributes as $attributeId => $attribute) {
+// attributeId like 'attribute_1'
+            if (is_numeric($attributeId[10])) {
+//Assumes that if the 11th character is a number, it must be a token-table created attribute
                 $selectedattribute[$attributeId] = $attribute['description'];
-            } else
-            {
+            } else {
                 array_push($alreadymappedattid, substr($attributeId, 15));
             }
         }
-        foreach ($CPDBAttributes as $row)
-        {
-            if (!in_array($row['attribute_id'], $alreadymappedattid))
-            {
+        foreach ($CPDBAttributes as $row) {
+            if (!in_array($row['attribute_id'], $alreadymappedattid)) {
                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
-            } else
-            {
+            } else {
                 array_push($alreadymappedattname, $row['attribute_name']);
             }
         }
@@ -2412,8 +2301,7 @@ $url .= "_view"; });
         $automaticallyMappedAttributes = $this->getAutomaticallyMappedAttributes($tokenAttributes, $CPDBAttributes);
 
         // Remove automatic mappings from CPDB list (they should only be in right-most list)
-        foreach ($automaticallyMappedAttributes as $autoAttr)
-        {
+        foreach ($automaticallyMappedAttributes as $autoAttr) {
             unset($selectedcentralattribute[$autoAttr['cpdbAttribute']['attribute_id']]);
         }
 
@@ -2428,8 +2316,7 @@ $url .= "_view"; });
             'count' => $count
         );
 
-        if (count($selectedcentralattribute) === 0)
-        {
+        if (count($selectedcentralattribute) === 0) {
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'info');
         }
 
@@ -2456,13 +2343,10 @@ $url .= "_view"; });
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
 
-        foreach ($aTokenAttributes as $key => $value)
-        {
-            if ($value['cpdbmap'] == '')
-            {
+        foreach ($aTokenAttributes as $key => $value) {
+            if ($value['cpdbmap'] == '') {
                 $selectedattribute[$value['description']] = $key;
-            } else
-            {
+            } else {
                 $attributeid = $value['cpdbmap'];
                 $continue = false;
                 foreach ($aCPDBAttributes as $attribute) {
@@ -2479,16 +2363,13 @@ $url .= "_view"; });
                 }
             }
         }
-        foreach ($aCPDBAttributes as $row)
-        {
-            if (!in_array($row['attribute_id'], $alreadymappedattid))
-            {
+        foreach ($aCPDBAttributes as $row) {
+            if (!in_array($row['attribute_id'], $alreadymappedattid)) {
                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
             }
         }
 
-        if (count($selectedattribute) === 0)
-        {
+        if (count($selectedattribute) === 0) {
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
         }
 
@@ -2514,13 +2395,11 @@ $url .= "_view"; });
     private function getAutomaticallyMappedAttributes(array $tokenAttributes, array $CPDBAttributes)
     {
         $result = array();
-        foreach ($tokenAttributes as $attributeId => $tokenAttribute) {  // attributeId like 'attribute_1'
-            if ($tokenAttribute['cpdbmap'] !== '')
-            {
-                foreach ($CPDBAttributes as $CPDBAttribute)
-                {
-                    if ($CPDBAttribute['attribute_id'] == intval($tokenAttribute['cpdbmap']))
-                    {
+        foreach ($tokenAttributes as $attributeId => $tokenAttribute) {
+// attributeId like 'attribute_1'
+            if ($tokenAttribute['cpdbmap'] !== '') {
+                foreach ($CPDBAttributes as $CPDBAttribute) {
+                    if ($CPDBAttribute['attribute_id'] == intval($tokenAttribute['cpdbmap'])) {
                         $result[$attributeId] = array(
                             'tokenAttributeId' => $attributeId,
                             'tokenAttribute' => $tokenAttribute,
@@ -2540,8 +2419,7 @@ $url .= "_view"; });
      */
     private function checkPermission($permission)
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', $permission))
-        {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', $permission)) {
             Yii::app()->setFlashMessage(gT('No permission'), 'error');
             Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
         }

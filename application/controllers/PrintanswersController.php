@@ -50,25 +50,21 @@
 
             Yii::app()->loadHelper('database');
 
-            if (isset($_SESSION['survey_'.$iSurveyID]['sid']))
-            {
+            if (isset($_SESSION['survey_'.$iSurveyID]['sid'])) {
                 $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
-            } else
-            {
+            } else {
                 //die('Invalid survey/session');
             }
             // Get the survey inforamtion
             // Set the language for dispay
-            if (isset($_SESSION['survey_'.$iSurveyID]['s_lang']))
-            {
+            if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
                 $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
             } elseif (Survey::model()->findByPk($iSurveyID)) {
                 // survey exist
             {
                 $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
             }
-            } else
-            {
+            } else {
                 $iSurveyID = 0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
@@ -82,7 +78,8 @@
             //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             //Survey is not finished or don't exist
-            if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid'])) { //display "sorry but your session has expired"
+            if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid'])) {
+//display "sorry but your session has expired"
                 $this->sTemplate = $oTemplate->sTemplateName;
                 $error = $this->renderPartial("/survey/system/errorWarning", array(
                     'aErrors'=>array(
@@ -113,8 +110,7 @@
             //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
             //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
-            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read'))
-            {
+            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
                 throw new CHttpException(401, gT('You are not allowed to print answers.'));
             }
 
@@ -132,11 +128,9 @@
             $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
 
-            if (empty($sExportType))
-            {
+            if (empty($sExportType)) {
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
-            } else if ($sExportType == 'pdf')
-            {
+            } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
 

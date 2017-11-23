@@ -112,15 +112,13 @@ class LSHttpRequest extends CHttpRequest
         $referrer = parent::getUrlReferrer();
         $navStack = App()->session['LSNAVSTACK'];
 
-        if (!is_array($navStack))
-        {
+        if (!is_array($navStack)) {
             $navStack = array();
         }
 
         array_unshift($navStack, $referrer);
 
-        if (count($navStack) > 5)
-        {
+        if (count($navStack) > 5) {
             array_pop($navStack);
         }
         App()->session['LSNAVSTACK'] = $navStack;
@@ -167,8 +165,7 @@ class LSHttpRequest extends CHttpRequest
 
     public function getPathInfo()
     {
-        if ($this->_pathInfo === null)
-        {
+        if ($this->_pathInfo === null) {
             $pathInfo = $this->getRequestUri();
 
             if (($pos = strpos($pathInfo, '?')) !== false) {

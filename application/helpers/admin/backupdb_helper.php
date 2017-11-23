@@ -19,29 +19,24 @@
      */
     function outputDatabase($sDbName = '', $bEchoOutput = true, $sFileName = null)
     {
-        if ($sDbName == '')
-        {
+        if ($sDbName == '') {
             $sDbName = _getDbName();
         }
         $bAllowExportAllDb = (bool) Yii::app()->getConfig('allowexportalldb');
 
         $sOutput = _outputDBDescription($sDbName, $bAllowExportAllDb);
-        if ($bEchoOutput)
-        {
+        if ($bEchoOutput) {
             echo $sOutput;
         }
 
-        if (!is_null($sFileName))
-        {
+        if (!is_null($sFileName)) {
             $oFile = fopen($sFileName, 'w');
             fwrite($oFile, $sOutput);
-        } else
-        {
+        } else {
             $oFile = null;
         }
         _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile);
-        if (!is_null($sFileName))
-        {
+        if (!is_null($sFileName)) {
             fclose($oFile);
         }
 
@@ -63,20 +58,16 @@
     {
         if ($bAllowExportAllDb) {
             $aTables = Yii::app()->db->getSchema()->getTableNames();
-        } else
-        {
+        } else {
             $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_')."%"))->queryColumn();
         }
-        foreach ($aTables as $sTableName)
-        {
+        foreach ($aTables as $sTableName) {
             $oTableData = Yii::app()->db->getSchema()->getTable($sTableName);
             $sOutput = _outputTableDescription($sTableName);
-            if ($bEchoOutput)
-            {
+            if ($bEchoOutput) {
                 echo $sOutput;
             }
-            if (!is_null($sFileName))
-            {
+            if (!is_null($sFileName)) {
                 fwrite($oFile, $sOutput);
             }
             _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
@@ -113,8 +104,7 @@
             $iMaxNbRecords = _getMaxNbRecords();
             $aFieldNames = array_keys($oTableData->columns);
 
-            for ($i = 0; $i < ceil($iNbRecords / $iMaxNbRecords); $i++)
-            {
+            for ($i = 0; $i < ceil($iNbRecords / $iMaxNbRecords); $i++) {
                 $aRecords = Yii::app()->db->createCommand()
                 ->select()
                 ->from($sTableName)
@@ -122,12 +112,10 @@
                 ->query()->readAll();
 
                 $sOutput .= _outputRecords($sTableName, $aFieldNames, $aRecords);
-                if ($bEchoOutput)
-                {
+                if ($bEchoOutput) {
                     echo $sOutput;
                 }
-                if (!is_null($sFileName))
-                {
+                if (!is_null($sFileName)) {
                     fwrite($oFile, $sOutput);
                 }
                 $sOutput = '';
@@ -137,12 +125,10 @@
             $sOutput .= "\n";
 
         }
-        if ($bEchoOutput)
-        {
+        if ($bEchoOutput) {
             echo $sOutput;
         }
-        if (!is_null($sFileName))
-        {
+        if (!is_null($sFileName)) {
             fwrite($oFile, $sOutput);
         }
     }
@@ -153,25 +139,21 @@
         $aLastRecord = end($aRecords);
         $i = 0;
         $sOutput = '';
-        foreach ($aRecords as $aRecord)
-        {
+        foreach ($aRecords as $aRecord) {
             if ($i == 0) {
                 $sOutput .= 'INSERT INTO `'.$sTableName."` (";
-                foreach ($aFieldNames as $sFieldName)
-                {
+                foreach ($aFieldNames as $sFieldName) {
                     $sOutput .= '`'.$sFieldName.'`,';
                 }
                 $sOutput = substr($sOutput, 0, -1);
                 $sOutput .= ") VALUES\n";
             }
             $sOutput .= '(';
-            foreach ($aFieldNames as $sFieldName)
-            {
+            foreach ($aFieldNames as $sFieldName) {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
                     $sOutput .= Yii::app()->db->quoteValue($aRecord[$sFieldName]);
-                } else
-                {
+                } else {
                     $sOutput .= 'NULL';
                 }
 
@@ -180,12 +162,10 @@
                 }
             }
             $i++;
-            if ($i == 200 || ($aLastRecord == $aRecord))
-            {
+            if ($i == 200 || ($aLastRecord == $aRecord)) {
                 $sOutput .= ');'."\n";
                 $i = 0;
-            } else
-            {
+            } else {
                 $sOutput .= '),'."\n";
             }
         }

@@ -15,8 +15,7 @@ class WipeCommand extends CConsoleCommand
 
     public function run($sArgument)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes')
-        {
+        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
 
             Yii::import('application.helpers.common_helper', true);
             Yii::import('application.helpers.database_helper', true);
@@ -95,20 +94,17 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
 
             $surveyidresult = dbGetTablesLike("tokens%");
-            foreach ($surveyidresult as $sv)
-            {
+            foreach ($surveyidresult as $sv) {
                 Yii::app()->db->createCommand("drop table ".$sv)->execute();
             }
 
             $surveyidresult = dbGetTablesLike("old\_%");
-            foreach ($surveyidresult as $sv)
-            {
+            foreach ($surveyidresult as $sv) {
                 Yii::app()->db->createCommand("drop table ".$sv)->execute();
             }
 
             $surveyidresult = dbGetTablesLike("survey\_%");
-            foreach ($surveyidresult as $sv)
-            {
+            foreach ($surveyidresult as $sv) {
                 if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
                                     Yii::app()->db->createCommand("drop table ".$sv)->execute();
                 }
@@ -117,8 +113,7 @@ class WipeCommand extends CConsoleCommand
 
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
-        } else
-        {
+        } else {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
         }
@@ -144,8 +139,7 @@ function SureRemoveDir($dir, $DeleteMe)
     }
     closedir($dh);
     if ($DeleteMe) {
-        if (!@rmdir($dir))
-        {
+        if (!@rmdir($dir)) {
             echo "Error: could not delete ".$dir;
         }
 

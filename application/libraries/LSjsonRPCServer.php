@@ -57,7 +57,8 @@
         }
 
         // output the response
-        if (is_null($request) || !empty($request['id'])) { // notifications don't want response
+        if (is_null($request) || !empty($request['id'])) {
+// notifications don't want response
             header('content-type: text/javascript');
             BigData::json_echo($response);
         }

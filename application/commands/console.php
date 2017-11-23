@@ -47,8 +47,7 @@
     /* specific for web */
     unset($config['defaultController']);
 
-    if (isset($config))
-    {
+    if (isset($config)) {
         require_once($core.'ConsoleApplication.php');
         $app = Yii::createApplication('ConsoleApplication', $config);
         define('APPPATH', Yii::app()->getBasePath().DIRECTORY_SEPARATOR);

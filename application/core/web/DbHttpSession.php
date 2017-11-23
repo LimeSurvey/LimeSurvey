@@ -14,8 +14,7 @@ class DbHttpSession extends \CDbHttpSession
     {
         // exception must be caught in session write handler
         // http://us.php.net/manual/en/function.session-set-save-handler.php
-        try
-        {
+        try {
             $expire = time() + $this->getTimeout();
             $db = $this->getDbConnection();
             if ($db->getDriverName() == 'pgsql') {
@@ -36,8 +35,7 @@ class DbHttpSession extends \CDbHttpSession
                     'expire'=>$expire
                 ), 'id=:id', array(':id'=>$id));
             }
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             if (YII_DEBUG) {
                             echo $e->getMessage();
             }

@@ -75,7 +75,8 @@ class jsonRPCServer
         }
 
         // output the response
-        if (!empty($request['id'])) { // notifications don't want response
+        if (!empty($request['id'])) {
+// notifications don't want response
             header('content-type: text/javascript');
             echo json_encode($response);
         }

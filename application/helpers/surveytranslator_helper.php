@@ -921,7 +921,8 @@ function getLanguageNameFromCode($codetosearch, $withnative = true, $sTranslatio
         } else {
             return $detaillanguages[$codetosearch]['description'];
         }
-    } else {         // else return code
+    } else {
+// else return code
         return $codetosearch;
     }
 }

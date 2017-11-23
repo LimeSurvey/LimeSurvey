@@ -134,12 +134,12 @@ class SurveymenuEntryData extends CFormModel
                 $oTypeObject = Template::model()->findByPk($oSurvey->template);
                 break;
             case 'questiongroup':
-                if (isset($_REQUEST['gid'])) { 
+                if (isset($_REQUEST['gid'])) {
                     $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['gid']));
                 }
                 break;
             case 'question':
-                if (isset($_REQUEST['qid'])) { 
+                if (isset($_REQUEST['qid'])) {
                     $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['qid']));
                 }
                 break;

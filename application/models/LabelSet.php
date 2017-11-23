@@ -99,8 +99,7 @@ class LabelSet extends LSActiveRecord
         foreach ($data as $k => $v) {
                     $lblset->$k = $v;
         }
-        if ($lblset->save())
-        {
+        if ($lblset->save()) {
             return $lblset->lid;
         }
         return false;

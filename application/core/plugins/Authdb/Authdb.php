@@ -98,8 +98,7 @@ class Authdb extends AuthPluginBase
     {
         $sUserName = '';
         $sPassword = '';
-        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
-        {
+        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) {
             $sUserName = Yii::app()->getConfig("defaultuser");
             $sPassword = Yii::app()->getConfig("defaultpass");
         }
@@ -114,8 +113,7 @@ class Authdb extends AuthPluginBase
         // Do nothing if this user is not Authdb type
         $identity = $this->getEvent()->get('identity');
 
-        if ($identity->plugin != 'Authdb')
-        {
+        if ($identity->plugin != 'Authdb') {
             return;
         }
 
@@ -132,8 +130,7 @@ class Authdb extends AuthPluginBase
                 $this->setUsername($user->users_name);
             }
         }
-        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))
-        {
+        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid)) {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
@@ -141,14 +138,14 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-        if ($user !== null && ($username != $user->users_name && $username != $user->email)) { // Control of equality for uppercase/lowercase with mysql
+        if ($user !== null && ($username != $user->users_name && $username != $user->email)) {
+// Control of equality for uppercase/lowercase with mysql
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
 
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw)
-        {
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw) {
             $user->one_time_pw = '';
             $user->save();
             $this->setAuthSuccess($user);

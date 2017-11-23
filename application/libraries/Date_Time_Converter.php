@@ -256,25 +256,29 @@ class Date_Time_Converter
                         //try numeric value checking
                         switch ($type) {
                             case "n":
-                                if ($val > 12 || $val < 1) {  //month must be between 1-12
+                                if ($val > 12 || $val < 1) {
+//month must be between 1-12
                                     $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "j":
-                                if ($val > 31 || $val < 1) {  //day must be between 1-31
+                                if ($val > 31 || $val < 1) {
+//day must be between 1-31
                                     $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "g":
-                                if ($val > 12 || $val < 1) {  //day must be between 1-12
+                                if ($val > 12 || $val < 1) {
+//day must be between 1-12
                                     $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "G":
-                                if ($val > 24 || $val < 1) {  //day must be between 1-24
+                                if ($val > 24 || $val < 1) {
+//day must be between 1-24
                                     $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
@@ -338,7 +342,8 @@ class Date_Time_Converter
             }
         }
 
-        if (strtolower($this->ampm) == "pm" && $this->hours < 12) { //if its pm, add 12 hours
+        if (strtolower($this->ampm) == "pm" && $this->hours < 12) {
+//if its pm, add 12 hours
             $this->hours = $this->hours + 12;
         }
 

@@ -31,17 +31,14 @@ class htmleditor_pop extends Survey_Common_Action
             'iGroupId' => sanitize_int(App()->request->getQuery('gid', 0)),
             'iQuestionId'=> sanitize_int(App()->request->getQuery('qid', 0)),
         );
-        if (!$aData['sFieldName'])
-        {
+        if (!$aData['sFieldName']) {
             $this->getController()->render('/admin/htmleditor/pop_nofields_view', $aData);
-        } else
-        {
+        } else {
             $aData['sControlIdEna'] = $aData['sFieldName'].'_popupctrlena';
             $aData['sControlIdDis'] = $aData['sFieldName'].'_popupctrldis';
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
-            if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder')))
-            {
+            if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder'))) {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }
 

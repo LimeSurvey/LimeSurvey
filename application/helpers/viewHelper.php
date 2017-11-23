@@ -117,25 +117,20 @@ class viewHelper
         $aOption = array_merge($aDefaultOption, $aOption);
 
         $sQuestionText = ""; // Allways return a string
-        if (isset($aField['fieldname']))
-        {
+        if (isset($aField['fieldname'])) {
             $sQuestionText = self::flatEllipsizeText($aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']).$aOption['afterquestion'];
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
-            if (isset($aField['subquestion']) && $bHaveSubQuestion)
-            {
+            if (isset($aField['subquestion']) && $bHaveSubQuestion) {
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if (isset($aField['subquestion1']) && $bHaveSubQuestion)
-            {
+            if (isset($aField['subquestion1']) && $bHaveSubQuestion) {
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion1'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if (isset($aField['subquestion2']) && $bHaveSubQuestion)
-            {
+            if (isset($aField['subquestion2']) && $bHaveSubQuestion) {
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion2'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if (isset($aField['scale']) && $aField['scale'])
-            {
+            if (isset($aField['scale']) && $aField['scale']) {
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['scale'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']); ;
             }
         }
@@ -163,17 +158,13 @@ class viewHelper
         if ($aOption['LEMcompat']) {$aOption['separator'] = "_"; }
 
         $sQuestionCode = "";
-        if (isset($aField['fieldname']))
-        {
-            if (isset($aField['title']) && $aField['title'])
-            {
+        if (isset($aField['fieldname'])) {
+            if (isset($aField['title']) && $aField['title']) {
                 $sQuestionCode = $aField['title'];
-                if (isset($aField['aid']) && $aField['aid'] != "")
-                {
+                if (isset($aField['aid']) && $aField['aid'] != "") {
                     $sQuestionCode .= self::putSeparator($aField['aid'], $aOption['separator']);
                 }
-                if (isset($aField['scale']) && $aField['scale'])
-                {
+                if (isset($aField['scale']) && $aField['scale']) {
                     if ($aOption['LEMcompat']) {
                         $scalenum = intval($aField['scale_id']);
                     } else {
@@ -181,8 +172,7 @@ class viewHelper
                     }
                     $sQuestionCode .= self::putSeparator($scalenum, $aOption['separator']);
                 }
-            } else
-            {
+            } else {
                 $sQuestionCode = $aField['fieldname'];
             }
         }
@@ -198,11 +188,9 @@ class viewHelper
      */
     public static function putSeparator($sString, $separator)
     {
-        if (is_array($separator))
-        {
+        if (is_array($separator)) {
             return $separator[0].$sString.$separator[1];
-        } else
-        {
+        } else {
             return $separator.$sString;
         }
     }
@@ -240,8 +228,7 @@ class viewHelper
      */
         public static function disableHtmlLogging()
         {
-        foreach (App()->log->routes as $route)
-        {
+        foreach (App()->log->routes as $route) {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
         }

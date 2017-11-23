@@ -14,8 +14,7 @@ if (!file_exists(dirname(__FILE__).'/config.php')) {
     $userConfig = require(dirname(__FILE__).'/config.php');
 }
 
-if (!date_default_timezone_set(@date_default_timezone_get()))
-{
+if (!date_default_timezone_set(@date_default_timezone_get())) {
 
     date_default_timezone_set('Europe/London');
 }
@@ -24,8 +23,7 @@ if (!date_default_timezone_set(@date_default_timezone_get()))
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
     mb_internal_encoding('UTF-8');
-    if (ini_get('mbstring.internal_encoding'))
-    {
+    if (ini_get('mbstring.internal_encoding')) {
         ini_set('mbstring.internal_encoding', 'UTF-8');
     }
 

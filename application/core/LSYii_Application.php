@@ -69,11 +69,9 @@ class LSYii_Application extends CWebApplication
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
         $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
-        if (file_exists(__DIR__.'/../config/config.php'))
-        {
+        if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
-            if (is_array($userConfigs['config']))
-            {
+            if (is_array($userConfigs['config'])) {
                 $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
@@ -102,10 +100,10 @@ class LSYii_Application extends CWebApplication
     public function initLanguage()
     {
         // Set language to use.
-        if ($this->request->getParam('lang') !== null)
-        {
+        if ($this->request->getParam('lang') !== null) {
             $this->setLanguage($this->request->getParam('lang'));
-        } elseif (isset(App()->session['_lang'])) {  // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+        } elseif (isset(App()->session['_lang'])) {
+// See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
             $this->setLanguage(App()->session['_lang']);
         }
 
@@ -179,8 +177,7 @@ class LSYii_Application extends CWebApplication
     public function loadConfig($file)
     {
         $config = require_once(APPPATH.'/config/'.$file.'.php');
-        if (is_array($config))
-        {
+        if (is_array($config)) {
             foreach ($config as $k => $v) {
                             $this->setConfig($k, $v);
             }
@@ -228,8 +225,7 @@ class LSYii_Application extends CWebApplication
      */
     public function getApi()
     {
-        if (!isset($this->api))
-        {
+        if (!isset($this->api)) {
             $this->api = new \LimeSurvey\PluginManager\LimesurveyApi();
         }
         return $this->api;

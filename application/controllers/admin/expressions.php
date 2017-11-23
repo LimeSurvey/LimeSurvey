@@ -22,8 +22,7 @@ class Expressions extends Survey_Common_Action
         $needpermission = false;
 
         $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
-        if (!$iSurveyID)
-        {
+        if (!$iSurveyID) {
             $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
         }
         
@@ -31,19 +30,16 @@ class Expressions extends Survey_Common_Action
 
         $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
 
-        if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID)
-        {
+        if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
         }
 
-        if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
-        {
+        if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-        } else
-        {
+        } else {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('decimal');
 
@@ -71,8 +67,7 @@ class Expressions extends Survey_Common_Action
         
         $sid = sanitize_int(Yii::app()->request->getParam('sid', 0));
 
-        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read'))
-        {
+        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
@@ -117,15 +112,13 @@ class Expressions extends Survey_Common_Action
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
-        if ($gid !== NULL)
-        {
+        if ($gid !== NULL) {
             $gid = sanitize_int($gid);
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;
         }
         
-        if ($qid !== NULL)
-        {
+        if ($qid !== NULL) {
             $qid = sanitize_int($qid);
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
             $aData['qid'] = $qid;
@@ -194,8 +187,7 @@ class Expressions extends Survey_Common_Action
 
     private function _printOnLoad($which)
     {
-        switch ($which)
-        {
+        switch ($which) {
             case 'relevance':
                 App()->getClientScript()->registerScript("emscript", "ExprMgr_process_relevance_and_tailoring();", LSYii_ClientScript::POS_POSTSCRIPT);
                 break;
@@ -207,8 +199,7 @@ class Expressions extends Survey_Common_Action
 
     private function _printTitle($which)
     {
-        switch ($which)
-        {
+        switch ($which) {
             case 'index':
                 return 'Test Suite';
                 break;

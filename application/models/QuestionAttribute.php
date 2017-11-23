@@ -126,8 +126,7 @@ class QuestionAttribute extends LSActiveRecord
                 $oQuestion = Question::model()->find('qid=:qid and language=:language and sid=:sid', array(":qid"=>$iQid, ":language"=>$sLanguage, ":sid"=>$iSid));
 
                 // For each attribute
-                foreach ($aAttributesToUpdate as $sAttribute)
-                {
+                foreach ($aAttributesToUpdate as $sAttribute) {
                     // TODO: use an array like for a form submit, so we can parse it from the controller instead of using $_POST directly here
                     $sValue         = Yii::app()->request->getPost($sAttribute);
                     $iInsertCount   = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$sAttribute, 'qid'=>$iQid));
@@ -219,7 +218,8 @@ class QuestionAttribute extends LSActiveRecord
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
-                    } elseif (isset($aAttributeValues[$aAttribute['name']])) { /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
+                    } elseif (isset($aAttributeValues[$aAttribute['name']])) {
+/* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
                         $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
                     } else {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];

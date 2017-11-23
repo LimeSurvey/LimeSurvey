@@ -47,14 +47,12 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'edit'))
-        {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'edit')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         $lid = returnGlobal('lid');
-        if (!empty($lid))
-        {
+        if (!empty($lid)) {
             if (Yii::app()->getConfig('demoMode')) {
                             $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
@@ -81,16 +79,14 @@ class labels extends Survey_Common_Action
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
 
-            if (is_file($zipfilename))
-            {
+            if (is_file($zipfilename)) {
                 if ($zip->extract($extractdir) <= 0) {
                                     $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. ".$zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
                 }
 
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
-                foreach ($folders as $folder)
-                {
+                foreach ($folders as $folder) {
                     list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir."/".$folder, $destdir.$folder);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
@@ -127,37 +123,32 @@ class labels extends Survey_Common_Action
      */
     public function import()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'import'))
-        {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'import')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         $action = returnGlobal('action');
         $aViewUrls = array();
 
-        if ($action == 'importlabels')
-        {
+        if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(20);
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2)
-            {
+            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
                 Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
                 $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
             }
 
-            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-            {
+            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
                 $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
             }
 
             $options['checkforduplicates'] = 'off';
-            if ($_POST['checkforduplicates'] == 1)
-            {
+            if ($_POST['checkforduplicates'] == 1) {
                 $options['checkforduplicates'] = 'on';
             }
             if (strtolower($sExtension) == 'lsl') {
@@ -188,13 +179,10 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (Permission::model()->hasGlobalPermission('labelsets', 'read'))
-        {
-            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'update'))
-            {
+        if (Permission::model()->hasGlobalPermission('labelsets', 'read')) {
+            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
-                foreach ($result as $row)
-                {
+                foreach ($result as $row) {
                     $row = $row->attributes;
                     $lbname = $row['label_name'];
                     $lblid = $row['lid'];
@@ -207,8 +195,7 @@ class labels extends Survey_Common_Action
             $aData['action'] = $sa;
             $aData['lid'] = $lid;
 
-            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create'))
-            {
+            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = gT("New label set");
             } else {
@@ -250,8 +237,7 @@ class labels extends Survey_Common_Action
      */
     public function view($lid = 0)
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
@@ -276,8 +262,7 @@ class labels extends Survey_Common_Action
         $labelset_exists = $model !== null;
         
         
-        if ($lid && $labelset_exists)
-        {
+        if ($lid && $labelset_exists) {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
@@ -302,8 +287,7 @@ class labels extends Survey_Common_Action
 
             Yii::app()->loadHelper("surveytranslator");
             $results = array();
-            foreach ($lslanguages as $lslanguage)
-            {
+            foreach ($lslanguages as $lslanguage) {
                 if (!$lslanguage) {
                     continue;
                 }
@@ -331,11 +315,9 @@ class labels extends Survey_Common_Action
 
         $aData['model'] = $model;
 
-        if ($lid == 0)
-        {
+        if ($lid == 0) {
             $aData['labelbar']['buttons']['view'] = true;
-        } else
-        {
+        } else {
             $aData['labelbar']['buttons']['delete'] = true;
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save changes");
@@ -348,8 +330,7 @@ class labels extends Survey_Common_Action
             }
         }
 
-        if (isset($_GET['pageSize']))
-        {
+        if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
@@ -364,8 +345,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
@@ -373,8 +353,7 @@ class labels extends Survey_Common_Action
         Yii::app()->loadHelper('admin/label');
         $lid = returnGlobal('lid');
 
-        if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update'))
-        {
+        if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."), 'success');
         }
@@ -384,10 +363,8 @@ class labels extends Survey_Common_Action
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                     modlabelsetanswers($lid);
         }
-        if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete'))
-        {
-            if (deletelabelset($lid))
-            {
+        if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
+            if (deletelabelset($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
                 $lid = 0;
             }
@@ -409,16 +386,13 @@ class labels extends Survey_Common_Action
     {
         $lid = returnGlobal('lid');
 
-        if (Permission::model()->hasGlobalPermission('labelsets', 'delete'))
-        {
+        if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             Yii::app()->loadHelper('admin/label');
 
-            if (deletelabelset($lid))
-            {
+            if (deletelabelset($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
             }
-        } else
-        {
+        } else {
             Yii::app()->setFlashMessage(gT("You are not authorized to delete label sets."));
         }
 
@@ -433,8 +407,7 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        if (Permission::model()->hasGlobalPermission('labelsets', 'export'))
-        {
+        if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
@@ -449,8 +422,7 @@ class labels extends Survey_Common_Action
 
         $output = array();
 
-        foreach ($results as $row)
-        {
+        foreach ($results as $row) {
             $output[$row->lid] = flattenText($row->getAttribute('label_name'));
         }
         header('Content-type: application/json');
@@ -469,22 +441,19 @@ class labels extends Survey_Common_Action
             $language .= $lang." ";
         }
         $language = trim($language);
-        if ($lid == 0)
-        {
+        if ($lid == 0) {
             $lset = new LabelSet;
             $lset->label_name = Yii::app()->getRequest()->getPost('laname');
             $lset->languages = $language;
             $lset->save();
 
             $lid = getLastInsertID($lset->tableName());
-        } else
-        {
+        } else {
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
         }
         $res = 'ok'; //optimistic
         foreach ($answers as $lang => $answer) {
-            foreach ($answer as $key => $ans)
-            {
+            foreach ($answer as $key => $ans) {
                 $label = new Label;
                 $label->lid = $lid;
                 $label->code = $code[$key];
@@ -511,14 +480,11 @@ class labels extends Survey_Common_Action
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'labels.js');
 
-        if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
-        {
-            if (empty($aData['labelsets']))
-            {
+        if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false) {
+            if (empty($aData['labelsets'])) {
                 $aData['labelsets'] = getLabelSets();
             }
-            if (empty($aData['lid']))
-            {
+            if (empty($aData['lid'])) {
                 $aData['lid'] = 0;
             }
             $aViewUrls = (array) $aViewUrls;

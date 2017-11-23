@@ -128,8 +128,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{participant_attribute_names_lang}}', 'lang', "string(20)", false);
             addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
             //Fixes the collation for the complete DB, tables and columns
-            if (Yii::app()->db->driverName == 'mysql')
-            {
+            if (Yii::app()->db->driverName == 'mysql') {
                 fixMySQLCollations('utf8mb4', 'utf8mb4_unicode_ci');
                 // Also apply again fixes from DBVersion 181 again for case sensitive token fields
                 upgradeSurveyTables181('utf8mb4_bin');
@@ -229,8 +228,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
                 // RAND is RANDOM in Postgres
-                switch (Yii::app()->db->driverName)
-                {
+                switch (Yii::app()->db->driverName) {
                     case 'pgsql':
                         Yii::app()->db->createCommand("UPDATE {$sTableName} SET seed = ROUND(RANDOM() * 10000000)")->execute();
                         break;
@@ -247,8 +245,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          * Plugin JSON config file
          * @since 2016-08-22
          */
-        if ($iOldDBVersion < 291)
-        {
+        if ($iOldDBVersion < 291) {
             $oTransaction = $oDB->beginTransaction();
 
             addColumn('{{plugins}}', 'version', 'string(32)');
@@ -707,8 +704,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-    } catch (Exception $e)
-    {
+    } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
         // Activate schema caching
@@ -1296,8 +1292,7 @@ function upgradeTokenTables256()
 {
     $aTableNames = dbGetTablesLike("tokens%");
     $oDB = Yii::app()->getDb();
-    foreach ($aTableNames as $sTableName)
-    {
+    foreach ($aTableNames as $sTableName) {
         try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl", $sTableName); } catch (Exception $e) { rollBackToTransactionBookmark(); }
         alterColumn($sTableName, 'email', "text");
         alterColumn($sTableName, 'firstname', "string(150)");
@@ -1387,15 +1382,12 @@ function upgradeSurveyTables253()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
-    foreach ($aTables as $sTable)
-    {
+    foreach ($aTables as $sTable) {
         $oTableSchema = $oSchema->getTable($sTable);
-        if (in_array('refurl', $oTableSchema->columnNames))
-        {
+        if (in_array('refurl', $oTableSchema->columnNames)) {
             alterColumn($sTable, 'refurl', "text");
         }
-        if (in_array('ipaddr', $oTableSchema->columnNames))
-        {
+        if (in_array('ipaddr', $oTableSchema->columnNames)) {
             alterColumn($sTable, 'ipaddr', "text");
         }
     }
@@ -1496,8 +1488,7 @@ function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
-    foreach ($surveyidresult as $sv)
-    {
+    foreach ($surveyidresult as $sv) {
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
     }
 }
@@ -1510,11 +1501,9 @@ function upgradeSurveyTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if (Yii::app()->db->driverName != 'pgsql')
-    {
+    if (Yii::app()->db->driverName != 'pgsql') {
         $aTables = dbGetTablesLike("survey\_%");
-        foreach ($aTables as $sTableName)
-        {
+        foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
@@ -1544,13 +1533,10 @@ function upgradeSurveyTables181($sMySQLCollation)
 function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
-    if (Yii::app()->db->driverName != 'pgsql')
-    {
+    if (Yii::app()->db->driverName != 'pgsql') {
         $aTables = dbGetTablesLike("tokens%");
-        if (!empty($aTables))
-        {
-            foreach ($aTables as $sTableName)
-            {
+        if (!empty($aTables)) {
+            foreach ($aTables as $sTableName) {
                 switch (Yii::app()->db->driverName) {
                     case 'sqlsrv':
                     case 'dblib':
@@ -1580,12 +1566,10 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
         case 'mysql':
         case 'mysqli':
             $sType = $sFieldType;
-            if ($bAllowNull !== true)
-            {
+            if ($bAllowNull !== true) {
                 $sType .= ' NOT NULL';
             }
-            if ($sDefault != 'NULL')
-            {
+            if ($sDefault != 'NULL') {
                 $sType .= " DEFAULT '{$sDefault}'";
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
@@ -1595,20 +1579,16 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
         case 'mssql':
             dropDefaultValueMSSQL($sColumn, $sTable);
             $sType = $sFieldType;
-            if ($bAllowNull != true && $sDefault != 'NULL')
-            {
+            if ($bAllowNull != true && $sDefault != 'NULL') {
                 $oDB->createCommand("UPDATE {$sTable} SET [{$sColumn}]='{$sDefault}' where [{$sColumn}] is NULL;")->execute();
             }
-            if ($bAllowNull != true)
-            {
+            if ($bAllowNull != true) {
                 $sType .= ' NOT NULL';
-            } else
-            {
+            } else {
                 $sType .= ' NULL';
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
-            if ($sDefault != 'NULL')
-            {
+            if ($sDefault != 'NULL') {
                 $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
@@ -1618,12 +1598,10 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
             try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute(); } catch (Exception $e) {};
             try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute(); } catch (Exception $e) {};
 
-            if ($bAllowNull != true)
-            {
+            if ($bAllowNull != true) {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
             }
-            if ($sDefault != 'NULL')
-            {
+            if ($sDefault != 'NULL') {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET DEFAULT '{$sDefault}'")->execute();
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
@@ -1727,8 +1705,7 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
     and ic.is_included_column = 0
     and o.name='{$sTableName}' and co.name='{$sFieldName}'";
     $aKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryScalar();
-    if ($aKeyName != false)
-    {
+    if ($aKeyName != false) {
         try { $oDB->createCommand()->dropIndex($aKeyName, $sTableName); } catch (Exception $e) { }
     }
 }
@@ -1759,8 +1736,7 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
             ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
             $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
-            if ($primarykey !== false)
-            {
+            if ($primarykey !== false) {
                 $sQuery = "ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
                 Yii::app()->db->createCommand($sQuery)->execute();
             }
