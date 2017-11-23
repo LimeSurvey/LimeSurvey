@@ -377,7 +377,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language) {
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, â€¦ */
+        /* Not managed (currently): url, IP, Ã¢â‚¬Â¦ */
         return;
     }
 }
@@ -722,12 +722,16 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             foreach ($Row as $Key=>$Value)
             {
                 if (!isset($exclude[$Key])) {
-                    if (!(is_null($Value))) // If the $value is null don't output an element at all
-                    {
-                        if (is_numeric($Key[0])) $Key = '_'.$Key; // mask invalid element names with an underscore
+                    if (!(is_null($Value))) { // If the $value is null don't output an element at all
+                        if (is_numeric($Key[0])) {
+                            // mask invalid element names with an underscore
+                            $Key = '_'.$Key; 
+                        }
                         $Key = str_replace('#', '-', $Key);
-                        if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
-                        // Remove invalid XML characters
+                        if (!$xmlwriter->startElement($Key)) { // Remove invalid XML characters
+                            safeDie('Invalid element key: '.$Key);
+                        }
+                        
                         if ($Value !== '') {
                             $Value = str_replace(']]>', ']] >', $Value);
                             $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value));
@@ -768,8 +772,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     WHERE {{assessments}}.sid=$iSurveyID";
     buildXMLFromQuery($xmlwriter, $query);
 
-    if (!isset($exclude['conditions']))
-    {
+    if (!isset($exclude['conditions'])) {
         //Condition table
         $cquery = "SELECT DISTINCT {{conditions}}.*
         FROM {{conditions}}, {{questions}}

@@ -268,8 +268,7 @@ function retrieveAnswers($ia)
     }
 
 
-    if (isset($values)) //Break apart $values array returned from switch
-    {
+    if (isset($values)) { //Break apart $values array returned from switch
         //$answer is the html code to be printed
         //$inputnames is an array containing the names of each input field
         list($answer, $inputnames) = $values;
@@ -342,8 +341,7 @@ function retrieveAnswers($ia)
         // START: <EMBED> work-around step 1
         $qtitle_custom = preg_replace('/(<embed[^>]+>)(<\/embed>)/i', '\1NOT_EMPTY\2', $qtitle_custom);
         // END <EMBED> work-around step 1
-        while ($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-        {
+        while ($c > 0) { // This recursively strips any empty tags to minimise rendering bugs.
             $oldtitle = $qtitle_custom;
             $qtitle_custom = preg_replace('/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU', '', $qtitle_custom, -1); // I removed the $count param because it is PHP 5.1 only.
 
@@ -352,8 +350,7 @@ function retrieveAnswers($ia)
         // START <EMBED> work-around step 2
         $qtitle_custom = preg_replace('/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i', '\1\2', $qtitle_custom);
         // END <EMBED> work-around step 2
-        while ($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-        {
+        while ($c > 0) { // This recursively strips any empty tags to minimise rendering bugs.
             $oldtitle = $qtitle_custom;
             $qtitle_custom = preg_replace('/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i', '', $qtitle_custom, -1); // I removed the $count param because it is PHP 5.1 only.
             $c = ($qtitle_custom != $oldtitle) ? 1 : 0;
@@ -428,8 +425,7 @@ function mandatory_popup($ia, $notanswered = null)
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered); }
-    if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
-    {
+    if (isset($notanswered) && is_array($notanswered)) { //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         global $mandatorypopup, $popup;
         //POPUP WARNING
         if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
@@ -845,8 +841,7 @@ function do_5pointchoice($ia)
             ), true);
     }
 
-    if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
-    {
+    if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) { // Add "No Answer" option if question is not mandatory
         $checkedState = '';
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
@@ -925,8 +920,7 @@ function do_date($ia)
         {
             $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
         }
-        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
-        {
+        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $mindate = $date_min;
         }
         elseif ($date_time_em)
@@ -953,8 +947,7 @@ function do_date($ia)
         {
             $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
         }
-        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
-        {
+        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
         }
         elseif ($date_time_em)
@@ -1849,9 +1842,7 @@ function do_listwithcomment($ia)
 
         $inputnames[] = $ia[1];
         $inputnames[] = $ia[1].'comment';
-    }
-    else //Dropdown list
-    {
+    } else { //Dropdown list
         $sOptions = '';
         foreach ($ansresult as $ansrow)
         {
@@ -3611,8 +3602,7 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($sIPAddress) {
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
-    if ($ipInfoDbAPIKey)// ipinfodb.com need a key
-    {
+    if ($ipInfoDbAPIKey) { // ipinfodb.com needs a key
         $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
         if ($oXML->{'statusCode'} == "OK") {
             $lat = (float) $oXML->{'latitude'};
@@ -3665,8 +3655,7 @@ function do_longfreetext($ia)
         $drows = 5;
     }
 
-    if (trim($aQuestionAttributes['text_input_width']) != '') // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
-    {
+    if (trim($aQuestionAttributes['text_input_width']) != '') { // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
@@ -3920,8 +3909,7 @@ function do_array_5point($ia)
     $columnswidth = 100 - $answerwidth;
     $colCount = 5; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         ++$colCount; // add another column
     }
 
@@ -3964,8 +3952,7 @@ function do_array_5point($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
@@ -3996,8 +3983,7 @@ function do_array_5point($ia)
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
@@ -4126,8 +4112,7 @@ function do_array_10point($ia)
         $answerwidth = 33;
     }
     $cellwidth = 10; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         ++$cellwidth; // add another column
     }
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
@@ -4153,8 +4138,7 @@ function do_array_10point($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $odd_even = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
@@ -4172,8 +4156,7 @@ function do_array_10point($ia)
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
@@ -4269,8 +4252,7 @@ function do_array_yesnouncertain($ia)
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         ++$cellwidth; // add another column
     }
 
@@ -4298,8 +4280,7 @@ function do_array_yesnouncertain($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth, 'no_answer'=>true), true);
     }
@@ -4373,8 +4354,7 @@ function do_array_increasesamedecrease($ia)
     $cellwidth               = 3; // number of columns
     $inputnames              = array();
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         ++$cellwidth; // add another column
     }
 
@@ -4403,8 +4383,7 @@ function do_array_increasesamedecrease($ia)
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
@@ -4573,8 +4552,7 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-        {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory and we can show "no answer"
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => 'answer-text noanswer-text',
                 'content' => gT('No answer'),
@@ -4677,8 +4655,7 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-        {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
             $odd_even = alternation($odd_even);
             $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
                 'class'     => 'col-no-answer '.$odd_even,
@@ -5991,8 +5968,7 @@ function do_array_dual($ia)
                     $aData['aSubQuestions'][$i]['sessionfname0'] = '';
                 }
 
-                if (count($labelans1) > 0) // if second label set is used
-                {
+                if (count($labelans1) > 0) {  // if second label set is used
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
                     {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
@@ -6004,8 +5980,7 @@ function do_array_dual($ia)
                     }
                 }
 
-                foreach ($labelcode0 as $j => $ld)  // First label set
-                {
+                foreach ($labelcode0 as $j => $ld) { // First label set
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
@@ -6016,8 +5991,7 @@ function do_array_dual($ia)
                     }
                 }
 
-                if (count($labelans1) > 0) // if second label set is used
-                {
+                if (count($labelans1) > 0) {  // if second label set is used
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
@@ -6033,8 +6007,7 @@ function do_array_dual($ia)
 
                     array_push($inputnames, $myfname1);
 
-                    foreach ($labelcode1 as $j => $ld) // second label set
-                    {
+                    foreach ($labelcode1 as $j => $ld) { // second label set
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;

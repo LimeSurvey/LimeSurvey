@@ -35,16 +35,14 @@ function loadanswers()
         $oCriteria->join = "LEFT JOIN {{saved_control}} ON t.id={{saved_control}}.srid";
         $oCriteria->condition = "{{saved_control}}.sid=:sid";
         $aParams = array(':sid'=>$surveyid);
-        if (isset($scid)) //Would only come from email : we don't need it ....
-        {
+        if (isset($scid)) { //Would only come from email : we don't need it ....
             $oCriteria->addCondition("{{saved_control}}.scid=:scid");
             $aParams[':scid'] = $scid;
         }
         $oCriteria->addCondition("{{saved_control}}.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
 
-        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
-        {
+        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
             // To be validated with mssql, think it's not needed
             $oCriteria->addCondition("(CAST({{saved_control}}.access_code as varchar(64))=:md5_code OR CAST({{saved_control}}.access_code as varchar(64))=:sha256_code)");
         } else

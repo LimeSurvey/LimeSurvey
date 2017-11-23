@@ -116,7 +116,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             }
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
-            if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title']) == '') continue; // Skip questions with invalid group id
+            if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title']) == '') { // Skip questions with invalid group id
+                continue;
+            } 
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $oldqid = $insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
@@ -153,10 +155,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['sid'] = $iNewSID;
-            if (!isset($aGIDReplacements[$insertdata['gid']])) continue; // Skip questions with invalid group id
+            if (!isset($aGIDReplacements[$insertdata['gid']])) { // Skip questions with invalid group id
+                continue;
+            } 
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']]; ;
             $oldsqid = (int) $insertdata['qid']; unset($insertdata['qid']); // save the old qid
-            if (!isset($aQIDReplacements[(int) $insertdata['parent_qid']])) continue; // Skip subquestions with invalid parent_qids
+            if (!isset($aQIDReplacements[(int) $insertdata['parent_qid']])) { // Skip questions with invalid parent qid
+                continue;
+            } 
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
@@ -193,7 +199,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) continue; // Skip questions with invalid group id
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) { // Skip questions with invalid group id
+                continue;
+            } 
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
@@ -215,7 +223,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['qaid']);
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) continue; // Skip questions with invalid group id
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) { // Skip questions with invalid group id
+                continue;
+            } 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
 
@@ -245,7 +255,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
             if ($insertdata['sqid'] > 0) {
-                if (!isset($aQIDReplacements[(int) $insertdata['sqid']])) continue; // If SQID is invalid skip the default value
+                if (!isset($aQIDReplacements[(int) $insertdata['sqid']])) { // Skip questions with invalid subquestion id
+                    continue;
+                } 
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; // remap the subquestion id
             }
 
@@ -268,16 +280,22 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']]; // remap the qid
             }
-            else continue; // a problem with this answer record -> don't consider
+            else { // a problem with this answer record -> don't consider
+                continue;
+            } 
             if (isset($aQIDReplacements[$insertdata['cqid']])) {
                 $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
             }
-            else continue; // a problem with this answer record -> don't consider
+            else { // a problem with this answer record -> don't consider
+                continue;
+            } 
 
             list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", $insertdata["cfieldname"], 3);
 
-            if ($oldcgid != $oldgid)    // this means that the condition is in another group (so it should not have to be been exported -> skip it
+            if ($oldcgid != $oldgid) {
+                // this means that the condition is in another group (so it should not have to be been exported -> skip it
                 continue;
+            }
 
             unset($insertdata["cid"]);
 
@@ -1284,7 +1302,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; // remap the subquestion id
+            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) { // remap the subquestion id   
+                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
+            }
             if ($insertdata)
                 XSSFilterArray($insertdata);
             // now translate any links
@@ -1308,20 +1328,26 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']]; // remap the qid
             }
-            else continue; // a problem with this answer record -> don't consider
+            else { // a problem with this answer record -> don't consider
+                continue; 
+            }
             if ($insertdata['cqid'] != 0) {
                 if (isset($aQIDReplacements[$insertdata['cqid']]))
                 {
                     $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 }
-                else continue; // a problem with this answer record -> don't consider
+                else  { // a problem with this answer record -> don't consider
+                    continue; 
+                }
 
                 list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", $insertdata["cfieldname"], 3);
 
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
-                if (!isset($aGIDReplacements[$oldcgid]))
-                    continue;
+                if (!isset($aGIDReplacements[$oldcgid])){
+                   continue; 
+                }
+                    
             }
 
             unset($insertdata["cid"]);
@@ -1632,8 +1658,9 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                         if (!$oXMLReader->isEmptyElement)
                         {
                             $oXMLReader->read();
-                            if (in_array($sFieldname, $DestinationFields)) // some old response tables contain invalid column names due to old bugs
+                            if (in_array($sFieldname, $DestinationFields)) { // some old response tables contain invalid column names due to old bugs
                                 $aInsertData[$sFieldname] = $oXMLReader->value;
+                            }
                             $oXMLReader->read();
                         } else
                         {
@@ -1822,15 +1849,14 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         }
         if ($oSurvey) {
             // First rule for id and submitdate
-            if (is_int($iIdKey)) // Rule for id: only if id exists in vvimport file
-            {
+            if (is_int($iIdKey)) {  // Rule for id: only if id exists in vvimport file
                 if (!$bExistingsId) // If not exist : allways import it
                 {
                     $oSurvey->id = $aResponses[$iIdKey];
                     $iMaxId = ($aResponses[$iIdKey] > $iMaxId) ? $aResponses[$iIdKey] : $iMaxId;
                 }
-                elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers')// Set it depending with some options
-                {
+                elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers') {
+                    // Set it depending with some options
                     $oSurvey->id = $aResponses[$iIdKey];
                 }
             }
@@ -1879,8 +1905,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         $aResponsesInserted[] = $aResponses[$iIdReponsesKey];
                     }
                 }
-                else // Actually can not be, leave it if we have a $oSurvey->validate() in future release
-                {
+                else {
+                    // Actually can not be, leave it if we have a $oSurvey->validate() in future release                    
                     $oTransaction->rollBack();
                     $aResponsesError[] = $aResponses[$iIdReponsesKey];
                 }
@@ -2171,8 +2197,7 @@ function TSVImportSurvey($sFullFilePath)
                 // when a multi-lang tsv-file without information on the group id/number (old style) is imported,
                 // we make up this information by giving a number 0..[numberofgroups-1] per language.
                 // the number and order of groups per language should be the same, so we can also import these files
-                if ($lastglang != $glang)    //reset counter on language change
-                {
+                if ($lastglang != $glang) {  //reset counter on language change
                     $iGroupcounter = 0;
                 }
                 $lastglang = $glang;
@@ -2318,8 +2343,7 @@ function TSVImportSurvey($sFullFilePath)
                 {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 }
-                elseif ($sqname == 'other' && $lastother == "Y") // If last question have other to Y : it's not a real SQ row
-                {
+                elseif ($sqname == 'other' && $lastother == "Y") {  // If last question have other to Y : it's not a real SQ row
                     if ($qtype == "!" || $qtype == "L")
                     {
                         // only used to set default value for 'other' in these cases

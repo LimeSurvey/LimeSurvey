@@ -44,9 +44,9 @@ class LSYii_Validators extends CValidator {
 
     public function __construct()
     {
-        if (Yii::app()->getConfig('DBVersion') < 172) // Permission::model exist only after 172 DB version
+        if (Yii::app()->getConfig('DBVersion') < 172) { // Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
-
+        }
         $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read'));
         return null;
     }
@@ -146,17 +146,17 @@ class LSYii_Validators extends CValidator {
         /** Construction of new string with unfiltered EM and filtered HTML **/
         $sNewValue = "";
         foreach ($aValues as $key=>$aValue) {
-            if ($aValue[2] == "STRING")
-                $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]); // If EM is broken : can throw invalid $key
-            else {
+            if ($aValue[2] == "STRING") {
+                $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]);  // If EM is broken : can throw invalid $key
+            } else {
                 $sExpression = trim($aValue[0], '{}');
                 $sNewValue .= "{";
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression)
                 {
-                    if ($aParsedExpression[2] == 'DQ_STRING')
-                        $sNewValue .= "\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS
-                    elseif ($aParsedExpression[2] == 'SQ_STRING')
+                    if ($aParsedExpression[2] == 'DQ_STRING') {
+                       $sNewValue .= "\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
+                    } elseif ($aParsedExpression[2] == 'SQ_STRING')
                         $sNewValue .= "'".$filter->purify($aParsedExpression[0])."'";
                     else
                         $sNewValue .= $aParsedExpression[0];

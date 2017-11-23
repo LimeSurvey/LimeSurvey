@@ -1323,7 +1323,9 @@ class Participant extends LSActiveRecord
                     'language',
                     'owner_uid',
                     'owner_name');
-                if (!in_array($sFieldname, $aSafeFieldNames)) continue; // Skip invalid fieldname
+                if (!in_array($sFieldname, $aSafeFieldNames)) { // Skip invalid fieldname
+                    continue; 
+                }
                 $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname).' '.$operator.' '.$param, $booloperator);
             }
 

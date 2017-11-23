@@ -372,8 +372,7 @@ class InstallerController extends CController {
                             'name' => '',
                         );
                     }
-                    elseif ($bDBExistsButEmpty) //&& !(returnGlobal('createdbstep2')==gT("Populate database")))
-                    {
+                    elseif ($bDBExistsButEmpty) {
                         Yii::app()->session['populatedatabase'] = true;
 
                         //$this->connection->database = $model->dbname;

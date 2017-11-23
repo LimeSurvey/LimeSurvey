@@ -395,8 +395,7 @@ function buildSelects($allfields, $surveyid, $language) {
                     */
                     if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
-                    {
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") { //pull out just the fieldnames
                         //put together some SQL here
                         $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
@@ -672,8 +671,7 @@ class userstatistics_helper {
         }
 
         //S - Short Free Text and T - Long Free Text
-        elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
-        {
+        elseif ($firstletter == "T" || $firstletter == "S") { //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
             $fielddata = $fieldmap[$fld];
@@ -764,8 +762,7 @@ class userstatistics_helper {
             }
         }
 
-        else if ($firstletter == "|") // File UPload
-        {
+        else if ($firstletter == "|") {  // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -886,8 +883,7 @@ class userstatistics_helper {
 
         //N = numerical input
         //K = multiple numerical input
-        elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
-        {
+        elseif ($firstletter == "N" || $firstletter == "K") { //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
             {
@@ -1741,13 +1737,11 @@ class userstatistics_helper {
                         //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
                         . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
                         . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
-                    }
-                    else
-                        //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                    } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR ".sanitize_int($rt)." = '' "
                         . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
                         . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                    }
                 }
 
             }
@@ -2596,21 +2590,11 @@ class userstatistics_helper {
             }
         }
 
-        if ($outputType == 'pdf') //XXX TODO PDF
+        if ($outputType == 'pdf') 
         {
-            //$tablePDF = array();
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
             $this->pdf->headTable($headPDF, $tablePDF);
-            //$this->pdf->tableintopdf($tablePDF);
-
-            //                if(isset($footPDF))
-            //                foreach($footPDF as $foot)
-            //                {
-            //                    $footA = array($foot);
-            //                    $this->pdf->tablehead($footA);
-            //                }
-            if (isset($headPDF2))
-            {
+            if (isset($headPDF2)) {
                 $this->pdf->headTable($headPDF2, $tablePDF2);
             }
         }
@@ -2687,8 +2671,7 @@ class userstatistics_helper {
             if ($bShowGraph == true)
             {
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
-                if ($cachefilename) // Add the image only if constructed
-                {
+                if ($cachefilename) { // Add the image only if constructed
                     //introduce new counter
                     if (!isset($ci)) {$ci = 0; }
 
@@ -3074,8 +3057,7 @@ class userstatistics_helper {
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 $sOutputHTML .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
-                if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
-                {
+                if (isset($outputs['alist']) && $outputs['alist']) {   //Make sure there really is an answerlist, and if so:
                     $display = $this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
@@ -3250,8 +3232,7 @@ class userstatistics_helper {
     {
         $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
-        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
-        {
+        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
             $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
 
@@ -3269,8 +3250,7 @@ class userstatistics_helper {
 
         if ($sortby != '')
         {
-            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
-            {
+            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
                 $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
             }
             else

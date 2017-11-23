@@ -56,8 +56,7 @@ class tokens extends Survey_Common_Action
 
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        if (!$survey->hasTokensTable) //If no tokens table exists
-        {
+        if (!$survey->hasTokensTable) { //If no tokens table exists
             self::_newtokentable($iSurveyId);
         }
         else
@@ -220,8 +219,7 @@ class tokens extends Survey_Common_Action
                                     }
 
                                     $readbounce = imap_body($mbox, $sMessageID, FT_UID); // Put read
-                                    if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
-                                    {
+                                    if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) {  // TODO Y or just true, and a imap_delete
                                         $deletebounce = imap_delete($mbox, $sMessageID, FT_UID); // Put delete
                                     }
                                 }
@@ -432,7 +430,7 @@ class tokens extends Survey_Common_Action
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&â€™*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&â€™*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
                                             $aData['email'] = 'lskeep';
                     } else {
@@ -1049,8 +1047,7 @@ class tokens extends Survey_Common_Action
         }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = $survey->hasTokensTable;
-        if (!$bTokenExists) //If no tokens table exists
-        {
+        if (!$bTokenExists) { //If no tokens table exists
             self::_newtokentable($iSurveyId);
         }
         Yii::app()->loadHelper("surveytranslator");
@@ -1434,8 +1431,7 @@ class tokens extends Survey_Common_Action
                         $to[] = ($emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>");
                     }
 
-                    foreach ($emrow as $attribute => $value) // LimeExpressionManager::loadTokenInformation use $oToken->attributes
-                    {
+                    foreach ($emrow as $attribute => $value) {
                         $fieldsarray['{'.strtoupper($attribute).'}'] = $value;
                     }
 
@@ -1665,8 +1661,7 @@ class tokens extends Survey_Common_Action
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export'))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
-        {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
@@ -2051,8 +2046,7 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokensimport.js');
         $aEncodings = aEncodingsArray();
 
-        if (Yii::app()->request->isPostRequest) // && Yii::app()->request->getPost('subaction')=='upload')
-        {
+        if (Yii::app()->request->isPostRequest) {
             $sUploadCharset = Yii::app()->request->getPost('csvcharset');
             if (!array_key_exists($sUploadCharset, $aEncodings))// Validate sUploadCharset
             {
@@ -2077,12 +2071,10 @@ class tokens extends Survey_Common_Action
             {
                 Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             }
-            elseif (strtolower($oFile->getExtensionName()) != 'csv')// && !in_array($oFile->getType(),$aCsvMimetypes)
-            {
+            elseif (strtolower($oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
             }
-            elseif (!@$oFile->saveAs($sFileName)) //!@move_uploaded_file($sFileTmpName, $sFileName))
-            {
+            elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
             }
             else
@@ -2283,8 +2275,9 @@ class tokens extends Survey_Common_Action
                             {
                                 if ($aWriteArray[$key] == "")
                                     unset($aWriteArray[$key]);
-                                if (substr($value, 0, 1) == '"' && substr($value, -1) == '"')// Fix CSV quote
-                                    $value = substr($value, 1, -1);
+                                if (substr($value, 0, 1) == '"' && substr($value, -1) == '"') { // Fix CSV quote
+                                    $value = substr($value, 1, -1);    
+                                }
                             }
                             // Some default value : to be moved to Token model rules in future release ?
                             // But think we have to accept invalid email etc ... then use specific scenario

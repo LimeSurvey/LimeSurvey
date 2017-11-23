@@ -192,8 +192,7 @@ class UserAction extends Survey_Common_Action
             $postuserid = $this->_getPostOrParam("uid");
             $postuser = flattenText($this->_getPostOrParam("user"));
 
-            if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
-            {
+            if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) { // it's the original superadmin !!!
                 Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
                 return;
@@ -282,8 +281,7 @@ class UserAction extends Survey_Common_Action
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
-        {
+        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) { // it's the original superadmin !!!
             Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"), 'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }

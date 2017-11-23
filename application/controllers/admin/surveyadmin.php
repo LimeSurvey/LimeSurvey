@@ -657,8 +657,8 @@ class SurveyAdmin extends Survey_Common_Action
         {
             Yii::app()->user->setFlash('error', $message);
         }
-        if ($success === false)  // TODO: What if two plugins change this?
-        {
+        if ($success === false) { 
+            // @todo: What if two plugins change this?
             $aData['nostep'] = true;
             $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
             return;
@@ -944,8 +944,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $operation = Yii::app()->request->getPost('oper');
         $iSurveyIDs = Yii::app()->request->getPost('id');
-        if ($operation == 'del') // If operation is delete , it will delete, otherwise edit it
-        {
+        if ($operation == 'del') { // If operation is delete , it will delete, otherwise edit it
             foreach (explode(',', $iSurveyIDs) as $iSurveyID)
             {
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
