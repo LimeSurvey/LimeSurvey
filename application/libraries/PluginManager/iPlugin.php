@@ -1,6 +1,7 @@
 <?php
 namespace LimeSurvey\PluginManager;
-interface iPlugin {
+interface iPlugin
+{
 
     /**
      * Should return the description for this plugin

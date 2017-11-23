@@ -85,7 +85,8 @@
         }
     }
 
-    function sTranslateLangCode2CK($sLanguageCode) {
+    function sTranslateLangCode2CK($sLanguageCode)
+    {
         $aTranslationTable = array(
         'ca-valencia'=>'ca',
         'de-informal'=>'de',

@@ -24,7 +24,8 @@
  *
  */
 
-class Statistics_userController extends SurveyController {
+class Statistics_userController extends SurveyController
+{
 
     /**
      * @var int

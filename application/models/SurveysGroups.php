@@ -76,7 +76,8 @@ class SurveysGroups extends LSActiveRecord
         );
     }
 
-    public function getColumns() {
+    public function getColumns()
+    {
         return array(
 
                 array(
@@ -241,12 +242,14 @@ class SurveysGroups extends LSActiveRecord
         return $aSurveyList;
     }
 
-    public function getNextOrderPosition() {
+    public function getNextOrderPosition()
+    {
         $oSurveysGroups = SurveysGroups::model()->findAll();
         return count($oSurveysGroups) + 1;
     }
 
-    public function getParentGroupOptions() {
+    public function getParentGroupOptions()
+    {
         $oSurveysGroups = SurveysGroups::model()->findAll();
         $options = [
             '' => gT('No parent menu')

@@ -24,13 +24,15 @@
  * @property string $value
  */
 
-class PluginSetting extends CActiveRecord {
+class PluginSetting extends CActiveRecord
+{
 
     /**
      * @inheritdoc
      * @return PluginSetting
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         /** @var self $model */
         $model = parent::model($className);
         return $model;
@@ -42,7 +44,8 @@ class PluginSetting extends CActiveRecord {
      * @access public
      * @return string
      */
-    public function tableName() {
+    public function tableName()
+    {
         return '{{plugin_settings}}';
     }
 
@@ -50,7 +53,8 @@ class PluginSetting extends CActiveRecord {
      * Returns the validation rules for attributes.
      * @return array[]
      */
-    public function rules() {
+    public function rules()
+    {
         return array(
             array('plugin_id', 'numerical', 'integerOnly'=>true), // 'allowEmpty'=>false ?
             array('model', 'length', 'max'=>255, 'allowEmpty'=>true),

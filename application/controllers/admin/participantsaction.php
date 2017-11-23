@@ -70,7 +70,9 @@ class participantsaction extends Survey_Common_Action
         // Add "_view" to urls
         if (is_array($aViewUrls))
         {
-            array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
+            array_walk($aViewUrls, function(&$url)
+            {
+$url .= "_view"; });
         } elseif (is_string($aViewUrls))
         {
             $aViewUrls .= "_view";

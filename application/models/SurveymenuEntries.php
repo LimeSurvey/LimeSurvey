@@ -120,7 +120,8 @@ class SurveymenuEntries extends LSActiveRecord
         return $oSurveymenuEntries->getPrimaryKey();
     }
 
-    public function reorder() {
+    public function reorder()
+    {
 
         $menusWithEntries = SurveymenuEntries::model()->findAll(array(
             'select'=>'t.menu_id',
@@ -131,7 +132,8 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public static function reorderMenu($menuId) {
+    public static function reorderMenu($menuId)
+    {
         $criteriaItems = new CDbCriteria();
         $criteriaItems->compare('menu_id', (int) $menuId, false);
         $criteriaItems->order = 't.ordering ASC';
@@ -152,7 +154,8 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public function onAfterSave($event) {
+    public function onAfterSave($event)
+    {
         $criteria = new CDbCriteria();
 
         $criteria->addCondition(['menu_id = :menu_id']);
@@ -204,7 +207,8 @@ class SurveymenuEntries extends LSActiveRecord
         );
     }
 
-    public static function returnCombinedMenuLink($data) {
+    public static function returnCombinedMenuLink($data)
+    {
         if ($data->menu_link) {
             return $data->menu_link;
         } else {
@@ -214,7 +218,8 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public static function returnMenuIcon($data) {
+    public static function returnMenuIcon($data)
+    {
         if ($data->menu_icon_type == 'fontawesome') {
             return "<i class='fa fa-".$data->menu_icon."'></i>";
         } else if ($data->menu_icon_type == 'image') {
@@ -224,7 +229,8 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public function getMenuIdOptions() {
+    public function getMenuIdOptions()
+    {
         $criteria = new CDbCriteria;
         if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
@@ -239,7 +245,8 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
-    public function getUserIdOptions() {
+    public function getUserIdOptions()
+    {
         $oUsers = User::model()->findAll();
         $options = [
             NULL => gT('All users')
@@ -252,7 +259,8 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
-    public function getUserOptions() {
+    public function getUserOptions()
+    {
 
         $oUsers = User::model()->findAll();
         $options = [];
@@ -262,7 +270,8 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
-    public function getMenuIconTypeOptions() {
+    public function getMenuIconTypeOptions()
+    {
         return [
             'fontawesome'	=> gT('Fontawesome icon'),
             'image'			=> gT('Image'),
@@ -271,7 +280,8 @@ class SurveymenuEntries extends LSActiveRecord
         // 		."<option value='image'>".gT('Image')."</option>";
     }
 
-    public function getButtons() {
+    public function getButtons()
+    {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
@@ -306,7 +316,8 @@ class SurveymenuEntries extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns() {
+    public function getColumns()
+    {
         $cols = array(
             array(
             'name' => 'id',
@@ -389,7 +400,8 @@ class SurveymenuEntries extends LSActiveRecord
     /**
      * @return array
      */
-    public function getShortListColumns() {
+    public function getShortListColumns()
+    {
         $cols = array(
             array(
             'name' => 'id',
@@ -496,7 +508,8 @@ class SurveymenuEntries extends LSActiveRecord
      *
      * @return boolean
      */
-    public function restoreDefaults() {
+    public function restoreDefaults()
+    {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {

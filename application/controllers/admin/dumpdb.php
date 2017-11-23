@@ -18,7 +18,8 @@
  * @copyright 2011
  * @access public
  */
-class Dumpdb extends Survey_Common_Action {
+class Dumpdb extends Survey_Common_Action
+{
 
     function __construct($controller, $id)
     {

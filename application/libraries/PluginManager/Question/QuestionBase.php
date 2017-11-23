@@ -1,7 +1,8 @@
 <?php
 namespace LimeSurvey\PluginManager;
 
-    abstract class QuestionBase implements iQuestion {
+    abstract class QuestionBase implements iQuestion
+    {
         /**
          * @var LimesurveyApi
          */
@@ -83,7 +84,8 @@ namespace LimeSurvey\PluginManager;
          * @param int $responseId Pass a response id to load results.
          */
         
-        public function __construct(iPlugin $plugin, LimesurveyApi $api, $questionId = null, $responseId = null) {
+        public function __construct(iPlugin $plugin, LimesurveyApi $api, $questionId = null, $responseId = null)
+        {
             $this->plugin = $plugin;
             $this->api = $api;
             $this->responseId = $responseId;
@@ -111,7 +113,9 @@ namespace LimeSurvey\PluginManager;
                     'localized' => false,
                     'advanced' => false,
                     'label' => gT('Question group:'),
-                    'options' => function($this) { return $this->api->getGroupList($this->get('sid')); }
+                    'options' => function($this)
+                    {
+return $this->api->getGroupList($this->get('sid')); }
                 ),
                 'relevance' => array(
                     'type' => 'relevance',
@@ -158,7 +162,7 @@ namespace LimeSurvey\PluginManager;
          * @param type $languages
          * @return type
          */
-        public function getAttributes($languages = null) 
+        public function getAttributes($languages = null)
         {
             $allAttributes = array_merge($this->defaultAttributes, $this->attributes);
             if (count($allAttributes) != count($this->defaultAttributes) + count($this->attributes))
@@ -233,7 +237,7 @@ namespace LimeSurvey\PluginManager;
             }
         }
         
-        public function getVariables() 
+        public function getVariables()
         {
             if (isset($this->questionId))
             {
@@ -264,7 +268,7 @@ namespace LimeSurvey\PluginManager;
             }
         }
         
-        public function saveAttributes(array $attributeValues, $qid = null) 
+        public function saveAttributes(array $attributeValues, $qid = null)
         {
             $attributes = $this->getAttributes();
             $result = true;

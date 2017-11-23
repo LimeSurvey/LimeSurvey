@@ -18,7 +18,8 @@
 /*********************************************/
 
 
-function ldap_getCnx($server_id = null) {
+function ldap_getCnx($server_id = null)
+{
     $ldap_server = Yii::app()->getConfig('ldap_server');
 
     if (is_null($server_id)) {
@@ -52,7 +53,8 @@ function ldap_getCnx($server_id = null) {
 }
 
 
-function ldap_bindCnx($ds, $server_id = null) {
+function ldap_bindCnx($ds, $server_id = null)
+{
     $ldap_server = Yii::app()->getConfig('ldap_server');
 
     if (!$ds || is_null($server_id)) {
@@ -70,7 +72,8 @@ function ldap_bindCnx($ds, $server_id = null) {
 }
 
 
-function ldap_readattr($attr) {
+function ldap_readattr($attr)
+{
 
     if (is_array($attr)) {
         return trim($attr[0]);
@@ -80,7 +83,8 @@ function ldap_readattr($attr) {
 }
 
 
-function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
+function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope)
+{
     if ($scope == "base") {
         $search = ldap_read($ds, $basedn, $filter, $attrlist);
     } elseif ($scope == "one") {
@@ -95,7 +99,8 @@ function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
 /**
  * @param integer $surveyid
  */
-function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
+function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
+{
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
     $totalrescount = 0;
     $userattrs = array();

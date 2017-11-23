@@ -21,7 +21,8 @@
  *
  *
  */
-class UserInGroup extends LSActiveRecord {
+class UserInGroup extends LSActiveRecord
+{
 
     /**
      * @inheritdoc

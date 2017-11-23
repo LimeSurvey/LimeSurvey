@@ -21,7 +21,8 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class translate extends Survey_Common_Action {
+class translate extends Survey_Common_Action
+{
 
     public function index()
     {
@@ -400,7 +401,8 @@ class translate extends Survey_Common_Action {
         return $language_list;
     }
 
-    private function _cleanup($string, $options = array()) {
+    private function _cleanup($string, $options = array())
+    {
         if (extension_loaded('tidy')) {
             $oTidy = new tidy;
 

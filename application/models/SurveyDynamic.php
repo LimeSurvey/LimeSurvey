@@ -735,7 +735,8 @@ class SurveyDynamic extends LSActiveRecord
      * @param boolean $getComment
      * @return array | boolean
      */
-    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getComment = false) {
+    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getComment = false)
+    {
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
@@ -843,7 +844,8 @@ class SurveyDynamic extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
-    public function getPrintAnswersArray($sSRID, $sLanguageCode, $bHonorConditions = true) {
+    public function getPrintAnswersArray($sSRID, $sLanguageCode, $bHonorConditions = true)
+    {
 
         $oSurvey = self::$survey;
         $aGroupArray = array();

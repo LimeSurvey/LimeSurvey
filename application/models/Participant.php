@@ -17,7 +17,9 @@
  * Specific exception for our purpose
  * Used to spit out error messages if mapping attributes doesn't work.
  */
-class CPDBException extends Exception {}
+class CPDBException extends Exception
+{
+}
 
 /**
  * This is the model class for table "{{participants}}".
@@ -112,7 +114,8 @@ class Participant extends LSActiveRecord
     /**
      * @return string
      */
-    public function getButtons() {
+    public function getButtons()
+    {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
@@ -245,7 +248,8 @@ class Participant extends LSActiveRecord
     /**
      * @return array
      */
-    public function getAllExtraAttributes() {
+    public function getAllExtraAttributes()
+    {
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
         $extraAttributes = array();
         foreach ($allAttributes  as $attribute) {
@@ -259,7 +263,8 @@ class Participant extends LSActiveRecord
      * @param string $attribute_id
      * @return array
      */
-    public function getOptionsForAttribute($attribute_id) {
+    public function getOptionsForAttribute($attribute_id)
+    {
 
         //if ($this->attribute_type != 'DD') {
             //throw new \CInvalidArgumentException('Only drop-down attributes have options');
@@ -274,7 +279,8 @@ class Participant extends LSActiveRecord
         return $result;
     }
 
-    public function getAllUsedLanguagesWithRealName() {
+    public function getAllUsedLanguagesWithRealName()
+    {
         $lang_array = array();
         $languages = $this->findAll(array(
             'select'=>'t.language',
@@ -310,7 +316,8 @@ class Participant extends LSActiveRecord
     /**
      * @return int|string
      */
-    public function getCountActiveSurveys() {
+    public function getCountActiveSurveys()
+    {
         $activeSurveys = $this->surveylinks;
         return count($activeSurveys) > 0 ? count($activeSurveys) : "";
     }
@@ -318,7 +325,8 @@ class Participant extends LSActiveRecord
     /**
      * @return string HTML
      */
-    public function getBlacklistSwitchbutton() {
+    public function getBlacklistSwitchbutton()
+    {
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
                 . ($this->blacklisted == "Y" ? "checked" : "")
@@ -336,7 +344,8 @@ class Participant extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns() {
+    public function getColumns()
+    {
         $cols = array(
             array(
                 "name" => 'checkbox',
@@ -539,7 +548,8 @@ class Participant extends LSActiveRecord
      * @param int $selected Owner id
      * @return string HTML
      */
-    public function getOwnersList($selected) {
+    public function getOwnersList($selected)
+    {
         $owner_ids = Yii::app()->db->createCommand()
             ->selectDistinct('owner_uid')
             ->from('{{participants}}')
@@ -554,7 +564,8 @@ class Participant extends LSActiveRecord
         
     }
 
-    public function addSurveyFilter($conditions) {
+    public function addSurveyFilter($conditions)
+    {
         $this->extraCondition = $this->getParticipantsSearchMultipleCondition($conditions);
     }
 
@@ -621,7 +632,8 @@ class Participant extends LSActiveRecord
      * @access public
      * @return string
      */
-    public function primaryKey() {
+    public function primaryKey()
+    {
         return 'participant_id';
     }
 
@@ -742,7 +754,8 @@ class Participant extends LSActiveRecord
      * @param int $userid
      * @return int
      */
-    public function getParticipantsCount($attid, $search = null, $userid = null) {
+    public function getParticipantsCount($attid, $search = null, $userid = null)
+    {
         $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
 
         return $data->queryScalar();
@@ -1790,7 +1803,8 @@ class Participant extends LSActiveRecord
      *
      * @return bool true/false
      */
-    public function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+    public function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
+    {
         // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
         if (intval($participantAttributeId) === 0) {
             throw new InvalidArgumentException(sprintf('$participantAttributeId has to be an integer. Given: %s (%s)', gettype($participantAttributeId), $participantAttributeId));
@@ -1826,7 +1840,8 @@ class Participant extends LSActiveRecord
      *
      * @return boolean|null true/false
      */
-        public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+        public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
+        {
             $survey = Survey::model()->findByPk($surveyId);
             $val = Yii::app()->db
             ->createCommand()

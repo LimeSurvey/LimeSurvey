@@ -20,7 +20,8 @@
 * @copyright 2011
 * @access public
 */
-class surveypermission extends Survey_Common_Action {
+class surveypermission extends Survey_Common_Action
+{
 
     /**
      * Load survey security screen.

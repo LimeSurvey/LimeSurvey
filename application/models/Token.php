@@ -58,7 +58,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
 abstract class Token extends Dynamic
 {
     /** @inheritdoc */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         $labels = array(
             'tid' => gT('Token ID'),
             'partcipant_id' => gT('Participant ID'),
@@ -84,7 +85,8 @@ abstract class Token extends Dynamic
     }
 
     /** @inheritdoc */
-    public function beforeDelete() {
+    public function beforeDelete()
+    {
         $result = parent::beforeDelete();
         if ($result && isset($this->surveylink)) {
             if (!$this->surveylink->delete()) {
@@ -197,7 +199,8 @@ abstract class Token extends Dynamic
      * @param integer $iTokenLength
      * @return mixed
      */
-    public static function generateRandomToken($iTokenLength) {
+    public static function generateRandomToken($iTokenLength)
+    {
         return str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
     }
 
@@ -219,7 +222,8 @@ abstract class Token extends Dynamic
      * @return integer[]
      * @throws Exception
      */
-    public function generateTokens() {
+    public function generateTokens()
+    {
         if ($this->scenario != '') {
             throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
         }
@@ -271,7 +275,8 @@ abstract class Token extends Dynamic
      * @inheritdoc
      * @return Token
      */
-    public static function model($className = null) {
+    public static function model($className = null)
+    {
         /** @var self $model */
         $model = parent::model($className);
         return $model;
@@ -282,7 +287,8 @@ abstract class Token extends Dynamic
      * @param string $scenario
      * @return Token Description
      */
-    public static function create($surveyId, $scenario = 'insert') {
+    public static function create($surveyId, $scenario = 'insert')
+    {
         return parent::create($surveyId, $scenario);
     }
 

@@ -27,7 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @author sergio <jsonrpcphp@inservibile.org>
  */
-class jsonRPCClient {
+class jsonRPCClient
+{
 
     /**
      * Debug state
@@ -61,7 +62,8 @@ class jsonRPCClient {
      * @param string $url
      * @param boolean $debug
      */
-    public function __construct($url, $debug = false) {
+    public function __construct($url, $debug = false)
+    {
         // server URL
         $this->url = $url;
         // proxy
@@ -77,7 +79,8 @@ class jsonRPCClient {
      *
      * @param boolean $notification
      */
-    public function setRPCNotification($notification) {
+    public function setRPCNotification($notification)
+    {
         empty($notification) ?
                             $this->notification = false
                             :
@@ -91,7 +94,8 @@ class jsonRPCClient {
      * @param array $params
      * @return array
      */
-    public function __call($method, $params) {
+    public function __call($method, $params)
+    {
 
         // check
         if (!is_scalar($method)) {
@@ -164,7 +168,8 @@ class jsonRPCClient {
         }
     }
         
-        public function call($method, $params) {
+        public function call($method, $params)
+        {
             return $this->__call($method, $params);
         }
 }

@@ -26,7 +26,8 @@
      * @param mixed $variable The variable to be dumped
      * @param int $depth Maximum depth to go into the variable, default is 10
      */
-    function traceVar($variable, $depth = 10) {
+    function traceVar($variable, $depth = 10)
+    {
         $msg = CVarDumper::dumpAsString($variable, $depth, false);
         $fullTrace = debug_backtrace();
         $trace = array_shift($fullTrace);

@@ -3,7 +3,8 @@
 class PgsqlSchema extends CPgsqlSchema
 {
 
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         parent::__construct($conn);
         /**
          * Auto increment.

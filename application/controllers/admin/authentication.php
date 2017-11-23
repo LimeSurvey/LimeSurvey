@@ -247,7 +247,8 @@ class Authentication extends Survey_Common_Action
         }
     }
 
-    public static function runDbUpgrade() {
+    public static function runDbUpgrade()
+    {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {

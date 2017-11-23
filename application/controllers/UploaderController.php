@@ -14,7 +14,8 @@
  *
  */
 
-class UploaderController extends SurveyController {
+class UploaderController extends SurveyController
+{
     function run($actionID)
     {
         $surveyid = Yii::app()->session['LEMsid'];

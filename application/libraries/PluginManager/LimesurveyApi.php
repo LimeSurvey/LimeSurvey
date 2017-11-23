@@ -179,7 +179,8 @@ use Template;
          * Returns an array of all available template names - does a basic check if the template might be valid
          * @return array
          */
-        public function getTemplateList() {
+        public function getTemplateList()
+        {
             return Template::getTemplateList();
         }
 
@@ -271,7 +272,8 @@ use Template;
          * Returns false if the user is not logged and returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getCurrentUser() {
+        public function getCurrentUser()
+        {
             if (\Yii::app()->user->id)
             {
                 return \User::model()->findByPk(\Yii::app()->user->id);
@@ -314,7 +316,8 @@ use Template;
          * @param int $iUserID The userid
          * @return User
          */
-        public function getUser($iUserID) {
+        public function getUser($iUserID)
+        {
             return \User::model()->findByPk($iUserID);
         }
 
@@ -353,7 +356,8 @@ use Template;
          * Returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getPermissionSet($iUserID, $iEntityID = null, $sEntityName = null) {
+        public function getPermissionSet($iUserID, $iEntityID = null, $sEntityName = null)
+        {
             return \Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
         }
 
@@ -363,7 +367,8 @@ use Template;
          * Returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getParticipant($iParticipantID) {
+        public function getParticipant($iParticipantID)
+        {
             return \Participant::model()->findByPk($iParticipantID);
         }
 

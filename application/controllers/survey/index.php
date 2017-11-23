@@ -13,7 +13,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-class index extends CAction {
+class index extends CAction
+{
 
     public $oTemplate;
 
@@ -667,7 +668,8 @@ class index extends CAction {
         return Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
     }
 
-    function _userHasPreviewAccessSession($iSurveyID) {
+    function _userHasPreviewAccessSession($iSurveyID)
+    {
         return (isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $iSurveyID));
     }
 

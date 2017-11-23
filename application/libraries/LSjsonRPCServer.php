@@ -9,7 +9,8 @@
          * @param remotecontrol_handle $object
          * @return boolean
          */
-    public static function handle($object) {
+    public static function handle($object)
+    {
         // checks if a JSON-RCP request has been received
         if (
             $_SERVER['REQUEST_METHOD'] != 'POST' ||

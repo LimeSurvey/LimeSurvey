@@ -16,7 +16,8 @@ class LSAuthResult
     protected $_code;
     protected $_message;
     
-    public function __construct($code = 0, $message = '') {
+    public function __construct($code = 0, $message = '')
+    {
         $this->setError($code, $message);
     }
     
@@ -39,7 +40,8 @@ class LSAuthResult
         return $this->_message;
     }
     
-    public function setError($code, $message = null) {
+    public function setError($code, $message = null)
+    {
         $this->_code = $code;
         $this->_message = $message;
     }

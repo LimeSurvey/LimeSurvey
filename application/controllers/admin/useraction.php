@@ -38,7 +38,8 @@ class UserAction extends Survey_Common_Action
      * @param string $param
      * @return string
      */
-    private function _getPostOrParam($param) {
+    private function _getPostOrParam($param)
+    {
         $value = Yii::app()->request->getPost($param);
         if (!$value)
         {

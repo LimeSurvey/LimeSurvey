@@ -22,7 +22,8 @@
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class statistics extends Survey_Common_Action {
+class statistics extends Survey_Common_Action
+{
 
     function __construct($controller, $id)
     {

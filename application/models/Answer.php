@@ -171,7 +171,7 @@ class Answer extends LSActiveRecord
      * @return bool
      */
     public function insertRecords($data)
-    {    
+    {
         $oRecord = new self;
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;

@@ -10,7 +10,8 @@ if (!defined('BASEPATH')) {
 * @todo : Add any expression
 * @version : 1.1
 */
-class ExpressionValidate extends Survey_Common_Action {
+class ExpressionValidate extends Survey_Common_Action
+{
 
     /**
      * @var string : Default layout is popup : less header, no footer

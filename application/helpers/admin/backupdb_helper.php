@@ -213,7 +213,8 @@
     /**
      * Get the database name
      */
-    function _getDbName() {
+    function _getDbName()
+    {
         // Yii doesn't give us a good way to get the database name
         preg_match('/dbname=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
         $sDbName = $aMatches[1];

@@ -1633,7 +1633,8 @@ class printablesurvey extends Survey_Common_Action
 
     }
 
-    private function _min_max_answers_help($qidattributes, $sLanguageCode, $surveyid) {
+    private function _min_max_answers_help($qidattributes, $sLanguageCode, $surveyid)
+    {
         $output = "";
         if (!empty($qidattributes['min_answers'])) {
             $output .= "\n<div class='extrahelp'>".sprintf(gT("Please choose at least %s items."), $qidattributes['min_answers'])."</div>\n";

@@ -36,7 +36,8 @@ class SurveymenuEntryController extends Survey_Common_Action
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }
 
-    public function getsurveymenuentryform($menuentryid = null) {
+    public function getsurveymenuentryform($menuentryid = null)
+    {
         $menuentryid = Yii::app()->request->getParam('menuentryid', null);
         if ($menuentryid != null)
         {
@@ -186,7 +187,8 @@ class SurveymenuEntryController extends Survey_Common_Action
     /**
      * Restores the default surveymenu entries
      */
-    public function restore() {
+    public function restore()
+    {
         if (Yii::app()->request->isPostRequest)
         {
             //Check for permission!

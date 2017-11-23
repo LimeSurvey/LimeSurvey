@@ -1,6 +1,7 @@
 <?php
 
-class SurveymenuEntryData extends CFormModel {
+class SurveymenuEntryData extends CFormModel
+{
 
     public $rawData = null;    
     public $render = null;    
@@ -15,7 +16,8 @@ class SurveymenuEntryData extends CFormModel {
     /**
      * @param integer|null $surveyid
      */
-    public function apply($menuEntry, $surveyid) {
+    public function apply($menuEntry, $surveyid)
+    {
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
 
@@ -30,7 +32,8 @@ class SurveymenuEntryData extends CFormModel {
         $this->_parseLink();
     }
 
-    public function createOptionJson($addSurveyID = false, $addQuestionGroupId = false, $addQuestionId = false) {
+    public function createOptionJson($addSurveyID = false, $addQuestionGroupId = false, $addQuestionId = false)
+    {
         
         $dataArray = array();
         if ($addSurveyID) {
@@ -61,12 +64,14 @@ class SurveymenuEntryData extends CFormModel {
         return json_encode(array('render' => $baseArray));
     }
     
-    public function linkCreator() {
+    public function linkCreator()
+    {
         $returnLink = Yii::app()->getController()->createUrl($this->link, $this->linkData);
         return $returnLink;
     }
 
-    private function _parseDataAttribute() {
+    private function _parseDataAttribute()
+    {
 
         $this->isActive = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'isActive'), 0, $this->isActive);
         $this->linkExternal = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'link', 'external'), 0, $this->linkExternal);
@@ -82,7 +87,8 @@ class SurveymenuEntryData extends CFormModel {
     }
     
 
-    private function _parseLink() {
+    private function _parseLink()
+    {
 
         if (empty($this->menuEntry->menu_link)) {
             $this->linkData['subaction'] = $this->menuEntry->name;
@@ -96,7 +102,8 @@ class SurveymenuEntryData extends CFormModel {
     /**
      * @param string[] $checkArray
      */
-    private function _recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null) {
+    private function _recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null)
+    {
         $default = null;
         if (is_array($variable) && array_key_exists($checkArray[$i], $variable)) {
                     $default = $variable[$checkArray[$i]];

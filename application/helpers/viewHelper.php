@@ -196,7 +196,8 @@ class viewHelper
      * @param $sString :the string
      * @param : string/array : the string to put before of the array (before,after)
      */
-    public static function putSeparator($sString, $separator) {
+    public static function putSeparator($sString, $separator)
+    {
         if (is_array($separator))
         {
             return $separator[0].$sString.$separator[1];
@@ -237,7 +238,8 @@ class viewHelper
      * @return void
      * @author Menno Dekker
      */
-        public static function disableHtmlLogging() {
+        public static function disableHtmlLogging()
+        {
         foreach (App()->log->routes as $route)
         {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
@@ -254,7 +256,8 @@ class viewHelper
      * @return string
      * @author Denis Chenu
      */
-        public static function filterScript($sHtml) {
+        public static function filterScript($sHtml)
+        {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
         }
     /**
@@ -263,7 +266,8 @@ class viewHelper
      * @param string $sHtml
      * @return string
      */
-        public static function purified($sHtml) {
+        public static function purified($sHtml)
+        {
         $oPurifier = new CHtmlPurifier();
         return $oPurifier->purify($sHtml);
         }

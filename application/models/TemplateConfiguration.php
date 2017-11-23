@@ -137,7 +137,8 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromConfigurationId($iTemplateConfigId) {
+    public static function getInstanceFromConfigurationId($iTemplateConfigId)
+    {
         $oTemplateConfiguration = self::model()->findByPk($iTemplateConfigId);
         $oTemplateConfiguration->setThisTemplate();
         return $oTemplateConfiguration;
@@ -149,7 +150,8 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromTemplateName($sTemplateName) {
+    public static function getInstanceFromTemplateName($sTemplateName)
+    {
         $oInstance = self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
             array(':template_name'=>$sTemplateName)
@@ -171,7 +173,8 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null) {
+    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null)
+    {
 
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
@@ -205,7 +208,8 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null) {
+    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null)
+    {
 
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
@@ -241,7 +245,8 @@ class TemplateConfiguration extends TemplateConfig
      * @param integer $iSurveyId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null) {
+    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null)
+    {
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
@@ -343,7 +348,8 @@ class TemplateConfiguration extends TemplateConfig
         return parent::importManifest($sTemplateName, $aDatas);
     }
 
-    public function setToInherit() {
+    public function setToInherit()
+    {
         $this->files_css         = 'inherit';
         $this->files_js          = 'inherit';
         $this->files_print_css   = 'inherit';
@@ -514,14 +520,16 @@ class TemplateConfiguration extends TemplateConfig
         return true;
     }
 
-    private function _filterImages($file) {
+    private function _filterImages($file)
+    {
         $checkImage = getimagesize($this->filesPath.$file['name']);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
                     return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
         }
     }
 
-    protected function getOptionPageAttributes() {
+    protected function getOptionPageAttributes()
+    {
         $aData = $this->attributes;
         $fileList = Template::getOtherFiles($this->filesPath);
         $aData['maxFileSize'] = getMaximumFileUploadSize();
@@ -833,7 +841,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
 
-    public function getParentConfiguration() {
+    public function getParentConfiguration()
+    {
         if (empty($this->oParentTemplate)) {
 
             //check for surveygroup id if a survey is given

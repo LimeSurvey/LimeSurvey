@@ -18,7 +18,8 @@
 * @param $string
 * @return string
 */
-function stripTagsFull($string) {
+function stripTagsFull($string)
+{
     $string = html_entity_decode($string, ENT_QUOTES, "UTF-8");
     //combining these into one mb_ereg_replace call ought to speed things up
     $string = str_replace(array("\r\n", "\r", "\n", '-oth-'), '', $string);
@@ -33,7 +34,8 @@ function stripTagsFull($string) {
 * @param $value
 * @return bool
 */
-function isNumericExtended($value) {
+function isNumericExtended($value)
+{
     if (empty($value)) {
         return true;
     }
@@ -54,7 +56,8 @@ function isNumericExtended($value) {
 * @param $l
 * @return string
 */
-function strSplitUnicode($str, $l = 0) {
+function strSplitUnicode($str, $l = 0)
+{
     if ($l > 0)
     {
         $ret = array();
@@ -78,7 +81,8 @@ function strSplitUnicode($str, $l = 0) {
  * @param bool $header logical $header If TRUE, adds SQGA code as column headings (used by export to R)
  * @param string $sLanguage
  */
-function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FALSE, $sLanguage = '') {
+function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FALSE, $sLanguage = '')
+{
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
@@ -246,7 +250,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
 * @param string $language
 * @return array|bool
 */
-function SPSSGetValues($field = array(), $qidattributes = null, $language) {
+function SPSSGetValues($field = array(), $qidattributes = null, $language)
+{
     $length_vallabel = 120; // Constant ?
     if (!isset($field['LStype']) || empty($field['LStype'])) {
         return false;
@@ -631,7 +636,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
 * @param
 * @return CDbCommand
 */
-function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
+function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
+{
 
     $survey = Survey::model()->findByPk($iSurveyID);
 

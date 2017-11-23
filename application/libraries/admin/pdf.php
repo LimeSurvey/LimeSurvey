@@ -166,7 +166,8 @@ require_once($tcpdf['base_directory'].'/tcpdf.php');
  * @version 1.0
  * @package tcpdf_ci
  ***********************************************************/
-class pdf extends TCPDF {
+class pdf extends TCPDF
+{
 
 
     /**
@@ -224,7 +225,8 @@ class pdf extends TCPDF {
      * @param mixed $tcpdf
      * @return
      */
-    public function setConfig($tcpdf) {
+    public function setConfig($tcpdf)
+    {
     $this->_config = $tcpdf;
     }
 
@@ -233,7 +235,8 @@ class pdf extends TCPDF {
      * Initialize and configure TCPDF with the settings in our config file
      *
      */
-    function __construct() {
+    function __construct()
+    {
 
     # load the config file
     require(APPPATH.'config/tcpdf'.EXT);

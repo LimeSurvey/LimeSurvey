@@ -20,7 +20,8 @@ namespace LimeSurvey\Helpers;
 use Yii;
 use LimeExpressionManager;
 
-class questionIndexHelper {
+class questionIndexHelper
+{
 
     /**
      * Singleton

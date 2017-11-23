@@ -28,7 +28,8 @@
 class ParticipantAttributeName extends LSActiveRecord
 {
     /** @inheritdoc */
-    public function primaryKey() {
+    public function primaryKey()
+    {
         return 'attribute_id';
     }
 
@@ -36,14 +37,16 @@ class ParticipantAttributeName extends LSActiveRecord
      * @inheritdoc
      * @return ParticipantAttributeName
      */
-    public static function model($class = __CLASS__) {
+    public static function model($class = __CLASS__)
+    {
         /** @var self $model */
         $model = parent::model($class);
         return $model;
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return '{{participant_attribute_names}}';
     }
 
@@ -166,7 +169,8 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @return string
      */
-    public function getVisibleSwitch() {
+    public function getVisibleSwitch()
+    {
         $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
             . ($this->visible == "TRUE" ? "checked" : "")
             . "/>";
@@ -176,7 +180,8 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns() {
+    public function getColumns()
+    {
         $cols = array(
             array(
                 "name" => 'massiveActionCheckbox',

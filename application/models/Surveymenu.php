@@ -85,7 +85,8 @@ class Surveymenu extends LSActiveRecord
         return $oSurveymenu->getPrimaryKey();
     }
 
-    public static function staticRemoveMenu($menuName, $recursive = false) {
+    public static function staticRemoveMenu($menuName, $recursive = false)
+    {
         
         $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
         
@@ -100,7 +101,8 @@ class Surveymenu extends LSActiveRecord
         $oSurveymenu->delete();
     }
 
-    public function getMenuIdOptions() {
+    public function getMenuIdOptions()
+    {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [
             '' => gT('No parent menu')
@@ -113,7 +115,8 @@ class Surveymenu extends LSActiveRecord
         return $options;
     }
 
-    public function getSurveyIdOptions() {
+    public function getSurveyIdOptions()
+    {
         $oSurveys = Survey::model()->findAll('expires < :expire', ['expire' => date('Y-m-d H:i:s', strtotime('+1 hour'))]);
         $options = [
             NULL => gT('All surveys')
@@ -126,7 +129,8 @@ class Surveymenu extends LSActiveRecord
         return $options;
     }
 
-    public function getUserIdOptions() {
+    public function getUserIdOptions()
+    {
         $oUsers = User::model()->findAll();
         $options = [
             NULL => gT('All users')
@@ -141,12 +145,14 @@ class Surveymenu extends LSActiveRecord
 
 
 
-    public function getNextOrderPosition() {
+    public function getNextOrderPosition()
+    {
         $oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id', array('parent_id'=>0));
         return count($oSurveymenus);
     }
 
-    public function getOrderOptions() {
+    public function getOrderOptions()
+    {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [];
         for ($i = 0; $i <= count($oSurveymenus); $i++) {
@@ -155,7 +161,8 @@ class Surveymenu extends LSActiveRecord
         //return join('\n',$options);
         return $options;
     }
-    public function getPositionOptions() {
+    public function getPositionOptions()
+    {
         $options = [
             'side' => gT('Sidemenu'),
             'collapsed' => gT('Collapsed menu'),
@@ -188,7 +195,8 @@ class Surveymenu extends LSActiveRecord
             'created_by'	=> gT('Created by'),
         );
     }
-    public function getButtons() {
+    public function getButtons()
+    {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
@@ -223,7 +231,8 @@ class Surveymenu extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns() {
+    public function getColumns()
+    {
         $cols = array(
             array(
             'name' => 'id',
@@ -286,7 +295,8 @@ class Surveymenu extends LSActiveRecord
         return $cols;
     }
 
-    public function onBeforeSave($event) {
+    public function onBeforeSave($event)
+    {
         if ($this->parent_id) {
             $parentMenu = Surveymenu::model()->findByPk($this->parent_id);
             $this->level = (((int) $parentMenu->level) + 1);
@@ -294,7 +304,8 @@ class Surveymenu extends LSActiveRecord
         return parent::onBeforeSave($event);
     }
 
-    public function onAfterSave($event) {
+    public function onAfterSave($event)
+    {
         $criteria = new CDbCriteria();
 		
         $criteria->addCondition(['position=:position']);
@@ -319,7 +330,8 @@ class Surveymenu extends LSActiveRecord
          *
          * @return boolean
          */
-    public function restoreDefaults() {
+    public function restoreDefaults()
+    {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
@@ -340,7 +352,8 @@ class Surveymenu extends LSActiveRecord
     /**
      * @return array
      */
-    public function getShortListColumns() {
+    public function getShortListColumns()
+    {
         $cols = array(
             array(
             'name' => 'id',
@@ -430,7 +443,8 @@ class Surveymenu extends LSActiveRecord
     }
     
 
-    public function delete() {
+    public function delete()
+    {
         foreach ($this->surveymenuEntries as $oSurveymenuEntry) {
             $oSurveymenuEntry->delete();
         }

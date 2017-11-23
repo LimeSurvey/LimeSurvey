@@ -116,7 +116,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         )
     );
 
-    public function init() {
+    public function init()
+    {
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -148,7 +149,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * Add AuthLDAP Permission to global Permission
      * @return void
      */
-    public function getGlobalBasePermissions() {
+    public function getGlobalBasePermissions()
+    {
         $this->getEvent()->append('globalBasePermissions', array(
             'auth_ldap' => array(
                 'create' => false,
@@ -167,7 +169,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * Validation of AuthPermission (for super-admin only)
      * @return void
      */
-    public function beforeHasPermission() {
+    public function beforeHasPermission()
+    {
         $oEvent = $this->getEvent();
         if ($oEvent->get('sEntityName') != 'global' || $oEvent->get('sPermission') != 'auth_ldap' || $oEvent->get('sCRUD') != 'read') {
             return;

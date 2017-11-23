@@ -185,7 +185,8 @@ class QuestionGroup extends LSActiveRecord
      * @param int $surveyid
      * @return array
      */
-    public function getGroups($surveyid) {
+    public function getGroups($surveyid)
+    {
         $language = Survey::model()->findByPk($surveyid)->language;
         return Yii::app()->db->createCommand()
             ->select(array('gid', 'group_name'))
@@ -233,7 +234,8 @@ class QuestionGroup extends LSActiveRecord
      * @param integer $groupId
      * @return array
      */
-    private static function getQuestionIdsInGroup($groupId) {
+    private static function getQuestionIdsInGroup($groupId)
+    {
         $questions = Yii::app()->db->createCommand()
             ->select('qid')
             ->from('{{questions}} q')
@@ -322,7 +324,8 @@ class QuestionGroup extends LSActiveRecord
     /**
      * @return CActiveDataProvider
      */
-    public function search() {
+    public function search()
+    {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();

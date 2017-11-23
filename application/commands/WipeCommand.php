@@ -129,7 +129,8 @@ class WipeCommand extends CConsoleCommand
 }
 
 
-function SureRemoveDir($dir, $DeleteMe) {
+function SureRemoveDir($dir, $DeleteMe)
+{
     if (!$dh = @opendir($dir)) {
         return;
     }

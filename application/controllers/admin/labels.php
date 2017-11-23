@@ -291,7 +291,8 @@ class labels extends Survey_Common_Action
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
-            $maxSortOrder = array_reduce($model->labels, function($mixed, $item) {
+            $maxSortOrder = array_reduce($model->labels, function($mixed, $item)
+            {
                 if (((int) $item->sortorder) > $mixed) {
                     $mixed = (int) $item->sortorder;
                 }
@@ -307,7 +308,8 @@ class labels extends Survey_Common_Action
                     continue;
                 }
 
-                $results[] = array_filter($model->labels, function($item) use ($lslanguage) {
+                $results[] = array_filter($model->labels, function($item) use ($lslanguage)
+                {
                     return ($item->language === $lslanguage);
                 });
             }

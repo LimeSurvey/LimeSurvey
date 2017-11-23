@@ -77,7 +77,8 @@ class SettingsUser extends LSActiveRecord
      * @return boolean | Saving success/failure
      */
 
-    public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null) {   
+    public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
+    {
         if ($uid === null) { $uid = Yii::app()->user->getId(); }        
 
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
@@ -106,7 +107,8 @@ class SettingsUser extends LSActiveRecord
      * @param integer $entity_id | optional defaults to 'null'
      * @return SettingsUser | The current settings Object
      */
-    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null) {
+    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
+    {
         if ($uid === null) { $uid = Yii::app()->user->getId(); }        
         $searchCriteria = new CDbCriteria;
         $searchParams = [];
@@ -145,7 +147,8 @@ class SettingsUser extends LSActiveRecord
      * @param [type] $entity_id | optional defaults to 'null'
      * @return String|Null | The current settings value or null id there is no setting
      */
-    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null) {
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null)
+    {
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
         return $setting != null ? $setting->getAttribute('stg_value') : null;
     }

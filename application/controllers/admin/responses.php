@@ -712,7 +712,8 @@ class responses extends Survey_Common_Action
         $stringItems = json_decode($request->getPost('sItems'));
         // Cast all ids to int.
         $items       = array_map(
-            function($id) {
+            function($id)
+            {
                 return (int) $id;
             },
             is_array($stringItems) ? $stringItems : array()

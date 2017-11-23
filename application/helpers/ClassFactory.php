@@ -1,6 +1,7 @@
 <?php
 
-    class ClassFactory {
+    class ClassFactory
+    {
 
         protected static $map = array();
         protected static $registered = false;

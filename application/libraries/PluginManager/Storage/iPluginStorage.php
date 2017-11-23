@@ -1,6 +1,7 @@
 <?php
 namespace LimeSurvey\PluginManager;
-    interface iPluginStorage {
+    interface iPluginStorage
+    {
 
         /**
          * Returns plugin data.

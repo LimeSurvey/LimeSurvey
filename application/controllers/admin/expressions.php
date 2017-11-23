@@ -13,7 +13,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Expressions extends Survey_Common_Action {
+class Expressions extends Survey_Common_Action
+{
 
     function index()
     {
@@ -63,7 +64,8 @@ class Expressions extends Survey_Common_Action {
         }
     }
 
-    public function survey_logic_file() {
+    public function survey_logic_file()
+    {
         
         $aData = array();
         
@@ -168,7 +170,8 @@ class Expressions extends Survey_Common_Action {
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);        
     }
 
-    public function survey_logic_form() {
+    public function survey_logic_form()
+    {
 
         $aData['surveylist'] = getSurveyList();
         

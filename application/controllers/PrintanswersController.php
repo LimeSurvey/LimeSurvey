@@ -21,7 +21,8 @@
      * @copyright 2011
      * @access public
      */
-    class PrintanswersController extends LSYii_Controller {
+    class PrintanswersController extends LSYii_Controller
+    {
     /* @var string : Default layout when using render : leave at bare actually : just send content */
     public $layout = 'survey';
     /* @var string the template name to be used when using layout */

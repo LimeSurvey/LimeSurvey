@@ -230,7 +230,8 @@ class PluginsController extends LSYii_Controller
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function($installedPlugin) {
+        $aInstalledNames    = array_map(function($installedPlugin)
+        {
                 return $installedPlugin->name;
             }, $aInstalledPlugins);
 

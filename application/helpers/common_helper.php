@@ -204,7 +204,8 @@ function getSurveyList($returnarray = false, $surveyid = false)
             }
         }
         
-        usort($surveynames, function($a, $b) {
+        usort($surveynames, function($a, $b)
+        {
                 return strcmp($a['surveyls_title'], $b['surveyls_title']);
         });
         $cached = $surveynames;
@@ -402,7 +403,8 @@ function convertGETtoPOST($url)
 *
 * @returns integer Actual space used in MB
 */
-function calculateTotalFileUploadUsage() {
+function calculateTotalFileUploadUsage()
+{
     global $uploaddir;
     $sQuery = 'select sid from {{surveys}}';
     $oResult = dbExecuteAssoc($sQuery); //checked
@@ -423,7 +425,8 @@ function calculateTotalFileUploadUsage() {
  * @param string $directory
  * @return int
  */
-function getDirectorySize($directory) {
+function getDirectorySize($directory)
+{
     $size = 0;
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
         $size += $file->getSize();
@@ -1398,7 +1401,8 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 *
 * @param mixed $sEmailAddress  Email address to check
 */
-function validateEmailAddress($sEmailAddress) {
+function validateEmailAddress($sEmailAddress)
+{
     require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
     $oIdnConverter = new idna_convert();
     $sEmailAddress = $oIdnConverter->encode($sEmailAddress);
@@ -1416,7 +1420,8 @@ function validateEmailAddress($sEmailAddress) {
 *
 * @param mixed $aEmailAddressList  Email address to check
 */
-function validateEmailAddresses($aEmailAddressList) {
+function validateEmailAddresses($aEmailAddressList)
+{
     $aOutList = false;
     if (!is_array($aEmailAddressList)) {
         $aEmailAddressList = explode(';', $aEmailAddressList);
@@ -1439,7 +1444,8 @@ function validateEmailAddresses($aEmailAddressList) {
  * @param string $sLanguage
  * @return string[] The summary
  */
-function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage) {
+function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
+{
 
         foreach ($aFilters as $flt)
         {
@@ -1566,7 +1572,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage) {
 * @param array $aDuplicateQIDs
 * @return array
 */
-function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array()) {
+function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array())
+{
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = $survey->sid;
@@ -2181,7 +2188,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 * @param integer $iSurveyID
 * @return bool
 */
-function hasFileUploadQuestion($iSurveyID) {
+function hasFileUploadQuestion($iSurveyID)
+{
     $iCount = Question::model()->count("sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));
     return $iCount > 0;
 }
@@ -2196,7 +2204,8 @@ function hasFileUploadQuestion($iSurveyID) {
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
-function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = false, $questionid = false, $sQuestionLanguage = null) {
+function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = false, $questionid = false, $sQuestionLanguage = null)
+{
 
     static $timingsFieldMap;
 
@@ -2246,7 +2255,8 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
  * @param integer $maxanswers
  * @return array
  */
-function arraySearchByKey($needle, $haystack, $keyname, $maxanswers = "") {
+function arraySearchByKey($needle, $haystack, $keyname, $maxanswers = "")
+{
     $output = array();
     foreach ($haystack as $hay) {
         if (array_key_exists($keyname, $hay)) {
@@ -2342,7 +2352,8 @@ function categorySort($a, $b)
 
 
 // make a string safe to include in an HTML 'value' attribute.
-function HTMLEscape($str) {
+function HTMLEscape($str)
+{
     // escape newline characters, too, in case we put a value from
     // a TEXTAREA  into an <input type="hidden"> value attribute.
     return str_replace(array("\x0A", "\x0D"), array("&#10;", "&#13;"),
@@ -2377,7 +2388,8 @@ function stripCtrlChars($sValue)
 }
 
 // make a string safe to include in a JavaScript String parameter.
-function javascriptEscape($str, $strip_tags = false, $htmldecode = false) {
+function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
+{
 
     if ($htmldecode == true) {
         $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
@@ -3001,7 +3013,8 @@ function getEmailFormat($surveyid)
 }
 
 // Check if user has manage rights for a template
-function hasTemplateManageRights($userid, $templatefolder) {
+function hasTemplateManageRights($userid, $templatefolder)
+{
     $userid = sanitize_int($userid);
     $templatefolder = sanitize_paranoid_string($templatefolder);
     return Permission::model()->hasTemplatePermission($templatefolder, 'read', $userid);
@@ -3167,7 +3180,8 @@ function conditionalNewlineToBreak($mytext, $ishtml, $encoded = '')
 }
 
 
-function breakToNewline($data) {
+function breakToNewline($data)
+{
     return preg_replace('!<br.*>!iU', "\n", $data);
 }
 
@@ -3359,7 +3373,8 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 * @param string $sContent String to clean
 * @return string  Cleaned string
 */
-function stripJavaScript($sContent) {
+function stripJavaScript($sContent)
+{
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
     // TODO : Adding the onload/onhover etc ... or remove this false security function
     return $text;
@@ -3371,7 +3386,8 @@ function stripJavaScript($sContent) {
 * @param string $sContent String to clean
 * @return string  Cleaned string
 */
-function showJavaScript($sContent) {
+function showJavaScript($sContent)
+{
     $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', create_function(
             // single quotes are essential here,
             // or alternative escape all $ as \$
@@ -3468,7 +3484,8 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
 * @param string $str
 * @return string
 */
-function removeBOM($str = "") {
+function removeBOM($str = "")
+{
     if (substr($str, 0, 3) == pack("CCC", 0xef, 0xbb, 0xbf)) {
         $str = substr($str, 3);
     }
@@ -3506,7 +3523,8 @@ function getTemplateURL($sTemplateName)
  * @param string $sLanguage Language of the subquestion text
  * @return array
  */
-function getSubQuestions($sid, $qid, $sLanguage) {
+function getSubQuestions($sid, $qid, $sLanguage)
+{
 
     static $subquestions;
 
@@ -3542,7 +3560,8 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 * Wrapper function to retrieve an xmlwriter object and do error handling if it is not compiled
 * into PHP
 */
-function getXMLWriter() {
+function getXMLWriter()
+{
     if (!extension_loaded('xmlwriter')) {
         safeDie('XMLWriter class not compiled into PHP, please contact your system administrator');
     } else {
@@ -5070,7 +5089,7 @@ function json_decode_ls($jsonString)
  * @return array
  */
 function aEncodingsArray()
-    {
+{
         $aEncodings = array(
         "armscii8" => gT("ARMSCII-8 Armenian"),
         "ascii" => gT("US ASCII"),
@@ -5201,7 +5220,8 @@ function getBrowserLanguage()
     return $sLanguage;
 }
 
-function array_diff_assoc_recursive($array1, $array2) {
+function array_diff_assoc_recursive($array1, $array2)
+{
     $difference = array();
     foreach ($array1 as $key => $value) {
         if (is_array($value)) {
@@ -5299,7 +5319,8 @@ function getMaximumFileUploadSize()
  * @param string $oTokenAttributeData The original token attributes as stored in the database
  * @return array|mixed
  */
-function decodeTokenAttributes($oTokenAttributeData) {
+function decodeTokenAttributes($oTokenAttributeData)
+{
     if (trim($oTokenAttributeData) == '') {
         return array();
     }
@@ -5325,7 +5346,8 @@ function decodeTokenAttributes($oTokenAttributeData) {
  * @param string $sSerial
  * @return string|null
  */
-function getSerialClass($sSerial) {
+function getSerialClass($sSerial)
+{
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
     $aParts = explode(':', $sSerial, 4);
@@ -5336,7 +5358,8 @@ function getSerialClass($sSerial) {
 * Force Yii to create a new CSRF token by removing the old one
 *
 */
-function regenerateCSRFToken() {
+function regenerateCSRFToken()
+{
     // Expire the CSRF cookie
     $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
     $cookie->expire = time() - 3600;

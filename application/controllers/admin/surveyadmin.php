@@ -453,7 +453,8 @@ class SurveyAdmin extends Survey_Common_Action
      *
      *
      */
-    public function getAjaxQuestionGroupArray($surveyid) {
+    public function getAjaxQuestionGroupArray($surveyid)
+    {
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
@@ -517,7 +518,8 @@ class SurveyAdmin extends Survey_Common_Action
      *
      *
      */
-    public function getAjaxMenuArray($surveyid, $position = '') {
+    public function getAjaxMenuArray($surveyid, $position = '')
+    {
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
@@ -963,7 +965,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param string $subaction
      * @return void
      */
-        public function rendersidemenulink($iSurveyID, $subaction) {
+        public function rendersidemenulink($iSurveyID, $subaction)
+        {
             $aViewUrls = $aData = $activePanels = [];
             $menuaction = (String) $subaction;
             $iSurveyID = sanitize_int($iSurveyID);
@@ -1022,7 +1025,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Edit surveytexts and general settings
      */
 
-        public function surveygeneralsettings($iSurveyID) {
+        public function surveygeneralsettings($iSurveyID)
+        {
             $aViewUrls = $aData = $activePanels = array();
             $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
             $survey = Survey::model()->findByPk($iSurveyID);
@@ -1608,7 +1612,8 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    private function _getGeneralTemplateData($iSurveyID) {
+    private function _getGeneralTemplateData($iSurveyID)
+    {
         //$aData['action'] = "editsurveysettings";
         $aData['surveyid'] = $iSurveyID;
 
@@ -1629,7 +1634,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param Survey $survey
      * @return array
      */
-    private function _getTextEditData($survey) {
+    private function _getTextEditData($survey)
+    {
         Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
 
@@ -1842,7 +1848,8 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
     }
 
-    function datetimesettings() {
+    function datetimesettings()
+    {
         $data = array(
             'dateformatsettings'=>getDateFormatData(Yii::app()->session['dateformat']),
             'showClear' => true,
@@ -1856,7 +1863,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Action to set expiry date to multiple surveys
      */
-    public function expireMultipleSurveys() {
+    public function expireMultipleSurveys()
+    {
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();

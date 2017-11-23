@@ -2030,7 +2030,8 @@ class questions extends Survey_Common_Action
     /**
      * function ajaxValidate
      */
-    public function ajaxValidate($surveyid, $qid = false) {
+    public function ajaxValidate($surveyid, $qid = false)
+    {
 
         // Stupid hack since Bootstrap switch is a checkbox and 'other' used to be radio button
         // TODO: Longterm, change 'other' to boolean; change the model rules

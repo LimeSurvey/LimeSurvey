@@ -21,7 +21,8 @@
 * @copyright 2011
 * @access public
 */
-class RegisterController extends LSYii_Controller {
+class RegisterController extends LSYii_Controller
+{
 
     /* @var string : Default layout when using render : leave at bare actually : just send content */
     public $layout = 'survey';
@@ -149,7 +150,8 @@ class RegisterController extends LSYii_Controller {
      * @param $iSurveyId Survey Id to register
      * @return array of errors when try to register (empty array => no error)
      */
-    public function getRegisterErrors($iSurveyId) {
+    public function getRegisterErrors($iSurveyId)
+    {
         $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
 
         // Check the security question's answer
@@ -241,7 +243,8 @@ class RegisterController extends LSYii_Controller {
      * @param $iSurveyId Survey Id to register
      * @return boolean : if email is set to sent (before SMTP problem)
      */
-    public function sendRegistrationEmail($iSurveyId, $iTokenId) {
+    public function sendRegistrationEmail($iSurveyId, $iTokenId)
+    {
 
         $sLanguage = App()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
@@ -458,7 +461,8 @@ class RegisterController extends LSYii_Controller {
      * @param $iSurveyId
      * @return null|string date
      */
-    public function getStartDate($iSurveyId) {
+    public function getStartDate($iSurveyId)
+    {
         $aSurveyInfo = getSurveyInfo($iSurveyId, Yii::app()->language);
         if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")) >= $aSurveyInfo['startdate']) {
                     return;

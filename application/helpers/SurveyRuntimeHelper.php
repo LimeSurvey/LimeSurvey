@@ -14,7 +14,8 @@
 *
 */
 
-class SurveyRuntimeHelper {
+class SurveyRuntimeHelper
+{
 
     /**
      * In the 2.x version of LimeSurvey and priors, the main run method  was using a variable called redata fed via get_defined_vars. It was making hard to move piece of code to subfuntions.

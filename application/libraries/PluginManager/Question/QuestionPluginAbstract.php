@@ -1,8 +1,9 @@
 <?php
 namespace LimeSurvey\PluginManager;
-abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin {
+abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin
+{
            
-    public function registerEvents() 
+    public function registerEvents()
     {
         $this->subscribe('getAvailablePlugins');
     }

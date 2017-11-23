@@ -84,7 +84,8 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function massiveAction() {
+    function massiveAction()
+    {
 
         $action = Yii::app()->request->getQuery('action');
         $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');

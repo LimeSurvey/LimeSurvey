@@ -18,12 +18,14 @@ class Tutorials extends LSActiveRecord
 {
     private $preBuiltPackage = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_generatePreBuiltPackage();
         parent::__construct();
     }
 
-    private function _generatePreBuiltPackage() {
+    private function _generatePreBuiltPackage()
+    {
         $this->preBuiltPackage = array(
             'firstStartTour' => array(
                 'name' => 'firstStartTour',
@@ -532,7 +534,8 @@ class Tutorials extends LSActiveRecord
         ));
     }
 
-    public function getPrebuilt($prebuiltName) {
+    public function getPrebuilt($prebuiltName)
+    {
         if (isset($this->preBuiltPackage[$prebuiltName])) {
             return $this->preBuiltPackage[$prebuiltName];
         }

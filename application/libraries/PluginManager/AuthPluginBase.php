@@ -3,7 +3,8 @@ namespace LimeSurvey\PluginManager;
 use \User;
 use LSAuthResult;
 
-abstract class AuthPluginBase extends PluginBase {
+abstract class AuthPluginBase extends PluginBase
+{
     
     /**
      * These constants reflect the error codes to be used by the identity, they 

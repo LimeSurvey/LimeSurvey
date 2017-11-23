@@ -172,7 +172,8 @@ class Condition extends LSActiveRecord
      * @param array $group
      * @return CDbDataReader
      */
-    public function getSomeConditions($fields, $condition, $order, $group) {
+    public function getSomeConditions($fields, $condition, $order, $group)
+    {
         $record = Yii::app()->db->createCommand()
         ->select($fields)
         ->from($this->tableName())

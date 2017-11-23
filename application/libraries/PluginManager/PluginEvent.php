@@ -109,7 +109,8 @@ class PluginEvent
      * @param PluginBase|string $plugin The plugin we want content for or a string name
      * @return PluginEventContent
      */
-    public function getContent($plugin) {
+    public function getContent($plugin)
+    {
         if (is_string($plugin)) {
             $pluginName = $plugin;
         } elseif ($plugin instanceof PluginBase) {

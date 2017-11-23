@@ -19,7 +19,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  *
  * @@TODO Move to LSWebUser and change documentation / workflow for authentication plugins
  */
-class LSUserIdentity extends CUserIdentity {
+class LSUserIdentity extends CUserIdentity
+{
 
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
@@ -48,7 +49,8 @@ class LSUserIdentity extends CUserIdentity {
      */
     public $plugin = 'Authdb';
 
-    public function authenticate() {
+    public function authenticate()
+    {
         // First initialize the result, we can later retieve it to get the exact error code/message
         $result = new LSAuthResult(self::ERROR_NONE);
 
@@ -178,11 +180,13 @@ class LSUserIdentity extends CUserIdentity {
         }
     }
 
-    public function setPlugin($name) {
+    public function setPlugin($name)
+    {
         $this->plugin = $name;
     }
 
-    public function setConfig($config) {
+    public function setConfig($config)
+    {
         $this->config = $config;
     }
 }

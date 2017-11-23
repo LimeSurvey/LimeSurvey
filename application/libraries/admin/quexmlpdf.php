@@ -30,7 +30,8 @@ require_once($tcpdf['base_directory'].'/tcpdf.php');
 * @link      http://quexml.sourceforge.net
 * @link      http://quexf.sourceforge.net
 */
-class quexmlpdf extends pdf {
+class quexmlpdf extends pdf
+{
 
     /**
      * Define an inch in MM
@@ -925,7 +926,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function setQuestionnaireInfoMargin($margin) {
+    public function setQuestionnaireInfoMargin($margin)
+    {
         $margin = floatval($margin);
         if ($margin >= 0 && $margin <= 100) {
             $this->questionnaireInfoMargin = $margin;
@@ -940,7 +942,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function getQuestionnaireInfoMargin() {
+    public function getQuestionnaireInfoMargin()
+    {
         return $this->questionnaireInfoMargin;
     }
 
@@ -952,7 +955,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function setSingleResponseHorizontalHeight($height) {
+    public function setSingleResponseHorizontalHeight($height)
+    {
         $height = floatval($height);
         if ($height >= 1 && $height <= 100) {
             $this->singleResponseHorizontalHeight = $height;
@@ -967,7 +971,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function getSingleResponseHorizontalHeight() {
+    public function getSingleResponseHorizontalHeight()
+    {
         return $this->singleResponseHorizontalHeight;
     }
 
@@ -979,7 +984,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function setSingleResponseAreaHeight($height) {
+    public function setSingleResponseAreaHeight($height)
+    {
         $height = floatval($height);
         if ($height >= 1 && $height <= 100) {
             $this->singleResponseAreaHeight = $height;
@@ -994,7 +1000,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function getSingleResponseAreaHeight() {
+    public function getSingleResponseAreaHeight()
+    {
         return $this->singleResponseAreaHeight;
     }
 
@@ -1006,7 +1013,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function setBackgroundColourQuestion($colour) {
+    public function setBackgroundColourQuestion($colour)
+    {
         $colour = intval($colour);
         if ($colour >= 0 && $colour <= 255) {
             $this->backgroundColourQuestion = array($colour);
@@ -1021,7 +1029,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function getBackgroundColourQuestion() {
+    public function getBackgroundColourQuestion()
+    {
         return $this->backgroundColourQuestion[0];
     }
 
@@ -1033,7 +1042,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function setBackgroundColourSection($colour) {
+    public function setBackgroundColourSection($colour)
+    {
         $colour = intval($colour);
         if ($colour >= 0 && $colour <= 255) {
             $this->backgroundColourSection = array($colour);
@@ -1048,7 +1058,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2013-10-25
      */
-    public function getBackgroundColourSection() {
+    public function getBackgroundColourSection()
+    {
         return $this->backgroundColourSection[0];
     }
 
@@ -1264,7 +1275,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2013-04-10
      */
-    public function setResponseLabelFontSizeSmall($smallsize) {
+    public function setResponseLabelFontSizeSmall($smallsize)
+    {
         $this->responseLabelFontSizeSmall = floatval($smallsize);
     }
 
@@ -1275,7 +1287,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2013-04-10
      */
-    public function getResponseLabelFontSizeSmall() {
+    public function getResponseLabelFontSizeSmall()
+    {
         return $this->responseLabelFontSizeSmall;
     }
 
@@ -1337,7 +1350,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2014-12-22
      */
-    public function setCornerLines() {
+    public function setCornerLines()
+    {
         $this->cornerLines = true;
     }
 
@@ -1348,7 +1362,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2014-12-22
      */
-    public function setCornerBoxes() {
+    public function setCornerBoxes()
+    {
         $this->cornerLines = false;
     }
 
@@ -1359,7 +1374,8 @@ class quexmlpdf extends pdf {
      * @param type $format lines or boxes
      * @since 2015-07-08
      */
-    public function setEdgeDetectionFormat($format) {
+    public function setEdgeDetectionFormat($format)
+    {
         if ($format === 'lines') {
             $this->cornerLines = true;
         } else if ($format === 'boxes') {
@@ -1374,7 +1390,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2014-12-22
      */
-    public function getCornerLines() {
+    public function getCornerLines()
+    {
         return $this->cornerLines;
     }
 
@@ -1385,7 +1402,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2014-12-22
      */
-    public function getCornerBoxes() {
+    public function getCornerBoxes()
+    {
         return !$this->cornerLines;
     }
 
@@ -1395,7 +1413,8 @@ class quexmlpdf extends pdf {
      * @author A A D V S Abeysinghe <venura@acspri.org.au>
      * @since 2015-07-08
      */
-    public function getEdgeDetectionFormat() {
+    public function getEdgeDetectionFormat()
+    {
         $value = '';
         if ($this->getCornerLines()) {
             $value = 'lines';
@@ -1412,7 +1431,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function getPageFormat() {
+    public function getPageFormat()
+    {
         return 'A4';
     }
 
@@ -1423,7 +1443,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function setPageFormat($format, $orientation = '') {
+    public function setPageFormat($format, $orientation = '')
+    {
         parent::setPageFormat($format, $orientation);
     }
 
@@ -1434,7 +1455,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function getPageOrientation() {
+    public function getPageOrientation()
+    {
         return $this->CurOrientation;
     }
 
@@ -1445,7 +1467,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function setPageOrientation($orientation, $autopagebreak = '', $bottommargin = '') {
+    public function setPageOrientation($orientation, $autopagebreak = '', $bottommargin = '')
+    {
         parent::setPageOrientation($orientation, $autopagebreak, $bottommargin);
     }
 
@@ -1611,7 +1634,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-20
      */
-    public function Header() {
+    public function Header()
+    {
     }
 
     /**
@@ -1619,7 +1643,8 @@ class quexmlpdf extends pdf {
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      */
-    public function Footer() {
+    public function Footer()
+    {
     }
 
     /**
@@ -2280,7 +2305,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2015-06-18
      */
-    public function importStyleXML($xmlsettings) {
+    public function importStyleXML($xmlsettings)
+    {
         $xml = new SimpleXMLElement($xmlsettings);
 
         //do some reflection and find all getters with matching setters
@@ -2327,7 +2353,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2015-06-18
      */
-    public function exportStyleXML() {
+    public function exportStyleXML()
+    {
         $doc = new DomDocument('1.0');
         $root = $doc->createElement('queXMLPDFStyle');
 
@@ -3110,17 +3137,14 @@ class quexmlpdf extends pdf {
             //draw text cells
             if ($cells == 1) { //only
                 $border = array('LTR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
-            }
-            else if ($j == 0) { //first
+            } else if ($j == 0) { //first
                 $border = array('LT' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
-            }
-            else if (($j + 1) == $cells) { //last
+            } else if (($j + 1) == $cells) { //last
                 $border = array('TR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
 
                 //add a border gap
                 $this->SetX($this->GetX() + ($this->textResponseBorder), false);
-            }
-            else {  //middle
+            } else {  //middle
                 $border = array('T' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
                 //add a border gap
                 $this->SetX($this->GetX() + ($this->textResponseBorder), false);
@@ -3605,7 +3629,9 @@ class quexmlpdf extends pdf {
             $skipto = false;
             $other = false;
 
-            if (isset($r['skipto'])) $skipto = $r['skipto'];
+            if (isset($r['skipto'])) {
+                $skipto = $r['skipto'];
+            }
             if (isset($r['other']) && $rnum == $total) { //only set for last in set
                 $other = $r['other'];    
             }
@@ -3616,23 +3642,24 @@ class quexmlpdf extends pdf {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {// only need to do this once
-                    if ($parenttext == false)
-                        $this->addBoxGroup(1, $s['varname'], $s['text']);
-                    else
-                        $this->addBoxGroup(1, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text']);
+                    if ($parenttext == false) {
+                                            $this->addBoxGroup(1, $s['varname'], $s['text']);
+                    } else {
+                                            $this->addBoxGroup(1, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text']);
+                    }
 
                     //save the box group for this subquestion
                     $boxcp[$j] = $this->boxGroupCP;
-                }
-                else
+                } else
                 {
                     //reset box group pointer to be for the correct subquestion
                     $this->boxGroupCP = $boxcp[$j];
                 }
 
                 $bfilled = false;
-                if (isset($s['defaultvalue']) && $s['defaultvalue'] !== false && $s['defaultvalue'] == $r['value'])
-                    $bfilled = true;
+                if (isset($s['defaultvalue']) && $s['defaultvalue'] !== false && $s['defaultvalue'] == $r['value']) {
+                                    $bfilled = true;
+                }
 
                 $x = $this->getColumnX() + $textwidth + ($rwidth * $j) + ((($rwidth - $this->singleResponseBoxWidth) / 2.0));
 

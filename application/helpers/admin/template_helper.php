@@ -25,7 +25,8 @@ function doreplacement($file, $data, $oTemplate = '')
 
 
 
-function getListOfFiles($wh) {
+function getListOfFiles($wh)
+{
     //Returns an array containing all files in a directory
     if ($handle = opendir($wh)) {
         while (false !== ($file = readdir($handle))) {
@@ -48,7 +49,8 @@ function getListOfFiles($wh) {
 /**
  * @param string $target
  */
-function mkdir_p($target) {
+function mkdir_p($target)
+{
     //creates a new directory
     //Returns 1 for success
     //        2 for "directory/file by that name exists
@@ -70,7 +72,8 @@ function mkdir_p($target) {
     }
 }
 
-function themeoptions($optionarray, $selectedvalue) {
+function themeoptions($optionarray, $selectedvalue)
+{
     $return = '';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
@@ -83,7 +86,8 @@ function themeoptions($optionarray, $selectedvalue) {
     return $return;
 }
 
-function multiarray_search($arrayVet, $campo, $valor) {
+function multiarray_search($arrayVet, $campo, $valor)
+{
     while (isset($arrayVet[key($arrayVet)])) {
         if ($arrayVet[key($arrayVet)][$campo] == $valor) {
             return key($arrayVet);
@@ -94,7 +98,8 @@ function multiarray_search($arrayVet, $campo, $valor) {
 }
 
 
-function recursive_in_array($needle, $haystack) {
+function recursive_in_array($needle, $haystack)
+{
     foreach ($haystack as $stalk) {
         if ($needle == $stalk || (is_array($stalk) && recursive_in_array($needle, $stalk))) {
             return true;

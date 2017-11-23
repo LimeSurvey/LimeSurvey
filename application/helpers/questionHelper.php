@@ -1608,7 +1608,8 @@ class questionHelper
             self::$questionAttributesSettings[$sType] = array();
             self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
-            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType){
+            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType)
+            {
                 return stripos($attribute['types'], $sType) !== false;
             });
 
