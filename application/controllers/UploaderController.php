@@ -60,7 +60,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400); // See for debug > 1
             }
-            if (is_file($sFileDir.$sFileGetContent))  { // Validate file before else 500 error by getMimeType
+            if (is_file($sFileDir.$sFileGetContent)) { // Validate file before else 500 error by getMimeType
                 $mimeType = CFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image

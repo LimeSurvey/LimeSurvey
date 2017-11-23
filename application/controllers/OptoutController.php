@@ -90,8 +90,7 @@ class OptoutController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
+        } else
         {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
@@ -148,8 +147,7 @@ class OptoutController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
+        } else
         {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }

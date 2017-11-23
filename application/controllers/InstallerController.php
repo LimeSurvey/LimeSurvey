@@ -295,8 +295,8 @@ class InstallerController extends CController {
                     {
                         try {
                             if ($dataReader = $this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
-                                 // DBLIB does not throw an exception on a missing table
-                                 $bTablesDoNotExist = true;
+                                    // DBLIB does not throw an exception on a missing table
+                                    $bTablesDoNotExist = true;
                             }
                         } catch (Exception $e) {
                             $bTablesDoNotExist = true;
