@@ -279,14 +279,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']]; // remap the qid
-            }
-            else { // a problem with this answer record -> don't consider
+            } else { // a problem with this answer record -> don't consider
                 continue;
             } 
             if (isset($aQIDReplacements[$insertdata['cqid']])) {
                 $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
-            }
-            else { // a problem with this answer record -> don't consider
+            } else { // a problem with this answer record -> don't consider
                 continue;
             } 
 
@@ -302,8 +300,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             // recreate the cfieldname with the new IDs
             if (preg_match("/^\+/", $oldcsid)) {
                 $newcfieldname = '+'.$iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldqid));
-            }
-            else
+            } else
             {
                 $newcfieldname = $iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldqid));
             }
@@ -1305,8 +1302,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) { // remap the subquestion id   
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
             }
-            if ($insertdata)
-                XSSFilterArray($insertdata);
+            if ($insertdata) {
+                            XSSFilterArray($insertdata);
+            }
             // now translate any links
             $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
             $results['defaultvalues']++;
@@ -1327,8 +1325,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
             // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this condition is orphan -> error, skip this record)
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']]; // remap the qid
-            }
-            else { // a problem with this answer record -> don't consider
+            } else { // a problem with this answer record -> don't consider
                 continue; 
             }
             if ($insertdata['cqid'] != 0) {
@@ -1336,8 +1333,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
                 {
                     $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
-                }
-                else  { // a problem with this answer record -> don't consider
+                } else  { // a problem with this answer record -> don't consider
                     continue; 
                 }
 
@@ -1345,7 +1341,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
 
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid])){
-                   continue; 
+                    continue; 
                 }
                     
             }
@@ -1664,8 +1660,9 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             $oXMLReader->read();
                         } else
                         {
-                            if (in_array($sFieldname, $DestinationFields))
-                                $aInsertData[$sFieldname] = '';
+                            if (in_array($sFieldname, $DestinationFields)) {
+                                                            $aInsertData[$sFieldname] = '';
+                            }
                         }
                     }
 
@@ -1899,13 +1896,11 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     if ($bExistingsId && $aOptions['sExistingId'] != 'renumber')
                     {
                         $aResponsesUpdated[] = $aResponses[$iIdReponsesKey];
-                    }
-                    else
+                    } else
                     {
                         $aResponsesInserted[] = $aResponses[$iIdReponsesKey];
                     }
-                }
-                else {
+                } else {
                     // Actually can not be, leave it if we have a $oSurvey->validate() in future release                    
                     $oTransaction->rollBack();
                     $aResponsesError[] = $aResponses[$iIdReponsesKey];
@@ -2342,8 +2337,7 @@ function TSVImportSurvey($sFullFilePath)
                 if ($qtype == 'O' || $qtype == '|')
                 {
                     ;   // these are fake rows to show naming of comment and filecount fields
-                }
-                elseif ($sqname == 'other' && $lastother == "Y") {  // If last question have other to Y : it's not a real SQ row
+                } elseif ($sqname == 'other' && $lastother == "Y") {  // If last question have other to Y : it's not a real SQ row
                     if ($qtype == "!" || $qtype == "L")
                     {
                         // only used to set default value for 'other' in these cases

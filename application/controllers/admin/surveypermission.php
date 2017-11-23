@@ -464,15 +464,13 @@ class surveypermission extends Survey_Common_Action {
             {
                 $this->getController()->error('Access denied');
             }
-        }
-        elseif ($action == "setusergroupsurveysecurity")
+        } elseif ($action == "setusergroupsurveysecurity")
         {
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray'))) {
                 // User can not change own security (except for superadmin ?)
                 $this->getController()->error('Access denied');
             }
-        }
-        else
+        } else
         {
             Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
             //$this->getController()->error('Unknow action');

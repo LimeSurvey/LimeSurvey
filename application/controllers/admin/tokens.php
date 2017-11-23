@@ -58,8 +58,7 @@ class tokens extends Survey_Common_Action
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) { //If no tokens table exists
             self::_newtokentable($iSurveyId);
-        }
-        else
+        } else
         {
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
@@ -2070,14 +2069,11 @@ class tokens extends Survey_Common_Action
             if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2)
             {
                 Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            }
-            elseif (strtolower($oFile->getExtensionName()) != 'csv') {
+            } elseif (strtolower($oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
-            }
-            elseif (!@$oFile->saveAs($sFileName)) {
+            } elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
-            }
-            else
+            } else
             {
                 $iRecordImported = 0;
                 $iRecordCount = 0;
@@ -2273,8 +2269,9 @@ class tokens extends Survey_Common_Action
                             // unset all empty value
                             foreach ($aWriteArray as $key=>$value)
                             {
-                                if ($aWriteArray[$key] == "")
-                                    unset($aWriteArray[$key]);
+                                if ($aWriteArray[$key] == "") {
+                                                                    unset($aWriteArray[$key]);
+                                }
                                 if (substr($value, 0, 1) == '"' && substr($value, -1) == '"') { // Fix CSV quote
                                     $value = substr($value, 1, -1);    
                                 }

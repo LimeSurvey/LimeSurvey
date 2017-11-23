@@ -117,8 +117,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         if ($totallines > 15)
         {
             $gheight = 320 + (6.7 * ($totallines - 15));
-        }
-        else
+        } else
         {
             $gheight = 320;
         }
@@ -760,9 +759,7 @@ class userstatistics_helper {
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
-        }
-
-        else if ($firstletter == "|") {  // File Upload
+        } else if ($firstletter == "|") {  // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -1747,8 +1744,7 @@ class userstatistics_helper {
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; }
-            elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {$query .= " AND $sql"; }
@@ -3237,8 +3233,7 @@ class userstatistics_helper {
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; }
-        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
+        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
 
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
@@ -3252,8 +3247,7 @@ class userstatistics_helper {
         {
             if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
                 $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
-            }
-            else
+            } else
             {
                 $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
