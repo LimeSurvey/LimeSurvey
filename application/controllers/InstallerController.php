@@ -371,8 +371,7 @@ class InstallerController extends CController {
                             'label' => gT('Create database'),
                             'name' => '',
                         );
-                    }
-                    elseif ($bDBExistsButEmpty) {
+                    } elseif ($bDBExistsButEmpty) {
                         Yii::app()->session['populatedatabase'] = true;
 
                         //$this->connection->database = $model->dbname;
@@ -1034,8 +1033,7 @@ class InstallerController extends CController {
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != ''))
             {
                 $sURLFormat = 'path';
-            }
-            else 
+            } else 
             { // Apache
                 $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
             }

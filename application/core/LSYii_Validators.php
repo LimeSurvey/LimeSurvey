@@ -147,7 +147,7 @@ class LSYii_Validators extends CValidator {
         $sNewValue = "";
         foreach ($aValues as $key=>$aValue) {
             if ($aValue[2] == "STRING") {
-                $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]);  // If EM is broken : can throw invalid $key
+                $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]); // If EM is broken : can throw invalid $key
             } else {
                 $sExpression = trim($aValue[0], '{}');
                 $sNewValue .= "{";
@@ -155,7 +155,7 @@ class LSYii_Validators extends CValidator {
                 foreach ($aParsedExpressions as $aParsedExpression)
                 {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
-                       $sNewValue .= "\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
+                        $sNewValue .= "\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
                     } elseif ($aParsedExpression[2] == 'SQ_STRING')
                         $sNewValue .= "'".$filter->purify($aParsedExpression[0])."'";
                     else

@@ -770,12 +770,13 @@ class SurveyRuntimeHelper {
     {
         if (isset($this->sMove))
         {
-            if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload")))
-                $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
-            else // Accepted $move without error
+            if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
+                            $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
+            } else {
+                // Accepted $move without error
                 $_SESSION[$this->LEMsessid]['prevstep'] = $this->sMove;
-        }
-        else
+            }
+        } else
         {
         //    $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
         }
@@ -837,8 +838,10 @@ class SurveyRuntimeHelper {
                 } else {
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
-                    if ($this->aSurveyInfo['questionindex'] == 2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
+                    if ($this->aSurveyInfo['questionindex'] == 2) {
+                        // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
                         LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
+                    }
 
                     $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }

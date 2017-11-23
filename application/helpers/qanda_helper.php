@@ -357,8 +357,7 @@ function retrieveAnswers($ia)
         };
 
         $question_text['all'] = $qtitle_custom;
-    }
-    else
+    } else
     {
         $question_text['all'] = $qtitle;
     };
@@ -432,15 +431,13 @@ function mandatory_popup($ia, $notanswered = null)
         {
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
-        }
-        else
+        } else
         {
             $popup = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup = "Y";
         }
         return array($mandatorypopup, $popup);
-    }
-    else
+    } else
     {
         return false;
     }
@@ -919,20 +916,16 @@ function do_date($ia)
         if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099))
         {
             $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
-        }
-        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $mindate = $date_min;
-        }
-        elseif ($date_time_em)
+        } elseif ($date_time_em)
         {
             $mindate = date("Y-m-d", $date_time_em);
-        }
-        else
+        } else
         {
             $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
-    }
-    else
+    } else
     {
         $mindate = '1900-01-01'; // Why 1900 ?
     }
@@ -946,20 +939,16 @@ function do_date($ia)
         if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099))
         {
             $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
-        }
-        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
-        }
-        elseif ($date_time_em)
+        } elseif ($date_time_em)
         {
             $maxdate = date("Y-m-d", $date_time_em);
-        }
-        else
+        } else
         {
             $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
-    }
-    else
+    } else
     {
         $maxdate = '2037-12-31'; // Why 2037 ?
     }
@@ -3609,9 +3598,9 @@ function getLatLongFromIp($sIPAddress) {
             $lng = (float) $oXML->{'longitude'};
 
             return(array($lat, $lng));
+        } else {
+                    return false;
         }
-        else
-            return false;
     }
 }
 
@@ -3649,8 +3638,7 @@ function do_longfreetext($ia)
     if (trim($aQuestionAttributes['display_rows']) != '')
     {
         $drows = $aQuestionAttributes['display_rows'];
-    }
-    else
+    } else
     {
         $drows = 5;
     }
@@ -3659,8 +3647,7 @@ function do_longfreetext($ia)
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
-    }
-    else
+    } else
     {
         $withColumn = false;
     }
@@ -3916,8 +3903,7 @@ function do_array_5point($ia)
     if ($aQuestionAttributes['random_order'] == 1)
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    }
-    else
+    } else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
@@ -4106,8 +4092,7 @@ function do_array_10point($ia)
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
-    }
-    else
+    } else
     {
         $answerwidth = 33;
     }
@@ -4119,8 +4104,7 @@ function do_array_10point($ia)
 
     if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    }
-    else
+    } else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
@@ -5962,8 +5946,7 @@ function do_array_dual($ia)
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
                 {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
-                }
-                else
+                } else
                 {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = '';
                 }
@@ -5973,8 +5956,7 @@ function do_array_dual($ia)
                     {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
-                    }
-                    else
+                    } else
                     {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';
                     }
@@ -6011,8 +5993,7 @@ function do_array_dual($ia)
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;
-                        }
-                        else
+                        } else
                         {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = "";
                         }
