@@ -327,8 +327,7 @@ abstract class Writer implements IWriter
                             $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column, $value);
                             break;
                     }
-                }
-                else { //Token table value
+                } else { //Token table value
                     $elementArray[] = $value;
                 }
             }

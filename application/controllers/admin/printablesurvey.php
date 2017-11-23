@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -37,14 +39,14 @@ class printablesurvey extends Survey_Common_Action
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-        }
-        else
+        } else
         {
             /* Remove admin css and js */
             Yii::app()->clientScript->reset();
             $aSurveyInfo = getSurveyInfo($surveyid, $lang);
-            if (!($aSurveyInfo))
-                $this->getController()->error('Invalid survey ID');
+            if (!($aSurveyInfo)) {
+                            $this->getController()->error('Invalid survey ID');
+            }
             SetSurveyLanguage($surveyid, $lang);
             $sLanguageCode = App()->language;
 
@@ -76,16 +78,14 @@ class printablesurvey extends Survey_Common_Action
                     $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
                 };
                 sprintf(gT("Please submit by %s"), $surveyexpirydate);
-            }
-            else
+            } else
             {
                 $surveyexpirydate = '';
             }
             //Fix $templatename : control if print_survey.pstpl exist
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);            
             if ($oTemplate->pstplPath.DIRECTORY_SEPARATOR.'print_survey.pstpl') {
-            }
-            elseif (is_file(getTemplatePath(Yii::app()->getConfig("defaulttheme")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
+            } elseif (is_file(getTemplatePath(Yii::app()->getConfig("defaulttheme")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
                 $templatename = Yii::app()->getConfig("defaulttheme");
             } else {
                 $templatename = "default";
@@ -93,8 +93,12 @@ class printablesurvey extends Survey_Common_Action
 
             $sFullTemplatePath = $oTemplate->path;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
-            if (!defined('PRINT_TEMPLATE_DIR')) define('PRINT_TEMPLATE_DIR', $sFullTemplatePath, true);
-            if (!defined('PRINT_TEMPLATE_URL')) define('PRINT_TEMPLATE_URL', $sFullTemplateUrl, true);
+            if (!defined('PRINT_TEMPLATE_DIR')) {
+                define('PRINT_TEMPLATE_DIR', $sFullTemplatePath, true);
+            }
+            if (!defined('PRINT_TEMPLATE_URL')) {
+                define('PRINT_TEMPLATE_URL', $sFullTemplateUrl, true);
+            }
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();
@@ -179,8 +183,7 @@ class printablesurvey extends Survey_Common_Action
                 if ($degrow['description'])
                 {
                     $group_desc = $degrow['description'];
-                }
-                else
+                } else
                 {
                     $group_desc = '';
                 }
@@ -197,8 +200,7 @@ class printablesurvey extends Survey_Common_Action
                 //Alternate bgcolor for different groups
                 if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even')
                 {
-                    $group['ODD_EVEN'] = ' g-row-odd'; }
-                else
+                    $group['ODD_EVEN'] = ' g-row-odd'; } else
                 {
                     $group['ODD_EVEN'] = ' g-row-even';
                 }
@@ -299,32 +301,25 @@ class printablesurvey extends Survey_Common_Action
                                 if ($distinctrow['method'] == '==')
                                 {
                                     $sExplanation .= gT("is")." ";
-                                }
-                                elseif ($distinctrow['method'] == '!=')
+                                } elseif ($distinctrow['method'] == '!=')
                                 {
                                     $sExplanation .= gT("is NOT")." ";
-                                }
-                                elseif ($distinctrow['method'] == '<')
+                                } elseif ($distinctrow['method'] == '<')
                                 {
                                     $sExplanation .= gT("is less than")." ";
-                                }
-                                elseif ($distinctrow['method'] == '<=')
+                                } elseif ($distinctrow['method'] == '<=')
                                 {
                                     $sExplanation .= gT("is less than or equal to")." ";
-                                }
-                                elseif ($distinctrow['method'] == '>=')
+                                } elseif ($distinctrow['method'] == '>=')
                                 {
                                     $sExplanation .= gT("is greater than or equal to")." ";
-                                }
-                                elseif ($distinctrow['method'] == '>')
+                                } elseif ($distinctrow['method'] == '>')
                                 {
                                     $sExplanation .= gT("is greater than")." ";
-                                }
-                                elseif ($distinctrow['method'] == 'RX')
+                                } elseif ($distinctrow['method'] == 'RX')
                                 {
                                     $sExplanation .= gT("is matched (regexp)")." ";
-                                }
-                                else
+                                } else
                                 {
                                     $sExplanation .= gT("is")." ";
                                 }
@@ -391,8 +386,7 @@ class printablesurvey extends Survey_Common_Action
                                                 $postans = $frow['answer'];
                                                 $conditions[] = $frow['answer'];
                                             } // while
-                                        }
-                                        elseif ($labelIndex == 1)
+                                        } elseif ($labelIndex == 1)
                                         {
 
                                             $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$sLanguageCode}'";
@@ -484,8 +478,7 @@ class printablesurvey extends Survey_Common_Action
                                             } else {
                                                 $header = '1';
                                             }
-                                        }
-                                        elseif ($labelIndex == 1)
+                                        } elseif ($labelIndex == 1)
                                         {
                                             if (trim($cqidattributes['dualscale_headerB'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerB'][$sLanguageCode]);
@@ -528,8 +521,7 @@ class printablesurvey extends Survey_Common_Action
                             if (count($conditions) > 1)
                             {
                                 $sExplanation .= "'".implode("' <em class='scenario-or-separator'>".gT("or")."</em> '", $conditions)."'";
-                            }
-                            elseif (count($conditions) == 1)
+                            } elseif (count($conditions) == 1)
                             {
                                 $sExplanation .= "'".$conditions[0]."'";
                             }
@@ -538,8 +530,7 @@ class printablesurvey extends Survey_Common_Action
                             //$explanation .= " ".gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if ($distinctrow['cqid']) {
                                 $sExplanation .= " <span class='scenario-at-separator'>".gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)";
-                            }
-                            else {
+                            } else {
                                 $sExplanation .= " ".$distinctrow['value'];
                             }
                             //$distinctrow
@@ -568,8 +559,7 @@ class printablesurvey extends Survey_Common_Action
                             {
                                 $sExplanation .= "<div class='printable_equation'>".$sEquation."</div>";
                             }
-                        }
-                        else
+                        } else
                         {
                             $sExplanation = '';
                         }
@@ -685,15 +675,13 @@ class printablesurvey extends Survey_Common_Action
                                 if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns']) != '')
                                 {
                                     $dcols = $qidattributes['display_columns'];
-                                }
-                                else
+                                } else
                                 {
                                     $dcols = 0;
                                 }
                                 if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
                                     $optCategorySeparator = $qidattributes['category_separator'];
-                                }
-                                else
+                                } else
                                 {
                                     unset($optCategorySeparator);
                                 }
@@ -721,14 +709,12 @@ class printablesurvey extends Survey_Common_Action
                                         if ($category != '')
                                         {
                                             $dearow['answer'] = "($category) $answer ".self::_addsgqacode("(".$dearow['code'].")");
-                                        }
-                                        else
+                                        } else
                                         {
                                             $dearow['answer'] = $answer.self::_addsgqacode(" (".$dearow['code'].")");
                                         }
                                         $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
-                                    }
-                                    else
+                                    } else
                                     {
                                         $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow['answer'])."\n\t\t\t".$dearow['answer'].self::_addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
                                     }
@@ -738,8 +724,7 @@ class printablesurvey extends Survey_Common_Action
                                         if ($colcounter == $wrapper['cols'] - 1)
                                         {
                                             $question['ANSWER'] .= $wrapper['col-devide-last'];
-                                        }
-                                        else
+                                        } else
                                         {
                                             $question['ANSWER'] .= $wrapper['col-devide'];
                                         }
@@ -798,8 +783,7 @@ class printablesurvey extends Survey_Common_Action
                                 if (trim($qidattributes['display_columns']) != '')
                                 {
                                     $dcols = $qidattributes['display_columns'];
-                                }
-                                else
+                                } else
                                 {
                                     $dcols = 0;
                                 }
@@ -826,8 +810,7 @@ class printablesurvey extends Survey_Common_Action
                                         if ($colcounter == $wrapper['cols'] - 1)
                                         {
                                             $question['ANSWER'] .= $wrapper['col-devide-last'];
-                                        }
-                                        else
+                                        } else
                                         {
                                             $question['ANSWER'] .= $wrapper['col-devide'];
                                         }
@@ -841,7 +824,9 @@ class printablesurvey extends Survey_Common_Action
                                     {
                                         $qidattributes["other_replace_text"][$sLanguageCode] = "Other";
                                     }
-                                    if (!isset($mearow['answer'])) $mearow['answer'] = "";
+                                    if (!isset($mearow['answer'])) {
+                                        $mearow['answer'] = "";
+                                    }
                                     $question['ANSWER'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox', $mearow['answer']).gT($qidattributes["other_replace_text"][$sLanguageCode]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
                                 }
                                 $question['ANSWER'] .= $wrapper['whole-end'];
@@ -997,8 +982,7 @@ class printablesurvey extends Survey_Common_Action
                                     if (strpos($mearow['question'], '|'))
                                     {
                                         $answertext = substr($mearow['question'], 0, strpos($mearow['question'], '|')).self::_addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
-                                    }
-                                    else
+                                    } else
                                     {
                                         $answertext = $mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
                                     }
@@ -1141,8 +1125,7 @@ class printablesurvey extends Survey_Common_Action
 
                                 if (trim($qidattributes['multiflexible_step']) != '') {
                                     $stepvalue = $qidattributes['multiflexible_step'];
-                                }
-                                else
+                                } else
                                 {
                                     $stepvalue = 1;
                                 }
@@ -1195,8 +1178,7 @@ class printablesurvey extends Survey_Common_Action
                                         if ($checkboxlayout === false)
                                         {
                                             $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('text', '', $width).self::_addsgqacode(" (".$fieldname.$frow['title']."_".$xaxisarray[$i].") ")."\n";
-                                        }
-                                        else
+                                        } else
                                         {
                                             $question['ANSWER'] .= "\t\t\t\t".self::_input_type_image('checkbox').self::_addsgqacode(" (".$fieldname.$frow['title']."_".$xaxisarray[$i].") ")."\n";
                                         }
@@ -1288,8 +1270,7 @@ class printablesurvey extends Survey_Common_Action
                                 if (trim($qidattributes['answer_width']) != '')
                                 {
                                     $iAnswerWidth = 100 - $qidattributes['answer_width'];
-                                }
-                                else
+                                } else
                                 {
                                     $iAnswerWidth = 77;
                                 }
@@ -1297,8 +1278,7 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     $col_width = round($iAnswerWidth / count($column_headings));
 
-                                }
-                                else
+                                } else
                                 {
                                     $heading = '';
                                 }
@@ -1319,14 +1299,15 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                                     $rowclass = alternation($rowclass, 'row');
-                                    if (trim($answertext) == '') $answertext = '&nbsp;';
+                                    if (trim($answertext) == '') {
+                                        $answertext = '&nbsp;';
+                                    }
 
                                     //semantic differential question type?
                                     if (strpos($mearow['question'], '|'))
                                     {
                                         $answertext = substr($mearow['question'], 0, strpos($mearow['question'], '|')).self::_addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
-                                    }
-                                    else
+                                    } else
                                     {
                                         $answertext = $mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
                                     }
@@ -1415,8 +1396,7 @@ class printablesurvey extends Survey_Common_Action
                                     }
 
                                     $myheader .= "\t\t\t\t</tr>\n";
-                                }
-                                else
+                                } else
                                 {
                                     $myheader = '';
                                 }
@@ -1629,14 +1609,12 @@ class printablesurvey extends Survey_Common_Action
                 {
                     return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
                 }
-            }
-            else
+            } else
             {
                 // No template found, abort
                 throw new \Exception("No template file found at path ".$full_path);
             }
-        }
-        else
+        } else
         {
             $template_content = constant($full_constant);
             $test_empty = trim($template_content);
@@ -1654,8 +1632,7 @@ class printablesurvey extends Survey_Common_Action
                 $replace[] = $value;
             }
             return str_replace($find, $replace, $template_content);
-        }
-        else
+        } else
         {
             if (Yii::app()->getConfig('debug') > 0)
             {
@@ -1703,8 +1680,7 @@ class printablesurvey extends Survey_Common_Action
         if (!empty($title))
         {
             $div_title = ' title="'.htmlspecialchars($title).'"';
-        }
-        else
+        } else
         {
             $div_title = '';
         }
@@ -1775,14 +1751,14 @@ class printablesurvey extends Survey_Common_Action
         } else {
             if ($answerBaseWidth) {
                 $sInputContainerWidth = $answerBaseWidth;
-            }elseif ($attributeLabelWidth == 12) {
+            } elseif ($attributeLabelWidth == 12) {
                 $sInputContainerWidth = 12;
             } else {
                 $sInputContainerWidth = 12 - $attributeLabelWidth;
             }
             if ($labelBaseWidth) {
                 $sLabelWidth = $labelBaseWidth;
-            }elseif ($answerBaseWidth == 12) {
+            } elseif ($answerBaseWidth == 12) {
                 $sLabelWidth = 12;
             } else {
                 $sLabelWidth = 12 - $sInputContainerWidth;

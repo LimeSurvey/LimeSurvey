@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * Offer some way to validate Expression in survey
 *
@@ -40,15 +42,15 @@ class ExpressionValidate extends Survey_Common_Action {
      */
     public function quota($iSurveyId, $quota, $lang = null)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read'))
-            throw new CHttpException(401, "401 Unauthorized");
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
+                    throw new CHttpException(401, "401 Unauthorized");
+        }
         $iQuotaId = $quota;
         if (is_string($lang))
         {
             $oValidator = new LSYii_Validators;
             $aLangs = array($oValidator->languageFilter($lang));
-        }
-        else
+        } else
         {
             $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         }
@@ -97,8 +99,9 @@ class ExpressionValidate extends Survey_Common_Action {
      */
     public function email($iSurveyId, $lang)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
-            throw new CHttpException(401, "401 Unauthorized");
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read')) {
+                    throw new CHttpException(401, "401 Unauthorized");
+        }
         $sType = Yii::app()->request->getQuery('type');
         $this->sLang = $sLang = $lang;
         $this->iSurveyId = $iSurveyId; // This start the survey before Expression : is this allways needed ?

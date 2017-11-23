@@ -156,7 +156,7 @@ class TemplateConfiguration extends TemplateConfig
         );
 
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one. 
-        if (! is_a($oInstance, 'TemplateConfiguration')  ){
+        if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName('default');
         }
 
