@@ -1903,8 +1903,10 @@ function checkCompletedQuota($surveyid, $return = false)
                     $aMatchedQuotas[] = $oQuota->viewArray;
                 } else {
                     $iCompleted = $oQuota->completeCount;
-                    if (!is_null($iCompleted) && ((int) $iCompleted >= (int) $oQuota->qlimit)) // This remove invalid quota and not completed
+                    if (!is_null($iCompleted) && ((int) $iCompleted >= (int) $oQuota->qlimit)) {
+                        // This remove invalid quota and not completed
                         $aMatchedQuotas[] = $oQuota->viewArray;
+                    }
                 }
             }
         }

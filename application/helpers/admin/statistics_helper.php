@@ -116,8 +116,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         if ($totallines > 15)
         {
             $gheight = 320 + (6.7 * ($totallines - 15));
-        }
-        else
+        } else
         {
             $gheight = 320;
         }
@@ -767,9 +766,7 @@ class statistics_helper {
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
-        }
-
-        else if ($firstletter == "|") { // File Upload
+        } else if ($firstletter == "|") { // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -892,15 +889,14 @@ class statistics_helper {
         //K = multiple numerical input
         elseif ($firstletter == "N" || $firstletter == "K") { //NUMERICAL TYPE
             //Zero handling
-            if (!isset($excludezeros)){ //If this hasn't been set, set it to on as default:
+            if (!isset($excludezeros)) { //If this hasn't been set, set it to on as default:
                 $excludezeros = 1;
             }
             //check last character, greater/less/equals don't need special treatment
             if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=")
             {
                 //DO NOTHING
-            }
-            else
+            } else
             {
                 $showem = array();
                 $fld = substr($rt, 1, strlen($rt));
@@ -1674,8 +1670,7 @@ class statistics_helper {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
                         . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
-                    }
-                    else {
+                    } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
                         . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
@@ -1684,8 +1679,7 @@ class statistics_helper {
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; }
-            elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
 
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {$query .= " AND $sql"; }
@@ -4568,8 +4562,7 @@ class statistics_helper {
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; }
-        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
+        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
 
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))

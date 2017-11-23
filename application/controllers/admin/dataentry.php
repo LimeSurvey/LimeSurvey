@@ -1756,8 +1756,7 @@ class dataentry extends Survey_Common_Action
                     // get submit date
                     if (isset($_POST['closedate'])) {
                         $submitdate = $_POST['closedate'];
-                    }
-                    else {
+                    } else {
                         $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
                     }
 

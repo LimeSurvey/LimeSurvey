@@ -329,8 +329,7 @@ class RegisterController extends LSYii_Controller {
                 $oToken->sent = $today;
                 $oToken->save();
             }
-        }
-        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments))
+        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));

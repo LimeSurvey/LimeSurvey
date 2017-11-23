@@ -5966,8 +5966,7 @@ function do_array_dual($ia)
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
-                    }
-                    else
+                    } else
                     {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = "";
                     }
@@ -5979,8 +5978,7 @@ function do_array_dual($ia)
                         {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
-                        }
-                        else
+                        } else
                         {
                             $aData['myfname0_notset'] = "";
                         }

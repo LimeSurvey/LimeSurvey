@@ -708,8 +708,7 @@ function alternation($alternate = '', $type = 'col')
     if ($type == 'row') {// Row is sub question OR Y Axis subquestion : it must be column for array by column
         $odd  = 'ls-odd';
         $even = 'ls-even';
-    }
-    else {// cols is answers part OR X axis subquestion : it must the row in array by column
+    } else {// cols is answers part OR X axis subquestion : it must the row in array by column
         $odd  = 'ls-col-odd';
         $even = 'ls-col-even';
     };
@@ -882,14 +881,12 @@ function getUserList($outputformat = 'fullinfoarray')
             UNION
             SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
 
-        }
-        else
+        } else
         {
             return array(); // Or die maybe
         }
 
-    }
-    else
+    } else
     {
         $uquery = "SELECT * FROM {{users}} ORDER BY uid";
     }
@@ -1230,7 +1227,9 @@ function sendCacheHeaders()
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 {
 
-    if ($sValue == null || $sValue == '') return '';
+    if ($sValue == null || $sValue == '') {
+        return '';
+    }
     $survey = Survey::model()->findByPk($iSurveyID);
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
@@ -1239,14 +1238,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
         if (isset($fieldmap[$sFieldCode]))
         {
             $fields = $fieldmap[$sFieldCode];
-        }
-        else
+        } else
         {
             return '';
         }
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid'] == 'comment') return $sValue;
+        if ($fields['aid'] == 'comment') {
+            return $sValue;
+        }
 
         //Find out the question type
         $this_type = $fields['type'];
@@ -2023,8 +2023,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
-        }
-        else { // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
+        } else { // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
             //MULTI ENTRY
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow)
@@ -2607,14 +2606,12 @@ function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities =
         if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1)
         {
             $sNicetext = preg_replace(array('~\R~u'), array(' '), $sNicetext);
-        }
-        else
+        } else
         {
             // Poor man's replacement for line feeds
             $sNicetext = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $sNicetext);
         }
-    }
-    elseif (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {  
+    } elseif (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {  
         // unify newlines to \r\n
         $sNicetext = preg_replace(array('~\R~u'), array("\r\n"), $sNicetext);
     }
@@ -4090,7 +4087,9 @@ function fixLanguageConsistency($sid, $availlangs = '')
     {
         $availlangs = sanitize_languagecodeS($availlangs);
         $langs = explode(" ", $availlangs);
-        if ($langs[count($langs) - 1] == "") array_pop($langs);
+        if ($langs[count($langs) - 1] == "") {
+            array_pop($langs);
+        }
     } else {
         $langs = Survey::model()->findByPk($sid)->additionalLanguages;
     }
@@ -5152,23 +5151,19 @@ function getIPAddress()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) { //check ip from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //to check ip is pass from proxy
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //to check ip is pass from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    elseif (!empty($_SERVER['REMOTE_ADDR']))
+    } elseif (!empty($_SERVER['REMOTE_ADDR']))
     {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
-    }
-    else
+    } else
     {
         $sIPAddress = '127.0.0.1';
     }
     if (!filter_var($sIPAddress, FILTER_VALIDATE_IP))
     {
         return 'Invalid';
-    }
-    else
+    } else
     {
         return $sIPAddress;
     }
@@ -5305,22 +5300,24 @@ function getMaximumFileUploadSize()
  * @return array|mixed
  */
 function decodeTokenAttributes($oTokenAttributeData) {
-    if (trim($oTokenAttributeData) == '') return array();
+    if (trim($oTokenAttributeData) == '') {
+        return array();
+    }
     if (substr($oTokenAttributeData, 0, 1) != '{' && substr($oTokenAttributeData, 0, 1) != '[')
     {
         $sSerialType = getSerialClass($oTokenAttributeData);
         if ($sSerialType == 'array') { // Safe to decode
             $aReturnData = @unserialize($oTokenAttributeData);
-        }
-        else { // Something else, might be unsafe
+        } else { // Something else, might be unsafe
             return array();
         }
-    }
-    else
+    } else
     {
             $aReturnData = @json_decode($oTokenAttributeData, true);
     }
-    if ($aReturnData === false || $aReturnData === null) return array();
+    if ($aReturnData === false || $aReturnData === null) {
+        return array();
+    }
     return $aReturnData;
 }
 
