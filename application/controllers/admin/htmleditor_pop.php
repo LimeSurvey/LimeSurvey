@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -32,8 +34,7 @@ class htmleditor_pop extends Survey_Common_Action
         if (!$aData['sFieldName'])
         {
             $this->getController()->render('/admin/htmleditor/pop_nofields_view', $aData);
-        }
-        else
+        } else
         {
             $aData['sControlIdEna'] = $aData['sFieldName'].'_popupctrlena';
             $aData['sControlIdDis'] = $aData['sFieldName'].'_popupctrldis';

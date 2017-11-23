@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -165,20 +167,17 @@ class conditionsaction extends Survey_Common_Action {
     if ($request->getPost('method') != '') {
         if (!in_array($request->getPost('method'), array_keys($method))) {
             $p_method = "==";
-        }
-        else {
+        } else {
             $p_method = trim($request->getPost('method'));
         }
-    }
-    else {
+    } else {
         $p_method = null;
     }
     
     $postNewScenarioNum = $request->getPost('newscenarionum');
     if (!empty($postNewScenarioNum)) {
         $p_newscenarionum = sanitize_int($postNewScenarioNum);
-    }
-    else {
+    } else {
         $p_newscenarionum = null;
     }
     //END Sanitizing POSTed data
@@ -498,8 +497,7 @@ class conditionsaction extends Survey_Common_Action {
                         if ($rows['method'] == 'RX') {
                             $rightOperandType = 'regexp';
                             $data['target'] = HTMLEscape($rows['value']);
-                        }
-                        elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', $rows['value'], $matchedSGQA) > 0) { // SGQA
+                        } elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', $rows['value'], $matchedSGQA) > 0) { // SGQA
                             $rightOperandType = 'prevQsgqa';
                             $textfound = false;
                             $matchedSGQAText = '';
@@ -516,19 +514,16 @@ class conditionsaction extends Survey_Common_Action {
                         }
                         
                         $data['target'] = HTMLEscape($matchedSGQAText);
-                    }
-                    elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['value'], $extractedTokenAttr) > 0) {
+                    } elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['value'], $extractedTokenAttr) > 0) {
                         $rightOperandType = 'tokenAttr';
                         $aTokenAttrNames = $this->tokenFieldsAndNames;
                         if ($this->tokenTableExists) {
                             $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
-                        }
-                        else {
+                        } else {
                             $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
                         }
                         $data['target'] = $thisAttrName;
-                    }
-                    elseif (isset($canswers)) {
+                    } elseif (isset($canswers)) {
                         foreach ($canswers as $can) {
                             if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value']) {
                                 $data['target'] = "$can[2] ($can[1])\n";
@@ -660,8 +655,7 @@ private function _showSpeaker($hinttext)
         ." \"$shortstring...\" </span>"
         ."<span class='fa fa-commenting-o text-success' style='cursor: hand'  title='".$htmlhinttext."'></span>"
         ." onclick=\"alert('".gT("Question", "js").": $jshinttext')\" />";
-    }
-    else
+    } else
     {
         $shortstring = flattenText($hinttext, true);
         
@@ -723,8 +717,7 @@ protected function insertCondition(array $args)
     
     if (isset($p_cquestions) && $p_cquestions != '') {
         $conditionCfieldname = $p_cquestions;
-    }
-    elseif (isset($p_csrctoken) && $p_csrctoken != '') {
+    } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
         $conditionCfieldname = $p_csrctoken;
     }
     
@@ -768,40 +761,33 @@ protected function insertCondition(array $args)
             );
         }
         
-    }
-    else {
+    } else {
         
         $posted_condition_value = null;
         
         // Other conditions like constant, other question or token field
         if ($request->getPost('editTargetTab') == "#CONST") {
             $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-        }
-        elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
+        } elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
             $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-        }
-        elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
+        } elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
             $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-        }
-        elseif ($request->getPost('editTargetTab') == "#REGEXP") {
+        } elseif ($request->getPost('editTargetTab') == "#REGEXP") {
             $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
         }
         
         if ($posted_condition_value) {
             $condition_data['value'] = $posted_condition_value;
             $result = Condition::model()->insertRecords($condition_data);
-        }
-        else {
+        } else {
             $result = null;
         }
         
         if ($result === false) {
             Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
-        }
-        else if ($result === true) {
+        } else if ($result === true) {
             Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
-        }
-        else {
+        } else {
             Yii::app()->setFlashMessage(
             gT(
             "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
@@ -829,11 +815,9 @@ protected function insertConditionAjax($args)
     
     if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
         $conditionCfieldname = $cquestions;
-    }
-    elseif (isset($csrctoken) && $csrctoken != '') {
+    } elseif (isset($csrctoken) && $csrctoken != '') {
         $conditionCfieldname = $csrctoken;
-    }
-    else {
+    } else {
         return array(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
     }
     
@@ -865,11 +849,9 @@ protected function insertConditionAjax($args)
         // Check if any result returned false
         if (in_array(false, $results, true)) {
             return array(gT('Could not insert all conditions.'), 'error');
-        }
-        else if (!empty($results)) {
+        } else if (!empty($results)) {
             return array(gT('Condition added.'), 'success');
-        }
-        else {
+        } else {
             return array(
             gT(
             "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
@@ -879,40 +861,33 @@ protected function insertConditionAjax($args)
             );
         }
         
-    }
-    else {
+    } else {
         
         $posted_condition_value = null;
         
         // Other conditions like constant, other question or token field
         if ($editTargetTab == "#CONST") {
             $posted_condition_value = $ConditionConst;
-        }
-        elseif ($editTargetTab == "#PREVQUESTIONS") {
+        } elseif ($editTargetTab == "#PREVQUESTIONS") {
             $posted_condition_value = $prevQuestionSGQA;
-        }
-        elseif ($editTargetTab == "#TOKENATTRS") {
+        } elseif ($editTargetTab == "#TOKENATTRS") {
             $posted_condition_value = $tokenAttr;
-        }
-        elseif ($editTargetTab == "#REGEXP") {
+        } elseif ($editTargetTab == "#REGEXP") {
             $posted_condition_value = $ConditionRegexp;
         }
         
         if ($posted_condition_value) {
             $condition_data['value'] = $posted_condition_value;
             $result = Condition::model()->insertRecords($condition_data);
-        }
-        else {
+        } else {
             $result = null;
         }
         
         if ($result === false) {
             return array(gT('Could not insert all conditions.'), 'error');
-        }
-        else if ($result === true) {
+        } else if ($result === true) {
             return array(gT('Condition added.'), 'success');
-        }
-        else {
+        } else {
             return array(
             gT(
             "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
@@ -940,11 +915,9 @@ public function quickAddCondition()
     if ($status == 'success') {
         LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $data['qid']);
         ls\ajax\AjaxHelper::outputSuccess($message);
-    }
-    else if ($status == 'error') {
+    } else if ($status == 'error') {
         ls\ajax\AjaxHelper::outputError($message);
-    }
-    else {
+    } else {
         ls\ajax\AjaxHelper::outputError('Internal error: Could not add condition, status unknown: '.$status);
     }
 }
@@ -995,8 +968,7 @@ protected function updateCondition(array $args)
     
     if (isset($p_cquestions) && $p_cquestions != '') {
         $conditionCfieldname = $p_cquestions;
-    }
-    elseif (isset($p_csrctoken) && $p_csrctoken != '') {
+    } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
         $conditionCfieldname = $p_csrctoken;
     }
     
@@ -1019,29 +991,23 @@ protected function updateCondition(array $args)
         // Check if any result returned false
         if (in_array(false, $results, true)) {
             Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
-        }
-        else if (!empty($results)) {
+        } else if (!empty($results)) {
             Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
-        }
-        else {
+        } else {
             Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
         }
-    }
-    else {
+    } else {
         $posted_condition_value = null;
         
         // Please note that autoUnescape is already applied in database.php included above
         // so we only need to db_quote _POST variables
         if ($request->getPost('editTargetTab') == "#CONST") {
             $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-        }
-        elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
+        } elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
             $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-        }
-        elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
+        } elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
             $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-        }
-        elseif ($request->getPost('editTargetTab') == "#REGEXP") {
+        } elseif ($request->getPost('editTargetTab') == "#REGEXP") {
             $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
         }
         
@@ -1107,8 +1073,9 @@ protected function copyConditions(array $args)
     $copyconditionsto = returnGlobal('copyconditionsto');
     if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
         //Get the conditions we are going to copy
-        foreach ($copyconditionsfrom as &$entry)
-        $entry = Yii::app()->db->quoteValue($entry);
+        foreach ($copyconditionsfrom as &$entry) {
+                $entry = Yii::app()->db->quoteValue($entry);
+        }
         $query = "SELECT * FROM {{conditions}}\n"
         ."WHERE cid in (";
         $query .= implode(", ", $copyconditionsfrom);
@@ -1385,8 +1352,7 @@ protected function getQuestionList($qid, array $qrows)
             // remember all previous questions
             // all question types are supported.
             $questionlist[] = $qrow["qid"];
-        }
-        elseif ($qrow["qid"] == $qid)
+        } elseif ($qrow["qid"] == $qid)
         {
             break;
     }
@@ -1624,7 +1590,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             }
             unset($quicky);
             // End if type R
-        }  elseif ($rows['type'] == "M" || $rows['type'] == "P") {
+        } elseif ($rows['type'] == "M" || $rows['type'] == "P") {
             
             $shortanswer = " [".gT("Group of checkboxes")."]";
             $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -2136,15 +2102,13 @@ protected function getAttributeName($extractedTokenAttr)
 {
     if (isset($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])])) {
         $thisAttrName = HTMLEscape($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])]['description']);
-    }
-    else {
+    } else {
         $thisAttrName = HTMLEscape($extractedTokenAttr[1]);
     }
     
     if ($this->tokenTableExists) {
         $thisAttrName .= " [".gT("From token table")."]";
-    }
-    else {
+    } else {
         $thisAttrName .= " [".gT("Inexistant token table")."]";
     }
     

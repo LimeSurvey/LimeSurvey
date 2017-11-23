@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * @todo Better name?
@@ -77,8 +79,7 @@ class PluginHelper extends Survey_Common_Action
         // Get plugin class, abort if not found
         try {
             $refClass = new ReflectionClass($pluginName);
-        }
-        catch (ReflectionException $ex) {
+        } catch (ReflectionException $ex) {
             throw new \CException("Can't find a plugin with class name $pluginName");
         }
 
@@ -95,8 +96,7 @@ class PluginHelper extends Survey_Common_Action
         // Get plugin method, abort if not found
         try {
             $refMethod = $refClass->getMethod($methodName);
-        }
-        catch (ReflectionException $ex) {
+        } catch (ReflectionException $ex) {
             throw new \CException("Plugin $pluginName has no method $methodName");
         }
 

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -39,8 +41,7 @@ class Expressions extends Survey_Common_Action {
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-        }
-        else
+        } else
         {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('decimal');
@@ -54,10 +55,11 @@ class Expressions extends Survey_Common_Action {
 
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             $sAction = Yii::app()->request->getQuery('sa', false);
-            if ($sAction)
-                $this->test($sAction, $aData);
-            else
-                $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+            if ($sAction) {
+                            $this->test($sAction, $aData);
+            } else {
+                            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+            }
         }
     }
 
@@ -84,8 +86,9 @@ class Expressions extends Survey_Common_Action {
 
         $language = Yii::app()->request->getParam('lang', NULL); 
         
-        if ($language !== NULL)
-            $language = sanitize_languagecode($language);
+        if ($language !== NULL) {
+                    $language = sanitize_languagecode($language);
+        }
 
         $aData['sid'] = $sid;
         $aData['title_bar']['title'] = gT("Survey logic file");
@@ -179,7 +182,9 @@ class Expressions extends Survey_Common_Action {
 
     protected function test($which, $aData)
     {
-        if ($which == 'survey_logic_file') $which = 'survey_logic_form';
+        if ($which == 'survey_logic_file') {
+            $which = 'survey_logic_form';
+        }
             $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }

@@ -89,8 +89,7 @@ class GlobalSettings extends Survey_Common_Action
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
             $data['excludedLanguages'] = array();
-        }
-        else
+        } else
         {
             $data['restrictToLanguages'] = explode(' ', trim(Yii::app()->getConfig('restrictToLanguages')));
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
@@ -265,7 +264,9 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceencryption', Yii::app()->request->getPost('bounceencryption', 'off'));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
-        if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+        if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
+            setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+        }
 
         setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
@@ -291,12 +292,16 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('showgroupinfo', ($_POST['showgroupinfo']));
         setGlobalSetting('showqnumcode', ($_POST['showqnumcode']));
         $repeatheadingstemp = (int) ($_POST['repeatheadings']);
-        if ($repeatheadingstemp == 0) $repeatheadingstemp = 25;
+        if ($repeatheadingstemp == 0) {
+            $repeatheadingstemp = 25;
+        }
         setGlobalSetting('repeatheadings', $repeatheadingstemp);
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
         $iSessionExpirationTime = (int) ($_POST['iSessionExpirationTime']);
-        if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 7200;
+        if ($iSessionExpirationTime == 0) {
+            $iSessionExpirationTime = 7200;
+        }
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('pdffontsize', $iPDFFontSize);
@@ -331,8 +336,7 @@ class GlobalSettings extends Survey_Common_Action
         {
             $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
             Yii::app()->getController()->redirect($url);
-        }
-        else
+        } else
         {
             Yii::app()->getController()->redirect(App()->createUrl('admin/globalsettings'));
         }
@@ -358,12 +362,10 @@ class GlobalSettings extends Survey_Common_Action
         {
             if (strpos($table, Yii::app()->db->tablePrefix."old_tokens_") !== false) {
                 $oldtokenlist[] = $table;
-            }
-            elseif (strpos($table, Yii::app()->db->tablePrefix."tokens_") !== false)
+            } elseif (strpos($table, Yii::app()->db->tablePrefix."tokens_") !== false)
             {
                 $tokenlist[] = $table;
-            }
-            elseif (strpos($table, Yii::app()->db->tablePrefix."old_survey_") !== false)
+            } elseif (strpos($table, Yii::app()->db->tablePrefix."old_survey_") !== false)
             {
                 $oldresultslist[] = $table;
             }

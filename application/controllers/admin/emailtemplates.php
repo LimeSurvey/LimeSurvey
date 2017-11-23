@@ -41,8 +41,7 @@ class emailtemplates extends Survey_Common_Action {
         if (isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
         {
             $ishtml = true;
-        }
-        else
+        } else
         {
             $ishtml = false;
         }
@@ -58,8 +57,7 @@ class emailtemplates extends Survey_Common_Action {
         if ($ishtml)
         {
             $sEscapeMode = 'html';
-        }
-        else
+        } else
         {
             $sEscapeMode = 'unescaped';
         }
@@ -122,21 +120,18 @@ class emailtemplates extends Survey_Common_Action {
                                 {
                                     $attachment['url'] = $localName;
                                     $attachment['size'] = filesize($localName);
-                                }
-                                else
+                                } else
                                 {
                                     unset($attachments[$index]);
                                 }
-                            }
-                            else
+                            } else
                             {
                                 unset($attachments[$index]);
                             }
                         }
                         unset($attachments);
                     }
-                }
-                else
+                } else
                 {
                     $_POST['attachments'][$langname] = array();
                 }

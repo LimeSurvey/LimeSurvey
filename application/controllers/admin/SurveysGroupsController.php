@@ -13,8 +13,9 @@
 * Surveys Groups Controller
 */
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 
 class SurveysGroupsController extends Survey_Common_Action
@@ -47,8 +48,9 @@ class SurveysGroupsController extends Survey_Common_Action
             $model->attributes = $_POST['SurveysGroups'];
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
-            if ($model->save())
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            if ($model->save()) {
+                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            }
         }
 
         $aData['model'] = $model;
@@ -72,8 +74,9 @@ class SurveysGroupsController extends Survey_Common_Action
 
         if (isset($_POST['SurveysGroups'])) {
             $model->attributes = $_POST['SurveysGroups'];
-            if ($model->save())
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            if ($model->save()) {
+                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            }
         }
 
         $aData['model'] = $model;
@@ -132,8 +135,9 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $model = new SurveysGroups('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['SurveysGroups']))
-            $model->attributes = $_GET['SurveysGroups'];
+        if (isset($_GET['SurveysGroups'])) {
+                    $model->attributes = $_GET['SurveysGroups'];
+        }
 
         $this->render('admin', array(
             'model'=>$model,
@@ -150,8 +154,9 @@ class SurveysGroupsController extends Survey_Common_Action
     public function loadModel($id)
     {
         $model = SurveysGroups::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

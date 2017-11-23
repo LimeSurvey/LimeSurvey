@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
@@ -185,12 +187,10 @@ class export extends Survey_Common_Action {
             if (incompleteAnsFilterState() == "complete")
             {
                 $selecthide = "selected='selected'";
-            }
-            elseif (incompleteAnsFilterState() == "incomplete")
+            } elseif (incompleteAnsFilterState() == "incomplete")
             {
                 $selectinc = "selected='selected'";
-            }
-            else
+            } else
             {
                 $selectshow = "selected='selected'";
             }
@@ -320,13 +320,12 @@ class export extends Survey_Common_Action {
             }
         }
 
-        if (Yii::app()->request->getPost('response_id'))
-            $sFilter = "{{survey_{$iSurveyID}}}.id=".(int) Yii::app()->request->getPost('response_id');
-        elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_'.$iSurveyID]))
+        if (Yii::app()->request->getPost('response_id')) {
+                    $sFilter = "{{survey_{$iSurveyID}}}.id=".(int) Yii::app()->request->getPost('response_id');
+        } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_'.$iSurveyID]))
         {
             $sFilter = Yii::app()->session['statistics_selects_'.$iSurveyID];
-        }
-        else
+        } else
         {
             $sFilter = '';
         }
@@ -546,8 +545,7 @@ class export extends Survey_Common_Action {
                         if ($field['SPSStype'] == "F" && isNumericExtended($answer['code']))
                         {
                             $str = "{$answer['code']}";
-                        }
-                        else
+                        } else
                         {
                             $str = "\"{$answer['code']}\"";
                         }
@@ -555,8 +553,7 @@ class export extends Survey_Common_Action {
                         if ($i < count($answers))
                         {
                             echo " $str \"{$answer['value']}\"\n";
-                        }
-                        else
+                        } else
                         {
                             echo " $str \"{$answer['value']}\".\n";
                         }
@@ -707,8 +704,7 @@ class export extends Survey_Common_Action {
                     if (is_null($row[$field]))
                     {
                         $value = '{question_not_shown}';
-                    }
-                    else
+                    } else
                     {
                         $value = trim($row[$field]);
                         // sunscreen for the value. necessary for the beach.
@@ -781,14 +777,14 @@ class export extends Survey_Common_Action {
             $zipdirs = array();
             foreach (array('files', 'flash', 'images') as $zipdir)
             {
-                if (is_dir($resourcesdir.$zipdir))
-                    $zipdirs[] = $resourcesdir.$zipdir.'/';
+                if (is_dir($resourcesdir.$zipdir)) {
+                                    $zipdirs[] = $resourcesdir.$zipdir.'/';
+                }
             }
             if ($zip->create($zipdirs, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0)
             {
                 die("Error : ".$zip->errorInfo(true));
-            }
-            elseif (file_exists($zipfilepath))
+            } elseif (file_exists($zipfilepath))
             {
                 $this->_addHeaders($zipfilename, 'application/force-download', 0);
                 readfile($zipfilepath);
@@ -800,7 +796,9 @@ class export extends Survey_Common_Action {
 
     public function dumplabel()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) die ('No permission.');
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+            die ('No permission.');
+        }
         $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
         // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
@@ -919,13 +917,11 @@ class export extends Survey_Common_Action {
                                 $newArchiveFileFullName         = 'survey_archive_'.$iSurveyID.'.lsa';
                                 $this->_addToZip($zip, $archiveFile, $newArchiveFileFullName);
                                 unlink($archiveFile);
-                            }
-                            else
+                            } else
                             {
                                 $aResults[$iSurveyID]['error'] = gT("Unknown error");
                             }
-                        }
-                        else
+                        } else
                         {
                             $aResults[$iSurveyID]['error'] = gT("Not active.");
                         }
@@ -942,8 +938,7 @@ class export extends Survey_Common_Action {
                             $newArchiveFileFullName         = 'survey_printables_'.$iSurveyID.'.zip';
                             $this->_addToZip($zip, $archiveFile, $newArchiveFileFullName);
                             unlink($archiveFile);
-                        }
-                        else
+                        } else
                         {
                             $aResults[$iSurveyID]['error'] = gT("Unknown error");
                         }
@@ -961,8 +956,7 @@ class export extends Survey_Common_Action {
                         unlink($archiveFile);
                     break;
                 }
-            }
-            else
+            } else
             {
                 $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
             }
@@ -1055,8 +1049,7 @@ class export extends Survey_Common_Action {
                 unlink($aZIPFileName);
 
                 return;
-            }
-            else
+            } else
             {
                 return($aZIPFileName);
             }
@@ -1091,8 +1084,7 @@ class export extends Survey_Common_Action {
 
             echo surveyGetXMLData($iSurveyID);
             exit;
-        }
-        elseif ($action == "exportstructurejson")
+        } elseif ($action == "exportstructurejson")
         {
             $fn = "limesurvey_survey_{$iSurveyID}.json";
             $this->_addHeaders($fn, "application/json", "Mon, 26 Jul 1997 05:00:00 GMT");
@@ -1100,15 +1092,12 @@ class export extends Survey_Common_Action {
             // now convert this xml into json format and then return
             echo _xmlToJson($surveyInXmlFormat);
             exit;
-        }
-
-        elseif ($action == "exportstructurequexml")
+        } elseif ($action == "exportstructurequexml")
         {
             if (isset($surveyprintlang) && !empty($surveyprintlang))
             {
                 $quexmllang = $surveyprintlang;
-            }
-            else
+            } else
             {
                 $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
             }
@@ -1122,16 +1111,13 @@ class export extends Survey_Common_Action {
                 echo quexml_export($iSurveyID, $quexmllang);
                 exit;
             }
-        }
-        elseif ($action == 'exportstructuretsv')
+        } elseif ($action == 'exportstructuretsv')
         {
             $this->_exporttsv($iSurveyID);
-        }
-        elseif ($action == "exportarchive")
+        } elseif ($action == "exportarchive")
         {
             $this->_exportarchive($iSurveyID);
-        }
-        elseif ($action == "exportprintables")
+        } elseif ($action == "exportprintables")
         {
             $this->_exportPrintableHtmls($iSurveyID);
         }
