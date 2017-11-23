@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -133,8 +135,9 @@ class QuotaMember extends LSActiveRecord
     function insertRecords($data)
     {
         $members = new self;
-        foreach ($data as $k => $v)
-            $members->$k = $v;
+        foreach ($data as $k => $v) {
+                    $members->$k = $v;
+        }
         return $members->save();
     }
 }

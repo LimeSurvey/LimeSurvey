@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -188,8 +189,9 @@ class SurveyAdmin extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
 
 
-        if (is_null($iSurveyID) || !$iSurveyID)
-            $this->getController()->error('Invalid survey ID');
+        if (is_null($iSurveyID) || !$iSurveyID) {
+                    $this->getController()->error('Invalid survey ID');
+        }
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys', 'read'))
         {
@@ -197,8 +199,9 @@ class SurveyAdmin extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
 
-        if (Yii::app()->request->isPostRequest)
-            $this->update($iSurveyID);
+        if (Yii::app()->request->isPostRequest) {
+                    $this->update($iSurveyID);
+        }
         $this->_registerScriptFiles();
 
         //Yii::app()->loadHelper('text');
@@ -274,8 +277,9 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
 
-            if (!is_dir($destdir))
-                mkdir($destdir);
+            if (!is_dir($destdir)) {
+                            mkdir($destdir);
+            }
 
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
@@ -307,8 +311,7 @@ class SurveyAdmin extends Survey_Common_Action
                     Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid Resources files. Import failed."));
                     $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
                 }
-            }
-            else
+            } else
             {
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
                 $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
@@ -430,12 +433,12 @@ class SurveyAdmin extends Survey_Common_Action
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID, 'language' => $baselang));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if ($qrrow['question'])
-                $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            if ($qrrow['question']) {
+                            $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
-        }
-        else
+        } else
         {
             $aData['showLastQuestion'] = false;
         }
@@ -628,7 +631,9 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function deactivate($iSurveyID = null)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die('No permission');
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+            die('No permission');
+        }
 
         $iSurveyID  = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID  = sanitize_int($iSurveyID);
@@ -669,8 +674,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['date']     = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
             $aData['step1']    = true;
-        }
-        else
+        } else
         {
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}"))
@@ -757,7 +761,9 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function activate($iSurveyID)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+            die();
+        }
 
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -793,8 +799,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
             $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
-        }
-        else
+        } else
         {
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             if (!is_null($survey))
@@ -815,20 +820,17 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 // Got false from plugin, redirect to survey front-page
                 $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
-            }
-            else if (isset($aResult['pluginFeedback']))
+            } else if (isset($aResult['pluginFeedback']))
             {
                 // Special feedback from plugin
                 $aViewUrls['output'] = $aResult['pluginFeedback'];
-            }
-            else if (isset($aResult['error']))
+            } else if (isset($aResult['error']))
             {
                 $aViewUrls['output'] = "<br />\n<div class='messagebox ui-corner-all'>\n";
                 if ($aResult['error'] == 'surveytablecreation')
                 {
                     $aViewUrls['output'] .= "<div class='alert alert-warning' role='alert'>".gT("The survey response table could not be created.")." ".gT("Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey.")."</div>\n";
-                }
-                else
+                } else
                 {
                     $aViewUrls['output'] .= "<div class='alert alert-success' role='alert'>".gT("Timings table could not be created.")."</div>\n";
                 }
@@ -839,8 +841,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
 
                 $aViewUrls['output'] .= "<a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</strong><br/>";
-            }
-            else
+            } else
             {
                 $warning = (isset($aResult['warning'])) ?true:false;
                 $allowregister = $survey->isAllowRegister;
@@ -1099,8 +1100,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
         {
             $aData['surveybar']['saveandclosebutton']['form'] = true;
-        }
-        else
+        } else
         {
             unset($aData['surveybar']['savebutton']['form']);
         }
@@ -1201,8 +1201,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
                 $aData['surveybar']['saveandclosebutton']['form'] = true;
-            }
-            else
+            } else
             {
                 unset($aData['surveybar']['savebutton']['form']);
             }
@@ -1244,7 +1243,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $sExtension = $aPathInfo['extension'];
                 }
 
-            }elseif ($action == 'copysurvey') {
+            } elseif ($action == 'copysurvey') {
                 $aData = array();
                 $aData['sHeader'] = gT("Copy survey");
                 $aData['sSummaryHeader'] = gT("Survey copy summary");
@@ -1259,14 +1258,14 @@ class SurveyAdmin extends Survey_Common_Action
                 if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
                     $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024).'<br>';
                     $aData['bFailed'] = true;
-                }elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
+                } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
-                }elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+                } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                     $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     $aData['bFailed'] = true;
                 }
-            }elseif ($action == 'copysurvey') {
+            } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
 
@@ -1299,10 +1298,10 @@ class SurveyAdmin extends Survey_Common_Action
                 if (!$iSurveyID) {
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
-                }elseif (!Survey::model()->findByPk($iSurveyID)) {
+                } elseif (!Survey::model()->findByPk($iSurveyID)) {
                     $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
-                }elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+                } elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
                     $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
                     $aData['bFailed'] = true;
                 } else {
@@ -1321,7 +1320,7 @@ class SurveyAdmin extends Survey_Common_Action
                         'error'=>gT("Unknown error while reading the file, no survey created.")
                     );
                 }
-            }elseif ($action == 'copysurvey' && !$aData['bFailed']) {
+            } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
 
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
                 if (isset($aExcludes['conditions'])) {
@@ -1390,13 +1389,11 @@ class SurveyAdmin extends Survey_Common_Action
             if ($closeAfterSave)
             {
                 $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
-            }
-            else
+            } else
             {
                 $this->_showReorderForm($iSurveyID);
             }
-        }
-        else
+        } else
         {
             $this->_showReorderForm($iSurveyID);
         }
@@ -1492,13 +1489,13 @@ class SurveyAdmin extends Survey_Common_Action
             if ($parent == 'root' && $ID[0] == 'g') {
                 QuestionGroup::model()->updateAll(array('group_order' => $grouporder), 'gid=:gid', array(':gid' => (int) substr($ID, 1)));
                 $grouporder++;
-            }
-            elseif ($ID[0] == 'q')
+            } elseif ($ID[0] == 'q')
             {
                 $qid = (int) substr($ID, 1);
                 $gid = (int) substr($parent, 1);
-                if (!isset($aQuestionOrder[$gid]))
-                    $aQuestionOrder[$gid] = 0;
+                if (!isset($aQuestionOrder[$gid])) {
+                                    $aQuestionOrder[$gid] = 0;
+                }
 
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 $oQuestion = Question::model()->findByPk(array("qid"=>$qid, 'language'=>$sBaseLanguage));
@@ -1551,8 +1548,7 @@ class SurveyAdmin extends Survey_Common_Action
         if ($action == 'newsurvey')
         {
             $oSurvey = new Survey;
-        }
-        elseif ($action == 'editsurvey' && $iSurveyID)
+        } elseif ($action == 'editsurvey' && $iSurveyID)
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
@@ -1577,17 +1573,18 @@ class SurveyAdmin extends Survey_Common_Action
         $owner = $user->attributes;
 
         //Degrade gracefully to $siteadmin details if anything is missing.
-        if (empty($owner['full_name']))
-            $owner['full_name'] = getGlobalSetting('siteadminname');
-        if (empty($owner['email']))
-            $owner['email'] = getGlobalSetting('siteadminemail');
+        if (empty($owner['full_name'])) {
+                    $owner['full_name'] = getGlobalSetting('siteadminname');
+        }
+        if (empty($owner['email'])) {
+                    $owner['email'] = getGlobalSetting('siteadminemail');
+        }
 
         //Bounce setting by default to global if it set globally
         if (getGlobalSetting('bounceaccounttype') != 'off')
         {
             $owner['bounce_email'] = getGlobalSetting('siteadminbounce');
-        }
-        else
+        } else
         {
             $owner['bounce_email'] = $owner['email'];
         }
@@ -1868,8 +1865,7 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::import('application.libraries.Date_Time_Converter', true);
         if (trim($expires) == "") {
             $expires = null;
-        }
-        else {
+        } else {
             $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
             $expires = $datetimeobj->convert("Y-m-d H:i:s");
         }
@@ -1908,8 +1904,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (!is_null($oRow['question']))
             {
                         $oRow['title'] .= ': '.ellipsize(flattenText($oRow['question'], false, true), 43, .70);
-            }
-            else
+            } else
             {
                         $oRow['title'] = gT('(No target question)');
             }
@@ -2117,8 +2112,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
                 Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-            }
-            else {
+            } else {
                 Yii::app()->setFlashMessage($warning.gT("Your new survey was created."), 'info');
             }
 
@@ -2130,8 +2124,7 @@ class SurveyAdmin extends Survey_Common_Action
                     "admin/questions/sa/view/",
                     ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
                     );
-            }
-            else
+            } else
             {
                 $redirecturl = $this->getController()->createUrl(
                     'admin/survey/sa/view/',

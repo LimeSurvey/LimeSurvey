@@ -1,8 +1,9 @@
 <?php
 use LimeSurvey\PluginManager\AuthPluginBase;
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -96,13 +97,11 @@ class UserAction extends Survey_Common_Action
         $aViewUrls = array();
         if (empty($new_user)) {
             $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'text-warning');
-        }
-        elseif (User::model()->find("users_name=:users_name", array(':users_name'=>$new_user))) {
+        } elseif (User::model()->find("users_name=:users_name", array(':users_name'=>$new_user))) {
             // TODO: If error, we want to keep the form values. Can't do it nicely without CActiveForm?
             Yii::app()->setFlashMessage(gT("The username already exists."), 'error');
             $this->getController()->redirect(array('/admin/user/sa/index'));
-        }
-        else
+        } else
         {
             $event = new PluginEvent('createNewUser');
             $event->set('errorCode', AuthPluginBase::ERROR_NOT_ADDED);
@@ -113,8 +112,7 @@ class UserAction extends Survey_Common_Action
             if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE)
             {
                 $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'text-warning');
-            }
-            else
+            } else
             {
                 $iNewUID = $event->get('newUserID');
                 $new_pass = $event->get('newPassword');
@@ -136,8 +134,7 @@ class UserAction extends Survey_Common_Action
                     // send password (if authorized by config)
                     if (Yii::app()->getConfig("display_user_password_in_email") === true) {
                         $body .= gT("Password").": ".$new_pass."<br />\n";
-                    }
-                    else
+                    } else
                     {
                         $body .= gT("Password").": ".gT("Please contact your LimeSurvey administrator for your password.")."<br />\n";
                     }
@@ -156,8 +153,7 @@ class UserAction extends Survey_Common_Action
                     $extra .= "<br />".gT("An email with a generated password was sent to the user.");
                     $classMsg = 'text-success';
                     $sHeader = gT("Success");
-                }
-                else
+                } else
                 {
                     // has to be sent again or no other way
                     $tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", gT("Email to {NAME} ({EMAIL}) failed."));
@@ -230,8 +226,9 @@ class UserAction extends Survey_Common_Action
                     $action = "finaldeluser";
                     foreach ($ownerUser as &$user)
                     {
-                        if ($postuserid != $user['uid'])
-                            $transfer_surveys_to = $user['uid'];
+                        if ($postuserid != $user['uid']) {
+                                                    $transfer_surveys_to = $user['uid'];
+                        }
                     }
                 }
 
@@ -243,8 +240,7 @@ class UserAction extends Survey_Common_Action
                 if ($action == "finaldeluser")
                 {
                     $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
-                }
-                else
+                } else
                 {
                     $aData['postuserid'] = $postuserid;
                     $aData['postuser'] = $postuser;
@@ -253,8 +249,7 @@ class UserAction extends Survey_Common_Action
                     $aViewUrls['deluser'][] = $aData;
                     $this->_renderWrappedTemplate('user', $aViewUrls);
                 }
-            }
-            else
+            } else
             {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
@@ -353,8 +348,7 @@ class UserAction extends Survey_Common_Action
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
-            }
-            else
+            } else
             {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
@@ -472,8 +466,7 @@ class UserAction extends Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = gT("Permissions were successfully updated.");
             $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-        else
+        } else
         {
             Yii::app()->session['flashmessage'] = gT("There was a problem updating the user permissions.");
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -503,7 +496,9 @@ class UserAction extends Survey_Common_Action
             {
                 foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
                 {
-                    if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue = false;
+                    if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                        $sPermissionValue = false;
+                    }
                 }
                 // Only show a row for that permission if there is at least one permission he may give to other users
                 if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
@@ -532,14 +527,12 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
 
                 $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
-            }
-            else
+            } else
             {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
-        }
-        else
+        } else
         {
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -587,8 +580,9 @@ class UserAction extends Survey_Common_Action
             $tresult = Template::model()->findAll();
             foreach ($tresult as $trow)
             {
-                if (isset($_POST[$trow["folder"]."_use"]))
-                    $aTemplatePermissions[$trow["folder"]] = $_POST[$trow["folder"]."_use"];
+                if (isset($_POST[$trow["folder"]."_use"])) {
+                                    $aTemplatePermissions[$trow["folder"]] = $_POST[$trow["folder"]."_use"];
+                }
             }
             foreach ($aTemplatePermissions as $key => $value)
             {
@@ -606,14 +600,12 @@ class UserAction extends Survey_Common_Action
             }
             if ($uresult !== false) {
                 Yii::app()->setFlashMessage(gT("Template permissions were updated successfully."));
-            }
-            else
+            } else
             {
                 Yii::app()->setFlashMessage(gT("Error while updating template permissions."), 'error');
             }
             $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-        else
+        } else
         {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -680,8 +672,7 @@ class UserAction extends Survey_Common_Action
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
-        }
-        else {
+        } else {
             $aData = array();
         }
 
@@ -717,8 +708,7 @@ class UserAction extends Survey_Common_Action
         if (isset($_POST['saveandclose']))
         {
             $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-        else
+        } else
         {
             $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
         }
@@ -731,8 +721,7 @@ class UserAction extends Survey_Common_Action
 
         if (!empty($result)) {
             return $result->users_name;
-        }
-        else
+        } else
         {
             return false;
         }
@@ -773,12 +762,10 @@ class UserAction extends Survey_Common_Action
     {
         if (is_string($str)) {
             $str = $this->escape_str($str);
-        }
-        elseif (is_bool($str))
+        } elseif (is_bool($str))
         {
             $str = ($str === true) ? 1 : 0;
-        }
-        elseif (is_null($str))
+        } elseif (is_null($str))
         {
             $str = 'NULL';
         }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -182,10 +184,11 @@ class SurveyRuntimeHelper {
                         $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
 
                         // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                        if (isset($ia[10]))
-                            $plus_qanda['finalgroup'] = $ia[10];
-                        else
-                            $plus_qanda['finalgroup'] = $ia[5];
+                        if (isset($ia[10])) {
+                                                    $plus_qanda['finalgroup'] = $ia[10];
+                        } else {
+                                                    $plus_qanda['finalgroup'] = $ia[5];
+                        }
 
                         $qanda[] = $plus_qanda;
                     }
@@ -210,8 +213,9 @@ class SurveyRuntimeHelper {
                     }
                 }
 
-                if ($ia[4] == "|")
-                    $upload_file = true;
+                if ($ia[4] == "|") {
+                                    $upload_file = true;
+                }
             } //end iteration
         }
 
@@ -658,8 +662,9 @@ class SurveyRuntimeHelper {
             initFieldArray($this->iSurveyid, $fieldmap);
 
             // Check surveyid coherence
-            if ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId())
-                LimeExpressionManager::SetDirtyFlag();
+            if ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()) {
+                            LimeExpressionManager::SetDirtyFlag();
+            }
 
             // Init $LEM states.
             LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
@@ -668,11 +673,11 @@ class SurveyRuntimeHelper {
             // Welcome page.
             if ($this->sSurveyMode == 'survey') {
                 LimeExpressionManager::JumpTo(1, false, false, true);
-            }elseif (isset($this->aSurveyInfo['showwelcome']) && $this->aSurveyInfo['showwelcome'] == 'N') {
+            } elseif (isset($this->aSurveyInfo['showwelcome']) && $this->aSurveyInfo['showwelcome'] == 'N') {
                 $this->aMoveResult = LimeExpressionManager::NavigateForwards();
                 $_SESSION[$this->LEMsessid]['step'] = 1;
             }
-        }elseif ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()) {
+        } elseif ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()) {
             $this->initDirtyStep();
         }
 
@@ -852,8 +857,7 @@ class SurveyRuntimeHelper {
                 if ($this->sMove > 0 && (($this->sMove <= $_SESSION[$this->LEMsessid]['step']) || (isset($_SESSION[$this->LEMsessid]['maxstep']) && $this->sMove <= $_SESSION[$this->LEMsessid]['maxstep']))) {
                     $this->aMoveResult = LimeExpressionManager::JumpTo($this->sMove, false);
                 }
-            }
-            elseif (isNumericInt($this->sMove) && $this->aSurveyInfo['questionindex'] == 2) {
+            } elseif (isNumericInt($this->sMove) && $this->aSurveyInfo['questionindex'] == 2) {
                 $this->sMove       = (int) $this->sMove;
                 $this->aMoveResult = LimeExpressionManager::JumpTo($this->sMove, false, true, true);
             }
@@ -1597,8 +1601,7 @@ class SurveyRuntimeHelper {
                     $aEnterErrors['captcha'] = gT("Your have to answer the security question - please try again.");
                 }
                 $renderCaptcha = 'main';
-            }
-            else {
+            } else {
                 $_SESSION['survey_'.$this->iSurveyid]['captcha_surveyaccessscreen'] = true;
                 $renderCaptcha = 'correct';
             }
@@ -1705,7 +1708,7 @@ class SurveyRuntimeHelper {
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
-        }elseif ($this->sSurveyMode == 'question' && $this->previewquestion) {
+        } elseif ($this->sSurveyMode == 'question' && $this->previewquestion) {
             $_qid       = sanitize_int($this->param['qid']);
 
             LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
@@ -1724,8 +1727,7 @@ class SurveyRuntimeHelper {
                 $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
                 $this->groupname        = gT("Submit your answers");
                 $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-            }
-            else if ($this->sSurveyMode != 'survey')
+            } else if ($this->sSurveyMode != 'survey')
             {
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);

@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -203,7 +205,7 @@ class TemplateConfig extends CActiveRecord
             if ($oTemplate instanceof TemplateConfiguration) {
                 if (file_exists($oTemplate->path.$sFile)) {
                     return $oTemplate->path.$sFile;
-                }elseif (file_exists($oTemplate->viewPath.$sFile)) {
+                } elseif (file_exists($oTemplate->viewPath.$sFile)) {
                     return $oTemplate->viewPath.$sFile;
                 }
             }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -179,8 +181,7 @@ class viewHelper
                     }
                     $sQuestionCode .= self::putSeparator($scalenum, $aOption['separator']);
                 }
-            }
-            else
+            } else
             {
                 $sQuestionCode = $aField['fieldname'];
             }
@@ -199,8 +200,7 @@ class viewHelper
         if (is_array($separator))
         {
             return $separator[0].$sString.$separator[1];
-        }
-        else
+        } else
         {
             return $separator.$sString;
         }

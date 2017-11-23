@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -87,10 +89,11 @@ class RegisterController extends LSYii_Controller {
     public function actionIndex($sid = null)
     {
 
-        if (!is_null($sid))
-            $iSurveyId = $sid;
-        else
-            $iSurveyId = Yii::app()->request->getPost('sid');
+        if (!is_null($sid)) {
+                    $iSurveyId = $sid;
+        } else {
+                    $iSurveyId = Yii::app()->request->getPost('sid');
+        }
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid'=>$iSurveyId));
         /* Throw 404 if needed */
@@ -168,7 +171,7 @@ class RegisterController extends LSYii_Controller {
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        }elseif (!validateEmailAddress($aFieldValue['sEmail'])) {
+        } elseif (!validateEmailAddress($aFieldValue['sEmail'])) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -196,8 +199,9 @@ class RegisterController extends LSYii_Controller {
         $registerFormEvent = array();
         if (!is_null($event->get('registerForm'))) {
             $registerFormEvent = $event->get('registerForm');
-            if (!isset($registerFormEvent['append']) || $registerFormEvent['append'] == false)
-                return $event->get('registerForm');
+            if (!isset($registerFormEvent['append']) || $registerFormEvent['append'] == false) {
+                            return $event->get('registerForm');
+            }
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
         $aRegisterAttributes = $this->getExtraAttributeInfo($iSurveyId);
@@ -220,8 +224,7 @@ class RegisterController extends LSYii_Controller {
         if (is_array($this->aRegisterErrors))
         {
             $aData['aErrors'] = $this->aRegisterErrors;
-        }
-        else
+        } else
         {
             $aData['aErrors'] = array();
         }
@@ -266,8 +269,9 @@ class RegisterController extends LSYii_Controller {
         foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
         {
             $url = $aReplacementFields["{{$key}URL}"];
-            if ($useHtmlEmail)
-                $aReplacementFields["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
+            if ($useHtmlEmail) {
+                            $aReplacementFields["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
+            }
             $aMail['subject'] = str_replace("@@{$key}URL@@", $url, $aMail['subject']);
             $aMail['message'] = str_replace("@@{$key}URL@@", $url, $aMail['message']);
         }
@@ -338,8 +342,7 @@ class RegisterController extends LSYii_Controller {
             $aMessage['mail-message'] = $this->sMailMessage;
             $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
             $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage'=>$aMessage), true);
-        }
-        else
+        } else
         {
             $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
@@ -371,22 +374,20 @@ class RegisterController extends LSYii_Controller {
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y')
             {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
-            }
-            elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout")// And global blacklisting ?
+            } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
+                // And global blacklisting ?
             {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
             }
-            elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK")
+            } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK")
             {
                 $this->aRegisterErrors[] = gT("This email address is already registered but the email adress was bounced.");
-            }
-            else
+            } else
             {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 return $oToken->tid;
             }
-        }
-        else
+        } else
         {
             // TODO : move xss filtering in model
             $oToken = Token::create($iSurveyId);
@@ -461,8 +462,9 @@ class RegisterController extends LSYii_Controller {
      */
     public function getStartDate($iSurveyId) {
         $aSurveyInfo = getSurveyInfo($iSurveyId, Yii::app()->language);
-        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")) >= $aSurveyInfo['startdate'])
-            return;
+        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")) >= $aSurveyInfo['startdate']) {
+                    return;
+        }
         Yii::app()->loadHelper("surveytranslator");
         $aDateFormat = getDateFormatData(getDateFormatForSID($iSurveyId, Yii::app()->language), Yii::app()->language);
         $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');

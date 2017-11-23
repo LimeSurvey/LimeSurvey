@@ -146,12 +146,12 @@
             return '';
         }
 
-        if ($htmleditormode == 'popup' || ($fieldtype == 'editanswer' ||$fieldtype == 'addanswer' || $fieldtype == 'editlabel' || $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
+        if ($htmleditormode == 'popup' || ($fieldtype == 'editanswer' || $fieldtype == 'addanswer' || $fieldtype == 'editlabel' || $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
         {
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        } elseif ($htmleditormode == 'inline')  {
+        } elseif ($htmleditormode == 'inline') {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        } else  {
+        } else {
             return '';
         }
     }

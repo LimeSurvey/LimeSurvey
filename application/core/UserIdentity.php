@@ -113,15 +113,13 @@ class UserIdentity extends CUserIdentity
                     $this->id = $oUser->uid;
                     $this->user = $oUser;                    
                     $this->errorCode = self::ERROR_NONE;                    
-                }
-                else
+                } else
                 {
                     $this->errorCode = self::ERROR_USERNAME_INVALID;
                 }
 
             }
-        }
-        else
+        } else
         {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         }

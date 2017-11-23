@@ -105,15 +105,17 @@ class SurveyDao
             $aSelectFields = array_intersect($aFields, $aSelectFields);
         }
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
-        foreach ($aSelectFields as &$sField)
-            $sField = $survey->responsesTableName.".".$sField;
+        foreach ($aSelectFields as &$sField) {
+                    $sField = $survey->responsesTableName.".".$sField;
+        }
         $oRecordSet = Yii::app()->db->createCommand()->from($survey->responsesTableName);
         if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read'))
         {
             $oRecordSet->leftJoin($survey->tokensTableName.' tokentable', 'tokentable.token='.$survey->tokensTableName.'.token');
             $aTokenFields = Yii::app()->db->schema->getTable($survey->tokensTableName)->getColumnNames();
-            foreach ($aTokenFields as &$sField)
-                $sField = "tokentable.".$sField;
+            foreach ($aTokenFields as &$sField) {
+                            $sField = "tokentable.".$sField;
+            }
             $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, array('tokentable.token')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
@@ -121,8 +123,9 @@ class SurveyDao
         if ($survey->info['savetimings'] == "Y") {
             $oRecordSet->leftJoin($survey->timi." survey_timings", $survey->responsesTableName.".id = survey_timings.id");
             $aTimingFields = Yii::app()->db->schema->getTable($survey->hasTimingsTable)->getColumnNames();
-            foreach ($aTimingFields as &$sField)
-                $sField = "survey_timings.".$sField;
+            foreach ($aTimingFields as &$sField) {
+                            $sField = "survey_timings.".$sField;
+            }
             $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, array('survey_timings.id')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
@@ -162,12 +165,13 @@ class SurveyDao
 
 //var_dump($aParams); die();
 
-        if (is_string($sFilter) && $sFilter)
-            $oRecordSet->andWhere($sFilter);
-        elseif (is_array($sFilter) && count($sFilter))
+        if (is_string($sFilter) && $sFilter) {
+                    $oRecordSet->andWhere($sFilter);
+        } elseif (is_array($sFilter) && count($sFilter))
         {
-            foreach ($sFilter as $filter)
-                $oRecordSet->andWhere($filter);
+            foreach ($sFilter as $filter) {
+                            $oRecordSet->andWhere($filter);
+            }
         }
 
         switch ($completionState)

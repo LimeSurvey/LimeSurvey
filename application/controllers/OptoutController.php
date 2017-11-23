@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -47,8 +49,7 @@ class OptoutController extends LSYii_Controller {
             if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
             {
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-            }
-            else
+            } else
             {
                 $sBaseLanguage = sanitize_languagecode($sLanguageCode);
             }
@@ -102,8 +103,7 @@ class OptoutController extends LSYii_Controller {
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
+        } else
         {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $sToken, false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token'=>$sToken));
@@ -112,16 +112,14 @@ class OptoutController extends LSYii_Controller {
             {
                 $sMessage = gT('You are not a participant in this survey.');
                 //throw new CHttpException(404, "You are not a participant in this survey.");
-            }
-            else
+            } else
             {
                 if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
                 {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
-                }
-                else
+                } else
                 {
                     $sMessage = gT('You have been already removed from this survey.');
                 }
@@ -164,24 +162,21 @@ class OptoutController extends LSYii_Controller {
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
+        } else
         {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $sToken, false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
             if (!isset($oToken))
             {
                 $sMessage = gT('You are not a participant in this survey.');
-            }
-            else
+            } else
             {
                 if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
                 {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
-                }
-                else
+                } else
                 {
                     $sMessage = gT('You have been already removed from this survey.');
                 }

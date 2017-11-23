@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -93,19 +95,16 @@ class dataentry extends Survey_Common_Action
                 if ($subAction != "upload")
                 {
                     $this->_showUploadForm($this->_getEncodingsArray(), $iSurveyId, $aData);
-                }
-                else
+                } else
                 {
                     $this->_handleFileUpload($iSurveyId, $aData);
                 }
-            }
-            else
+            } else
             {
                 Yii::app()->session['flashmessage'] = gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
                 $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
             }
-        }
-        else
+        } else
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -223,8 +222,7 @@ class dataentry extends Survey_Common_Action
                     'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
                     );
                 $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
-            }
-            else
+            } else
             {
                 return $sFullFilePath;
             }
@@ -389,8 +387,9 @@ class dataentry extends Survey_Common_Action
                 foreach ($aQueryOldValues as $sRecord) {
                     if (isset($aSRIDConversions[$sRecord['id']])) {
                         $sRecord['id'] = $aSRIDConversions[$sRecord['id']];
+                    } else {
+                        continue;
                     }
-                    else continue;
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
                     $iRecordCountT++;
                 }
@@ -520,8 +519,9 @@ class dataentry extends Survey_Common_Action
 
             $fnames = array_merge($fnames, createFieldMap($survey, 'full', false, false, $sDataEntryLanguage));
             // Fix private if disallowed to view token
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read'))
-                unset($fnames['token']);
+            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')) {
+                            unset($fnames['token']);
+            }
             $nfncount = count($fnames) - 1;
 
             //SHOW INDIVIDUAL RECORD
@@ -534,14 +534,12 @@ class dataentry extends Survey_Common_Action
                 {
                     $results[] = $idrow;
                 }
-            }
-            elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
+            } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
             {
                 if (isset($_GET['public']) && $_GET['public'] == "true")
                 {
                     $password = md5(Yii::app()->request->getParam('accesscode'));
-                }
-                else
+                } else
                 {
                     $password = Yii::app()->request->getParam('accesscode');
                 }
@@ -574,8 +572,7 @@ class dataentry extends Survey_Common_Action
                     if (isset($responses[$fm['fieldname']]))
                     {
                         $results1[$fm['fieldname']] = $responses[$fm['fieldname']];
-                    }
-                    else
+                    } else
                     {
                         $results1[$fm['fieldname']] = "";
                     }
@@ -618,8 +615,11 @@ class dataentry extends Survey_Common_Action
                 {
                     $question = $fname['question'];
                     $aDataentryoutput .= "\t<tr";
-                    if ($highlight) $aDataentryoutput .= " class='odd'";
-                    else $aDataentryoutput .= " class='even'";
+                    if ($highlight) {
+                        $aDataentryoutput .= " class='odd'";
+                    } else {
+                        $aDataentryoutput .= " class='even'";
+                    }
 
                     $highlight = !$highlight;
                     $aDataentryoutput .= ">\n"
@@ -643,8 +643,7 @@ class dataentry extends Survey_Common_Action
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
                                 $mysubmitdate = date("Y-m-d H:i", mktime(0, 0, 0, 1, 1, 1980)); // Note that the completed field only supports 17 chars (so no seconds!)
-                            }
-                            else
+                            } else
                             {
                                 $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); // Note that the completed field only supports 17 chars (so no seconds!)
                             }
@@ -693,8 +692,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $datetimeobj = DateTime::createFromFormat("!Y-m-d H:i:s", $idrow[$fname['fieldname']]);
                                 $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
-                            }
-                            else
+                            } else
                             {
                                 $thisdate = '';
                             }
@@ -741,8 +739,7 @@ class dataentry extends Survey_Common_Action
                                 );
                                 // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
                                 // $aDataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
-                            }
-                            else
+                            } else
                             {
                                 $aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
                             }
@@ -761,8 +758,7 @@ class dataentry extends Survey_Common_Action
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
-                            }
-                            else
+                            } else
                             {
                                 unset($optCategorySeparator);
                             }
@@ -771,8 +767,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
-                            }
-                            else
+                            } else
                             {
                                 $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                                 $lresult = dbExecuteAssoc($lquery);
@@ -789,8 +784,7 @@ class dataentry extends Survey_Common_Action
                                         if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'"; }
                                         $aDataentryoutput .= ">{$llrow['answer']}</option>\n";
                                     }
-                                }
-                                else
+                                } else
                                 {
                                     $defaultopts = array();
                                     $optgroups = array();
@@ -800,8 +794,7 @@ class dataentry extends Survey_Common_Action
                                         if ($categorytext == '')
                                         {
                                             $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
-                                        }
-                                        else
+                                        } else
                                         {
                                             $optgroups[$categorytext][] = array('code' => $llrow['code'], 'answer' => $answertext);
                                         }
@@ -945,8 +938,7 @@ class dataentry extends Survey_Common_Action
                             if (trim($qidattributes['display_columns']) != '')
                             {
                                 $dcols = $qidattributes['display_columns'];
-                            }
-                            else
+                            } else
                             {
                                 $dcols = 0;
                             }
@@ -960,8 +952,7 @@ class dataentry extends Survey_Common_Action
                                 {
                                     $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
-                                }
-                                else
+                                } else
                                 {
                                     $aDataentryoutput .= "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
                                     if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked"; }
@@ -1007,8 +998,7 @@ class dataentry extends Survey_Common_Action
                                     $aDataentryoutput .= "<td><input type='text' name='{$fname['fieldname']}' size='50' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' /></td>\n"
                                     ."\t</tr>\n";
-                                }
-                                elseif (substr($fname['fieldname'], -5) == "other")
+                                } elseif (substr($fname['fieldname'], -5) == "other")
                                 {
                                     $aDataentryoutput .= "\t<tr>\n"
                                     ."<td>\n"
@@ -1021,8 +1011,7 @@ class dataentry extends Survey_Common_Action
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n"
                                     ."</td>\n"
                                     ."\t</tr>\n";
-                                }
-                                else
+                                } else
                                 {
                                     $aDataentryoutput .= "\t<tr>\n"
                                     ."<td><div class='checkbox'><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" id=\"{$fname['fieldname']}\" value='Y'";
@@ -1042,10 +1031,12 @@ class dataentry extends Survey_Common_Action
                                 $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                                 for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
-                                    if ($qAttributes['show_title'])
-                                        $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i.'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"]).'" /></td></tr>';
-                                    if ($qAttributes['show_comment'])
-                                        $aDataentryoutput .= '<tr><td >Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i.'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]).'" /></td></tr>';
+                                    if ($qAttributes['show_title']) {
+                                                                            $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i.'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"]).'" /></td></tr>';
+                                    }
+                                    if ($qAttributes['show_comment']) {
+                                                                            $aDataentryoutput .= '<tr><td >Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i.'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]).'" /></td></tr>';
+                                    }
 
                                     $aDataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i.'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"])).'" /></td></tr>'
                                     .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i.'" name="size" size=50 value="'.htmlspecialchars($metadata[$i]["size"]).'" /></td></tr>'
@@ -1077,8 +1068,7 @@ class dataentry extends Survey_Common_Action
                                 });
                                 });
                                 </script>';
-                            }
-                            else
+                            } else
                             {//file count
                                 $aDataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
                             }
@@ -1221,7 +1211,9 @@ class dataentry extends Survey_Common_Action
                                 }
                                 $aDataentryoutput .= "</td>\n";
                                 $scale_id = 0;
-                                if (isset($fname['scale_id'])) $scale_id = $fname['scale_id'];
+                                if (isset($fname['scale_id'])) {
+                                    $scale_id = $fname['scale_id'];
+                                }
                                 $fquery = "SELECT * FROM {{answers}} WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
                                 $fresult = dbExecuteAssoc($fquery);
                                 $aDataentryoutput .= "<td>\n";
@@ -1322,10 +1314,11 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case "token":
-                            if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'))
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
-                            else
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled'=>'disabled'));
+                            if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
+                                                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                            } else {
+                                                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled'=>'disabled'));
+                            }
                             break;
                         case "submitdate":
                         case "startlanguage":
@@ -1347,13 +1340,11 @@ class dataentry extends Survey_Common_Action
             if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
             { // if you are not survey owner or super admin you cannot modify responses
                 $aDataentryoutput .= "<p><input type='button' value='".gT("Save")."' disabled='disabled'/></p>\n";
-            }
-            elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
+            } elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
             {
                 $aData['part'] = 'edit';
                 $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
-            }
-            elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
+            } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
             {
                 $aData['part'] = 'editsaved';
                 $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
@@ -1383,7 +1374,9 @@ class dataentry extends Survey_Common_Action
         {
             $surveyid = $_REQUEST['surveyid'];
         }
-        if (!empty($_REQUEST['sid'])) $surveyid = (int) $_REQUEST['sid'];
+        if (!empty($_REQUEST['sid'])) {
+            $surveyid = (int) $_REQUEST['sid'];
+        }
 
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
@@ -1426,8 +1419,12 @@ class dataentry extends Survey_Common_Action
     {
         $aData = array();
         $subaction = Yii::app()->request->getPost('subaction');
-        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
-        if (!empty($_REQUEST['sid'])) $surveyid = (int) $_REQUEST['sid'];
+        if (isset($_REQUEST['surveyid'])) {
+            $surveyid = $_REQUEST['surveyid'];
+        }
+        if (!empty($_REQUEST['sid'])) {
+            $surveyid = (int) $_REQUEST['sid'];
+        }
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
 
@@ -1460,26 +1457,25 @@ class dataentry extends Survey_Common_Action
             foreach ($fieldmap as $irow)
             {
                 $fieldname = $irow['fieldname'];
-                if ($fieldname == 'id') continue;
+                if ($fieldname == 'id') {
+                    continue;
+                }
                 if (isset($_POST[$fieldname]))
                 {
                     $thisvalue = $_POST[$fieldname];
-                }
-                else
+                } else
                 {
                     $thisvalue = "";
                 }
                 if ($irow['type'] == 'lastpage')
                 {
                     $thisvalue = 0;
-                }
-                elseif ($irow['type'] == 'D')
+                } elseif ($irow['type'] == 'D')
                 {
                     if ($thisvalue == "")
                     {
                         $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
-                    }
-                    else
+                    } else
                     {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1494,31 +1490,25 @@ class dataentry extends Survey_Common_Action
 
                         $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
                     }
-                }
-                elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
+                } elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
                 {
                     $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
-                }
-                elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
+                } elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
                 {
                     $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
-                }
-                elseif ($irow['type'] == 'submitdate')
+                } elseif ($irow['type'] == 'submitdate')
                 {
                     if (isset($_POST['completed']) && ($_POST['completed'] == "N"))
                     {
                         $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
-                    }
-                    elseif (isset($_POST['completed']) && $thisvalue == "")
+                    } elseif (isset($_POST['completed']) && $thisvalue == "")
                     {
                         $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($_POST['completed']).", \n";
-                    }
-                    else
+                    } else
                     {
                         $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
                     }
-                }
-                else
+                } else
                 {
                     $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
                 }
@@ -1537,8 +1527,7 @@ class dataentry extends Survey_Common_Action
             if (Yii::app()->request->getPost('close-after-save') == 'true')
             {
                 $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
-            }
-            else
+            } else
             {
                 $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
             }
@@ -1597,8 +1586,7 @@ class dataentry extends Survey_Common_Action
                     if ($tokencompleted != "" && $tokencompleted != "N") {
                         $lastanswfortoken = 'PrivacyProtected';
                     }
-                }
-                else
+                } else
                 { // token is valid, survey not anonymous, try to get last recorded response id
                     $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
                     $aresult = dbExecuteAssoc($aquery);
@@ -1617,13 +1605,11 @@ class dataentry extends Survey_Common_Action
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
-            }
-            elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken')
+            } elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken')
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
-            }
-            elseif ($tokenTableExists && $lastanswfortoken != '')
+            } elseif ($tokenTableExists && $lastanswfortoken != '')
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
@@ -1635,13 +1621,11 @@ class dataentry extends Survey_Common_Action
                         $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
                         array('title' => gT("Edit this entry")));
                     $errormsg .= "<br/><br/>";
-                }
-                else
+                } else
                 {
                     $errormsg .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
                 }
-            }
-            else
+            } else
             {
                 $last_db_id = 0;
 
@@ -1657,8 +1641,7 @@ class dataentry extends Survey_Common_Action
                     if (!returnGlobal('redo'))
                     {
                         $password = md5($saver['password']);
-                    }
-                    else
+                    } else
                     {
                         $password = $saver['password'];
                     }
@@ -1705,8 +1688,7 @@ class dataentry extends Survey_Common_Action
                         if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
                         { // can't add '' in Date column
                             // Do nothing
-                        }
-                        else if ($irow['type'] == '|')
+                        } else if ($irow['type'] == '|')
                         {
                             if (!strpos($irow['fieldname'], "_filecount"))
                             {
@@ -1736,13 +1718,11 @@ class dataentry extends Survey_Common_Action
 
                                 $insert_data[$fieldname] = ls_json_encode($phparray);
 
-                            }
-                            else
+                            } else
                             {
                                 $insert_data[$fieldname] = count($phparray);
                             }
-                        }
-                        elseif ($irow['type'] == 'D')
+                        } elseif ($irow['type'] == 'D')
                         {
                             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1753,8 +1733,7 @@ class dataentry extends Survey_Common_Action
                                 $dateoutput = '';
                             }
                             $insert_data[$fieldname] = $dateoutput;
-                        }
-                        else
+                        } else
                         {
                             $insert_data[$fieldname] = $_POST[$fieldname];
                         }
@@ -1798,19 +1777,16 @@ class dataentry extends Survey_Common_Action
                         if (isset($usesleft) && $usesleft <= 1)
                         {
                             $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
-                        }
-                        else
+                        } else
                         {
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
-                    }
-                    else
+                    } else
                     {
                         if (isset($usesleft) && $usesleft <= 1)
                         {
                             $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-                        }
-                        else
+                        } else
                         {
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
@@ -1910,8 +1886,7 @@ class dataentry extends Survey_Common_Action
                             }
                         }
 
-                    }
-                    else
+                    } else
                     {
                         safeDie("Unable to insert record into saved_control table.<br /><br />");
                     }
@@ -1942,7 +1917,9 @@ class dataentry extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
-        if (isset($lang)) $lang = sanitize_languagecode($lang);
+        if (isset($lang)) {
+            $lang = sanitize_languagecode($lang);
+        }
         $aViewUrls = array();
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
@@ -2041,8 +2018,7 @@ class dataentry extends Survey_Common_Action
 
                     //Alternate bgcolor for different groups
                     if (!isset($bgc)) {$bgc = "even"; }
-                    if ($bgc == "even") {$bgc = "odd"; }
-                    else {$bgc = "even"; }
+                    if ($bgc == "even") {$bgc = "odd"; } else {$bgc = "even"; }
 
                     $qid = $deqrow['qid'];
                     $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
@@ -2089,8 +2065,7 @@ class dataentry extends Survey_Common_Action
                             if ($deqrow['type'] == '!' && trim($qidattributes['category_separator']) != '')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
-                            }
-                            else
+                            } else
                             {
                                 unset($optCategorySeparator);
                             }
@@ -2107,8 +2082,7 @@ class dataentry extends Survey_Common_Action
                                     //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
                                     $aDatatemp .= ">{$dearow['answer']}</option>\n";
                                 }
-                            }
-                            else
+                            } else
                             {
                                 $defaultopts = array();
                                 $optgroups = array();
@@ -2119,8 +2093,7 @@ class dataentry extends Survey_Common_Action
                                     if ($categorytext == '')
                                     {
                                         $defaultopts[] = array('code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
-                                    }
-                                    else
+                                    } else
                                     {
                                         $optgroups[$categorytext][] = array('code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
                                     }
@@ -2200,8 +2173,7 @@ class dataentry extends Survey_Common_Action
                             if (trim($qidattributes['display_columns']) != '')
                             {
                                 $dcols = $qidattributes['display_columns'];
-                            }
-                            else
+                            } else
                             {
                                 $dcols = 0;
                             }
@@ -2426,7 +2398,9 @@ class dataentry extends Survey_Common_Action
         // and then our escaping).
         foreach ($fieldvalues as &$sValue)
         {
-            if ($sValue == '{question_not_shown}') $sValue = null;
+            if ($sValue == '{question_not_shown}') {
+                $sValue = null;
+            }
         }
 
         return $fieldvalues;
@@ -2472,11 +2446,13 @@ class dataentry extends Survey_Common_Action
     {
         if (!isset($aData['display']['menu_bars']['browse']))
         {
-            if (isset($aData['surveyid']))
-                $iSurveyId = $aData['surveyid'];
+            if (isset($aData['surveyid'])) {
+                            $iSurveyId = $aData['surveyid'];
+            }
 
-            if (isset($_POST['sid']))
-                $iSurveyId = $_POST['sid'];
+            if (isset($_POST['sid'])) {
+                            $iSurveyId = $_POST['sid'];
+            }
 
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
             $survey = Survey::model()->findByPk($iSurveyId);
