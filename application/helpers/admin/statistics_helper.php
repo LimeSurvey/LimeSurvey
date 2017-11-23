@@ -3479,24 +3479,14 @@ class statistics_helper {
             }
         }
 
-        if ($outputType == 'pdf') //XXX TODO PDF
-        {
-            //$tablePDF = array();
+        if ($outputType == 'pdf') {
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
             if (!isset($headPDF))
             {
-                // TODO: Why is $headPDF sometimes undefined here?
+                // @TODO: Why is $headPDF sometimes undefined here?
                 $headPDF = array();
             }
             $this->pdf->headTable($headPDF, $tablePDF);
-            //$this->pdf->tableintopdf($tablePDF);
-
-            //                if(isset($footPDF))
-            //                foreach($footPDF as $foot)
-            //                {
-            //                    $footA = array($foot);
-            //                    $this->pdf->tablehead($footA);
-            //                }
             if (isset($headPDF2))
             {
                 $this->pdf->headTable($headPDF2, $tablePDF2);
@@ -4574,8 +4564,7 @@ class statistics_helper {
 
         if ($sortby != '')
         {
-            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
-            {
+            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
                 $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
             }
             else
