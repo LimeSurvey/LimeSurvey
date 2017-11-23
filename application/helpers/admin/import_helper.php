@@ -1333,14 +1333,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
                 {
                     $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid'] = $aQIDReplacements[$insertdata['cqid']]; // remap the qid
-                } else  { // a problem with this answer record -> don't consider
+                } else { // a problem with this answer record -> don't consider
                     continue; 
                 }
 
                 list($oldcsid, $oldcgid, $oldqidanscode) = explode("X", $insertdata["cfieldname"], 3);
 
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
-                if (!isset($aGIDReplacements[$oldcgid])){
+                if (!isset($aGIDReplacements[$oldcgid])) {
                     continue; 
                 }
                     

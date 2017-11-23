@@ -1376,8 +1376,7 @@ protected function getPostQuestionList($qid, array $qrows)
         {
             $position = "after";
             //break;
-        }
-        elseif ($qrow["qid"] != $qid && $position == "after")
+        } elseif ($qrow["qid"] != $qid && $position == "after")
         {
             $postquestionlist[] = $qrow['qid'];
         }
