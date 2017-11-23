@@ -151,9 +151,9 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <td class="col-md-2"><?php eT('core admin theme');?></td>
                                             <td class="col-md-1">
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>
-                                                    <?php eT("Selected")?>
+                                                    <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
                                                 <?php else: ?>
-                                                    <a href="<?php echo Yii::app()->getController()->createUrl("admin/themeoptions/sa/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default ">
+                                                    <a href="<?php echo Yii::app()->getController()->createUrl("admin/themeoptions/sa/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
                                                         <?php eT("select");?>
                                                     </a>
                                                 <?php endif; ?>
