@@ -56,7 +56,6 @@ $(document).on('ready', function () {
                 });
             },
             mounted() {
-                window.singletonPjax();
                 const surveyid = $(this.$el).data('surveyid');
                 if (surveyid != 0) {
                     this.$store.commit('updateSurveyId', surveyid);
@@ -64,14 +63,16 @@ $(document).on('ready', function () {
                 const maxHeight = ($('#in_survey_common').height() - 35) || 400;
                 this.$store.commit('changeMaxHeight', maxHeight);
                 this.updatePjaxLinks();
-
+                
                 $(document).on('click', 'ul.pagination>li>a',  ()=>{
                     this.updatePjaxLinks();
                 });
-
+                
                 $(document).on('vue-redraw',  ()=>{
                     this.$forceUpdate();
+                    this.updatePjaxLinks();
                 });
+                window.singletonPjax();
 
             }
         });
