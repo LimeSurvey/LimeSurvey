@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
@@ -45,21 +47,18 @@ function loadanswers()
         {
             // To be validated with mssql, think it's not needed
             $oCriteria->addCondition("(CAST({{saved_control}}.access_code as varchar(64))=:md5_code OR CAST({{saved_control}}.access_code as varchar(64))=:sha256_code)");
-        }
-        else
+        } else
         {
             $oCriteria->addCondition("({{saved_control}}.access_code=:md5_code OR {{saved_control}}.access_code=:sha256_code)");
         }
         $aParams[':md5_code'] = md5($sLoadPass);
         $aParams[':sha256_code'] = hash('sha256', $sLoadPass);
-    }
-    elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
+    } elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
         $oCriteria = new CDbCriteria;
         $oCriteria->condition = "id=:id";
         $aParams = array(':id'=>$_SESSION['survey_'.$surveyid]['srid']);
-    }
-    else
+    } else
     {
         return;
     }
@@ -68,8 +67,7 @@ function loadanswers()
     if (!$oResponses)
     {
         return false;
-    }
-    else
+    } else
     {
         //A match has been found. Let's load the values!
         //If this is from an email, build surveysession first
@@ -104,28 +102,24 @@ function loadanswers()
             {
                 $clienttoken = $value;
                 $token = $value;
-            }
-            elseif ($column == 'lastpage' && !isset($_SESSION['survey_'.$surveyid]['step']))
+            } elseif ($column == 'lastpage' && !isset($_SESSION['survey_'.$surveyid]['step']))
             {
                 if (is_null($submitdate) || $submitdate == "N")
                 {
                     $_SESSION['survey_'.$surveyid]['step'] = ($value > 1 ? $value : 1);
                     $thisstep = $_SESSION['survey_'.$surveyid]['step'] - 1;
-                }
-                else
+                } else
                 {
                     $_SESSION['survey_'.$surveyid]['maxstep'] = ($value > 1 ? $value : 1);
                 }
-            }
-            elseif ($column == "datestamp")
+            } elseif ($column == "datestamp")
             {
                 $_SESSION['survey_'.$surveyid]['datestamp'] = $value;
             }
             if ($column == "startdate")
             {
                 $_SESSION['survey_'.$surveyid]['startdate'] = $value;
-            }
-            else
+            } else
             {
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
@@ -140,8 +134,7 @@ function loadanswers()
                         // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
                         // question types (NKD)
                         $_SESSION['survey_'.$surveyid][$column] = '';
-                    }
-                    else
+                    } else
                     {
                         $_SESSION['survey_'.$surveyid][$column] = $value;
                     }
@@ -220,8 +213,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
         );
 
         return $languageChangerDatas;
-    }
-    else
+    } else
     {
         return false;
     }
@@ -240,8 +232,9 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
     if (count($aLanguages) > 1)
     {
         $sClass = "ls-language-changer-item";
-        foreach ($aLanguages as $sLangCode => $aLanguage)
-            $aListLang[$sLangCode] = html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8').' - '.$aLanguage['description'];
+        foreach ($aLanguages as $sLangCode => $aLanguage) {
+                    $aListLang[$sLangCode] = html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8').' - '.$aLanguage['description'];
+        }
         $sSelected = $sSelectedLanguage;
 
         $languageChangerDatas = array(
@@ -251,8 +244,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
         );
 
         return $languageChangerDatas;
-    }
-    else
+    } else
     {
         return false;
     }
@@ -294,13 +286,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                         if ($phparray[0]->size != "")
                         { // ajax
                             $filecount = count($phparray);
-                        }
-                        else
+                        } else
                         { // basic
                             for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
                             {
-                                if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '')
-                                    continue;
+                                if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '') {
+                                                                    continue;
+                                }
 
                                 $filecount++;
 
@@ -325,8 +317,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                                     {
                                         $filenotvalidated[$field."_file_".$i] .= sprintf(gT("Sorry, only %s extensions are allowed!"), $validation['allowed_filetypes']);
                                         unset($append);
-                                    }
-                                    else
+                                    } else
                                     {
                                         $filenotvalidated = array();
                                         $filenotvalidated[$field."_file_".$i] .= sprintf(gT("Sorry, only %s extensions are allowed!"), $validation['allowed_filetypes']);
@@ -334,9 +325,9 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                                 }
                             }
                         }
+                    } else {
+                                            $filecount = 0;
                     }
-                    else
-                        $filecount = 0;
 
                     if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                     {
@@ -348,18 +339,21 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
         }
         if (isset($filenotvalidated))
         {
-            if (isset($move) && $move == "moveprev")
-                $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
-            if (isset($move) && $move == "movenext")
-                $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
+            if (isset($move) && $move == "moveprev") {
+                            $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
+            }
+            if (isset($move) && $move == "movenext") {
+                            $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
+            }
             return $filenotvalidated;
         }
     }
-    if (!isset($filenotvalidated))
-        return false;
-    else
-        return $filenotvalidated;
-}
+    if (!isset($filenotvalidated)) {
+            return false;
+    } else {
+            return $filenotvalidated;
+    }
+    }
 
 /**
 * Takes two single element arrays and adds second to end of first if value exists
@@ -394,8 +388,7 @@ function submittokens($quotaexit = false)
     if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
     {
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    }
-    else
+    } else
     {
         $thissurvey = getSurveyInfo($surveyid);
     }
@@ -413,8 +406,7 @@ function submittokens($quotaexit = false)
     {
         $token->completed = 'Q';
         $token->usesleft--;
-    }
-    else
+    } else
     {
         if ($token->usesleft <= 1)
         {
@@ -483,8 +475,7 @@ function submittokens($quotaexit = false)
                 if (getEmailFormat($surveyid) == 'html')
                 {
                     $ishtml = true;
-                }
-                else
+                } else
                 {
                     $ishtml = false;
                 }
@@ -496,8 +487,7 @@ function submittokens($quotaexit = false)
                 if (!$ishtml)
                 {
                     $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
-                }
-                else
+                } else
                 {
                     $message = html_entity_decode($message, ENT_QUOTES, $emailcharset);
                 }
@@ -581,16 +571,16 @@ function sendSubmitNotifications($surveyid)
         {
             $aReplacementVars['RELOADURL'] = "<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
         }
-    }
-    else
+    } else
     {
         $aReplacementVars['RELOADURL'] = '';
     }
 
-    if (!isset($_SESSION['survey_'.$surveyid]['srid']))
-        $srid = null;
-    else
-        $srid = $_SESSION['survey_'.$surveyid]['srid'];
+    if (!isset($_SESSION['survey_'.$surveyid]['srid'])) {
+            $srid = null;
+    } else {
+            $srid = $_SESSION['survey_'.$surveyid]['srid'];
+    }
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
     $aReplacementVars['VIEWRESPONSEURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
@@ -649,13 +639,11 @@ function sendSubmitNotifications($surveyid)
             {
                 $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n\n";
-            }
-            elseif (substr($sFieldname, 0, 4) == 'qid_')
+            } elseif (substr($sFieldname, 0, 4) == 'qid_')
             {
                 $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n";
-            }
-            else
+            } else
             {
                 $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".strip_tags("{$fname[0]} {$fname[1]}")."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
@@ -667,8 +655,7 @@ function sendSubmitNotifications($surveyid)
         if ($bIsHTML)
         {
             $aReplacementVars['ANSWERTABLE'] = $ResultTableHTML;
-        }
-        else
+        } else
         {
             $aReplacementVars['ANSWERTABLE'] = $ResultTableText;
         }
@@ -787,8 +774,7 @@ function submitfailed($errormsg = '', $query = null)
             if (isset($_SESSION['survey_'.$surveyid][$value]))
             {
                 $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
-            }
-            else
+            } else
             {
                 $email .= "$value: N/A\n";
             }
@@ -799,8 +785,7 @@ function submitfailed($errormsg = '', $query = null)
         . gT("ERROR MESSAGE", "unescaped").":\n"
         . $errormsg."\n\n";
         SendEmailMessage($email, gT("Error saving results", "unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
-    }
-    else
+    } else
     {
         $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
         $completed .= $subquery;
@@ -840,7 +825,7 @@ function buildsurveysession($surveyid, $preview = false)
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang', true)) {
         $language_to_set = returnGlobal('lang', true);
-    }elseif (isset($oTokenEntry) && $oTokenEntry) {
+    } elseif (isset($oTokenEntry) && $oTokenEntry) {
         // If survey have token : we have a $oTokenEntry
         // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
         $language_to_set = $oTokenEntry->language;
@@ -925,8 +910,7 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
                             $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname] = $_GET[$aRow['parameter']];
                             $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']] = $_GET[$aRow['parameter']];
                         }
-                    }
-                    else
+                    } else
                     {
                         if ($aField['qid'] == $aRow['targetqid'])
                         {
@@ -1018,30 +1002,35 @@ function initFieldArray($surveyid, array $fieldmap)
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
-                if (isset($field['title']))
-                    $title = $field['title'];
-                else
-                    $title = "";
+                if (isset($field['title'])) {
+                                    $title = $field['title'];
+                } else {
+                                    $title = "";
+                }
 
-                if (isset($field['question']))
-                    $question = $field['question'];
-                else
-                    $question = "";
+                if (isset($field['question'])) {
+                                    $question = $field['question'];
+                } else {
+                                    $question = "";
+                }
 
-                if (isset($field['mandatory']))
-                    $mandatory = $field['mandatory'];
-                else
-                    $mandatory = 'N';
+                if (isset($field['mandatory'])) {
+                                    $mandatory = $field['mandatory'];
+                } else {
+                                    $mandatory = 'N';
+                }
 
-                if (isset($field['hasconditions']))
-                    $hasconditions = $field['hasconditions'];
-                else
-                    $hasconditions = 'N';
+                if (isset($field['hasconditions'])) {
+                                    $hasconditions = $field['hasconditions'];
+                } else {
+                                    $hasconditions = 'N';
+                }
 
-                if (isset($field['usedinconditions']))
-                    $usedinconditions = $field['usedinconditions'];
-                else
-                    $usedinconditions = 'N';
+                if (isset($field['usedinconditions'])) {
+                                    $usedinconditions = $field['usedinconditions'];
+                } else {
+                                    $usedinconditions = 'N';
+                }
 
                 $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']] = array($field['qid'],
                 $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
@@ -1353,13 +1342,11 @@ function getRenderWay($renderToken, $renderCaptcha)
         if ($renderCaptcha === "")
         {
             $renderWay = $renderToken;
-        }
-        else if ($renderToken === "")
+        } else if ($renderToken === "")
         {
             $renderWay = $renderCaptcha;
         }
-    }
-    else
+    } else
     {
         $renderWay = $renderToken;
     }
@@ -1565,7 +1552,7 @@ function getNavigatorDatas()
                 $aNavigator['load']['show'] = true;
             }
             $aNavigator['save']['show'] = true;
-        }elseif (!$iSessionStep) {
+        } elseif (!$iSessionStep) {
 
             //Welcome page, show load (but not save)
             if (!$bTokenanswerspersistence && !$bAlreadySaved) {
@@ -1575,14 +1562,14 @@ function getNavigatorDatas()
             if ($thissurvey['showwelcome'] == "N") {
                 $aNavigator['save']['show'] = true;
             }
-        }elseif ($iSessionMaxStep == 1 && $thissurvey['showwelcome'] == "N") {
+        } elseif ($iSessionMaxStep == 1 && $thissurvey['showwelcome'] == "N") {
             //First page, show LOAD and SAVE
             if (!$bTokenanswerspersistence && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
 
             $aNavigator['save']['show'] = true;
-        }elseif (getMove() != "movelast") {
+        } elseif (getMove() != "movelast") {
             // Not on last page or submited survey
             $aNavigator['save']['show'] = true;
         }
@@ -2056,14 +2043,12 @@ function getReferringUrl()
         if (!Yii::app()->getConfig('strip_query_from_referer_url'))
         {
             return $_SERVER["HTTP_REFERER"];
-        }
-        else
+        } else
         {
             $aRefurl = explode("?", $_SERVER["HTTP_REFERER"]);
             return $aRefurl[0];
         }
-    }
-    else
+    } else
     {
         return null;
     }
@@ -2190,8 +2175,9 @@ function getMove()
     /* @deprecated since we use button and not input with different value. */
     foreach ($aAcceptedMove as $sAccepteMove)
     {
-        if (Yii::app()->request->getParam($sAccepteMove))
-            $move = $sAccepteMove;
+        if (Yii::app()->request->getParam($sAccepteMove)) {
+                    $move = $sAccepteMove;
+        }
     }
     /* default move (user don't click on a button, but use enter in a input:text or a select */
     if ($move == 'default')
@@ -2203,8 +2189,7 @@ function getMove()
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A')
         {
             $move = "movesubmit";
-        }
-        else
+        } else
         {
             $move = "movenext";
         }
@@ -2234,16 +2219,13 @@ function getSideBodyClass($sideMenustate = false)
         {
             $class = 'side-body-margin';
         }
-    }
-    elseif ($sideMenuBehaviour == 'alwaysClosed')
+    } elseif ($sideMenuBehaviour == 'alwaysClosed')
     {
         $class = 'side-body-margin';
-    }
-    elseif ($sideMenuBehaviour == 'alwaysOpen')
+    } elseif ($sideMenuBehaviour == 'alwaysOpen')
     {
         // No margin class
-    }
-    else
+    } else
     {
         throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }

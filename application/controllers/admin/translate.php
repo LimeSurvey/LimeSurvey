@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -102,7 +104,9 @@ class translate extends Survey_Common_Action {
             $amTypeOptions = $this->setupTranslateFields($type);
             $type2 = $amTypeOptions["associated"];
 
-            if (!empty($type2)) $tab_names_full[] = $type2;
+            if (!empty($type2)) {
+                $tab_names_full[] = $type2;
+            }
         }
 
         foreach ($tab_names_full as $type)
@@ -286,8 +290,7 @@ class translate extends Survey_Common_Action {
                                 "icon-do text-success",
                                 $menuitem_url.$baselang
                             );
-        }
-        else
+        } else
         {
             $icontext = gT($menutext);
 
@@ -881,8 +884,7 @@ class translate extends Survey_Common_Action {
             {
                 //print_r($rowfrom->attributes);die();
                 $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
-            }
-            else if ($type == 'subquestion')
+            } else if ($type == 'subquestion')
             {
                 //print_r($rowfrom->attributes);die();
                 $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
@@ -901,7 +903,9 @@ class translate extends Survey_Common_Action {
 
             $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
             $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
-            if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+            if (is_numeric($iScaleID)) {
+                $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+            }
             $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
             $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
             $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
@@ -938,8 +942,7 @@ class translate extends Survey_Common_Action {
         if ($htmleditor["HTMLeditorDisplay"] == "Inline" OR $htmleditor["HTMLeditorDisplay"] == "")
         {
             $editor_function = "getEditor";
-        }
-        else if ($htmleditor["HTMLeditorDisplay"] == "Popup")
+        } else if ($htmleditor["HTMLeditorDisplay"] == "Popup")
         {
             $editor_function = "getPopupEditor";
             $aData[2] = urlencode($htmleditor['description']);
@@ -1057,8 +1060,7 @@ class translate extends Survey_Common_Action {
                 if ($part[2] == 'EXPRESSION')
                 {
                     $sparts[] = $part[0];
-                }
-                else
+                } else
                 {
                     $convertedPart = $objGt->$sProcedure($part[0]);
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
@@ -1067,8 +1069,7 @@ class translate extends Survey_Common_Action {
                 }
             }
             $sOutput = implode(' ', $sparts);
-        }
-        catch (GTranslateException $ge)
+        } catch (GTranslateException $ge)
         {
             // Get the error message and build the ouput array
             $error = TRUE;

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -109,8 +111,9 @@ class surveypermission extends Survey_Common_Action {
                     {
                         $group_names[] = \CHtml::encode($resul4row->name);
                     }
-                    if (count($group_names) > 0)
-                        $group_names_query = implode(", ", $group_names);
+                    if (count($group_names) > 0) {
+                                            $group_names_query = implode(", ", $group_names);
+                    }
                 }
                 //                  else {break;} //TODO Commented by lemeur
                 $surveysecurity .= "<tr>\n";
@@ -149,8 +152,7 @@ class surveypermission extends Survey_Common_Action {
                 if (isset($group_names) > 0)
                 {
                     $surveysecurity .= $group_names_query;
-                }
-                else
+                } else
                 {
                     $surveysecurity .= "&#8211;";
                 }
@@ -198,8 +200,7 @@ class surveypermission extends Survey_Common_Action {
                     // Blurred icon, meaning only partial permissions
                     elseif ($iCount > 0) {
                         $insert = "<div data-toggle='tooltip' data-title='".$sTooltip."' class=\"fa fa-check mixed\">&nbsp;</div>";
-                    }
-                    else
+                    } else
                     {
                         $insert = "<div>&#8211;</div>";
                     }
@@ -289,7 +290,9 @@ class surveypermission extends Survey_Common_Action {
                         {
                             $uid_arr[] = $row2['uid'];
                             $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));
-                            if (!$isrresult) break;
+                            if (!$isrresult) {
+                                break;
+                            }
                         }
 
                         if ($isrresult)
@@ -307,8 +310,7 @@ class surveypermission extends Survey_Common_Action {
                             ."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
                             ."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
                             ."</form></p>\n";
-                        }
-                        else
+                        } else
                         {
                             // Error while adding user to the database
 
@@ -320,8 +322,7 @@ class surveypermission extends Survey_Common_Action {
                             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
                             $addsummary .= "</p>";
                         }
-                    }
-                    else
+                    } else
                     {
                         // no user to add
                         $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
@@ -331,8 +332,7 @@ class surveypermission extends Survey_Common_Action {
                         $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
                         $addsummary .= "</p>";
                     }
-                }
-                else
+                } else
                 {
                     $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
                     $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
@@ -342,8 +342,7 @@ class surveypermission extends Survey_Common_Action {
                     $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
                     $addsummary .= "</p>";
                 }
-            }
-            else
+            } else
             {
                 $this->getController()->error('Access denied');
             }
@@ -407,8 +406,7 @@ class surveypermission extends Survey_Common_Action {
                         ."<input type='hidden' name='action' value='setsurveysecurity' />"
                         ."<input type='hidden' name='uid' value='{$postuserid}' /></p>"
                         ."</form>\n";
-                    }
-                    else
+                    } else
                     {
                         // Username already exists.
                         $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
@@ -417,8 +415,7 @@ class surveypermission extends Survey_Common_Action {
                         . "<p>".gT("Username already exists.")."</p>";
                         $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
                     }
-                }
-                else
+                } else
                 {
                     $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
                     $addsummary .= "<h2>".gT("Add user")."</h2>\n";
@@ -426,8 +423,7 @@ class surveypermission extends Survey_Common_Action {
                     . "<p>".gT("No Username selected.")."</p>\n";
                     $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
                 }
-            }
-            else
+            } else
             {
                 $this->getController()->error('Access denied');
             }
@@ -495,8 +491,7 @@ class surveypermission extends Survey_Common_Action {
                 $resrow = Yii::app()->db->createCommand($query)->bindParam(":uid", $postuserid, PDO::PARAM_INT)->queryRow();
                 $sUsername = $resrow['users_name'];
                 $usersummary .= "<h3>".sprintf(gT("Edit survey permissions for user %s"), "<em>".\CHtml::encode($sUsername)."</em>")."</h3>";
-            }
-            else
+            } else
             {
                 $resrow = UserGroup::model()->find('ugid = :ugid', array(':ugid' => $postusergroupid));
                 $sUsergroupName = $resrow['name'];
@@ -531,7 +526,9 @@ class surveypermission extends Survey_Common_Action {
                 $usersummary .= "<td ><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
                 {
-                    if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) continue;
+                    if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+                        continue;
+                    }
                     $usersummary .= "<td class='extended'>";
 
                     if ($CRUDValue)
@@ -558,16 +555,14 @@ class surveypermission extends Survey_Common_Action {
             if ($action == 'setsurveysecurity')
             {
                 $usersummary .= "<input type='hidden' name='uid' value='{$postuserid}' />";
-            }
-            else
+            } else
             {
                 $usersummary .= "<input type='hidden' name='ugid' value='{$postusergroupid}' />";
             }
             $usersummary .= "</form></div></div>\n";
 
             $aViewUrls['output'] = $usersummary;
-        }
-        else
+        } else
         {
             $this->getController()->error('Access denied');
         }
@@ -606,8 +601,7 @@ class surveypermission extends Survey_Common_Action {
         if ($postuserid && !in_array($postuserid, $userList))
         {
             $this->getController()->error('Access denied');
-        }
-        elseif ($postusergroupid && !in_array($postusergroupid, $userList))
+        } elseif ($postusergroupid && !in_array($postusergroupid, $userList))
         {
             $this->getController()->error('Access denied');
         }
@@ -628,14 +622,12 @@ class surveypermission extends Survey_Common_Action {
                     $dbresult = Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = 'survey'", array(':uid' => $postuserid, ':sid' => $surveyid));
                     $addsummary .= "<br />".gT("Username").": ".sanitize_xss_string(App()->getRequest()->getParam('user'))."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".gT("Success!")."</div>\n";
-                }
-                else
+                } else
                 {
                     $addsummary .= "<div class=\"warningheader\">".gT("Could not delete user. User was not supplied.")."</div>\n";
                 }
                 $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
-            }
-            else
+            } else
             {
                 $this->getController()->error('Access denied');
             }
@@ -673,8 +665,7 @@ class surveypermission extends Survey_Common_Action {
         if ($postuserid && !in_array($postuserid, getUserList('onlyuidarray')))
         {
             $this->getController()->error('Access denied');
-        }
-        elseif ($postusergroupid && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray')))
+        } elseif ($postusergroupid && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray')))
         {
             $this->getController()->error('Access denied');
         }
@@ -695,8 +686,7 @@ class surveypermission extends Survey_Common_Action {
                     $where .= "sid = :surveyid AND owner_id != :postuserid AND owner_id = :owner_id";
                     $resrow = Survey::model()->find($where, array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
                 }
-            }
-            else {
+            } else {
                 $where .= "sid = :sid";
                 $resrow = Survey::model()->find($where, array(':sid' => $surveyid));
                 $iOwnerID = $resrow['owner_id'];
@@ -708,14 +698,15 @@ class surveypermission extends Survey_Common_Action {
             {
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
                 {
-                    if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) continue;
+                    if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+                        continue;
+                    }
 
                     if ($CRUDValue)
                     {
                         if (isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])) {
                             $aPermissions[$sPermissionKey][$sCRUDKey] = 1;
-                        }
-                        else
+                        } else
                         {
                             $aPermissions[$sPermissionKey][$sCRUDKey] = 0;
                         }
@@ -734,14 +725,12 @@ class surveypermission extends Survey_Common_Action {
                     }
                     $addsummary .= "<div class=\"successheader\">".gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }
-            }
-            else
+            } else
             {
                 if (Permission::model()->setPermissions($postuserid, $surveyid, 'survey', $aPermissions))
                 {
                     Yii::app()->setFlashMessage(gT("Survey permissions were successfully updated."));
-                }
-                else
+                } else
                 {
                     Yii::app()->setFlashMessage(gT("Failed to update survey permissions!"));
                 }
@@ -754,8 +743,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
             $addsummary .= "</div></div></div>\n";
             $aViewUrls['output'] = $addsummary;
-        }
-        else
+        } else
         {
             $this->getController()->error('Access denied');
         }

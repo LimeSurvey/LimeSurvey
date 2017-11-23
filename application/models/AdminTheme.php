@@ -347,7 +347,7 @@ class AdminTheme extends CFormModel
                     // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
                     $oTemplateConfig = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
                     $previewUrl = Yii::app()->getConfig('styleurl').$file; // NOTE: will not work with uploaded themes for now
-                    $oTemplateConfig->path    =  $file;
+                    $oTemplateConfig->path    = $file;
                     $oTemplateConfig->preview = '<img src="'.$previewUrl.'/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }

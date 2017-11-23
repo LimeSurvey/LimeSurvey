@@ -64,8 +64,9 @@ class SurveymenuEntryController extends Survey_Common_Action
         if (isset($_POST['SurveymenuEntries']))
         {
             $model->attributes = $_POST['SurveymenuEntries'];
-            if ($model->save())
-                $this->redirect(array('view', 'id'=>$model->id));
+            if ($model->save()) {
+                            $this->redirect(array('view', 'id'=>$model->id));
+            }
         }
 
         $this->render('create', array(
@@ -80,10 +81,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function update($id)
     {
-        if ($id != 0)
-            $model = $this->loadModel($id);
-        else 
-            $model = new SurveymenuEntries();
+        if ($id != 0) {
+                    $model = $this->loadModel($id);
+        } else {
+                    $model = new SurveymenuEntries();
+        }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 		
@@ -164,15 +166,13 @@ class SurveymenuEntryController extends Survey_Common_Action
                         $aResults[$iSurveyMenuEntryId]['message']   = $oSurveyMenuEntry->error;
                     }
                 }
-            }
-            else
+            } else
             {
                 $aResults['global']['result']  = false;
                 $aResults['global']['message'] = gT('Nothing to update');
             }
 
-        } 
-        else 
+        } else 
         {
             $aResults['global']['result'] = false;
             $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
@@ -355,8 +355,9 @@ class SurveymenuEntryController extends Survey_Common_Action
     public function loadModel($id)
     {
         $model = SurveymenuEntries::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

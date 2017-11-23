@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -121,12 +123,10 @@ abstract class LSYii_Controller extends CController
         if (Yii::app()->getConfig('debug') == 1) {//For debug purposes - switch on in config.php
             @ini_set("display_errors", 1);
             error_reporting(E_ALL);
-        }
-        elseif (Yii::app()->getConfig('debug') == 2) {//For debug purposes - switch on in config.php
+        } elseif (Yii::app()->getConfig('debug') == 2) {//For debug purposes - switch on in config.php
             @ini_set("display_errors", 1);
             error_reporting(E_ALL | E_STRICT);
-        }
-        else {
+        } else {
             @ini_set("display_errors", 0);
             error_reporting(0);
         }
@@ -164,9 +164,9 @@ abstract class LSYii_Controller extends CController
                 $url = substr($url, strlen($sActualBaseUrl));
             }
             return trim($sPublicUrl, "/").$url;
+        } else {
+                    return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
         }
-        else
-            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
     }
 
     /**

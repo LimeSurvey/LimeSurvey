@@ -47,10 +47,11 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function update($id = 0)
     {
-        if ($id != 0)
-            $model = $this->loadModel($id);
-        else 
-            $model = new Surveymenu();
+        if ($id != 0) {
+                    $model = $this->loadModel($id);
+        } else {
+                    $model = new Surveymenu();
+        }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 		
@@ -62,8 +63,9 @@ class SurveymenuController extends Survey_Common_Action
                 unset($aSurveymenu['id']);
                 $aSurveymenu['created_at'] = date('Y-m-d H:i:s');
                 $aSurveymenu['parent_id'] = (int) $aSurveymenu['parent_id'];
-                if ($aSurveymenu['parent_id'] > 0)
-                    $aSurveymenu['level'] = ((Surveymenu::model()->findByPk($aSurveymenu['parent_id'])->level) + 1);
+                if ($aSurveymenu['parent_id'] > 0) {
+                                    $aSurveymenu['level'] = ((Surveymenu::model()->findByPk($aSurveymenu['parent_id'])->level) + 1);
+                }
             }
 
             $model->setAttributes($aSurveymenu);
@@ -140,15 +142,13 @@ class SurveymenuController extends Survey_Common_Action
                         $aResults[$iSurveyMenuId]['message']   = $iSurveyMenuId->error;
                     }
                 }
-            }
-            else
+            } else
             {
                 $aResults['global']['result']  = false;
                 $aResults['global']['message'] = gT('Nothing to update');
             }
 
-        } 
-        else 
+        } else 
         {
             $aResults['global']['result'] = false;
             $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
@@ -312,8 +312,9 @@ class SurveymenuController extends Survey_Common_Action
     public function loadModel($id)
     {
         $model = Surveymenu::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

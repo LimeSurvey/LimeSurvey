@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -37,8 +39,7 @@ class databaseupdate extends Survey_Common_Action
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
-        }
-        else
+        } else
         {
             $aData['display']['header'] = true;
             $aViewUrls['output'] = CheckForDBUpgrades();

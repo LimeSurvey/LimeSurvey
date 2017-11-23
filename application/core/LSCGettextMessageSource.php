@@ -24,24 +24,27 @@ class LSCGettextMessageSource extends CGettextMessageSource
         $this->catalog = $language;
 
         $messageFile = $this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$this->catalog;
-        if ($this->useMoFile)
-            $messageFile .= self::MO_FILE_EXT;
-        else
-            $messageFile .= self::PO_FILE_EXT;
+        if ($this->useMoFile) {
+                    $messageFile .= self::MO_FILE_EXT;
+        } else {
+                    $messageFile .= self::PO_FILE_EXT;
+        }
 
         if ($this->cachingDuration > 0 && $this->cacheID !== false && ($cache = Yii::app()->getComponent($this->cacheID)) !== null)
         {
             $key = self::CACHE_KEY_PREFIX.$messageFile.".".$category;
-            if (($data = $cache->get($key)) !== false)
-                return unserialize($data);
+            if (($data = $cache->get($key)) !== false) {
+                            return unserialize($data);
+            }
         }
 
         if (is_file($messageFile))
         {
-            if ($this->useMoFile)
-                $file = new CGettextMoFile($this->useBigEndian);
-            else
-                $file = new CGettextPoFile();
+            if ($this->useMoFile) {
+                            $file = new CGettextMoFile($this->useBigEndian);
+            } else {
+                            $file = new CGettextPoFile();
+            }
             $messages = $file->load($messageFile, $category);
             if (isset($cache))
             {
@@ -49,8 +52,8 @@ class LSCGettextMessageSource extends CGettextMessageSource
                 $cache->set($key, serialize($messages), $this->cachingDuration, $dependency);
             }
             return $messages;
+        } else {
+                    return array();
         }
-        else
-            return array();
     }
 }

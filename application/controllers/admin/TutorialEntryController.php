@@ -70,8 +70,9 @@ class TutorialEntryController extends Controller
         if (isset($_POST['TutorialEntry']))
         {
             $model->attributes = $_POST['TutorialEntry'];
-            if ($model->save())
-                $this->redirect(array('view', 'id'=>$model->teid));
+            if ($model->save()) {
+                            $this->redirect(array('view', 'id'=>$model->teid));
+            }
         }
 
         $this->render('create', array(
@@ -94,8 +95,9 @@ class TutorialEntryController extends Controller
         if (isset($_POST['TutorialEntry']))
         {
             $model->attributes = $_POST['TutorialEntry'];
-            if ($model->save())
-                $this->redirect(array('view', 'id'=>$model->teid));
+            if ($model->save()) {
+                            $this->redirect(array('view', 'id'=>$model->teid));
+            }
         }
 
         $this->render('update', array(
@@ -113,8 +115,9 @@ class TutorialEntryController extends Controller
         $this->loadModel($id)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if (!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        if (!isset($_GET['ajax'])) {
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
     }
 
     /**
@@ -135,8 +138,9 @@ class TutorialEntryController extends Controller
     {
         $model = new TutorialEntry('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['TutorialEntry']))
-            $model->attributes = $_GET['TutorialEntry'];
+        if (isset($_GET['TutorialEntry'])) {
+                    $model->attributes = $_GET['TutorialEntry'];
+        }
 
         $this->render('admin', array(
             'model'=>$model,
@@ -153,8 +157,9 @@ class TutorialEntryController extends Controller
     public function loadModel($id)
     {
         $model = TutorialEntry::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 

@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -33,8 +34,9 @@ class labels extends Survey_Common_Action
      */
     public function run($sa = null)
     {
-        if ($sa == 'newlabelset' || $sa == 'editlabelset')
-            $this->route('index', array('sa', 'lid'));
+        if ($sa == 'newlabelset' || $sa == 'editlabelset') {
+                    $this->route('index', array('sa', 'lid'));
+        }
     }
 
     /**
@@ -53,8 +55,9 @@ class labels extends Survey_Common_Action
         $lid = returnGlobal('lid');
         if (!empty($lid))
         {
-            if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            if (Yii::app()->getConfig('demoMode')) {
+                            $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            }
 
             // Create temporary directory
             // If dangerous content is unzipped
@@ -67,19 +70,22 @@ class labels extends Survey_Common_Action
             Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilename);
 
-            if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            if (!is_writeable($basedestdir)) {
+                            $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            }
 
-            if (!is_dir($destdir))
-                mkdir($destdir);
+            if (!is_dir($destdir)) {
+                            mkdir($destdir);
+            }
 
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
 
             if (is_file($zipfilename))
             {
-                if ($zip->extract($extractdir) <= 0)
-                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. ".$zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                if ($zip->extract($extractdir) <= 0) {
+                                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. ".$zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                }
 
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -96,11 +102,12 @@ class labels extends Survey_Common_Action
                 // Delete the temporary file
                 unlink($zipfilename);
 
-                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
+                                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                }
+            } else {
+                            $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
-            else
-                $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -153,10 +160,11 @@ class labels extends Survey_Common_Action
             {
                 $options['checkforduplicates'] = 'on';
             }
-            if (strtolower($sExtension) == 'lsl')
-                $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
-            else
-                $this->getController()->error(gT("Uploaded label set file needs to have an .lsl extension."));
+            if (strtolower($sExtension) == 'lsl') {
+                            $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
+            } else {
+                            $this->getController()->error(gT("Uploaded label set file needs to have an .lsl extension."));
+            }
 
             unlink($sFullFilepath);
 
@@ -203,16 +211,17 @@ class labels extends Survey_Common_Action
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = gT("New label set");
+            } else {
+                            $tabitem = gT("Edit label set");
             }
-            else
-                $tabitem = gT("Edit label set");
 
             $langidsarray = explode(" ", trim($langids)); // Make an array of it
 
-            if (isset($row['lid']))
-                $panecookie = $row['lid'];
-            else
-                $panecookie = 'new';
+            if (isset($row['lid'])) {
+                            $panecookie = $row['lid'];
+            } else {
+                            $panecookie = 'new';
+            }
 
             $aData['langids'] = $langids;
             $aData['langidsarray'] = $langidsarray;
@@ -247,8 +256,9 @@ class labels extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         // Escapes the id variable
-        if ($lid != false)
-            $lid = sanitize_int($lid);
+        if ($lid != false) {
+                    $lid = sanitize_int($lid);
+        }
 
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
@@ -293,7 +303,9 @@ class labels extends Survey_Common_Action
             $results = array();
             foreach ($lslanguages as $lslanguage)
             {
-                if (!$lslanguage) continue;
+                if (!$lslanguage) {
+                    continue;
+                }
 
                 $results[] = array_filter($model->labels, function($item) use ($lslanguage) {
                     return ($item->language === $lslanguage);
@@ -309,8 +321,7 @@ class labels extends Survey_Common_Action
                 'action' => $action,
                 'model' => $model
             );
-        }
-        else {
+        } else {
             //show listing
             $aViewUrls['labelsets_view'][] = array();
             $model = LabelSet::model();
@@ -321,8 +332,7 @@ class labels extends Survey_Common_Action
         if ($lid == 0)
         {
             $aData['labelbar']['buttons']['view'] = true;
-        }
-        else
+        } else
         {
             $aData['labelbar']['buttons']['delete'] = true;
             $aData['labelbar']['savebutton']['form'] = 'mainform';
@@ -366,10 +376,12 @@ class labels extends Survey_Common_Action
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."), 'success');
         }
-        if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create'))
-            $lid = insertlabelset();
-        if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update'))
-            modlabelsetanswers($lid);
+        if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+                    $lid = insertlabelset();
+        }
+        if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+                    modlabelsetanswers($lid);
+        }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete'))
         {
             if (deletelabelset($lid))
@@ -378,10 +390,11 @@ class labels extends Survey_Common_Action
                 $lid = 0;
             }
         }
-        if ($lid)
-            $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
-        else
-            $this->getController()->redirect(array("admin/labels/sa/view"));
+        if ($lid) {
+                    $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
+        } else {
+                    $this->getController()->redirect(array("admin/labels/sa/view"));
+        }
     }
 
     /**
@@ -402,8 +415,7 @@ class labels extends Survey_Common_Action
             {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
             }
-        }
-        else
+        } else
         {
             Yii::app()->setFlashMessage(gT("You are not authorized to delete label sets."));
         }
@@ -463,8 +475,7 @@ class labels extends Survey_Common_Action
             $lset->save();
 
             $lid = getLastInsertID($lset->tableName());
-        }
-        else
+        } else
         {
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
         }
@@ -479,8 +490,9 @@ class labels extends Survey_Common_Action
                 $label->sortorder = $key;
                 $label->language = $lang;
                 $label->assessment_value = isset($aAssessmentValues[$key]) ? $aAssessmentValues[$key] : 0;
-                if (!$label->save())
-                    $res = 'fail';
+                if (!$label->save()) {
+                                    $res = 'fail';
+                }
             }
         }
         echo ls_json_encode($res);

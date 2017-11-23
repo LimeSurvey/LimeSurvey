@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -27,8 +29,7 @@ function subval_sort($a, $subkey, $order)
     }
     if ($order == "asc") {
         asort($b, SORT_REGULAR);
-    }
-    else {
+    } else {
         arsort($b, SORT_REGULAR);
     }
     foreach ($b as $key => $val) {
@@ -70,12 +71,10 @@ class participantsaction extends Survey_Common_Action
         if (is_array($aViewUrls))
         {
             array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
-        }
-        elseif (is_string($aViewUrls))
+        } elseif (is_string($aViewUrls))
         {
             $aViewUrls .= "_view";
-        }
-        else
+        } else
         {
             // Complete madness
             throw new \InvalidArgumentException("aViewUrls must be either string or array");
@@ -179,8 +178,9 @@ class participantsaction extends Survey_Common_Action
         }
         $aAttributeIDs = array_combine($aAttributeIDs, $aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
-        if (!$query)
-            return false;
+        if (!$query) {
+                    return false;
+        }
 
         // Field names in the first row
         $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
@@ -285,8 +285,9 @@ class participantsaction extends Survey_Common_Action
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
-            $surveys->permission(Yii::app()->user->getId());
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                    $surveys->permission(Yii::app()->user->getId());
+        }
 
         /** @var Survey[] $aSurveyNames */
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
@@ -394,16 +395,14 @@ class participantsaction extends Survey_Common_Action
         // Deletes from central , token and assosiated responses as well
         else if ($selectoption == 'ptta') {
             Participant::model()->deleteParticipantTokenAnswer($participantIds);
-        }
-        else {
+        } else {
             // Internal error
             throw new InvalidArgumentException('Unknown select option: '.$selectoption);
         }
 
         if ($deletedParticipants == 0) {
             ls\ajax\AjaxHelper::outputError(gT('No participants deleted'));
-        }
-        else {
+        } else {
             ls\ajax\AjaxHelper::outputSuccess(gT('Participant deleted'));
         }
     }
@@ -420,8 +419,7 @@ class participantsaction extends Survey_Common_Action
         {
             $model = Participant::model()->findByPk($participant_id);
             $operationType = "edit";
-        }
-        else
+        } else
         {
             $model = new Participant;
             $operationType = "add";
@@ -548,8 +546,7 @@ class participantsaction extends Survey_Common_Action
 
         if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1')) {
             $aData['blacklisted'] = 'Y';
-        }
-        else {
+        } else {
             $aData['blacklisted'] = 'N';
         }
 
@@ -639,16 +636,13 @@ class participantsaction extends Survey_Common_Action
                 }
 
                 ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully added"));
-            }
-            else if (is_string($result)) {
+            } else if (is_string($result)) {
                 ls\ajax\AjaxHelper::outputError('Could not add new participant: '.$result);
-            }
-            else {
+            } else {
                 // "Impossible"
                 assert(false);
             }
-        }
-        else {
+        } else {
             ls\ajax\AjaxHelper::outputNoPermission();
         }
     }
@@ -691,13 +685,11 @@ class participantsaction extends Survey_Common_Action
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
-        }
-        elseif (strtolower($sExtension) == 'csv')
+        } elseif (strtolower($sExtension) == 'csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
-        }
-        else
+        } else
         {
             $bMoveFileResult = null; // Scrutinizer does not understand that this block halt execution
             $filterblankemails = null; // Same
@@ -711,8 +703,7 @@ class participantsaction extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
-        }
-        else
+        } else
         {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
@@ -802,8 +793,9 @@ class participantsaction extends Survey_Common_Action
         $invalidparticipantid = array();
         $aGlobalErrors = array();
         /* If no mapped array */
-        if (!$mappedarray)
-            $mappedarray = array();
+        if (!$mappedarray) {
+                    $mappedarray = array();
+        }
         /* Adjust system settings to read file with MAC line endings */
         @ini_set('auto_detect_line_endings', true);
         /* Open the uploaded file into an array */
@@ -864,9 +856,11 @@ class participantsaction extends Survey_Common_Action
                     default:
                         $comma = substr_count($buffer, ',');
                         $semicolon = substr_count($buffer, ';');
-                        if ($semicolon > $comma)
-                            $separator = ';'; else
-                            $separator = ',';
+                        if ($semicolon > $comma) {
+                                                    $separator = ';';
+                        } else {
+                                                        $separator = ',';
+                            }
                 }
                 $firstline = str_getcsv($buffer, $separator, '"');
                 $firstline = array_map('trim', $firstline);
@@ -906,8 +900,9 @@ class participantsaction extends Survey_Common_Action
                 }
                 // Add aFilterDuplicateFields not in CSV to writearray : quick fix
                 foreach ($aFilterDuplicateFields as $sFilterDuplicateField) {
-                    if (!in_array($sFilterDuplicateField, $firstline))
-                        $writearray[$sFilterDuplicateField] = "";
+                    if (!in_array($sFilterDuplicateField, $firstline)) {
+                                            $writearray[$sFilterDuplicateField] = "";
+                    }
                 }
                 $dupfound = false;
                 $thisduplicate = 0;
@@ -1081,15 +1076,13 @@ class participantsaction extends Survey_Common_Action
         $searchSelected = new CDbCriteria;
         if (!empty($chosenParticipants)) {
             $searchSelected->addInCondition("p.participant_id", $chosenParticipantsArray);
-        }
-        else {
+        } else {
             $searchSelected = null;
         }
 
         if ($search) {
             $search->mergeWith($searchSelected);
-        }
-        else {
+        } else {
             $search = $searchSelected;
         }
 
@@ -1122,15 +1115,17 @@ class participantsaction extends Survey_Common_Action
         $chosenParticipantsArray = explode(',', $chosenParticipants);
 
             $searchSelected = new CDbCriteria;
-        if (!empty($chosenParticipants))
-            $searchSelected->addInCondition("{{participant_id}}", $chosenParticipantsArray);
-        else
-            $searchSelected = null;
+        if (!empty($chosenParticipants)) {
+                    $searchSelected->addInCondition("{{participant_id}}", $chosenParticipantsArray);
+        } else {
+                    $searchSelected = null;
+        }
 
-        if ($search)
-            $search->mergeWith($searchSelected);
-        else
-            $search = $searchSelected;
+        if ($search) {
+                    $search->mergeWith($searchSelected);
+        } else {
+                    $search = $searchSelected;
+        }
 
 
         echo $this->csvExportCount($search);
@@ -1146,8 +1141,7 @@ class participantsaction extends Survey_Common_Action
         {
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id", $chosenParticipants);
-        }
-        else
+        } else
         {
             $search = null;
         }
@@ -1164,8 +1158,7 @@ class participantsaction extends Survey_Common_Action
         {
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id", $chosenParticipants);
-        }
-        else
+        } else
         {
             $search = null;
         }
@@ -1210,8 +1203,7 @@ class participantsaction extends Survey_Common_Action
                         'stg_value' => Yii::app()->request->getPost($value) ? 'Y' : 'N'
                     )
                 );
-            }
-            else
+            } else
             {
                 $stg = new SettingGlobal;
                 $stg ->stg_name = $value;
@@ -1269,8 +1261,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getParam('pageSizeAttributes'))
         {
             Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSizeAttributes'));
-        }
-        else
+        } else
         {
             Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->params['defaultPageSize']);
         }
@@ -1320,8 +1311,7 @@ class participantsaction extends Survey_Common_Action
         {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
             $editType = "edit";
-        }
-        else
+        } else
         {
             $model = new ParticipantAttributeName();
             $model->attribute_type = 'TB';
@@ -1403,8 +1393,7 @@ class participantsaction extends Survey_Common_Action
         {
             $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk($AttributeNameAttributes['attribute_id']);
             $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
-        }
-        else
+        } else
         {
             $ParticipantAttributNamesModel = new ParticipantAttributeName;
             $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
@@ -1455,8 +1444,7 @@ class participantsaction extends Survey_Common_Action
         {
             ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
             ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
-        }
-        else
+        } else
         {
             ls\ajax\AjaxHelper::outputError(gT("There has to be at least one language."));
         }
@@ -1501,8 +1489,7 @@ class participantsaction extends Survey_Common_Action
                 ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
                 $deletedAttributes)
             );
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             ls\ajax\AjaxHelper::outputError(sprintf(
                 gT('Error. Deleted %s attribute(s). Error message: %s'),
                 $deletedAttributes,
@@ -1530,8 +1517,7 @@ class participantsaction extends Survey_Common_Action
             {
                 ParticipantAttributeName::model()->delAttribute($iAttributeId);
             }
-        }
-        elseif ($operation == 'add' && Yii::app()->request->getPost('attribute_name'))
+        } elseif ($operation == 'add' && Yii::app()->request->getPost('attribute_name'))
         {
             $aData = array(
                 'defaultname' => Yii::app()->request->getPost('attribute_name'),
@@ -1540,8 +1526,7 @@ class participantsaction extends Survey_Common_Action
                 'visible' => Yii::app()->request->getPost('visible') ? 'TRUE' : 'FALSE'
             );
             echo ParticipantAttributeName::model()->storeAttribute($aData);
-        }
-        elseif ($operation == 'edit' && Yii::app()->request->getPost('id'))
+        } elseif ($operation == 'edit' && Yii::app()->request->getPost('id'))
         {
             $aData = array(
                 'attribute_id' => Yii::app()->request->getPost('id'),
@@ -1585,13 +1570,11 @@ class participantsaction extends Survey_Common_Action
                     }
                     $attval = substr($attval, 0, -1);
                     array_push($outputs[$i], $attval);
-                }
-                else
+                } else
                 {
                     array_push($outputs[$i], "");
                 }
-            }
-            else
+            } else
             {
                 array_push($outputs[$i], "");
             }
@@ -1629,13 +1612,11 @@ class participantsaction extends Survey_Common_Action
                     }
                     $attval = substr($attval, 0, -1);
                     array_push($outputs[$i], $attval);
-                }
-                else
+                } else
                 {
                     array_push($outputs[$i], "");
                 }
-            }
-            else
+            } else
             {
                 array_push($outputs[$i], "");
             }
@@ -1809,8 +1790,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getParam('pageSizeShareParticipantView'))
         {
             Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSizeShareParticipantView'));
-        }
-        else
+        } else
         {
             Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->params['defaultPageSize']);
         }
@@ -2179,8 +2159,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantShare::model()->storeParticipantShare($aData);
 
             ls\ajax\AjaxHelper::outputSuccess(gT("Participant shared."));
-        }
-        else {
+        } else {
             ls\ajax\AjaxHelper::outputNoPermission();
         }
     }
@@ -2212,8 +2191,7 @@ class participantsaction extends Survey_Common_Action
 
         if (empty($participantShare)) {
             ls\ajax\AjaxHelper::outputError(gT('Found no participant share'));
-        }
-        else {
+        } else {
             $userId = Yii::app()->user->id;
             $isOwner = $participantShare->participant->owner_uid == $userId;
             $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
@@ -2221,8 +2199,7 @@ class participantsaction extends Survey_Common_Action
             if ($isOwner || $isSuperAdmin) {
                 $participantShare->delete();
                 ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
-            }
-            else {
+            } else {
                 ls\ajax\AjaxHelper::outputNoPermission();
             }
         }
@@ -2262,8 +2239,7 @@ class participantsaction extends Survey_Common_Action
 
         if ($sharesDeleted == 0) {
             ls\ajax\AjaxHelper::outputError(gT('No participant shares were deleted'));
-        }
-        else {
+        } else {
             ls\ajax\AjaxHelper::outputSuccess(
                 sprintf(ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
                 $sharesDeleted
@@ -2283,8 +2259,7 @@ class participantsaction extends Survey_Common_Action
         if ($shareModel) {
             $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
             $success = $shareModel->save();
-        }
-        else {
+        } else {
             $success = false;
         }
         echo json_encode(array("newValue" => $can_edit, "success" => $success));
@@ -2376,8 +2351,7 @@ class participantsaction extends Survey_Common_Action
         {
             echo $e->getMessage();
             return;
-        }
-        catch (Exception $e)
+        } catch (Exception $e)
         {
             printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
             return;
@@ -2440,8 +2414,7 @@ class participantsaction extends Survey_Common_Action
             if (!in_array($row['attribute_id'], $alreadymappedattid))
             {
                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
-            }
-            else
+            } else
             {
                 array_push($alreadymappedattname, $row['attribute_name']);
             }
@@ -2501,8 +2474,7 @@ class participantsaction extends Survey_Common_Action
             if ($value['cpdbmap'] == '')
             {
                 $selectedattribute[$value['description']] = $key;
-            }
-            else
+            } else
             {
                 $attributeid = $value['cpdbmap'];
                 $continue = false;
@@ -2568,6 +2540,7 @@ class participantsaction extends Survey_Common_Action
                             'tokenAttribute' => $tokenAttribute,
                             'cpdbAttribute' => $CPDBAttribute
                         );
+        }
                     }
                 }
             }

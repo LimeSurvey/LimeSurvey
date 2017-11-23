@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -47,8 +49,9 @@ class index extends CAction {
         Yii::app()->setConfig('move', $move);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
-        if (is_null($thissurvey) && !is_null($surveyid))
-            $thissurvey = getSurveyInfo($surveyid);
+        if (is_null($thissurvey) && !is_null($surveyid)) {
+                    $thissurvey = getSurveyInfo($surveyid);
+        }
 
         // unused vars in this method (used in methods using compacted method vars)
         $loadname = $param['loadname'];
@@ -75,9 +78,9 @@ class index extends CAction {
 
         if (!empty($param['lang'])) {
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
-        }elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
+        } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }elseif (Survey::model()->findByPk($surveyid)) {
+        } elseif (Survey::model()->findByPk($surveyid)) {
             $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
         } else {
             $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
@@ -156,8 +159,12 @@ class index extends CAction {
                     $aErrors
                     );
             } else {
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) $previewmode = 'question';
-                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) $previewmode = 'group';
+                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                    $previewmode = 'question';
+                }
+                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
+                    $previewmode = 'group';
+                }
             }
         }
 
@@ -230,7 +237,9 @@ class index extends CAction {
 
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
 
-            if ($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
+            if ($previewmode) {
+                LimeExpressionManager::SetPreviewMode($previewmode);
+            }
 
             // Update the Session var only if needed
             if (App()->language != $sOldLang) {
@@ -374,7 +383,7 @@ class index extends CAction {
 
                 if (empty($sLoadSecurity)) {
                     $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");
-                }elseif (!$captchaCorrect) {
+                } elseif (!$captchaCorrect) {
                     $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
                 }
             }
@@ -457,9 +466,9 @@ class index extends CAction {
                     // This can not happen (TokenInstance must fix this)
                     if ($oToken->completed != 'N' && !empty($oToken->completed)) {
                         $sError = gT("This invitation has already been used.");
-                    }elseif (strtotime($now) < strtotime($oToken->validfrom)) {
+                    } elseif (strtotime($now) < strtotime($oToken->validfrom)) {
                         $sError = gT("This invitation is not valid yet.");
-                    }elseif (strtotime($now) > strtotime($oToken->validuntil)) {
+                    } elseif (strtotime($now) > strtotime($oToken->validuntil)) {
                         $sError = gT("This invitation is not valid anymore.");
                     } else {
                         // This can not happen
@@ -567,7 +576,7 @@ class index extends CAction {
 
             if ($param['action'] == 'previewgroup') {
                 $thissurvey['format'] = 'G';
-            }elseif ($param['action'] == 'previewquestion') {
+            } elseif ($param['action'] == 'previewquestion') {
                 $thissurvey['format'] = 'S';
             }
 
@@ -593,7 +602,9 @@ class index extends CAction {
     function _getParameters($args = array(), $post = array())
     {
         $param = array();
-        if (@$args[0] == __CLASS__) array_shift($args);
+        if (@$args[0] == __CLASS__) {
+            array_shift($args);
+        }
         if (count($args) % 2 == 0) {
             for ($i = 0; $i < count($args); $i += 2) {
                 //Sanitize input from URL with returnGlobal
@@ -621,7 +632,7 @@ class index extends CAction {
     {
         if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
             $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
-        }elseif (!empty($mvSurveyIdOrBaseLang)) {
+        } elseif (!empty($mvSurveyIdOrBaseLang)) {
             $baselang = $mvSurveyIdOrBaseLang;
         } else {
             $baselang = Yii::app()->getConfig('defaultlang');

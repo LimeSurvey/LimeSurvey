@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
@@ -104,7 +106,9 @@ class UploaderController extends SurveyController {
                         }
                         $iFileIndex++;
                     }
-                    if ($found == true) unset($aFiles[$iFileIndex]);
+                    if ($found == true) {
+                        unset($aFiles[$iFileIndex]);
+                    }
                     $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                 }
             }
@@ -113,9 +117,9 @@ class UploaderController extends SurveyController {
             if (@unlink($sFileDir.$sFileName))
             {
                 echo sprintf(gT('File %s deleted'), $sOriginalFileName);
+            } else {
+                            echo gT('Oops, There was an error deleting the file');
             }
-            else
-                echo gT('Oops, There was an error deleting the file');
             Yii::app()->end();
         }
 
@@ -174,9 +178,7 @@ class UploaderController extends SurveyController {
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
-                }
-
-                else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
+                } else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
                 {
 
                     $return = array(
@@ -195,8 +197,7 @@ class UploaderController extends SurveyController {
                     echo ls_json_encode($return); ;
                     Yii::app()->end();
                 }
-            }
-            else
+            } else
             {    // if everything went fine and the file was uploaded successfully,
                     // send the file related info back to the client
                     $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
@@ -209,8 +210,7 @@ class UploaderController extends SurveyController {
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
-                }
-                elseif ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB))
+                } elseif ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB))
                 {
                     $return = array(
                         "success" => false,
@@ -219,8 +219,7 @@ class UploaderController extends SurveyController {
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
-                }
-                elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
+                } elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
                 {
                     $return = array(
                         "success" => true,
@@ -258,8 +257,7 @@ class UploaderController extends SurveyController {
                         //header('Content-Type: application/json');
                         echo ls_json_encode($return);
                         Yii::app()->end();
-                    }
-                    else
+                    } else
                     {
                         $return = array(
                                     "success" => false,

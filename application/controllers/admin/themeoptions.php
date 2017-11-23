@@ -166,7 +166,7 @@ class themeoptions  extends Survey_Common_Action
     public function index()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
-            $aData          = array();
+            $aData = array();
             $aData['oSurveyTheme'] = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 

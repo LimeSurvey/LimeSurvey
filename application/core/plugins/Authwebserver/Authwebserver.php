@@ -81,8 +81,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             {
                 $this->setUsername($sUser);
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
-            }
-            elseif ($this->get('is_default', null, null, $this->settings['is_default']['default']))
+            } elseif ($this->get('is_default', null, null, $this->settings['is_default']['default']))
             {
                 throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
             }
@@ -109,8 +108,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 // If defined this function returns an array
                 // describing the default profile for this user
                 $aUserProfile = hook_get_auth_webserver_profile($sUser);
-            }
-            elseif ($this->api->getConfigKey('auth_webserver_autocreate_user'))
+            } elseif ($this->api->getConfigKey('auth_webserver_autocreate_user'))
             {
                 $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
@@ -119,8 +117,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             {
                 $this->setAuthSuccess($oUser);
                 return;
-            }
-            else
+            } else
             {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
                 return;
@@ -146,8 +143,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);
                 return;
-            }
-            else
+            } else
             {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }

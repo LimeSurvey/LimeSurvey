@@ -41,8 +41,9 @@ function updateset($lid)
 
     if (isset($oldcodesarray) && count($oldcodesarray) > 0) {
             foreach ($addlangidsarray as $addedlangid) {
-                        foreach ($oldcodesarray as $oldcode => $olddata)
-                $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+                        foreach ($oldcodesarray as $oldcode => $olddata) {
+                                        $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+                        }
             }
     }
 
