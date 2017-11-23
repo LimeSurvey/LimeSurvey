@@ -75,8 +75,7 @@ class questionIndexHelper
 
     public static function getInstance()
     {
-        if (empty(self::$instance))
-        {
+        if (empty(self::$instance)) {
             self::$instance = new questionIndexHelper(LimeExpressionManager::getLEMsurveyId());
         }
 
@@ -128,8 +127,7 @@ class questionIndexHelper
         /* get the step info from LEM : for already seen group : give if error/show and answered ...*/
         $stepInfos = LimeExpressionManager::GetStepIndexInfo();
         $stepIndex = array();
-        foreach ($sessionLem['grouplist'] as $step=>$groupInfo)
-        {
+        foreach ($sessionLem['grouplist'] as $step=>$groupInfo) {
             /* EM step start at 1, we start at 0*/
             $groupInfo['step'] = $step + 1;
             $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step] : array('show'=>true, 'anyUnanswered'=>null, 'anyErrors'=>null);
@@ -179,9 +177,9 @@ class questionIndexHelper
         $stepIndex = array();
         $prevStep = -1;
         $prevGroupSeq = -1;
-        foreach ($sessionLem['fieldmap'] as $step=>$questionFieldmap)
-        {
-            if (isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq'] != $prevStep) { // Sub question have same questionSeq, and no questionSeq : must be hidden (lastpage, id, seed ...)
+        foreach ($sessionLem['fieldmap'] as $step=>$questionFieldmap) {
+            if (isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq'] != $prevStep) {
+// Sub question have same questionSeq, and no questionSeq : must be hidden (lastpage, id, seed ...)
                 /* This question can be in index */
                 $questionStep = $questionFieldmap['questionSeq'] + 1;
                 $stepInfo = isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']] : array('show'=>true, 'anyUnanswered'=>null, 'anyErrors'=>null);

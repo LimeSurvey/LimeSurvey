@@ -86,8 +86,7 @@ class limereplacementfields extends Survey_Common_Action
      */
     private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
-        switch ($action)
-        {
+        switch ($action) {
             case 'addgroup':
                 return true;
 
@@ -145,15 +144,15 @@ class limereplacementfields extends Survey_Common_Action
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
             $isPreviousPageQuestion = true;
-        } elseif ($surveyformat == "G")
-        {
-            if ($isPreviousPageQuestion === true) { // Last question was on a previous page
-                if ($field["gid"] == $gid) { // This question is on same page
+        } elseif ($surveyformat == "G") {
+            if ($isPreviousPageQuestion === true) {
+// Last question was on a previous page
+                if ($field["gid"] == $gid) {
+// This question is on same page
                     $isPreviousPageQuestion = false;
                 }
             }
-        } elseif ($surveyformat == "A")
-        {
+        } elseif ($surveyformat == "A") {
             $isPreviousPageQuestion = false;
         }
 
@@ -166,8 +165,7 @@ class limereplacementfields extends Survey_Common_Action
     {
         $cquestions = array();
 
-        foreach ($questions as $row)
-        {
+        foreach ($questions as $row) {
             $question = $row['question'];
 
             if (isset($row['subquestion'])) {
@@ -196,8 +194,7 @@ class limereplacementfields extends Survey_Common_Action
         if (!$surveyid) {
                     return array($replFields, false);
         }
-        switch ($fieldtype)
-        {
+        switch ($fieldtype) {
             case 'survey-desc':
             case 'survey-welc':
             case 'survey-endtext':
@@ -209,8 +206,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['TOKEN:LASTNAME'] = gT("Last name from token");
                 $replFields['TOKEN:EMAIL'] = gT("Email from the token");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
-                foreach ($attributes as $attributefield => $attributedescription)
-                {
+                foreach ($attributes as $attributefield => $attributedescription) {
                     $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -251,8 +247,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['SID'] = gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
-                foreach ($attributes as $attributefield => $attributedescription)
-                {
+                foreach ($attributes as $attributefield => $attributedescription) {
                     $replFields[strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['ADMINNAME'] = gT("Name of the survey administrator");
@@ -275,8 +270,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['SID'] = gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
-                foreach ($attributes as $attributefield => $attributedescription)
-                {
+                foreach ($attributes as $attributefield => $attributedescription) {
                     $replFields[strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['ADMINNAME'] = gT("Name of the survey administrator");
@@ -294,8 +288,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['SID'] = gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
-                foreach ($attributes as $attributefield => $attributedescription)
-                {
+                foreach ($attributes as $attributefield => $attributedescription) {
                     $replFields[strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['ADMINNAME'] = gT("Name of the survey administrator");
@@ -327,8 +320,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['QID'] = gT("This question's question ID number");
                 $replFields['SGQ'] = gT("This question's SGQA code");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
-                foreach ($attributes as $attributefield => $attributedescription)
-                {
+                foreach ($attributes as $attributefield => $attributedescription) {
                     $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['EXPIRY'] = gT("Survey expiration date");

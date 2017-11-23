@@ -334,8 +334,7 @@ class Zend_XmlRpc_Client
                     $params = array($params);
                 }
 
-                foreach ($params as $key => $param)
-                {
+                foreach ($params as $key => $param) {
                     if ($param instanceof Zend_XmlRpc_Value) {
                         continue;
                     }

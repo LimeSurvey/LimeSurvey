@@ -67,8 +67,7 @@ class TutorialEntryController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['TutorialEntry']))
-        {
+        if (isset($_POST['TutorialEntry'])) {
             $model->attributes = $_POST['TutorialEntry'];
             if ($model->save()) {
                             $this->redirect(array('view', 'id'=>$model->teid));
@@ -92,8 +91,7 @@ class TutorialEntryController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['TutorialEntry']))
-        {
+        if (isset($_POST['TutorialEntry'])) {
             $model->attributes = $_POST['TutorialEntry'];
             if ($model->save()) {
                             $this->redirect(array('view', 'id'=>$model->teid));
@@ -169,8 +167,7 @@ class TutorialEntryController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'tutorial-entry-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'tutorial-entry-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

@@ -328,8 +328,7 @@ abstract class Token extends Dynamic
             array('blacklisted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('emailstatus', 'default', 'value' => 'OK'),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
-        {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
                 $aRules[] = array($key, 'LSYii_Validators', 'except'=>'FinalSubmit');
         }
         return $aRules;

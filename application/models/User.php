@@ -377,22 +377,19 @@ class User extends LSActiveRecord
             if (((Permission::model()->hasGlobalPermission('superadmin', 'read') &&
                 $this->uid != Yii::app()->session['loginID']) ||
                 (Permission::model()->hasGlobalPermission('users', 'update') &&
-                $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid))
-                {
+                $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
                 //'admin/user/sa/setuserpermissions'
                     $setPermissionsUser = "<button data-toggle='tooltip' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
                 }
             if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
                 || Permission::model()->hasGlobalPermission('templates', 'read'))
-                && !Permission::isForcedSuperAdmin($this->uid))
-                {
+                && !Permission::isForcedSuperAdmin($this->uid)) {
                 //'admin/user/sa/setusertemplates')
                     $setTemplatePermissionUser = "<button type='submit' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
                 }
                 if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
                     || (Permission::model()->hasGlobalPermission('users', 'delete')
-                    && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid))
-                    {
+                    && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
                     $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
                         "action"=> "deluser",
                         "uid"=>$this->uid,

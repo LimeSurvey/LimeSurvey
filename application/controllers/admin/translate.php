@@ -32,8 +32,7 @@ class translate extends Survey_Common_Action
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
 
-        if ($action == "ajaxtranslategoogleapi")
-        {
+        if ($action == "ajaxtranslategoogleapi") {
             echo $this->translate_google_api();
             return;
         }
@@ -45,8 +44,7 @@ class translate extends Survey_Common_Action
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin/htmleditor");
 
-        if (empty($tolang) && count($langs) > 0)
-        {
+        if (empty($tolang) && count($langs) > 0) {
             $tolang = $langs[0];
         }
 
@@ -69,11 +67,9 @@ class translate extends Survey_Common_Action
         $tab_names = array("title", "welcome", "group", "question", "subquestion", "answer",
                         "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
 
-        if (!empty($tolang))
-        {
+        if (!empty($tolang)) {
             // Only save if the administration user has the correct permission
-            if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update'))
-            {
+            if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')) {
                 $this->_translateSave($iSurveyID, $tolang, $baselang, $tab_names);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
@@ -100,8 +96,7 @@ class translate extends Survey_Common_Action
     {
         $tab_names_full = $tab_names;
 
-        foreach ($tab_names as $type)
-        {
+        foreach ($tab_names as $type) {
             $amTypeOptions = $this->setupTranslateFields($type);
             $type2 = $amTypeOptions["associated"];
 
@@ -110,22 +105,18 @@ class translate extends Survey_Common_Action
             }
         }
 
-        foreach ($tab_names_full as $type)
-        {
+        foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size");
             // start a loop in order to update each record
             $i = 0;
-            while ($i <= $size)
-            {
+            while ($i <= $size) {
                 // define each variable
-                if (Yii::app()->getRequest()->getPost("{$type}_newvalue_{$i}"))
-                {
+                if (Yii::app()->getRequest()->getPost("{$type}_newvalue_{$i}")) {
                     $old = Yii::app()->getRequest()->getPost("{$type}_oldvalue_{$i}");
                     $new = Yii::app()->getRequest()->getPost("{$type}_newvalue_{$i}");
 
                     // check if the new value is different from old, and then update database
-                    if ($new != $old)
-                    {
+                    if ($new != $old) {
                         $id1 = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
                         $id2 = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
@@ -160,8 +151,7 @@ class translate extends Survey_Common_Action
 
         //iterate through all tabs
         $allTabNames = count($tab_names);
-        for ($i = 0; $i < $allTabNames; $i++)
-        {
+        for ($i = 0; $i < $allTabNames; $i++) {
             $type = $tab_names[$i];
             $amTypeOptions = $this->setupTranslateFields($type);
             // Setup form
@@ -174,8 +164,7 @@ class translate extends Survey_Common_Action
 
             $type2 = $amTypeOptions["associated"];
             $associated = FALSE;
-            if (!empty($type2))
-            {
+            if (!empty($type2)) {
                 $associated = TRUE;
                 //get type otions again again
                 $amTypeOptions2 = $this->setupTranslateFields($type2);
@@ -188,14 +177,12 @@ class translate extends Survey_Common_Action
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 
-            for ($j = 0; $j < count($resultbase); $j++)
-            {
+            for ($j = 0; $j < count($resultbase); $j++) {
                 $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
                 
                 $textto = $resultto[$j][$amTypeOptions["dbColumn"]];
-                if ($associated)
-                {
+                if ($associated) {
                     $textfrom2 = htmlspecialchars_decode($resultbase2[$j][$amTypeOptions2["dbColumn"]]);
                     $textto2 = $resultto2[$j][$amTypeOptions2["dbColumn"]];
                 }
@@ -227,8 +214,7 @@ class translate extends Survey_Common_Action
 
                 $aData['translateFields'] = $this->displayTranslateFields($iSurveyID, $gid, $qid, $type,
                                             $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $rowfrom, $evenRow);
-                if ($associated && strlen(trim((string) $textfrom2)) > 0)
-                {
+                if ($associated && strlen(trim((string) $textfrom2)) > 0) {
                     $aData['translateFields'] .= $this->displayTranslateFields($iSurveyID, $gid, $qid, $type2,
                                             $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $j, $resultbase2[$j], $evenRow);
                 }
@@ -283,16 +269,14 @@ class translate extends Survey_Common_Action
 
         $menutext = ($oSurvey->active == "N") ? gT("Preview survey") : gT("Execute survey");
 
-        if (count($langs) == 0)
-        {
+        if (count($langs) == 0) {
             $survey_button .= $this->menuItem(
                                 $menutext,
                                 '',
                                 "icon-do text-success",
                                 $menuitem_url.$baselang
                             );
-        } else
-        {
+        } else {
             $icontext = gT($menutext);
 
             $survey_button .= CHtml::link('<span class="icon-do text-success"></span>', '#', array(
@@ -316,8 +300,7 @@ class translate extends Survey_Common_Action
 
             $survey_button .= gT("Please select a language:").CHtml::openTag('ul');
 
-            foreach ($tmp_survlangs as $tmp_lang)
-            {
+            foreach ($tmp_survlangs as $tmp_lang) {
                 $survey_button .= CHtml::tag('li', array(),
                     CHtml::link(getLanguageNameFromCode($tmp_lang, FALSE), $menuitem_url.$tmp_lang, array(
                         'target' 	=> 	'_blank',
@@ -363,8 +346,7 @@ class translate extends Survey_Common_Action
                                 'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
                             )
                         );
-        if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1)
-        {
+        if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1) {
             $selected = (!isset($tolang)) ? "selected" : "";
 
             $language_list .= CHtml::tag(
@@ -377,8 +359,7 @@ class translate extends Survey_Common_Action
                             );
         }
 
-        foreach ($langs as $lang)
-        {
+        foreach ($langs as $lang) {
             $selected = ($tolang == $lang) ? "selected" : "";
 
             $tolangtext = $supportedLanguages[$lang]['description'];
@@ -427,8 +408,7 @@ class translate extends Survey_Common_Action
 
         $aData = array();
 
-        switch ($type)
-        {
+        switch ($type) {
             case 'title':
                 $aData = array(
                     'type' => 1,
@@ -740,13 +720,11 @@ class translate extends Survey_Common_Action
     private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID = "", $new = "")
     {
         $amTypeOptions = array();
-        switch ($action)
-        {
+        switch ($action) {
             case "queryto":
                 $baselang = $tolang;
             case "querybase":
-                switch ($type)
-                {
+                switch ($type) {
                     case 'title':
                     case 'description':
                     case 'welcome':
@@ -774,8 +752,7 @@ class translate extends Survey_Common_Action
                         return Answer::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
                 }
             case "queryupdate":
-                switch ($type)
-                {
+                switch ($type) {
                     case 'title':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_title'=>$new));
                     case 'description':
@@ -840,8 +817,7 @@ class translate extends Survey_Common_Action
             //$translateoutput .= '<colgroup width="37" />';
             //$translateoutput .= '<colgroup width="55%" />';
             $translateoutput .= CHtml::openTag('div', array('class' => 'row'));
-            if ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer')
-            {
+            if ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer') {
                 $translateoutput .= CHtml::tag('div', array('class'=>'col-md-2'), CHtml::tag('b', array(), gT('Question code / ID')));
             }
             $translateoutput .= CHtml::tag('div', array('class'=>'col-sm-5'), CHtml::tag('b', array(), $baselangdesc));
@@ -877,17 +853,14 @@ class translate extends Survey_Common_Action
             $iScaleID = (!empty($amTypeOptions["scaleid"])) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
-            if ($type == 'answer')
-            {
+            if ($type == 'answer') {
                 //print_r($rowfrom->attributes);die();
                 $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.")");
             }
-            if ($type == 'question_help' || $type == 'question')
-            {
+            if ($type == 'question_help' || $type == 'question') {
                 //print_r($rowfrom->attributes);die();
                 $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
-            } else if ($type == 'subquestion')
-            {
+            } else if ($type == 'subquestion') {
                 //print_r($rowfrom->attributes);die();
                 $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
             }
@@ -941,11 +914,9 @@ class translate extends Survey_Common_Action
     {
         $editor_function = "";
 
-        if ($htmleditor["HTMLeditorDisplay"] == "Inline" OR $htmleditor["HTMLeditorDisplay"] == "")
-        {
+        if ($htmleditor["HTMLeditorDisplay"] == "Inline" OR $htmleditor["HTMLeditorDisplay"] == "") {
             $editor_function = "getEditor";
-        } else if ($htmleditor["HTMLeditorDisplay"] == "Popup")
-        {
+        } else if ($htmleditor["HTMLeditorDisplay"] == "Popup") {
             $editor_function = "getPopupEditor";
             $aData[2] = urlencode($htmleditor['description']);
         }
@@ -1023,8 +994,7 @@ class translate extends Survey_Common_Action
     public function ajaxtranslategoogleapi()
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
-        if (Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             echo self::translate_google_api();
         }
     }
@@ -1045,8 +1015,7 @@ class translate extends Survey_Common_Action
 
         $error = false;
 
-        try
-        {
+        try {
             require_once(APPPATH.'/third_party/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
             $objGt = $gtranslate;
@@ -1057,13 +1026,10 @@ class translate extends Survey_Common_Action
             $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
 
             $sparts = array();
-            foreach ($parts as $part)
-            {
-                if ($part[2] == 'EXPRESSION')
-                {
+            foreach ($parts as $part) {
+                if ($part[2] == 'EXPRESSION') {
                     $sparts[] = $part[0];
-                } else
-                {
+                } else {
                     $convertedPart = $objGt->$sProcedure($part[0]);
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
@@ -1071,8 +1037,7 @@ class translate extends Survey_Common_Action
                 }
             }
             $sOutput = implode(' ', $sparts);
-        } catch (GTranslateException $ge)
-        {
+        } catch (GTranslateException $ge) {
             // Get the error message and build the ouput array
             $error = TRUE;
             $sOutput = $ge->getMessage();

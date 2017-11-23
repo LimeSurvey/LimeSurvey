@@ -40,8 +40,7 @@ class JsonWriter extends Writer
 
         }
         $this->havePrev = true;
-        if ($oOptions->output == 'display')
-        {
+        if ($oOptions->output == 'display') {
             echo $sJson;
             $this->output = '';
         } elseif ($oOptions->output == 'file') {
@@ -55,11 +54,9 @@ class JsonWriter extends Writer
     public function close()
     {
         $sEndOutput = ']}';
-        if (!$this->file)
-        {
+        if (!$this->file) {
             echo $sEndOutput;
-        } else
-        {
+        } else {
             $this->output .= $sEndOutput;
             fwrite($this->file, $this->output);
             fclose($this->file);

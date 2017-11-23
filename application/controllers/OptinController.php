@@ -38,19 +38,16 @@ class OptinController extends LSYii_Controller
         $sToken = $token;
         $sToken = Token::sanitizeToken($sToken);
 
-        if (!$iSurveyID)
-        {
+        if (!$iSurveyID) {
             $this->redirect(array('/'));
         }
         $iSurveyID = (int) $iSurveyID;
 
         //Check that there is a SID
         // Get passed language from form, so that we dont loose this!
-        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
-        {
+        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        } else
-        {
+        } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
 
@@ -58,29 +55,22 @@ class OptinController extends LSYii_Controller
 
         $aSurveyInfo = getSurveyInfo($iSurveyID, $sBaseLanguage);
 
-        if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
-        {
+        if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}")) {
             throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        } else
-        {
+        } else {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $token, false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
-            if (!isset($oToken))
-            {
+            if (!isset($oToken)) {
                 $sMessage = gT('You are not a participant in this survey.');
-            } else
-            {
-                if ($oToken->emailstatus == 'OptOut')
-                {
+            } else {
+                if ($oToken->emailstatus == 'OptOut') {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
                     $sMessage = gT('You have been successfully added back to this survey.');
-                } elseif ($oToken->emailstatus == 'OK')
-                {
+                } elseif ($oToken->emailstatus == 'OK') {
                     $sMessage = gT('You are already a part of this survey.');
-                } else
-                {
+                } else {
                     $sMessage = gT('You have been already removed from this survey.');
                 }
             }
@@ -104,8 +94,7 @@ class OptinController extends LSYii_Controller
         $aSupportData = array('thissurvey'=>$aSurveyInfo);
 
         $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-        if ($oTemplate->cssFramework == 'bootstrap')
-        {
+        if ($oTemplate->cssFramework == 'bootstrap') {
             App()->bootstrap->register();
         }
         App()->clientScript->registerPackage('survey-template');

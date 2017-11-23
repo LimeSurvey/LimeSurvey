@@ -25,11 +25,9 @@ class ConsoleApplication extends CConsoleApplication
 
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');
-        if (file_exists(__DIR__.'/../config/config.php'))
-        {
+        if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
-            if (is_array($userConfigs['config']))
-            {
+            if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
@@ -52,11 +50,9 @@ class ConsoleApplication extends CConsoleApplication
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
         $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
-        if (file_exists(__DIR__.'/../config/config.php'))
-        {
+        if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
-            if (is_array($userConfigs['config']))
-            {
+            if (is_array($userConfigs['config'])) {
                 $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
@@ -80,8 +76,7 @@ class ConsoleApplication extends CConsoleApplication
      */
     public function getApi()
     {
-        if (!isset($this->api))
-        {
+        if (!isset($this->api)) {
             $this->api = new LimesurveyApi();
         }
         return $this->api;
@@ -107,14 +102,11 @@ class ConsoleApplication extends CConsoleApplication
      */
     public function getConfig($name = null)
     {
-        if (isset($this->$name))
-        {
+        if (isset($this->$name)) {
             return $this->name;
-        } elseif (isset($this->config[$name]))
-        {
+        } elseif (isset($this->config[$name])) {
             return $this->config[$name];
-        } else
-        {
+        } else {
             return false;
         }
     }

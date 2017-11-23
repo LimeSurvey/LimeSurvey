@@ -55,17 +55,13 @@ define('SELECTED', ' selected="selected"', true);
 */
 function setNoAnswerMode($thissurvey)
 {
-    if (getGlobalSetting('shownoanswer') == 1)
-    {
+    if (getGlobalSetting('shownoanswer') == 1) {
         define('SHOW_NO_ANSWER', 1);
-    } elseif (getGlobalSetting('shownoanswer') == 0)
-    {
+    } elseif (getGlobalSetting('shownoanswer') == 0) {
         define('SHOW_NO_ANSWER', 0);
-    } elseif ($thissurvey['shownoanswer'] == 'N')
-    {
+    } elseif ($thissurvey['shownoanswer'] == 'N') {
         define('SHOW_NO_ANSWER', 0);
-    } else
-    {
+    } else {
         define('SHOW_NO_ANSWER', 1);
     }
 }
@@ -138,8 +134,7 @@ function retrieveAnswers($ia)
     $oQuestionTemplate = QuestionTemplate::getNewInstance($oQuestion);
     $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
 
-    switch ($ia[4])
-    {
+    switch ($ia[4]) {
         case 'X': //BOILERPLATE QUESTION
             $values = do_boilerplate($ia);
             break;
@@ -152,10 +147,8 @@ function retrieveAnswers($ia)
             $values = do_date($ia);
             // if a drop box style date was answered incompletely (dropbox), print an error/help message
             if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
-            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-            {
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
-                {
+            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]])) {
                     $message = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]];
                     $question_text['help'] = doRender('/survey/questions/question_help/error', array('message'=>$message, 'classes'=>''), true);
                 }
@@ -268,14 +261,14 @@ function retrieveAnswers($ia)
     }
 
 
-    if (isset($values)) { //Break apart $values array returned from switch
+    if (isset($values)) {
+//Break apart $values array returned from switch
         //$answer is the html code to be printed
         //$inputnames is an array containing the names of each input field
         list($answer, $inputnames) = $values;
     }
 
-    if ($ia[6] == 'Y')
-    {
+    if ($ia[6] == 'Y') {
 
         //$qtitle .= doRender('/survey/questions/question_help/asterisk', array(), true);
         //$qtitle .= $qtitle;
@@ -296,11 +289,9 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-    {
+    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
         $file_validation_msg = file_validation_message($ia);
-    } else
-    {
+    } else {
         $file_validation_msg = '';
         $isValid = true; // don't want to show any validation messages.
     }
@@ -308,8 +299,7 @@ function retrieveAnswers($ia)
     $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
     $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";
 
-    if (!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message']))
-    {
+    if (!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message'])) {
         $question_text['input_error_class'] = ' input-error'; // provides a class to style question wrapper differently if there is some kind of user input error;
     }
 
@@ -320,18 +310,15 @@ function retrieveAnswers($ia)
     // are put.
 
     $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
-    if (is_file('templates/'.$sTemplate.'/question_start.pstpl'))
-    {
+    if (is_file('templates/'.$sTemplate.'/question_start.pstpl')) {
         $replace = array();
         $find    = array();
-        foreach ($question_text as $key => $value)
-        {
+        foreach ($question_text as $key => $value) {
             $find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
             $replace[] = $value; // substitue text
         };
 
-        if (!defined('QUESTION_START'))
-        {
+        if (!defined('QUESTION_START')) {
             define('QUESTION_START', file_get_contents(getTemplatePath($thissurvey['template']).'/question_start.pstpl', true));
         };
 
@@ -341,7 +328,8 @@ function retrieveAnswers($ia)
         // START: <EMBED> work-around step 1
         $qtitle_custom = preg_replace('/(<embed[^>]+>)(<\/embed>)/i', '\1NOT_EMPTY\2', $qtitle_custom);
         // END <EMBED> work-around step 1
-        while ($c > 0) { // This recursively strips any empty tags to minimise rendering bugs.
+        while ($c > 0) {
+// This recursively strips any empty tags to minimise rendering bugs.
             $oldtitle = $qtitle_custom;
             $qtitle_custom = preg_replace('/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU', '', $qtitle_custom, -1); // I removed the $count param because it is PHP 5.1 only.
 
@@ -350,15 +338,15 @@ function retrieveAnswers($ia)
         // START <EMBED> work-around step 2
         $qtitle_custom = preg_replace('/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i', '\1\2', $qtitle_custom);
         // END <EMBED> work-around step 2
-        while ($c > 0) { // This recursively strips any empty tags to minimise rendering bugs.
+        while ($c > 0) {
+// This recursively strips any empty tags to minimise rendering bugs.
             $oldtitle = $qtitle_custom;
             $qtitle_custom = preg_replace('/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i', '', $qtitle_custom, -1); // I removed the $count param because it is PHP 5.1 only.
             $c = ($qtitle_custom != $oldtitle) ? 1 : 0;
         };
 
         $question_text['all'] = $qtitle_custom;
-    } else
-    {
+    } else {
         $question_text['all'] = $qtitle;
     };
     // END: legacy question_start.pstpl code
@@ -390,11 +378,9 @@ function validation_message($ia, $show)
     $class      = (!$show) ? ' hide-tip' : '';
     $id         = "vmsg_".$ia[0];
     $message    = $qinfo['validTip'];
-    if ($message != "")
-    {
+    if ($message != "") {
         $tip = doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id), true);
-    } else
-    {
+    } else {
         $tip = "";
     }
 
@@ -424,21 +410,19 @@ function mandatory_popup($ia, $notanswered = null)
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered); }
-    if (isset($notanswered) && is_array($notanswered)) { //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+    if (isset($notanswered) && is_array($notanswered)) {
+//ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         global $mandatorypopup, $popup;
         //POPUP WARNING
-        if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
-        {
+        if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
-        } else
-        {
+        } else {
             $popup = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup = "Y";
         }
         return array($mandatorypopup, $popup);
-    } else
-    {
+    } else {
         return false;
     }
 }
@@ -451,7 +435,8 @@ function validation_popup($ia, $notvalidated = null)
     if ($notvalidated === null) {
         unset($notvalidated);
     }
-    if (isset($notvalidated) && is_array($notvalidated)) {  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+    if (isset($notvalidated) && is_array($notvalidated)) {
+//ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
         global $validationpopup, $vpopup;
         //POPUP WARNING
         if (!isset($validationpopup)) {
@@ -472,12 +457,10 @@ function file_validation_popup($ia, $filenotvalidated = null)
 {
 
     if ($filenotvalidated === null) { unset($filenotvalidated); }
-    if (isset($filenotvalidated) && is_array($filenotvalidated))
-    {
+    if (isset($filenotvalidated) && is_array($filenotvalidated)) {
         global $filevalidationpopup, $fpopup;
 
-        if (!isset($filevalidationpopup))
-        {
+        if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
         }
@@ -509,8 +492,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
      * The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
      * This just stops error messages occuring
      */
-    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
-    {
+    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'])) {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array();
     }
     /* End */
@@ -559,39 +541,32 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
     $timersessionname = "timer_question_".$ia[0];
-    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname]))
-    {
+    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname])) {
         $time_limit = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
     $output = doRender('/survey/questions/question_timer/timer_header', array('timersessionname'=>$timersessionname, 'time_limit'=>$time_limit), true);
 
-    if ($thissurvey['timercount'] < 2)
-    {
+    if ($thissurvey['timercount'] < 2) {
         $iAction = '';
-        if (isset($thissurvey['format']) && $thissurvey['format'] == "G")
-        {
+        if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
             global $gid;
             $qcount = 0;
-            foreach ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] as $ib)
-            {
-                if ($ib[5] == $gid)
-                {
+            foreach ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] as $ib) {
+                if ($ib[5] == $gid) {
                     $qcount++;
                 }
             }
             // Override all other options and just allow freezing, survey is presented in group by group mode
             // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-            if ($qcount > 1)
-            {
+            if ($qcount > 1) {
                 $iAction = '3';
             }
         }
 
         /* If this is a preview, don't allow the page to submit/reload */
         $thisaction = returnglobal('action');
-        if ($thisaction == "previewquestion" || $thisaction == "previewgroup")
-        {
+        if ($thisaction == "previewquestion" || $thisaction == "previewgroup") {
             $iAction = '3';
         }
 
@@ -660,8 +635,7 @@ function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttribut
     $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim($aQuestionAttributes['exclude_all_others']) : '';
     /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
     if ($sExcludeAllOther) {
-        foreach (explode(';', $sExcludeAllOther) as $sExclude)
-        {
+        foreach (explode(';', $sExcludeAllOther) as $sExclude) {
             $sExclude = $baseName.$sExclude;
             if ((!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
             && (isset($_SESSION["survey_{$surveyId}"][$sExclude]) && $_SESSION["survey_{$surveyId}"][$sExclude] == "Y")
@@ -704,41 +678,30 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'" : "";
     $surveyid = $thissurvey['sid'];
-    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
-    {
+    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) {
         // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
-        if (isset($aQuestionAttributes['exclude_all_others']))
-        {
+        if (isset($aQuestionAttributes['exclude_all_others'])) {
             $disableit = false;
-            foreach (explode(';', trim($aQuestionAttributes['exclude_all_others'])) as $eo)
-            {
+            foreach (explode(';', trim($aQuestionAttributes['exclude_all_others'])) as $eo) {
                 $eorow = $ia[1].$eo;
                 if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
-                && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
-                {
+                && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y")) {
                     $disableit = true;
                 }
             }
-            if ($disableit)
-            {
+            if ($disableit) {
                 $htmltbody2 .= " disabled='disabled'";
-            } else
-            {
-                if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-                {
+            } else {
+                if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0') {
                     $htmltbody2 .= " style='display: none'";
-                } else
-                {
+                } else {
                     $htmltbody2 .= " disabled='disabled'";
                 }
             }
-        } else
-        {
-            if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-            {
+        } else {
+            if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0') {
                 $htmltbody2 .= " style='display: none'";
-            } else
-            {
+            } else {
                 $htmltbody2 .= " disabled='disabled'";
             }
         }
@@ -753,12 +716,10 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
 */
 function testKeypad($sUseKeyPad)
 {
-    if ($sUseKeyPad == 'Y')
-    {
+    if ($sUseKeyPad == 'Y') {
         includeKeypad();
         $kpclass = "text-keypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
     return $kpclass;
@@ -776,8 +737,7 @@ function do_boilerplate($ia)
     $answer = '';
     $inputnames = array();
 
-    if (trim($aQuestionAttributes['time_limit']) != '')
-    {
+    if (trim($aQuestionAttributes['time_limit']) != '') {
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
@@ -819,11 +779,9 @@ function do_5pointchoice($ia)
     $inputnames = array();
 
     $sRows = "";
-    for ($fp = 1; $fp <= 5; $fp++)
-    {
+    for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp)
-        {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {
             //$answer .= CHECKED;
             $checkedState = ' CHECKED ';
         }
@@ -839,10 +797,10 @@ function do_5pointchoice($ia)
             ), true);
     }
 
-    if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) { // Add "No Answer" option if question is not mandatory
+    if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
+// Add "No Answer" option if question is not mandatory
         $checkedState = '';
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
-        {
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $checkedState = ' CHECKED ';
         }
         $aData = array(
@@ -909,65 +867,54 @@ function do_date($ia)
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js', CClientScript::POS_END);
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-    if (trim($aQuestionAttributes['date_min']) != '')
-    {
+    if (trim($aQuestionAttributes['date_min']) != '') {
         $date_min      = trim($aQuestionAttributes['date_min']);
         $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{".$date_min."}", $ia[0]));
 
-        if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099))
-        {
+        if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
             $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
-        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
+// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $mindate = $date_min;
-        } elseif ($date_time_em)
-        {
+        } elseif ($date_time_em) {
             $mindate = date("Y-m-d", $date_time_em);
-        } else
-        {
+        } else {
             $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
-    } else
-    {
+    } else {
         $mindate = '1900-01-01'; // Why 1900 ?
     }
 
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-    if (trim($aQuestionAttributes['date_max']) != '')
-    {
+    if (trim($aQuestionAttributes['date_max']) != '') {
         $date_max     = trim($aQuestionAttributes['date_max']);
         $date_time_em = strtotime(LimeExpressionManager::ProcessString("{".$date_max."}", $ia[0]));
 
-        if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099))
-        {
+        if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
             $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
-        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) { // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
+// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
-        } elseif ($date_time_em)
-        {
+        } elseif ($date_time_em) {
             $maxdate = date("Y-m-d", $date_time_em);
-        } else
-        {
+        } else {
             $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
-    } else
-    {
+    } else {
         $maxdate = '2037-12-31'; // Why 2037 ?
     }
 
-    if (trim($aQuestionAttributes['dropdown_dates']) == 1)
-    {
+    if (trim($aQuestionAttributes['dropdown_dates']) == 1) {
         $coreClass .= " dropdown-item"; // items ?
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &&
-        ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != 'INVALID'))
-        {
+        ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != 'INVALID')) {
             $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
             $currentdate   = $datetimeobj->days;
             $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
-        } else
-        {
+        } else {
             // If date is invalid get the POSTED value
             $currentdate   = App()->request->getPost("day{$ia[1]}", '');
             $currentmonth  = App()->request->getPost("month{$ia[1]}", '');
@@ -980,10 +927,8 @@ function do_date($ia)
 
         $sRows = '';
         $montharray = array();
-        foreach ($dateorder as $datepart)
-        {
-            switch ($datepart)
-            {
+        foreach ($dateorder as $datepart) {
+            switch ($datepart) {
                 // Show day select box
                 case 'j':
                 case 'd':
@@ -992,8 +937,7 @@ function do_date($ia)
                     // Show month select box
                 case 'n':
                 case 'm':
-                switch ((int) trim($aQuestionAttributes['dropdown_dates_month_style']))
-                {
+                switch ((int) trim($aQuestionAttributes['dropdown_dates_month_style'])) {
                     case 0:
                         $montharray = array(
                             gT('Jan'),
@@ -1041,32 +985,27 @@ function do_date($ia)
                     * expressions are not supported because contents of dropbox cannot be easily updated dynamically
                     */
                     $yearmin = (int) substr($mindate, 0, 4);
-                    if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2037)
-                    {
+                    if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2037) {
                         $yearmin = 1900;
                     }
 
                     $yearmax = (int) substr($maxdate, 0, 4);
-                    if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2037)
-                    {
+                    if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2037) {
                         $yearmax = 2037;
                     }
 
-                    if ($yearmin > $yearmax)
-                    {
+                    if ($yearmin > $yearmax) {
                         $yearmin = 1900;
                         $yearmax = 2037;
                     }
 
-                    if ($aQuestionAttributes['reverse'] == 1)
-                    {
+                    if ($aQuestionAttributes['reverse'] == 1) {
                         $tmp = $yearmin;
                         $yearmin = $yearmax;
                         $yearmax = $tmp;
                         $step = 1;
                         $reverse = true;
-                    } else
-                    {
+                    } else {
                         $step = -1;
                         $reverse = false;
                     }
@@ -1089,8 +1028,7 @@ function do_date($ia)
 
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput != '' && $dateoutput != 'INVALID')
-        {
+        if ($dateoutput != '' && $dateoutput != 'INVALID') {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
             if ($datetimeobj) {
                 $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
@@ -1113,13 +1051,11 @@ function do_date($ia)
             ), true);
 
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}", "doDropDownDate({$ia[0]});", CClientScript::POS_BEGIN);
-    } else
-    {
+    } else {
         $coreClass .= " text-item";
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput != '' && $dateoutput != 'INVALID')
-        {
+        if ($dateoutput != '' && $dateoutput != 'INVALID') {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
             if ($datetimeobj) {
                 $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
@@ -1209,8 +1145,7 @@ function do_language($ia)
     $coreClass              = "ls-answers answer-item dropdow-item langage-item";
     $inputnames = array();
 
-    if (!in_array($sLang, $answerlangs))
-    {
+    if (!in_array($sLang, $answerlangs)) {
         $sLang = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     }
 
@@ -1247,8 +1182,7 @@ function do_list_dropdown($ia)
     $optCategorySeparator   = (trim($aQuestionAttributes['category_separator']) != '') ? $aQuestionAttributes['category_separator'] : '';
     $coreClass              = "ls-answers answer-item dropdown-item";
 
-    if ($optCategorySeparator == '')
-    {
+    if ($optCategorySeparator == '') {
         unset($optCategorySeparator);
     }
 
@@ -1263,28 +1197,23 @@ function do_list_dropdown($ia)
 
     $dropdownSize = null;
 
-    if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
-    {
+    if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0) {
         $_height    = sanitize_int($aQuestionAttributes['dropdown_size']);
         $_maxHeight = count($ansresult);
 
-        if ((!is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
+        if ((!is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             ++$_maxHeight; // for No Answer
         }
 
-        if (isset($other) && $other == 'Y')
-        {
+        if (isset($other) && $other == 'Y') {
             ++$_maxHeight; // for Other
         }
 
-        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
+        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
             ++$_maxHeight; // for 'Please choose:'
         }
 
-        if ($_height > $_maxHeight)
-        {
+        if ($_height > $_maxHeight) {
             $_height = $_maxHeight;
         }
         $dropdownSize = $_height;
@@ -1292,8 +1221,7 @@ function do_list_dropdown($ia)
 
     $prefixStyle = 0;
 
-    if (isset($aQuestionAttributes['dropdown_prefix']))
-    {
+    if (isset($aQuestionAttributes['dropdown_prefix'])) {
         $prefixStyle = sanitize_int($aQuestionAttributes['dropdown_prefix']);
     }
 
@@ -1304,8 +1232,7 @@ function do_list_dropdown($ia)
     $sOptions         = '';
 
     // If no answer previously selected
-    if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '')
-    {
+    if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '') {
         $sOptions .= doRender('/survey/questions/answer/list_dropdown/rows/option', array(
             'name'=> $ia[1],
             'value'=>'',
@@ -1314,17 +1241,13 @@ function do_list_dropdown($ia)
             ), true);
     }
 
-    if (!isset($optCategorySeparator))
-    {
-        foreach ($ansresult as $ansrow)
-        {
+    if (!isset($optCategorySeparator)) {
+        foreach ($ansresult as $ansrow) {
             $opt_select = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
-            {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $opt_select = SELECTED;
             }
-            if ($prefixStyle == 1)
-            {
+            if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum.') ';
             }
             // ==> rows
@@ -1335,35 +1258,27 @@ function do_list_dropdown($ia)
                 'answer'=>$_prefix.$ansrow['answer'],
                 ), true);
         }
-    } else
-    {
+    } else {
         $defaultopts = Array();
         $optgroups = Array();
-        foreach ($ansresult as $ansrow)
-        {
+        foreach ($ansresult as $ansrow) {
             // Let's sort answers in an array indexed by subcategories
             @list ($categorytext, $answertext) = explode($optCategorySeparator, $ansrow['answer']);
             // The blank category is left at the end outside optgroups
-            if ($categorytext == '')
-            {
+            if ($categorytext == '') {
                 $defaultopts[] = array('code' => $ansrow['code'], 'answer' => $answertext);
-            } else
-            {
+            } else {
                 $optgroups[$categorytext][] = array('code' => $ansrow['code'], 'answer' => $answertext);
             }
         }
 
-        foreach ($optgroups as $categoryname => $optionlistarray)
-        {
+        foreach ($optgroups as $categoryname => $optionlistarray) {
 
             $sOptGroupOptions = '';
-            foreach ($optionlistarray as $optionarray)
-            {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
-                {
+            foreach ($optionlistarray as $optionarray) {
+                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
                     $opt_select = SELECTED;
-                } else
-                {
+                } else {
                     $opt_select = '';
                 }
 
@@ -1382,13 +1297,10 @@ function do_list_dropdown($ia)
                 'sOptGroupOptions'  => $sOptGroupOptions,
                 ), true);
         }
-        foreach ($defaultopts as $optionarray)
-        {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
-            {
+        foreach ($defaultopts as $optionarray) {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code']) {
                 $opt_select = SELECTED;
-            } else
-            {
+            } else {
                 $opt_select = '';
             }
 
@@ -1402,13 +1314,10 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (isset($other) && $other == 'Y')
-    {
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-')
-        {
+    if (isset($other) && $other == 'Y') {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
             $opt_select = SELECTED;
-        } else
-        {
+        } else {
             $opt_select = '';
         }
         if ($prefixStyle == 1) {
@@ -1424,10 +1333,8 @@ function do_list_dropdown($ia)
             ), true);
     }
 
-    if (!(is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === "") && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
-        if ($prefixStyle == 1)
-        {
+    if (!(is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === "") && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum.') ';
         }
 
@@ -1443,8 +1350,7 @@ function do_list_dropdown($ia)
     }
 
     $sOther = '';
-    if (isset($other) && $other == 'Y')
-    {
+    if (isset($other) && $other == 'Y') {
         $aData = array();
         $aData['name'] = $ia[1];
         $aData['checkconditionFunction'] = $checkconditionFunction;
@@ -1476,8 +1382,7 @@ function do_list_dropdown($ia)
     $inputnames[] = $ia[1];
 
     //Time Limit Code
-    if (trim($aQuestionAttributes['time_limit']) != '')
-    {
+    if (trim($aQuestionAttributes['time_limit']) != '') {
         return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
@@ -1546,15 +1451,13 @@ function do_list_radio($ia)
     $i = 0;
 
     $sRows = '';
-    foreach ($ansresult as $key=>$ansrow)
-    {
+    foreach ($ansresult as $key=>$ansrow) {
         $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
         $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$ansrow['code'];
 
         $checkedState = '';
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
-        {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
             $checkedState = 'CHECKED';
         }
 
@@ -1566,8 +1469,7 @@ function do_list_radio($ia)
         // Open Column
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1)
-        {
+        if ($iRowCount == 1) {
             $sRows  .= doRender('/survey/questions/answer/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
             $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
         }
@@ -1591,8 +1493,7 @@ function do_list_radio($ia)
         // and if the max answer rows by column is reached.
         // If max answer rows by column is not reached while there is no more answer,
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if ($iRowCount == $iMaxRowsByColumn)
-        {
+        if ($iRowCount == $iMaxRowsByColumn) {
             $last      = ($i == $anscount) ?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows    .= doRender('/survey/questions/answer/listradio/columns/column_footer', array('last'=>$last), true);
             $iRowCount = 0;
@@ -1600,41 +1501,33 @@ function do_list_radio($ia)
         }
     }
 
-    if (isset($other) && $other == 'Y')
-    {
+    if (isset($other) && $other == 'Y') {
         $iRowCount++; $i++;
         $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator = $sSeparator['separator'];
 
-        if ($aQuestionAttributes['other_numbers_only'] == 1)
-        {
+        if ($aQuestionAttributes['other_numbers_only'] == 1) {
             $oth_checkconditionFunction = 'fixnum_checkconditions';
-        } else
-        {
+        } else {
             $oth_checkconditionFunction = 'checkconditions';
         }
 
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-')
-        {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
             $checkedState = CHECKED;
-        } else
-        {
+        } else {
             $checkedState = '';
         }
 
         $myfname = $thisfieldname = $ia[1].'other';
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
-            if ($aQuestionAttributes['other_numbers_only'] == 1)
-            {
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $answer_other = ' value="'.htmlspecialchars($dispVal, ENT_QUOTES).'"';
-        } else
-        {
+        } else {
             $answer_other = ' value=""';
         }
 
@@ -1643,8 +1536,7 @@ function do_list_radio($ia)
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row (should never happen for 'other'),
         // or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1)
-        {
+        if ($iRowCount == 1) {
             $sRows .= doRender('/survey/questions/answer/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
@@ -1670,8 +1562,7 @@ function do_list_radio($ia)
         // Close column
         // The column is closed if the user set more than one column in question attribute
         // We can't be sure it's the last one because of 'no answer' item
-        if ($iRowCount == $iMaxRowsByColumn)
-        {
+        if ($iRowCount == $iMaxRowsByColumn) {
             $sRows .= doRender('/survey/questions/answer/listradio/columns/column_footer', array(), true);
             $iRowCount = 0;
             $isOpen = false;
@@ -1679,20 +1570,16 @@ function do_list_radio($ia)
 
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
         $iRowCount++;
 
-        if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' '))
-        {
+        if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
-        } else
-        {
+        } else {
             $check_ans = '';
         }
 
-        if ($iRowCount == 1)
-        {
+        if ($iRowCount == 1) {
             $sRows .= doRender('/survey/questions/answer/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
         }
 
@@ -1714,8 +1601,7 @@ function do_list_radio($ia)
     // Close column
     // if on column has been opened and not closed
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if ($isOpen)
-    {
+    if ($isOpen) {
         $sRows .= doRender('/survey/questions/answer/listradio/columns/column_footer', array('last'=>true), true);
     }
 
@@ -1759,16 +1645,13 @@ function do_listwithcomment($ia)
     $anscount     = count($ansresult);
     $hint_comment = gT('Please enter your comment here');
 
-    if ($aQuestionAttributes['use_dropdown'] != 1)
-    {
+    if ($aQuestionAttributes['use_dropdown'] != 1) {
         $sRows = '';
         $li_classes = 'answer-item radio-item';
-        foreach ($ansresult as $ansrow)
-        {
+        foreach ($ansresult as $ansrow) {
             $check_ans = '';
 
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
-            {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $check_ans = CHECKED;
             }
 
@@ -1786,13 +1669,10 @@ function do_listwithcomment($ia)
 
         // ==> rows
         $check_ans = '';
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
-            if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' '))
-            {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+            if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
                 $check_ans = CHECKED;
-            } elseif (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != ''))
-            {
+            } elseif (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '')) {
                 $check_ans = '';
             }
 
@@ -1832,13 +1712,12 @@ function do_listwithcomment($ia)
 
         $inputnames[] = $ia[1];
         $inputnames[] = $ia[1].'comment';
-    } else { //Dropdown list
+    } else {
+//Dropdown list
         $sOptions = '';
-        foreach ($ansresult as $ansrow)
-        {
+        foreach ($ansresult as $ansrow) {
             $check_ans = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
-            {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code']) {
                 $check_ans = SELECTED;
             }
 
@@ -1849,16 +1728,13 @@ function do_listwithcomment($ia)
             );
             $sOptions .= doRender('/survey/questions/answer/list_with_comment/dropdown/rows/option', $itemData, true);
 
-            if (strlen($ansrow['answer']) > $maxoptionsize)
-            {
+            if (strlen($ansrow['answer']) > $maxoptionsize) {
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $check_ans = "";
-            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) == '')
-            {
+            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) == '') {
                 $check_ans = SELECTED;
             }
             $itemData = array(
@@ -1871,16 +1747,13 @@ function do_listwithcomment($ia)
         }
         $fname2 = $ia[1].'comment';
 
-        if ($anscount > 8)
-        {
+        if ($anscount > 8) {
             $tarows = $anscount / 1.2;
-        } else
-        {
+        } else {
             $tarows = 4;
         }
 
-        if ($tarows > 15)
-        {
+        if ($tarows > 15) {
             $tarows = 15;
         }
         $maxoptionsize = $maxoptionsize * 0.72;
@@ -1914,44 +1787,34 @@ function do_ranking($ia)
 {
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $coreClass              = "ls-answers answers-lists select-sortable-lists";
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
     $anscount  = count($ansresult);
     $max_subquestions = intval($aQuestionAttributes['max_subquestions']) > 0 ? intval($aQuestionAttributes['max_subquestions']) : $anscount;
-    if (trim($aQuestionAttributes["max_answers"]) != '')
-    {
-        if ($max_subquestions < $anscount)
-        {
+    if (trim($aQuestionAttributes["max_answers"]) != '') {
+        if ($max_subquestions < $anscount) {
             $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$max_subquestions.")";
-        } else
-        {
+        } else {
             $max_answers = trim($aQuestionAttributes["max_answers"]);
         }
-    } else
-    {
+    } else {
         $max_answers = $max_subquestions;
     }
     $max_answers = LimeExpressionManager::ProcessString("{{$max_answers}}", $ia[0]);
     // Get the max number of line needed
-    if (ctype_digit($max_answers) && intval($max_answers) < $max_subquestions)
-    {
+    if (ctype_digit($max_answers) && intval($max_answers) < $max_subquestions) {
         $iMaxLine = $max_answers;
-    } else
-    {
+    } else {
         $iMaxLine = $max_subquestions;
     }
-    if (trim($aQuestionAttributes["min_answers"]) != '')
-    {
+    if (trim($aQuestionAttributes["min_answers"]) != '') {
         $min_answers = trim($aQuestionAttributes["min_answers"]);
-    } else
-    {
+    } else {
         $min_answers = 0;
     }
     $min_answers = LimeExpressionManager::ProcessString("{{$min_answers}}", $ia[0]);
@@ -1961,8 +1824,7 @@ function do_ranking($ia)
     // construction select box
     $answers = array();
 
-    foreach ($ansresult as $ansrow)
-    {
+    foreach ($ansresult as $ansrow) {
         $answers[] = $ansrow;
     }
 
@@ -1971,14 +1833,12 @@ function do_ranking($ia)
     $myfname    = '';
 
     $thisvalue = "";
-    for ($i = 1; $i <= $iMaxLine; $i++)
-    {
+    for ($i = 1; $i <= $iMaxLine; $i++) {
         $myfname = $ia[1].$i;
         $labeltext = ($i == 1) ?gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
         $itemDatas = array();
 
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
-        {
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) {
             $itemDatas[] = array(
                 'value'      => '',
                 'selected'   => 'SELECTED',
@@ -1988,14 +1848,11 @@ function do_ranking($ia)
             );
         }
 
-        foreach ($answers as $ansrow)
-        {
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
-            {
+        foreach ($answers as $ansrow) {
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code']) {
                 $selected = SELECTED;
                 $thisvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            } else
-            {
+            } else {
                 $selected = '';
             }
 
@@ -2026,18 +1883,14 @@ function do_ranking($ia)
     $rankingTranslation = 'LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js').'";';
     App()->getClientScript()->registerScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
 
-    if (trim($aQuestionAttributes['choice_title'][App()->language]) != '')
-    {
+    if (trim($aQuestionAttributes['choice_title'][App()->language]) != '') {
         $choice_title = htmlspecialchars(trim($aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
-    } else
-    {
+    } else {
         $choice_title = gT("Your Choices", 'js');
     }
-    if (trim($aQuestionAttributes['rank_title'][App()->language]) != '')
-    {
+    if (trim($aQuestionAttributes['rank_title'][App()->language]) != '') {
         $rank_title = htmlspecialchars(trim($aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
-    } else
-    {
+    } else {
         $rank_title = gT("Your Ranking", 'js');
     }
 
@@ -2079,13 +1932,11 @@ function do_multiplechoice($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
-    if ($aQuestionAttributes['other_numbers_only'] == 1)
-    {
+    if ($aQuestionAttributes['other_numbers_only'] == 1) {
         $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator                 = $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
-    } else
-    {
+    } else {
         $sSeparator = '.'; // TODO: Correct default?
         $oth_checkconditionFunction = "checkconditions";
     }
@@ -2120,8 +1971,7 @@ function do_multiplechoice($ia)
         // Then, we calculate how many answer rows in each column
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
         $first = true; // The very first item will open a bootstrap row containing the columns
-    } else
-    {
+    } else {
         $iColumnWidth = 12;
         $iMaxRowsByColumn = $anscount + 3; // No max
         $first = true;
@@ -2131,8 +1981,7 @@ function do_multiplechoice($ia)
     $i = 0;
 
     $sRows = '';
-    foreach ($ansresult as $ansrow)
-    {
+    foreach ($ansresult as $ansrow) {
         $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
         $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$ansrow['title'];
@@ -2140,10 +1989,8 @@ function do_multiplechoice($ia)
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
-            {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
                 $checkedState = 'CHECKED';
             }
         }
@@ -2156,8 +2003,7 @@ function do_multiplechoice($ia)
         // Open Column
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1)
-        {
+        if ($iRowCount == 1) {
             $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array(
                 'iColumnWidth' => (isset($iColumnWidth)) ? $iColumnWidth : '',
                 'first'        => (isset($first)) ? $first : ''),
@@ -2187,8 +2033,7 @@ function do_multiplechoice($ia)
         // and if the max answer rows by column is reached.
         // If max answer rows by column is not reached while there is no more answer,
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if ($iRowCount == $iMaxRowsByColumn)
-        {
+        if ($iRowCount == $iMaxRowsByColumn) {
             $last      = ($i == $anscount) ?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>$last), true);
             $iRowCount = 0;
@@ -2197,24 +2042,20 @@ function do_multiplechoice($ia)
     }
 
     //==>  rows
-    if ($other == 'Y')
-    {
+    if ($other == 'Y') {
         $iRowCount++;
         $myfname = $ia[1].'other';
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) != '')
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) != '') {
             $checkedState = 'CHECKED';
         }
 
         $sValue = '';
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            if ($aQuestionAttributes['other_numbers_only'] == 1)
-            {
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
@@ -2222,11 +2063,9 @@ function do_multiplechoice($ia)
 
         // TODO : check if $sValueHidden === $sValue
         $sValueHidden = '';
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            if ($aQuestionAttributes['other_numbers_only'] == 1)
-            {
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES); ;
@@ -2240,8 +2079,7 @@ function do_multiplechoice($ia)
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row (should never happen for 'other'),
         // or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1)
-        {
+        if ($iRowCount == 1) {
             $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
 
@@ -2273,8 +2111,7 @@ function do_multiplechoice($ia)
     // The column is closed if the user set more than one column in question attribute
     // and if on column has been opened and not closed
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if ($isOpen)
-    {
+    if ($isOpen) {
         $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>true), true);
     }
 
@@ -2298,32 +2135,26 @@ function do_multiplechoice_withcomments($ia)
     $coreClass = "ls-answers answers-list checkbox-text-list";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if ($aQuestionAttributes['other_numbers_only'] == 1)
-    {
+    if ($aQuestionAttributes['other_numbers_only'] == 1) {
         $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator                 = $sSeparator['separator'];
         $otherNumber = 1;
-    } else
-    {
+    } else {
         $otherNumber = 0;
         $sSeparator = '.';
     }
 
-    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-    } else
-    {
+    } else {
         $othertext = gT('Other:');
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $other  = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
@@ -2334,11 +2165,9 @@ function do_multiplechoice_withcomments($ia)
     if (!isset($other)) {
         $other = 'N';
     }
-    if ($other == 'Y')
-    {
+    if ($other == 'Y') {
         $label_width = 25;
-    } else
-    {
+    } else {
         $label_width = 0;
     }
 
@@ -2348,7 +2177,8 @@ function do_multiplechoice_withcomments($ia)
         $attributeInputContainerWidth = null;
     }
     $attributeLabelWidth = intval(trim($aQuestionAttributes['choice_input_columns']));
-    if ($attributeLabelWidth < 1 || $attributeLabelWidth > 12) {/* old system or imported */
+    if ($attributeLabelWidth < 1 || $attributeLabelWidth > 12) {
+/* old system or imported */
         $attributeLabelWidth = null;
     }
     if (!$attributeInputContainerWidth && !$attributeLabelWidth) {
@@ -2374,8 +2204,7 @@ function do_multiplechoice_withcomments($ia)
     // Size of elements depends on longest text item
     $toIterate = $ansresult->readAll();
     $longest_question = 0;
-    foreach ($toIterate as $ansrow)
-    {
+    foreach ($toIterate as $ansrow) {
         $current_length = round((strlen($ansrow['question']) / 10) + 1);
         $longest_question = ($longest_question > $current_length) ? $longest_question : $current_length;
     }
@@ -2383,12 +2212,10 @@ function do_multiplechoice_withcomments($ia)
     $sRows = "";
     $inputCOmmentValue = '';
     $checked = '';
-    foreach ($toIterate as $ansrow)
-    {
+    foreach ($toIterate as $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
 
-        if ($label_width < strlen(trim(strip_tags($ansrow['question']))))
-        {
+        if ($label_width < strlen(trim(strip_tags($ansrow['question'])))) {
             $label_width = strlen(trim(strip_tags($ansrow['question'])));
         }
 
@@ -2396,10 +2223,8 @@ function do_multiplechoice_withcomments($ia)
 
         /* If the question has already been ticked, check the checkbox */
         $checked = '';
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
-            {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
                 $checked = CHECKED;
             }
         }
@@ -2435,30 +2260,25 @@ function do_multiplechoice_withcomments($ia)
             ), true);
 
     }
-    if ($other == 'Y')
-    {
+    if ($other == 'Y') {
         $myfname = $ia[1].'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
         // SPAN LABEL OPTION //////////////////////////
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            if ($aQuestionAttributes['other_numbers_only'] == 1)
-            {
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $value = htmlspecialchars($dispVal, ENT_QUOTES);
         }
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
-        {
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
             $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2], ENT_QUOTES);
         }
 
         // TODO: $value is not defined for some execution paths.
-        if (!isset($value))
-        {
+        if (!isset($value)) {
             $value = '';
         }
 
@@ -2497,8 +2317,7 @@ function do_multiplechoice_withcomments($ia)
         ), true);
 
 
-    if ($aQuestionAttributes['commented_checkbox'] != "allways" && $aQuestionAttributes['commented_checkbox_auto'])
-    {
+    if ($aQuestionAttributes['commented_checkbox'] != "allways" && $aQuestionAttributes['commented_checkbox_auto']) {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js", LSYii_ClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}",
         "doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",
@@ -2519,16 +2338,13 @@ function do_file_upload($ia)
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview = Yii::app()->request->getParam('action') == "previewgroup" || Yii::app()->request->getParam('action') == "previewquestion" || $thissurvey['active'] != "Y";
 
-    if ($bPreview)
-    {
+    if ($bPreview) {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 1; // Preview is launched from Question or group level
-    } elseif ($thissurvey['active'] != "Y")
-    {
+    } elseif ($thissurvey['active'] != "Y") {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 0;
-    } else
-    {
+    } else {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
@@ -2560,11 +2376,9 @@ function do_file_upload($ia)
     //$answer .= $uploadbutton;
 
     $filecountvalue = '0';
-    if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
-    {
+    if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')])) {
         $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
-        if (is_numeric($tempval))
-        {
+        if (is_numeric($tempval)) {
             $filecountvalue = $tempval;
         }
     }
@@ -2672,24 +2486,20 @@ function do_multipleshorttext($ia)
     $extraclass          = "";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $coreClass = "ls-answers subquestion-list questions-list text-list";
-    if ($aQuestionAttributes['numbers_only'] == 1)
-    {
+    if ($aQuestionAttributes['numbers_only'] == 1) {
         $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator             = $sSeparator['separator'];
         $extraclass            .= " numberonly";
         $coreClass             .= " number-list";
-    } else
-    {
+    } else {
         $sSeparator = '';
     }
 
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = "";
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -2704,30 +2514,24 @@ function do_multipleshorttext($ia)
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_columns']);
 
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
-    } else
-    {
+    } else {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
-    } else
-    {
+    } else {
         $suffix = '';
     }
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
@@ -2738,19 +2542,15 @@ function do_multipleshorttext($ia)
     $sRows         = '';
     $inputnames = array();
 
-    if ($anscount != 0)
-    {
+    if ($anscount != 0) {
         $alert = false;
-        foreach ($aSubquestions as $ansrow)
-        {
+        foreach ($aSubquestions as $ansrow) {
             $myfname = $ia[1].$ansrow['title'];
             $ansrow['question'] = ($ansrow['question'] == "") ? "&nbsp;" : $ansrow['question'];
 
             // color code missing mandatory questions red
-            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-            {
-                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
-                {
+            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $alert = true;
                 }
             }
@@ -2758,11 +2558,9 @@ function do_multipleshorttext($ia)
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
             $dispVal       = '';
 
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
                 $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                if ($aQuestionAttributes['numbers_only'] == 1)
-                {
+                if ($aQuestionAttributes['numbers_only'] == 1) {
                     $dispVal = str_replace('.', $sSeparator, $dispVal);
                 }
                 $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
@@ -2816,8 +2614,7 @@ function do_multipleshorttext($ia)
             'basename'=>$ia[1],
             ), true);
 
-    } else
-    {
+    } else {
         $inputnames   = array();
         $answer       = doRender('/survey/questions/answer/multipleshorttext/empty', array(), true);
     }
@@ -2836,12 +2633,10 @@ function do_multiplenumeric($ia)
     $sSeparator             = $sSeparator['separator'];
     $extraclass            .= " numberonly"; //Must turn on the "numbers only javascript"
     $coreClass              = "ls-answers subquestion-list questions-list ";
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars'])); /* must be limited to 32 : -(10 number)dot(20 numbers) ! DECIMAL sql */
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = 20;
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -2851,21 +2646,17 @@ function do_multiplenumeric($ia)
         $inputsize = null;
     }
 
-    if ($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] != '')
-    {
+    if ($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] != '') {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
-    } else
-    {
+    } else {
         $prefix = ''; /* slider js need it */
     }
 
-    if ($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] != '')
-    {
+    if ($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] != '') {
         $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
-    } else
-    {
+    } else {
         $suffix = ''; /* slider js need it */
     }
 
@@ -2876,8 +2667,7 @@ function do_multiplenumeric($ia)
 
     $prefixclass = "numeric";
 
-    if ($aQuestionAttributes['slider_layout'] == 1)
-    {
+    if ($aQuestionAttributes['slider_layout'] == 1) {
         $coreClass           .= " slider-list";
         $slider_layout        = true;
         $extraclass          .= " withslider";
@@ -2893,8 +2683,7 @@ function do_multiplenumeric($ia)
         $slider_orientation   = (trim($aQuestionAttributes['slider_orientation']) == 0) ? 'horizontal' : 'vertical';
         $slider_custom_handle = (trim($aQuestionAttributes['slider_custom_handle']));
 
-        switch (trim($aQuestionAttributes['slider_handle']))
-        {
+        switch (trim($aQuestionAttributes['slider_handle'])) {
             case 0:
                 $slider_handle = 'round';
                 break;
@@ -2913,7 +2702,8 @@ function do_multiplenumeric($ia)
         }
 
         /* Put the slider init to initial state (when no click is set or when 'reset') */
-        if ($slider_default !== '') { /* can be 0 */
+        if ($slider_default !== '') {
+/* can be 0 */
             $slider_position = $slider_default;
         } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
             $slider_position = intval(($slider_max + $slider_min) / 2);
@@ -2931,8 +2721,7 @@ function do_multiplenumeric($ia)
             $slider_reversed = 'false';
         }
 
-    } else
-    {
+    } else {
         $coreClass .= " text-list number-list";
         $slider_layout  = false;
         $slider_step    = '';
@@ -2949,11 +2738,9 @@ function do_multiplenumeric($ia)
         $slider_reversed = 'false';
     }
 
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
@@ -2965,25 +2752,20 @@ function do_multiplenumeric($ia)
 
     $inputnames = array();
 
-    if ($anscount == 0)
-    {
+    if ($anscount == 0) {
         $answer = doRender('/survey/questions/answer/multiplenumeric/empty', array(), true);
-    } else
-    {
-        foreach ($aSubquestions as $ansrow)
-        {
+    } else {
+        foreach ($aSubquestions as $ansrow) {
             $labelText = $ansrow['question'];
             $myfname   = $ia[1].$ansrow['title'];
 
-            if ($ansrow['question'] == "")
-            {
+            if ($ansrow['question'] == "") {
                 $ansrow['question'] = "&nbsp;";
             }
 
             if ($slider_layout) {
                 $sliderWidth = 12;
-                if ($slider_separator != '')
-                {
+                if ($slider_separator != '') {
                     $aAnswer     = explode($slider_separator, $ansrow['question']);
                     $theanswer   = (isset($aAnswer[0])) ? $aAnswer[0] : "";
                     $labelText   = $theanswer;
@@ -3001,8 +2783,7 @@ function do_multiplenumeric($ia)
                     $theanswer = $ansrow['question'];
                     $sliders   = false;
                 }
-            } else
-            {
+            } else {
                 $theanswer = $ansrow['question'];
                 $sliders   = false;
             }
@@ -3014,10 +2795,8 @@ function do_multiplenumeric($ia)
             // color code missing mandatory questions red
             $alert = '';
 
-            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-            {
-                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
-                {
+            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $alert = true;
                 }
             }
@@ -3040,19 +2819,16 @@ function do_multiplenumeric($ia)
 
             $sUnformatedValue = $sValue;
 
-            if (strpos($sValue, "."))
-            {
+            if (strpos($sValue, ".")) {
                 $sValue = rtrim(rtrim($sValue, "0"), ".");
                 $sValue = str_replace('.', $sSeparator, $sValue);
             }
 
-            if (trim($aQuestionAttributes['num_value_int_only']) == 1)
-            {
+            if (trim($aQuestionAttributes['num_value_int_only']) == 1) {
                 $extraclass .= " integeronly";
                 $answertypeclass = " integeronly";
                 $integeronly = 1;
-            } else
-            {
+            } else {
                 $answertypeclass = "";
                 $integeronly = 0;
             }
@@ -3136,12 +2912,10 @@ function do_multiplenumeric($ia)
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
-        )
-        {
+        ) {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
 
-            if (trim($aQuestionAttributes['equals_num_value']) != '')
-            {
+            if (trim($aQuestionAttributes['equals_num_value']) != '') {
                 $equals_num_value = true;
             }
             $displaytotal = true;
@@ -3167,8 +2941,7 @@ function do_multiplenumeric($ia)
 
     }
 
-    if ($aQuestionAttributes['slider_layout'] == 1)
-    {
+    if ($aQuestionAttributes['slider_layout'] == 1) {
         /* Add some data for javascript */
         $sliderTranslation = array(
             'help'=>gT('Please click and drag the slider handles to enter your answer.')
@@ -3190,39 +2963,31 @@ function do_numerical($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $coreClass = "ls-answers answer-item text-item numeric-item";
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
-    } else
-    {
+    } else {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
-    } else
-    {
+    } else {
         $suffix = '';
     }
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0 && intval(trim($aQuestionAttributes['maximum_chars'])) < 20)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0 && intval(trim($aQuestionAttributes['maximum_chars'])) < 20) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = 20;
     }
-    if (trim($aQuestionAttributes['text_input_width']) != '')
-    {
+    if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
-    } else
-    {
+    } else {
         $withColumn = false;
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -3231,13 +2996,11 @@ function do_numerical($ia)
     } else {
         $inputsize = null;
     }
-    if (trim($aQuestionAttributes['num_value_int_only']) == 1)
-    {
+    if (trim($aQuestionAttributes['num_value_int_only']) == 1) {
         $extraclass      .= " integeronly";
         $answertypeclass .= " integeronly";
         $integeronly      = 1;
-    } else
-    {
+    } else {
         $integeronly = 0;
     }
 
@@ -3246,14 +3009,12 @@ function do_numerical($ia)
     $sSeparator = $sSeparator['separator'];
 
     // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
-    if (strpos($fValue, "."))
-    {
+    if (strpos($fValue, ".")) {
         $fValue = rtrim(rtrim($fValue, "0"), ".");
     }
     $fValue = str_replace('.', $sSeparator, $fValue);
 
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $extraclass      .= " inputkeypad";
         $answertypeclass .= " num-keypad";
@@ -3288,43 +3049,36 @@ function do_shortfreetext($ia)
 
     $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
     $coreClass = "ls-answers answer-item text-item";
-    if ($sGoogleMapsAPIKey != '')
-    {
+    if ($sGoogleMapsAPIKey != '') {
         $sGoogleMapsAPIKey = '&key='.$sGoogleMapsAPIKey;
     }
 
     $extraclass = "";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if ($aQuestionAttributes['numbers_only'] == 1)
-    {
+    if ($aQuestionAttributes['numbers_only'] == 1) {
         $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator             = $sSeparator['separator'];
         $extraclass            .= " numberonly";
         $coreClass             .= " numeric-item";
         $checkconditionFunction = "fixnum_checkconditions";
-    } else
-    {
+    } else {
         $sSeparator = '';
         $checkconditionFunction = "checkconditions";
     }
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength      = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass    .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = "";
     }
 
-    if (trim($aQuestionAttributes['text_input_width']) != '' && intval(trim($aQuestionAttributes['location_mapservice'])) == 0)
-    {
+    if (trim($aQuestionAttributes['text_input_width']) != '' && intval(trim($aQuestionAttributes['location_mapservice'])) == 0) {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
-    } else
-    {
+    } else {
         $withColumn = false;
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -3333,46 +3087,37 @@ function do_shortfreetext($ia)
     } else {
         $inputsize = null;
     }
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
-    } else
-    {
+    } else {
         $prefix = '';
     }
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '')
-    {
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
         $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
-    } else
-    {
+    } else {
         $suffix = '';
     }
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass     = "text-keypad";
         $extraclass .= " inputkeypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
     $answer = "";
 
-    if (trim($aQuestionAttributes['display_rows']) != '')
-    {
+    if (trim($aQuestionAttributes['display_rows']) != '') {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
         $drows = $aQuestionAttributes['display_rows'];
 
         $dispVal = "";
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
-        {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
 
-            if ($aQuestionAttributes['numbers_only'] == 1)
-            {
+            if ($aQuestionAttributes['numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $dispVal = htmlspecialchars($dispVal);
@@ -3394,32 +3139,26 @@ function do_shortfreetext($ia)
             'inputsize'              => $inputsize,
             'withColumn'             => $withColumn
             ), true);
-    } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1)
-    {
+    } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2)
-        {
+        if (strlen($currentLocation) > 2) {
             $currentLatLong = explode(';', $currentLocation);
             $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
-        } else
-        {
-            if ((int) ($aQuestionAttributes['location_nodefaultfromip']) == 0)
-            {
+        } else {
+            if ((int) ($aQuestionAttributes['location_nodefaultfromip']) == 0) {
                 $currentLatLong = getLatLongFromIp(getIPAddress());
             }
 
-            if (!isset($currentLatLong) || $currentLatLong == false)
-            {
+            if (!isset($currentLatLong) || $currentLatLong == false) {
                 $floatLat = 0;
                 $floatLng = 0;
                 $LatLong  = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
 
-                if (isset($LatLong[0]) && isset($LatLong[1]))
-                {
+                if (isset($LatLong[0]) && isset($LatLong[1])) {
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
                 }
@@ -3454,8 +3193,7 @@ function do_shortfreetext($ia)
             }
 
             $questionHelp = false;
-        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0)
-        {
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
@@ -3480,29 +3218,24 @@ function do_shortfreetext($ia)
             'withColumn'             => $withColumn
             ), true);
 
-    } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 100)
-    {
+    } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 100) {
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";"))
-        {
+        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) {
             $currentLatLong = explode(';', $currentLocation);
             $currentCenter  = $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
-        } elseif ((int) ($aQuestionAttributes['location_nodefaultfromip']) == 0)
-        {
+        } elseif ((int) ($aQuestionAttributes['location_nodefaultfromip']) == 0) {
             $currentCenter = $currentLatLong = getLatLongFromIp(getIPAddress());
         }
 
         // If it's not set : set the center to the default position, but don't set the marker
-        if (!$currentLatLong)
-        {
+        if (!$currentLatLong) {
             $currentLatLong = array("", "");
             $currentCenter = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
-            if (count($currentCenter) != 2)
-            {
+            if (count($currentCenter) != 2) {
                 $currentCenter = array("", "");
             }
         }
@@ -3525,8 +3258,7 @@ function do_shortfreetext($ia)
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", CClientScript::POS_END);
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'map.css', CClientScript::POS_END);
 
-        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0)
-        {
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
@@ -3552,12 +3284,10 @@ function do_shortfreetext($ia)
             'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
-    } else
-    {
+    } else {
         //no question attribute set, use common input text field
         $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        if ($aQuestionAttributes['numbers_only'] == 1)
-        {
+        if ($aQuestionAttributes['numbers_only'] == 1) {
             $dispVal = str_replace('.', $sSeparator, $dispVal);
         }
         $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
@@ -3579,8 +3309,7 @@ function do_shortfreetext($ia)
 
     }
 
-    if (trim($aQuestionAttributes['time_limit']) != '')
-    {
+    if (trim($aQuestionAttributes['time_limit']) != '') {
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -3593,7 +3322,8 @@ function do_shortfreetext($ia)
 function getLatLongFromIp($sIPAddress)
 {
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
-    if ($ipInfoDbAPIKey) { // ipinfodb.com needs a key
+    if ($ipInfoDbAPIKey) {
+// ipinfodb.com needs a key
         $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
         if ($oXML->{'statusCode'} == "OK") {
             $lat = (float) $oXML->{'latitude'};
@@ -3614,43 +3344,37 @@ function do_longfreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass     = "text-keypad";
         $extraclass .= " inputkeypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
 
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = "";
     }
 
-    if (trim($aQuestionAttributes['display_rows']) != '')
-    {
+    if (trim($aQuestionAttributes['display_rows']) != '') {
         $drows = $aQuestionAttributes['display_rows'];
-    } else
-    {
+    } else {
         $drows = 5;
     }
 
-    if (trim($aQuestionAttributes['text_input_width']) != '') { // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
+    if (trim($aQuestionAttributes['text_input_width']) != '') {
+// text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
-    } else
-    {
+    } else {
         $withColumn = false;
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -3677,8 +3401,7 @@ function do_longfreetext($ia)
         ), true);
 
 
-    if (trim($aQuestionAttributes['time_limit']) != '')
-    {
+    if (trim($aQuestionAttributes['time_limit']) != '') {
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -3693,13 +3416,11 @@ function do_hugefreetext($ia)
     global $thissurvey;
     $extraclass = "";
     $coreClass = "ls-answers answer-item text-item";
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass = "text-keypad";
         $extraclass .= " inputkeypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
 
@@ -3707,30 +3428,24 @@ function do_hugefreetext($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = "";
     }
 
-    if (trim($aQuestionAttributes['display_rows']) != '')
-    {
+    if (trim($aQuestionAttributes['display_rows']) != '') {
         $drows = $aQuestionAttributes['display_rows'];
-    } else
-    {
+    } else {
         $drows = 30;
     }
-    if (trim($aQuestionAttributes['text_input_width']) != '')
-    {
+    if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
         $extraclass .= " col-sm-".trim($col);
         $withColumn = true;
-    } else
-    {
+    } else {
         $withColumn = false;
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -3741,8 +3456,7 @@ function do_hugefreetext($ia)
     }
 
     $dispVal = "";
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
-    {
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
         $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
     }
 
@@ -3761,8 +3475,7 @@ function do_hugefreetext($ia)
     );
     $answer = doRender('/survey/questions/answer/longfreetext/answer', $itemDatas, true);
 
-    if (trim($aQuestionAttributes['time_limit']) != '')
-    {
+    if (trim($aQuestionAttributes['time_limit']) != '') {
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -3776,22 +3489,18 @@ function do_yesno($ia)
 {
     $coreClass = "ls-answers answers-list";
     $yChecked = $nChecked = $naChecked = '';
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y')
-    {
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
         $yChecked = CHECKED;
     }
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N')
-    {
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N') {
         $nChecked = CHECKED;
     }
 
     $noAnswer = false;
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
+        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $naChecked = CHECKED;
         }
     }
@@ -3809,12 +3518,10 @@ function do_yesno($ia)
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType'=>$displayType,
     );
-    if ($displayType === 0)
-    {
+    if ($displayType === 0) {
         $itemDatas['coreClass'] = "{$coreClass} button-list yesno-button";
         $answer = doRender('/survey/questions/answer/yesno/buttons/item', $itemDatas, true);
-    } else
-    {
+    } else {
         $itemDatas['coreClass'] = "{$coreClass} radio-list yesno-radio-list";
         $answer = doRender('/survey/questions/answer/yesno/radio/item', $itemDatas, true);
     }
@@ -3833,11 +3540,9 @@ function do_gender($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType            = $aQuestionAttributes['display_type'];
     $coreClass              = "ls-answers answers-list radio-list";
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
-        {
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
             $naChecked = CHECKED;
         }
     }
@@ -3854,12 +3559,10 @@ function do_gender($ia)
         'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
-    if ($displayType === 0)
-    {
+    if ($displayType === 0) {
         $itemDatas['coreClass'] = "{$coreClass} button-list gender-button";
         $answer = doRender('/survey/questions/answer/gender/buttons/answer', $itemDatas, true);
-    } else
-    {
+    } else {
         $itemDatas['coreClass'] = "{$coreClass} radio-list gender-radio-list";
         $answer = doRender('/survey/questions/answer/gender/radio/answer', $itemDatas, true);
     }
@@ -3886,27 +3589,24 @@ function do_array_5point($ia)
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames              = array();
 
-    if (trim($aQuestionAttributes['answer_width']) != '')
-    {
+    if (trim($aQuestionAttributes['answer_width']) != '') {
         $answerwidth = $aQuestionAttributes['answer_width'];
         $defaultWidth = false;
-    } else
-    {
+    } else {
         $answerwidth = 33;
         $defaultWidth = true;
     }
     $columnswidth = 100 - $answerwidth;
     $colCount = 5; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         ++$colCount; // add another column
     }
 
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
@@ -3917,16 +3617,13 @@ function do_array_5point($ia)
 
     // Check if any subquestion use suffix/prefix
     $right_exists  = false;
-    foreach ($aSubquestions as $j => $ansrow)
-    {
+    foreach ($aSubquestions as $j => $ansrow) {
         $answertext2 = $ansrow['question'];
-        if (strpos($answertext2, '|'))
-        {
+        if (strpos($answertext2, '|')) {
             $right_exists = true;
         }
     }
-    if ($right_exists)
-    {
+    if ($right_exists) {
         /* put the right answer to same width : take place in answer width only if it's not default */
         if ($defaultWidth) {
             $columnswidth -= $answerwidth;
@@ -3935,18 +3632,17 @@ function do_array_5point($ia)
         }
     }
     $cellwidth = $columnswidth / $colCount;
-    for ($xc = 1; $xc <= 5; $xc++)
-    {
+    for ($xc = 1; $xc <= 5; $xc++) {
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
     // Column for suffix
-    if ($right_exists)
-    {
+    if ($right_exists) {
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$answerwidth), true);
     }
 
@@ -3954,8 +3650,7 @@ function do_array_5point($ia)
         'class'=>'',
         'content'=>'',
         ), true);
-    for ($xc = 1; $xc <= 5; $xc++)
-    {
+    for ($xc = 1; $xc <= 5; $xc++) {
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text',
             'content'=>$xc,
@@ -3963,15 +3658,15 @@ function do_array_5point($ia)
     }
 
     // Header for suffix
-    if ($right_exists)
-    {
+    if ($right_exists) {
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_information', array(
             'class'=>'answertextright',
             'content'=>'',
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
@@ -3979,12 +3674,10 @@ function do_array_5point($ia)
     }
 
 
-    foreach ($aSubquestions as $j => $ansrow)
-    {
+    foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
-        if (strpos($answertext, '|'))
-        {
+        if (strpos($answertext, '|')) {
             $answertext = substr($answertext, 0, strpos($answertext, '|'));
         }
 
@@ -3997,8 +3690,7 @@ function do_array_5point($ia)
         // Value
         $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-        for ($i = 1; $i <= 5; $i++)
-        {
+        for ($i = 1; $i <= 5; $i++) {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
@@ -4012,16 +3704,14 @@ function do_array_5point($ia)
 
         // Suffix
         $answertext2 = $ansrow['question'];
-        if (strpos($answertext2, '|'))
-        {
+        if (strpos($answertext2, '|')) {
             $answertext2 = substr($answertext2, strpos($answertext2, '|') + 1);
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_answertext', array(
                 'class'=>'answertextright',
                 'style'=>'text-align:left',
                 'th_content'=>$answertext2,
                 ), true);
-        } elseif ($right_exists)
-        {
+        } elseif ($right_exists) {
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>'',
@@ -4029,8 +3719,7 @@ function do_array_5point($ia)
         }
 
         // ==>tds
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>"",
@@ -4091,23 +3780,21 @@ function do_array_10point($ia)
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width']) != '')
-    {
+    if (trim($aQuestionAttributes['answer_width']) != '') {
         $answerwidth = $aQuestionAttributes['answer_width'];
-    } else
-    {
+    } else {
         $answerwidth = 33;
     }
     $cellwidth = 10; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         ++$cellwidth; // add another column
     }
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
     $ansresult = dbExecuteAssoc($ansquery); //Checked
@@ -4118,13 +3805,13 @@ function do_array_10point($ia)
     $odd_even = '';
 
     $sColumns = '';
-    for ($xc = 1; $xc <= 10; $xc++)
-    {
+    for ($xc = 1; $xc <= 10; $xc++) {
         $odd_even = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $odd_even = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
@@ -4134,15 +3821,15 @@ function do_array_10point($ia)
         'class'=>'',
         'content'=>'',
         ), true);
-    for ($xc = 1; $xc <= 10; $xc++)
-    {
+    for ($xc = 1; $xc <= 10; $xc++) {
         $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text',
             'content'=>$xc,
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
@@ -4153,8 +3840,7 @@ function do_array_10point($ia)
 
     $sRows = '';
     $inputnames = array();
-    foreach ($aSubquestions as $j => $ansrow)
-    {
+    foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
         /* Check if this item has not been answered */
@@ -4169,8 +3855,7 @@ function do_array_10point($ia)
         $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
         $answer_tds = '';
-        for ($i = 1; $i <= 10; $i++)
-        {
+        for ($i = 1; $i <= 10; $i++) {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
 
             $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
@@ -4183,8 +3868,7 @@ function do_array_10point($ia)
                 ), true);
         }
 
-        if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
-        {
+        if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>'',
@@ -4238,17 +3922,16 @@ function do_array_yesnouncertain($ia)
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         ++$cellwidth; // add another column
     }
 
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
 
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
@@ -4260,13 +3943,13 @@ function do_array_yesnouncertain($ia)
     $odd_even = '';
     $sColumns = '';
 
-    for ($xc = 1; $xc <= 3; $xc++)
-    {
+    for ($xc = 1; $xc <= 3; $xc++) {
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth, 'no_answer'=>true), true);
     }
@@ -4275,12 +3958,10 @@ function do_array_yesnouncertain($ia)
     $sHeaders  = doRender('/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead', array('no_answer'=>$no_answer, 'anscount'=>$anscount), true);
 
     $inputnames = array();
-    if ($anscount > 0)
-    {
+    if ($anscount > 0) {
         $sRows = '';
 
-        foreach ($aSubquestions as $i => $ansrow)
-        {
+        foreach ($aSubquestions as $i => $ansrow) {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
             /* Check the sub question mandatory violation */
@@ -4340,7 +4021,8 @@ function do_array_increasesamedecrease($ia)
     $cellwidth               = 3; // number of columns
     $inputnames              = array();
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         ++$cellwidth; // add another column
     }
 
@@ -4364,12 +4046,12 @@ function do_array_increasesamedecrease($ia)
     $odd_even       = '';
     $sColumns       = "";
 
-    for ($xc = 1; $xc <= 3; $xc++)
-    {
+    for ($xc = 1; $xc <= 3; $xc++) {
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
@@ -4381,8 +4063,7 @@ function do_array_increasesamedecrease($ia)
 
     // rows
     $sRows = '';
-    foreach ($aSubquestions as $i => $ansrow)
-    {
+    foreach ($aSubquestions as $i => $ansrow) {
         $myfname        = $ia[1].$ansrow['title'];
         $answertext     = $ansrow['question'];
         $error          = ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the sub Q mandatory violation */
@@ -4437,20 +4118,17 @@ function do_array($ia)
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    if ($aQuestionAttributes['use_dropdown'] == 1)
-    {
+    if ($aQuestionAttributes['use_dropdown'] == 1) {
         $useDropdownLayout = true;
         $coreClass .= " dropdown-array";
         $caption           = gT("A table with a subquestion on each row. You have to select your answer.");
-    } else
-    {
+    } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
         $caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
     }
 
-    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != ""))
-    {
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
         $repeatheadings    = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
@@ -4459,15 +4137,13 @@ function do_array($ia)
     $labelans   = array();
     $labelcode  = array();
 
-    foreach ($lresult as $lrow)
-    {
+    foreach ($lresult as $lrow) {
         $labelans[]  = $lrow->answer;
         $labelcode[] = $lrow->code;
     }
 
     // No-dropdown layout
-    if ($useDropdownLayout === false && count($lresult) > 0)
-    {
+    if ($useDropdownLayout === false && count($lresult) > 0) {
         if (trim($aQuestionAttributes['answer_width']) != '') {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
@@ -4477,8 +4153,7 @@ function do_array($ia)
         }
         $columnswidth = 100 - $answerwidth;
         $iCount = intval(Question::model()->count("parent_qid=:qid and question like :separator", array(':qid'=>$ia[0], ":separator"=>'%|%')));
-        if ($iCount > 0)
-        {
+        if ($iCount > 0) {
             $right_exists = true;
             /* put the right answer to same width : take place in answer width only if it's not default */
             if ($defaultWidth) {
@@ -4486,16 +4161,13 @@ function do_array($ia)
             } else {
                 $answerwidth = $answerwidth / 2;
             }
-        } else
-        {
+        } else {
             $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order'] == 1)
-        {
+        if ($aQuestionAttributes['random_order'] == 1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-        } else
-        {
+        } else {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
 
@@ -4505,13 +4177,11 @@ function do_array($ia)
         $fn         = 1;
         $numrows    = count($labelans);
 
-        if ($right_exists)
-        {
+        if ($right_exists) {
             ++$numrows;
             $caption .= gT("After the answer options a cell does give some information.");
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             ++$numrows;
         }
 
@@ -4522,23 +4192,22 @@ function do_array($ia)
             'content' => '',
             ), true);
 
-        foreach ($labelans as $ld)
-        {
+        foreach ($labelans as $ld) {
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => "answer-text",
                 'content' => $ld,
                 ), true);
         }
 
-        if ($right_exists)
-        {
+        if ($right_exists) {
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_information', array(
                 'class'     => '',
                 'content'   => '',
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory and we can show "no answer"
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory and we can show "no answer"
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => 'answer-text noanswer-text',
                 'content' => gT('No answer'),
@@ -4548,12 +4217,9 @@ function do_array($ia)
         $inputnames = array();
 
         $sRows = '';
-        foreach ($aQuestions as $i => $ansrow)
-        {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0)
-            {
-                if (($anscount - $fn + 1) >= $minrepeatheadings)
-                {
+        foreach ($aQuestions as $i => $ansrow) {
+            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
+                if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     // Close actual body and open another one
                     $sRows .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header', array(
                         'sHeaders'=>$sHeaders
@@ -4565,11 +4231,9 @@ function do_array($ia)
             $answertext     = $ansrow['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($right_exists && strpos($ansrow['question'], '|') !== false)
-            {
+            if ($right_exists && strpos($ansrow['question'], '|') !== false) {
                 $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
-            } else
-            {
+            } else {
                 $answertextright = '';
             }
 
@@ -4579,8 +4243,7 @@ function do_array($ia)
             $answer_tds     = '';
             $fn++;
 
-            foreach ($labelcode as $ld)
-            {
+            foreach ($labelcode as $ld) {
                 $CHECKED     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld) ? 'CHECKED' : '';
                 $answer_tds .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
                     'myfname'=>$myfname,
@@ -4594,8 +4257,7 @@ function do_array($ia)
 
             // NB: $ia[6] = mandatory
             $no_answer_td = '';
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-            {
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
                 $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $no_answer_td .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
                     'myfname'                => $myfname,
@@ -4623,8 +4285,7 @@ function do_array($ia)
 
         $odd_even = '';
         $sColumns = '';
-        foreach ($labelans as $c)
-        {
+        foreach ($labelans as $c) {
             $odd_even = alternation($odd_even);
             $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
                 'class'     => $odd_even,
@@ -4632,8 +4293,7 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($right_exists)
-        {
+        if ($right_exists) {
             $odd_even = alternation($odd_even);
             $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
                 'class'     => 'answertextright '.$odd_even,
@@ -4641,7 +4301,8 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) { //Question is not mandatory
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+//Question is not mandatory
             $odd_even = alternation($odd_even);
             $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
                 'class'     => 'col-no-answer '.$odd_even,
@@ -4661,8 +4322,7 @@ function do_array($ia)
     }
 
     // Dropdown layout
-    elseif ($useDropdownLayout === true && count($lresult) > 0)
-    {
+    elseif ($useDropdownLayout === true && count($lresult) > 0) {
         if (trim($aQuestionAttributes['answer_width']) != '') {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
@@ -4671,8 +4331,7 @@ function do_array($ia)
             $defaultWidth = true;
         }
         $columnswidth = 100 - $answerwidth;
-        foreach ($lresult as $lrow)
-        {
+        foreach ($lresult as $lrow) {
             $labels[] = array(
                 'code'   => $lrow->code,
                 'answer' => $lrow->answer
@@ -4682,8 +4341,7 @@ function do_array($ia)
         $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-        if ($iCount > 0)
-        {
+        if ($iCount > 0) {
             $right_exists = true;
             /* put the right answer to same width : take place in answer width only if it's not default */
             if ($defaultWidth) {
@@ -4691,16 +4349,13 @@ function do_array($ia)
             } else {
                 $answerwidth = $answerwidth / 2;
             }
-        } else
-        {
+        } else {
             $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order'] == 1)
-        {
+        if ($aQuestionAttributes['random_order'] == 1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-        } else
-        {
+        } else {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
 
@@ -4711,19 +4366,16 @@ function do_array($ia)
         $inputnames = array();
 
         $sRows = "";
-        foreach ($aQuestions as $j => $ansrow)
-        {
+        foreach ($aQuestions as $j => $ansrow) {
             $myfname        = $ia[1].$ansrow['title'];
             $answertext     = $ansrow['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if ($right_exists && (strpos($ansrow['question'], '|') !== false))
-            {
+            if ($right_exists && (strpos($ansrow['question'], '|') !== false)) {
                 $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
-            } else
-            {
+            } else {
                 $answertextright = null;
             }
 
@@ -4731,8 +4383,7 @@ function do_array($ia)
 
             /* Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer */
             $showNoAnswer = $ia[6] != 'Y' && SHOW_NO_ANSWER == 1; // Tag if we must show no-answer
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
-            {
+            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                 $options[] = array(
                     'text'=> gT('Please choose...'),
                     'value'=> '',
@@ -4741,8 +4392,7 @@ function do_array($ia)
                 $showNoAnswer = false;
             }
             // Real options
-            foreach ($labels as $i=>$lrow)
-            {
+            foreach ($labels as $i=>$lrow) {
                 $options[] = array(
                     'value'=>$lrow['code'],
                     'selected'=>($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code']) ? SELECTED :'',
@@ -4750,8 +4400,7 @@ function do_array($ia)
                 );
             }
             /* Add the now answer if needed */
-            if ($showNoAnswer)
-            {
+            if ($showNoAnswer) {
                 $options[] = array(
                     'text'=> gT('No answer'),
                     'value'=> '',
@@ -4785,8 +4434,7 @@ function do_array($ia)
                 'right_exists'=> $right_exists,
             ), true);
 
-    } else
-    {
+    } else {
         $answer = doRender('/survey/questions/answer/arrays/array/dropdown/empty', array(), true);
         $inputnames = '';
     }
@@ -4806,12 +4454,10 @@ function do_array_texts($ia)
     $coreRowClass               = "subquestion-list questions-list";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass = "text-keypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
 
@@ -4833,18 +4479,15 @@ function do_array_texts($ia)
     $isInteger = 0;
     $inputnames             = array();
 
-    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != ""))
-    {
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
         $repeatheadings     = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings  = 0;
     }
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars";
-    } else
-    {
+    } else {
         $maxlength = "";
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -4853,12 +4496,10 @@ function do_array_texts($ia)
     } else {
         $inputsize = null;
     }
-    if ($aQuestionAttributes['numbers_only'] == 1)
-    {
+    if ($aQuestionAttributes['numbers_only'] == 1) {
         $checkconditionFunction = "fixnum_checkconditions";
 
-        if (in_array($aQuestionAttributes['show_totals'], array("R", "C", "B")))
-        {
+        if (in_array($aQuestionAttributes['show_totals'], array("R", "C", "B"))) {
             $q_table_id      = 'totals_'.$ia[0];
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
         }
@@ -4867,16 +4508,14 @@ function do_array_texts($ia)
         $coreRowClass .= " number-list";
         $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
-        switch ($aQuestionAttributes['show_totals'])
-        {
+        switch ($aQuestionAttributes['show_totals']) {
 
             case 'R':
                 $totals_class   = $show_totals = 'row';
                 $row_total      = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty'=>false, 'inputsize'=>$inputsize), true);
                 $col_head       = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''), true);
 
-                if ($show_grand == true)
-                {
+                if ($show_grand == true) {
                     $row_head    = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>'answertext'), true);
                     $col_total   = doRender('/survey/questions/answer/arrays/texts/columns/col_total', array('empty'=>true, 'inputsize'=>$inputsize), true);
                     $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty'=>false, 'inputsize'=>$inputsize), true);
@@ -4890,8 +4529,7 @@ function do_array_texts($ia)
                 $col_total    = doRender('/survey/questions/answer/arrays/texts/columns/col_total', array('empty'=>false, 'inputsize'=>$inputsize, 'label'=>true), true);
                 $row_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'), true);
 
-                if ($show_grand == true)
-                {
+                if ($show_grand == true) {
                     $row_total   = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty'=>true, 'inputsize'=>$inputsize), true);
                     $col_head    = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>''), true);
                     $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty'=>false, 'inputsize'=>$inputsize), true);
@@ -4906,11 +4544,9 @@ function do_array_texts($ia)
                 $col_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''), true);
                 $row_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'), true);
 
-                if ($show_grand == true)
-                {
+                if ($show_grand == true) {
                     $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty'=>false, 'inputsize'=>$inputsize), true);
-                } else
-                {
+                } else {
                     $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty'=>true, 'inputsize'=>$inputsize), true);
                 };
 
@@ -4918,12 +4554,10 @@ function do_array_texts($ia)
                 break;
         };
 
-        if (!empty($totals_class))
-        {
+        if (!empty($totals_class)) {
             $totals_class = ' show-totals '.$totals_class;
 
-            if ($aQuestionAttributes['show_grand_total'])
-            {
+            if ($aQuestionAttributes['show_grand_total']) {
                 $totals_class  .= ' grand';
                 $show_grand     = true;
             };
@@ -4943,21 +4577,17 @@ function do_array_texts($ia)
     $labelans     = array();
     $labelcode    = array();
 
-    foreach ($lresult->readAll() as $lrow)
-    {
+    foreach ($lresult->readAll() as $lrow) {
         $labelans[]  = $lrow['question'];
         $labelcode[] = $lrow['title'];
     }
 
-    if ($numrows = count($labelans))
-    {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
+    if ($numrows = count($labelans)) {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             $numrows++;
         }
 
-        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both')
-        {
+        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') {
             ++$numrows;
         }
 
@@ -4966,23 +4596,19 @@ function do_array_texts($ia)
         $ansquery  = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
         $ansresult = Yii::app()->db->createCommand($ansquery)->queryScalar(); //Checked
 
-        if ($ansresult > 0)
-        {
+        if ($ansresult > 0) {
             $right_exists = true;
             if (!$defaultWidth) {
                 $answerwidth = $answerwidth / 2;
             }
-        } else
-        {
+        } else {
             $right_exists = false;
         }
 
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order'] == 1)
-        {
+        if ($aQuestionAttributes['random_order'] == 1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-        } else
-        {
+        } else {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
 
@@ -4994,12 +4620,9 @@ function do_array_texts($ia)
         $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') ?true:false;
 
         $sRows = '';
-        foreach ($aQuestions as $j => $ansrow)
-        {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0)
-            {
-                if (($anscount - $fn + 1) >= $minrepeatheadings)
-                {
+        foreach ($aQuestions as $j => $ansrow) {
+            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
+                if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     // Close actual body and open another one
                     $sRows .= doRender('/survey/questions/answer/arrays/texts/rows/repeat_header', array(
                         'answerwidth'  => $answerwidth,
@@ -5015,41 +4638,34 @@ function do_array_texts($ia)
             $answertextsave = $answertext;
             $error = false;
 
-            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ))
-            {
+            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ)) {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult = 0;
-                foreach ($labelcode as $ld)
-                {
+                foreach ($labelcode as $ld) {
                     $myfname2 = $myfname.'_'.$ld;
-                    if (in_array($myfname2, $aMandatoryViolationSubQ))
-                    {
+                    if (in_array($myfname2, $aMandatoryViolationSubQ)) {
                         $emptyresult = 1;
                     }
                 }
                 $error = false;
-                if ($emptyresult == 1)
-                {
+                if ($emptyresult == 1) {
                     $error = true;
                 }
             }
             $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if (strpos($answertext, '|'))
-            {
+            if (strpos($answertext, '|')) {
                 $answertext = substr($answertext, 0, strpos($answertext, '|'));
             }
 
             $thiskey = 0;
             $answer_tds = '';
 
-            foreach ($labelcode as $ld)
-            {
+            foreach ($labelcode as $ld) {
                 $myfname2 = $myfname."_$ld";
                 $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
 
-                if ($aQuestionAttributes['numbers_only'] == 1)
-                {
+                if ($aQuestionAttributes['numbers_only'] == 1) {
                     $myfname2value = str_replace('.', $sSeparator, $myfname2value);
                 }
 
@@ -5072,12 +4688,10 @@ function do_array_texts($ia)
 
             $rightTd = $rightTdEmpty = false;
 
-            if (strpos($answertextsave, '|'))
-            {
+            if (strpos($answertextsave, '|')) {
                 $answertext = substr($answertextsave, strpos($answertextsave, '|') + 1);
                 $rightTd    = true; $rightTdEmpty = false;
-            } elseif ($right_exists)
-            {
+            } elseif ($right_exists) {
                 $rightTd      = true;
                 $rightTdEmpty = true;
             }
@@ -5101,12 +4715,10 @@ function do_array_texts($ia)
 
         $showtotals = false; $total = '';
 
-        if ($show_totals == 'col' || $show_totals == 'both' || $grand_total == true)
-        {
+        if ($show_totals == 'col' || $show_totals == 'both' || $grand_total == true) {
             $showtotals = true;
 
-            for ($a = 0; $a < count($labelcode); ++$a)
-            {
+            for ($a = 0; $a < count($labelcode); ++$a) {
                 $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $col_total);
 
             };
@@ -5115,13 +4727,10 @@ function do_array_texts($ia)
 
         $radix = '';
 
-        if (!empty($q_table_id))
-        {
-            if ($aQuestionAttributes['numbers_only'] == 1)
-            {
+        if (!empty($q_table_id)) {
+            if ($aQuestionAttributes['numbers_only'] == 1) {
                 $radix = $sSeparator;
-            } else
-            {
+            } else {
                 $radix = 'X'; // to indicate that should not try to change entered values
             }
             Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
@@ -5148,8 +4757,7 @@ function do_array_texts($ia)
             'sRows'                     => $sRows,
             'checkconditionFunction'    => $checkconditionFunction
             ), true);
-    } else
-    {
+    } else {
         $inputnames = '';
         $answer = doRender('/survey/questions/answer/arrays/texts/empty_error', array(), true);
     }
@@ -5183,31 +4791,26 @@ function do_array_multiflexi($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Define min and max value
-    if (trim($aQuestionAttributes['multiflexible_max']) != '' && trim($aQuestionAttributes['multiflexible_min']) == '')
-    {
+    if (trim($aQuestionAttributes['multiflexible_max']) != '' && trim($aQuestionAttributes['multiflexible_min']) == '') {
         $maxvalue    = $aQuestionAttributes['multiflexible_max'];
         $minvalue    = 1;
         $extraclass .= " maxvalue maxvalue-".trim($aQuestionAttributes['multiflexible_max']); // @todo : move to data
     }
 
-    if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) == '')
-    {
+    if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) == '') {
         $minvalue    = $aQuestionAttributes['multiflexible_min'];
         $maxvalue    = $aQuestionAttributes['multiflexible_min'] + 10;
         $extraclass .= " minvalue minvalue-".trim($aQuestionAttributes['multiflexible_max']); // @todo : move to data
     }
 
-    if (trim($aQuestionAttributes['multiflexible_min']) == '' && trim($aQuestionAttributes['multiflexible_max']) == '')
-    {
+    if (trim($aQuestionAttributes['multiflexible_min']) == '' && trim($aQuestionAttributes['multiflexible_max']) == '') {
         $maxvalue   = 10;
         $minvalue   = (isset($minvalue['value']) && $minvalue['value'] == 0) ? 0 : 1;
 
     }
 
-    if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) != '')
-    {
-        if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max'])
-        {
+    if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) != '') {
+        if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
             $minvalue   = $aQuestionAttributes['multiflexible_min'];
             $maxvalue   = $aQuestionAttributes['multiflexible_max'];
         }
@@ -5215,15 +4818,13 @@ function do_array_multiflexi($ia)
 
     $stepvalue = (trim($aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
 
-    if ($aQuestionAttributes['reverse'] == 1)
-    {
+    if ($aQuestionAttributes['reverse'] == 1) {
         $tmp        = $minvalue;
         $minvalue   = $maxvalue;
         $maxvalue   = $tmp;
         $reverse    = true;
         $stepvalue  = -$stepvalue;
-    } else
-    {
+    } else {
         $reverse    = false;
     }
 
@@ -5231,8 +4832,7 @@ function do_array_multiflexi($ia)
     $inputboxlayout = false;
     $textAlignment  = 'right';
 
-    if ($aQuestionAttributes['multiflexible_checkbox'] != 0)
-    {
+    if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {
         $layout = "checkbox";
         $minvalue            = 0;
         $maxvalue            = 1;
@@ -5244,8 +4844,7 @@ function do_array_multiflexi($ia)
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js", CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox", "doArrayNumberCheckbox();\n", LSYii_ClientScript::POS_POSTSCRIPT);
-    } elseif ($aQuestionAttributes['input_boxes'] != 0)
-    {
+    } elseif ($aQuestionAttributes['input_boxes'] != 0) {
         $layout = "text";
         $inputboxlayout      = true;
         $answertypeclass    .= " numeric-item text-item";
@@ -5253,8 +4852,7 @@ function do_array_multiflexi($ia)
         $coreRowClass .= " text-list number-list";
         $extraclass         .= " numberonly";
         $caption            .= gT("Please enter only numbers.");
-    } else
-    {
+    } else {
         $layout = "dropdown";
         $answertypeclass     = " dropdown-item";
         $coreClass          .= " dropdown-array";
@@ -5262,19 +4860,16 @@ function do_array_multiflexi($ia)
         $caption            .= gT("Please select an answer for each combination.");
     }
 
-    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != ""))
-    {
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
         $repeatheadings     = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings  = 0;
     }
 
-    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0)
-    {
+    if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
         $extraclass .= " ls-input-maxchars"; // @todo : move to data or fix class
-    } else
-    {
+    } else {
         $maxlength = "";
     }
     if (ctype_digit(trim($aQuestionAttributes['input_size']))) {
@@ -5284,22 +4879,18 @@ function do_array_multiflexi($ia)
         $inputsize = null;
     }
 
-    if ($thissurvey['nokeyboard'] == 'Y')
-    {
+    if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass     = " num-keypad";
         $extraclass .= " inputkeypad";
-    } else
-    {
+    } else {
         $kpclass = "";
     }
 
-    if (trim($aQuestionAttributes['answer_width']) != '')
-    {
+    if (trim($aQuestionAttributes['answer_width']) != '') {
         $answerwidth = $aQuestionAttributes['answer_width'];
         $defaultWidth = false;
-    } else
-    {
+    } else {
         $answerwidth = 33;
         $defaultWidth = true;
     }
@@ -5311,58 +4902,47 @@ function do_array_multiflexi($ia)
     $labelans       = array();
     $labelcode      = array();
 
-    foreach ($aQuestions as $lrow)
-    {
+    foreach ($aQuestions as $lrow) {
         $labelans[]  = $lrow['question'];
         $labelcode[] = $lrow['title'];
     }
 
-    if ($numrows = count($labelans))
-    {
+    if ($numrows = count($labelans)) {
         //~ if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth  = $columnswidth / $numrows;
 
         $sQuery     = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
         $iCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-        if ($iCount > 0)
-        {
+        if ($iCount > 0) {
             $right_exists = true;
             if (!$defaultWidth) {
                 $answerwidth = $answerwidth / 2;
             }
-        } else
-        {
+        } else {
             $right_exists = false;
         }
 
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order'] == 1)
-        {
+        if ($aQuestionAttributes['random_order'] == 1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-        } else
-        {
+        } else {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
 
         $ansresult = dbExecuteAssoc($ansquery)->readAll(); //Checked
 
-        if (trim($aQuestionAttributes['parent_order'] != ''))
-        {
+        if (trim($aQuestionAttributes['parent_order'] != '')) {
             $iParentQID = (int) $aQuestionAttributes['parent_order'];
             $aResult    = array();
             $sessionao  = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order']) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'] : array();
 
-            if (isset($sessionao[$iParentQID]))
-            {
-                foreach ($sessionao[$iParentQID] as $aOrigRow)
-                {
+            if (isset($sessionao[$iParentQID])) {
+                foreach ($sessionao[$iParentQID] as $aOrigRow) {
                     $sCode = $aOrigRow['title'];
 
-                    foreach ($ansresult as $aRow)
-                    {
-                        if ($sCode == $aRow['title'])
-                        {
+                    foreach ($ansresult as $aRow) {
+                        if ($sCode == $aRow['title']) {
                             $aResult[] = $aRow;
                         }
                     }
@@ -5374,12 +4954,9 @@ function do_array_multiflexi($ia)
         $fn = 1;
 
         $sAnswerRows = '';
-        foreach ($ansresult as $j => $ansrow)
-        {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0)
-            {
-                if (($anscount - $fn + 1) >= $minrepeatheadings)
-                {
+        foreach ($ansresult as $j => $ansrow) {
+            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
+                if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     $sAnswerRows .= doRender('/survey/questions/answer/arrays/multiflexi/rows/repeat_header', array(
                         'labelans'      =>  $labelans,
                         'right_exists'  =>  $right_exists,
@@ -5397,25 +4974,19 @@ function do_array_multiflexi($ia)
             /* Check the sub Q mandatory violation */
             $error = false;
 
-            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ))
-            {
+            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ)) {
                 //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
                 // PS : we really need a better system : event for EM !
                 $emptyresult = ($aQuestionAttributes['multiflexible_checkbox'] != 0) ? 1 : 0;
 
-                foreach ($labelcode as $ld)
-                {
+                foreach ($labelcode as $ld) {
                     $myfname2 = $myfname.'_'.$ld;
-                    if ($aQuestionAttributes['multiflexible_checkbox'] != 0)
-                    {
-                        if (!in_array($myfname2, $aMandatoryViolationSubQ))
-                        {
+                    if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {
+                        if (!in_array($myfname2, $aMandatoryViolationSubQ)) {
                             $emptyresult = 0;
                         }
-                    } else
-                    {
-                        if (in_array($myfname2, $aMandatoryViolationSubQ))
-                        {
+                    } else {
+                        if (in_array($myfname2, $aMandatoryViolationSubQ)) {
                             $emptyresult = 1;
                         }
                     }
@@ -5431,8 +5002,7 @@ function do_array_multiflexi($ia)
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
 
-            if (strpos($answertext, '|'))
-            {
+            if (strpos($answertext, '|')) {
                 $answertext = substr($answertext, 0, strpos($answertext, '|'));
             }
 
@@ -5441,8 +5011,7 @@ function do_array_multiflexi($ia)
             $thiskey            = 0;
             $answer_tds         = '';
 
-            foreach ($labelcode as $i => $ld)
-            {
+            foreach ($labelcode as $i => $ld) {
                 $myfname2   = $myfname."_$ld";
                 $value      = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : '';
 
@@ -5455,8 +5024,7 @@ function do_array_multiflexi($ia)
                     $value = str_replace('.', $sSeparator, $_SESSION[$surveyLabel][$myfname2]);
                 }
 
-                if ($checkboxlayout == false)
-                {
+                if ($checkboxlayout == false) {
 
                     $answer_tds .= doRender('/survey/questions/answer/arrays/multiflexi/rows/cells/answer_td', array(
                         'dataTitle'                 => $labelans[$i],
@@ -5483,15 +5051,12 @@ function do_array_multiflexi($ia)
 
                     $inputnames[] = $myfname2;
                     $thiskey++;
-                } else
-                {
+                } else {
 
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1')
-                    {
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1') {
                         $myvalue    = '1';
                         $setmyvalue = CHECKED;
-                    } else
-                    {
+                    } else {
                         $myvalue    = '';
                         $setmyvalue = '';
                     }
@@ -5513,12 +5078,10 @@ function do_array_multiflexi($ia)
 
             $rightTd = false; $answertextright = '';
 
-            if (strpos($answertextsave, '|'))
-            {
+            if (strpos($answertextsave, '|')) {
                 $answertextright    = substr($answertextsave, strpos($answertextsave, '|') + 1);
                 $rightTd            = true;
-            } elseif ($right_exists)
-            {
+            } elseif ($right_exists) {
                 $rightTd = true;
             }
 
@@ -5552,8 +5115,7 @@ function do_array_multiflexi($ia)
             'textAlignment'     => $textAlignment,
             ), true);
 
-    } else
-    {
+    } else {
         $answer     = doRender('/survey/questions/answer/arrays/multiflexi/empty_error', array(), true);
         $inputnames = '';
     }
@@ -5579,26 +5141,22 @@ function do_arraycolumns($ia)
     $labelcode = array();
     $labels = array();
 
-    foreach ($aAnswers as $lrow)
-    {
+    foreach ($aAnswers as $lrow) {
         $labelans[] = $lrow['answer'];
         $labelcode[] = $lrow['code'];
         $labels[] = array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
     }
 
     $inputnames = array();
-    if (count($labelans) > 0)
-    {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
+    if (count($labelans) > 0) {
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             $labelcode[] = '';
             $labelans[] = gT('No answer');
             $labels[] = array('answer'=>gT('No answer'), 'code'=>'');
         }
         if ($aQuestionAttributes['random_order'] == 1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-        } else
-        {
+        } else {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery); //Checked
@@ -5609,8 +5167,7 @@ function do_arraycolumns($ia)
         $aData['labelans'] = $labelans;
         $aData['labelcode'] = $labelcode;
 
-        if ($anscount > 0)
-        {
+        if ($anscount > 0) {
             if (trim($aQuestionAttributes['answer_width_bycolumn']) != '') {
                 $answerwidth = trim($aQuestionAttributes['answer_width_bycolumn']);
             } else {
@@ -5623,8 +5180,7 @@ function do_arraycolumns($ia)
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = $aQuestions;
 
-            foreach ($aQuestions as $ansrow)
-            {
+            foreach ($aQuestions as $ansrow) {
                 $anscode[] = $ansrow['title'];
                 $answers[] = $ansrow['question'];
             }
@@ -5632,15 +5188,12 @@ function do_arraycolumns($ia)
             $aData['anscode'] = $anscode;
             $aData['answers'] = $answers;
 
-            for ($_i = 0; $_i < count($answers); ++$_i)
-            {
+            for ($_i = 0; $_i < count($answers); ++$_i) {
                 $myfname = $ia[1].$anscode[$_i];
                 /* Check the Sub Q mandatory violation */
-                if ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ))
-                {
+                if ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) {
                     $aData['aQuestions'][$_i]['errormandatory'] = true;
-                } else
-                {
+                } else {
                     $aData['aQuestions'][$_i]['errormandatory'] = false;
                 }
             }
@@ -5648,36 +5201,28 @@ function do_arraycolumns($ia)
             $aData['labels'] = $labels;
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
-            foreach ($labels as $ansrow)
-            {
-                foreach ($anscode as $j => $ld)
-                {
+            foreach ($labels as $ansrow) {
+                foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1].$ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code'])
-                    {
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code']) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
-                    } elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '')
-                    {
+                    } elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '') {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
                         // should remove the !isset part I think !!
-                    } else
-                    {
+                    } else {
                         $aData['checked'][$ansrow['code']][$ld] = "";
                     }
                 }
             }
 
-            foreach ($anscode as $j => $ld)
-            {
+            foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1].$ld;
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
                     $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                } else
-                {
+                } else {
                     $aData['aQuestions'][$j]['myfname_value'] = '';
                 }
 
@@ -5691,13 +5236,11 @@ function do_arraycolumns($ia)
                 $aData,
                 true
             );
-        } else
-        {
+        } else {
             $answer = '<p class="error">'.gT('Error: There are no answers defined for this question.')."</p>";
             $inputnames = "";
         }
-    } else
-    {
+    } else {
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = '';
     }
@@ -5722,11 +5265,9 @@ function do_array_dual($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Get questions and answers by defined order
-    if ($aQuestionAttributes['random_order'] == 1)
-    {
+    if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    } else
-    {
+    } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
     }
 
@@ -5741,23 +5282,20 @@ function do_array_dual($ia)
     $aAnswersScale1 = $lresult1->readAll();
 
     // Set attributes
-    if ($aQuestionAttributes['use_dropdown'] == 1)
-    {
+    if ($aQuestionAttributes['use_dropdown'] == 1) {
         $useDropdownLayout = true;
         $coreClass .= " dropdown-array";
         $answertypeclass .= " dropdown";
         $doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
         $caption = gT("A table with a subquestion on each row, with two answers to provide on each line.  Please select the answers.");
-    } else
-    {
+    } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
         $answertypeclass .= " radio";
         $doDualScaleFunction = "doDualScaleRadio";
         $caption = gT("A table with one subquestion on each row and two answers to provide on each row. The related answer options are in the top table header row.");
     }
-    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != ""))
-    {
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
         $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
@@ -5783,24 +5321,20 @@ function do_array_dual($ia)
     //~ $rightexists=false;
     //~ $centerexists=false;
     // Label and code for input
-    foreach ($aAnswersScale0 as $lrow)
-    {
+    foreach ($aAnswersScale0 as $lrow) {
         $labels0[] = Array('code' => $lrow['code'],
             'title' => $lrow['answer']);
     }
-    foreach ($aAnswersScale1 as $lrow)
-    {
+    foreach ($aAnswersScale1 as $lrow) {
         $labels1[] = Array('code' => $lrow['code'],
             'title' => $lrow['answer']);
     }
-    if (count($aAnswersScale0) > 0 && $anscount)
-    {
+    if (count($aAnswersScale0) > 0 && $anscount) {
         $answer = "";
         $fn = 1; // Used by repeat_heading
 
         // No drop-down
-        if ($useDropdownLayout === false)
-        {
+        if ($useDropdownLayout === false) {
             $aData = array();
             $aData['coreClass'] = $coreClass;
             $aData['basename'] = $ia[1];
@@ -5811,13 +5345,11 @@ function do_array_dual($ia)
             $labelans1 = array();
             $labelcode0 = array();
             $labelcode1 = array();
-            foreach ($aAnswersScale0 as $lrow)
-            {
+            foreach ($aAnswersScale0 as $lrow) {
                 $labelans0[] = $lrow['answer'];
                 $labelcode0[] = $lrow['code'];
             }
-            foreach ($aAnswersScale1 as $lrow)
-            {
+            foreach ($aAnswersScale1 as $lrow) {
                 $labelans1[] = $lrow['answer'];
                 $labelcode1[] = $lrow['code'];
             }
@@ -5875,18 +5407,14 @@ function do_array_dual($ia)
             // And no each line of body
             $trbc = '';
             $aData['aSubQuestions'] = $aSubQuestions;
-            foreach ($aSubQuestions as $i => $ansrow)
-            {
+            foreach ($aSubQuestions as $i => $ansrow) {
 
                 // Build repeat headings if needed
-                if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0)
-                {
-                    if (($anscount - $fn + 1) >= $minrepeatheadings)
-                    {
+                if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
+                    if (($anscount - $fn + 1) >= $minrepeatheadings) {
                         $aData['aSubQuestions'][$i]['repeatheadings'] = true;
                     }
-                } else
-                {
+                } else {
                     $aData['aSubQuestions'][$i]['repeatheadings'] = false;
                 }
 
@@ -5894,20 +5422,16 @@ function do_array_dual($ia)
                 $answertext = $ansrow['question'];
 
                 // rigth and center answertext: not explode for ? Why not
-                if (strpos($answertext, '|'))
-                {
+                if (strpos($answertext, '|')) {
                     $answertextright = substr($answertext, strpos($answertext, '|') + 1);
                     $answertext = substr($answertext, 0, strpos($answertext, '|'));
-                } else
-                {
+                } else {
                     $answertextright = "";
                 }
-                if (strpos($answertextright, '|'))
-                {
+                if (strpos($answertextright, '|')) {
                     $answertextcenter = substr($answertextright, 0, strpos($answertextright, '|'));
                     $answertextright = substr($answertextright, strpos($answertextright, '|') + 1);
-                } else
-                {
+                } else {
                     $answertextcenter = "";
                 }
 
@@ -5928,11 +5452,9 @@ function do_array_dual($ia)
 
                 $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
                 /* Check the Sub Q mandatory violation */
-                if ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
-                {
+                if ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ))) {
                     $aData['aSubQuestions'][$i]['showmandatoryviolation'] = true;
-                } else
-                {
+                } else {
                     $aData['aSubQuestions'][$i]['showmandatoryviolation'] = false;
                 }
 
@@ -5945,80 +5467,68 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['sDisplayStyle'] = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
                 array_push($inputnames, $myfname0);
 
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
-                {
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
-                } else
-                {
+                } else {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = '';
                 }
 
-                if (count($labelans1) > 0) {  // if second label set is used
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
-                    {
+                if (count($labelans1) > 0) {
+// if second label set is used
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
-                    } else
-                    {
+                    } else {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';
                     }
                 }
 
-                foreach ($labelcode0 as $j => $ld) { // First label set
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
-                    {
+                foreach ($labelcode0 as $j => $ld) {
+// First label set
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
-                    } else
-                    {
+                    } else {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = "";
                     }
                 }
 
-                if (count($labelans1) > 0) {  // if second label set is used
-                    if ($shownoanswer) {// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
-                        {
+                if (count($labelans1) > 0) {
+// if second label set is used
+                    if ($shownoanswer) {
+// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
+                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
-                        } else
-                        {
+                        } else {
                             $aData['myfname0_notset'] = "";
                         }
                     }
 
                     array_push($inputnames, $myfname1);
 
-                    foreach ($labelcode1 as $j => $ld) { // second label set
-                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
-                        {
+                    foreach ($labelcode1 as $j => $ld) {
+// second label set
+                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;
-                        } else
-                        {
+                        } else {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = "";
                         }
                     }
                 }
                 $aData['answertextright'] = $answertextright;
-                if ($shownoanswer)
-                {
-                    if (count($labelans1) > 0)
-                    {
-                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
-                        {
+                if ($shownoanswer) {
+                    if (count($labelans1) > 0) {
+                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "") {
                             $answer .= CHECKED;
                             $aData['myfname1_notset'] = CHECKED;
-                        } else
-                        {
+                        } else {
                             $aData['myfname1_notset'] = "";
                         }
-                    } else
-                    {
-                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
-                        {
+                    } else {
+                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
-                        } else
-                        {
+                        } else {
                             $aData['myfname0_notset'] = '';
                         }
                     }
@@ -6034,8 +5544,7 @@ function do_array_dual($ia)
         }
 
         // Dropdown Layout
-        elseif ($useDropdownLayout === true)
-        {
+        elseif ($useDropdownLayout === true) {
             $aData = array();
             $aData['coreClass'] = $coreClass;
             $aData['basename'] = $ia[1];
@@ -6074,8 +5583,7 @@ function do_array_dual($ia)
             $aData['rightheader'] = $rightheader;
 
             $aData['aSubQuestions'] = $aSubQuestions;
-            foreach ($aSubQuestions as $i => $ansrow)
-            {
+            foreach ($aSubQuestions as $i => $ansrow) {
 
                 $myfname = $ia[1].$ansrow['title'];
                 $myfname0 = $ia[1].$ansrow['title']."#0";
@@ -6120,8 +5628,7 @@ function do_array_dual($ia)
                 true
             );
         }
-    } else
-    {
+    } else {
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = "";
     }
@@ -6150,7 +5657,8 @@ function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
         $attributeLabelWidth = 0;
     } else {
         $attributeLabelWidth = intval($attributeLabelWidth);
-        if ($attributeLabelWidth < 1 || $attributeLabelWidth > 12) {/* old system or imported or '' */
+        if ($attributeLabelWidth < 1 || $attributeLabelWidth > 12) {
+/* old system or imported or '' */
             $attributeLabelWidth = null;
         }
     }

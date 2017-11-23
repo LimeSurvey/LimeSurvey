@@ -55,8 +55,7 @@ class SavedControl extends LSActiveRecord
 
     function getAllRecords($condition = false)
     {
-        if ($condition != false)
-        {
+        if ($condition != false) {
             $this->db->where($condition);
         }
 

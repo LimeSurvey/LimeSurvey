@@ -55,8 +55,7 @@ use Template;
          */
         public function createTable($plugin, $sTableName, $aColumns, $sOptions = null)
         {
-            if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
-            {
+            if (null !== $sTableName = $this->getTableName($plugin, $sTableName)) {
                 return App()->getDb()->createCommand()->createTable($sTableName, $aColumns, $sOptions);
             }
             return false;
@@ -69,8 +68,7 @@ use Template;
          */
         public function dropTable($plugin, $sTableName)
         {
-            if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
-            {
+            if (null !== $sTableName = $this->getTableName($plugin, $sTableName)) {
                 return App()->getDb()->createCommand()->dropTable($sTableName);
             }
             return false;
@@ -90,15 +88,12 @@ use Template;
          */
         public function getTable(iPlugin $plugin, $sTableName, $bPluginTable = true)
         {
-            if ($bPluginTable)
-            {
+            if ($bPluginTable) {
                 $table = $this->getTableName($plugin, $sTableName);
-            } else
-            {
+            } else {
                 $table = $sTableName;
             }
-            if (isset($table))
-            {
+            if (isset($table)) {
                 return \PluginDynamic::model($table);
             }
         }
@@ -124,15 +119,12 @@ use Template;
          */
         public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert', $bPluginTable = true)
         {
-            if ($bPluginTable)
-            {
+            if ($bPluginTable) {
                 $table = $this->getTableName($plugin, $sTableName);
-            } else
-            {
+            } else {
                 $table = $sTableName;
             }
-            if (isset($table))
-            {
+            if (isset($table)) {
                 return new \PluginDynamic($table, $scenario);
             }
         }
@@ -200,18 +192,15 @@ use Template;
                 return $response;
             }
 
-            if (isset($response))
-            {
+            if (isset($response)) {
                 // Now map the response to the question codes if possible, duplicate question codes will result in the
                 // old sidXgidXqid code for the second time the code is found
                 $fieldmap = createFieldMap($survey, 'full', null, false, $response->attributes['startlanguage']);
                 $output = array();
-                foreach ($response->attributes as $key => $value)
-                {
+                foreach ($response->attributes as $key => $value) {
                     $newKey = $key;
                     if (array_key_exists($key, $fieldmap)) {
-                        if (array_key_exists('title', $fieldmap[$key]))
-                        {
+                        if (array_key_exists('title', $fieldmap[$key])) {
                             $code = $fieldmap[$key]['title'];
                             // Add subquestion code if needed
                             if (array_key_exists('aid', $fieldmap[$key]) && isset($fieldmap[$key]['aid']) && $fieldmap[$key]['aid'] != '') {
@@ -274,8 +263,7 @@ use Template;
          */
         public function getCurrentUser()
         {
-            if (\Yii::app()->user->id)
-            {
+            if (\Yii::app()->user->id) {
                 return \User::model()->findByPk(\Yii::app()->user->id);
             }
             return false;
@@ -301,8 +289,7 @@ use Template;
             $tables = array();
             $base = App()->getDb()->tablePrefix.'old_survey_'.$surveyId;
             $timingbase = App()->getDb()->tablePrefix.'old_survey_'.$surveyId.'_timings_';
-            foreach (App()->getDb()->getSchema()->getTableNames() as $table)
-            {
+            foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
                 if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
                                 $tables[] = $table;
                 }
@@ -399,8 +386,7 @@ use Template;
          */
         public function pluginExists($name)
         {
-            if (!is_string($name))
-            {
+            if (!is_string($name)) {
                 throw new InvalidArgumentException('$name must be a string');
             }
 
@@ -419,18 +405,15 @@ use Template;
          */
         public function pluginIsActive($name)
         {
-            if (!is_string($name))
-            {
+            if (!is_string($name)) {
                 throw new InvalidArgumentException('$name must be a string');
             }
 
             $plugin = \Plugin::model()->findByAttributes(array('name' => $name));
 
-            if ($plugin)
-            {
+            if ($plugin) {
                 return $plugin->active == 1;
-            } else
-            {
+            } else {
                 throw new Exception("Can't find a plugin with name ".$name);
             }
         }

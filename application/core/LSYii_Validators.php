@@ -45,7 +45,8 @@ class LSYii_Validators extends CValidator
 
     public function __construct()
     {
-        if (Yii::app()->getConfig('DBVersion') < 172) { // Permission::model exist only after 172 DB version
+        if (Yii::app()->getConfig('DBVersion') < 172) {
+// Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         }
         $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read'));
@@ -54,26 +55,21 @@ class LSYii_Validators extends CValidator
 
     protected function validateAttribute($object, $attribute)
     {
-        if ($this->xssfilter)
-        {
+        if ($this->xssfilter) {
             $object->$attribute = $this->xssFilter($object->$attribute);
-            if ($this->isUrl)
-            {
+            if ($this->isUrl) {
                 $object->$attribute = str_replace('javascript:', '', html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"));
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
-        if ($this->isUrl)
-        {
+        if ($this->isUrl) {
             if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {$object->$attribute = ""; }
             $object->$attribute = html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
-        if ($this->isLanguage)
-        {
+        if ($this->isLanguage) {
             $object->$attribute = $this->languageFilter($object->$attribute);
         }
-        if ($this->isLanguageMulti)
-        {
+        if ($this->isLanguageMulti) {
             $object->$attribute = $this->multiLanguageFilter($object->$attribute);
         }
     }
@@ -89,20 +85,17 @@ class LSYii_Validators extends CValidator
     {
         // Actually don't use it in model : model apply too when import : needed or not ?
         $value = str_replace('<br type="_moz" />', '', $value);
-        if ($value == "<br />" || $value == " " || $value == "&nbsp;")
-        {
+        if ($value == "<br />" || $value == " " || $value == "&nbsp;") {
             $value = "";
         }
-        if (preg_match("/^[\s]+$/", $value))
-        {
+        if (preg_match("/^[\s]+$/", $value)) {
             $value = '';
         }
-        if ($value == "\n")
-        {
+        if ($value == "\n") {
             $value = "";
         }
-        if (trim($value) == "&nbsp;" || trim($value) == '')
-        { // chrome adds a single &nbsp; element to empty fckeditor fields
+        if (trim($value) == "&nbsp;" || trim($value) == '') {
+// chrome adds a single &nbsp; element to empty fckeditor fields
             $value = "";
         }
         return $value;
@@ -153,8 +146,7 @@ class LSYii_Validators extends CValidator
                 $sExpression = trim($aValue[0], '{}');
                 $sNewValue .= "{";
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
-                foreach ($aParsedExpressions as $aParsedExpression)
-                {
+                foreach ($aParsedExpressions as $aParsedExpression) {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
                         $sNewValue .= "\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {

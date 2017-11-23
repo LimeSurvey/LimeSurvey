@@ -36,8 +36,7 @@ class Assessments extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read'))
-        {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
             $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
 
@@ -66,8 +65,7 @@ class Assessments extends Survey_Common_Action
 
 
             $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
-        } else
-        {
+        } else {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array("admin/"));
         }
@@ -126,8 +124,7 @@ class Assessments extends Survey_Common_Action
         $urls['output'] .= viewHelper::getViewTestTag('surveyAssessments');
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
-        if ($oSurvey->assessments != 'Y')
-        {
+        if ($oSurvey->assessments != 'Y') {
             $aData['asessementNotActivated'] = array(
                 'title' => gT("Assessments mode not activated"), 
                 'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
@@ -186,8 +183,7 @@ class Assessments extends Survey_Common_Action
             $bFirst = true;
             $iAssessmentID = -1;
             $aLanguages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($aLanguages as $sLanguage)
-            {
+            foreach ($aLanguages as $sLanguage) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $sLanguage);
 
                 if ($bFirst == false) {
@@ -211,8 +207,7 @@ class Assessments extends Survey_Common_Action
 
             $aid = sanitize_int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($languages as $language)
-            {
+            foreach ($languages as $language) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);
                 Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
             }

@@ -27,11 +27,9 @@ function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
 {
     $error = '';
     try {
-        if ($inputarr)
-        {
+        if ($inputarr) {
             $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
-        } else
-        {
+        } else {
             $dataset = Yii::app()->db->createCommand($sql)->query();
 
         }
@@ -40,8 +38,7 @@ function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
         $dataset = false;
     }
 
-    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent))
-    {
+    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
         // Exception is better than safeDie, because you can see the backtrace.
         throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
     }
@@ -100,8 +97,7 @@ function dbSelectLimitAssoc($sql, $numrows = 0, $offset = 0, $inputarr = false, 
  */
 function dbQuoteID($id)
 {
-    switch (Yii::app()->db->getDriverName())
-    {
+    switch (Yii::app()->db->getDriverName()) {
         case "mysqli" :
         case "mysql" :
             return "`".$id."`";
@@ -133,8 +129,7 @@ function dbRandom()
     //$configForm = new InstallerConfigForm();
     //$dbTypes    = $configForm->db_names; //Supported types are in this array
 
-    switch ($driver)
-    {
+    switch ($driver) {
         case 'dblib':
         case 'mssql':
         case 'sqlsrv':

@@ -329,10 +329,12 @@ class ParticipantAttributeName extends LSActiveRecord
             $findCriteria->params = array(':participant_id'=>$participant_id);
             $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')
                                                         ->findAll($findCriteria);
-            foreach ($records as $row) { //Iterate through each attribute
+            foreach ($records as $row) {
+//Iterate through each attribute
                 $thisname = "";
                 $thislang = "";
-                foreach ($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                foreach ($row->participant_attribute_names_lang as $names) {
+//Iterate through each language version of this attribute
                     if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
                     if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
                 }
@@ -349,10 +351,12 @@ class ParticipantAttributeName extends LSActiveRecord
         } else {
             $findCriteria = new CDbCriteria();
             $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
-            foreach ($records as $row) { //Iterate through each attribute
+            foreach ($records as $row) {
+//Iterate through each attribute
                 $thisname = "";
                 $thislang = "";
-                foreach ($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                foreach ($row->participant_attribute_names_lang as $names) {
+//Iterate through each language version of this attribute
                     if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
                     if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
                 }
@@ -389,10 +393,12 @@ class ParticipantAttributeName extends LSActiveRecord
         $findCriteria->limit = -1;
         $output = array();
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
-        foreach ($records as $row) { //Iterate through each attribute
+        foreach ($records as $row) {
+//Iterate through each attribute
             $thisname = "";
             $thislang = "";
-            foreach ($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+            foreach ($row->participant_attribute_names_lang as $names) {
+//Iterate through each language version of this attribute
                 if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
                 if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
             }
@@ -444,10 +450,12 @@ class ParticipantAttributeName extends LSActiveRecord
         $alias = $this->getTableAlias();
         $criteria->addNotInCondition("$alias.attribute_id", $attributeIds);
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($criteria);
-        foreach ($records as $row) { //Iterate through each attribute
+        foreach ($records as $row) {
+//Iterate through each attribute
             $thisname = "";
             $thislang = "";
-            foreach ($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+            foreach ($row->participant_attribute_names_lang as $names) {
+//Iterate through each language version of this attribute
                 if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
                 if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
             }

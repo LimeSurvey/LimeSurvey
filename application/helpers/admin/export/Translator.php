@@ -17,11 +17,9 @@ class Translator
      */
     public function getHeaderTranslationKey($column)
     {
-        if (isset($this->headerTranslationKeys[$column]))
-        {
+        if (isset($this->headerTranslationKeys[$column])) {
             return $this->headerTranslationKeys[$column];
-        } else
-        {
+        } else {
             return false;
         }
     }

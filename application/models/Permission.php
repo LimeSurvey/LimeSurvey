@@ -167,8 +167,7 @@ class Permission extends LSActiveRecord
             )
         );
         uasort($aPermissions, array(__CLASS__, "comparePermissionTitle"));
-        foreach ($aPermissions as &$permission)
-        {
+        foreach ($aPermissions as &$permission) {
             $permission = array_merge($defaults, $permission);
         }
         return $aPermissions;
@@ -376,12 +375,10 @@ class Permission extends LSActiveRecord
                     }
                 }
                 $aBasePermissions = $aFilteredPermissions;
-            } elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) 
-            {
+            } elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) {
                 unset($aBasePermissions['superadmin']);
             }
-        } elseif ($sEntityName == 'survey') 
-        {
+        } elseif ($sEntityName == 'survey') {
             $aBasePermissions = Permission::model()->getSurveyBasePermissions();
         }
 

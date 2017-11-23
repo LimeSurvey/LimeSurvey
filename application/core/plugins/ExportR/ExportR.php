@@ -23,7 +23,7 @@ class ExportR extends \LimeSurvey\PluginManager\PluginBase
         $event = $this->getEvent();
         $type = $event->get('type');
         
-        switch ($type) {           
+        switch ($type) {
             case 'rsyntax':
                 $tooltip = CHtml::openTag('ol');
                 $tooltip .= CHtml::tag('li', array(), gT("Download the data and the syntax file."));

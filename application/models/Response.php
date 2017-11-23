@@ -8,8 +8,7 @@
     {
         public function beforeDelete()
         {
-            if (parent::beforeDelete())
-            {
+            if (parent::beforeDelete()) {
                 $this->deleteFiles();
                 return true;
             }
@@ -66,18 +65,15 @@
         public function getFilesAndSqga($sQID = 0)
         {
             $aConditions = array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$this->survey->language);
-            if ($sQID > 0)
-            {
+            if ($sQID > 0) {
                 $aConditions['qid'] = $sQID;
             }
             $aQuestions = Question::model()->findAllByAttributes($aConditions);
             $files = array();
-            foreach ($aQuestions as $question)
-            {
+            foreach ($aQuestions as $question) {
                 $field = "{$question->sid}X{$question->gid}X{$question->qid}";
                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
-                if (is_array($data))
-                {
+                if (is_array($data)) {
                     $files[$field] = $data;
                 }
             }
@@ -92,8 +88,7 @@
         public function someFileExists($sQID = 0)
         {
             $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
-            foreach ($this->getFiles($sQID) as $fileInfo)
-            {
+            foreach ($this->getFiles($sQID) as $fileInfo) {
                 $basename = basename($fileInfo['filename']);
                 if (file_exists($uploaddir.$basename)) {
                     return true;

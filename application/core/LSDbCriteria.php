@@ -30,11 +30,9 @@ class LSDbCriteria extends CDbCriteria
     // public function compare(string $column, mixed $value, boolean $partialMatch=false, string $operator='AND', boolean $escape=true)
     public function compare($column, $value, $partialMatch = false, $operator = 'AND', $escape = true)
     {
-        if ($partialMatch && Yii::app()->db->getDriverName() == 'pgsql')
-        {
+        if ($partialMatch && Yii::app()->db->getDriverName() == 'pgsql') {
             $this->addSearchCondition($column, $value, true, $operator, 'ILIKE');
-        } else
-        {
+        } else {
             parent::compare($column, $value, $partialMatch, $operator, $escape);
         }
     }

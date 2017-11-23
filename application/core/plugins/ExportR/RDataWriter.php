@@ -77,11 +77,14 @@ class RDataWriter extends CsvWriter
                     }
                 }
 
-                if ($value == 'Y') {            // Yes
+                if ($value == 'Y') {
+// Yes
                     return 1;
-                } elseif ($value === '') {      // No
+                } elseif ($value === '') {
+// No
                     return 0;
-                } else {                        // Not shown
+                } else {
+// Not shown
                     return $this->na;
                 }
                 break;

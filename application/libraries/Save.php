@@ -186,14 +186,12 @@ class Save
         if (!Yii::app()->request->getPost('savepass')) {
             $this->aSaveErrors[] = gT("You must supply a password for this saved session.");
         }
-        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2'))
-        {
+        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2')) {
             $this->aSaveErrors[] = gT("Your passwords do not match.");
         }
 
         // if security question asnwer is incorrect
-        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
-        {
+        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
             if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
              || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
@@ -201,28 +199,26 @@ class Save
             }
         }
 
-        if (!empty($this->aSaveErrors))
-        {
+        if (!empty($this->aSaveErrors)) {
             return;
         }
         $saveName = Yii::app()->request->getPost('savename');
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $saveName));
         if (strpos($saveName, '/') !== false || strpos($saveName, '/') !== false || strpos($saveName, '&') !== false || strpos($saveName, '&') !== false
-            || strpos($saveName, '\\') !== false || strpos($saveName, '\\') !== false)
-        {
+            || strpos($saveName, '\\') !== false || strpos($saveName, '\\') !== false) {
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
             return;
-        } elseif (!empty($duplicate) && $duplicate->count() > 0) { // OK - AR count
+        } elseif (!empty($duplicate) && $duplicate->count() > 0) {
+// OK - AR count
             $this->aSaveErrors[] = gT("This name has already been used for this survey. You must use a unique save name.");
             return;
-        } elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail'])) { // Check if the email address is valid
+        } elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail'])) {
+// Check if the email address is valid
             $errormsg .= gT("This is not a valid email address. Please provide a valid email address or leave it empty.")."<br />\n";
             return;
-        } else
-        {
+        } else {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
-            if (!isset($_SESSION['survey_'.$surveyid]['srid']))
-            {
+            if (!isset($_SESSION['survey_'.$surveyid]['srid'])) {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
                     "datestamp" => $today,
@@ -233,8 +229,7 @@ class Save
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
-                } else
-                {
+                } else {
                     safeDie("Unable to insert record into survey table.<br /><br />");
                 }
             }
@@ -250,20 +245,16 @@ class Save
             $saved_control->saved_thisstep = $thisstep;
             $saved_control->status = 'S';
             $saved_control->saved_date = $today;
-            if (isset($_SESSION['survey_'.$surveyid]['refurl']))
-            {
+            if (isset($_SESSION['survey_'.$surveyid]['refurl'])) {
                 $saved_control->refurl = $_SESSION['survey_'.$surveyid]['refurl'];
-            } else
-            {
+            } else {
                 $saved_control->refurl = getenv("HTTP_REFERER");
             }
 
-            if ($saved_control->save())
-            {
+            if ($saved_control->save()) {
                 $scid = getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
-            } else
-            {
+            } else {
                 safeDie("Unable to insert record into saved_control table.<br /><br />");
             }
 
@@ -271,8 +262,7 @@ class Save
             $_SESSION['survey_'.$surveyid]['holdpass'] = $_POST['savepass']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail']))
-            {
+            if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail'])) {
                 $subject  = gT("Saved Survey Details")." - ".$thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
@@ -280,21 +270,17 @@ class Save
                 $message .= gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                 $aParams = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>$_POST['savename'], 'loadpass'=>$_POST['savepass']);
-                if (!empty($clienttoken))
-                {
+                if (!empty($clienttoken)) {
                     $aParams['token'] = $clienttoken;
                 }
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
 
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
-                {
+                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid))) {
                     $emailsent = "Y";
-                } else
-                {
+                } else {
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (trim($thissurvey['adminemail']) == '')
-                    {
+                    if (trim($thissurvey['adminemail']) == '') {
                         $errormsg .= gT('(Reason: Admin email address empty)');
                     }
                 }
@@ -469,18 +455,17 @@ class Save
 
         if (isset($_POST['lastanswer'])) {
             $setField = $_POST['lastanswer'];
-        } elseif (isset($_POST['lastgroup']))
-        {
+        } elseif (isset($_POST['lastgroup'])) {
             $setField = $_POST['lastgroup'];
         }
         $passedTime = str_replace(',', '.', round(microtime(true) - $_POST['start_time'], 2));
-        if (!isset($setField)) { //we show the whole survey on one page - we don't have to save time for group/question
+        if (!isset($setField)) {
+//we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + ".$passedTime
             ." WHERE id = ".$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
-        } else
-        {
+        } else {
             $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
             if (!in_array($setField, $aColumnNames)) {

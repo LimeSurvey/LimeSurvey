@@ -38,8 +38,7 @@ class oldUrlCompat extends PluginBase
      */
     public function oldUrlCompat()
     {
-        if (App()->getController() && App()->getController()->getId() === "surveys" && App()->request->getQuery('sid'))
-        {
+        if (App()->getController() && App()->getController()->getId() === "surveys" && App()->request->getQuery('sid')) {
             Yii::app()->getController()->forward('survey/index');
         }
     }

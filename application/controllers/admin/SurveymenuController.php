@@ -56,8 +56,7 @@ class SurveymenuController extends Survey_Common_Action
         // $this->performAjaxValidation($model);
 		
         $success = false;
-        if (Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             $aSurveymenu = Yii::app()->request->getPost('Surveymenu', []);
             if ($aSurveymenu['id'] == '') {
                 unset($aSurveymenu['id']);
@@ -106,8 +105,7 @@ class SurveymenuController extends Survey_Common_Action
         $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         $oBaseModel = Surveymenu::model();
-        if (Permission::model()->hasGlobalPermission('settings', 'update'))
-        {
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             // First we create the array of fields to update
             $aData = array();
             $aResults['global']['result'] = true;
@@ -115,16 +113,13 @@ class SurveymenuController extends Survey_Common_Action
             // Core Fields
             $aCoreTokenFields = array('position', 'parent', 'survey', 'user');
 
-            foreach ($aCoreTokenFields as $sCoreTokenField)
-            {
-                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep')
-                {
+            foreach ($aCoreTokenFields as $sCoreTokenField) {
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
             }
             
-            if (count($aData) > 0)
-            {
+            if (count($aData) > 0) {
                 foreach ($aSurveyMenuIds as $iSurveyMenuId) {
                     $iSurveyMenuId = (int) $iSurveyMenuId;
                     $oSurveyMenu = Surveymenu::model()->findByPk($iSurveyMenuId);
@@ -142,14 +137,12 @@ class SurveymenuController extends Survey_Common_Action
                         $aResults[$iSurveyMenuId]['message']   = $iSurveyMenuId->error;
                     }
                 }
-            } else
-            {
+            } else {
                 $aResults['global']['result']  = false;
                 $aResults['global']['message'] = gT('Nothing to update');
             }
 
-        } else 
-        {
+        } else {
             $aResults['global']['result'] = false;
             $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
         }
@@ -164,8 +157,7 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function massDelete()
     {
-        if (Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
@@ -206,8 +198,7 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function delete()
     {
-        if (Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
             $success = false;
             $model = $this->loadModel($menuid);
@@ -243,11 +234,9 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function restore()
     {
-        if (Yii::app()->request->isPostRequest)
-        {
+        if (Yii::app()->request->isPostRequest) {
             //Check for permission!
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
-            {
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
                 $returnData = array(
                     'data' => [
@@ -325,8 +314,7 @@ class SurveymenuController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveymenu-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveymenu-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
@@ -350,11 +338,9 @@ class SurveymenuController extends Survey_Common_Action
     public function getsurveymenuform($menuid = null)
     {
         $menuid = Yii::app()->request->getParam('menuid', null);
-        if ($menuid != null)
-        {
+        if ($menuid != null) {
             $model = Surveymenu::model()->findByPk(((int) $menuid));
-        } else 
-        {
+        } else {
             $model = new Surveymenu();
         }
         $user = Yii::app()->session['loginID'];

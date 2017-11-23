@@ -16,28 +16,23 @@ class Menu implements MenuInterface
      */
     public function __construct($options)
     {
-        if (isset($options['isDropDown']))
-        {
+        if (isset($options['isDropDown'])) {
             $this->isDropDown = $options['isDropDown'];
         }
 
-        if (isset($options['label']))
-        {
+        if (isset($options['label'])) {
             $this->label = $options['label'];
         }
 
-        if (isset($options['href']))
-        {
+        if (isset($options['href'])) {
             $this->href = $options['href'];
         }
 
-        if (isset($options['menuItems']))
-        {
+        if (isset($options['menuItems'])) {
             $this->menuItems = $options['menuItems'];
         }
 
-        if (isset($options['iconClass']))
-        {
+        if (isset($options['iconClass'])) {
             $this->iconClass = $options['iconClass'];
         }
     }

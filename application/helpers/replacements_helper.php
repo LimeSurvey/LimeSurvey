@@ -66,8 +66,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $varsPassed = array();
 
-    foreach ($allowedvars as $var)
-    {
+    foreach ($allowedvars as $var) {
         if (isset($redata[$var])) {
             $$var = $redata[$var];
             $varsPassed[] = $var;
@@ -85,8 +84,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
-    if ($_surveyid && !isset($thissurvey))
-    {
+    if ($_surveyid && !isset($thissurvey)) {
         $thissurvey = getSurveyInfo($_surveyid, $s_lang);
     }
 
@@ -98,11 +96,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // lets sanitize the survey template
-    if (isset($thissurvey['templatedir']))
-    {
+    if (isset($thissurvey['templatedir'])) {
         $templatename = $thissurvey['templatedir'];
-    } else
-    {
+    } else {
         $templatename = Yii::app()->getConfig('defaulttheme');
     }
     if (!isset($templateurl)) {
@@ -121,27 +117,22 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      *
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
-    if ($oTemplate === '')
-    {
+    if ($oTemplate === '') {
         $oTemplate = Template::model()->getInstance($templatename);
     }
 
     // surveyformat
-    if (isset($thissurvey['format']))
-    {
+    if (isset($thissurvey['format'])) {
         $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
-    } else
-    {
+    } else {
         $surveyformat = "";
     }
-    if (!empty($oTemplate->cssFramework->name))
-    {
+    if (!empty($oTemplate->cssFramework->name)) {
         $surveyformat .= " ".$oTemplate->cssFramework->name."-engine ";
     }
 
 
-    if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat != "allinone")
-    {
+    if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat != "allinone") {
         $surveyformat .= " page-odd";
     }
 
@@ -176,11 +167,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
     ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
     ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
-    )
-    {
+    ) {
         $_groupname = isset($groupname) ? $groupname : '';
-    } else
-    {
+    } else {
         $_groupname = '';
     };
     if (
@@ -189,11 +178,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
     ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
     ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
-    )
-    {
+    ) {
         $_groupdescription = isset($groupdescription) ? $groupdescription : '';
-    } else
-    {
+    } else {
         $_groupdescription = '';
     };
 
@@ -205,64 +192,50 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $showxquestions == 'show' ||
     ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||
     ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
-    )
-    {
-        if ($_totalquestionsAsked < 1)
-        {
+    ) {
+        if ($_totalquestionsAsked < 1) {
             $_therearexquestions = gT("There are no questions in this survey"); // Singular
-        } elseif ($_totalquestionsAsked == 1)
-        {
+        } elseif ($_totalquestionsAsked == 1) {
             $_therearexquestions = gT("There is 1 question in this survey"); //Singular
-        } else
-        {
+        } else {
             $_therearexquestions = gT("There are {NUMBEROFQUESTIONS} questions in this survey."); //Note this line MUST be before {NUMBEROFQUESTIONS}
         };
         $_therearexquestions = "<div class='question-count-text'>".$_therearexquestions."</div>";
-    } else
-    {
+    } else {
         $_therearexquestions = '';
     };
 
-    if (isset($token))
-    {
+    if (isset($token)) {
         $_token = $token;
-    } elseif (isset($clienttoken))
-    {
+    } elseif (isset($clienttoken)) {
         $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
-    } else
-    {
+    } else {
         $_token = '';
     }
 
     // Expiry
-    if (isset($thissurvey['expiry']))
-    {
+    if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
         Yii::import('application.libraries.Date_Time_Converter', true);
         $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d");
         $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
-    } else
-    {
+    } else {
         $_dateoutput = '-';
     }
 
     $_linkreplace = '';
 
-    if (isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y')
-    {
+    if (isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
         $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
-    } else
-    {
+    } else {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
     $_clearall = "";
 
-    if (isset(Yii::app()->session['datestamp']))
-    {
+    if (isset(Yii::app()->session['datestamp'])) {
         $_datestamp = Yii::app()->session['datestamp'];
-    } else
-    {
+    } else {
         $_datestamp = '-';
     }
 
@@ -271,14 +244,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_restart = "";
     $_return_to_survey = "";
 
-    if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
-    {
+    if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
-    } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
-    {
+    } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
-    } else
-    {
+    } else {
         $_googleAnalyticsAPIKey = "";
     }
 
@@ -286,8 +256,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
 
-    if ($_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle == 2)
-    {
+    if ($_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle == 2) {
         // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
         $moveInfo = LimeExpressionManager::GetLastMoveResult();
         if (is_null($moveInfo)) {
@@ -305,17 +274,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     $_endtext = '';
-    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '')
-    {
+    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 
     $sitelogo = '';
 
-    if (!empty($oTemplate->siteLogo))
-    {
-        if (file_exists($oTemplate->path.$oTemplate->siteLogo))
-        {
+    if (!empty($oTemplate->siteLogo)) {
+        if (file_exists($oTemplate->path.$oTemplate->siteLogo)) {
             $sitelogo = '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="'.App()->getAssetManager()->publish($oTemplate->path.$oTemplate->siteLogo).'" alt=""/>';
         }
     }
@@ -370,16 +336,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
-    if (!isset($replacements['QID']))
-    {
+    if (!isset($replacements['QID'])) {
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $coreReplacements = array_merge($coreReplacements, SurveyRuntimeHelper::getQuestionReplacement(null)); // so $replacements overrides core values
     }
-    if (!is_null($replacements) && is_array($replacements))
-    {
+    if (!is_null($replacements) && is_array($replacements)) {
         $doTheseReplacements = array_merge($coreReplacements, $replacements); // so $replacements overrides core values
-    } else
-    {
+    } else {
         $doTheseReplacements = $coreReplacements;
     }
 
@@ -396,18 +359,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticReplace = true)
 {
 
-    if ($bReplaceInsertans)
-    {
+    if ($bReplaceInsertans) {
         $replacements = array();
-        foreach ($fieldsarray as $key => $value)
-        {
+        foreach ($fieldsarray as $key => $value) {
             $replacements[substr($key, 1, -1)] = $value;
         }
         $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
-    } else
-    {
-        foreach ($fieldsarray as $key => $value)
-        {
+    } else {
+        foreach ($fieldsarray as $key => $value) {
             $text = str_replace($key, $value, $text);
         }
     }
@@ -427,8 +386,7 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
 */
 function PassthruReplace($line, $thissurvey)
 {
-    while (strpos($line, "{PASSTHRU:") !== false)
-    {
+    while (strpos($line, "{PASSTHRU:") !== false) {
         $p1 = strpos($line, "{PASSTHRU:"); // startposition
         $p2 = $p1 + 10; // position of the first arg char
         $p3 = strpos($line, "}", $p1); // position of the last arg char
@@ -438,8 +396,7 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue = '';
-        if (isset($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]))
-        {
+        if (isset($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg])) {
             $sValue = urlencode($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]);
         }
         $line = str_replace($cmd, $sValue, $line); // replace

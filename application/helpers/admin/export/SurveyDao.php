@@ -36,8 +36,7 @@ class SurveyDao
             $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId, 'full', true, false, $lang);
         }
 
-        if (empty($intId))
-        {
+        if (empty($intId)) {
             //The id given to us is not an integer, croak.
             safeDie("An invalid survey ID was encountered");
         }
@@ -63,8 +62,7 @@ class SurveyDao
         'ORDER BY a.qid, a.sortorder;';
         //$survey->answers = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aAnswers = Yii::app()->db->createCommand($sQuery)->queryAll();
-        foreach ($aAnswers as $aAnswer)
-        {
+        foreach ($aAnswers as $aAnswer) {
                 $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
         }
         //Load language settings for requested language
@@ -73,8 +71,7 @@ class SurveyDao
         $survey->languageSettings = $recordSet->read();
         $recordSet->close();
 
-        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read'))
-        {
+        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read')) {
             // Now add the tokenFields
             $survey->tokenFields = getTokenFieldsAndNames($survey->id);
             unset($survey->tokenFields['token']);
@@ -109,8 +106,7 @@ class SurveyDao
                     $sField = $survey->responsesTableName.".".$sField;
         }
         $oRecordSet = Yii::app()->db->createCommand()->from($survey->responsesTableName);
-        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read'))
-        {
+        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read')) {
             $oRecordSet->leftJoin($survey->tokensTableName.' tokentable', 'tokentable.token='.$survey->tokensTableName.'.token');
             $aTokenFields = Yii::app()->db->schema->getTable($survey->tokensTableName)->getColumnNames();
             foreach ($aTokenFields as &$sField) {
@@ -167,15 +163,13 @@ class SurveyDao
 
         if (is_string($sFilter) && $sFilter) {
                     $oRecordSet->andWhere($sFilter);
-        } elseif (is_array($sFilter) && count($sFilter))
-        {
+        } elseif (is_array($sFilter) && count($sFilter)) {
             foreach ($sFilter as $filter) {
                             $oRecordSet->andWhere($filter);
             }
         }
 
-        switch ($completionState)
-        {
+        switch ($completionState) {
             case 'incomplete':
                 $oRecordSet->andWhere('submitdate IS NULL');
                 break;

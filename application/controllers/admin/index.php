@@ -20,8 +20,7 @@ class Index extends Survey_Common_Action
     {
         App()->loadHelper('surveytranslator');
         $aData['issuperadmin'] = false;
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $aData['issuperadmin'] = true;
         }
 
@@ -29,14 +28,12 @@ class Index extends Survey_Common_Action
         $setting_entry = 'last_survey_'.Yii::app()->user->getId();
         $lastsurvey = getGlobalSetting($setting_entry);
         $survey = Survey::model()->findByPk($lastsurvey);
-        if ($lastsurvey != null && $survey)
-        {
+        if ($lastsurvey != null && $survey) {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
             $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title."(".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
-        } else
-        {
+        } else {
             $aData['showLastSurvey'] = false;
         }
 
@@ -52,8 +49,7 @@ class Index extends Survey_Common_Action
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
         $lastquestionsid = getGlobalSetting($setting_entry);
         $survey = Survey::model()->findByPk($lastquestionsid);
-        if ($lastquestion && $lastquestiongroup && $survey)
-        {
+        if ($lastquestion && $lastquestiongroup && $survey) {
 
             $baselang = $survey->language;
             $aData['showLastQuestion'] = true;
@@ -61,20 +57,16 @@ class Index extends Survey_Common_Action
             $gid = $lastquestiongroup;
             $sid = $lastquestionsid;
             $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid, 'language' => $baselang));
-            if ($qrrow)
-            {
+            if ($qrrow) {
                 $aData['last_question_name'] = $qrrow['title'];
-                if ($qrrow['question'])
-                {
+                if ($qrrow['question']) {
                     $aData['last_question_name'] .= ' : '.$qrrow['question'];
                 }
                 $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
-            } else
-            {
+            } else {
                 $aData['showLastQuestion'] = false;
             }
-        } else
-        {
+        } else {
             $aData['showLastQuestion'] = false;
         }
 

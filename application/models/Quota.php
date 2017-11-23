@@ -171,8 +171,7 @@ class Quota extends LSActiveRecord
 
             $oCriteria = new CDbCriteria;
             $oCriteria->condition = new CDbExpression("submitdate IS NOT NULL");
-            foreach ($aQuotaColumns as $sColumn=>$aValue)
-            {
+            foreach ($aQuotaColumns as $sColumn=>$aValue) {
                 if (count($aValue) == 1) {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn), $aValue); // NO need params : compare bind
                 } else {

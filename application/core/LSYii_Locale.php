@@ -27,8 +27,7 @@ class LSYii_Locale extends CLocale
     {
         // Fix up the LimeSurvey language code for Yii
         $aLanguageData = getLanguageData();
-        if (isset($aLanguageData[$id]['cldr']))
-        {
+        if (isset($aLanguageData[$id]['cldr'])) {
             $id = $aLanguageData[$id]['cldr'];
         }
         static $locales = array();

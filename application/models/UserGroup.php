@@ -149,7 +149,8 @@ class UserGroup extends LSActiveRecord
                                                             ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
                                                             ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
         $result = $command->query();
-        if ($result) { //Checked
+        if ($result) {
+//Checked
             $id = getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
             if ($id > 0) {
                     $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';

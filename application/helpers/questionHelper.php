@@ -29,8 +29,7 @@ class questionHelper
      */
     public static function getAttributesDefinitions()
     {
-        if (self::$attributes)
-        {
+        if (self::$attributes) {
             return self::$attributes;
         }
 
@@ -1603,8 +1602,7 @@ class questionHelper
      */
     public static function getQuestionAttributesSettings($sType)
     {
-        if (!isset(self::$questionAttributesSettings[$sType]))
-        {
+        if (!isset(self::$questionAttributesSettings[$sType])) {
             self::$questionAttributesSettings[$sType] = array();
             self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
@@ -1625,8 +1623,7 @@ class questionHelper
                 "readonly"=>false,
                 "readonly_when_active"=>false,
             );
-            foreach ($aQuestionTypeAttribute as $attribute=>$settings)
-            {
+            foreach ($aQuestionTypeAttribute as $attribute=>$settings) {
                 self::$questionAttributesSettings[$sType][$attribute] = array_merge(
                     $default,
                     $settings,

@@ -114,8 +114,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
     //			'attr1', 'attr2');
 
     $aTokenAttr = getAttributeFieldNames($surveyid);
-    foreach ($aTokenAttr as $thisattrfieldname)
-    {
+    foreach ($aTokenAttr as $thisattrfieldname) {
         $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
         $userparams[] = "attr".$attridx;
     }
@@ -153,7 +152,8 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
         $groupscope);
         $rescount = @ldap_count_entries($ds, $search_groups);
 
-        if ($rescount >= 1) { // at least 1 group was selected
+        if ($rescount >= 1) {
+// at least 1 group was selected
             $group_info = ldap_get_entries($ds, $search_groups);
             // For each group candidate add members's id to $userCandidates[]
             for ($i = 0; $i < $group_info["count"]; $i++) {

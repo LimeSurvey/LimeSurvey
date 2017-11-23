@@ -34,31 +34,25 @@ class pdfHelper
         Yii::import('application.helpers.surveytranslator_helper', true);
 
         $pdffont = Yii::app()->getConfig('pdfdefaultfont');
-        if ($pdffont == 'auto')
-        {
+        if ($pdffont == 'auto') {
             $pdffont = PDF_FONT_NAME_DATA;
         }
         $pdfcorefont = array("freesans", "dejavusans", "courier", "helvetica", "freemono", "symbol", "times", "zapfdingbats");
-        if (in_array($pdffont, $pdfcorefont))
-        {
+        if (in_array($pdffont, $pdfcorefont)) {
             $alternatepdffontfile = Yii::app()->getConfig('alternatepdffontfile');
-            if (array_key_exists($language, $alternatepdffontfile))
-            {
+            if (array_key_exists($language, $alternatepdffontfile)) {
                 $pdffont = $alternatepdffontfile[$language]; // Actually use only core font
             }
         }
         $pdffontsize = Yii::app()->getConfig('pdffontsize');
-        if ($pdffontsize == 'auto')
-        {
+        if ($pdffontsize == 'auto') {
             $pdffontsize = PDF_FONT_SIZE_MAIN;
         }
         $lg = array();
         $lg['a_meta_charset'] = 'UTF-8';
-        if (getLanguageRTL($language))
-        {
+        if (getLanguageRTL($language)) {
             $lg['a_meta_dir'] = 'rtl';
-        } else
-        {
+        } else {
             $lg['a_meta_dir'] = 'ltr';
         }
         $lg['a_meta_language'] = $language;

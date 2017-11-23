@@ -8,10 +8,8 @@
 		
         public static function autoload($className)
         {
-            foreach (self::$map as $prefix => $baseClass)
-            {
-                if (strpos($className, $prefix) === 0)
-                {
+            foreach (self::$map as $prefix => $baseClass) {
+                if (strpos($className, $prefix) === 0) {
                     self::createClass($baseClass, $className);
                     return true;
                 }
@@ -38,8 +36,7 @@
             // mdekker: Don't see the need for sorting, but since anonymous functions 
             //          can break on eaccelerator avoid it when possible uncomment if needed:
             //krsort(self::$map); 
-            if (!self::$registered)
-            {
+            if (!self::$registered) {
                 self::$registered = spl_autoload_register(array(get_class(), 'autoload'), true, true);
             }
         }

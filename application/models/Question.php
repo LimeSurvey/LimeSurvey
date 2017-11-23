@@ -740,13 +740,11 @@ class Question extends LSActiveRecord
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="#" role="button" ><span class="fa fa-eye-open"  ></span></a> ';
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
-        {
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'))
-        {
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
         }
 
@@ -806,7 +804,8 @@ class Question extends LSActiveRecord
             $position = 0;
             foreach ($ansresult as $answer) {
                 if (($answer['title'] == trim($exclude_all_others))) {
-                    if ($position == $answer['question_order'] - 1) { //already in the right position
+                    if ($position == $answer['question_order'] - 1) {
+//already in the right position
                         break; 
                     }
                     $tmp = array_splice($ansresult, $position, 1);

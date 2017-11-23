@@ -34,13 +34,11 @@ class quotas extends Survey_Common_Action
         // Sanitize/get globals/variables
         $_POST['quotamax'] = sanitize_int(Yii::app()->request->getPost('quotamax'));
 
-        if (empty($_POST['autoload_url']))
-        {
+        if (empty($_POST['autoload_url'])) {
             $_POST['autoload_url'] = 0;
         }
 
-        if (empty($_POST['quota_limit']) || !is_numeric(Yii::app()->request->getPost('quota_limit')) || Yii::app()->request->getPost('quota_limit') < 0)
-        {
+        if (empty($_POST['quota_limit']) || !is_numeric(Yii::app()->request->getPost('quota_limit')) || Yii::app()->request->getPost('quota_limit') < 0) {
             $_POST['quota_limit'] = 0;
         }
     }
@@ -74,11 +72,9 @@ class quotas extends Survey_Common_Action
 
     function _redirectToIndex($iSurveyId)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read'))
-        {
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
-        } else
-        {
+        } else {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
         }
@@ -137,8 +133,7 @@ class quotas extends Survey_Common_Action
         $aData = $this->_getData($iSurveyId);
         $aViewUrls = array();
 
-        if ($quickreport == false)
-        {
+        if ($quickreport == false) {
             $aViewUrls[] = 'viewquotas_view';
         }
 
@@ -163,8 +158,7 @@ class quotas extends Survey_Common_Action
         $csvoutput = array();
 
         // Set number of page
-        if (Yii::app()->getRequest()->getQuery('pageSize'))
-        {
+        if (Yii::app()->getRequest()->getQuery('pageSize')) {
             Yii::app()->user->setState('pageSize', (int) Yii::app()->getRequest()->getQuery('pageSize'));
         }
         $aData['iGridPageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -178,22 +172,19 @@ class quotas extends Survey_Common_Action
 
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
-        if (!empty($oSurvey->quotas))
-        {
+        if (!empty($oSurvey->quotas)) {
             $aData['output'] = '';
             $aQuotaItems = array();
 
             //loop through all quotas
-            foreach ($oSurvey->quotas as $oQuota)
-            {
+            foreach ($oSurvey->quotas as $oQuota) {
                 $totalquotas += $oQuota->qlimit;
                 $completed = 0;
                 $completed = $oQuota->completeCount;
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $oQuota->name.",".$oQuota->qlimit.",".$completed.",".($oQuota->qlimit - $completed)."\r\n";
 
-                if ($quickreport != false)
-                {
+                if ($quickreport != false) {
                     continue;
                 }
 
@@ -215,8 +206,7 @@ class quotas extends Survey_Common_Action
                 ));
 
                 //loop through all sub-parts
-                foreach ($oQuota->quotaMembers as $oQuotaMember)
-                {
+                foreach ($oQuota->quotaMembers as $oQuotaMember) {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $oQuota['id']);
                     if ($oQuotaMember->question->type == '*') {
                         $answerText = $oQuotaMember->code;
@@ -243,8 +233,7 @@ class quotas extends Survey_Common_Action
             foreach ($oQuota->languagesettings as $languagesetting) {
                 $aData['aQuotaLanguageSettings'][$languagesetting->quotals_language] = $languagesetting;
             }
-        } else
-        {
+        } else {
             // No quotas have been set for this survey
             //$aViewUrls[] = 'viewquotasempty_view';
             $aData['output'] = $this->getController()->renderPartial('/admin/quotas/viewquotasempty_view', $aData, true);
@@ -253,18 +242,15 @@ class quotas extends Survey_Common_Action
         $aData['totalquotas'] = $totalquotas;
         $aData['totalcompleted'] = $totalcompleted;
 
-        if ($quickreport == false)
-        {
+        if ($quickreport == false) {
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
-        } else
-        {
+        } else {
             /* Export a quickly done csv file */
             header("Content-Disposition: attachment; filename=quotas-survey".$iSurveyId.".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Pragma: public");
             echo gT("Quota name").",".gT("Limit").",".gT("Completed").",".gT("Remaining")."\r\n";
-            foreach ($csvoutput as $line)
-            {
+            foreach ($csvoutput as $line) {
                 echo $line;
             }
             App()->end();
@@ -283,14 +269,12 @@ class quotas extends Survey_Common_Action
         $oQuotaMembers->quota_id = Yii::app()->request->getPost('quota_id');
         $oQuotaMembers->code = Yii::app()->request->getPost('quota_anscode');
         if ($oQuotaMembers->save()) {
-            if (!empty($_POST['createanother']))
-            {
+            if (!empty($_POST['createanother'])) {
                 $_POST['action'] = "quotas";
                 $_POST['subaction'] = "new_answer";
                 $sSubAction = "new_answer";
                 self::new_answer($iSurveyId, $sSubAction);
-            } else
-            {
+            } else {
                 self::_redirectToIndex($iSurveyId);
             }
         } else {
@@ -401,8 +385,7 @@ class quotas extends Survey_Common_Action
         $quota = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
         $aData['oQuota'] = $quota;
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
-        {
+        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
 
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
@@ -530,89 +513,71 @@ class quotas extends Survey_Common_Action
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
-        if ($aQuestionType == 'M')
-        {
+        if ($aQuestionType == 'M') {
             $aResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
 
-            foreach ($aResults as $aDbAnsList)
-            {
+            foreach ($aResults as $aDbAnsList) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
                 $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
             }
-        } elseif ($aQuestionType == 'G')
-        {
+        } elseif ($aQuestionType == 'G') {
             $aAnswerList = array(
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-        } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
-        {
+        } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!') {
 
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
-            foreach ($aAnsResults as $aDbAnsList)
-            {
+            foreach ($aAnsResults as $aDbAnsList) {
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
-        } elseif ($aQuestionType == 'A')
-        {
+        } elseif ($aQuestionType == 'A') {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
-            foreach ($aAnsResults as $aDbAnsList)
-            {
-                for ($x = 1; $x < 6; $x++)
-                {
+            foreach ($aAnsResults as $aDbAnsList) {
+                for ($x = 1; $x < 6; $x++) {
                     $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
                     $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'B')
-        {
+        } elseif ($aQuestionType == 'B') {
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
-            foreach ($aAnsResults as $aDbAnsList)
-            {
-                for ($x = 1; $x < 11; $x++)
-                {
+            foreach ($aAnsResults as $aDbAnsList) {
+                for ($x = 1; $x < 11; $x++) {
                     $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['code']);
                     $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'Y')
-        {
+        } elseif ($aQuestionType == 'Y') {
             $aAnswerList = array(
                 'Y' => array('Title' => $aQuestion['title'], 'Display' => gT("Yes"), 'code' => 'Y'),
                 'N' => array('Title' => $aQuestion['title'], 'Display' => gT("No"), 'code' => 'N'));
-        } elseif ($aQuestionType == 'I')
-        {
+        } elseif ($aQuestionType == 'I') {
             $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             array_unshift($slangs, $sBaseLang);
 
-            while (list($key, $value) = each($slangs))
-            {
+            while (list($key, $value) = each($slangs)) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
                 $aAnswerList[$value] = $tmparrayans;
             }
         }
 
-        if (empty($aAnswerList))
-        {
+        if (empty($aAnswerList)) {
             return array();
-        } else
-        {
+        } else {
             // Now we mark answers already used in this quota as such
             $aExistsingAnswers = QuotaMember::model()->findAllByAttributes(array('sid' => $iSurveyId, 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));
-            foreach ($aExistsingAnswers as $aAnswerRow)
-            {
-                if (array_key_exists($aAnswerRow['code'], $aAnswerList))
-                {
+            foreach ($aExistsingAnswers as $aAnswerRow) {
+                if (array_key_exists($aAnswerRow['code'], $aAnswerList)) {
                     $aAnswerList[$aAnswerRow['code']]['rowexists'] = '1';
                 }
             }

@@ -42,11 +42,9 @@ abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlu
     
     public function populate($data)
     {
-        foreach ($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $setter = 'set'.ucfirst($key);
-            if (method_exists($this, $setter))
-            {
+            if (method_exists($this, $setter)) {
                 $this->$setter($value);
             } else {
                 $this->$key = $value;

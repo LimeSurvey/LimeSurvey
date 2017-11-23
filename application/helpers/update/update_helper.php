@@ -22,15 +22,12 @@ function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion = GetGlobalSetting('DBVersion');
-    if (intval($dbversionnumber) > intval($currentDBVersion))
-    {
+    if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update/updatedb');
-            if (isset($subaction) && $subaction == "yes")
-        {
+            if (isset($subaction) && $subaction == "yes") {
             echo Yii::app()->getController()->_getAdminHeader();
             $result = db_upgrade_all(intval($currentDBVersion));
-            if ($result)
-            {
+            if ($result) {
                 $data =
                 '<div class="jumbotron message-box">'.
                     '<h2 class="">'.gT('Success').'</h2>'.
@@ -41,11 +38,9 @@ function CheckForDBUpgrades($subaction = null)
                         '<a href="'.Yii::app()->getController()->createUrl("/admin").'">'.gT("Back to main menu").'</a>'.
                     '</p>'.
                     '</div>';
-            } else
-            {
+            } else {
                 $msg = '';
-                foreach (yii::app()->user->getflashes() as $key => $message)
-                {
+                foreach (yii::app()->user->getflashes() as $key => $message) {
                     $msg .= '<div class="alert alert-danger flash-'.$key.'">'.$message."</div>\n";
                 }
                 $data = $msg."<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div> ";

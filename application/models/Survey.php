@@ -722,8 +722,7 @@ class Survey extends LSActiveRecord
         $criteria = new CDbCriteria;
         $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
 
-        if ($position != '')
-        {
+        if ($position != '') {
             $criteria->condition .= ' AND position=:position';
             $criteria->params = array(':position'=>$position);
         }
@@ -1297,11 +1296,9 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        if (isset($this->languagesettings[App()->language]))
-        {
+        if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language]->surveyls_title;
-        } else
-        {
+        } else {
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
@@ -1489,8 +1486,7 @@ class Survey extends LSActiveRecord
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
 
-                if ($this->active == "R")
-                {
+                if ($this->active == "R") {
                     $criteria->compare("t.active", 'Y');
                     $subCriteria1 = new CDbCriteria;
                     $subCriteria2 = new CDbCriteria;

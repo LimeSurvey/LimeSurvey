@@ -315,8 +315,7 @@ abstract class Zend_XmlRpc_Value
             }
         }
 
-        switch (self::getXmlRpcTypeByValue($value))
-        {
+        switch (self::getXmlRpcTypeByValue($value)) {
             case self::XMLRPC_TYPE_DATETIME:
                 require_once 'Zend/XmlRpc/Value/DateTime.php';
                 return new Zend_XmlRpc_Value_DateTime($value);

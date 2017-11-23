@@ -12,12 +12,10 @@ namespace ls\mersenne;
 function setSeed($surveyid)
 {
     //traceVar(@$_SESSION['survey_' . $surveyid]['srid']);
-    if (isset($_SESSION['survey_'.$surveyid]['srid']))
-    {
+    if (isset($_SESSION['survey_'.$surveyid]['srid'])) {
         $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
         $seed = $oResponse->seed;
-    } else
-    {
+    } else {
         $seed = mt_rand();
 
         // Only set seed if corresponding database column exists.
@@ -73,8 +71,7 @@ class MersenneTwister
      */
     public static function getInstance()
     {
-        if (empty(self::$instance))
-        {
+        if (empty(self::$instance)) {
             throw new \Exception('Must init MersenneTwister before use. Should be done in randomizationGroupsAndQuestions.');
         }
 
@@ -91,8 +88,7 @@ class MersenneTwister
     {
         $mt = self::$instance;
         $new = $arr;
-        for ($i = count($new) - 1; $i > 0; $i--)
-        {
+        for ($i = count($new) - 1; $i > 0; $i--) {
             $j = $mt->getNext(0, $i);
             $tmp = $new[$i];
             $new[$i] = $new[$j];

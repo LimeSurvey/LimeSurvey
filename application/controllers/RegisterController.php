@@ -155,14 +155,12 @@ class RegisterController extends LSYii_Controller
         $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
 
         // Check the security question's answer
-        if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha']))
-        {
+        if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
             $sLoadSecurity = Yii::app()->request->getPost('loadsecurity', '');
             $captcha = Yii::app()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
 
-            if (!$captchaCorrect)
-            {
+            if (!$captchaCorrect) {
                 $this->aRegisterErrors[] = gT("Your answer to the security question was not correct - please try again.");
             }
         }
@@ -177,10 +175,8 @@ class RegisterController extends LSYii_Controller
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
-        foreach ($aRegisterAttributes as $key => $aAttribute)
-        {
-            if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key]))
-            {
+        foreach ($aRegisterAttributes as $key => $aAttribute) {
+            if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key])) {
                 $this->aRegisterErrors[] = sprintf(gT("%s cannot be left empty").".", $aAttribute['caption']);
             }
         }
@@ -223,11 +219,9 @@ class RegisterController extends LSYii_Controller
             $aData['formAdditions'] = $registerFormEvent['formAppend'];
         }
 
-        if (is_array($this->aRegisterErrors))
-        {
+        if (is_array($this->aRegisterErrors)) {
             $aData['aErrors'] = $this->aRegisterErrors;
-        } else
-        {
+        } else {
             $aData['aErrors'] = array();
         }
 
@@ -269,8 +263,7 @@ class RegisterController extends LSYii_Controller
         $aReplacementFields["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}", array('lang'=>$sLanguage, 'token'=>$sToken));
         $aReplacementFields["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}", array('langcode'=>$sLanguage, 'token'=>$sToken));
         $aReplacementFields["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}", array('langcode'=>$sLanguage, 'token'=>$sToken));
-        foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
-        {
+        foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
             $url = $aReplacementFields["{{$key}URL}"];
             if ($useHtmlEmail) {
                             $aReplacementFields["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
@@ -304,19 +297,14 @@ class RegisterController extends LSYii_Controller
         $sBounce = $event->get('bounce');
 
         $aRelevantAttachments = array();
-        if (isset($aSurveyInfo['attachments']))
-        {
+        if (isset($aSurveyInfo['attachments'])) {
             $aAttachments = unserialize($aSurveyInfo['attachments']);
-            if (!empty($aAttachments))
-            {
-                if (isset($aAttachments['registration']))
-                {
+            if (!empty($aAttachments)) {
+                if (isset($aAttachments['registration'])) {
                     LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
 
-                    foreach ($aAttachments['registration'] as $aAttachment)
-                    {
-                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
-                        {
+                    foreach ($aAttachments['registration'] as $aAttachment) {
+                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
                             $aRelevantAttachments[] = $aAttachment['url'];
                         }
                     }
@@ -324,16 +312,15 @@ class RegisterController extends LSYii_Controller
             }
         }
 
-        if ($event->get('send', true) == false)
-        {
+        if ($event->get('send', true) == false) {
             $this->sMessage = $event->get('message', $this->sMailMessage); // event can send is own message
-            if ($event->get('error') == null) { // mimic core system, set send to today
+            if ($event->get('error') == null) {
+// mimic core system, set send to today
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $oToken->sent = $today;
                 $oToken->save();
             }
-        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments))
-        {
+        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments)) {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent = $today;
@@ -343,8 +330,7 @@ class RegisterController extends LSYii_Controller
             $aMessage['mail-message'] = $this->sMailMessage;
             $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
             $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage'=>$aMessage), true);
-        } else
-        {
+        } else {
             $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
             $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
@@ -370,26 +356,21 @@ class RegisterController extends LSYii_Controller
         $oToken = Token::model($iSurveyId)->findByAttributes(array(
             'email' => $aFieldValue['sEmail']
         ));
-        if ($oToken)
-            {
-            if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y')
-            {
+        if ($oToken) {
+            if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
             } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
                 // And global blacklisting ?
             {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
             }
-            } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK")
-            {
+            } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK") {
                 $this->aRegisterErrors[] = gT("This email address is already registered but the email adress was bounced.");
-            } else
-            {
+            } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 return $oToken->tid;
             }
-        } else
-        {
+        } else {
             // TODO : move xss filtering in model
             $oToken = Token::create($iSurveyId);
             $oToken->firstname = sanitize_xss_string($aFieldValue['sFirstName']);
@@ -399,12 +380,10 @@ class RegisterController extends LSYii_Controller
             $oToken->language = $sLanguage;
             $aFieldValue['aAttribute'] = array_map('sanitize_xss_string', $aFieldValue['aAttribute']);
             $oToken->setAttributes($aFieldValue['aAttribute']);
-            if ($aSurveyInfo['startdate'])
-            {
+            if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
             }
-            if ($aSurveyInfo['expires'])
-            {
+            if ($aSurveyInfo['expires']) {
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();

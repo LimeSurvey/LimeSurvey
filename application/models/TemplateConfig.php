@@ -808,8 +808,7 @@ class TemplateConfig extends CActiveRecord
 
     public static function uninstall($templatename)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'delete'))
-        {
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
             if ($oTemplate) {
                 if ($oTemplate->delete()) {

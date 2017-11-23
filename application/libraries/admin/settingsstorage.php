@@ -19,10 +19,8 @@ final class SettingsStorage extends ArrayObject
     {
         $defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
 
-        foreach ($defaults as $key => $val)
-        {
-            if (isset($params[$key]) && $params[$key] !== "")
-            {
+        foreach ($defaults as $key => $val) {
+            if (isset($params[$key]) && $params[$key] !== "") {
                 $defaults[$key] = $params[$key];
             }
         }

@@ -61,8 +61,7 @@ class LSUserIdentity extends CUserIdentity
         }
 
         // If still ok, continue
-        if ($result->isValid())
-        {
+        if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
@@ -141,7 +140,8 @@ class LSUserIdentity extends CUserIdentity
             $not->save();
         }
 
-        if ((int) App()->request->getPost('width', '1220') < 1220) { // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+        if ((int) App()->request->getPost('width', '1220') < 1220) {
+// Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
             Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
         }
 
@@ -156,16 +156,13 @@ class LSUserIdentity extends CUserIdentity
         Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang', 'default') != 'default')
-        {
+        if (App()->request->getPost('loginlang', 'default') != 'default') {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
-        } else if ($user->lang == 'auto' || $user->lang == '')
-        {
+        } else if ($user->lang == 'auto' || $user->lang == '') {
             $sLanguage = getBrowserLanguage();
-        } else
-        {
+        } else {
             $sLanguage = $user->lang;
         }
 
@@ -173,8 +170,7 @@ class LSUserIdentity extends CUserIdentity
         App()->setLanguage($sLanguage);
 
         // Read all plugin config files if superadmin logged in
-        if (Permission::model()->hasGlobalPermission('superadmin'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin')) {
             $pm = Yii::app()->getPluginManager();
             $pm->readConfigFiles();
         }

@@ -232,8 +232,7 @@ class SurveymenuEntries extends LSActiveRecord
     public function getMenuIdOptions()
     {
         $criteria = new CDbCriteria;
-        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $criteria->compare('id', '<> 0');
             $criteria->compare('id', '<> 1');
         }
@@ -463,8 +462,7 @@ class SurveymenuEntries extends LSActiveRecord
         $criteria = new CDbCriteria;
 
         //Don't show main menu when not superadmin
-        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $criteria->compare('menu_id', '<> 1');
             $criteria->compare('menu_id', '<> 2');
         }

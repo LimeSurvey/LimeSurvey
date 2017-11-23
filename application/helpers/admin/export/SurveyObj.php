@@ -88,11 +88,9 @@ class SurveyObj
         $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];
         $answer = null;
-        if ($questionId)
-        {
+        if ($questionId) {
             $answers = $this->getAnswers($questionId);
-            if (isset($answers[$answerCode]))
-            {
+            if (isset($answers[$answerCode])) {
                 $answer = $answers[$answerCode]['answer'];
             }
         }
@@ -118,54 +116,43 @@ class SurveyObj
                 break;
 
             case '1':   //Array dual scale
-                if (mb_substr($fieldName, -1) == 0)
-                {
+                if (mb_substr($fieldName, -1) == 0) {
                     $answers = $this->getAnswers($questionId, 0);
-                } else
-                {
+                } else {
                     $answers = $this->getAnswers($questionId, 1);
                 }
-                if (array_key_exists($answerCode, $answers))
-                {
+                if (array_key_exists($answerCode, $answers)) {
                     $fullAnswer = $answers[$answerCode]['answer'];
-                } else
-                {
+                } else {
                     $fullAnswer = null;
                 }
                 break;
 
             case 'L':   //DROPDOWN LIST
             case '!':
-                if (mb_substr($fieldName, -5, 5) == 'other')
-                {
+                if (mb_substr($fieldName, -5, 5) == 'other') {
                     $fullAnswer = $answerCode;
-                } else
-                {
-                    if ($answerCode == '-oth-')
-                    {
+                } else {
+                    if ($answerCode == '-oth-') {
                         $fullAnswer = $translator->translate('Other', $sLanguageCode);
-                    } else
-                    {
+                    } else {
                         $fullAnswer = $answer;
                     }
                 }
                 break;
 
             case 'O':   //DROPDOWN LIST WITH COMMENT
-                if (isset($answer))
-                {
+                if (isset($answer)) {
                     //This is one of the dropdown list options.
                     $fullAnswer = $answer;
-                } else
-                {
+                } else {
                     //This is a comment.
                     $fullAnswer = $answerCode;
                 }
                 break;
 
             case 'Y':   //YES/NO
-            switch ($answerCode)
-            {
+            switch ($answerCode) {
                 case 'Y':
                     $fullAnswer = $translator->translate('Yes', $sLanguageCode);
                     break;
@@ -180,8 +167,7 @@ class SurveyObj
             break;
 
             case 'G':
-            switch ($answerCode)
-            {
+            switch ($answerCode) {
                 case 'M':
                     $fullAnswer = $translator->translate('Male', $sLanguageCode);
                     break;
@@ -197,16 +183,14 @@ class SurveyObj
 
             case 'M':   //MULTIOPTION
             case 'P':
-                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment')
-                {
+                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment') {
                     //echo "\n -- Branch 1 --";
                     $fullAnswer = $answerCode;
-                } else
-                {
-                    if ($answerCode == 'Y')
-                    {
+                } else {
+                    if ($answerCode == 'Y') {
                         $fullAnswer = $translator->translate('Yes', $sLanguageCode);
-                    } elseif ($answerCode == 'N' || $answerCode === '') { // Strict check for empty string to find null values
+                    } elseif ($answerCode == 'N' || $answerCode === '') {
+// Strict check for empty string to find null values
                         $fullAnswer = $translator->translate('No', $sLanguageCode);
                     } else {
                         $fullAnswer = $translator->translate('N/A', $sLanguageCode);
@@ -215,8 +199,7 @@ class SurveyObj
                 break;
 
             case 'C':
-            switch ($answerCode)
-            {
+            switch ($answerCode) {
                 case 'Y':
                     $fullAnswer = $translator->translate('Yes', $sLanguageCode);
                     break;
@@ -232,8 +215,7 @@ class SurveyObj
             break;
 
             case 'E':
-            switch ($answerCode)
-            {
+            switch ($answerCode) {
                 case 'I':
                     $fullAnswer = $translator->translate('Increase', $sLanguageCode);
                     break;
@@ -300,8 +282,7 @@ class SurveyObj
      */
     public function getAnswers($questionId, $scaleId = '0')
     {
-        if (isset($this->answers[$questionId]) && isset($this->answers[$questionId][$scaleId]))
-        {
+        if (isset($this->answers[$questionId]) && isset($this->answers[$questionId][$scaleId])) {
             return $this->answers[$questionId][$scaleId];
         }
         return array();

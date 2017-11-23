@@ -46,8 +46,7 @@ class CsvWriter extends Writer
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $sRecord = '';
-        if (!$this->hasOutputHeader)
-        {
+        if (!$this->hasOutputHeader) {
             if ($oOptions->output == 'display') {
                 header("Content-Disposition: attachment; filename=".$this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -56,8 +55,7 @@ class CsvWriter extends Writer
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
             if ($this->doHeaders == true) {
                 $index = 0;
-                foreach ($headers as $header)
-                {
+                foreach ($headers as $header) {
                     $headers[$index] = $this->csvEscape($header);
                     $index++;
                 }
@@ -68,14 +66,12 @@ class CsvWriter extends Writer
         }
         //Output the values.
         $index = 0;
-        foreach ($values as $value)
-        {
+        foreach ($values as $value) {
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
         $sRecord .= implode($this->separator, $values).PHP_EOL;
-        if ($oOptions->output == 'display')
-        {
+        if ($oOptions->output == 'display') {
             echo $sRecord; 
             $this->output = '';
         } elseif ($oOptions->output == 'file') {

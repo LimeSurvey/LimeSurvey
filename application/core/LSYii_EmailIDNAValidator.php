@@ -24,23 +24,18 @@ class LSYii_EmailIDNAValidator extends CValidator
     public function validateAttribute($object, $attribute)
     {
 
-        if ($object->$attribute == '' && $this->allowEmpty)
-        {
+        if ($object->$attribute == '' && $this->allowEmpty) {
                 return;
         }
 
-        if ($this->allowMultiple)
-        {
+        if ($this->allowMultiple) {
             $aEmailAdresses = preg_split("/(,|;)/", $object->$attribute);
-        } else
-        {
+        } else {
             $aEmailAdresses = array($object->$attribute);
         }
 
-        foreach ($aEmailAdresses as $sEmailAddress)
-        {
-            if (!validateEmailAddress($sEmailAddress))
-            {
+        foreach ($aEmailAdresses as $sEmailAddress) {
+            if (!validateEmailAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }

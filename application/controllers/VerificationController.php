@@ -44,44 +44,35 @@ class VerificationController extends LSYii_Controller
 
         $num1 = rand(1, 5);
         $found = false;
-        while ($found == false)
-        {
+        while ($found == false) {
             $num2 = rand(1, 100);
-            if (preg_match('/^[0-9]+$/', $num2 / 5))
-            {
+            if (preg_match('/^[0-9]+$/', $num2 / 5)) {
                 $found = true;
                 break;
             }
         }
         $font_c_rand = rand(1, 3);
-        if ($font_c_rand == 1)
-        {
+        if ($font_c_rand == 1) {
             $font_color = $black;
-        } else if ($font_c_rand == 2)
-        {
+        } else if ($font_c_rand == 2) {
             $font_color = $red;
-        } else if ($font_c_rand == 3)
-        {
+        } else if ($font_c_rand == 3) {
             $font_color = $blue;
         }
 
         $font_rand = rand(1, 2); //Maybe add other specific hard font
-        if ($font_rand == 1)
-        {
+        if ($font_rand == 1) {
             $font = $rootdir."/assets/fonts/FreeSans.ttf";
         } else {
             $font = $rootdir."/assets/fonts/DejaVuSans.ttf";
         }
 
         $line_rand = rand(1, 3);
-        if ($line_rand == 1)
-        {
+        if ($line_rand == 1) {
             $line_color = $black;
-        } else if ($line_rand == 2)
-        {
+        } else if ($line_rand == 2) {
             $line_color = $red;
-        } else if ($line_rand == 3)
-        {
+        } else if ($line_rand == 3) {
             $line_color = $blue;
         }
 

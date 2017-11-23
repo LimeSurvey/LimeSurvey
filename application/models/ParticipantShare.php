@@ -327,10 +327,10 @@ class ParticipantShare extends LSActiveRecord
         if ($ownerid['owner_uid'] == $data['share_uid']) {
             return;
         }
-        if (is_null($arShare)) { // A check to ensure that the participant is not added to it's owner
+        if (is_null($arShare)) {
+// A check to ensure that the participant is not added to it's owner
             Yii::app()->db->createCommand()->insert('{{participant_shares}}', $data);
-        } else
-        {
+        } else {
             self::updateShare($data);
         }
     }

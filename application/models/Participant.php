@@ -237,8 +237,7 @@ class Participant extends LSActiveRecord
             'owner_uid' => gT('Owner ID'),
             'surveyid' => gT('Active survey ID')
         );
-        foreach ($this->allExtraAttributes as $name => $attribute)
-        {
+        foreach ($this->allExtraAttributes as $name => $attribute) {
             $returnArray[$name] = $attribute['defaultname'];
         }
         return $returnArray;
@@ -1336,7 +1335,8 @@ class Participant extends LSActiveRecord
                     'language',
                     'owner_uid',
                     'owner_name');
-                if (!in_array($sFieldname, $aSafeFieldNames)) { // Skip invalid fieldname
+                if (!in_array($sFieldname, $aSafeFieldNames)) {
+// Skip invalid fieldname
                     continue; 
                 }
                 $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname).' '.$operator.' '.$param, $booloperator);
@@ -1626,8 +1626,7 @@ class Participant extends LSActiveRecord
                 ->queryRow();
 
             if (Yii::app()->getConfig('blockaddingtosurveys') == 'Y'
-                && $participant['blacklisted'] == 'Y')
-            {
+                && $participant['blacklisted'] == 'Y') {
                 $blacklistSkipped++;
                 continue;
             }
@@ -1656,7 +1655,8 @@ class Participant extends LSActiveRecord
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
                     foreach ($mappedAttributes as $key => $value) {
-                        if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
+                        if ($key[10] == 'c') {
+//We know it's automapped because the 11th letter is 'c'
                             Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
@@ -1664,7 +1664,8 @@ class Participant extends LSActiveRecord
                 if ($options['overwriteman'] == "true") {
                     //If there are any manually mapped attributes, add those values to the token entry for this participant
                     foreach ($mappedAttributes as $key => $value) {
-                        if ($key[10] != 'c' && $key[9] == '_') { //It's not an auto field because it's 11th character isn't 'c'
+                        if ($key[10] != 'c' && $key[9] == '_') {
+//It's not an auto field because it's 11th character isn't 'c'
                             Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
@@ -1911,7 +1912,8 @@ class Participant extends LSActiveRecord
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
-            foreach ($aAttributesToBeCreated as $key => $value) { //creating new central attribute
+            foreach ($aAttributesToBeCreated as $key => $value) {
+//creating new central attribute
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */

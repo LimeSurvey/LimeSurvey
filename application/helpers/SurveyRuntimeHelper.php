@@ -462,7 +462,8 @@ class SurveyRuntimeHelper
         $showqnumcode_survey_ = $this->aSurveyInfo['showqnumcode'];
 
         // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') { // Use survey level settings
+        if ($showqnumcode_global_ == 'choose') {
+// Use survey level settings
             $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
         } else {
             // Use global setting
@@ -584,8 +585,7 @@ class SurveyRuntimeHelper
      */
     private function setSurveyMode()
     {
-        switch ($this->aSurveyInfo['format'])
-        {
+        switch ($this->aSurveyInfo['format']) {
             case "A": //All in one
                 $this->sSurveyMode = 'survey';
                 break;
@@ -655,8 +655,7 @@ class SurveyRuntimeHelper
     {
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$this->LEMsessid]['step']))
-        {
+        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
             $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
@@ -769,20 +768,17 @@ class SurveyRuntimeHelper
      */
     private function setPrevStep()
     {
-        if (isset($this->sMove))
-        {
+        if (isset($this->sMove)) {
             if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
                             $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             } else {
                 // Accepted $move without error
                 $_SESSION[$this->LEMsessid]['prevstep'] = $this->sMove;
             }
-        } else
-        {
+        } else {
         //    $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
         }
-        if (!isset($_SESSION[$this->LEMsessid]['prevstep']))
-        {
+        if (!isset($_SESSION[$this->LEMsessid]['prevstep'])) {
             $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['prevstep'] - 1; // this only happens on re-load
         }
 
@@ -1241,8 +1237,7 @@ class SurveyRuntimeHelper
             "QUESTION_MANDATORY"=>"",
             "QUESTION_ESSENTIALS"=>"",
         );
-        if (!is_array($aQuestionQanda) || empty($aQuestionQanda[0]))
-        {
+        if (!is_array($aQuestionQanda) || empty($aQuestionQanda[0])) {
             return $aReplacement;
         }
         $iQid = $aQuestionQanda[4];
@@ -1267,14 +1262,15 @@ class SurveyRuntimeHelper
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
         $aSurveyinfo = getSurveyInfo($iSurveyId);
         // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') { // Use survey level settings
+        if ($showqnumcode_global_ == 'choose') {
+// Use survey level settings
             $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
-        } else { // Use global setting
+        } else {
+// Use global setting
             $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
         }
 
-        switch ($showqnumcode_)
-        {
+        switch ($showqnumcode_) {
             case 'both':
             case 'B': // Both
                 $aReplacement['QUESTION_CODE'] = $sCode;
@@ -1302,8 +1298,7 @@ class SurveyRuntimeHelper
         // Core value : user text : add an id for labelled-by and described-by
         $aReplacement['QUESTION_TEXT'] = CHtml::tag("div", array('id'=>"ls-question-text-{$aReplacement['SGQ']}", 'class'=>"ls-label-question"), $aQuestionQanda[0]['text']);
         $aReplacement['QUESTIONHELP'] = $lemQuestionInfo['info']['help']; // User help
-        if (flattenText($aReplacement['QUESTIONHELP'], true, true) != '')
-        {
+        if (flattenText($aReplacement['QUESTIONHELP'], true, true) != '') {
             $aReplacement['QUESTIONHELP'] = Yii::app()->getController()->renderPartial('//survey/questions/question_help/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true); ;
         }
         // Core value :the classes
@@ -1311,12 +1306,12 @@ class SurveyRuntimeHelper
             Question::getQuestionClass($sType),
         );
         /* Add the relevance class */
-        if (!$lemQuestionInfo['relevant'])
-        {
+        if (!$lemQuestionInfo['relevant']) {
             $aQuestionClass[] = 'ls-irrelevant';
             $aQuestionClass[] = 'ls-hidden';
         }
-        if ($lemQuestionInfo['hidden']) { /* Can use aQuestionAttributes too */
+        if ($lemQuestionInfo['hidden']) {
+/* Can use aQuestionAttributes too */
             $aQuestionClass[] = 'ls-hidden-attribute'; /* another string ? */
             $aQuestionClass[] = 'ls-hidden';
         }
@@ -1723,14 +1718,12 @@ class SurveyRuntimeHelper
 
     private function setGroup()
     {
-        if (!$this->previewgrp && !$this->previewquestion)
-        {
+        if (!$this->previewgrp && !$this->previewquestion) {
             if (($this->bShowEmptyGroup) || !isset($_SESSION[$this->LEMsessid]['grouplist'])) {
                 $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
                 $this->groupname        = gT("Submit your answers");
                 $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-            } else if ($this->sSurveyMode != 'survey')
-            {
+            } else if ($this->sSurveyMode != 'survey') {
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
                 }
@@ -1745,8 +1738,7 @@ class SurveyRuntimeHelper
     private function fixMaxStep()
     {
         // NOTE: must stay after setPreview  because of ()$this->sSurveyMode == 'group' && $this->previewgrp) condition touching step
-        if ($_SESSION[$this->LEMsessid]['step'] > $_SESSION[$this->LEMsessid]['maxstep'])
-        {
+        if ($_SESSION[$this->LEMsessid]['step'] > $_SESSION[$this->LEMsessid]['maxstep']) {
             $_SESSION[$this->LEMsessid]['maxstep'] = $_SESSION[$this->LEMsessid]['step'];
         }
     }

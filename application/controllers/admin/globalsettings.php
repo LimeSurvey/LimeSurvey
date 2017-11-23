@@ -26,8 +26,7 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('settings', 'read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
@@ -70,8 +69,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $data['title'] = "hi";
         $data['message'] = "message";
-        foreach ($this->_checkSettings() as $key => $row)
-        {
+        foreach ($this->_checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
@@ -89,8 +87,7 @@ class GlobalSettings extends Survey_Common_Action
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
             $data['excludedLanguages'] = array();
-        } else
-        {
+        } else {
             $data['restrictToLanguages'] = explode(' ', trim(Yii::app()->getConfig('restrictToLanguages')));
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
@@ -206,14 +203,12 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         $iPDFFontSize = sanitize_int($_POST['pdffontsize']);
-        if ($iPDFFontSize < 1)
-        {
+        if ($iPDFFontSize < 1) {
             $iPDFFontSize = 9;
         }
 
         $iPDFLogoWidth = sanitize_int($_POST['pdflogowidth']);
-        if ($iPDFLogoWidth < 1)
-        {
+        if ($iPDFLogoWidth < 1) {
             $iPDFLogoWidth = 50;
         }
 
@@ -224,7 +219,8 @@ class GlobalSettings extends Survey_Common_Action
 
         $defaultlang = sanitize_languagecode($_POST['defaultlang']);
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
-        if (!in_array($defaultlang, $aRestrictToLanguages)) { // Force default language in restrictToLanguages
+        if (!in_array($defaultlang, $aRestrictToLanguages)) {
+// Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;
         }
         if (count(array_diff(array_keys(getLanguageData(false, Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
@@ -239,10 +235,10 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode', 'default')));
         setGlobalSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
-        if (!Yii::app()->getConfig('demoMode'))
-        {
+        if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList())) { // Filter template name
+            if (array_key_exists($sTemplate, getTemplateList())) {
+// Filter template name
                 setGlobalSetting('defaulttheme', $sTemplate);
             }
             setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
@@ -330,12 +326,10 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
         // Redirect if user clicked save-and-close-button
-        if (isset($_POST['saveandclose']))
-        {
+        if (isset($_POST['saveandclose'])) {
             $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
             Yii::app()->getController()->redirect($url);
-        } else
-        {
+        } else {
             Yii::app()->getController()->redirect(App()->createUrl('admin/globalsettings'));
         }
     }
@@ -356,15 +350,12 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         $tablelist = Yii::app()->db->schema->getTableNames();
-        foreach ($tablelist as $table)
-        {
+        foreach ($tablelist as $table) {
             if (strpos($table, Yii::app()->db->tablePrefix."old_tokens_") !== false) {
                 $oldtokenlist[] = $table;
-            } elseif (strpos($table, Yii::app()->db->tablePrefix."tokens_") !== false)
-            {
+            } elseif (strpos($table, Yii::app()->db->tablePrefix."tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos($table, Yii::app()->db->tablePrefix."old_survey_") !== false)
-            {
+            } elseif (strpos($table, Yii::app()->db->tablePrefix."old_survey_") !== false) {
                 $oldresultslist[] = $table;
             }
         }

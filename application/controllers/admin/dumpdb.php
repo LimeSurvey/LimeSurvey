@@ -25,17 +25,14 @@ class Dumpdb extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             die();
         }
 
-        if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')))
-        {
+        if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli'))) {
             die(sprintf(gT('This feature is only available for MySQL databases. Your database type is %s.'), Yii::app()->db->getDriverName()));
         }
-        if (Yii::app()->getConfig('demoMode'))
-        {
+        if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }

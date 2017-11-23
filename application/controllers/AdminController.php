@@ -61,21 +61,16 @@ class AdminController extends LSYii_Controller
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
         $sOutput .= $message.'<br /><br />'."\n";
-        if (!empty($sURL) && !is_array($sURL))
-        {
+        if (!empty($sURL) && !is_array($sURL)) {
             $sTitle = gT('Back');
-        } elseif (!empty($sURL['url']))
-        {
-            if (!empty($sURL['title']))
-            {
+        } elseif (!empty($sURL['url'])) {
+            if (!empty($sURL['title'])) {
                 $sTitle = $sURL['title'];
-            } else
-            {
+            } else {
                 $sTitle = gT('Back');
             }
             $sURL = $sURL['url'];
-        } else
-        {
+        } else {
             $sTitle = gT('Main Admin Screen');
             $sURL = $this->createUrl('/admin');
         }
@@ -126,12 +121,10 @@ class AdminController extends LSYii_Controller
     public function run($action)
     {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}'))
-        {
+        if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = getGlobalSetting('DBVersion');
         }
-        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
-        {
+        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
             Yii::app()->loadHelper('update/updatedb');
             if (!db_upgrade_all(intval($sDBVersion), true)) {
@@ -140,10 +133,8 @@ class AdminController extends LSYii_Controller
         }
 
 
-        if ($action != "databaseupdate" && $action != "db")
-        {
-            if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol")
-            {
+        if ($action != "databaseupdate" && $action != "db") {
+            if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
                 }
@@ -159,10 +150,8 @@ class AdminController extends LSYii_Controller
                 }
 
                 $this->redirect(array('/admin/authentication/sa/login'));
-            } elseif (!empty($this->user_id) && $action != "remotecontrol")
-            {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
-                {
+            } elseif (!empty($this->user_id) && $action != "remotecontrol") {
+                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -183,8 +172,7 @@ class AdminController extends LSYii_Controller
     {
         $aActions = $this->getActionClasses();
 
-        foreach ($aActions as $action => $class)
-        {
+        foreach ($aActions as $action => $class) {
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
 
@@ -288,19 +276,16 @@ class AdminController extends LSYii_Controller
 
         Yii::app()->loadHelper("surveytranslator");
 
-        if (getLanguageRTL(Yii::app()->language))
-        {
+        if (getLanguageRTL(Yii::app()->language)) {
             $aData['languageRTL'] = " dir=\"rtl\" ";
             $aData['bIsRTL'] = true;
-        } else
-        {
+        } else {
             $aData['languageRTL'] = " dir=\"ltr\" ";
             $aData['bIsRTL'] = false;
         }
 
         $aData['meta'] = "";
-        if ($meta)
-        {
+        if ($meta) {
             $aData['meta'] = $meta;
         }
 
@@ -327,11 +312,9 @@ class AdminController extends LSYii_Controller
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
-        if ($return)
-        {
+        if ($return) {
             return $sOutput;
-        } else
-        {
+        } else {
             echo $sOutput;
         }
     }
@@ -355,13 +338,11 @@ class AdminController extends LSYii_Controller
         }
 
         //If user is not logged in, don't print the version number information in the footer.
-        if (empty(Yii::app()->session['loginID']))
-        {
+        if (empty(Yii::app()->session['loginID'])) {
             $aData['versionnumber'] = "";
             $aData['versiontitle'] = "";
             $aData['buildtext'] = "";
-        } else
-        {
+        } else {
             $aData['versiontitle'] = gT('Version');
         }
 

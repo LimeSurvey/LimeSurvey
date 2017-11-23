@@ -346,8 +346,7 @@ class Notification extends LSActiveRecord
         $criteria = new CDbCriteria();
         $params = array();
         // Only fetch survey specific notifications if user is viewing a survey
-        if (!empty($surveyId))
-        {
+        if (!empty($surveyId)) {
             $criteria->addCondition('entity =:sentity AND entity_id=:sentity_id');
             $params[':sentity'] = 'survey';
             $params[':sentity_id'] = $surveyId;

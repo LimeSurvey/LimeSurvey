@@ -44,8 +44,7 @@ class FlushAssetsCommand extends CConsoleCommand
         }
         closedir($dh);
         if ($DeleteMe) {
-            if (!@rmdir($dir))
-            {
+            if (!@rmdir($dir)) {
                 echo "Error: could not delete ".$dir;
             }
     

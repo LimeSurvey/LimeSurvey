@@ -50,8 +50,7 @@
         {
             $oPluginEvent = new PluginEvent($sEventName, $this);
             $oPluginEvent->set('model', $this->owner);
-            if (isset($criteria))
-            {
+            if (isset($criteria)) {
                 $oPluginEvent->set('filterCriteria', $criteria);
             }
             return App()->getPluginManager()->dispatchEvent($oPluginEvent);

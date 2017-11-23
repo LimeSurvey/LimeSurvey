@@ -35,8 +35,7 @@
          */
         public function listQuestionPlugins(PluginEvent $event)
         {
-            if (!empty($this->questionTypes))
-            {
+            if (!empty($this->questionTypes)) {
                 $event->set('questionplugins.'.get_class($this), $this->questionTypes);
             }
         }
