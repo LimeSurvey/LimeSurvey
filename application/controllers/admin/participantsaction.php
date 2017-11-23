@@ -2540,12 +2540,10 @@ class participantsaction extends Survey_Common_Action
                             'tokenAttribute' => $tokenAttribute,
                             'cpdbAttribute' => $CPDBAttribute
                         );
-        }
                     }
                 }
             }
         }
-
         return $result;
     }
 
