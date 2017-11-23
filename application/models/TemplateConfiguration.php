@@ -150,10 +150,17 @@ class TemplateConfiguration extends TemplateConfig
      * @return TemplateConfiguration
      */
     public static function getInstanceFromTemplateName($sTemplateName) {
-        return  self::model()->find(
+        $oInstance = self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
             array(':template_name'=>$sTemplateName)
         );
+
+        // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one. 
+        if (! is_a($oInstance, 'TemplateConfiguration')  ){
+            $oInstance = self::getInstanceFromTemplateName('default');
+        }
+
+        return $oInstance;
     }
 
     /**
@@ -215,6 +222,7 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
             $oTemplateConfigurationModel->sid = $iSurveyId;
