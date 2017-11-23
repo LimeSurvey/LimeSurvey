@@ -575,15 +575,16 @@
                     {{ sprintf( gT("Upload an image (maximum size: %d MB):"), (templateConfiguration.maxFileSize/1024/1024) ) }}
                 </div>
                 <div class="col-sm-6">
-                {{ C.Html.form('admin/themes/sa/upload', 'post', { 'id' : 'upload_frontend', 'name' : 'upload_frontend', 'enctype' :'multipart/form-data' }) }}
+                {{ C.Html.form(createUrl('/admin/themes/sa/upload'), 'post', { 'id' : 'upload_frontend', 'name' : 'upload_frontend', 'enctype' :'multipart/form-data' }) }}
                     <span id="fileselector">
                         <label class="btn btn-default col-xs-8" for="upload_image_frontend">
-                            <input class="hidden" id="upload_logo" name="upload_image_frontend" type="file">
-                            <i class="fa fa-upload ls-space margin right-10"></i><{{ gT("Upload") }}
+                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                            <i class="fa fa-upload ls-space margin right-10"></i>
+                            {{ gT("Upload") }}
                         </label>
                     </span>
 
-                        <input type='hidden' name='templatename' value='{{ templateConfiguration.name }}' />
+                        <input type='hidden' name='templatename' value='{{ templateConfiguration.template_name }}' />
                         <input type='hidden' name='templateconfig' value='{{ templateConfiguration.id }}' />
                         <input type='hidden' name='action' value='templateuploadimagefile' />
                     </form>

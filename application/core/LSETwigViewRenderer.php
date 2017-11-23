@@ -142,7 +142,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         if (file_exists($oRTemplate->path.$sOptionJS)) {
-            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_BEGIN);
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, LSYii_ClientScript::POS_BEGIN);
         }
 
         $this->_twig = $twig = parent::getTwig();

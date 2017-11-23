@@ -144,5 +144,15 @@ $(document).on('ready pjax:scriptcomplete',function(){
     $('.simple-template-edit-loading').css('display','block');
     prepare().then(function(){
         $('.simple-template-edit-loading').remove();
-    })
+    });
+    var uploadImageBind = new bindUpload({
+        form: '#upload_frontend',
+        input: '#upload_image_frontend',
+        progress: '#upload_progress_frontend',
+        onSuccess : function(){ 
+            var triggerEvent = new Event('pjax:load');
+            triggerEvent.url =  window.location.href;
+            window.dispatchEvent( triggerEvent );
+        }
+    });
 });

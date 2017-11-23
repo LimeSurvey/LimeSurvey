@@ -211,6 +211,12 @@ class LS_Twig_Extension extends Twig_Extension
             'buttonLabel' => gt('Reload image', 'unescaped')
         ));
     }
+    
+    
+    public static function createUrl($url, $params = array())
+    {
+        return App()->getController()->createUrl($url, $params);
+    }
 
     /**
      * @param string $sRessource
@@ -234,6 +240,7 @@ class LS_Twig_Extension extends Twig_Extension
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         } else {
+            $sUrlImgAsset = '';            
             // TODO: publish a default image "not found"
         }
 
@@ -250,6 +257,7 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
+        $sUrlImgAsset = '';
 
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);

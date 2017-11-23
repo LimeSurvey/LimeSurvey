@@ -212,6 +212,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         var $activeInput = $(options.input);
         var $progressBar = $(options.progress);
 
+        var onSuccess = options.onSuccess || function(){};
+
         var progressHandling = function(event){
             var percent = 0;
             var position = event.loaded || event.position;
@@ -247,6 +249,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         $('#notif-container').append('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                         $progressBar.css("width", "0%");
                         $progressBar.find('span.sr-only').text('0%');
+                        onSuccess();
                     } else {
                         $('#notif-container').append('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                         $progressBar.css("width", "0%");
