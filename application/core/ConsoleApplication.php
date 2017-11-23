@@ -20,7 +20,8 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
-    public function __construct($aApplicationConfig = null) {
+    public function __construct($aApplicationConfig = null)
+    {
 
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');

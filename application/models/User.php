@@ -124,7 +124,8 @@ class User extends LSActiveRecord
     /**
      * @return string
      */
-    public function getSurveysCreated() {
+    public function getSurveysCreated()
+    {
         $noofsurveys = Survey::model()->countByAttributes(array("owner_id" =>$this->uid));
         return $noofsurveys;
     }
@@ -313,7 +314,8 @@ class User extends LSActiveRecord
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getButtons() {
+    public function getButtons()
+    {
         $editUser = "";
         $deleteUser = "";
         $setPermissionsUser = "";
@@ -429,7 +431,8 @@ class User extends LSActiveRecord
             . "</div>";
     }
 
-    public function getParentUserName() {
+    public function getParentUserName()
+    {
         if ($this->parentUser) {
             return $this->parentUser->users_name;
         }
@@ -441,7 +444,8 @@ class User extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColums() {
+    public function getColums()
+    {
         // TODO should be static
         $cols = array(
             array(

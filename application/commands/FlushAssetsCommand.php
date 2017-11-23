@@ -29,7 +29,8 @@ class FlushAssetsCommand extends CConsoleCommand
         $this->_sureRemoveFiles($tmpFolder.'/runtime/cache/', false, ['index.html']);
 
     }
-    private function _sureRemoveFiles($dir, $DeleteMe, $exclude = array()) {
+    private function _sureRemoveFiles($dir, $DeleteMe, $exclude = array())
+    {
         if (!$dh = @opendir($dir)) {
             return;
         }

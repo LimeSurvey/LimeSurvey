@@ -55,7 +55,8 @@ class PluginDynamic extends LSActiveRecord
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return $this->tableName;
     }
 

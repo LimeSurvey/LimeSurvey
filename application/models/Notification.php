@@ -121,7 +121,8 @@ class Notification extends LSActiveRecord
     }
 
     /** @inheritdoc */
-    public function primaryKey() {
+    public function primaryKey()
+    {
         return 'id';
     }
 
@@ -236,7 +237,8 @@ class Notification extends LSActiveRecord
      * @param int|null $surveyId
      * @return string
      */
-    public static function getUpdateUrl($surveyId = null) {
+    public static function getUpdateUrl($surveyId = null)
+    {
         $params = array(
             'sa' => 'actionGetMenuWidget',
         );

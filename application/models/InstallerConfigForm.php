@@ -64,7 +64,8 @@ class InstallerConfigForm extends CFormModel
      * InstallerConfigForm constructor.
      * @param string $scenario
      */
-    public function __construct($scenario = 'database') {
+    public function __construct($scenario = 'database')
+    {
         $drivers = array();
         if (extension_loaded('pdo')) {
             $drivers = CDbConnection::getAvailableDrivers();

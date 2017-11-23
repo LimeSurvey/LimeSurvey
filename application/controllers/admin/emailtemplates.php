@@ -20,7 +20,8 @@
  * @access public
  */
 
-class emailtemplates extends Survey_Common_Action {
+class emailtemplates extends Survey_Common_Action
+{
 
     /**
      * Load edit email template screen.

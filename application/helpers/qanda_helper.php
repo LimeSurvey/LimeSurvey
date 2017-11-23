@@ -651,7 +651,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 * @return string
 */
 
-function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttributes) {
+function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttributes)
+{
     $relevanceStatus = !isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name];
     if ($relevanceStatus) {
         return "";
@@ -3589,7 +3590,8 @@ function do_shortfreetext($ia)
 
 }
 
-function getLatLongFromIp($sIPAddress) {
+function getLatLongFromIp($sIPAddress)
+{
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
     if ($ipInfoDbAPIKey) { // ipinfodb.com needs a key
         $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
@@ -6135,7 +6137,8 @@ function do_array_dual($ia)
 * @param string|int inputwidth from attribute
 * @return array: labelWidth as integer,inputWidth as integer,defaultWidth as boolean
 */
-function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth) {
+function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
+{
 
     $attributeInputContainerWidth = intval(trim($inputAttributeWidth));
     if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
@@ -6190,7 +6193,8 @@ function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth) {
 * @param string $dateString
 * @return string
 */
-function fillDate($dateString) {
+function fillDate($dateString)
+{
     switch (strlen($dateString)) {
         // Only year
         case 4:

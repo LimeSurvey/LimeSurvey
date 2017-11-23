@@ -2,7 +2,8 @@
 
 class MysqlSchema extends CMysqlSchema
 {
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         parent::__construct($conn);
         /**
          * Auto increment.
@@ -41,7 +42,8 @@ class MysqlSchema extends CMysqlSchema
     public function getCompositePrimaryKey(array $columns)
     {
         $columns = array_map(
-            function($column) {
+            function($column)
+            {
                 return '`'.$column.'`';
             },
             $columns

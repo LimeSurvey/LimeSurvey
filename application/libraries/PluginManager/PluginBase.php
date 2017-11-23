@@ -5,7 +5,8 @@ namespace LimeSurvey\PluginManager;
 /**
  * Base class for plugins.
  */
-abstract class PluginBase implements iPlugin {
+abstract class PluginBase implements iPlugin
+{
     /**
      *
      * @var LimesurveyApi

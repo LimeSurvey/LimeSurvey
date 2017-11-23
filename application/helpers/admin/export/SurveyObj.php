@@ -269,7 +269,8 @@ class SurveyObj
      * @param string $sValue
      * @return string
      */
-    public function getShortAnswer($sFieldName, $sValue) {
+    public function getShortAnswer($sFieldName, $sValue)
+    {
         $aQuestion = $this->fieldMap[$sFieldName];
         $sFieldType = $aQuestion['type'];
 

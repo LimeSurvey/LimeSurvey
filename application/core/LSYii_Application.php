@@ -89,7 +89,8 @@ class LSYii_Application extends CWebApplication
         $this->config = array_merge($this->config, $lsConfig);
     }
 
-    public function init() {
+    public function init()
+    {
         parent::init();
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
@@ -296,7 +297,8 @@ class LSYii_Application extends CWebApplication
      * @param CExceptionEvent $event
      * @return void
      */
-    public function onException($event) {
+    public function onException($event)
+    {
         if (Yii::app() instanceof CWebApplication) {
             if (defined('PHP_ENV') && PHP_ENV == 'test') {
                 // If run from phpunit, die with exception message.

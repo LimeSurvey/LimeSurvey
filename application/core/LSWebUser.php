@@ -6,7 +6,8 @@
         protected $sessionVariable = 'LSWebUser';
 
 
-        public function __construct() {
+        public function __construct()
+        {
             $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
         }
 
@@ -28,15 +29,17 @@
         }
 
 
-        public function setFlash($key, $value, $defaultValue = null) {
+        public function setFlash($key, $value, $defaultValue = null)
+        {
             $this->setState("flash.$key", $value, $defaultValue);
         }
-        public function hasFlash($key) {
+        public function hasFlash($key)
+        {
             $this->hasState("flash.$key");
         }
 
         public function getFlashes($delete = true)
-            {
+        {
             $result = $this->getState('flash', array());
             $this->removeState('flash');
             return $result;

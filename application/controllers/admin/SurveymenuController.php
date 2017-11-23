@@ -241,7 +241,8 @@ class SurveymenuController extends Survey_Common_Action
     /**
      * Restores the default surveymenus
      */
-    public function restore() {
+    public function restore()
+    {
         if (Yii::app()->request->isPostRequest)
         {
             //Check for permission!
@@ -346,7 +347,8 @@ class SurveymenuController extends Survey_Common_Action
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $data);
     }
 
-    public function getsurveymenuform($menuid = null) {
+    public function getsurveymenuform($menuid = null)
+    {
         $menuid = Yii::app()->request->getParam('menuid', null);
         if ($menuid != null)
         {

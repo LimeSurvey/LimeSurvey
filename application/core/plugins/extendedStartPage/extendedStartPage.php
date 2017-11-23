@@ -17,7 +17,8 @@ class ExtendedStartpage extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeSurveysStartpageRender');
     }
 
-    public function beforeSurveysStartpageRender() {
+    public function beforeSurveysStartpageRender()
+    {
         $event = $this->getEvent();
         $aData = $event->get('aData');
 

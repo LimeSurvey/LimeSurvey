@@ -1002,7 +1002,8 @@ class Survey_Common_Action extends CAction
         $quickMenuItems = $result->get('quickMenuItems');
         if (!empty($quickMenuItems))
         {
-            usort($quickMenuItems, function($b1, $b2) {
+            usort($quickMenuItems, function($b1, $b2)
+            {
                 return (int) $b1['order'] > (int) $b2['order'];
             });
         }

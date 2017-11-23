@@ -2,7 +2,8 @@
 
 class MssqlSchema extends CMssqlSchema
 {
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         parent::__construct($conn);
         /**
          * Recommended practice.
@@ -70,7 +71,8 @@ class MssqlSchema extends CMssqlSchema
     public function getCompositePrimaryKey(array $columns)
     {
         $columns = array_map(
-            function($column) {
+            function($column)
+            {
                 return '['.$column.']';
             },
             $columns

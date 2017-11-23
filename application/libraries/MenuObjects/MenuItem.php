@@ -39,12 +39,24 @@ class MenuItem implements MenuItemInterface
         }
     }
 
-    public function getHref() { return $this->href; }
-    public function getLabel() { return $this->label; }
-    public function getIconClass() { return $this->iconClass; }
-    public function isDivider() { return $this->isDivider; }
-    public function isSmallText() { return $this->isSmallText; }
+    public function getHref()
+    {
+return $this->href; }
+    public function getLabel()
+    {
+return $this->label; }
+    public function getIconClass()
+    {
+return $this->iconClass; }
+    public function isDivider()
+    {
+return $this->isDivider; }
+    public function isSmallText()
+    {
+return $this->isSmallText; }
 
     // Used by array_unique
-    public function __toString() { return $this->href; }
+    public function __toString()
+    {
+return $this->href; }
 }

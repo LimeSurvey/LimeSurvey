@@ -302,7 +302,8 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
-    public function getTypeGroup() {
+    public function getTypeGroup()
+    {
         
     }
 
@@ -967,7 +968,8 @@ class Question extends LSActiveRecord
      * @todo : move other fix here ?
      * @return void
      */
-    public function fixSubQuestions() {
+    public function fixSubQuestions()
+    {
         if ($this->parent_qid) {
             return;
         }
@@ -991,12 +993,14 @@ class Question extends LSActiveRecord
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
     /** @return string[] */
-    public static function getQuotableTypes() {
+    public static function getQuotableTypes()
+    {
         return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!', '*');
     }
 
 
-    public function getBasicFieldName() {
+    public function getBasicFieldName()
+    {
         if ($this->parent_qid != 0) {
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
         } else {
@@ -1007,7 +1011,8 @@ class Question extends LSActiveRecord
     /**
      * @return QuestionAttribute[]
      */
-    public function getQuestionAttributes() {
+    public function getQuestionAttributes()
+    {
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
         $criteria->params = [':qid'=>$this->qid];

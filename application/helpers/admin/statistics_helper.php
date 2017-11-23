@@ -333,7 +333,8 @@ function getQuestionMapData($sField, $qsid)
 *                          ie: array("`FIELDNAME`='Y'", "`FIELDNAME2`='Hello'");
 *
 */
-function buildSelects($allfields, $surveyid, $language) {
+function buildSelects($allfields, $surveyid, $language)
+{
 
     //Create required variables
     $selects = array();
@@ -571,7 +572,8 @@ function square($number)
     return $squarenumber;
 }
 
-class statistics_helper {
+class statistics_helper
+{
     /**
      * @var pdf
      */
@@ -4464,7 +4466,8 @@ class statistics_helper {
      * @param bool $excludezeros
      * @return null|float
      */
-    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros) {
+    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
+    {
         static $sid = null;
         static $recordCount = 0;
         static $field = null;
@@ -4566,8 +4569,7 @@ class statistics_helper {
         {
             if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
                 $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
-            }
-            else
+            } else
             {
                 $sortby = Yii::app()->db->quoteColumnName($sortby);
             }

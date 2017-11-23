@@ -1,6 +1,7 @@
 <?php
 namespace LimeSurvey\PluginManager;
-class PluginEventContent {
+class PluginEventContent
+{
     
     const APPEND = 'append';
     const PREPEND = 'prepend';
@@ -14,7 +15,8 @@ class PluginEventContent {
      * @param string $cssClass
      * @param string $id
      */
-    public function __construct($content = null, $cssClass = null, $id = null) {
+    public function __construct($content = null, $cssClass = null, $id = null)
+    {
         $this->setContent($content);
         $this->setCssClass($cssClass);
         $this->setCssId($id);

@@ -110,7 +110,8 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true) {
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true)
+{
     // sanitize filename
     $filename = preg_replace(
         '~
@@ -140,7 +141,8 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
 /**
  * @param string $filename
  */
-function beautify_filename($filename) {
+function beautify_filename($filename)
+{
     // reduce consecutive characters
     $filename = preg_replace(array(
         // "file   name.zip" becomes "file-name.zip"
@@ -175,7 +177,8 @@ function beautify_filename($filename) {
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
 
-function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false) {
+function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
+{
     $string = str_replace(".", "", $string);
     return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
 }
@@ -461,14 +464,16 @@ function check($input, $flags, $min = '', $max = '')
     return TRUE;
 }
 
-function sanitize_languagecode($codetosanitize) {
+function sanitize_languagecode($codetosanitize)
+{
     return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize);
 }
 
 /**
  * @param string $codestringtosanitize
  */
-function sanitize_languagecodeS($codestringtosanitize) {
+function sanitize_languagecodeS($codestringtosanitize)
+{
     $codearray = explode(" ", trim($codestringtosanitize));
     $codearray = array_map("sanitize_languagecode", $codearray);
     return implode(" ", $codearray);

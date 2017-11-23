@@ -2349,7 +2349,7 @@ class remotecontrol_handle
  * @return array The list of users in case of success
  */
     public function list_users($sSessionKey = null, $uid = null)
-    {    
+    {
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read'))

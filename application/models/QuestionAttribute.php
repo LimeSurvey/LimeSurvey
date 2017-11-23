@@ -273,7 +273,8 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @return Question
      */
-    public function getQuestion() {
+    public function getQuestion()
+    {
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
         $criteria->params = [':qid'=>$this->qid];
@@ -289,7 +290,8 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @return Survey
      */
-    public function getSurvey() {
+    public function getSurvey()
+    {
         return $this->question->survey;
     }
 }

@@ -27,7 +27,8 @@
  * @author Thomas M. White (TMSWhite)
  */
 
-class ExpressionManager {
+class ExpressionManager
+{
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
     public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
@@ -1947,7 +1948,8 @@ class ExpressionManager {
      * @param array $a
      * @return array
      */
-    private function flatten_array(array $a) {
+    private function flatten_array(array $a)
+    {
         $i = 0;
         while ($i < count($a)) {
             if (is_array($a[$i])) {
@@ -2110,7 +2112,8 @@ class ExpressionManager {
      * @param array $functions
      */
 
-    public function RegisterFunctions(array $functions) {
+    public function RegisterFunctions(array $functions)
+    {
         $this->RDP_ValidFunctions = array_merge($this->RDP_ValidFunctions, $functions);
     }
 

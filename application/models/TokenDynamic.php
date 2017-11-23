@@ -128,7 +128,8 @@ class TokenDynamic extends LSActiveRecord
      * This method should be moved to db update for 2.05 version so it runs only
      * once per token table / backup token table
      */
-    public function checkColumns() {
+    public function checkColumns()
+    {
         $sid = self::$sid;
         $sTableName = '{{tokens_'.$sid.'}}';
         $columncheck = array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus", "token", "language", "blacklisted", "sent", "remindersent", "completed", "usesleft", "validfrom", "validuntil");

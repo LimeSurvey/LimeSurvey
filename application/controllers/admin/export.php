@@ -22,7 +22,8 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-class export extends Survey_Common_Action {
+class export extends Survey_Common_Action
+{
 
     function __construct($controller, $id)
     {
@@ -1294,7 +1295,8 @@ class export extends Survey_Common_Action {
      * @param bool $readFile Whether we read the file for direct download (or not as in massive actions)
      * @return string
      */
-    private function _exportPrintableHtmls($iSurveyID, $readFile = true) {
+    private function _exportPrintableHtmls($iSurveyID, $readFile = true)
+    {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $assetsDir = substr(Template::getTemplateURL($oSurvey->template), 1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
@@ -1341,7 +1343,8 @@ class export extends Survey_Common_Action {
      * @param string $tempdir the directory the file will be stored in
      * @return string File name where the data is stored
      */
-    private function _exportPrintableHtml($oSurvey, $language, $tempdir) {
+    private function _exportPrintableHtml($oSurvey, $language, $tempdir)
+    {
         $printableSurvey = new printablesurvey();
 
         ob_start(); //Start output buffer
@@ -1400,7 +1403,8 @@ class export extends Survey_Common_Action {
         header("Pragma: {$pragma}"); // HTTP/1.0
     }
 
-    private function _xmlToJson($fileContents) {
+    private function _xmlToJson($fileContents)
+    {
         $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
 
         $fileContents          = str_replace(array("\n", "\r", "\t"), '', $fileContents);

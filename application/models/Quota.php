@@ -138,12 +138,14 @@ class Quota extends LSActiveRecord
     /**
      * @return QuotaLanguageSetting
      */
-    public function getMainLanguagesetting() {
+    public function getMainLanguagesetting()
+    {
         return $this->languagesettings[$this->survey->language];
 
     }
 
-    public function getCompleteCount() {
+    public function getCompleteCount()
+    {
         if (!tableExists("survey_{$this->sid}")) {
             return;
         }
@@ -184,7 +186,8 @@ class Quota extends LSActiveRecord
         }
     }
 
-    public function getViewArray() {
+    public function getViewArray()
+    {
         $languageSettings = $this->currentLanguageSetting;
         $members = array();
         foreach ($this->quotaMembers as $quotaMember) {
@@ -199,7 +202,8 @@ class Quota extends LSActiveRecord
      * Get the QuotaLanguageSetting for current language
      * @return QuotaLanguageSetting
      */
-    public function getCurrentLanguageSetting() {
+    public function getCurrentLanguageSetting()
+    {
         $oQuotaLanguageSettings = QuotaLanguageSetting::model()
             ->findByAttributes(array(
                 'quotals_quota_id' => $this->id,

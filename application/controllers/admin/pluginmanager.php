@@ -19,7 +19,8 @@ class PluginManager extends Survey_Common_Action
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function($installedPlugin) {
+        $aInstalledNames    = array_map(function($installedPlugin)
+        {
                 return $installedPlugin->name;
             }, $aInstalledPlugins);
 
@@ -87,7 +88,8 @@ class PluginManager extends Survey_Common_Action
      *
      * @return void
      */
-    public function changestate() {
+    public function changestate()
+    {
         //Yii::app()->request->validateCsrfToken();
         $id = Yii::app()->request->getPost('id');
         $type = Yii::app()->request->getPost('type');

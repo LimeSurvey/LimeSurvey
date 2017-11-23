@@ -28,7 +28,8 @@
  * @property string $saved_date
  * @property string $refurl
  */
-class SavedControl extends LSActiveRecord {
+class SavedControl extends LSActiveRecord
+{
 
     /** @inheritdoc */
     public function tableName()

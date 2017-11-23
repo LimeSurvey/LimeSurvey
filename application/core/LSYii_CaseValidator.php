@@ -14,12 +14,14 @@
  *
  */
 
-class LSYii_CaseValidator extends CValidator {
+class LSYii_CaseValidator extends CValidator
+{
 
     public $type = 'lower';
 
 
-    public function validateAttribute($object, $attribute) {
+    public function validateAttribute($object, $attribute)
+    {
 
         if ($this->type == 'upper') {
             if (strtoupper($object->$attribute) == $object->$attribute) {

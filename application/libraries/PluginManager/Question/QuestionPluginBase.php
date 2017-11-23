@@ -1,7 +1,8 @@
 <?php
     namespace LimeSurvey\PluginManager;
 
-    abstract class QuestionPluginBase extends PluginBase {
+    abstract class QuestionPluginBase extends PluginBase
+    {
 
 
 
@@ -23,7 +24,8 @@
          * @param string $id
          */
 
-        public function __construct(PluginManager $manager, $id) {
+        public function __construct(PluginManager $manager, $id)
+        {
             parent::__construct($manager, $id);
             $this->subscribe('listQuestionPlugins');
         }

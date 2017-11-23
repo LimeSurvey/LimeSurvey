@@ -6,7 +6,8 @@
      */
     abstract class Response extends Dynamic
     {
-        public function beforeDelete() {
+        public function beforeDelete()
+        {
             if (parent::beforeDelete())
             {
                 $this->deleteFiles();
@@ -19,7 +20,8 @@
          * @param mixed $className Either the classname or the survey id.
          * @return Response
          */
-        public static function model($className = null) {
+        public static function model($className = null)
+        {
             /** @var self $model */
             $model = parent::model($className);
             return $model;
@@ -30,7 +32,8 @@
          * @param string $scenario
          * @return Response Description
          */
-        public static function create($surveyId, $scenario = 'insert') {
+        public static function create($surveyId, $scenario = 'insert')
+        {
             return parent::create($surveyId, $scenario);
         }
 
@@ -159,7 +162,8 @@
             return array($success, $errors);
         }
 
-        public function delete($deleteFiles = false) {
+        public function delete($deleteFiles = false)
+        {
             if ($deleteFiles) {
                 $this->deleteFiles();
             }
@@ -177,12 +181,15 @@
         {
             return '{{survey_'.$this->dynamicId.'}}';
         }
-        public function getSurveyId() {
+        public function getSurveyId()
+        {
             return $this->dynamicId;
         }
-        public function browse() {
+        public function browse()
+        {
         }
-        public function search() {
+        public function search()
+        {
 
         }
     }

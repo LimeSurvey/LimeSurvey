@@ -450,7 +450,8 @@ class questiongroups extends Survey_Common_Action
             
             //first set up the ordering for questiongroups
             $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-            array_map(function($oQuestiongroup) use ($aQuestiongroup) {
+            array_map(function($oQuestiongroup) use ($aQuestiongroup)
+            {
                 $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                 $oQuestiongroup->save();
             }, $oQuestiongroups);
@@ -458,7 +459,8 @@ class questiongroups extends Survey_Common_Action
             
             foreach ($aQuestiongroup['questions'] as $aQuestion) {
                 $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                array_map(function($oQuestion) use ($aQuestion){
+                array_map(function($oQuestion) use ($aQuestion)
+                {
                     $oQuestion->question_order = $aQuestion['question_order'];
                     $oQuestion->gid = $aQuestion['gid'];
                     $oQuestion->save();
@@ -479,7 +481,8 @@ class questiongroups extends Survey_Common_Action
         $grouparray = Yii::app()->request->getPost('grouparray', []);
         foreach ($grouparray as $aQuestiongroup) {
             $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-            array_map(function($oQuestiongroup) use ($aQuestiongroup) {
+            array_map(function($oQuestiongroup) use ($aQuestiongroup)
+            {
                 $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                 $oQuestiongroup->save();
             }, $oQuestiongroups);

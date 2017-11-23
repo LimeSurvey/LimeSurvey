@@ -23,7 +23,8 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 )
     );
     
-    public function init() {
+    public function init()
+    {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -37,7 +38,8 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
      * Add AuthLDAP Permission to global Permission
      * @return void
      */
-    public function getGlobalBasePermissions() {
+    public function getGlobalBasePermissions()
+    {
         $this->getEvent()->append('globalBasePermissions', array(
             'auth_webserver' => array(
                 'create' => false,
@@ -53,7 +55,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     }
 
     public function beforeLogin()
-    {       
+    {
         // normal login through webserver authentication    
         $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && isset($_SERVER[$serverKey]))

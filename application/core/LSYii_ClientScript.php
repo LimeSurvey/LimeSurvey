@@ -28,7 +28,8 @@
  *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
  */
 
-class LSYii_ClientScript extends CClientScript {
+class LSYii_ClientScript extends CClientScript
+{
 
     const POS_POSTSCRIPT = 5;
     /**

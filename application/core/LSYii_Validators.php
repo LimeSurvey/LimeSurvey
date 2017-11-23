@@ -14,7 +14,8 @@
  *
  */
 
-class LSYii_Validators extends CValidator {
+class LSYii_Validators extends CValidator
+{
 
     /**
      * Filter attribute for fixCKeditor

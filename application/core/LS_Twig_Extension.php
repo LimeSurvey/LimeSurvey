@@ -126,7 +126,8 @@ class LS_Twig_Extension extends Twig_Extension
      * @param $position
      * @return string
      */
-    public static function getPosition($position) {
+    public static function getPosition($position)
+    {
         switch ($position) {
             case "POS_HEAD":
                 $position = LSYii_ClientScript::POS_HEAD;

@@ -66,14 +66,16 @@ class Timing extends LSActiveRecord
 
 
     /** @inheritdoc */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'response' => array(self::BELONGS_TO, 'Response', 'id')
         );
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return $this->survey->timingsTableName;
     }
 

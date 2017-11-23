@@ -6,7 +6,8 @@ use Plugin;
 /**
  * Factory for limesurvey plugin objects.
  */
-class PluginManager extends \CApplicationComponent {
+class PluginManager extends \CApplicationComponent
+{
     /**
      * Object containing any API that the plugins can use.
      * @var mixed $api The class name of the API class to load, or
@@ -41,7 +42,8 @@ class PluginManager extends \CApplicationComponent {
      *
      * a reference to an already constructed reference.
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         if (!is_object($this->api)) {
             $class = $this->api;

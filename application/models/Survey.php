@@ -188,7 +188,8 @@ class Survey extends LSActiveRecord
     }
 
     /** @inheritdoc */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'running' => gT('running')
         );
@@ -551,7 +552,8 @@ class Survey extends LSActiveRecord
      * Return the name of survey tokens table
      * @return string
      */
-    public function getTokensTableName() {
+    public function getTokensTableName()
+    {
         return "{{tokens_".$this->primaryKey."}}";
     }
 
@@ -559,7 +561,8 @@ class Survey extends LSActiveRecord
      * Return the name of survey timigs table
      * @return string
      */
-    public function getTimingsTableName() {
+    public function getTimingsTableName()
+    {
         return "{{survey_".$this->primaryKey."_timings}}";
     }
 
@@ -567,7 +570,8 @@ class Survey extends LSActiveRecord
      * Return the name of survey responses (the data) table name
      * @return string
      */
-    public function getResponsesTableName() {
+    public function getResponsesTableName()
+    {
         return '{{survey_'.$this->primaryKey.'}}';
     }
 
@@ -576,7 +580,8 @@ class Survey extends LSActiveRecord
      * Returns true in a token table exists for survey
      * @return boolean
      */
-    public function getHasTokensTable() {
+    public function getHasTokensTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->tokensTableName);
@@ -586,7 +591,8 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses (data) table exists in DB
      * @return boolean
      */
-    public function getHasResponsesTable() {
+    public function getHasResponsesTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->responsesTableName);
@@ -596,7 +602,8 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses timings exists in DB
      * @return boolean
      */
-    public function getHasTimingsTable() {
+    public function getHasTimingsTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->timingsTableName);
@@ -606,7 +613,8 @@ class Survey extends LSActiveRecord
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
      * @return string
      */
-    public function getGoogleanalyticsapikeysetting() {
+    public function getGoogleanalyticsapikeysetting()
+    {
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
             return "G";
         } else if ($this->googleanalyticsapikey == "") {
@@ -619,7 +627,8 @@ class Survey extends LSActiveRecord
     /**
      * @param string $value
      */
-    public function setGoogleanalyticsapikeysetting($value) {
+    public function setGoogleanalyticsapikeysetting($value)
+    {
         if ($value == "G") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
         } else if ($value == "N") {
@@ -631,7 +640,8 @@ class Survey extends LSActiveRecord
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
      * @return string
      */
-    public function getGoogleanalyticsapikey() {
+    public function getGoogleanalyticsapikey()
+    {
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
             return getGlobalSetting('googleanalyticsapikey');
         } else {
@@ -639,7 +649,8 @@ class Survey extends LSActiveRecord
         }
     }
 
-    public function getSurveyTemplateConfiguration() {
+    public function getSurveyTemplateConfiguration()
+    {
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
@@ -688,7 +699,8 @@ class Survey extends LSActiveRecord
         return $aResultCollected;
     }
 
-    private function _getSurveymenuSubmenus($oParentSurveymenu) {
+    private function _getSurveymenuSubmenus($oParentSurveymenu)
+    {
         $criteria = new CDbCriteria;
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
         $criteria->addCondition('parent_id=:parentid');
@@ -727,7 +739,8 @@ class Survey extends LSActiveRecord
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
-    public function getSurveyMenus($position = '') {
+    public function getSurveyMenus($position = '')
+    {
 
         //Get the default menus
         $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
@@ -872,7 +885,8 @@ class Survey extends LSActiveRecord
      * @return Survey
      *
      */
-    public function findByPk($pk, $condition = '', $params = array()) {
+    public function findByPk($pk, $condition = '', $params = array())
+    {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
@@ -891,7 +905,8 @@ class Survey extends LSActiveRecord
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache() {
+    public function resetCache()
+    {
         $this->findByPkCache = array();
     }
 
@@ -1536,7 +1551,8 @@ class Survey extends LSActiveRecord
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function transcribeCaptchaOptions() {
+    public static function transcribeCaptchaOptions()
+    {
         // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
@@ -1577,7 +1593,8 @@ class Survey extends LSActiveRecord
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    {
         // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -1640,7 +1657,9 @@ class Survey extends LSActiveRecord
     public static function getSurveysWithTokenTable()
     {
         $surveys = self::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
-        $surveys = array_filter($surveys, function($s) { return $s->hasTokensTable; });
+        $surveys = array_filter($surveys, function($s)
+        {
+return $s->hasTokensTable; });
         return $surveys;
     }
 
@@ -1713,7 +1732,8 @@ class Survey extends LSActiveRecord
      * Get the DB criteria to get questions as ordered in survey
      * @return CDbCriteria
      */
-    private function getQuestionOrderCriteria() {
+    private function getQuestionOrderCriteria()
+    {
         $criteria = new CDbCriteria;
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
         $criteria->with = array(
@@ -1739,7 +1759,8 @@ class Survey extends LSActiveRecord
     /**
      * @return integer
      */
-    public function getCountTotalQuestions() {
+    public function getCountTotalQuestions()
+    {
         $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
         $sumresult = Question::model()->countByAttributes($condn);
         return (int) $sumresult;
@@ -1749,7 +1770,8 @@ class Survey extends LSActiveRecord
      * Get the coutn of questions that do not need input (skipping text-display etc.)
      * @return integer
      */
-    public function getCountNoInputQuestions() {
+    public function getCountNoInputQuestions()
+    {
         $condn = array(
             'sid'=>$this->sid,
             'language'=>$this->language,
@@ -1764,7 +1786,8 @@ class Survey extends LSActiveRecord
      * Get the coutn of questions that need input (skipping text-display etc.)
      * @return integer
      */
-    public function getCountInputQuestions() {
+    public function getCountInputQuestions()
+    {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
 

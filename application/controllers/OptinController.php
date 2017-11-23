@@ -23,7 +23,8 @@
  * @copyright 2011
  * @access public
  */
-class OptinController extends LSYii_Controller {
+class OptinController extends LSYii_Controller
+{
 
         public $layout = 'bare';
         public $defaultAction = 'tokens';

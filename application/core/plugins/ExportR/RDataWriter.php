@@ -1,6 +1,7 @@
 <?php
 Yii::import('application.helpers.admin.export.*');
-class RDataWriter extends CsvWriter {
+class RDataWriter extends CsvWriter
+{
     /**
      * The value to use when no data is present (for example unanswered because
      * of relevance)
@@ -11,7 +12,8 @@ class RDataWriter extends CsvWriter {
 
     public $fieldmap = null;
 
-    public function init(\SurveyObj $survey, $sLanguageCode, \FormattingOptions $oOptions) {
+    public function init(\SurveyObj $survey, $sLanguageCode, \FormattingOptions $oOptions)
+    {
         parent::init($survey, $sLanguageCode, $oOptions);
 
         // Change filename
@@ -34,7 +36,8 @@ class RDataWriter extends CsvWriter {
      * @param string $column
      * @return mixed
      */
-    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null) {
+    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null)
+    {
         switch ($fieldType) {
             case 'C':       // Yes/no/uncertain
                 if ($value == 'Y') {

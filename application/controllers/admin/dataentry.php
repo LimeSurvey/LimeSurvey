@@ -188,7 +188,8 @@ class dataentry extends Survey_Common_Action
     }
 
     private function _readFile($filePath)
-    { // Open the file for reading
+    {
+// Open the file for reading
         $handle = fopen($filePath, "r");
         $bigarray = array();
         // Read the file
@@ -2403,7 +2404,8 @@ class dataentry extends Survey_Common_Action
     /*
     * This is a duplicate of the array_filter_help function in printablesurvey.php
     */
-    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid)
+    {
         $output = "";
         if (!empty($qidattributes['array_filter']))
         {

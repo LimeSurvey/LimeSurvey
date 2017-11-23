@@ -4,7 +4,8 @@
      * Class containing helper functions for dealing with "big data".
      * @author Sam Mousa <sam@befound.nl>
      */
-    class BigData {
+    class BigData
+    {
 
 
 
@@ -236,7 +237,8 @@
         }
     }
 
-    class BigFile {
+    class BigFile
+    {
 
         public $fileName;
         protected $deleteAfterUse;

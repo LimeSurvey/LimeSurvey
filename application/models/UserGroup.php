@@ -26,7 +26,8 @@
  * @property User $owner Group ownre user
  * @property integer $countUsers Count of users in this group
  */
-class UserGroup extends LSActiveRecord {
+class UserGroup extends LSActiveRecord
+{
 
     /** @var integer $member_count  */
     public $member_count = null;
@@ -140,7 +141,8 @@ class UserGroup extends LSActiveRecord {
      * @return boolean
      * @todo should use save() and afterSave() methods!!
      */
-    public function addGroup($group_name, $group_description) {
+    public function addGroup($group_name, $group_description)
+    {
         $iLoginID = intval(Yii::app()->session['loginID']);
         $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
@@ -365,7 +367,8 @@ class UserGroup extends LSActiveRecord {
      * @param integer $uid
      * @return bool
      */
-    public function hasUser($uid) {
+    public function hasUser($uid)
+    {
         // superadmin is part of all groups
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             return true;

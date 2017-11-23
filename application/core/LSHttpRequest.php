@@ -143,7 +143,8 @@ class LSHttpRequest extends CHttpRequest
         return false;  
     }
 
-    protected function normalizeRequest() {
+    protected function normalizeRequest()
+    {
         parent::normalizeRequest();
 
         if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') {

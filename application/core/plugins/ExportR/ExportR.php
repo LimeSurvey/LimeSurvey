@@ -1,12 +1,14 @@
 <?php
-class ExportR extends \LimeSurvey\PluginManager\PluginBase {
+class ExportR extends \LimeSurvey\PluginManager\PluginBase
+{
     
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: R-export';
     static protected $name = 'Export results to R';
     
-    public function init() {
+    public function init()
+    {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle

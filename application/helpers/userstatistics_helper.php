@@ -335,7 +335,8 @@ function getQuestionMapData($sField, $qsid)
  *                          ie: array("`FIELDNAME`='Y'", "`FIELDNAME2`='Hello'");
  *
  */
-function buildSelects($allfields, $surveyid, $language) {
+function buildSelects($allfields, $surveyid, $language)
+{
 
     //Create required variables
     $selects = array();
@@ -573,7 +574,8 @@ function square($number)
     return $squarenumber;
 }
 
-class userstatistics_helper {
+class userstatistics_helper
+{
     /**
      * @var pdf
      */
@@ -619,7 +621,8 @@ class userstatistics_helper {
      *                       "qquestion"=>The description of the question,
      *                       "qtype"=>The question type code
      */
-    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true) {
+    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
+    {
 
         //Set up required variables
         $survey = Survey::model()->findByPk($surveyid);
@@ -1565,7 +1568,8 @@ class userstatistics_helper {
      * @param boolean $browse
      * @return array
      */
-    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
+    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
+    {
 
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
@@ -3144,7 +3148,8 @@ class userstatistics_helper {
      * @param bool $excludezeros
      * @return null|float
      */
-    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros) {
+    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
+    {
         static $sid = null;
         static $recordCount = 0;
         static $field = null;

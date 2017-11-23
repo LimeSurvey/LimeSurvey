@@ -17,7 +17,8 @@ abstract class Dynamic extends LSActiveRecord
      * Dynamic constructor.
      * @param string $scenario
      */
-    public function __construct($scenario = 'insert') {
+    public function __construct($scenario = 'insert')
+    {
         list(,$this->dynamicId) = explode('_', get_class($this));
         parent::__construct($scenario);
     }
@@ -26,7 +27,8 @@ abstract class Dynamic extends LSActiveRecord
      * @inheritdoc
      * @return Dynamic
      */
-    public static function model($className = null) {
+    public static function model($className = null)
+    {
         if (!isset($className)) {
             $className = get_called_class();
         } elseif (is_numeric($className)) {

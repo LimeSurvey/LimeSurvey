@@ -21,7 +21,8 @@
  * @property integer $targetqid
  * @property integer $targetsqid
  */
-class SurveyURLParameter extends LSActiveRecord {
+class SurveyURLParameter extends LSActiveRecord
+{
     /**
      * @inheritdoc
      * @return SurveyURLParameter
@@ -62,7 +63,8 @@ class SurveyURLParameter extends LSActiveRecord {
     /**
      * @param array $compareToArray
      */
-    public function compareToArray($compareToArray) {
+    public function compareToArray($compareToArray)
+    {
 
     }
 

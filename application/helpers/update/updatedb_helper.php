@@ -26,7 +26,8 @@
 * @param integer $iOldDBVersion The previous database version
 * @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
 */
-function db_upgrade_all($iOldDBVersion, $bSilent = false) {
+function db_upgrade_all($iOldDBVersion, $bSilent = false)
+{
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
      * @link https://manual.limesurvey.org/Database_versioning for explanations
@@ -810,7 +811,8 @@ function upgrade327($oDB)
 
 }
 
-function transferPasswordFieldToText($oDB) {
+function transferPasswordFieldToText($oDB)
+{
     switch ($oDB->getDriverName()) {
         case 'mysql':
         case 'mysqli':
@@ -837,7 +839,8 @@ function transferPasswordFieldToText($oDB) {
     }
 }
 
-function createSurveyMenuTable293($oDB) {
+function createSurveyMenuTable293($oDB)
+{
     // Drop the old survey rights table.
     if (tableExists('{surveymenu_entries}')) {
         $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
@@ -1632,7 +1635,8 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
 /**
 * @param string $sType
 */
-function addColumn($sTableName, $sColumn, $sType) {
+function addColumn($sTableName, $sColumn, $sType)
+{
     Yii::app()->db->createCommand()->addColumn($sTableName, $sColumn, $sType);
 }
 
@@ -1641,7 +1645,8 @@ function addColumn($sTableName, $sColumn, $sType) {
 *
 * @param mixed $sBookmark  Name of the bookmark
 */
-function setTransactionBookmark($sBookmark = 'limesurvey') {
+function setTransactionBookmark($sBookmark = 'limesurvey')
+{
     if (Yii::app()->db->driverName == 'pgsql') {
         Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
     }

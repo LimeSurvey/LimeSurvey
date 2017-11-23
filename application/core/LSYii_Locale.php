@@ -14,7 +14,8 @@
 *
 */
 
-class LSYii_Locale extends CLocale {
+class LSYii_Locale extends CLocale
+{
     /**
      * Converts a locale ID to its canonical form.
      * In canonical form, a locale ID consists of only underscores and lower-case letters.

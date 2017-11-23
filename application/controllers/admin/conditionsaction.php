@@ -21,7 +21,8 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-class conditionsaction extends Survey_Common_Action {
+class conditionsaction extends Survey_Common_Action
+{
     
     /**
      * @var array

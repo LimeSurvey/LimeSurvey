@@ -16,5 +16,5 @@ unset ($config['config']);
 //Yii::createWebApplication('CApplication', $config);
 
     abstract class CTestCase extends PHPUnit_Framework_TestCase
-{
+    {
 }

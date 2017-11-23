@@ -197,7 +197,8 @@ function modlabelsetanswers($lid)
 *
 * @param mixed $lid Label set ID
 */
-function fixorder($lid) {
+function fixorder($lid)
+{
 
 
 

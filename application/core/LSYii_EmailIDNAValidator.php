@@ -14,13 +14,15 @@
  *
  */
 
-class LSYii_EmailIDNAValidator extends CValidator {
+class LSYii_EmailIDNAValidator extends CValidator
+{
 
     public $allowEmpty = false;
     public $allowMultiple = false;
 
 
-    public function validateAttribute($object, $attribute) {
+    public function validateAttribute($object, $attribute)
+    {
 
         if ($object->$attribute == '' && $this->allowEmpty)
         {

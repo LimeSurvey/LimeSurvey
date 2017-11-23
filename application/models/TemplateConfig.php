@@ -23,7 +23,7 @@ if (!defined('BASEPATH')) {
  *
  */
 class TemplateConfig extends CActiveRecord
-    {
+{
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 
@@ -944,32 +944,54 @@ class TemplateConfig extends CActiveRecord
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
 
-    public static function rename($sOldName, $sNewName) {}
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true) {}
-    public function addFileReplacement($sFile, $sType) {}
+    public static function rename($sOldName, $sNewName)
+    {
+}
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    {
+}
+    public function addFileReplacement($sFile, $sType)
+    {
+}
 
-    protected function getTemplateForPath($oRTemplate, $sPath) {}
-
-    /**
-     * @param string $sType
-     */
-    protected function getFilesToLoad($oTemplate, $sType) {}
-
-    /**
-     * @param string $sType
-     */
-    protected function changeMotherConfiguration($sType, $aSettings) {}
+    protected function getTemplateForPath($oRTemplate, $sPath)
+    {
+}
 
     /**
      * @param string $sType
      */
-    protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false) {}
+    protected function getFilesToLoad($oTemplate, $sType)
+    {
+}
 
     /**
      * @param string $sType
      */
-    protected function getFrameworkAssetsReplacement($sType) {}
-    protected function removeFileFromPackage($sPackageName, $sType, $aSettings) {}
-    protected function setMotherTemplates() {}
-    protected function setThisTemplate() {}
+    protected function changeMotherConfiguration($sType, $aSettings)
+    {
+}
+
+    /**
+     * @param string $sType
+     */
+    protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
+    {
+}
+
+    /**
+     * @param string $sType
+     */
+    protected function getFrameworkAssetsReplacement($sType)
+    {
+}
+    protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
+    {
+}
+    protected function setMotherTemplates()
+    {
+}
+    protected function setThisTemplate()
+    {
+}
     }

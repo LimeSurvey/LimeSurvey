@@ -2,10 +2,11 @@
 namespace LimeSurvey\PluginManager;
 use PluginSetting;
 
-class DbStorage implements iPluginStorage {
+class DbStorage implements iPluginStorage
+{
 
     
-    public function __construct() 
+    public function __construct()
     {
     }
     /**
@@ -18,7 +19,7 @@ class DbStorage implements iPluginStorage {
      * @param string $language Optional language identifier used for retrieving the setting.
      * @return mixed Returns the value from the database or null if not set.
      */
-    public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null) 
+    public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null)
     {
         $functionName = 'get'.ucfirst($model);
         if ($model == null || !method_exists($this, $functionName))
@@ -39,7 +40,7 @@ class DbStorage implements iPluginStorage {
      * @param mixed $default Default value to return if key could not be found.
      * @return mixed Returns the value from the database or null if not set.
      */
-    protected function getGeneric(iPlugin $plugin, $key, $model, $id, $default) 
+    protected function getGeneric(iPlugin $plugin, $key, $model, $id, $default)
     {
         $attributes = array(
             'plugin_id' => $plugin->getId(),
@@ -178,7 +179,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */    
-    public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null) 
+    public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null)
     {
         
         $functionName = 'set'.ucfirst($model);
@@ -201,7 +202,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */
-    protected function setGeneric(iPlugin $plugin, $key, $data, $model, $id, $language) 
+    protected function setGeneric(iPlugin $plugin, $key, $data, $model, $id, $language)
     {
         
         if ($id == null && $model != null)
@@ -239,7 +240,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */
-    protected function setQuestion(iPlugin $plugin, $key, $data, $model, $id, $language) 
+    protected function setQuestion(iPlugin $plugin, $key, $data, $model, $id, $language)
     {
         $baseAttributes = array(
             'sid',
