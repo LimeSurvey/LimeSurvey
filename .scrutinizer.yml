@@ -13,3 +13,16 @@ coding_style:
                 class: new-line
                 function: new-line
                 closure: new-line
+            if:
+                opening: end-of-line
+            for:
+                opening: end-of-line
+            while:
+                opening: end-of-line
+            do_while:
+                opening: end-of-line
+            switch:
+                opening: end-of-line
+            try:
+                opening: end-of-line
+                
