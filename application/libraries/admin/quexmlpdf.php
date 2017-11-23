@@ -3114,15 +3114,13 @@ class quexmlpdf extends pdf {
             else if ($j == 0) { //first
                 $border = array('LT' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
             }
-            else if (($j + 1) == $cells) //last
-            {
+            else if (($j + 1) == $cells) { //last
                 $border = array('TR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
 
                 //add a border gap
                 $this->SetX($this->GetX() + ($this->textResponseBorder), false);
             }
-            else //middle
-            {
+            else {  //middle
                 $border = array('T' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
                 //add a border gap
                 $this->SetX($this->GetX() + ($this->textResponseBorder), false);
@@ -3608,15 +3606,16 @@ class quexmlpdf extends pdf {
             $other = false;
 
             if (isset($r['skipto'])) $skipto = $r['skipto'];
-            if (isset($r['other']) && $rnum == $total) $other = $r['other']; //only set for last in set
+            if (isset($r['other']) && $rnum == $total) { //only set for last in set
+                $other = $r['other'];    
+            }
 
             //draw the response boxes
             for ($j = 0; $j < count($subquestions); $j++)
             {
                 $s = $subquestions[$j];
 
-                if ($i == 0) // only need to do this once
-                {
+                if ($i == 0) {// only need to do this once
                     if ($parenttext == false)
                         $this->addBoxGroup(1, $s['varname'], $s['text']);
                     else
@@ -3863,8 +3862,7 @@ class quexmlpdf extends pdf {
     {
         $this->columnCP++; //increment the column pointer
 
-        if ($init || ($this->columnCP >= $this->columns)) // if it is time for a new page
-        {
+        if ($init || ($this->columnCP >= $this->columns)) {// if it is time for a new page
             $this->AddPage();
 
             //Set Auto page break to false
