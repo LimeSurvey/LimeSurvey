@@ -83,7 +83,9 @@ PrepareEditorScript(false, $this);
     var updateCKfields = function(){
         $('textarea').each(function () {
             var $textarea = $(this);
-            $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+            if(CKEDITOR.instances[$textarea.attr('name')] != undefined || CKEDITOR.instances[$textarea.attr('name')] != null) {
+                $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+            }
         });
     }
     $(document).on('ready pjax:complete', function(){
