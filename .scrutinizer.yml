@@ -7,10 +7,9 @@ checks:
         duplication: true
         one_class_per_file: true
 coding_style:
-    php: {  }
-    
-#            braces:
-#            classes_functions:
-#                class: new-line
-#                function: new-line
-#                closure: new-line
+    php:    
+        braces:
+            classes_functions:
+                class: new-line
+                function: new-line
+                closure: new-line
