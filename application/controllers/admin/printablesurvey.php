@@ -53,7 +53,6 @@ class printablesurvey extends Survey_Common_Action
             $end = $aSurveyInfo['surveyls_endtext'];
             $surveyname = $aSurveyInfo['surveyls_title'];
             $surveydesc = $aSurveyInfo['surveyls_description'];
-            $surveyactive = $aSurveyInfo['active'];
             $surveytable = $survey->responsesTableName;
             $surveyexpirydate = $aSurveyInfo['expires'];
             $surveyfaxto = $aSurveyInfo['faxto'];
@@ -96,7 +95,7 @@ class printablesurvey extends Survey_Common_Action
             }
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
-            $moveResult = LimeExpressionManager::NavigateForwards();
+            LimeExpressionManager::NavigateForwards();
             Yii::app()->clientScript->reset(); // Remove all scripts
             /* Add css */
             Yii::app()->getClientScript()->registerCssFile(App()->getConfig('publicstyleurl')."/printable.css");
@@ -207,7 +206,6 @@ class printablesurvey extends Survey_Common_Action
 
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 
-                    $printablesurveyoutput = '';
                     $sExplanation = ''; //reset conditions explanation
                     $s = 0;
                     // TMSW Condition->Relevance:  show relevance instead of this whole section to create $explanation
@@ -291,8 +289,6 @@ class printablesurvey extends Survey_Common_Action
 
                             $conditions = array();
                             foreach ($conresult->readAll() as $conrow) {
-
-                                $postans = "";
                                 $value = $conrow['value'];
                                 switch ($conrow['type']) {
                                     case "Y":
@@ -337,7 +333,6 @@ class printablesurvey extends Survey_Common_Action
                                             $fresult = Answer::model()->getAllRecords($condition);
 
                                             foreach ($fresult->readAll() as $frow) {
-                                                $postans = $frow['answer'];
                                                 $conditions[] = $frow['answer'];
                                             } // while
                                         } elseif ($labelIndex == 1) {
@@ -345,7 +340,6 @@ class printablesurvey extends Survey_Common_Action
                                             $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$sLanguageCode}'";
                                             $fresult = Answer::model()->getAllRecords($condition);
                                             foreach ($fresult->readAll() as $frow) {
-                                                $postans = $frow['answer'];
                                                 $conditions[] = $frow['answer'];
                                             } // while
                                         }
@@ -381,13 +375,9 @@ class printablesurvey extends Survey_Common_Action
                                     case "F":
                                     case "H":
                                     default:
-                                        $value = substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid']) + strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-
                                         $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sLanguageCode}'";
-
                                         $fresult = Answer::model()->getAllRecords($condition);
                                         foreach ($fresult->readAll() as $frow) {
-                                            $postans = $frow['answer'];
                                             $conditions[] = $frow['answer'];
                                         } // while
                                         break;
@@ -599,11 +589,6 @@ class printablesurvey extends Survey_Common_Action
 
                                 // ==================================================================
                             case "!": //List - dropdown
-                                if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns']) != '') {
-                                    $dcols = $qidattributes['display_columns'];
-                                } else {
-                                    $dcols = 0;
-                                }
                                 if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
                                     $optCategorySeparator = $qidattributes['category_separator'];
                                 } else {
@@ -994,30 +979,6 @@ class printablesurvey extends Survey_Common_Action
                                 // ==================================================================
                             case ":": //ARRAY (Multi Flexible) (Numbers)
                                 $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                                if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
-                                    $maxvalue = $qidattributes['multiflexible_max'];
-                                    $minvalue = 1;
-                                }
-                                if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
-                                    $minvalue = $qidattributes['multiflexible_min'];
-                                    $maxvalue = $qidattributes['multiflexible_min'] + 10;
-                                }
-                                if (trim($qidattributes['multiflexible_min']) == '' && trim($qidattributes['multiflexible_max']) == '') {
-                                    $minvalue = 1;
-                                    $maxvalue = 10;
-                                }
-                                if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
-                                    if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
-                                        $minvalue = $qidattributes['multiflexible_min'];
-                                        $maxvalue = $qidattributes['multiflexible_max'];
-                                    }
-                                }
-
-                                if (trim($qidattributes['multiflexible_step']) != '') {
-                                    $stepvalue = $qidattributes['multiflexible_step'];
-                                } else {
-                                    $stepvalue = 1;
-                                }
                                 if ($qidattributes['multiflexible_checkbox'] != 0) {
                                     $checkboxlayout = true;
                                 } else {
@@ -1032,7 +993,6 @@ class printablesurvey extends Survey_Common_Action
                                 $fresult = Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' and scale_id=1 AND language='{$sLanguageCode}' ", array('question_order'));
                                 $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
-                                $fwidth = "120";
                                 $i = 0;
                                 //array to temporary store X axis question codes
                                 $xaxisarray = array();
@@ -1092,7 +1052,6 @@ class printablesurvey extends Survey_Common_Action
                                 $fresult = Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND scale_id=1 AND language='{$sLanguageCode}' ", array('question_order'));
                                 $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
-                                $fwidth = "120";
                                 $i = 0;
                                 //array to temporary store X axis question codes
                                 $xaxisarray = array();
@@ -1138,7 +1097,6 @@ class printablesurvey extends Survey_Common_Action
                                 $fresult = Answer::model()->getAllRecords(" scale_id=0 AND qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}'", array('sortorder', 'code'));
                                 $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
-                                $fwidth = "120";
                                 $i = 1;
                                 $column_headings = array();
                                 foreach ($fresult as $frow) {
@@ -1170,9 +1128,6 @@ class printablesurvey extends Survey_Common_Action
                                 foreach ($mearesult->readAll() as $mearow) {
                                     $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                                     $rowclass = alternation($rowclass, 'row');
-                                    if (trim($answertext) == '') {
-                                        $answertext = '&nbsp;';
-                                    }
 
                                     //semantic differential question type?
                                     if (strpos($mearow['question'], '|')) {
@@ -1218,7 +1173,6 @@ class printablesurvey extends Survey_Common_Action
                                 $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
 
-                                $fwidth = "120";
                                 $l1 = 0;
                                 $printablesurveyoutput2 = "<td style='width:{$answerwidth}%'>{NOTEMPTY}</td>";
                                 $myheader2 = '';
@@ -1234,7 +1188,6 @@ class printablesurvey extends Survey_Common_Action
                                 $fresult1 = Answer::model()->getAllRecords(" qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ", array('sortorder', 'code'));
                                 $fresult1 = $fresult1->readAll();
                                 $fcount1 = count($fresult1);
-                                $fwidth = "120";
                                 $l2 = 0;
 
                                 //array to temporary store second scale question codes
@@ -1310,7 +1263,6 @@ class printablesurvey extends Survey_Common_Action
                                 $question['ANSWER'] .= "\t\t\t<td style='width:{$answerwidth}%'>{NOTEMPTY}</td>\n";
 
                                 $fcount = count($fresult);
-                                $fwidth = "120";
                                 $i = 0;
                                 foreach ($fresult as $frow) {
                                     $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}".self::_addsgqacode(" (".$fieldname.$frow['title'].")")."</th>\n";
@@ -1552,7 +1504,6 @@ class printablesurvey extends Survey_Common_Action
             case 'checkbox':
                 $output = '<div class="input-'.$type.'">{NOTEMPTY}</div>';
                 break;
-            break;
             case 'rank':
             case 'other':
             case 'othercomment':
