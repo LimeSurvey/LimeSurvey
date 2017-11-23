@@ -938,8 +938,7 @@ class questions extends Survey_Common_Action
             {
                 $currentCharacter = substr($stringCode, -$n, 1); // get the current character
 
-                if (ctype_digit($currentCharacter))                           // check if it's numerical
-                {
+                if (ctype_digit($currentCharacter)) { // check if it's numerical
                     $numericSuffix = $currentCharacter.$numericSuffix; // store it in a string
                     $n = $n + 1;
                 }
@@ -1226,8 +1225,9 @@ class questions extends Survey_Common_Action
 
                 foreach ($egresult as $esrow)
                 {
-                    if (!array_key_exists($esrow->language, $questlangs)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
+                    if (!array_key_exists($esrow->language, $questlangs)) { // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();
+                    }
                     else
                         $questlangs[$esrow->language] = 99;
 
@@ -1559,7 +1559,7 @@ class questions extends Survey_Common_Action
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$iGid)); // The New Group object
         $oSurvey        = $oQuestionGroup->survey; // The Survey associated with this group
 
-        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update'))  // Permissions check
+        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) 
         {
             if ($oSurvey->active == 'N')                                                        // If survey is active it should not be possible to update
             {
@@ -1616,7 +1616,7 @@ class questions extends Survey_Common_Action
         $iSid           = Yii::app()->request->getPost('sid');
         $bMandatory     = (Yii::app()->request->getPost('mandatory') === 'true') ? 'Y' : 'N';
 
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update'))  // Permissions check
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) 
         {
             $oSurvey          = Survey::model()->findByPk($iSid);
             $aSurveyLanguages = $oSurvey->additionalLanguages;
@@ -1650,7 +1650,7 @@ class questions extends Survey_Common_Action
         $iSid           = $_POST['sid'];
         $bOther = (Yii::app()->request->getPost('other') === 'true') ? 'Y' : 'N';
 
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update'))  // Permissions check
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) 
         {
             $oSurvey          = Survey::model()->findByPk($iSid);
             $aSurveyLanguages = $oSurvey->additionalLanguages;

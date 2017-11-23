@@ -180,8 +180,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = explode("\t", trim($aFileContents[1]));
 
         $nbOfFields = count($aFieldnames) - 1;
-        while (trim($aFieldnames[$nbOfFields]) == "" && $nbOfFields > -1) // get rid of blank entries
-        {
+        while (trim($aFieldnames[$nbOfFields]) == "" && $nbOfFields > -1) { // get rid of blank entries
             unset($aFieldnames[$nbOfFields]);
             $nbOfFields--;
         }
@@ -682,7 +681,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= '<span class="five-point">';
                                 $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
                                 $aDataentryoutput .= '<label for="5-point-choice-'.$i.'">'.$i.'</label>';
-                                $aDataentryoutput .= '</span>   ';
+                                $aDataentryoutput .= '</span> Â Â ';
                             }
                             break;
                         case "D": //DATE

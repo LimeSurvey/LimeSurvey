@@ -827,8 +827,7 @@ class participantsaction extends Survey_Common_Action
         {
             $uploadcharset = 'auto';
         }
-        foreach ($tokenlistarray as $buffer) //Iterate through the CSV file line by line
-        {
+        foreach ($tokenlistarray as $buffer) { //Iterate through the CSV file line by line
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             if ($recordcount == 0) {
                 //The first time we iterate through the file we look at the very
@@ -1061,8 +1060,7 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('export');
 
-        if (Yii::app()->request->getPost('searchcondition', '') !== '') // if there is a search condition then only the participants that match the search criteria are counted
-        {
+        if (Yii::app()->request->getPost('searchcondition', '') !== '') { // if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition', ''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         }
@@ -1103,8 +1101,7 @@ class participantsaction extends Survey_Common_Action
         $searchconditionurl = basename($searchconditionurl);
 
         $search = new CDbCriteria;
-        if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
-        {
+        if ($searchconditionurl != 'getParticipants_json') { // if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("||", $searchcondition);
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
@@ -1943,8 +1940,7 @@ class participantsaction extends Survey_Common_Action
          * EG: fname||eq||jason||lname||ct||c
          *
          */
-        if ($sSearchURL != 'getParticipants_json') // if there is a search condition present
-        {
+        if ($sSearchURL != 'getParticipants_json') { // if there is a search condition present
             $participantid = "";
             $condition = explode("||", $searchcondition); // explode the condition to the array
             $query = Participant::model()->getParticipantsSearchMultiple($condition, 0, 0);

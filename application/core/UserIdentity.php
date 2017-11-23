@@ -48,8 +48,7 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_NONE;
             }
         }
-        elseif (Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER']) || isset($_SERVER['LOGON_USER']) || isset($_SERVER['REMOTE_USER']))) // normal login through webserver authentication        
-        {
+        elseif (Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER']) || isset($_SERVER['LOGON_USER']) || isset($_SERVER['REMOTE_USER']))) { // normal login through webserver authentication        
             if (isset($_SERVER['PHP_AUTH_USER'])) {
                 $sUser = $_SERVER['PHP_AUTH_USER'];
             }
