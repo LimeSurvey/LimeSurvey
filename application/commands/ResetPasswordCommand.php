@@ -29,7 +29,7 @@
                         return 0;
                     }
                 } else {
-                    echo "User {$sArgument[0]} not found.\n";
+                    echo "User ".$sArgument[0]." not found.\n";
                     return 0;
                 }
 

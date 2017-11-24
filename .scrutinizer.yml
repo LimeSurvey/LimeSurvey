@@ -2,10 +2,14 @@ build:
     tests:
         override:
             - true
+
+    nodes:
+        tests: true
 filter:
     paths: [application/*]
-    excluded_paths: [tests/*, framework/*, locale/*, docs/*, fonts/*, third_party/*, application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
+    excluded_paths: [application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*]
 checks:
+    javascript: { true }
     php:
         code_rating: true
         duplication: true
@@ -15,6 +19,7 @@ tools:
         enabled:              true
         config:
             level:            psr2
+            lowercase_keywords: false
         filter:
             excluded_paths:
                 - 'framework/*'

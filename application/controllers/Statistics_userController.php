@@ -313,7 +313,7 @@ class Statistics_userController extends SurveyController
 
         foreach ($filters as $flt) {
             //SGQ identifier
-            $myfield = "{$this->iSurveyID}X{$flt[1]}X{$flt[0]}";
+            $myfield = $this->iSurveyID.'X'.$flt[1].'X'.$flt[0];
 
             //let's switch through the question type for each question
             switch ($flt[2]) {
@@ -349,7 +349,7 @@ class Statistics_userController extends SurveyController
                 case "T": // Long free text
                 case "U": // Huge free text
                 case "S": // Short free text
-                    $myfield = "T$myfield";
+                    $myfield = "T".$myfield;
                     $allfields[] = $myfield;
                     break;
                 case ";":  //ARRAY (Multi Flex) (Text)

@@ -2233,7 +2233,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['parent_qid'] = 0;
 
                 // For multi numeric survey : same name, add the gid to have same name on different gid. Bad for EM.
-                $fullqname = "G{$gid}_".$qname;
+                $fullqname = 'G'.$gid.'_'.$qname;
                 if (isset($qinfo[$fullqname])) {
                     $qseq = $qinfo[$fullqname]['question_order'];
                     $qid = $qinfo[$fullqname]['qid'];
@@ -2350,7 +2350,7 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
                     $insertdata['scale_id'] = $scale_id;
                     // For multi nueric language, qid is needed, why not gid. name is not unique.
-                    $fullsqname = "G{$gid}Q{$qid}_{$scale_id}_{$sqname}";
+                    $fullsqname = 'G'.$gid.'Q'.$qid.'_'.$scale_id.'_'.$sqname;
                     if (isset($sqinfo[$fullsqname])) {
                         $qseq = $sqinfo[$fullsqname]['question_order'];
                         $sqid = $sqinfo[$fullsqname]['sqid'];

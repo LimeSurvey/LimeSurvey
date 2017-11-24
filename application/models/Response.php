@@ -48,7 +48,7 @@
             $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$survey->language));
             $files = array();
             foreach ($questions as $question) {
-                $field = "{$question->sid}X{$question->gid}X{$question->qid}";
+                $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
                 if (is_array($data)) {
                     $files = array_merge($files, $data);
@@ -71,8 +71,8 @@
             $aQuestions = Question::model()->findAllByAttributes($aConditions);
             $files = array();
             foreach ($aQuestions as $question) {
-                $field = "{$question->sid}X{$question->gid}X{$question->qid}";
-                $data = json_decode(stripslashes($this->getAttribute($field)), true);
+                $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
+                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
                 if (is_array($data)) {
                     $files[$field] = $data;
                 }

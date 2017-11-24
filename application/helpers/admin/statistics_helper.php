@@ -116,8 +116,8 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $counter = 0;
             $maxyvalue = 0;
             foreach ($grawdata as $datapoint) {
-                $DataSet->AddPoint(array($datapoint), "Serie$counter");
-                $DataSet->AddSerie("Serie$counter");
+                $DataSet->AddPoint(array($datapoint), 'Serie'.$counter);
+                $DataSet->AddSerie("Serie".$counter);
 
                 $counter++;
                 if ($datapoint > $maxyvalue) {
@@ -153,7 +153,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
             $counter = 0;
             foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie$counter");
+                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie".$counter);
                 $counter++;
             }
 
@@ -3564,16 +3564,16 @@ class statistics_helper
                 $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
                 // Multiple choice get special treatment
-                if ($field['type'] == "M") {$myField = "M$myField"; }
-                if ($field['type'] == "P") {$myField = "P$myField"; }
+                if ($field['type'] == "M") {$myField = "M".$myField; }
+                if ($field['type'] == "P") {$myField = "P".$myField; }
                 //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == "N") {$myField = "N$myField"; }
-                if ($field['type'] == "|") {$myField = "|$myField"; }
-                if ($field['type'] == "Q") {$myField = "Q$myField"; }
+                if ($field['type'] == "N") {$myField = "N".$myField; }
+                if ($field['type'] == "|") {$myField = "|".$myField; }
+                if ($field['type'] == "Q") {$myField = "Q".$myField; }
                 // textfields get special treatment
-                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U") {$myField = "T$myField"; }
+                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U") {$myField = "T".$myField; }
                 //statistics for Date questions are not implemented yet.
-                if ($field['type'] == "D") {$myField = "D$myField"; }
+                if ($field['type'] == "D") {$myField = "D".$myField; }
                 if ($field['type'] == "F" || $field['type'] == "H") {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";

@@ -1050,7 +1050,7 @@ function do_date($ia)
             'dateformat'             => $dateformatdetails['jsdate'],
             ), true);
 
-        App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}", "doDropDownDate({$ia[0]});", CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('doDropDownDate'.$ia[0], "doDropDownDate({$ia[0]});", CClientScript::POS_BEGIN);
     } else {
         $coreClass .= " text-item";
         // Format the date  for output
@@ -1128,7 +1128,7 @@ function do_date($ia)
             );
             App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", CClientScript::POS_BEGIN);
         }
-        App()->getClientScript()->registerScript("doPopupDate{$ia[0]}", "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
+        App()->getClientScript()->registerScript(doPopupDate.'$ia[0]}', "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     }
     $inputnames[] = $ia[1];
 
@@ -2319,7 +2319,7 @@ function do_multiplechoice_withcomments($ia)
 
     if ($aQuestionAttributes['commented_checkbox'] != "allways" && $aQuestionAttributes['commented_checkbox_auto']) {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js", LSYii_ClientScript::POS_BEGIN);
-        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}",
+        Yii::app()->getClientScript()->registerScript('doMultipleChoiceWithComments'.$ia[0],
         "doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",
         LSYii_ClientScript::POS_POSTSCRIPT);
     }
@@ -5633,7 +5633,7 @@ function do_array_dual($ia)
         $inputnames = "";
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_BEGIN);
-    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}", "{$doDualScaleFunction}({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
+    Yii::app()->getClientScript()->registerScript('doDualScaleFunction'.$ia[0], "{$doDualScaleFunction}({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
 
     return array($answer, $inputnames);
 }
