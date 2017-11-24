@@ -26,6 +26,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if($('.loader-advancedquestionsettings').length){
         updatequestionattributes();
     }
+
     $('#question_type').change(updatequestionattributes);
 
     $('#question_type_button  li a').click(function(){
@@ -33,7 +34,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $('#question_type').val($(this).data('value'));
 
         updatequestionattributes();
-   });
+    });
+    
 });
 /**
 * Validate question object on blur on title element

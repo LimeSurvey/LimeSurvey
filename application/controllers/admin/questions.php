@@ -1084,7 +1084,7 @@ class questions extends Survey_Common_Action
             $oQuestionGroup = QuestionGroup::model()->find(array('condition'=>'sid=:sid', 'params'=> array(':sid'=>$surveyid), 'order'=>'group_order'));
         }
         $aData['oQuestionGroup'] = $oQuestionGroup;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questions.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questions.js', LSYii_ClientScript::POS_BEGIN);
 
         $aData['adding'] = true;
         $aData['copying'] = false;
@@ -1324,7 +1324,7 @@ class questions extends Survey_Common_Action
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questions.js');
+            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questions.js', LSYii_ClientScript::POS_BEGIN);
 
             $aData['sValidateUrl'] = ($adding || $copying) ? $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid)) : $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid, 'qid'=>$qid));
 

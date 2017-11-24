@@ -25,7 +25,7 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 /* See function */
 fixAccordionPosition();
 
-$(document).on('ready  pjax:success', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
@@ -123,19 +123,19 @@ $(document).on('ready  pjax:success', function(){
 
     if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden')
     {
-
+        
        qTypeDropdownInit();
         $("#question_type_button").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type_button").change();
+        $("#question_type_button").trigger('change');
     }
     else
     {
         $("#question_type.none").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type.none").change();
+        $("#question_type.none").trigger('change');
     }
 
     /**

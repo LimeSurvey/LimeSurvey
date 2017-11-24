@@ -234,6 +234,7 @@ return array(
     // qTip2
     'qTip2' => array(
         'basePath' => 'third_party.qTip2',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'dist/jquery.qtip.min.js'
         ),

@@ -227,7 +227,7 @@ Pjax.prototype = {
       }, this)
 
       // Fire Events
-      trigger(document,"pjax:scriptcomplete pjax:success", options)
+      trigger(document,"pjax:complete pjax:success", options)
 
       options.analytics()
 

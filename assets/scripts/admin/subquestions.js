@@ -36,9 +36,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         update:aftermove,
         distance:3});
 
-    $(document).on("click", '.btnaddanswer', addinput);
-    $(document).on("click", '.btndelanswer', deleteinput);
-    $(document).on("click", '.btnlsbrowser', lsbrowser );
+    $('.btnaddanswer').on("click", addinput);
+    $('.btndelanswer').on("click", deleteinput);
+    $('.btnlsbrowser').on("click", lsbrowser );
 
     //$('.btnaddanswer').click(addinput);
     //$('.btndelanswer').click(deleteinput);
