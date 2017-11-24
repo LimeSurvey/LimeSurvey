@@ -36636,6 +36636,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         controlActiveLink() {
             //get current location
             let currentUrl = window.location.href;
+
             //Check for corresponding menuItem
             let lastMenuItemObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.sidemenus, (itm, i) => {
@@ -36643,6 +36644,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     lastMenuItemObject = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.endsWith(currentUrl, itmm.link) ? itmm : lastMenuItemObject;
                 });
             });
+
             //check for quickmenu menuLinks
             let lastQuickMenuItemObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.collapsedmenus, (itm, i) => {
@@ -36650,12 +36652,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     lastQuickMenuItemObject = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.endsWith(currentUrl, itmm.link) ? itmm : lastQuickMenuItemObject;
                 });
             });
+
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.questiongroups, (itm, i) => {
                 let regTest = new RegExp('questiongroups/sa/edit/surveyid/' + itm.sid + '/gid/' + itm.gid);
                 lastQuestionGroupObject = regTest.test(currentUrl) || __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.endsWith(currentUrl, itm.link) ? itm : lastQuestionGroupObject;
             });
+
             //check for corresponding question group
             let lastQuestionObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.questiongroups, (itm, i) => {
@@ -38712,10 +38716,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         let rowArray = {
                             'id': row.id,
                             'parameter': row.parameter,
-                            'targetQuestionText': row.question,
-                            'sid': row.datas.sid,
-                            'qid': row.datas.targetqid || '',
-                            'sqid': row.datas.targetsqid || ''
+                            'targetQuestionText': row.questionTitle,
+                            'targetSubQuestionText': row.subquestionTitle,
+                            'sid': row.sid,
+                            'qid': row.targetqid || '',
+                            'sqid': row.targetsqid || ''
                         };
                         dataSet.push(rowArray);
                     });
@@ -38847,12 +38852,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'isNew': { type: Boolean }
     },
     data() {
-        return {};
+        return {
+            'currentQuestion': this.selectedQuestion
+        };
     },
     computed: {
         selectedQuestion() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.questions, (item, i) => {
-                return this.parameterRow.qid == item.qid && (!item.sqid || item.sqid == this.parameterRow.sqid);
+                return this.parameterRow.qid == item.qid && (item.sqid == null || item.sqid == this.parameterRow.sqid);
             });
         },
         popupTitle() {
@@ -38895,10 +38902,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cancelEditParameter() {
             this.$emit('canceledit');
         },
-        updateValues() {
-            this.parameterRow.qid = this.selectedQuestion.qid;
-            this.parameterRow.sqid = this.selectedQuestion.sqid || '';
-            this.parameterRow.targetQuestionText = this.printQuestion(this.selectedQuestion);
+        updateValues($event) {
+            this.currentQuestion = this.questions[$event.target.value];
+            this.parameterRow.qid = this.currentQuestion.qid;
+            this.parameterRow.sqid = this.currentQuestion.sqid || '';
+            this.parameterRow.targetQuestionText = this.printQuestion(this.currentQuestion);
         }
     },
     created() {},
@@ -38960,39 +38968,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "targetquestion"
     }
   }, [_vm._v(_vm._s(_vm.translate.popup.targetQuestion))]), _vm._v(" "), _c('div', {}, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.selectedQuestion),
-      expression: "selectedQuestion"
-    }],
     staticClass: "form-control",
     attrs: {
       "name": "targetquestion",
       "size": "1"
     },
     on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.selectedQuestion = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateValues()
-      }]
+      "change": function($event) {
+        _vm.updateValues($event)
+      }
     }
   }, [_c('option', {
     attrs: {
       "value": ""
     }
-  }, [_vm._v(_vm._s(_vm.translate.popup.noTargetQuestion))]), _vm._v(" "), _vm._l((_vm.questions), function(question) {
+  }, [_vm._v(_vm._s(_vm.translate.popup.noTargetQuestion))]), _vm._v(" "), _vm._l((_vm.questions), function(question, index) {
     return _c('option', {
       key: question.qid,
       domProps: {
-        "value": question,
+        "value": index,
         "selected": question.qid == _vm.parameterRow.qid
       }
     }, [_vm._v("\n                            " + _vm._s(_vm.printQuestion(question)) + " \n                        ")])
@@ -39192,7 +39186,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "true"
       }],
       domProps: {
-        "innerHTML": _vm._s(parameterRow.targetQuestionText)
+        "innerHTML": _vm._s(parameterRow.targetQuestionText + (parameterRow.sqid != '' ? ' => ' + parameterRow.targetSubQuestionText : ''))
       }
     }), _vm._v(" "), _c('td', {
       directives: [{

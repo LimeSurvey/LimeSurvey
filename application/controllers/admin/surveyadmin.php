@@ -1825,27 +1825,22 @@ class SurveyAdmin extends Survey_Common_Action
         left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID ]);
         $i = 0;
         $aData = array(
-            'rows' => array()
+            'rows' => []
         );
-        foreach ($oResult as $oRow) {
-            $row = array();
-            $row['id'] = $oRow['id'];
-            if (!is_null($oRow['question'])) {
-                        $oRow['title'] .= ': '.ellipsize(flattenText($oRow['question'], false, true), 43, .70);
-            } else {
-                        $oRow['title'] = gT('(No target question)');
+        foreach($aSurveyParameters as $oSurveyParameter){
+            $row = $oSurveyParameter->attributes;
+            $row['questionTitle'] = $oSurveyParameter->question->title;
+            
+            if($oSurveyParameter->targetsqid != ''){
+                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
             }
-            if ($oRow['sqquestion'] != '') {
-                $oRow['title'] .= (' - '.ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
-            }
-            $row['question'] = $oRow['title'];
-            $row['parameter'] = $oRow['parameter'];
-            $row['datas'] = $oRow;
-
+            
+            $row['qid'] = $oSurveyParameter->targetqid;
+            $row['sqid'] = $oSurveyParameter->targetsqid;
             $aData['rows'][] = $row;
-            $i++;
         }
 
         $aData['page'] = 1;
