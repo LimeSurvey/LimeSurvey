@@ -42,4 +42,4 @@ wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standa
 wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz"
 tar xvzf geckodriver-v0.19.1-linux64.tar.gz
 export MOZ_HEADLESS=1
-java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null &
+java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false 2> /dev/null &
