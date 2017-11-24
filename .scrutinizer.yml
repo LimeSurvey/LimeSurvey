@@ -29,4 +29,7 @@ coding_style:
                 opening: end-of-line
             try:
                 opening: end-of-line
+        upper_lower_casing:
+            constants:
+                true_false_null: lower
                 
