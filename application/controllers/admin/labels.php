@@ -220,7 +220,7 @@ class labels extends Survey_Common_Action
 
 
         $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ?true:false;
-        $aData['labelbar']['buttons']['edition'] = TRUE;
+        $aData['labelbar']['buttons']['edition'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
         $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view')); // Close button, UrlReferrer
@@ -411,7 +411,7 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            $aData['labelbar']['buttons']['edition'] = TRUE;
+            $aData['labelbar']['buttons']['edition'] = true;
             $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }

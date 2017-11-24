@@ -15,7 +15,7 @@
         if (
             $_SERVER['REQUEST_METHOD'] != 'POST' ||
             empty($_SERVER['CONTENT_TYPE']) ||
-            strpos($_SERVER['CONTENT_TYPE'], "application/json") === FALSE
+            strpos($_SERVER['CONTENT_TYPE'], "application/json") === false
             ) {
             // This is not a JSON-RPC request
             return false;
@@ -28,7 +28,7 @@
             // Can not decode the json, issue error
             $response = array(
                                 'id' => null,
-                                'result' => NULL,
+                                'result' => null,
                                 'error' => sprintf('unable to decode malformed json')
                                 );
         } else {
@@ -38,19 +38,19 @@
                     $response = array(
                                         'id' => $request['id'],
                                         'result' => $result,
-                                        'error' => NULL
+                                        'error' => null
                                         );
                 } else {
                     $response = array(
                                         'id' => $request['id'],
-                                        'result' => NULL,
+                                        'result' => null,
                                         'error' => 'unknown method or incorrect parameters'
                                         );
                 }
             } catch (Exception $e) {
                 $response = array(
                                     'id' => $request['id'],
-                                    'result' => NULL,
+                                    'result' => null,
                                     'error' => $e->getMessage()
                                     );
             }

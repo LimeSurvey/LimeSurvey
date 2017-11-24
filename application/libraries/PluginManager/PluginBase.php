@@ -321,7 +321,7 @@ abstract class PluginBase implements iPlugin
      * @param string $sLanguage
      * @return string
      */
-    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
     {
         $translation = \quoteText(
             \Yii::t(

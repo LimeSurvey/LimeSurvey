@@ -161,7 +161,7 @@ class Answer extends LSActiveRecord
      * @param bool|mixed $condition
      * @return int
      */
-    public function updateRecord($data, $condition = FALSE)
+    public function updateRecord($data, $condition = false)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
@@ -208,7 +208,7 @@ class Answer extends LSActiveRecord
      * @param bool $return_query
      * @return array|CDbCommand
      */
-    public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
+    public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
         $query = Yii::app()->db->createCommand();
         $query->select("{{answers}}.*, {{questions}}.gid");
@@ -220,10 +220,10 @@ class Answer extends LSActiveRecord
         return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order = FALSE)
+    function getAllRecords($condition, $order = false)
     {
         $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE) {
+        if ($order != false) {
             $command->order($order);
         }
         return $command->query();

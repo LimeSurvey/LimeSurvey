@@ -119,7 +119,7 @@ class Surveymenu extends LSActiveRecord
     {
         $oSurveys = Survey::model()->findAll('expires < :expire', ['expire' => date('Y-m-d H:i:s', strtotime('+1 hour'))]);
         $options = [
-            NULL => gT('All surveys')
+            null => gT('All surveys')
         ];
         foreach ($oSurveys as $oSurvey) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
@@ -133,7 +133,7 @@ class Surveymenu extends LSActiveRecord
     {
         $oUsers = User::model()->findAll();
         $options = [
-            NULL => gT('All users')
+            null => gT('All users')
         ];
         foreach ($oUsers as $oUser) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";

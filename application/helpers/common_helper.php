@@ -22,7 +22,7 @@ Yii::import('application.helpers.sanitize_helper', true);
  * @param string $sLanguage
  * @return mixed|string
  */
-function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 {
     return quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
 }
@@ -33,7 +33,7 @@ function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param string $sEscapeMode
  * @param string $sLanguage
  */
-function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 {
     echo gT($sToTranslate, $sEscapeMode);
 }
@@ -1052,7 +1052,7 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
  * @param integer $qid
  * @param integer $newgid
  */
-function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = NULL) //Function rewrites the cfieldname for a question after group change
+function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = null) //Function rewrites the cfieldname for a question after group change
 {
     if (!isset($iSurveyID)) {
             $iSurveyID = Yii::app()->getConfig('sid');
@@ -1119,7 +1119,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
         return $urlParam;
     } else {
-        return NULL;
+        return null;
     }
 }
 
@@ -4320,7 +4320,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
     return $resarray;
 }
 
-function getUserGroupList($ugid = NULL, $outputformat = 'optionlist')
+function getUserGroupList($ugid = null, $outputformat = 'optionlist')
 {
 
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
@@ -4657,7 +4657,7 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
     $surveyselecter = "";
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedGroupsList = getUserGroupList(NULL, 'simplegidarray');
+        $authorizedGroupsList = getUserGroupList(null, 'simplegidarray');
     }
 
     $svexist = false;

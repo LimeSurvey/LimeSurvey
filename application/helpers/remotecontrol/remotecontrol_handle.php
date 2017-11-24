@@ -215,7 +215,7 @@ class remotecontrol_handle
      * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
      * @return int|array The ID of the new survey in case of success
      */
-    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName = NULL, $DestSurveyID = NULL)
+    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName = null, $DestSurveyID = null)
     {
         $sImportData = (string) $sImportData;
         $sNewSurveyName = (string) $sNewSurveyName;
@@ -280,7 +280,7 @@ class remotecontrol_handle
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
             if ($copysurveydata) {
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, NULL, $btranslinksfields);
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance'=>'1'), 'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'), 'sid='.$aImportResults['newsid']);
@@ -853,7 +853,7 @@ class remotecontrol_handle
                     $aSurveyLocaleSettings = $aBasicDestinationFields;
                 }
 
-                if ($sLang == NULL || !array_key_exists($sLang, getLanguageDataRestricted())) {
+                if ($sLang == null || !array_key_exists($sLang, getLanguageDataRestricted())) {
                                     $sLang = $oSurvey->language;
                 }
 
@@ -894,7 +894,7 @@ class remotecontrol_handle
      * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
-    public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = NULL)
+    public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = null)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey)) {
@@ -1064,7 +1064,7 @@ class remotecontrol_handle
      * @param string $sNewGroupDescription  Optional new description for the group
      * @return array|integer iGroupID  - ID of the new group or status
      */
-    public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = NULL, $sNewGroupDescription = NULL)
+    public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
@@ -1311,7 +1311,7 @@ class remotecontrol_handle
                                 return array('status' => 'Cannot delete Question. Others rely on this question');
                 }
 
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $iQuestionID);
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
 
                 try {
                     Condition::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
@@ -1356,7 +1356,7 @@ class remotecontrol_handle
      * @param string $sNewQuestionHelp (optional) new question help text
      * @return array|integer The id of the new question in case of success. Array if errors
      */
-    public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = NULL, $sNewqQuestion = NULL, $sNewQuestionHelp = NULL)
+    public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
         $bOldEntityLoaderState = null;
         if ($this->_checkSessionKey($sSessionKey)) {
@@ -1417,7 +1417,7 @@ class remotecontrol_handle
                     $iNewqid = $aImportResults['newqid'];
 
                     $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
-                    if ($sNewQuestionTitle != NULL) {
+                    if ($sNewQuestionTitle != null) {
                                             $oQuestion->setAttribute('title', $sNewQuestionTitle);
                     }
                     if ($sNewqQuestion != '') {
@@ -1602,7 +1602,7 @@ class remotecontrol_handle
      * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array Of succeeded and failed modifications according to internal validation.
      */
-    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = NULL)
+    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
@@ -2040,7 +2040,7 @@ class remotecontrol_handle
      * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array The list of questions
      */
-    public function list_questions($sSessionKey, $iSurveyID, $iGroupID = NULL, $sLanguage = NULL)
+    public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
@@ -2059,7 +2059,7 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid language');
                 }
 
-                if ($iGroupID != NULL) {
+                if ($iGroupID != null) {
                     $iGroupID = (int) $iGroupID;
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
                     $sGroupSurveyID = $oGroup['sid'];
@@ -2153,7 +2153,7 @@ class remotecontrol_handle
      * @param string|null $sUsername (optional) username to get list of surveys
      * @return array In case of success the list of surveys
      */
-    public function list_surveys($sSessionKey, $sUsername = NULL)
+    public function list_surveys($sSessionKey, $sUsername = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = new Survey;
@@ -2754,7 +2754,7 @@ class remotecontrol_handle
         }
 
         $uploaded = file_put_contents($randfileloc, base64_decode($sFileContent));
-        if ($uploaded === FALSE) {
+        if ($uploaded === false) {
             return array('status' => 'Unable to write file');
         }
 

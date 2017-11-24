@@ -999,10 +999,10 @@ class database extends Survey_Common_Action
                 unset($aURLParam['targetQuestionText']);
                 unset($aURLParam['sqid']);
                 if ($aURLParam['targetqid'] == '') {
-                    $aURLParam['targetqid'] = NULL;
+                    $aURLParam['targetqid'] = null;
                 }
                 if ($aURLParam['targetsqid'] == '') {
-                    $aURLParam['targetsqid'] = NULL;
+                    $aURLParam['targetsqid'] = null;
                 }
                 $aURLParam['sid'] = $iSurveyID;
 

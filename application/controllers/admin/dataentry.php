@@ -559,7 +559,7 @@ class dataentry extends Survey_Common_Action
             $aViewUrls[] = 'dataentry_header_view';
             $aViewUrls[] = 'edit';
 
-            $highlight = FALSE;
+            $highlight = false;
             unset($fnames['lastpage']);
 
             // unset timings
@@ -633,8 +633,8 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "5": //5 POINT CHOICE radio-buttons
                             for ($i = 1; $i <= 5; $i++) {
-                                $checked = FALSE;
-                                if ($idrow[$fname['fieldname']] == $i) { $checked = TRUE; }
+                                $checked = false;
+                                if ($idrow[$fname['fieldname']] == $i) { $checked = true; }
                                 $aDataentryoutput .= '<span class="five-point">';
                                 $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
                                 $aDataentryoutput .= '<label for="5-point-choice-'.$i.'">'.$i.'</label>';
@@ -1249,10 +1249,10 @@ class dataentry extends Survey_Common_Action
                 $aDataentryoutput .= "<p><input type='button' value='".gT("Save")."' disabled='disabled'/></p>\n";
             } elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 $aData['part'] = 'edit';
-                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
+                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 $aData['part'] = 'editsaved';
-                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
+                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
             }
 
             $aDataentryoutput .= "</form>\n";
@@ -1428,7 +1428,7 @@ class dataentry extends Survey_Common_Action
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
 
-        $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
+        $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : null;
         $survey = Survey::model()->findByPk($surveyid);
 
         $aData = array(
@@ -1507,7 +1507,7 @@ class dataentry extends Survey_Common_Action
                 $last_db_id = 0;
 
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
-                    $aData['save'] = TRUE;
+                    $aData['save'] = true;
 
                     $saver['identifier'] = $_POST['save_identifier'];
                     $saver['language'] = $_POST['save_language'];
@@ -1759,11 +1759,11 @@ class dataentry extends Survey_Common_Action
      * @param mixed $surveyid
      * @param mixed $lang
      */
-    public function view($surveyid, $lang = NULL)
+    public function view($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
+        $lang = isset($_GET['lang']) ? $_GET['lang'] : null;
         if (isset($lang)) {
             $lang = sanitize_languagecode($lang);
         }
@@ -1783,7 +1783,7 @@ class dataentry extends Survey_Common_Action
             $thissurvey = getSurveyInfo($surveyid);
 
             //This is the default, presenting a blank dataentry form
-            LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
+            LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();
 
             $aData['survey'] = $survey;
@@ -2142,8 +2142,8 @@ class dataentry extends Survey_Common_Action
                     }
 
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
-                    $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view", $cdata, TRUE);
-                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], NULL, false, 1, 1);
+                    $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view", $cdata, true);
+                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, false, 1, 1);
                     $aDataentryoutput .= $viewdata_em;
                 }
                 LimeExpressionManager::FinishProcessingGroup();

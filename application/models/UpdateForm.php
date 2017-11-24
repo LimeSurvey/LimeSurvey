@@ -77,12 +77,12 @@ class UpdateForm extends CFormModel
                 $content = $this->_performRequest($getters);
             } else {
                 $content = new stdClass();
-                $content->result = FALSE;
+                $content->result = false;
                 $content->error = "no_build";
             }
         } else {
             $content = new stdClass();
-            $content->result = FALSE;
+            $content->result = false;
             $content->error = "update_disable";
         }
         return $content;
@@ -95,7 +95,7 @@ class UpdateForm extends CFormModel
      * @param string $destinationBuild
      * @return string html
      */
-    public function getWelcomeMessage($updateKey = NULL, $destinationBuild)
+    public function getWelcomeMessage($updateKey = null, $destinationBuild)
     {
         // First, we destroy any previous cookie :
         if (file_exists(realpath($this->path_cookie))) {
@@ -105,7 +105,7 @@ class UpdateForm extends CFormModel
         $updater_version = Yii::app()->getConfig("updaterversion");
         touch($this->path_cookie);
         $getters = '/index.php?r=updates/getwelcome&currentbuild='.$this->build.'&keyid='.$updateKey.'&destinationbuild='.$destinationBuild.'&updater_version='.$updater_version;
-        $content = $this->_performRequest($getters, TRUE);
+        $content = $this->_performRequest($getters, true);
         return $content;
     }
 
@@ -153,7 +153,7 @@ class UpdateForm extends CFormModel
             return $updateKey;
         } else {
             // Else we return the errors
-            return array('result'=>FALSE, 'error'=>'db_error');
+            return array('result'=>false, 'error'=>'db_error');
         }
     }
 
@@ -203,10 +203,10 @@ class UpdateForm extends CFormModel
         }
 
         if (count($readOnly) <= 0) {
-            return (object) array('result'=>TRUE);
+            return (object) array('result'=>true);
         }
 
-        return  (object) array('result'=>FALSE, 'readOnly'=>$readOnly);
+        return  (object) array('result'=>false, 'readOnly'=>$readOnly);
     }
 
 
@@ -284,13 +284,13 @@ class UpdateForm extends CFormModel
             if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER) == 0) {
                 // To debug pcl_zip, uncomment the following line :
                 //PclTraceDisplay(); die();
-                $return = array('result'=>FALSE, 'error'=>'unzip_error', 'message'=>$archive->errorInfo(true));
+                $return = array('result'=>false, 'error'=>'unzip_error', 'message'=>$archive->errorInfo(true));
                 return (object) $return;
             }
-            $return = array('result'=>TRUE);
+            $return = array('result'=>true);
             return (object) $return;
         } else {
-            $return = array('result'=>FALSE, 'error'=>'zip_update_not_found');
+            $return = array('result'=>false, 'error'=>'zip_update_not_found');
             return (object) $return;
         }
     }
@@ -317,18 +317,18 @@ class UpdateForm extends CFormModel
             if ($file['type'] == 'D' && file_exists($this->rootdir.$sFileToDelete)) {
                 if (is_file($this->rootdir.$sFileToDelete)) {
                     if (!@unlink($this->rootdir.$sFileToDelete)) {
-                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_files', 'message'=>'file : '.$sFileToDelete);
+                        $return = array('result'=>false, 'error'=>'cant_remove_deleted_files', 'message'=>'file : '.$sFileToDelete);
                         return (object) $return;
                     }
                 } else {
                     if (!rmdir($this->rootdir.$sFileToDelete)) {
-                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_directory', 'message'=>'dir : '.$sFileToDelete);
+                        $return = array('result'=>false, 'error'=>'cant_remove_deleted_directory', 'message'=>'dir : '.$sFileToDelete);
                         return (object) $return;
                     }
                 }
             }
         }
-        $return = array('result' => TRUE);
+        $return = array('result' => true);
         return (object) $return;
     }
 
@@ -342,12 +342,12 @@ class UpdateForm extends CFormModel
         $sTmpFilePath = $this->tempdir.DIRECTORY_SEPARATOR.$sTmpFile;
         if (file_exists($sTmpFilePath)) {
             if (!@unlink($sTmpFilePath)) {
-                $return = array('result'=>FALSE, 'error'=>'cant_remove_update_file', 'message'=>'file : '.$sTmpFilePath);
+                $return = array('result'=>false, 'error'=>'cant_remove_update_file', 'message'=>'file : '.$sTmpFilePath);
                 return (object) $return;
             }
         }
 
-        $return = array('result' => TRUE);
+        $return = array('result' => true);
         return (object) $return;
     }
 
@@ -486,11 +486,11 @@ class UpdateForm extends CFormModel
         $backup = new stdClass();
 
         if (!$v_list == 0) {
-            $backup->result = TRUE;
+            $backup->result = true;
             $backup->basefilename = $basefilename;
             $backup->tempdir = $this->tempdir;
         } else {
-            $backup->result = FALSE;
+            $backup->result = false;
             $backup->error = 'cant_zip_backup';
             $backup->message = $archive->errorInfo(true);
         }
@@ -527,16 +527,16 @@ class UpdateForm extends CFormModel
                     if ($dbSize <= $dbChecks->dbSize) {
                         return $this->_createDbBackup();
                     } else {
-                        $backupDb->result = FALSE;
+                        $backupDb->result = false;
                         $backupDb->message = 'db_too_big';
                     }
                 } else {
-                    $backupDb->result = FALSE;
+                    $backupDb->result = false;
                     $backupDb->message = 'no_db_changes';
                 }
             }
         } else {
-            $backupDb->result = FALSE;
+            $backupDb->result = false;
             $backupDb->message = 'not_mysql';
         }
 
@@ -581,21 +581,21 @@ class UpdateForm extends CFormModel
                 Yii::app()->session['notificationstate'] = 1;
 
                 $updates = $this->getUpdateInfo('1');
-                $update_available = FALSE;
+                $update_available = false;
                 if ($updates->result) {
                     unset($updates->result);
 
                     if (count($updates) > 0) {
-                        $update_available = TRUE;
-                        $security_update_available = FALSE;
-                        $unstable_update_available = FALSE;
+                        $update_available = true;
+                        $security_update_available = false;
+                        $unstable_update_available = false;
                         foreach ($updates as $update) {
                             if ($update->security_update) {
-                                $security_update_available = TRUE;
+                                $security_update_available = true;
                             }
 
                             if ($update->branch != 'master') {
-                                $unstable_update_available = TRUE;
+                                $unstable_update_available = true;
                             }
                         }
                     }
@@ -686,15 +686,15 @@ class UpdateForm extends CFormModel
             $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $this->tempdir, PCLZIP_OPT_ADD_TEMP_FILE_ON);
             unlink($sfilename);
             if ($v_list == 0) {
-                $backupDb->result = FALSE;
+                $backupDb->result = false;
                 $backupDb->message = 'db_backup_zip_failed';
             } else {
-                $backupDb->result = TRUE;
+                $backupDb->result = true;
                 $backupDb->message = htmlspecialchars($dfilename);
                 $backupDb->fileurl = Yii::app()->getBaseUrl(true).'/tmp/LimeSurvey_database_backup_'.$basefilename.'.zip';
             }
         } else {
-            $backupDb->result = FALSE;
+            $backupDb->result = false;
             $backupDb->message = htmlspecialchars('db_backup_failed');
         }
         return $backupDb;
@@ -866,9 +866,9 @@ class UpdateForm extends CFormModel
         $return->php_ver = $php_ver->php_version;
 
         if (version_compare(PHP_VERSION, $return->php_ver) >= 0) {
-            $return->result = TRUE;
+            $return->result = true;
         } else {
-            $return->result = FALSE;
+            $return->result = false;
             $return->local_php_ver = PHP_VERSION;
         }
         return ($return);
@@ -890,9 +890,9 @@ class UpdateForm extends CFormModel
             foreach ($php_module_list->php_modules as $module => $state) {
                 $return->$module = new stdClass();
                 // Required or Optional
-                $return->$module->$state = TRUE;
+                $return->$module->$state = true;
                 // Installed or not
-                $return->$module->installed = (extension_loaded($module)) ? TRUE : FALSE;
+                $return->$module->installed = (extension_loaded($module)) ? true : false;
             }
         }
 
@@ -966,7 +966,7 @@ class UpdateForm extends CFormModel
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
         curl_close($ch);
 
-        $result = ($content_type == "application/zip") ? array("result"=>TRUE) : array('result'=>FALSE, 'error'=>'error_while_processing_download');
+        $result = ($content_type == "application/zip") ? array("result"=>true) : array('result'=>false, 'error'=>'error_while_processing_download');
 
         return (object) $result;
     }
@@ -1006,7 +1006,7 @@ class UpdateForm extends CFormModel
             $content_decoded = json_decode(base64_decode($content));
             if (!is_object($content_decoded)) {
                 $content_decoded = new stdClass();
-                $content_decoded->result = FALSE;
+                $content_decoded->result = false;
                 $content_decoded->error = "no_server_answer";
                 $content_decoded->message = $content;
             }
@@ -1014,7 +1014,7 @@ class UpdateForm extends CFormModel
         } else {
             // Should happen only on first step (get buttons), diplayed in check_updates/update_buttons/_updatesavailable_error.php
             // Could rather define a call to httprequest2 functions.
-            return (object) array('result' => FALSE, 'error'=>"php_curl_not_loaded");
+            return (object) array('result' => false, 'error'=>"php_curl_not_loaded");
         }
     }
 }

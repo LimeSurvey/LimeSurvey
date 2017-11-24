@@ -106,7 +106,7 @@ class User extends LSActiveRecord
      * @param mixed|boolean $condition
      * @return string
      */
-    public function getAllRecords($condition = FALSE)
+    public function getAllRecords($condition = false)
     {
         $criteria = new CDbCriteria;
 

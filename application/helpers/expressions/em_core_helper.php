@@ -67,7 +67,7 @@ class ExpressionManager
     private $surveyMode = 'group';
 
     // The following are only needed to enable click on variable names within pretty print and open new window to edit them
-    private $sid = NULL; // the survey ID
+    private $sid = null; // the survey ID
     private $hyperlinkSyntaxHighlighting = true; // TODO - change this back to false
     private $sgqaNaming = false;
 
@@ -477,9 +477,9 @@ class ExpressionManager
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
-        $this->RDP_result = NULL;
+        $this->RDP_result = null;
         $this->varsUsed = array();
-        $this->jsExpression = NULL;
+        $this->jsExpression = null;
 
         if ($this->HasSyntaxErrors()) {
             return false;
@@ -496,11 +496,11 @@ class ExpressionManager
                 $this->RDP_evalStatus = true;
                 return true;
             } else {
-                $this->RDP_AddError(self::gT("Unbalanced equation - values left on stack"), NULL);
+                $this->RDP_AddError(self::gT("Unbalanced equation - values left on stack"), null);
                 return false;
             }
         } else {
-            $this->RDP_AddError(self::gT("Not a valid expression"), NULL);
+            $this->RDP_AddError(self::gT("Not a valid expression"), null);
             return false;
         }
     }
@@ -550,7 +550,7 @@ class ExpressionManager
     private function RDP_EvaluateConstantVarOrFunction()
     {
         if ($this->RDP_pos + 1 >= $this->RDP_count) {
-                $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), NULL);
+                $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), null);
                 return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -575,9 +575,9 @@ class ExpressionManager
                         }
                         if ($relStatus == 1) {
                             $argtype = ($this->GetVarAttribute($token[0], 'onlynum', 0)) ? "NUMBER" : "WORD";
-                            $result = array($this->GetVarAttribute($token[0], NULL, ''), $token[1], $argtype);
+                            $result = array($this->GetVarAttribute($token[0], null, ''), $token[1], $argtype);
                         } else {
-                            $result = array(NULL, $token[1], 'NUMBER'); // was 0 instead of NULL
+                            $result = array(null, $token[1], 'NUMBER'); // was 0 instead of NULL
                         }
                         $this->RDP_StackPush($result);
                         return true;
@@ -884,7 +884,7 @@ class ExpressionManager
     private function RDP_EvaluatePrimaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), NULL);
+            $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), null);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -951,7 +951,7 @@ class ExpressionManager
     private function RDP_EvaluateUnaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), NULL);
+            $this->RDP_AddError(self::gT("Poorly terminated expression - expected a constant or variable"), null);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -1550,7 +1550,7 @@ class ExpressionManager
             }
         }
         if ($nesting != 0) {
-            $this->RDP_AddError(sprintf(self::gT("Missing %s closing right parentheses"), $nesting), NULL);
+            $this->RDP_AddError(sprintf(self::gT("Missing %s closing right parentheses"), $nesting), null);
         }
         return (count($this->RDP_errs) > 0);
     }
@@ -1629,7 +1629,7 @@ class ExpressionManager
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid = NULL, $rooturl = '', $hyperlinkSyntaxHighlighting = true)
+    public function StartProcessingGroup($sid = null, $rooturl = '', $hyperlinkSyntaxHighlighting = true)
     {
         $this->substitutionNum = 0;
         $this->substitutionInfo = array(); // array of JavaScripts for managing each substitution
@@ -2108,8 +2108,8 @@ class ExpressionManager
         if (count($this->RDP_stack) > 0) {
             return array_pop($this->RDP_stack);
         } else {
-            $this->RDP_AddError(self::gT("Tried to pop value off of empty stack"), NULL);
-            return NULL;
+            $this->RDP_AddError(self::gT("Tried to pop value off of empty stack"), null);
+            return null;
         }
     }
 
@@ -2619,7 +2619,7 @@ function exprmgr_implode($args)
  */
 function exprmgr_empty($arg)
 {
-    if ($arg === NULL || $arg === "" || $arg === false) {
+    if ($arg === null || $arg === "" || $arg === false) {
         return true;
     }
     return false;

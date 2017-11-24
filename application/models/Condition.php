@@ -86,11 +86,11 @@ class Condition extends LSActiveRecord
      * @param bool|mixed $condition
      * @return int
      */
-    public function deleteRecords($condition = FALSE)
+    public function deleteRecords($condition = false)
     {
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             if (is_array($condition)) {
                 foreach ($condition as $column=>$value) {
                     $criteria->addCondition("$column='$value'");
@@ -129,7 +129,7 @@ class Condition extends LSActiveRecord
 
 
 
-    public function insertRecords($data, $update = FALSE, $condition = FALSE)
+    public function insertRecords($data, $update = false, $condition = false)
     {
         $record = new self;
         foreach ($data as $k => $v) {
@@ -179,10 +179,10 @@ class Condition extends LSActiveRecord
         ->from($this->tableName())
         ->where($condition);
 
-        if ($order != NULL) {
+        if ($order != null) {
             $record->order($order);
         }
-        if ($group != NULL) {
+        if ($group != null) {
             $record->group($group);
         }
 
