@@ -688,7 +688,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(128) NOT NULL');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 22");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'assessments_collapsed'), "name = 'assessments' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'emailtemplates_collapsed'), "name = 'emailtemplates' AND menu_id = 2");
