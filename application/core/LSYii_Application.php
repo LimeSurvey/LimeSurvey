@@ -18,8 +18,9 @@
 require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 
 /**
-* Implements global  config
+* Implements global config
 * @property CLogRouter $log Log router component.
+* @property string $language Returns the language that the user is using and the application should be targeted to.
 */
 class LSYii_Application extends CWebApplication
 {
