@@ -30,8 +30,6 @@ coding_style:
             try:
                 opening: end-of-line
         upper_lower_casing:
-            keywords:
-                general: lower
             constants:
                 true_false_null: lower
                 
