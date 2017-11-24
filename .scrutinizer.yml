@@ -8,14 +8,14 @@ build:
 filter:
     paths: [application/*]
     excluded_paths: 
+        - 'application/views/*'
+    dependency_paths:
+        - 'framework/'
         - 'application/helpers/adodb/*'
         - 'application/libraries/admin/http/*'
         - 'application/libraries/admin/pclzip/*'
         - 'application/extensions/*'
-        - 'application/views/*'
         - 'application/third_party/*'
-    dependency_paths:
-        - "framework/"    
 checks:
     javascript: true 
     php:
