@@ -27,7 +27,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',

@@ -184,7 +184,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         e.preventDefault();
         $(this).tab('show');
     });
-    $(document).on('ready pjax:complete', function(){
+    $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
             $('#themelist').find('a[href='+window.location.hash+']').trigger('click');
         }

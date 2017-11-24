@@ -24,7 +24,7 @@ if ($('#bounceprocessing input:radio:checked').val()!='L'){
     }
 }
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     updateParameters();
     $("input:radio[id^='bounceprocessing']").on('change',function(){
         updateParameters();

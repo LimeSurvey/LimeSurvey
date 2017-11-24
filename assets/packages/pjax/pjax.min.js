@@ -175,7 +175,7 @@ Pjax.prototype = {
     this.doRequest(href, options.requestOptions, function(html) {
       // Fail if unable to load HTML via AJAX
       if (html === false) {
-        trigger(document,"pjax:complete pjax:error", options)
+        trigger(document,"pjax:scriptcomplete pjax:error", options)
 
         return
       }
@@ -227,7 +227,7 @@ Pjax.prototype = {
       }, this)
 
       // Fire Events
-      trigger(document,"pjax:complete pjax:success", options)
+      trigger(document,"pjax:scriptcomplete pjax:success", options)
 
       options.analytics()
 

@@ -136,5 +136,5 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
     }),
     bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
 
-    $(document).on('ready pjax:complete', bindAction);
+    $(document).on('ready pjax:scriptcomplete', bindAction);
   </script>

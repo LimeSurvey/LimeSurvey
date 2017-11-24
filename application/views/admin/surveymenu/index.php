@@ -128,5 +128,5 @@ var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu',
   }),
   bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenus();
 
-  $(document).on('ready pjax:complete', bindAction);
+  $(document).on('ready pjax:scriptcomplete', bindAction);
 </script>

@@ -3,7 +3,7 @@
 var LS = LS || {  onDocumentReady: {} };
 
 var labelcache=[];
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,

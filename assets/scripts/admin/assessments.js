@@ -27,7 +27,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     //$('#languagetabs').tabs();
     if ($(".assessmentlist tbody tr").size()>0)
     {

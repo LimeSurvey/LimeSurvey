@@ -1,7 +1,7 @@
 /**
  * Side Menu
  */
-$(document).on('ready pjax:complete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
        var close = $('#chevronClose');
     var stretch = $('#chevronStretch');
     var sideBody = $('.side-body-dont-changeme');

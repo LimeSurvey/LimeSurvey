@@ -1,5 +1,5 @@
 var formSubmitting = false;
-$(document).on('ready pjax:complete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
 /** These buttons are in global settings */
 if ($('#save-form-button').length>0){

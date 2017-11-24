@@ -4,7 +4,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on(' pjax:complete', function(){
+$(document).on(' pjax:scriptcomplete', function(){
     $('[class^=max]').each(function(){
        var arrayOfClasses = $(this).attr('class').split(' '); 
        charcount=arrayOfClasses[0].substr(10);

@@ -68,7 +68,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     // TODO: Localization
     $('#copyconditions').submit(function() {

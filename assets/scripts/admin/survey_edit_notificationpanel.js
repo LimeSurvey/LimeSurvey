@@ -38,7 +38,7 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
     }
 }
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     updateParameters();
     $("input:radio[id^='googleanalyticsapikeysetting']").on('change',function(){
         updateParameters();

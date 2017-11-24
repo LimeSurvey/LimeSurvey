@@ -2393,7 +2393,7 @@ function do_file_upload($ia)
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
-    $(document).on("ready pjax:complete", function(){
+    $(document).on("ready pjax:scriptcomplete", function(){
     var fieldname = "'.$ia[1].'";
     var filecount = $("#"+fieldname+"_filecount").val();
     var json = $("#"+fieldname).val();

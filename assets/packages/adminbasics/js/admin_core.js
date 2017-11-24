@@ -299,7 +299,7 @@ function qTypeDropdownInit()
         });
     };
 
-    $(document).on('ready  pjax:complete', onDocumentReadyAdminCoreq);
+    $(document).on('ready  pjax:scriptcomplete', onDocumentReadyAdminCoreq);
 }
 
 
