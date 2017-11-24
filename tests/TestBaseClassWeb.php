@@ -94,6 +94,7 @@ class TestBaseClassWeb extends TestBaseClass
                 $success = true;
             } catch (WebDriverCurlException $ex) {
                 $tries++;
+                sleep(1);
             }
         } while (!$success && $tries < 5);
 
