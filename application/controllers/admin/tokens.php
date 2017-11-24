@@ -27,13 +27,14 @@ class tokens extends Survey_Common_Action
 
     /**
      * Show token index page, handle token database
-     * @param int $iSurveyId
+     * @param int $surveyid  The survey ID
      * @return void
      */
-    public function index($iSurveyId)
+    public function index($surveyid)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId=$surveyid;
+        $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
         //// TODO : check if it does something different than the model function
@@ -48,6 +49,7 @@ class tokens extends Survey_Common_Action
 
         Yii::app()->loadHelper("surveytranslator");
 
+        $aData = array();
         $aData['surveyprivate'] = $thissurvey['anonymized'];
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
@@ -73,7 +75,7 @@ class tokens extends Survey_Common_Action
      */
     public function bounceprocessing($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!$survey->hasTokensTable) {
             eT("No token table.");
@@ -169,12 +171,12 @@ class tokens extends Survey_Common_Action
                 $count = imap_num_msg($mbox);
                 if ($count > 0) {
                     $aMessageIDs = imap_search($mbox, 'UNSEEN', SE_UID);
-                    if (!$aMessageIDs) {
+                    if ($aMessageIDs === false) {
                         $aMessageIDs = array();
                     }
                     foreach ($aMessageIDs as $sMessageID) {
-                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID && FT_PEEK)); // Don't mark messages as read
-
+                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID & FT_PEEK)); // Don't mark messages as read
+                        $iSurveyIdBounce='';
                         foreach ($header as $item) {
                             if (preg_match('/^X-surveyid/', $item)) {
                                 $iSurveyIdBounce = explode(": ", $item);
@@ -184,10 +186,6 @@ class tokens extends Survey_Common_Action
                                 $tokenBounce = explode(": ", $item);
 
                                 if ($iSurveyId == $iSurveyIdBounce[1]) {
-                                    $aData = array(
-                                        'emailstatus' => 'bounced'
-                                    );
-
                                     $condn  = array('token' => $tokenBounce[1]);
                                     $record = Token::model($iSurveyId)->findByAttributes($condn);
 
@@ -197,10 +195,9 @@ class tokens extends Survey_Common_Action
                                         $bouncetotal++;
                                     }
 
-                                    $readbounce = imap_body($mbox, $sMessageID, FT_UID); // Put read
+                                    imap_body($mbox, $sMessageID, FT_UID); // Mark as read
                                     if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) {
-// TODO Y or just true, and a imap_delete
-                                        $deletebounce = imap_delete($mbox, $sMessageID, FT_UID); // Put delete
+                                        imap_delete($mbox, $sMessageID, FT_UID); // Mark for delete
                                     }
                                 }
                             }
@@ -272,9 +269,9 @@ class tokens extends Survey_Common_Action
      * @param boolean $searchstring
      * @return void
      */
-    public function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
+    public function browse($iSurveyId, $limit = 50, $start = 0)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
         /* Check permissions */
@@ -291,6 +288,7 @@ class tokens extends Survey_Common_Action
         }
 
         /* build JS variable to hide buttons forbidden for the current user */
+        $aData=[];
         $aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete') ? 'true' : 'false';
         $aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';
         $aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';
@@ -408,7 +406,7 @@ class tokens extends Survey_Common_Action
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&Ã¢â‚¬â„¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&Ã¢â‚¬â„¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
                                             $aData['email'] = 'lskeep';
                     } else {
@@ -482,6 +480,8 @@ class tokens extends Survey_Common_Action
      */
     public function editToken($iSurveyId)
     {
+        $iSurveyId=(int)$iSurveyId;
+        $aData=[];
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             eT("We are sorry but you don't have permissions to do this."); // return json ? error not treated in js.
@@ -1336,10 +1336,10 @@ class tokens extends Survey_Common_Action
 
             foreach ($aSurveyLangs as $language) {
                 // See #08683 : this allow use of {TOKEN:ANYTHING}, directly replaced by {ANYTHING}
-                $sSubject[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('subject_'.$language));
-                $sMessage[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('message_'.$language));
+                $sSubject[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('subject_'.$language,''));
+                $sMessage[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('message_'.$language,''));
                 if ($bHtml) {
-                                    $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
+                    $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
                 }
             }
 
@@ -2424,7 +2424,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function _newtokentable($iSurveyId)
+    public static function _newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
