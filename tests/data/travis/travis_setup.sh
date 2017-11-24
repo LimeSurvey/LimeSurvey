@@ -21,7 +21,7 @@ php application/commands/console.php install admin password TravisLS no@email.co
 cp application/config/config-sample-mysql.php application/config/config.php
 
 sudo apt-get update > /dev/null
-sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs chromium-browser
+sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs firefox
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
 sudo a2enmod rewrite actions fastcgi alias
