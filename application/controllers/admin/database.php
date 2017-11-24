@@ -315,20 +315,21 @@ class database extends Survey_Common_Action
                 if (isset($sOldCode) && $sCode !== $sOldCode) {
                     Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
                 }
-            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
 
-            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
-            if (!Yii::app()->request->getPost('bFullPOST')) {
-                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
-            } else {
-                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
-            }
-            LimeExpressionManager::SetDirtyFlag();
-            if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
-            }
-            $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }
+
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        if (!Yii::app()->request->getPost('bFullPOST')) {
+            Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
+        } else {
+            Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
+        }
+        LimeExpressionManager::SetDirtyFlag();
+        if (Yii::app()->request->getPost('close-after-save') === 'true') {
+            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+        }
+        $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
     }
 
     /**
