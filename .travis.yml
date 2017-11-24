@@ -52,8 +52,16 @@ before_script:
     - more localhost
 
     # Chromedriver setup.
-    - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-    - unzip chromedriver_linux64.zip
+    # Note: Keep getting timeout problems on Travis with chromedriver.
+    #- wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+    #- unzip chromedriver_linux64.zip
+
+    # Setup Selenium with Firefox headless mode.
+    - wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
+    - wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-arm7hf.tar.gz"
+    - tar xvzf geckodriver-v0.19.1-arm7hf.tar.gz
+    - export MOZ_HEADLESS=1
+    - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null &
 
 script:
     - DOMAIN=localhost phpunit

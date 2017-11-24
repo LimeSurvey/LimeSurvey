@@ -33,7 +33,13 @@ sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-defaul
 sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
 sudo service apache2 restart
 
-wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip
+# Chromedriver does not work on Travis.
+#wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+#unzip chromedriver_linux64.zip
 
-# TODO: For firefox, export MOZ_HEADLESS=1, install selenium.
+# Firefox headless.
+wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
+wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-arm7hf.tar.gz"
+tar xvzf geckodriver-v0.19.1-arm7hf.tar.gz
+export MOZ_HEADLESS=1
+java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null &
