@@ -6,10 +6,19 @@ checks:
         code_rating: true
         duplication: true
         one_class_per_file: true
+    javascript: true        
 tools:
     php_cs_fixer:
-        config: 
-            level: psr2
+        enabled:              true
+        config:
+            level:            psr2
+        filter:
+            excluded_paths:
+                - 'docs/*'
+                - 'examples/*'
+                - 'extras/*'
+                - 'test/*'
+                - 'vendor/*'
 coding_style:
     php:    
         braces:
