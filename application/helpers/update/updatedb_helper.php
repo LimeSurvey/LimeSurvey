@@ -700,10 +700,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'mainmenu'), 'id = 1');
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
             $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128) NOT NULL');
-            
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 330) {
+            $oTransaction = $oDB->beginTransaction();
+            upgrade330($oDB);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>330), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -747,6 +755,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     return true;
 }
 
+/**
+* @param $oDB
+* @return void
+*/
+function upgrade330($oDB)
+{
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'files_css'       => '{"add": ["css/animate.css","css/theme.css"]}',
+            'files_js'        => '{"add": ["scripts/theme.js", "scripts/ajaxify.js"]}',
+            'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='default' AND  files_css != 'inherit' ");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+          'files_css'       => '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/theme.css"]}',
+          'files_js'        => '{"add": ["scripts/theme.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}',
+          'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='material' AND  files_css != 'inherit'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+          'files_css'       => '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/theme.css"]}',
+          'files_js'        => '{"add":["scripts/theme.js","scripts/ajaxify.js"]}',
+          'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='monochrome' AND  files_css != 'inherit'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+          'files_css'       => '{"css/theme.css"]}',
+          'files_js'        => '{"add":["scripts/theme.js"]}',
+          'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='vanilla' AND  files_css != 'inherit'");
+}
 
 /**
 * @param $oDB
