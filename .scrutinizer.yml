@@ -16,6 +16,8 @@ filter:
         - 'application/libraries/admin/pclzip/*'
         - 'application/extensions/*'
         - 'application/third_party/*'
+        - 'third_party/*'
+        - 'installer/*'
 checks:
     javascript: true 
     php:
