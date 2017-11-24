@@ -1826,7 +1826,6 @@ class SurveyAdmin extends Survey_Common_Action
         where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID ]);
-        $i = 0;
         $aData = array(
             'rows' => []
         );
