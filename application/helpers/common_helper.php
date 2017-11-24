@@ -868,7 +868,7 @@ function getUserList($outputformat = 'fullinfoarray')
 /**
 * Gets all survey infos in one big array including the language specific settings
 *
-* @param string $surveyid  The survey ID
+* @param integer $surveyid  The survey ID
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @return array|bool Returns array with survey info or false, if survey does not exist
 */

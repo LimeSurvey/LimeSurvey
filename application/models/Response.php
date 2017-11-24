@@ -72,7 +72,7 @@
             $files = array();
             foreach ($aQuestions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
-                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
+                $data = json_decode(stripslashes($this->getAttribute($field)), true);
                 if (is_array($data)) {
                     $files[$field] = $data;
                 }
