@@ -9,7 +9,7 @@ filter:
     paths: [application/*]
     excluded_paths: [application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*]
 checks:
-    javascript: { true }
+    javascript: true 
     php:
         code_rating: true
         duplication: true
