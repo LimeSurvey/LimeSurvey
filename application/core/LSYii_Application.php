@@ -22,6 +22,7 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property CLogRouter $log Log router component.
 * @property string $language Returns the language that the user is using and the application should be targeted to.
 * @property CClientScript $clientScript CClientScript manages JavaScript and CSS stylesheets for views.
+* @property CHttpRequest $request The request component. 
 */
 class LSYii_Application extends CWebApplication
 {
