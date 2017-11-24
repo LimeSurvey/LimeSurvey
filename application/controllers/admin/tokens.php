@@ -823,7 +823,7 @@ class tokens extends Survey_Common_Action
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->_newtokentable($iSurveyID);
+            $this->_newtokentable($iSurveyId);
         }
 
         $beforeTokenDelete = new PluginEvent('beforeTokenDelete');
@@ -2429,7 +2429,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function _newtokentable($iSurveyId)
+    private function _newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
