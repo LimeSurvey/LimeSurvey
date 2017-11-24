@@ -1,3 +1,7 @@
+build:
+    tests:
+        override:
+            - true
 filter:
     paths: [application/*]
     excluded_paths: [tests/*, framework/*, locale/*, docs/*, fonts/*, third_party/*, application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
