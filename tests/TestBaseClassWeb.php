@@ -24,6 +24,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
+use Facebook\WebDriver\Exception\WebDriverCurlException;
 
 /**
  * Class TestBaseClassWeb
@@ -78,13 +79,23 @@ class TestBaseClassWeb extends TestBaseClass
         self::$webDriver = FirefoxDriver::start($caps);
          */
 
-        $host = 'http://localhost:4444/wd/hub'; // this is the default
-        $capabilities = DesiredCapabilities::firefox();
-        $profile = new FirefoxProfile();
-        $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
-        $profile->setPreference('browser.link.open_newwindow', 3);
-        $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
-        self::$webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+        $tries = 0;
+        $success = false;
+        do {
+            try {
+                $host = 'http://localhost:4444/wd/hub'; // this is the default
+                $capabilities = DesiredCapabilities::firefox();
+                $profile = new FirefoxProfile();
+                $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                // Open target="_blank" in new tab.
+                $profile->setPreference('browser.link.open_newwindow', 3);
+                $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
+                self::$webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $success = true;
+            } catch (WebDriverCurlException $ex) {
+                $tries++;
+            }
+        } while (!$success && $tries < 5);
 
         // Implicit timout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
