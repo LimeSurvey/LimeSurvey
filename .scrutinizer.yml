@@ -14,11 +14,24 @@ tools:
             level:            psr2
         filter:
             excluded_paths:
+                - 'framework/*'
+                - 'locale/*'
                 - 'docs/*'
-                - 'examples/*'
-                - 'extras/*'
-                - 'test/*'
-                - 'vendor/*'
+                - 'fonts/*'
+                - 'third_party/*'
+                - 'application/helpers/adodb/*'
+                - 'application/libraries/admin/http/*'
+                - 'application/libraries/admin/pclzip/*'
+                - 'application/extensions/*'
+                - 'application/views/*'
+                - 'application/third_party/*'
+                - 'images/*'
+                - 'styles/*'
+                - 'styles-public/*'
+                - 'templates/*'
+                - 'themes/*'
+                - 'tmp/*'
+                - 'upload/*'
 coding_style:
     php:    
         braces:
