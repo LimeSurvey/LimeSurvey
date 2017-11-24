@@ -6,6 +6,10 @@ checks:
         code_rating: true
         duplication: true
         one_class_per_file: true
+tools:
+    php_cs_fixer:
+        config: 
+            level: psr2
 coding_style:
     php:    
         braces:
