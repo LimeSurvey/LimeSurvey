@@ -97,6 +97,15 @@ class TestBaseClassWeb extends TestBaseClass
             }
         } while (!$success && $tries < 5);
 
+        if (empty(self::$webDriver)) {
+            throw new \Exception(
+                sprintf(
+                    'Could not connect to remote web driver, tried %d times.',
+                    $tries
+                )
+            );
+        }
+
         // Implicit timout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
