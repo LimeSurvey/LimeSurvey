@@ -50,8 +50,8 @@ class tokens extends Survey_Common_Action
 
         $aData['surveyprivate'] = $thissurvey['anonymized'];
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
-        $aData['token_bar']['buttons']['view'] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
+        $aData['token_bar']['buttons']['view'] = true;
 
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -614,8 +614,8 @@ class tokens extends Survey_Common_Action
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
-        $aData['token_bar']['buttons']['view'] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
+        $aData['token_bar']['buttons']['view'] = true;
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = Yii::app()->request;
         if ($request->getPost('subaction') == 'inserttoken') {
@@ -867,8 +867,8 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
-        $aData['token_bar']['savebutton']['form'] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
+        $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
 
         if (!empty($subaction) && $subaction == 'add') {
@@ -1011,7 +1011,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -1216,7 +1216,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
 
         if (Yii::app()->request->getParam('action') == "remind") {
@@ -1659,7 +1659,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
 
         Yii::app()->loadConfig('ldap');
@@ -1899,7 +1899,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokensimport.js');
         $aEncodings = aEncodingsArray();
@@ -2204,7 +2204,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
 
 
         if (!Yii::app()->request->getParam('ok')) {
@@ -2342,7 +2342,7 @@ class tokens extends Survey_Common_Action
             $this->getController()->redirect(array("admin/tokens/sa/bouncesettings/surveyid/{$iSurveyId}"));
         }
 
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
         $aData['token_bar']['savebutton']['form'] = true;
 
@@ -2406,8 +2406,8 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
-        $aData['token_bar']['savebutton']['form'] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
+        $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
         if ($ajax) {
@@ -2520,7 +2520,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = TRUE;
+        $aData['sidemenu']["token_menu"] = true;
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
         Yii::app()->end();

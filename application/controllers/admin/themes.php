@@ -1037,10 +1037,10 @@ class themes extends Survey_Common_Action
                         $this->getController()->renderPartial('/admin/themes/templateeditor_printablesurvey_quesanswer_view', array(
                             'templateurl' => $templateurl
                             ), true),
-                        ), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                        ), $aData, 'Unspecified', false, null, array(), false, $oEditedTemplate);
                 }
                 $groupoutput = array();
-                $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData, 'Unspecified', false, null, array(), false, $oEditedTemplate);
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array('GROUPS' => implode(' ', $groupoutput),
                     'FAX_TO' => gT("Please fax your completed survey to:")." 000-000-000",
@@ -1049,7 +1049,7 @@ class themes extends Survey_Common_Action
                     'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),
                     'THANKS' => gT('Thank you for completing this survey.'),
                     'END' => gT('This is the survey end message.')
-                    ), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                    ), $aData, 'Unspecified', false, null, array(), false, $oEditedTemplate);
                 break;
 
             case 'printanswers':

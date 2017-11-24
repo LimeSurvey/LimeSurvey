@@ -327,7 +327,7 @@ class Usergroups extends Survey_Common_Action
             $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
             $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
         } else {
-            $aData['usergroupbar']['edit'] = TRUE;
+            $aData['usergroupbar']['edit'] = true;
             $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view'); // Close button
         }
 

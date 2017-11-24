@@ -740,7 +740,7 @@ class UserAction extends Survey_Common_Action
     /**
      * @param string $str
      */
-    private function escape_str($str, $like = FALSE)
+    private function escape_str($str, $like = false)
     {
         if (is_array($str)) {
             foreach ($str as $key => $val) {
@@ -759,7 +759,7 @@ class UserAction extends Survey_Common_Action
     /**
      * @param string $str
      */
-    private function remove_invisible_characters($str, $url_encoded = TRUE)
+    private function remove_invisible_characters($str, $url_encoded = true)
     {
         $non_displayables = array();
 

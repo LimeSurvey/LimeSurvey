@@ -2272,7 +2272,7 @@ $url .= "_view"; });
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $CPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
-        $tokenAttributes = getTokenFieldsAndNames($iSurveyId, TRUE);
+        $tokenAttributes = getTokenFieldsAndNames($iSurveyId, true);
 
         $selectedattribute = array(); //List of existing attribute fields that are not mapped
         $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
@@ -2335,7 +2335,7 @@ $url .= "_view"; });
 
         $iSurveyID = (int) Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
-        $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, TRUE);
+        $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, true);
 
         $selectedattribute = array();
         $selectedcentralattribute = array();

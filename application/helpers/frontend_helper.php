@@ -419,7 +419,7 @@ function submittokens($quotaexit = false)
                 $redata = array('thissurvey'=>$thissurvey);
 
                 // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $subject = templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', false, NULL, array(), true);
+                $subject = templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', false, null, array(), true);
 
                 $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
 
@@ -432,7 +432,7 @@ function submittokens($quotaexit = false)
                 $message = $thissurvey['email_confirm'];
                 //$message=ReplaceFields($message, $fieldsarray, true);
                 // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $message = templatereplace($message, $aReplacementVars, $redata, 'email_confirm', false, NULL, array(), true);
+                $message = templatereplace($message, $aReplacementVars, $redata, 'email_confirm', false, null, array(), true);
                 if (!$ishtml) {
                     $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
                 } else {
@@ -607,8 +607,8 @@ function sendSubmitNotifications($surveyid)
     $redata = compact(array_keys(get_defined_vars()));
     if (count($aEmailNotificationTo) > 0) {
         // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
-        $sMessage = templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, 'admin_notification', $thissurvey['anonymized'] == "Y", NULL, array(), true);
-        $sSubject = templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, 'admin_notification_subj', ($thissurvey['anonymized'] == "Y"), NULL, array(), true);
+        $sMessage = templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, 'admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
+        $sSubject = templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, 'admin_notification_subj', ($thissurvey['anonymized'] == "Y"), null, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
@@ -633,8 +633,8 @@ function sendSubmitNotifications($surveyid)
     }
     if (count($aEmailResponseTo) > 0) {
         // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
-        $sMessage = templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, 'detailed_admin_notification', $thissurvey['anonymized'] == "Y", NULL, array(), true);
-        $sSubject = templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, 'detailed_admin_notification_subj', $thissurvey['anonymized'] == "Y", NULL, array(), true);
+        $sMessage = templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, 'detailed_admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
+        $sSubject = templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, 'detailed_admin_notification_subj', $thissurvey['anonymized'] == "Y", null, array(), true);
         foreach ($aEmailResponseTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
@@ -1521,7 +1521,7 @@ function doAssessment($surveyid)
             foreach ($fieldmap as $field) {
 
                 // Init Assessment Value
-                $assessmentValue = NULL;
+                $assessmentValue = null;
 
                 if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
 
@@ -1840,10 +1840,10 @@ function checkCompletedQuota($surveyid, $return = false)
         submittokens(true);
     }
     // Construct the default message
-    $sMessage        = templatereplace($sMessage, array(), $aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
+    $sMessage        = templatereplace($sMessage, array(), $aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
     $sUrl            = passthruReplace($sUrl, $aSurveyInfo);
-    $sUrl            = templatereplace($sUrl, array(), $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
-    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
+    $sUrl            = templatereplace($sUrl, array(), $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
+    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
 
 
     // Datas for twig view

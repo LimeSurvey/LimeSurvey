@@ -64,7 +64,7 @@ class UserInGroup extends LSActiveRecord
     {
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             foreach ($condition as $item => $value) {
                 $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
             }
@@ -92,11 +92,11 @@ class UserInGroup extends LSActiveRecord
 
         $user->from($from);
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             $user->where($condition);
         }
 
-        if ($order != FALSE) {
+        if ($order != false) {
             $user->order($order);
         }
 

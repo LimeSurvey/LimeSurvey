@@ -52,7 +52,7 @@ class translate extends Survey_Common_Action
         $survey_title = $oSurvey->defaultlanguage->name;
 
         Yii::app()->loadHelper("surveytranslator");
-        $supportedLanguages = getLanguageData(FALSE, Yii::app()->session['adminlang']);
+        $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
         $baselangdesc = $supportedLanguages[$baselang]['description'];
 
@@ -155,17 +155,17 @@ class translate extends Survey_Common_Action
             $type = $tab_names[$i];
             $amTypeOptions = $this->setupTranslateFields($type);
             // Setup form
-            $evenRow = FALSE; //deprecated => using css
+            $evenRow = false; //deprecated => using css
 
-            $all_fields_empty = TRUE;
+            $all_fields_empty = true;
             
             $resultbase = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
             $resultto = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
 
             $type2 = $amTypeOptions["associated"];
-            $associated = FALSE;
+            $associated = false;
             if (!empty($type2)) {
-                $associated = TRUE;
+                $associated = true;
                 //get type otions again again
                 $amTypeOptions2 = $this->setupTranslateFields($type2);
                 $resultbase2 = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
@@ -187,8 +187,8 @@ class translate extends Survey_Common_Action
                     $textto2 = $resultto2[$j][$amTypeOptions2["dbColumn"]];
                 }
                
-                $gid = ($amTypeOptions["gid"] == TRUE) ? $gid = $rowfrom['gid'] : NULL;
-                $qid = ($amTypeOptions["qid"] == TRUE) ? $qid = $rowfrom['qid'] : NULL;
+                $gid = ($amTypeOptions["gid"] == true) ? $gid = $rowfrom['gid'] : null;
+                $qid = ($amTypeOptions["qid"] == true) ? $qid = $rowfrom['qid'] : null;
 
                 $textform_length = strlen(trim($textfrom));
 
@@ -302,7 +302,7 @@ class translate extends Survey_Common_Action
 
             foreach ($tmp_survlangs as $tmp_lang) {
                 $survey_button .= CHtml::tag('li', array(),
-                    CHtml::link(getLanguageNameFromCode($tmp_lang, FALSE), $menuitem_url.$tmp_lang, array(
+                    CHtml::link(getLanguageNameFromCode($tmp_lang, false), $menuitem_url.$tmp_lang, array(
                         'target' 	=> 	'_blank',
                         'onclick' 	=> 	"$('.dosurvey').qtip('hide');",
                         'accesskey' => 	'd'
@@ -328,7 +328,7 @@ class translate extends Survey_Common_Action
 
 
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $supportedLanguages = getLanguageData(FALSE, Yii::app()->session['adminlang']);
+        $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
         $language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
         $language_list .= CHtml::openTag('div', array('class'=>'row'));
@@ -415,8 +415,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_title',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Survey title and description"),
                     'HTMLeditorType' => "title",
                     'HTMLeditorDisplay' => "Inline",
@@ -430,8 +430,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_description',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Description:"),
                     'HTMLeditorType' => "description",
                     'HTMLeditorDisplay' => "Inline",
@@ -445,8 +445,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_welcometext',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Welcome and end text"),
                     'HTMLeditorType' => "welcome",
                     'HTMLeditorDisplay' => "Inline",
@@ -460,8 +460,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_endtext',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("End message:"),
                     'HTMLeditorType' => "end",
                     'HTMLeditorDisplay' => "Inline",
@@ -475,8 +475,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'group_name',
                     'id1' => 'gid',
                     'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => FALSE,
+                    'gid' => true,
+                    'qid' => false,
                     'description' => gT("Question groups"),
                     'HTMLeditorType' => "group",
                     'HTMLeditorDisplay' => "Popup",
@@ -490,8 +490,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'description',
                     'id1' => 'gid',
                     'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => FALSE,
+                    'gid' => true,
+                    'qid' => false,
                     'description' => gT("Group description"),
                     'HTMLeditorType' => "group_desc",
                     'HTMLeditorDisplay' => "Popup",
@@ -505,8 +505,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => TRUE,
+                    'gid' => true,
+                    'qid' => true,
                     'description' => gT("Questions"),
                     'HTMLeditorType' => "question",
                     'HTMLeditorDisplay' => "Popup",
@@ -520,8 +520,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'help',
                     'id1' => 'qid',
                     'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => TRUE,
+                    'gid' => true,
+                    'qid' => true,
                     'description' => gT("Question help"),
                     'HTMLeditorType' => "question_help",
                     'HTMLeditorDisplay' => "Popup",
@@ -535,8 +535,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'question',
                     'id1' => 'qid',
                     'id2' => '',
-                    'gid' => TRUE,
-                    'qid' => TRUE,
+                    'gid' => true,
+                    'qid' => true,
                     'description' => gT("Subquestions"),
                     'HTMLeditorType' => "question",
                     'HTMLeditorDisplay' => "Popup",
@@ -551,8 +551,8 @@ class translate extends Survey_Common_Action
                     'id1' => 'qid',
                     'id2' => 'code',
                     'scaleid' => 'scale_id',
-                    'gid' => FALSE,
-                    'qid' => TRUE,
+                    'gid' => false,
+                    'qid' => true,
                     'description' => gT("Answer options"),
                     'HTMLeditorType' => "subquestion",
                     'HTMLeditorDisplay' => "Popup",
@@ -566,8 +566,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_invite_subj',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Invitation email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "Popup",
@@ -581,8 +581,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_invite',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Invitation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -596,8 +596,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_remind_subj',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Reminder email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -611,8 +611,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_remind',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Reminder email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -626,8 +626,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_confirm_subj',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Confirmation email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -641,8 +641,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_confirm',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Confirmation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -656,8 +656,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_register_subj',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Registration email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -671,8 +671,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_register',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Registration email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -686,8 +686,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_confirm_subj',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Confirmation email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -701,8 +701,8 @@ class translate extends Survey_Common_Action
                     'dbColumn' => 'surveyls_email_confirm',
                     'id1' => '',
                     'id2' => '',
-                    'gid' => FALSE,
-                    'qid' => FALSE,
+                    'gid' => false,
+                    'qid' => false,
                     'description' => gT("Confirmation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
@@ -1039,7 +1039,7 @@ class translate extends Survey_Common_Action
             $sOutput = implode(' ', $sparts);
         } catch (GTranslateException $ge) {
             // Get the error message and build the ouput array
-            $error = TRUE;
+            $error = true;
             $sOutput = $ge->getMessage();
         }
 

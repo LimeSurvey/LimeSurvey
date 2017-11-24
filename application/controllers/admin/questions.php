@@ -1040,7 +1040,7 @@ class questions extends Survey_Common_Action
         $eqrow['type'] = 'T';
         $eqrow['lid'] = 0;
         $eqrow['lid1'] = 0;
-        $eqrow['gid'] = NULL;
+        $eqrow['gid'] = null;
         $eqrow['other'] = 'N';
         $eqrow['mandatory'] = 'N';
         $eqrow['preg'] = '';
@@ -1403,7 +1403,7 @@ class questions extends Survey_Common_Action
                             $qid = returnGlobal('qid');
             }
 
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid);
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
             // Check if any other questions have conditions which rely on this question. Don't delete if there are.
             // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.

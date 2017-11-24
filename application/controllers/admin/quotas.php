@@ -147,7 +147,7 @@ class quotas extends Survey_Common_Action
         $aData['subaction'] = gT("Survey quotas");
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
-        $aData['surveybar']['buttons']['view'] = TRUE;
+        $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button

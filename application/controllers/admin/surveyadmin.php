@@ -399,7 +399,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
         $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
-        $aData['sidemenu']["survey_menu"] = TRUE;
+        $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;

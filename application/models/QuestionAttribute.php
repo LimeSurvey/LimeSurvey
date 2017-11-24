@@ -258,13 +258,13 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $orderby
      * @return array
      */
-    public function getQuestionsForStatistics($fields, $condition, $orderby = FALSE)
+    public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
         $command = Yii::app()->db->createCommand()
             ->select($fields)
             ->from($this->tableName())
             ->where($condition);
-        if ($orderby != FALSE) {
+        if ($orderby != false) {
             $command->order($orderby);
         }
         return $command->queryAll();

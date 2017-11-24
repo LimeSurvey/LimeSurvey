@@ -112,23 +112,23 @@ class conditionsaction extends Survey_Common_Action
         
         $aData['subaction'] = gT("Conditions designer");
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
-        $aData['questionbar']['buttons']['conditions'] = TRUE;
+        $aData['questionbar']['buttons']['conditions'] = true;
         
         switch ($subaction) {
             case 'editconditionsform':
-                $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
+                $aData['questionbar']['buttons']['condition']['edit'] = true;
                 break;
             
             case 'conditions':
-                $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;
+                $aData['questionbar']['buttons']['condition']['conditions'] = true;
                 break;
             
             case 'copyconditionsform':
-                $aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
+                $aData['questionbar']['buttons']['condition']['copyconditionsform'] = true;
                 break;
             
             default:
-                $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
+                $aData['questionbar']['buttons']['condition']['edit'] = true;
                 break;
     }
     
@@ -553,7 +553,7 @@ class conditionsaction extends Survey_Common_Action
                         
                         //$aViewUrls['includes/conditions_edit'][] = $aData;
                         
-                        $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit', $aData, TRUE);
+                        $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit', $aData, true);
                         $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
                     } else {
                         $data['editButtons'] = '';
@@ -788,7 +788,7 @@ protected function insertCondition(array $args)
         }
     }
     
-    LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+    LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     
     $this->redirectToConditionStart($qid, $gid);
 }
@@ -903,7 +903,7 @@ public function quickAddCondition()
     list($message, $status) = $this->insertConditionAjax($data);
     
     if ($status == 'success') {
-        LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $data['qid']);
+        LimeExpressionManager::UpgradeConditionsToRelevance(null, $data['qid']);
         ls\ajax\AjaxHelper::outputSuccess($message);
     } else if ($status == 'error') {
         ls\ajax\AjaxHelper::outputError($message);
@@ -975,7 +975,7 @@ protected function updateCondition(array $args)
             'method' => $p_method,
             'value' => $ca
             );
-            $results[] = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+            $results[] = Condition::model()->insertRecords($updated_data, true, array('cid'=>$p_cid));
         }
         
         // Check if any result returned false
@@ -1023,7 +1023,7 @@ protected function updateCondition(array $args)
         
     }
     
-    LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+    LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     $this->redirectToConditionStart($qid, $gid);
 }
 
@@ -1041,12 +1041,12 @@ protected function renumberScenarios(array $args)
     
     foreach ($result->readAll() as $srow) {
         // new var $update_result == old var $result2
-        $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), TRUE,
+        $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), true,
         array('qid'=>$qid, 'scenario'=>$srow['scenario'])
         );
         $newindex++;
     }
-    LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+    LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     Yii::app()->setFlashMessage(gT("All conditions scenarios were renumbered."));
 }
 
@@ -1083,7 +1083,7 @@ protected function copyConditions(array $args)
         } // while
         
         foreach ($copyconditionsto as $copyc) {
-            list(,,$newqid) = explode("X", $copyc);
+            list(,, $newqid) = explode("X", $copyc);
             foreach ($proformaconditions as $pfc) {
 //TIBO
                 
@@ -1155,31 +1155,31 @@ protected function applySubaction($p_subaction, array $args)
         
         // Delete entry if this is delete
         case "delete":
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+            LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             $this->redirectToConditionStart($qid, $gid);
             break;
         
         // Delete all conditions in this scenario
         case "deletescenario":
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+            LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             $this->redirectToConditionStart($qid, $gid);
             break;
         
         // Update scenario
         case "updatescenario":
             // TODO: Check if $p_newscenarionum is null
-            $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
+            $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), true, array(
             'qid'=>$qid, 'scenario'=>$p_scenario));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
+            LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             break;
         
         // Delete all conditions for this question
         case "deleteallconditions":
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('qid'=>$qid));
             Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
                 $this->redirectToConditionStart($qid, $gid);

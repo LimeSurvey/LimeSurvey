@@ -335,7 +335,7 @@ class Question extends LSActiveRecord
      * @param string|boolean $sCondition
      * @return array
      */
-    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
+    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = false)
     {
         $command = Yii::app()->db->createCommand()
             ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, '.'{{groups}}.*')
@@ -344,7 +344,7 @@ class Question extends LSActiveRecord
             ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
         $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
 
-        if ($sCondition != FALSE) {
+        if ($sCondition != false) {
             $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
             ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
             ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
@@ -381,10 +381,10 @@ class Question extends LSActiveRecord
      * This function is called from everywhere, which is quiet weird...
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object]) (thumbs up)
      */
-    function getAllRecords($condition, $order = FALSE)
+    function getAllRecords($condition, $order = false)
     {
         $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE) {
+        if ($order != false) {
             $command->order($order);
         }
         return $command->query();
@@ -399,13 +399,13 @@ class Question extends LSActiveRecord
      * @param string $orderby
      * @return array
      */
-    public function getQuestionsForStatistics($fields, $condition, $orderby = FALSE)
+    public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
         $command = Yii::app()->db->createCommand()
         ->select($fields)
         ->from(self::tableName())
         ->where($condition);
-        if ($orderby != FALSE) {
+        if ($orderby != false) {
             $command->order($orderby);
         }
         return $command->queryAll();

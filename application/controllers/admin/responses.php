@@ -124,7 +124,7 @@ class responses extends Survey_Common_Action
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $sBrowseLanguage = $aData['language'];
 
-            Yii::import("application.libraries.admin.quexmlpdf", TRUE);
+            Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
 
@@ -275,7 +275,7 @@ class responses extends Survey_Common_Action
                         }
 
                         if ($fnames[$i][0] == 'completed') {
-                            if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N") {
+                            if ($iIdrow['submitdate'] == null || $iIdrow['submitdate'] == "N") {
                                 $answervalue = "N";
                             } else {
                                 $answervalue = "Y";

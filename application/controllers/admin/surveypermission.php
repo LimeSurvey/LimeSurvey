@@ -75,7 +75,7 @@ class surveypermission extends Survey_Common_Action
             // Foot first
 
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-                $authorizedGroupsList = getUserGroupList(NULL, 'simplegidarray');
+                $authorizedGroupsList = getUserGroupList(null, 'simplegidarray');
             }
 
             $surveysecurity .= "<tbody>\n";
@@ -94,7 +94,7 @@ class surveypermission extends Survey_Common_Action
                     }
                 }
 
-                if (isset($group_ids) && $group_ids[0] != NULL) {
+                if (isset($group_ids) && $group_ids[0] != null) {
                     $group_ids_query = implode(",", $group_ids);
                     unset($group_ids);
                     $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");

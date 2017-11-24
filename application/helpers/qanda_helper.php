@@ -309,7 +309,7 @@ function retrieveAnswers($ia)
     // templaters to control where the various parts of the question text
     // are put.
 
-    $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
+    $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : null;
     if (is_file('templates/'.$sTemplate.'/question_start.pstpl')) {
         $replace = array();
         $find    = array();

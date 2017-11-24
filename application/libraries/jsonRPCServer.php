@@ -57,19 +57,19 @@ class jsonRPCServer
                 $response = array(
                                     'id' => $request['id'],
                                     'result' => $result,
-                                    'error' => NULL
+                                    'error' => null
                                     );
             } else {
                 $response = array(
                                     'id' => $request['id'],
-                                    'result' => NULL,
+                                    'result' => null,
                                     'error' => 'unknown method or incorrect parameters'
                                     );
             }
         } catch (Exception $e) {
             $response = array(
                                 'id' => $request['id'],
-                                'result' => NULL,
+                                'result' => null,
                                 'error' => $e->getMessage()
                                 );
         }

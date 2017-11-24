@@ -79,7 +79,7 @@ function strSplitUnicode($str, $l = 0)
  * @param bool $header logical $header If TRUE, adds SQGA code as column headings (used by export to R)
  * @param string $sLanguage
  */
-function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FALSE, $sLanguage = '')
+function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = false, $sLanguage = '')
 {
 
     // Build array that has to be returned
@@ -100,7 +100,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
         if ($rownr == 1) {
             $num_fields = count($row);
             // Add column headers (used by R export)
-            if ($header == TRUE) {
+            if ($header == true) {
                 $i = 1;
                 foreach ($fields as $field) {
                     if (!$field['hide']) {

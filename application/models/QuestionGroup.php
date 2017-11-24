@@ -92,15 +92,15 @@ class QuestionGroup extends LSActiveRecord
     }
 
 
-    public function getAllRecords($condition = FALSE, $order = FALSE, $return_query = TRUE)
+    public function getAllRecords($condition = false, $order = false, $return_query = true)
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             $query->where($condition);
         }
 
-        if ($order != FALSE) {
+        if ($order != false) {
             $query->order($order);
         }
 
@@ -263,7 +263,7 @@ class QuestionGroup extends LSActiveRecord
             ->where($condition)
             ->select('*')
             ->from($this->tableName());
-        if ($order != FALSE) {
+        if ($order != false) {
             $command->order($order);
         }
         return $command->query();

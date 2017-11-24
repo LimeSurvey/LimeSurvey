@@ -3825,16 +3825,16 @@ class quexmlpdf extends pdf
                 $cw = $this->cornerBoxWidth;
 
                 //Top left
-                $this->Rect(($cb - $cw), ($cb - $cw), $cw, $cw, 'DF', NULL, $this->lineColour);
+                $this->Rect(($cb - $cw), ($cb - $cw), $cw, $cw, 'DF', null, $this->lineColour);
 
                 //Top right
-                $this->Rect(($width - $cb), ($cb - $cw), $cw, $cw, 'DF', NULL, $this->lineColour);
+                $this->Rect(($width - $cb), ($cb - $cw), $cw, $cw, 'DF', null, $this->lineColour);
 
                 //Bottom left
-                $this->Rect(($cb - $cw), ($height - $cb), $cw, $cw, 'DF', NULL, $this->lineColour);
+                $this->Rect(($cb - $cw), ($height - $cb), $cw, $cw, 'DF', null, $this->lineColour);
 
                 //Bottom right
-                $this->Rect(($width - $cb), ($height - $cb), $cw, $cw, 'DF', NULL, $this->lineColour);
+                $this->Rect(($width - $cb), ($height - $cb), $cw, $cw, 'DF', null, $this->lineColour);
 
                 $calc = -$cw;
             }
@@ -3887,6 +3887,6 @@ class quexmlpdf extends pdf
     public function AcceptPageBreak()
     {
         $this->pageBreakOccured = true;
-        return FALSE;
+        return false;
     }
 }
