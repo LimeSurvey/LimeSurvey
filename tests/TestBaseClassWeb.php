@@ -59,26 +59,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         self::$domain = getenv('DOMAIN');
 
-        //$capabilities = DesiredCapabilities::phantomjs();
-        //$port = self::$webPort;
-
-        $base = \Yii::app()->getBasePath();
-
-        /*
-        $caps = new DesiredCapabilities();
-        $chromeOptions = new FirefoxProfile();
-        $noHeadless = getenv('NOHEADLESS');
-        if (empty($noHeadless)) {
-            //$chromeOptions->addArguments(['--headless', 'window-size=1400,1024']);
-        } else {
-            //$chromeOptions->addArguments(['window-size=1400,1024']);
-        }
-        $caps->setCapability($chromeOptions);
-
-        putenv(sprintf('webdriver.firefox.driver=/%s/../firefoxdriver', $base));
-        self::$webDriver = FirefoxDriver::start($caps);
-         */
-
+        // NB: Travis might be slow, better try more than once to connect.
         $tries = 0;
         $success = false;
         do {
