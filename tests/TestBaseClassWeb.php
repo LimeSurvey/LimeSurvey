@@ -92,9 +92,6 @@ class TestBaseClassWeb extends TestBaseClass
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
         self::deleteLoginTimeout();
-
-        //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
-        //self::$webDriver->manage()->window()->maximize();
     }
 
     public static function tearDownAfterClass()
