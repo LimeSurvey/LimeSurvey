@@ -1,6 +1,6 @@
 filter:
-    excluded_paths: [test/*, framework/*, locale/*, docs/*, fonts/*, third_party/*, application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
     paths: [application/*]
+    excluded_paths: [tests/*, framework/*, locale/*, docs/*, fonts/*, third_party/*, application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
 checks:
     php:
         code_rating: true
@@ -31,7 +31,7 @@ tools:
                 - 'themes/*'
                 - 'tmp/*'
                 - 'upload/*'
-                - 'test/*'
+                - 'tests/*'
 coding_style:
     php:    
         braces:
