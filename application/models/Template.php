@@ -397,26 +397,6 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Touch each directory in standard template directory to force assset manager to republish them
-     */
-    public static function forceAssets()
-    {
-        // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) {
-            return;
-        }
-
-        $standardTemplatesPath = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR;
-        $Resource    = opendir($standardTemplatesPath);
-        while ($Item = readdir($Resource)) {
-            if (is_dir($standardTemplatesPath.$Item) && $Item != "." && $Item != "..") {
-                // TODO: This can be removed with latest asset manager fix.
-                //touch($standardTemplatesPath . $Item);
-            }
-        }
-    }
-
-    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception

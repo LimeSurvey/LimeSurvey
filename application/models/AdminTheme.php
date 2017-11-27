@@ -234,62 +234,6 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * Touch each directory in standard admin theme directory to force assset manager to republish them
-     * NB: This function still makes problem, because it's touching direcories inside application, which could be unwritable.
-     * But: if people used comfortUpdate, the probably made it writable
-     * TODO: check if 'force' parameter could be used to publish new assets here
-     * see: http://www.yiiframework.com/doc/api/1.1/CAssetManager#forceCopy-detail
-     */
-    public static function forceAssets()
-    {
-        // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) {
-            return;
-        }
-
-        // Touch all the admin themes
-        $standardTemplatesPath = Yii::app()->getConfig("styledir");
-        self::touchSubDirectories($standardTemplatesPath);
-
-        //Touch all the assets folders of extensions and third party
-        $otherAssets = self::getOtherAssets();
-
-        $sRootDir = App()->getConfig("rootdir");
-        foreach ($otherAssets as $otherAsset) {
-            $sDirToTouch = $sRootDir.DIRECTORY_SEPARATOR.$otherAsset;
-            if (is_dir($sDirToTouch)) {
-                if (is_writable($sDirToTouch)) {
-                    touch($sDirToTouch);
-                }
-            }
-        }
-
-
-        // Touch all the root folders of third party
-        $sPath = $sRootDir.DIRECTORY_SEPARATOR.'third_party';
-        self::touchSubDirectories($sPath);
-
-        //Touch all the root folders of extensions
-        $sPath = $sRootDir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions';
-        self::touchSubDirectories($sPath);
-    }
-
-    /**
-     * @param string $sPath
-     */
-    public static function touchSubDirectories($sPath)
-    {
-        $Resource = opendir($sPath);
-        while ($Item = readdir($Resource)) {
-            if (is_dir($sPath.DIRECTORY_SEPARATOR.$Item) && $Item != "." && $Item != "..") {
-                if (is_writable($sPath.DIRECTORY_SEPARATOR.$Item)) {
-                                    touch($sPath.DIRECTORY_SEPARATOR.$Item);
-                }
-            }
-        }
-    }
-
-    /**
      * @return string[]
      */
     public static function getOtherAssets()

@@ -363,10 +363,6 @@ class UpdateForm extends CFormModel
             return;
         }
 
-        // Republish the assets
-        Template::model()->forceAssets();
-        AdminTheme::forceAssets();
-
         // Delete all the content in the asset directory, but not the directory itself nor the index.html file at its root ^^
         $sAssetsDir = Yii::app()->getConfig('tempdir').'/assets/';
         $dir = dir($sAssetsDir);

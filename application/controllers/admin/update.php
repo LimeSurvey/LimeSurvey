@@ -65,7 +65,7 @@ if (!defined('BASEPATH')) {
 */
 class update extends Survey_Common_Action
 {
-    
+
     /**
      * First function to be called, when comming to admin/update
      *
@@ -376,9 +376,6 @@ class update extends Survey_Common_Action
                                 $updateModel->destroyGlobalSettings();
                                 $updateModel->removeTmpFile('update.zip');
                                 $updateModel->removeTmpFile('comfort_updater_cookie.txt');
-
-                                // Force asset manager to republish the assets for all templates
-                                Template::model()->forceAssets();
 
                                 Yii::app()->session['update_result'] = null;
                                 Yii::app()->session['security_update'] = null;
