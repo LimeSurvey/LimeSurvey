@@ -114,7 +114,7 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 
 
     if ($ReturnType == "group") {
-        $newqType=[];
+        $newqType = [];
         foreach ($qtypes as $qkey => $qtype) {
             $newqType[$qtype['group']][$qkey] = $qtype;
         }
@@ -1028,9 +1028,9 @@ function groupOrderThenQuestionOrder($a, $b)
  */
 function shiftOrderQuestions($sid, $gid, $shiftvalue) //Function shifts the sortorder for questions
 {
-    $sid = (int)$sid;
-    $gid = (int)$gid;
-    $shiftvalue = (int)$shiftvalue;
+    $sid = (int) $sid;
+    $gid = (int) $gid;
+    $shiftvalue = (int) $shiftvalue;
 
     $baselang = Survey::model()->findByPk($sid)->language;
 
@@ -1053,9 +1053,9 @@ function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = null) /
     if (!isset($iSurveyID)) {
             $iSurveyID = Yii::app()->getConfig('sid');
     }
-    $qid = (int)$qid;
-    $oldgid = (int)$oldgid;
-    $newgid = (int)$newgid;
+    $qid = (int) $qid;
+    $oldgid = (int) $oldgid;
+    $newgid = (int) $newgid;
     Condition::model()->updateCFieldName($iSurveyID, $qid, $oldgid, $newgid);
     // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
@@ -1354,7 +1354,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
         if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
                     $sLanguage = $oSurvey->language;
         }
-        $allfields=[];
+        $allfields = [];
         switch ($flt['type']) {
                     case "K": // Multiple Numerical
                     case "Q": // Multiple Short Text
@@ -1477,7 +1477,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     if ($sLanguage == '' || !in_array($sLanguage, $survey->allLanguages)) {
         $sLanguage = $survey->language;
     }
-    $fieldmap=[];
+    $fieldmap = [];
     $fieldmap["id"] = array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full") {
         $fieldmap["id"]['title'] = "";
@@ -2066,7 +2066,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap=[];
+    $fieldmap = [];
     $fieldmap['interviewtime'] = array('fieldname'=>'interviewtime', 'type'=>'interview_time', 'sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>gT('Total time'), 'title'=>'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
@@ -2328,7 +2328,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             }
             if (strpos($emailsmtphost, ':') > 0) {
                 $mail->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
-                $mail->Port = (int)substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
+                $mail->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
             } else {
                 $mail->Host = $emailsmtphost;
             }
@@ -3516,8 +3516,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
 
     Yii::app()->loadHelper('database');
-    $newsid = (int)$newsid;
-    $oldsid = (int)$oldsid;
+    $newsid = (int) $newsid;
+    $oldsid = (int) $oldsid;
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
     $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}}
@@ -3742,7 +3742,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
     //
     $sid = sanitize_int($sid);
     $baselang = Survey::model()->findByPk($sid)->language;
-    $aLanguages=[];
+    $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
         $aLanguages = explode(" ", $availlangs);
@@ -4289,7 +4289,7 @@ function getUserGroupList()
 
     $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {return "Database Error"; }
-    $aGroupNames=[];
+    $aGroupNames = [];
     foreach ($sresult->readAll() as $row) {
         $aGroupNames[] = $row;
     }
@@ -4314,7 +4314,7 @@ function getGroupUserList($ugid)
     $surveyidresult = dbExecuteAssoc($surveyidquery); //Checked
     if (!$surveyidresult) {return "Database Error"; }
     $surveyselecter = "";
-    $aSurveyNames=[];
+    $aSurveyNames = [];
     foreach ($surveyidresult->readAll() as $row) {
         $aSurveyNames[] = $row;
     }
@@ -4355,7 +4355,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
 
     $success = true; // Let's be optimistic
     $modifyoutput = '';
-    $lines=[];
+    $lines = [];
     if (!empty($sqlfile)) {
         if (!is_readable($sqlfile)) {
             $success = false;
@@ -4532,7 +4532,7 @@ function doFooter()
 function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
 {
 
-    $surveyid = (int)$surveyid;
+    $surveyid = (int) $surveyid;
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
     LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$surveyid} and entity='survey') AS b ON a.uid = b.id
@@ -4593,14 +4593,14 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
-    $authorizedGroupsList=[];
+    $authorizedGroupsList = [];
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
         $authorizedGroupsList = getUserGroupList(null, 'simplegidarray');
     }
 
     $svexist = false;
     $surveyselecter = "";
-    $simpleugidarray=[];
+    $simpleugidarray = [];
     foreach ($aResult as $sv) {
         if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
         in_array($sv['ugid'], $authorizedGroupsList)) {
@@ -4762,7 +4762,7 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
     }
 
     $iStrLen = mb_strlen($sString, 'UTF-8');
-    $sBegin = mb_substr($sString, 0, (int)floor($iMaxLength * $fPosition), 'UTF-8');
+    $sBegin = mb_substr($sString, 0, (int) floor($iMaxLength * $fPosition), 'UTF-8');
     $sEnd = mb_substr($sString, $iStrLen - ($iMaxLength - mb_strlen($sBegin, 'UTF-8')), $iStrLen, 'UTF-8');
     return $sBegin.$sEllipsis.$sEnd;
 }
