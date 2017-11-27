@@ -154,7 +154,7 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'devBaseUrl' => 'assets/fonts/fontawesome/',
+        'devBaseUrl' => 'assets/fonts/src/fontawesome/',
         'basePath' => 'fonts.fontawesome',
         'css'=> array(
             'css/font-awesome'.$minVersion.'.css',
