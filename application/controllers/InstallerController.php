@@ -399,7 +399,7 @@ class InstallerController extends CController
         if (!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
         }
-
+        $aData = [];
         $aData['model'] = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -516,7 +516,7 @@ class InstallerController extends CController
         extract($aDbConfig);
         self::_dbConnect($aDbConfig, $aData);
 
-        if (!in_array($sDatabaseType,'mysqli','mysql','dblib','sqlsrv','mssql','pgsql')){
+        if (!in_array($sDatabaseType,['mysqli','mysql','dblib','sqlsrv','mssql','pgsql'])){
             throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
@@ -1240,7 +1240,7 @@ class InstallerController extends CController
      * Trye a connexion to the DB and add error in model if exist
      * @param array $aDbConfig : The config to be tested
      * @param array $aData
-     * @return void, bool if connection is done
+     * @return bool if connection is done
      */
     private function dbTest($aDbConfig = array(), $aData = array())
     {
@@ -1286,8 +1286,6 @@ class InstallerController extends CController
                 Yii::app()->end();
             }
         }
-        $testPdo = null;
-
         return true;
     }
 

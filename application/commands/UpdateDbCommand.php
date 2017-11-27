@@ -27,8 +27,8 @@ class UpdateDBCommand extends CConsoleCommand
      */
     public function run($args = null)
     {
-        $newDbVersion = (float) Yii::app()->getConfig('dbversionnumber');
-        $currentDbVersion = (float) Yii::app()->getConfig('DBVersion');
+        $newDbVersion = (int) Yii::app()->getConfig('dbversionnumber');
+        $currentDbVersion = intval(Yii::app()->getConfig('DBVersion'));
 
         if (!$currentDbVersion) {
             throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");
