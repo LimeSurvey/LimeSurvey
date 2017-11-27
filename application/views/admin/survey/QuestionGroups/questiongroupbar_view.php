@@ -87,7 +87,7 @@
 
                 <!-- Edit button -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
                         <span class="icon-edit"></span>
                         <?php eT("Edit current question group");?>
                     </a>
@@ -95,7 +95,7 @@
 
                 <!-- Check survey logic -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
                         <span class="icon-expressionmanagercheck"></span>
                         <?php eT("Check survey logic for current question group"); ?>
                     </a>
@@ -210,7 +210,7 @@
                         </div>
                     <?php else:?>
                         <!-- Preview/Execute survey -->
-                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php if($oSurvey->active=='N'):?>
                                 <?php eT('Preview survey');?>

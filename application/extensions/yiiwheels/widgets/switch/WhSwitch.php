@@ -136,16 +136,6 @@ class WhSwitch extends CInputWidget
      */
     public function registerClientScript()
     {
-        /* publish assets dir */
-        $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets';
-        $assetsUrl = $this->getAssetsUrl($path);
-        $id = TbArray::getValue('id', $this->htmlOptions);
-
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
-        $selector = '#' . $id;
-
-        $this->getApi()->registerPlugin('bootstrapSwitch', $selector);
-        $this->getApi()->registerEvents($selector, $this->events);
 
     }
 }

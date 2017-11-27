@@ -1,4 +1,4 @@
-function doMultipleChoiceWithComments(qID,when)
+var  doMultipleChoiceWithComments = function(qID,when)
 {
   var question=$("#question"+qID+" .questions-list");
   if (jQuery.inArray(when, ['checked','unchecked'])<0){when='checked'}

@@ -17,12 +17,13 @@ class ExtendedStartpage extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeSurveysStartpageRender');
     }
 
-    public function beforeSurveysStartpageRender(){
+    public function beforeSurveysStartpageRender()
+    {
         $event = $this->getEvent();
         $aData = $event->get('aData');
 
-        $html = $this->renderPartial('publicSurveyList_extended',$aData,true );
-        $event->append('result',array('html'=>$html));
+        $html = $this->renderPartial('publicSurveyList_extended', $aData, true);
+        $event->append('result', array('html'=>$html));
     }
 
 }

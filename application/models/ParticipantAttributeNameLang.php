@@ -19,7 +19,7 @@
  * @property string $attribute_name
  * @property string $lang
  *
- * @property ParticipantAttributeName $participant_attribute_names //TODO should be singular
+ * @property ParticipantAttributeName $participant_attribute_name
  */
 class ParticipantAttributeNameLang extends LSActiveRecord
 {
@@ -34,37 +34,39 @@ class ParticipantAttributeNameLang extends LSActiveRecord
      * @inheritdoc
      * @return ParticipantAttributeNameLang
      */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{participant_attribute_names_lang}}';
-	}
+    public function tableName()
+    {
+        return '{{participant_attribute_names_lang}}';
+    }
 
     /** @inheritdoc */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that will receive user inputs.
-		return array(
-            array('attribute_name','filter','filter' => 'strip_tags'),
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that will receive user inputs.
+        return array(
+            array('attribute_name', 'filter', 'filter' => 'strip_tags'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-			array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
-		);
-	}
+            array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
+        );
+    }
 
     /** @inheritdoc */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
-		);
-	}
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+        );
+    }
 
 }

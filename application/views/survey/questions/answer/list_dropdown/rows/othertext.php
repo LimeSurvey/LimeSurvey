@@ -20,16 +20,17 @@ echo \CHtml::textField("{$name}other",$value,array(
 ?>
 
 <script>
-if($("#answer<?php echo $name; ?>").val()!="-oth-"){
+if( $("#answer<?php echo $name; ?>").val() != "-oth-" ){
     $("#othertext<?php echo $name; ?>").hide();
 }
-$(document).on("change","#answer<?php echo $name; ?>",function(){
-    if($("#answer<?php echo $name; ?>").val()!="-oth-"){
+
+$(document).on("change","#answer<?php echo $name; ?>", function(){
+    if($("#answer<?php echo $name; ?>").val() != "-oth-"){
         $("#<?php echo $name; ?>othertext").hide();
         $("#<?php echo $name; ?>othertext").val("").trigger("keyup");
     }else{
         $("#<?php echo $name; ?>othertext").show();
-        $("#<?php echo $name; ?>"othertext).focus();
+        $("#<?php echo $name; ?>othertext").focus();
     }
 });
 </script>

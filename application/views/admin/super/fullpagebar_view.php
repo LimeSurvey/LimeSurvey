@@ -12,7 +12,7 @@
 
 
         <!-- Right actions -->
-        <div class="col-md-4 text-right">
+        <div class="col-md-6 text-right">
 
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>

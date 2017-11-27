@@ -3,7 +3,8 @@ namespace LimeSurvey\PluginManager;
 use \User;
 use LSAuthResult;
 
-abstract class AuthPluginBase extends PluginBase {
+abstract class AuthPluginBase extends PluginBase
+{
     
     /**
      * These constants reflect the error codes to be used by the identity, they 
@@ -61,7 +62,7 @@ abstract class AuthPluginBase extends PluginBase {
         // Here we handle post data
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
-            $this->setUsername( $request->getPost('user'));
+            $this->setUsername($request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
     }

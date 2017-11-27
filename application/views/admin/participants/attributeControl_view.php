@@ -1,3 +1,11 @@
+<?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('participantsAttributeControl');
+
+?>
+
 <div class="col-xs-12 ">
     <div class="pagetitle row h3">
         <div class="col-xs-8 ">

@@ -598,7 +598,7 @@ function LEMval(alias)
                     }
                     else {
                         which_ans = '0~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             answer = value;
                         }
                         else {
@@ -612,7 +612,7 @@ function LEMval(alias)
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                     which_ans = prefix + '~' + value;
-                    if (typeof attr.answers[which_ans] === 'undefined') {
+                    if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                         answer = '';
                     }
                     else {
@@ -715,7 +715,7 @@ function LEMval(alias)
                         }
                         else {
                             which_ans = '0~' + value;
-                            if (typeof attr.answers[which_ans] === 'undefined') {
+                            if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                                 value = '';
                             }
                             else {
@@ -727,7 +727,7 @@ function LEMval(alias)
                     case '1': //Array (Flexible Labels) dual scale  // need scale
                         prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                         which_ans = prefix + '~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             value = '';
                         }
                         else {

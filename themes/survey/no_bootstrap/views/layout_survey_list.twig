@@ -1,0 +1,82 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Survey List Layout  ·._.·´¯)·._.·´¯)
+
+    This file renders the list of publicly listed surveys in your LimeSurvey home page.
+
+#}
+
+
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
+
+{# Replace the content block #}
+{% block content %}
+
+    <div class="{{ aSurveyInfo.class.surveylistrow }}" id="{{ aSurveyInfo.id.surveylistrow }}">
+
+        {# include the alert for no JavaScript #}
+        {{ include('./subviews/no_js_alert.twig') }}
+
+        <div>
+            {{ aSurveyInfo.sSiteName }}
+        </div>
+
+        <div class="{{ aSurveyInfo.class.surveylistrowdiva }}">
+            <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }}'>
+                {{ "The following surveys are available:" | t }}
+            </div>
+        </div>
+
+        <div class="{{ aSurveyInfo.class.surveylistrowdivb }}">
+            <div class='{{ aSurveyInfo.class.surveylistrowdivbdiv }}' >
+                <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }}' >
+
+                    {% for key, oSurvey in aSurveyInfo.publicSurveys %}
+                        <li>
+                            <a
+                                href="{{ oSurvey.sSurveyUrl }}"
+                                title="{{ "Start survey" | t }}"
+                                lang="{{ oSurvey.language }}"
+                                class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }}"  >
+                                {{ oSurvey.localizedTitle }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="{{ aSurveyInfo.class.surveylistrowdivc }}">
+             {{ sprintf( gT("Please contact %s ( %s ) for further assistance."), aSurveyInfo.sSiteAdminName, aSurveyInfo.sSiteAdminEmail ) }}
+        </div>
+
+    </div>
+
+    <div id="{{ aSurveyInfo.id.surveylistfooter }}" class="{{ aSurveyInfo.class.surveylistfooter }}">
+        <div>
+            <p>
+                <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} >
+                    {{ image("poweredby.png", "LimeSurvey Survey Software") }}
+                </a>
+
+                <br />
+                <a {{ aSurveyInfo.attr.surveylistfootercontpab }} >
+                    The Online Survey Tool
+                </a>
+                - Free & Open Source
+                <br />
+            </p>
+        </div>
+    </div>
+{% endblock %}

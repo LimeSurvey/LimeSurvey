@@ -1,33 +1,1366 @@
-﻿(function(){function d(a,b){l.call(this,a,b);this.actualConfig=this.originalConfig=this.removedButtons=null;this.emptyVisible=!1;this.state="edit";this.toolbarButtons=[{text:{active:"Hide empty toolbar groups",inactive:"Show empty toolbar groups"},group:"edit",position:"left",cssClass:"button-a-soft",clickCallback:function(a,b){a[a.hasClass("button-a-background")?"removeClass":"addClass"]("button-a-background");this._toggleVisibilityEmptyElements();this.emptyVisible?a.setText(b.text.active):a.setText(b.text.inactive)}},
-{text:"Add row separator",group:"edit",position:"left",cssClass:"button-a-soft",clickCallback:function(){this._addSeparator()}},{text:"Select config",group:"config",position:"left",cssClass:"button-a-soft",clickCallback:function(){this.configContainer.findOne("textarea").$.select()}},{text:"Back to configurator",group:"config",position:"right",cssClass:"button-a-background",clickCallback:function(){if("paste"===this.state){var a=this.configContainer.findOne("textarea").getValue();(a=d.evaluateToolbarGroupsConfig(a))?
-this.setConfig(a):alert("Your pasted config is wrong.")}this.state="edit";this._showConfigurationTool();this.showToolbarBtnsByGroupName(this.state)}},{text:'Get toolbar \x3cspan class\x3d"highlight"\x3econfig\x3c/span\x3e',group:"edit",position:"right",cssClass:"button-a-background icon-pos-left icon-download",clickCallback:function(){this.state="config";this._showConfig();this.showToolbarBtnsByGroupName(this.state)}}];this.cachedActiveElement=null}var l=ToolbarConfigurator.AbstractToolbarModifier;
-ToolbarConfigurator.ToolbarModifier=d;d.prototype=Object.create(ToolbarConfigurator.AbstractToolbarModifier.prototype);d.prototype.getActualConfig=function(){var a=l.prototype.getActualConfig.call(this);if(a.toolbarGroups)for(var b=a.toolbarGroups.length,c=0;c<b;c+=1)a.toolbarGroups[c]=d.parseGroupToConfigValue(a.toolbarGroups[c]);return a};d.prototype._onInit=function(a,b,c){c=!0===c;l.prototype._onInit.call(this,void 0,b);this.removedButtons=[];c?this.removedButtons=this.actualConfig.removeButtons?
-this.actualConfig.removeButtons.split(","):[]:"removeButtons"in this.originalConfig?this.removedButtons=this.originalConfig.removeButtons?this.originalConfig.removeButtons.split(","):[]:(this.originalConfig.removeButtons="",this.removedButtons=[]);this.actualConfig.toolbarGroups||(this.actualConfig.toolbarGroups=this.fullToolbarEditor.getFullToolbarGroupsConfig());this._fixGroups(this.actualConfig);this._calculateTotalBtns();this._createModifier();this._refreshMoveBtnsAvalibility();this._refreshBtnTabIndexes();
-"function"===typeof a&&a(this.mainContainer)};d.prototype._showConfigurationTool=function(){this.configContainer.addClass("hidden");this.modifyContainer.removeClass("hidden")};d.prototype._showConfig=function(){var a=this.getActualConfig(),b,c;if(a.toolbarGroups){b=a.toolbarGroups;for(var e=this.cfg.trimEmptyGroups,f=[],g=b.length,m=0;m<g;m++){var h=b[m];if("/"===h)f.push("'/'");else{if(e)for(var k=h.groups.length;k--;)0===d.getTotalSubGroupButtonsNumber(h.groups[k],this.fullToolbarEditor)&&h.groups.splice(k,
-1);e&&0===h.groups.length||f.push(l.stringifyJSONintoOneLine(h,{addSpaces:!0,noQuotesOnKey:!0,singleQuotes:!0}))}}b="\n\t\t"+f.join(",\n\t\t")}a.removeButtons&&(c=a.removeButtons);a=['\x3ctextarea class\x3d"configCode" readonly\x3eCKEDITOR.editorConfig \x3d function( config ) {\n',b?"\tconfig.toolbarGroups \x3d ["+b+"\n\t];":"",c?"\n\n":"",c?"\tconfig.removeButtons \x3d '"+c+"';":"","\n};\x3c/textarea\x3e"].join("");this.modifyContainer.addClass("hidden");this.configContainer.removeClass("hidden");
-this.configContainer.setHtml(a)};d.prototype._toggleVisibilityEmptyElements=function(){this.modifyContainer.hasClass("empty-visible")?(this.modifyContainer.removeClass("empty-visible"),this.emptyVisible=!1):(this.modifyContainer.addClass("empty-visible"),this.emptyVisible=!0);this._refreshMoveBtnsAvalibility()};d.prototype._createModifier=function(){function a(){b._highlightGroup(this.data("name"))}var b=this;l.prototype._createModifier.call(this);this.modifyContainer.setHtml(this._toolbarConfigToListString());
-var c=this.modifyContainer.find('li[data-type\x3d"group"]');this.modifyContainer.on("mouseleave",function(){this._dehighlightActiveToolGroup()},this);for(var e=c.count(),f=0;f<e;f+=1)c.getItem(f).on("mouseenter",a);CKEDITOR.document.on("keypress",function(a){a=a.data.$.keyCode;a=32===a||13===a;var c=new CKEDITOR.dom.element(CKEDITOR.document.$.activeElement);c.getAscendant(function(a){return a.$===b.mainContainer.$})&&a&&"button"===c.data("type")&&c.findOne("input").$.click()});this.modifyContainer.on("click",
-function(a){var c=a.data.$,e=new CKEDITOR.dom.element(c.target||c.srcElement);if(a=d.getGroupOrSeparatorLiAncestor(e)){b.cachedActiveElement=document.activeElement;if(e.$ instanceof HTMLInputElement)b._handleCheckboxClicked(e);else if(e.$ instanceof HTMLButtonElement&&(c.preventDefault?c.preventDefault():c.returnValue=!1,(c=b._handleAnchorClicked(e.$))&&"remove"==c.action))return;c=a.data("type");a=a.data("name");b._setActiveElement(c,a);b.cachedActiveElement&&b.cachedActiveElement.focus()}});this.toolbarContainer||
-(this._createToolbar(),this.toolbarContainer.insertBefore(this.mainContainer.getChildren().getItem(0)));this.showToolbarBtnsByGroupName("edit");this.configContainer||(this.configContainer=new CKEDITOR.dom.element("div"),this.configContainer.addClass("configContainer"),this.configContainer.addClass("hidden"),this.mainContainer.append(this.configContainer));return this.mainContainer};d.prototype.showToolbarBtnsByGroupName=function(a){if(this.toolbarContainer)for(var b=this.toolbarContainer.find("button"),
-c=b.count(),e=0;e<c;e+=1){var d=b.getItem(e);d.data("group")==a?d.removeClass("hidden"):d.addClass("hidden")}};d.parseGroupToConfigValue=function(a){if("separator"==a.type)return"/";var b=a.groups,c=b.length;delete a.totalBtns;for(var e=0;e<c;e+=1)b[e]=b[e].name;return a};d.getGroupOrSeparatorLiAncestor=function(a){return a.$ instanceof HTMLLIElement&&"group"==a.data("type")?a:d.getFirstAncestor(a,function(a){a=a.data("type");return"group"==a||"separator"==a})};d.prototype._setActiveElement=function(a,
-b){this.currentActive&&this.currentActive.elem.removeClass("active");if(null===a)this._dehighlightActiveToolGroup(),this.currentActive=null;else{var c=this.mainContainer.findOne('ul[data-type\x3dtable-body] li[data-type\x3d"'+a+'"][data-name\x3d"'+b+'"]');c.addClass("active");this.currentActive={type:a,name:b,elem:c};"group"==a&&this._highlightGroup(b);"separator"==a&&this._dehighlightActiveToolGroup()}};d.prototype.getActiveToolGroup=function(){return this.editorInstance.container?this.editorInstance.container.findOne(".cke_toolgroup.active, .cke_toolbar.active"):
-null};d.prototype._dehighlightActiveToolGroup=function(){var a=this.getActiveToolGroup();a&&a.removeClass("active");this.editorInstance.container&&this.editorInstance.container.removeClass("some-toolbar-active")};d.prototype._highlightGroup=function(a){this.editorInstance.container&&(a=this.getFirstEnabledButtonInGroup(a),a=this.editorInstance.container.findOne(".cke_button__"+a+", .cke_combo__"+a),this._dehighlightActiveToolGroup(),this.editorInstance.container&&this.editorInstance.container.addClass("some-toolbar-active"),
-a&&(a=d.getFirstAncestor(a,function(a){return a.hasClass("cke_toolbar")}))&&a.addClass("active"))};d.prototype.getFirstEnabledButtonInGroup=function(a){var b=this.actualConfig.toolbarGroups;a=this.getGroupIndex(a);b=b[a];if(-1===a)return null;a=b.groups?b.groups.length:0;for(var c=0;c<a;c+=1){var e=this.getFirstEnabledButtonInSubgroup(b.groups[c].name);if(e)return e}return null};d.prototype.getFirstEnabledButtonInSubgroup=function(a){for(var b=(a=this.fullToolbarEditor.buttonsByGroup[a])?a.length:
-0,c=0;c<b;c+=1){var e=a[c].name;if(!this.isButtonRemoved(e))return e}return null};d.prototype._handleCheckboxClicked=function(a){var b=a.getAscendant("li").data("name");a.$.checked?this._removeButtonFromRemoved(b):this._addButtonToRemoved(b)};d.prototype._handleAnchorClicked=function(a){a=new CKEDITOR.dom.element(a);var b=a.getAscendant("li"),c=b.getAscendant("ul"),e=b.data("type"),d=b.data("name"),g=a.data("direction"),m="up"===g?b.getPrevious():b.getNext(),h;if(a.hasClass("disabled"))return null;
-if(a.hasClass("remove"))return b.remove(),this._removeSeparator(b.data("name")),this._setActiveElement(null),{action:"remove"};if(!a.hasClass("move")||!m)return{action:null};if("group"===e||"separator"===e)h=this._moveGroup(g,d);"subgroup"===e&&(h=b.getAscendant("li").data("name"),h=this._moveSubgroup(g,h,d));"up"===g&&b.insertBefore(c.getChild(h));"down"===g&&b.insertAfter(c.getChild(h));for(var k;b="up"===g?b.getPrevious():b.getNext();)if(this.emptyVisible||!b.hasClass("empty")){k=b;break}k||(k=
-'[data-direction\x3d"'+("up"===g?"down":"up")+'"]',this.cachedActiveElement=a.getParent().findOne(k));this._refreshMoveBtnsAvalibility();this._refreshBtnTabIndexes();return{action:"move"}};d.prototype._refreshMoveBtnsAvalibility=function(){function a(a){var c=a.count();for(d=0;d<c;d+=1)b._disableElementsInList(a.getItem(d))}for(var b=this,c=this.mainContainer.find("ul[data-type\x3dtable-body] li \x3e p \x3e span \x3e button.move.disabled"),e=c.count(),d=0;d<e;d+=1)c.getItem(d).removeClass("disabled");
-a(this.mainContainer.find("ul[data-type\x3dtable-body]"));a(this.mainContainer.find("ul[data-type\x3dtable-body] \x3e li \x3e ul"))};d.prototype._refreshBtnTabIndexes=function(){for(var a=this.mainContainer.find('[data-tab\x3d"true"]'),b=a.count(),c=0;c<b;c++){var e=a.getItem(c),d=e.hasClass("disabled");e.setAttribute("tabindex",d?-1:c)}};d.prototype._disableElementsInList=function(a){function b(a){return!a.hasClass("empty")}if(a.getChildren().count()){var c;this.emptyVisible?(c=a.getFirst(),a=a.getLast()):
-(c=a.getFirst(b),a=a.getLast(b));if(c)var e=c.findOne('p button[data-direction\x3d"up"]');if(a)var d=a.findOne('p button[data-direction\x3d"down"]');e&&(e.addClass("disabled"),e.setAttribute("tabindex","-1"));d&&(d.addClass("disabled"),d.setAttribute("tabindex","-1"))}};d.prototype.getGroupIndex=function(a){for(var b=this.actualConfig.toolbarGroups,c=b.length,d=0;d<c;d+=1)if(b[d].name===a)return d;return-1};d.prototype._addSeparator=function(){var a=this._determineSeparatorToAddIndex(),b=d.createSeparatorLiteral(),
-c=CKEDITOR.dom.element.createFromHtml(d.getToolbarSeparatorString(b));this.actualConfig.toolbarGroups.splice(a,0,b);c.insertBefore(this.modifyContainer.findOne("ul[data-type\x3dtable-body]").getChild(a));this._setActiveElement("separator",b.name);this._refreshMoveBtnsAvalibility();this._refreshBtnTabIndexes();this._refreshEditor()};d.prototype._removeSeparator=function(a){var b=CKEDITOR.tools.indexOf(this.actualConfig.toolbarGroups,function(b){return"separator"==b.type&&b.name==a});this.actualConfig.toolbarGroups.splice(b,
-1);this._refreshMoveBtnsAvalibility();this._refreshBtnTabIndexes();this._refreshEditor()};d.prototype._determineSeparatorToAddIndex=function(){return this.currentActive?("group"==this.currentActive.elem.data("type")||"separator"==this.currentActive.elem.data("type")?this.currentActive.elem:this.currentActive.elem.getAscendant("li")).getIndex():0};d.prototype._moveElement=function(a,b,c){function e(a){return a.totalBtns||"separator"==a.type}c=this.emptyVisible?"down"==c?b+1:b-1:d.getFirstElementIndexWith(a,
-b,c,e);return d.moveTo(c-b,a,b)};d.prototype._moveGroup=function(a,b){var c=this.getGroupIndex(b),c=this._moveElement(this.actualConfig.toolbarGroups,c,a);this._refreshMoveBtnsAvalibility();this._refreshBtnTabIndexes();this._refreshEditor();return c};d.prototype._moveSubgroup=function(a,b,c){b=this.getGroupIndex(b);b=this.actualConfig.toolbarGroups[b];var d=CKEDITOR.tools.indexOf(b.groups,function(a){return a.name==c});a=this._moveElement(b.groups,d,a);this._refreshEditor();return a};d.prototype._calculateTotalBtns=
-function(){for(var a=this.actualConfig.toolbarGroups,b=a.length;b--;){var c=a[b],e=d.getTotalGroupButtonsNumber(c,this.fullToolbarEditor);"separator"!=c.type&&(c.totalBtns=e)}};d.prototype._addButtonToRemoved=function(a){if(-1!=CKEDITOR.tools.indexOf(this.removedButtons,a))throw"Button already added to removed";this.removedButtons.push(a);this.actualConfig.removeButtons=this.removedButtons.join(",");this._refreshEditor()};d.prototype._removeButtonFromRemoved=function(a){a=CKEDITOR.tools.indexOf(this.removedButtons,
-a);if(-1===a)throw"Trying to remove button from removed, but not found";this.removedButtons.splice(a,1);this.actualConfig.removeButtons=this.removedButtons.join(",");this._refreshEditor()};d.parseGroupToConfigValue=function(a){if("separator"==a.type)return"/";var b=a.groups,c=b.length;delete a.totalBtns;for(var d=0;d<c;d+=1)b[d]=b[d].name;return a};d.getGroupOrSeparatorLiAncestor=function(a){return a.$ instanceof HTMLLIElement&&"group"==a.data("type")?a:d.getFirstAncestor(a,function(a){a=a.data("type");
-return"group"==a||"separator"==a})};d.createSeparatorLiteral=function(){return{type:"separator",name:"separator"+CKEDITOR.tools.getNextNumber()}};d.prototype._toolbarConfigToListString=function(){for(var a=this.actualConfig.toolbarGroups||[],b='\x3cul data-type\x3d"table-body"\x3e',c=a.length,e=0;e<c;e+=1)var f=a[e],b="separator"===f.type?b+d.getToolbarSeparatorString(f):b+this._getToolbarGroupString(f);b+="\x3c/ul\x3e";return d.getToolbarHeaderString()+b};d.prototype._getToolbarGroupString=function(a){var b=
-a.groups,c;c=""+['\x3cli data-type\x3d"group" data-name\x3d"',a.name,'" ',a.totalBtns?"":'class\x3d"empty"',"\x3e"].join("");c+=d.getToolbarElementPreString(a)+"\x3cul\x3e";a=b.length;for(var e=0;e<a;e+=1){var f=b[e];c+=this._getToolbarSubgroupString(f,this.fullToolbarEditor.buttonsByGroup[f.name])}return c+"\x3c/ul\x3e\x3c/li\x3e"};d.getToolbarSeparatorString=function(a){return['\x3cli data-type\x3d"',a.type,'" data-name\x3d"',a.name,'"\x3e',d.getToolbarElementPreString("row separator"),"\x3c/li\x3e"].join("")};
-d.getToolbarHeaderString=function(){return'\x3cul data-type\x3d"table-header"\x3e\x3cli data-type\x3d"header"\x3e\x3cp\x3eToolbars\x3c/p\x3e\x3cul\x3e\x3cli\x3e\x3cp\x3eToolbar groups\x3c/p\x3e\x3cp\x3eToolbar group items\x3c/p\x3e\x3c/li\x3e\x3c/ul\x3e\x3c/li\x3e\x3c/ul\x3e'};d.getFirstAncestor=function(a,b){for(var c=a.getParents(),d=c.length;d--;)if(b(c[d]))return c[d];return null};d.getFirstElementIndexWith=function(a,b,c,d){for(;"up"===c?b--:++b<a.length;)if(d(a[b]))return b;return-1};d.moveTo=
-function(a,b,c){var d;-1!==c&&(d=b.splice(c,1)[0]);a=c+a;b.splice(a,0,d);return a};d.getTotalSubGroupButtonsNumber=function(a,b){var c=b.buttonsByGroup["string"==typeof a?a:a.name];return c?c.length:0};d.getTotalGroupButtonsNumber=function(a,b){for(var c=0,e=a.groups,f=e?e.length:0,g=0;g<f;g+=1)c+=d.getTotalSubGroupButtonsNumber(e[g],b);return c};d.prototype._getToolbarSubgroupString=function(a,b){var c;c=""+['\x3cli data-type\x3d"subgroup" data-name\x3d"',a.name,'" ',a.totalBtns?"":'class\x3d"empty" ',
-"\x3e"].join("");c+=d.getToolbarElementPreString(a.name);c+="\x3cul\x3e";for(var e=b?b.length:0,f=0;f<e;f+=1)c+=this.getButtonString(b[f]);return c+="\x3c/ul\x3e\x3c/li\x3e"};d.prototype._getConfigButtonName=function(a){var b=this.fullToolbarEditor.editorInstance.ui.items,c;for(c in b)if(b[c].name==a)return c;return null};d.prototype.isButtonRemoved=function(a){return-1!=CKEDITOR.tools.indexOf(this.removedButtons,this._getConfigButtonName(a))};d.prototype.getButtonString=function(a){var b=this.isButtonRemoved(a.name)?
-"":'checked\x3d"checked"';return['\x3cli data-tab\x3d"true" data-type\x3d"button" data-name\x3d"',this._getConfigButtonName(a.name),'"\x3e\x3clabel title\x3d"',a.label,'" \x3e\x3cinput tabindex\x3d"-1"type\x3d"checkbox"',b,"/\x3e",a.$.getOuterHtml(),"\x3c/label\x3e\x3c/li\x3e"].join("")};d.getToolbarElementPreString=function(a){a=a.name?a.name:a;return['\x3cp\x3e\x3cspan\x3e\x3cbutton title\x3d"Move element upward" data-tab\x3d"true" data-direction\x3d"up" class\x3d"move icon-up-big"\x3e\x3c/button\x3e\x3cbutton title\x3d"Move element downward" data-tab\x3d"true" data-direction\x3d"down" class\x3d"move icon-down-big"\x3e\x3c/button\x3e',
-"row separator"==a?'\x3cbutton title\x3d"Remove element" data-tab\x3d"true" class\x3d"remove icon-trash"\x3e\x3c/button\x3e':"",a,"\x3c/span\x3e\x3c/p\x3e"].join("")};d.evaluateToolbarGroupsConfig=function(a){return a=function(a){var c={},d;try{d=eval("("+a+")")}catch(f){try{d=eval(a)}catch(g){return null}}return c.toolbarGroups&&"number"===typeof c.toolbarGroups.length?JSON.stringify(c):d&&"number"===typeof d.length?JSON.stringify({toolbarGroups:d}):d&&d.toolbarGroups?JSON.stringify(d):null}(a)};
-return d})();
+/* global ToolbarConfigurator, alert */
+
+'use strict';
+
+( function() {
+	var AbstractToolbarModifier = ToolbarConfigurator.AbstractToolbarModifier;
+
+	/**
+	 * @class ToolbarConfigurator.ToolbarModifier
+	 * @param {String} editorId An id of modified editor
+	 * @param {Object} cfg
+	 * @extends AbstractToolbarModifier
+	 * @constructor
+	 */
+	function ToolbarModifier( editorId, cfg ) {
+		AbstractToolbarModifier.call( this, editorId, cfg );
+
+		this.removedButtons = null;
+		this.originalConfig = null;
+		this.actualConfig = null;
+		this.emptyVisible = false;
+
+		// edit, paste, config
+		this.state = 'edit';
+
+		this.toolbarButtons = [
+			{
+				text: {
+					active: 'Hide empty toolbar groups',
+					inactive: 'Show empty toolbar groups'
+				},
+				group: 'edit',
+				position: 'left',
+				cssClass: 'button-a-soft',
+				clickCallback: function( button, buttonDefinition ) {
+					var className = 'button-a-background';
+
+					button[ button.hasClass( className ) ? 'removeClass' : 'addClass' ]( className );
+
+					this._toggleVisibilityEmptyElements();
+
+					if ( this.emptyVisible ) {
+						button.setText( buttonDefinition.text.active );
+					} else {
+						button.setText( buttonDefinition.text.inactive );
+					}
+				}
+			},
+			{
+				text: 'Add row separator',
+				group: 'edit',
+				position: 'left',
+				cssClass: 'button-a-soft',
+				clickCallback: function() {
+					this._addSeparator();
+				}
+			},
+			/*{
+				text: 'Paste config',
+				group: 'edit',
+				position: 'left',
+				clickCallback: function() {
+					this.state = 'paste';
+
+					this.modifyContainer.addClass( 'hidden' );
+					this.configContainer.removeClass( 'hidden' );
+					this.configContainer.setHtml( '<textarea></textarea>' );
+					this.showToolbarBtnsByGroupName( 'config' );
+				}
+			},*/
+			{
+				text: 'Select config',
+				group: 'config',
+				position: 'left',
+				cssClass: 'button-a-soft',
+				clickCallback: function() {
+					this.configContainer.findOne( 'textarea' ).$.select();
+				}
+			},
+			{
+				text: 'Back to configurator',
+				group: 'config',
+				position: 'right',
+				cssClass: 'button-a-background',
+				clickCallback: function() {
+					if ( this.state === 'paste' ) {
+						var cfg = this.configContainer.findOne( 'textarea' ).getValue();
+						cfg = ToolbarModifier.evaluateToolbarGroupsConfig( cfg );
+
+						if ( cfg ) {
+							this.setConfig( cfg );
+						} else {
+							alert( 'Your pasted config is wrong.' );
+						}
+					}
+
+					this.state = 'edit';
+					this._showConfigurationTool();
+					this.showToolbarBtnsByGroupName( this.state );
+				}
+			},
+			{
+				text: 'Get toolbar <span class="highlight">config</span>',
+				group: 'edit',
+				position: 'right',
+				cssClass: 'button-a-background icon-pos-left icon-download',
+				clickCallback: function() {
+					this.state = 'config';
+					this._showConfig();
+					this.showToolbarBtnsByGroupName( this.state );
+				}
+			}
+		];
+
+		this.cachedActiveElement = null;
+	}
+
+	// Expose the class.
+	ToolbarConfigurator.ToolbarModifier = ToolbarModifier;
+
+	ToolbarModifier.prototype = Object.create( ToolbarConfigurator.AbstractToolbarModifier.prototype );
+
+	/**
+	 * @returns {Object}
+	 */
+	ToolbarModifier.prototype.getActualConfig = function() {
+		var copy = AbstractToolbarModifier.prototype.getActualConfig.call( this );
+
+		if ( copy.toolbarGroups ) {
+
+			var max = copy.toolbarGroups.length;
+			for ( var i = 0; i < max; i += 1 ) {
+				var currentGroup = copy.toolbarGroups[ i ];
+
+				copy.toolbarGroups[ i ] = ToolbarModifier.parseGroupToConfigValue( currentGroup );
+			}
+
+		}
+
+		return copy;
+	};
+
+	/**
+	 * @param {Function} callback
+	 * @param {String} [config]
+	 * @param {Boolean} [forceKeepRemoveButtons=false]
+	 * @private
+	 */
+	ToolbarModifier.prototype._onInit = function( callback, config, forceKeepRemoveButtons ) {
+		forceKeepRemoveButtons = ( forceKeepRemoveButtons === true );
+		AbstractToolbarModifier.prototype._onInit.call( this, undefined, config );
+
+		this.removedButtons = [];
+
+		if ( forceKeepRemoveButtons ) {
+			if ( this.actualConfig.removeButtons ) {
+				this.removedButtons = this.actualConfig.removeButtons.split( ',' );
+			} else {
+				this.removedButtons = [];
+			}
+		} else {
+			if ( !( 'removeButtons' in this.originalConfig ) ) {
+				this.originalConfig.removeButtons = '';
+				this.removedButtons = [];
+			} else {
+				this.removedButtons = this.originalConfig.removeButtons ? this.originalConfig.removeButtons.split( ',' ) : [];
+			}
+		}
+
+		if ( !this.actualConfig.toolbarGroups )
+			this.actualConfig.toolbarGroups = this.fullToolbarEditor.getFullToolbarGroupsConfig();
+
+		this._fixGroups( this.actualConfig );
+		this._calculateTotalBtns();
+
+		this._createModifier();
+		this._refreshMoveBtnsAvalibility();
+		this._refreshBtnTabIndexes();
+
+		if ( typeof callback === 'function' )
+			callback( this.mainContainer );
+	};
+
+	/**
+	 * @private
+	 */
+	ToolbarModifier.prototype._showConfigurationTool = function() {
+		this.configContainer.addClass( 'hidden' );
+		this.modifyContainer.removeClass( 'hidden' );
+	};
+
+	/**
+	 * Show configuration file in tool
+	 *
+	 * @private
+	 */
+	ToolbarModifier.prototype._showConfig = function() {
+		var that = this,
+			actualConfig = this.getActualConfig(),
+			cfg = {};
+		if ( actualConfig.toolbarGroups ) {
+			cfg.toolbarGroups = actualConfig.toolbarGroups;
+
+			var groups = prepareGroups( actualConfig.toolbarGroups, this.cfg.trimEmptyGroups );
+
+			cfg.toolbarGroups = '\n\t\t' + groups.join( ',\n\t\t' );
+		}
+
+		function prepareGroups( toolbarGroups, trimEmptyGroups ) {
+			var groups = [],
+				max = toolbarGroups.length;
+
+			for ( var i = 0; i < max; i++ ) {
+				var group = toolbarGroups[ i ];
+
+				if ( group === '/' ) {
+					groups.push( '\'/\'' );
+					continue;
+				}
+
+				if ( trimEmptyGroups ) {
+					var max2 = group.groups.length;
+					while ( max2-- ) {
+						var subgroup = group.groups[ max2 ];
+
+						if ( ToolbarModifier.getTotalSubGroupButtonsNumber( subgroup, that.fullToolbarEditor ) === 0 ) {
+							group.groups.splice( max2, 1 );
+						}
+					}
+				}
+
+				if ( !( trimEmptyGroups && group.groups.length === 0 ) ) {
+					groups.push( AbstractToolbarModifier.stringifyJSONintoOneLine( group, {
+						addSpaces: true,
+						noQuotesOnKey: true,
+						singleQuotes: true
+					} ) );
+				}
+			}
+
+			return groups;
+		}
+
+		if ( actualConfig.removeButtons ) {
+			cfg.removeButtons = actualConfig.removeButtons;
+		}
+
+		var content = [
+			'<textarea class="configCode" readonly>',
+			'CKEDITOR.editorConfig = function( config ) {\n',
+			( cfg.toolbarGroups ? '\tconfig.toolbarGroups = [' + cfg.toolbarGroups + '\n\t];' : '' ),
+			( cfg.removeButtons ? '\n\n' : '' ),
+			( cfg.removeButtons ? '\tconfig.removeButtons = \'' + cfg.removeButtons + '\';' : '' ),
+			'\n};',
+			'</textarea>'
+		].join( '' );
+
+
+
+		this.modifyContainer.addClass( 'hidden' );
+		this.configContainer.removeClass( 'hidden' );
+
+		this.configContainer.setHtml( content );
+	};
+
+	/**
+	 * Toggle empty groups and subgroups visibility.
+	 *
+	 * @private
+	 */
+	ToolbarModifier.prototype._toggleVisibilityEmptyElements = function() {
+		if ( this.modifyContainer.hasClass( 'empty-visible' ) ) {
+			this.modifyContainer.removeClass( 'empty-visible' );
+			this.emptyVisible = false;
+		} else {
+			this.modifyContainer.addClass( 'empty-visible' );
+			this.emptyVisible = true;
+		}
+
+		this._refreshMoveBtnsAvalibility();
+	};
+
+	/**
+	 * Creates HTML main container of modifier.
+	 *
+	 * @returns {CKEDITOR.dom.element}
+	 * @private
+	 */
+	ToolbarModifier.prototype._createModifier = function() {
+		var that = this;
+
+		AbstractToolbarModifier.prototype._createModifier.call( this );
+
+		this.modifyContainer.setHtml( this._toolbarConfigToListString() );
+
+		var groupLi = this.modifyContainer.find( 'li[data-type="group"]' );
+
+		this.modifyContainer.on( 'mouseleave', function() {
+			this._dehighlightActiveToolGroup();
+		}, this );
+
+		var max = groupLi.count();
+		for ( var i = 0; i < max; i += 1 ) {
+			groupLi.getItem( i ).on( 'mouseenter', onGroupHover );
+		}
+
+		function onGroupHover() {
+			that._highlightGroup( this.data( 'name' ) );
+		}
+
+		CKEDITOR.document.on( 'keypress', function( e ) {
+			var nativeEvent = e.data.$,
+				keyCode = nativeEvent.keyCode,
+				spaceOrEnter = ( keyCode === 32 || keyCode === 13 ),
+				active = new CKEDITOR.dom.element( CKEDITOR.document.$.activeElement );
+
+			var mainContainer = active.getAscendant( function( node ) {
+				return node.$ === that.mainContainer.$;
+			} );
+
+			if ( !mainContainer || !spaceOrEnter ) {
+				return;
+			}
+
+			if ( active.data( 'type' ) === 'button' ) {
+				active.findOne( 'input' ).$.click();
+			}
+		} );
+
+		this.modifyContainer.on( 'click', function( e ) {
+			var origEvent = e.data.$,
+				target = new CKEDITOR.dom.element( ( origEvent.target || origEvent.srcElement ) ),
+				relativeGroupOrSeparatorLi = ToolbarModifier.getGroupOrSeparatorLiAncestor( target );
+
+			if ( !relativeGroupOrSeparatorLi ) {
+				return;
+			}
+
+			that.cachedActiveElement = document.activeElement;
+
+			// checkbox clicked
+			if ( target.$ instanceof HTMLInputElement )
+				that._handleCheckboxClicked( target );
+
+			// link clicked
+			else if ( target.$ instanceof HTMLButtonElement ) {
+				if ( origEvent.preventDefault )
+					origEvent.preventDefault();
+				else
+					origEvent.returnValue = false;
+
+				var result = that._handleAnchorClicked( target.$ );
+
+				if ( result && result.action == 'remove' )
+					return;
+
+			}
+
+			var elementType = relativeGroupOrSeparatorLi.data( 'type' ),
+				elementName = relativeGroupOrSeparatorLi.data( 'name' );
+
+			that._setActiveElement( elementType, elementName );
+
+			if ( that.cachedActiveElement )
+				that.cachedActiveElement.focus();
+		} );
+
+		if ( !this.toolbarContainer ) {
+			this._createToolbar();
+			this.toolbarContainer.insertBefore( this.mainContainer.getChildren().getItem( 0 ) );
+		}
+
+		this.showToolbarBtnsByGroupName( 'edit' );
+
+		if ( !this.configContainer ) {
+			this.configContainer = new CKEDITOR.dom.element( 'div' );
+			this.configContainer.addClass( 'configContainer' );
+			this.configContainer.addClass( 'hidden' );
+
+			this.mainContainer.append( this.configContainer );
+		}
+
+		return this.mainContainer;
+	};
+
+	/**
+	 * Show toolbar buttons related to group name provided in argument
+	 * and hide other buttons
+	 * Please note: this method works on toolbar in tool, which is located
+	 * on top of the tool
+	 *
+	 * @param {String} groupName
+	 */
+	ToolbarModifier.prototype.showToolbarBtnsByGroupName = function( groupName ) {
+		if ( !this.toolbarContainer ) {
+			return;
+		}
+
+		var allButtons = this.toolbarContainer.find( 'button' );
+
+		var max = allButtons.count();
+		for ( var i = 0; i < max; i += 1 ) {
+			var currentBtn = allButtons.getItem( i );
+
+			if ( currentBtn.data( 'group' ) == groupName )
+				currentBtn.removeClass( 'hidden' );
+			else
+				currentBtn.addClass( 'hidden' );
+
+		}
+	};
+
+	/**
+	 * Parse group "model" to configuration value
+	 *
+	 * @param {Object} group
+	 * @returns {Object}
+	 * @private
+	 */
+	ToolbarModifier.parseGroupToConfigValue = function( group ) {
+		if ( group.type == 'separator' ) {
+			return '/';
+		}
+
+		var groups = group.groups,
+			max = groups.length;
+
+		delete group.totalBtns;
+		for ( var i = 0; i < max; i += 1 ) {
+			groups[ i ] = groups[ i ].name;
+		}
+
+		return group;
+	};
+
+	/**
+	 * Find closest Li ancestor in DOM tree which is group or separator element
+	 *
+	 * @param {CKEDITOR.dom.element} element
+	 * @returns {CKEDITOR.dom.element}
+	 */
+	ToolbarModifier.getGroupOrSeparatorLiAncestor = function( element ) {
+		if ( element.$ instanceof HTMLLIElement && element.data( 'type' ) == 'group' )
+			return element;
+		else {
+			return ToolbarModifier.getFirstAncestor( element, function( ancestor ) {
+				var type = ancestor.data( 'type' );
+
+				return ( type == 'group' || type == 'separator' );
+			} );
+		}
+	};
+
+	/**
+	 * Set active element in tool by provided type and name.
+	 *
+	 * @param {String} type
+	 * @param {String} name
+	 */
+	ToolbarModifier.prototype._setActiveElement = function( type, name ) {
+		// clear current active element
+		if ( this.currentActive )
+			this.currentActive.elem.removeClass( 'active' );
+
+		if ( type === null ) {
+			this._dehighlightActiveToolGroup();
+			this.currentActive = null;
+			return;
+		}
+
+		var liElem = this.mainContainer.findOne( 'ul[data-type=table-body] li[data-type="' + type + '"][data-name="' + name + '"]' );
+
+		liElem.addClass( 'active' );
+
+		// setup model
+		this.currentActive = {
+			type: type,
+			name: name,
+			elem: liElem
+		};
+
+		// highlight group in toolbar
+		if ( type == 'group' )
+			this._highlightGroup( name );
+
+		if ( type == 'separator' )
+			this._dehighlightActiveToolGroup();
+	};
+
+	/**
+	 * @returns {CKEDITOR.dom.element|null}
+	 */
+	ToolbarModifier.prototype.getActiveToolGroup = function() {
+		if ( this.editorInstance.container )
+			return this.editorInstance.container.findOne( '.cke_toolgroup.active, .cke_toolbar.active' );
+		else
+			return null;
+	};
+
+	/**
+	 * @private
+	 */
+	ToolbarModifier.prototype._dehighlightActiveToolGroup = function() {
+		var currentActive = this.getActiveToolGroup();
+
+		if ( currentActive )
+			currentActive.removeClass( 'active' );
+
+		// @see ToolbarModifier.prototype._highlightGroup.
+		if ( this.editorInstance.container ) {
+			this.editorInstance.container.removeClass( 'some-toolbar-active' );
+		}
+	};
+
+	/**
+	 * Highlight group by its name, and dehighlight current group.
+	 *
+	 * @param {String} name
+	 */
+	ToolbarModifier.prototype._highlightGroup = function( name ) {
+		if ( !this.editorInstance.container )
+			return;
+
+		var foundBtnName = this.getFirstEnabledButtonInGroup( name ),
+			foundBtn = this.editorInstance.container.findOne( '.cke_button__' + foundBtnName + ', .cke_combo__' + foundBtnName );
+
+		this._dehighlightActiveToolGroup();
+
+		// Helpful to dim other toolbar groups if one is highlighted.
+		if ( this.editorInstance.container ) {
+			this.editorInstance.container.addClass( 'some-toolbar-active' );
+		}
+
+		if ( foundBtn ) {
+			var btnToolbar = ToolbarModifier.getFirstAncestor( foundBtn, function( ancestor ) {
+				return ancestor.hasClass( 'cke_toolbar' );
+			} );
+
+			if ( btnToolbar )
+				btnToolbar.addClass( 'active' );
+		}
+	};
+
+	/**
+	 * @param {String} groupName
+	 * @return {String|null}
+	 */
+	ToolbarModifier.prototype.getFirstEnabledButtonInGroup = function( groupName ) {
+		var groups = this.actualConfig.toolbarGroups,
+			groupIndex = this.getGroupIndex( groupName ),
+			group = groups[ groupIndex ];
+
+		if ( groupIndex === -1 ) {
+			return null;
+		}
+
+		var max = group.groups ? group.groups.length : 0;
+		for ( var i = 0; i < max; i += 1 ) {
+			var currSubgroupName = group.groups[ i ].name,
+				firstEnabled = this.getFirstEnabledButtonInSubgroup( currSubgroupName );
+
+			if ( firstEnabled )
+				return firstEnabled;
+		}
+		return null;
+	};
+
+	/**
+	 * @param {String} subgroupName
+	 * @returns {String|null}
+	 */
+	ToolbarModifier.prototype.getFirstEnabledButtonInSubgroup = function( subgroupName ) {
+		var subgroupBtns = this.fullToolbarEditor.buttonsByGroup[ subgroupName ];
+
+		var max = subgroupBtns ? subgroupBtns.length : 0;
+		for ( var i = 0; i < max; i += 1 ) {
+			var currBtnName = subgroupBtns[ i ].name;
+			if ( !this.isButtonRemoved( currBtnName ) )
+				return currBtnName;
+		}
+
+		return null;
+	};
+
+	/**
+	 * Sets up parameters and call adequate action.
+	 *
+	 * @param {CKEDITOR.dom.element} checkbox
+	 * @private
+	 */
+	ToolbarModifier.prototype._handleCheckboxClicked = function( checkbox ) {
+		var closestLi = checkbox.getAscendant( 'li' ),
+			elementName = closestLi.data( 'name' ),
+			aboutToAddToRemoved = !checkbox.$.checked;
+
+		if ( aboutToAddToRemoved )
+			this._addButtonToRemoved( elementName );
+		else
+			this._removeButtonFromRemoved( elementName );
+	};
+
+	/**
+	 * Sets up parameters and call adequate action.
+	 *
+	 * @param {HTMLAnchorElement} anchor
+	 * @private
+	 */
+	ToolbarModifier.prototype._handleAnchorClicked = function( anchor ) {
+		var anchorDOM = new CKEDITOR.dom.element( anchor ),
+			relativeLi = anchorDOM.getAscendant( 'li' ),
+			relativeUl = relativeLi.getAscendant( 'ul' ),
+			elementType = relativeLi.data( 'type' ),
+			elementName = relativeLi.data( 'name' ),
+			direction = anchorDOM.data( 'direction' ),
+			nearestLi = ( direction === 'up' ? relativeLi.getPrevious() : relativeLi.getNext() ),
+			groupName,
+			subgroupName,
+			newIndex;
+
+		// nothing to do
+		if ( anchorDOM.hasClass( 'disabled' ) )
+			return null;
+
+		// remove separator and nothing else
+		if ( anchorDOM.hasClass( 'remove' ) ) {
+			relativeLi.remove();
+			this._removeSeparator( relativeLi.data( 'name' ) );
+			this._setActiveElement( null );
+			return { action: 'remove' };
+		}
+
+		if ( !anchorDOM.hasClass( 'move' ) || !nearestLi )
+			return { action: null };
+
+		// move group or separator
+		if ( elementType === 'group' || elementType === 'separator' ) {
+			groupName = elementName;
+			newIndex = this._moveGroup( direction, groupName );
+		}
+
+		// move subgroup
+		if ( elementType === 'subgroup' ) {
+			subgroupName = elementName;
+			groupName = relativeLi.getAscendant( 'li' ).data( 'name' );
+			newIndex = this._moveSubgroup( direction, groupName, subgroupName );
+		}
+
+		// Visual effect
+		if ( direction === 'up' )
+			relativeLi.insertBefore( relativeUl.getChild( newIndex ) );
+
+		if ( direction === 'down' )
+			relativeLi.insertAfter( relativeUl.getChild( newIndex ) );
+
+		// Should know whether there is next li element after modifications.
+		var nextLi = relativeLi;
+
+		// We are looking for next li element in list (to check whether current one is the last one)
+		var found;
+		while ( nextLi = ( direction === 'up' ? nextLi.getPrevious() : nextLi.getNext() ) ) {
+			if ( !this.emptyVisible && nextLi.hasClass( 'empty' ) ) {
+				continue;
+			}
+
+			found = nextLi;
+			break;
+		}
+
+		// If not found, it means that we reached end.
+		if ( !found ) {
+			var selector = ( '[data-direction="' + ( direction === 'up' ? 'down' : 'up' ) + '"]' );
+
+			// Shifting direction.
+			this.cachedActiveElement = anchorDOM.getParent().findOne( selector );
+		}
+
+		this._refreshMoveBtnsAvalibility();
+		this._refreshBtnTabIndexes();
+
+		return {
+			action: 'move'
+		};
+	};
+
+	/**
+	 * First element can not be moved up, and last element can not be moved down,
+	 * so they are disabled.
+	 */
+	ToolbarModifier.prototype._refreshMoveBtnsAvalibility = function() {
+		var that = this,
+			disabledBtns = this.mainContainer.find( 'ul[data-type=table-body] li > p > span > button.move.disabled' );
+
+		// enabling all disabled buttons
+		var max = disabledBtns.count();
+		for ( var i = 0; i < max; i += 1 ) {
+			var currentBtn = disabledBtns.getItem( i );
+			currentBtn.removeClass( 'disabled' );
+		}
+
+
+		function disableElementsInLists( ulList ) {
+			var max = ulList.count();
+			for ( i = 0; i < max; i += 1 ) {
+				that._disableElementsInList( ulList.getItem( i ) );
+			}
+		}
+
+		// Disable buttons in toolbars.
+		disableElementsInLists( this.mainContainer.find( 'ul[data-type=table-body]' ) );
+
+		// Disable buttons in toolbar groups.
+		disableElementsInLists( this.mainContainer.find( 'ul[data-type=table-body] > li > ul' ) );
+	};
+
+	/**
+	 * @private
+	 */
+	ToolbarModifier.prototype._refreshBtnTabIndexes = function() {
+		var tabindexed = this.mainContainer.find( '[data-tab="true"]' );
+
+		var max = tabindexed.count();
+		for ( var i = 0; i < max; i++ ) {
+			var item = tabindexed.getItem( i ),
+				disabled = item.hasClass( 'disabled' );
+
+			item.setAttribute( 'tabindex', disabled ? -1 : i );
+		}
+	};
+
+	/**
+	 * Disable buttons to move elements up and down which should be disabled.
+	 *
+	 * @param {CKEDITOR.dom.element} ul
+	 * @private
+	 */
+	ToolbarModifier.prototype._disableElementsInList = function( ul ) {
+		var liList = ul.getChildren();
+
+		if ( !liList.count() )
+			return;
+
+		var firstDisabled, lastDisabled;
+		if ( this.emptyVisible ) {
+			firstDisabled = ul.getFirst();
+			lastDisabled = ul.getLast();
+		} else {
+			firstDisabled = ul.getFirst( isNotEmptyChecker );
+			lastDisabled = ul.getLast( isNotEmptyChecker );
+		}
+
+		function isNotEmptyChecker( element ) {
+			return !element.hasClass( 'empty' );
+		}
+
+		if ( firstDisabled )
+			var firstDisabledBtn = firstDisabled.findOne( 'p button[data-direction="up"]' );
+
+		if ( lastDisabled )
+			var lastDisabledBtn = lastDisabled.findOne( 'p button[data-direction="down"]' );
+
+		if ( firstDisabledBtn ) {
+			firstDisabledBtn.addClass( 'disabled' );
+			firstDisabledBtn.setAttribute( 'tabindex', '-1' );
+		}
+
+		if ( lastDisabledBtn ) {
+			lastDisabledBtn.addClass( 'disabled' );
+			lastDisabledBtn.setAttribute( 'tabindex', '-1' );
+		}
+	};
+
+	/**
+	 * Gets group index in actual config toolbarGroups
+	 *
+	 * @param {String} name
+	 * @returns {Number}
+	 */
+	ToolbarModifier.prototype.getGroupIndex = function( name ) {
+		var groups = this.actualConfig.toolbarGroups;
+
+		var max = groups.length;
+		for ( var i = 0; i < max; i += 1 ) {
+			if ( groups[ i ].name === name )
+				return i;
+		}
+
+		return -1;
+	};
+
+	/**
+	 * Handle adding separator.
+	 *
+	 * @private
+	 */
+	ToolbarModifier.prototype._addSeparator = function() {
+		var separatorIndex = this._determineSeparatorToAddIndex(),
+			separator = ToolbarModifier.createSeparatorLiteral(),
+			domSeparator = CKEDITOR.dom.element.createFromHtml( ToolbarModifier.getToolbarSeparatorString( separator ) );
+
+		this.actualConfig.toolbarGroups.splice( separatorIndex, 0, separator );
+
+		domSeparator.insertBefore( this.modifyContainer.findOne( 'ul[data-type=table-body]' ).getChild( separatorIndex ) );
+
+		this._setActiveElement( 'separator', separator.name );
+		this._refreshMoveBtnsAvalibility();
+		this._refreshBtnTabIndexes();
+		this._refreshEditor();
+	};
+
+	/**
+	 * Handle removing separator.
+	 *
+	 * @param {String} name
+	 */
+	ToolbarModifier.prototype._removeSeparator = function( name ) {
+		var separatorIndex = CKEDITOR.tools.indexOf( this.actualConfig.toolbarGroups, function( group ) {
+			return group.type == 'separator' && group.name == name;
+		} );
+
+		this.actualConfig.toolbarGroups.splice( separatorIndex, 1 );
+
+		this._refreshMoveBtnsAvalibility();
+		this._refreshBtnTabIndexes();
+		this._refreshEditor();
+	};
+
+	/**
+	 * Determine index where separator should be added, based on currently selected element.
+	 *
+	 * @returns {Number}
+	 * @private
+	 */
+	ToolbarModifier.prototype._determineSeparatorToAddIndex = function() {
+		if ( !this.currentActive )
+			return 0;
+
+		var groupLi;
+		if ( this.currentActive.elem.data( 'type' ) == 'group' || this.currentActive.elem.data( 'type' ) == 'separator' )
+			groupLi = this.currentActive.elem;
+		else
+			groupLi = this.currentActive.elem.getAscendant( 'li' );
+
+		return groupLi.getIndex();
+	};
+
+	/**
+	 * @param {Array} elementsArray
+	 * @param {Number} elementIndex
+	 * @param {String} direction
+	 * @returns {Number}
+	 * @private
+	 */
+	ToolbarModifier.prototype._moveElement = function( elementsArray, elementIndex, direction ) {
+		var nextIndex;
+
+		if ( this.emptyVisible )
+			nextIndex = ( direction == 'down' ? elementIndex + 1 : elementIndex - 1 );
+		else {
+			// When empty elements are not visible, there is need to skip them.
+			nextIndex = ToolbarModifier.getFirstElementIndexWith( elementsArray, elementIndex, direction, isEmptyOrSeparatorChecker );
+		}
+
+		function isEmptyOrSeparatorChecker( element ) {
+			return element.totalBtns || element.type == 'separator';
+		}
+
+		var offset = nextIndex - elementIndex;
+
+		return ToolbarModifier.moveTo( offset, elementsArray, elementIndex );
+	};
+
+	/**
+	 * Moves group located in config level up or down and refresh editor.
+	 *
+	 * @param {String} direction
+	 * @param {String} groupName
+	 * @returns {Number}
+	 */
+	ToolbarModifier.prototype._moveGroup = function( direction, groupName ) {
+		var groupIndex = this.getGroupIndex( groupName ),
+			groups = this.actualConfig.toolbarGroups,
+			newIndex = this._moveElement( groups, groupIndex, direction );
+
+		this._refreshMoveBtnsAvalibility();
+		this._refreshBtnTabIndexes();
+		this._refreshEditor();
+
+		return newIndex;
+	};
+
+	/**
+	 * Moves subgroup located in config level up or down and refresh editor.
+	 *
+	 * @param {String} direction
+	 * @param {String} groupName
+	 * @param {String} subgroupName
+	 * @private
+	 */
+	ToolbarModifier.prototype._moveSubgroup = function( direction, groupName, subgroupName ) {
+		var groupIndex = this.getGroupIndex( groupName ),
+			groups = this.actualConfig.toolbarGroups,
+			group = groups[ groupIndex ],
+			subgroupIndex = CKEDITOR.tools.indexOf( group.groups, function( subgroup ) {
+				return subgroup.name == subgroupName;
+			} ),
+			newIndex = this._moveElement( group.groups, subgroupIndex, direction );
+
+		this._refreshEditor();
+
+		return newIndex;
+	};
+
+	/**
+	 * Set `totalBtns` property in `actualConfig.toolbarGroups` elements.
+	 *
+	 * @private
+	 */
+	ToolbarModifier.prototype._calculateTotalBtns = function() {
+		var groups = this.actualConfig.toolbarGroups;
+
+		var i = groups.length;
+		// from the end
+		while ( i-- ) {
+			var currentGroup = groups[ i ],
+				totalBtns = ToolbarModifier.getTotalGroupButtonsNumber( currentGroup, this.fullToolbarEditor );
+
+			if ( currentGroup.type == 'separator' ) {
+				// nothing to do with separator
+				continue;
+			}
+
+			currentGroup.totalBtns = totalBtns;
+		}
+	};
+
+	/**
+	 * Add button to removeButtons field in config and refresh editor.
+	 *
+	 * @param {String} buttonName
+	 * @private
+	 */
+	ToolbarModifier.prototype._addButtonToRemoved = function( buttonName ) {
+		if ( CKEDITOR.tools.indexOf( this.removedButtons, buttonName ) != -1 )
+			throw 'Button already added to removed';
+
+		this.removedButtons.push( buttonName );
+		this.actualConfig.removeButtons = this.removedButtons.join( ',' );
+		this._refreshEditor();
+	};
+
+	/**
+	 * Remove button from removeButtons field in config and refresh editor.
+	 *
+	 * @param {String} buttonName
+	 * @private
+	 */
+	ToolbarModifier.prototype._removeButtonFromRemoved = function( buttonName ) {
+		var foundAtIndex =  CKEDITOR.tools.indexOf( this.removedButtons, buttonName );
+
+		if ( foundAtIndex === -1 )
+			throw 'Trying to remove button from removed, but not found';
+
+		this.removedButtons.splice( foundAtIndex, 1 );
+		this.actualConfig.removeButtons = this.removedButtons.join( ',' );
+		this._refreshEditor();
+	};
+
+	/**
+	 * Parse group "model" to configuration value
+	 *
+	 * @param {Object} group
+	 * @returns {Object}
+	 * @static
+	 */
+	ToolbarModifier.parseGroupToConfigValue = function( group ) {
+		if ( group.type == 'separator' ) {
+			return '/';
+		}
+
+		var groups = group.groups,
+			max = groups.length;
+
+		delete group.totalBtns;
+		for ( var i = 0; i < max; i += 1 ) {
+			groups[ i ] = groups[ i ].name;
+		}
+
+		return group;
+	};
+
+	/**
+	 * Find closest Li ancestor in DOM tree which is group or separator element
+	 *
+	 * @param {CKEDITOR.dom.element} element
+	 * @returns {CKEDITOR.dom.element}
+	 * @static
+	 */
+	ToolbarModifier.getGroupOrSeparatorLiAncestor = function( element ) {
+		if ( element.$ instanceof HTMLLIElement && element.data( 'type' ) == 'group' )
+			return element;
+		else {
+			return ToolbarModifier.getFirstAncestor( element, function( ancestor ) {
+				var type = ancestor.data( 'type' );
+
+				return ( type == 'group' || type == 'separator' );
+			} );
+		}
+	};
+
+	/**
+	 * Create separator literal with unique id.
+	 *
+	 * @public
+	 * @static
+	 * @return {Object}
+	 */
+	ToolbarModifier.createSeparatorLiteral = function() {
+		return {
+			type: 'separator',
+			name: ( 'separator' + CKEDITOR.tools.getNextNumber() )
+		};
+	};
+
+	/**
+	 * Creates HTML unordered list string based on toolbarGroups field in config.
+	 *
+	 * @returns {String}
+	 * @static
+	 */
+	ToolbarModifier.prototype._toolbarConfigToListString = function() {
+		var groups = this.actualConfig.toolbarGroups || [],
+			listString = '<ul data-type="table-body">';
+
+		var max = groups.length;
+		for ( var i = 0; i < max; i += 1 ) {
+			var currentGroup = groups[ i ];
+
+			if ( currentGroup.type === 'separator' )
+				listString += ToolbarModifier.getToolbarSeparatorString( currentGroup );
+			else
+				listString += this._getToolbarGroupString( currentGroup );
+		}
+
+		listString += '</ul>';
+
+		var headerString = ToolbarModifier.getToolbarHeaderString();
+
+		return headerString + listString;
+	};
+
+	/**
+	 * Created HTML group list element based on group field in config.
+	 *
+	 * @param {Object} group
+	 * @returns {String}
+	 * @private
+	 */
+	ToolbarModifier.prototype._getToolbarGroupString = function( group ) {
+		var subgroups = group.groups,
+			groupString = '';
+
+		groupString += [
+			'<li ',
+				'data-type="group" ',
+				'data-name="', group.name, '" ',
+				( group.totalBtns ? '' : 'class="empty"' ),
+			'>'
+		].join( '' );
+		groupString += ToolbarModifier.getToolbarElementPreString( group ) + '<ul>';
+
+		var max = subgroups.length;
+
+		for ( var i = 0; i < max; i += 1 ) {
+			var currentSubgroup = subgroups[ i ],
+				subgroupBtns = this.fullToolbarEditor.buttonsByGroup[ currentSubgroup.name ];
+
+			groupString += this._getToolbarSubgroupString( currentSubgroup, subgroupBtns );
+		}
+		groupString += '</ul></li>';
+
+		return groupString;
+	};
+
+	/**
+	 * @param {Object} separator
+	 * @returns {String}
+	 * @static
+	 */
+	ToolbarModifier.getToolbarSeparatorString = function( separator ) {
+		return [
+			'<li ',
+			'data-type="', separator.type , '" ',
+			'data-name="', separator.name , '"',
+			'>',
+			ToolbarModifier.getToolbarElementPreString( 'row separator' ),
+			'</li>'
+		].join( '' );
+	};
+
+	/**
+	 * @returns {string}
+	 */
+	ToolbarModifier.getToolbarHeaderString = function() {
+		return '<ul data-type="table-header">' +
+			'<li data-type="header">' +
+				'<p>Toolbars</p>' +
+				'<ul>' +
+					'<li>' +
+						'<p>Toolbar groups</p>' +
+						'<p>Toolbar group items</p>' +
+					'</li>' +
+				'</ul>' +
+			'</li>' +
+		'</ul>';
+	};
+
+	/**
+	 * Find and return first ancestor of element provided in first argument
+	 * which match the criteria checked in function provided in second argument.
+	 *
+	 * @param {CKEDITOR.dom.element} element
+	 * @param {Function} checker
+	 * @returns {CKEDITOR.dom.element|null}
+	 */
+	ToolbarModifier.getFirstAncestor = function( element, checker ) {
+		var ancestors = element.getParents(),
+			i = ancestors.length;
+
+		while ( i-- ) {
+			if ( checker( ancestors[ i ] ) )
+				return ancestors[ i ];
+		}
+
+		return null;
+	};
+
+	/**
+	 * Looking through array elements start from index provided in second argument
+	 * and go 'up' or 'down' in array
+	 * last argument is condition checker which should return Boolean value
+	 *
+	 * User cases:
+	 *
+	 * ToolbarModifier.getFirstElementIndexWith( [3, 4, 8, 1, 4], 2, 'down', function( elem ) { return elem == 4; } ); // 4
+	 * ToolbarModifier.getFirstElementIndexWith( [3, 4, 8, 1, 4], 2, 'up', function( elem ) { return elem == 4; } ); // 1
+	 *
+	 * @param {Array} array
+	 * @param {Number} i
+	 * @param {String} direction 'up' or 'down'
+	 * @param {Function} conditionChecker
+	 * @static
+	 * @returns {Number} index of found element
+	 */
+	ToolbarModifier.getFirstElementIndexWith = function( array, i, direction, conditionChecker ) {
+		function whileChecker() {
+			var result;
+			if ( direction === 'up' )
+				result = i--;
+			else
+				result = ( ++i < array.length );
+
+			return result;
+		}
+
+		while ( whileChecker() ) {
+			if ( conditionChecker( array[ i ] ) )
+				return i;
+
+		}
+
+		return -1;
+	};
+
+	/**
+	 * Moves array element at index level up or down.
+	 *
+	 * @static
+	 * @param {String} direction
+	 * @param {Array} array
+	 * @param {Number} index
+	 * @returns {Number}
+	 */
+	ToolbarModifier.moveTo = function( offset, array, index ) {
+		var element, newIndex;
+
+		if ( index !== -1 )
+			element = array.splice( index, 1 )[ 0 ];
+
+		newIndex = index + offset;
+
+		array.splice( newIndex, 0, element );
+
+		return newIndex;
+	};
+
+	/**
+	 * @static
+	 * @param {Object} subgroup
+	 * @returns {Number}
+	 */
+	ToolbarModifier.getTotalSubGroupButtonsNumber = function( subgroup, fullToolbarEditor ) {
+		var subgroupName = ( typeof subgroup == 'string' ? subgroup : subgroup.name ),
+			subgroupBtns = fullToolbarEditor.buttonsByGroup[ subgroupName ];
+
+		return ( subgroupBtns ? subgroupBtns.length : 0 );
+	};
+
+	/**
+	 * Returns all buttons number in group which are nested in subgroups also.
+	 *
+	 * @param {Object} group
+	 * @param {ToolbarModifier.FullToolbarEditor}
+	 * @static
+	 * @returns {Number}
+	 */
+	ToolbarModifier.getTotalGroupButtonsNumber = function( group, fullToolbarEditor ) {
+		var total = 0,
+			subgroups = group.groups;
+
+		var max = subgroups ? subgroups.length : 0;
+		for ( var i = 0; i < max; i += 1 )
+			total += ToolbarModifier.getTotalSubGroupButtonsNumber( subgroups[ i ], fullToolbarEditor );
+
+		return total;
+	};
+
+	/**
+	 * Creates HTML subgroup list element based on subgroup field in config.
+	 *
+	 * @param {Object} subgroup
+	 * @param {Array} groupBtns
+	 * @returns {String}
+	 * @private
+	 */
+	ToolbarModifier.prototype._getToolbarSubgroupString = function( subgroup, groupBtns ) {
+		var subgroupString = '';
+
+		subgroupString += [
+			'<li ',
+				'data-type="subgroup" ',
+				'data-name="', subgroup.name, '" ',
+				( subgroup.totalBtns ? '' : 'class="empty" ' ),
+			'>'
+		].join( '' );
+		subgroupString += ToolbarModifier.getToolbarElementPreString( subgroup.name );
+		subgroupString += '<ul>';
+
+		var max = groupBtns ? groupBtns.length : 0;
+		for ( var i = 0; i < max; i += 1 )
+			subgroupString += this.getButtonString( groupBtns[ i ] );
+
+		subgroupString += '</ul>';
+
+		subgroupString += '</li>';
+
+		return subgroupString;
+	};
+
+	/**
+	 * @param {String} buttonName
+	 * @returns {String|null}
+	 * @private
+	 */
+	ToolbarModifier.prototype._getConfigButtonName = function( buttonName ) {
+		var items = this.fullToolbarEditor.editorInstance.ui.items;
+
+		var name;
+		for ( name in items ) {
+			if ( items[ name ].name == buttonName )
+				return name;
+		}
+
+		return null;
+	};
+
+	/**
+	 * @param {String} buttonName
+	 * @returns {Boolean}
+	 */
+	ToolbarModifier.prototype.isButtonRemoved = function( buttonName ) {
+		return CKEDITOR.tools.indexOf( this.removedButtons, this._getConfigButtonName( buttonName ) ) != -1;
+	};
+
+	/**
+	 * @param {CKEDITOR.ui.button/CKEDITOR.ui.richCombo} button
+	 * @returns {String}
+	 * @public
+	 */
+	ToolbarModifier.prototype.getButtonString = function( button ) {
+		var checked = ( this.isButtonRemoved( button.name ) ? '' : 'checked="checked"' );
+
+		return [
+			'<li data-tab="true" data-type="button" data-name="', this._getConfigButtonName( button.name ), '">',
+				'<label title="', button.label, '" >',
+					'<input ',
+						'tabindex="-1"',
+						'type="checkbox"',
+						checked,
+					'/>',
+					button.$.getOuterHtml(),
+				'</label>',
+			'</li>'
+		].join( '' );
+	};
+
+	/**
+	 * Creates group header string.
+	 *
+	 * @param {Object|String} group
+	 * @returns {String}
+	 * @static
+	 */
+	ToolbarModifier.getToolbarElementPreString = function( group ) {
+		var name = ( group.name ? group.name : group );
+
+		return [
+			'<p>',
+				'<span>',
+					'<button title="Move element upward" data-tab="true" data-direction="up" class="move icon-up-big"></button>',
+					'<button title="Move element downward" data-tab="true" data-direction="down" class="move icon-down-big"></button>',
+					( name == 'row separator' ? '<button title="Remove element" data-tab="true" class="remove icon-trash"></button>' : '' ),
+					name,
+				'</span>',
+			'</p>'
+		].join( '' );
+	};
+
+	/**
+	 * @static
+	 * @param {String} cfg
+	 * @returns {String}
+	 */
+	ToolbarModifier.evaluateToolbarGroupsConfig = function( cfg ) {
+		cfg = ( function( cfg ) {
+			var config = {}, result;
+
+			/*jshint -W002 */
+			try {
+				result = eval( '(' + cfg + ')' );
+			} catch ( e ) {
+				try {
+					result = eval( cfg );
+				} catch ( e ) {
+					return null;
+				}
+			}
+			/*jshint +W002 */
+
+			if ( config.toolbarGroups && typeof config.toolbarGroups.length === 'number' ) {
+				return JSON.stringify( config );
+			} else if ( result && typeof result.length === 'number' ) {
+				return JSON.stringify( { toolbarGroups: result } );
+			} else if ( result && result.toolbarGroups ) {
+				return JSON.stringify( result );
+			} else {
+				return null;
+			}
+
+		}( cfg ) );
+
+		return cfg;
+	};
+
+	return ToolbarModifier;
+} )();
+

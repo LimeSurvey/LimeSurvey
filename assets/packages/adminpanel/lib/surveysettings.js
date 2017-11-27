@@ -121,7 +121,7 @@ $(document).on('ready  pjax:complete', function(){
   $('#addnewsurvey').submit(PostParameterGrid);
   $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
 
-  $( '#tabs' ).bind( 'tabsactivate', function(event, ui) {
+  $( '#tabs' ).on( 'tabsactivate', function(event, ui) {
     if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
     {
       $('#btnSave').hide();

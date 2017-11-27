@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  *		Date and Time Converter by Elac v0.9.3
@@ -62,8 +64,8 @@ class Date_Time_Converter
      *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s'); 	*/
     public function __construct($sDate, $sFormat)
     {
-    	require_once(APPPATH . '/helpers/adodb/adodb-time.inc_helper.php');
-        $this->_default_date_time_units();				//set date&time units to default values
+        require_once(APPPATH.'/helpers/adodb/adodb-time.inc_helper.php');
+        $this->_default_date_time_units(); //set date&time units to default values
         $this->date_time = $sDate;
         $this->date_time_mask = $sFormat;
 
@@ -116,49 +118,49 @@ class Date_Time_Converter
             case 'jan':
             case 'jan.':
             case 'january':
-                return ($return_two_digit == true ? '01': '1');
+                return ($return_two_digit == true ? '01' : '1');
                 break;
             case 'feb':
             case 'feb.':
             case 'february':
             case 'febuary':
-                return ($return_two_digit == true ? '02': '2');
+                return ($return_two_digit == true ? '02' : '2');
                 break;
             case 'mar':
             case 'mar.':
             case 'march':
-                return ($return_two_digit == true ? '03': '3');
+                return ($return_two_digit == true ? '03' : '3');
                 break;
             case 'apr':
             case 'apr.':
             case 'april':
-                return ($return_two_digit == true ? '04': '4');
+                return ($return_two_digit == true ? '04' : '4');
                 break;
             case 'may':
             case 'may.':
-                return ($return_two_digit == true ? '05': '5');
+                return ($return_two_digit == true ? '05' : '5');
                 break;
             case 'jun':
             case 'jun.':
             case 'june':
-                return ($return_two_digit == true ? '06': '6');
+                return ($return_two_digit == true ? '06' : '6');
                 break;
             case 'jul':
             case 'jul.':
             case 'july':
-                return ($return_two_digit == true ? '07': '7');
+                return ($return_two_digit == true ? '07' : '7');
                 break;
             case 'aug':
             case 'aug.':
             case 'august':
-                return ($return_two_digit == true ? '08': '8');
+                return ($return_two_digit == true ? '08' : '8');
                 break;
             case 'sep':
             case 'sep.':
             case 'sept':
             case 'sept.':
             case 'september':
-                return ($return_two_digit == true ? '09': '9');
+                return ($return_two_digit == true ? '09' : '9');
                 break;
             case 'oct':
             case 'oct.':
@@ -195,28 +197,28 @@ class Date_Time_Converter
         $all = array(
 
         //time
-            's' => 'ss',		// Seconds, with leading zeros
-            'i' => 'ii',		// Minutes with leading zeros
-            'H' => 'HH',		// 24-hour format of an hour with leading zeros
-            'h' => 'hh',		// 12-hour format of an hour with leading zeros
-            'G' => 'GG',  		// 24-hour format of an hour without leading zeros
-            'g' => 'gg',  		// 12-hour format of an hour without leading zeros
-            'A' => 'AA',		// Uppercase Ante meridiem and Post meridiem
-            'a' => 'aa',		// Lowercase Ante meridiem and Post meridiem
+            's' => 'ss', // Seconds, with leading zeros
+            'i' => 'ii', // Minutes with leading zeros
+            'H' => 'HH', // 24-hour format of an hour with leading zeros
+            'h' => 'hh', // 12-hour format of an hour with leading zeros
+            'G' => 'GG', // 24-hour format of an hour without leading zeros
+            'g' => 'gg', // 12-hour format of an hour without leading zeros
+            'A' => 'AA', // Uppercase Ante meridiem and Post meridiem
+            'a' => 'aa', // Lowercase Ante meridiem and Post meridiem
 
         //year
-            'y' => 'yy',		// A full numeric representation of a year, 4 digits
-            'Y' => 'YYYY', 		// A two digit representation of a year
+            'y' => 'yy', // A full numeric representation of a year, 4 digits
+            'Y' => 'YYYY', // A two digit representation of a year
 
         //month
-            'm' => 'mm', 		// A numeric representation of a month with leading zeros.
-            'M' => 'MMM',		// A textual representation of a month.  3 letters.  ex: Jan, Feb, Mar, Apr...
-            'n' => 'nn',		// Numeric representation of a month, without leading zeros
+            'm' => 'mm', // A numeric representation of a month with leading zeros.
+            'M' => 'MMM', // A textual representation of a month.  3 letters.  ex: Jan, Feb, Mar, Apr...
+            'n' => 'nn', // Numeric representation of a month, without leading zeros
 
         //days
-            'd' => 'dd',		// Day of the month, 2 digits with leading zeros
-            'j' => 'jj',		// Day of the month without leading zeros
-            'S' => 'SS',		// English ordinal suffix for the day of the month, 2 characters (st, nd, rd, or th. works well with j)
+            'd' => 'dd', // Day of the month, 2 digits with leading zeros
+            'j' => 'jj', // Day of the month without leading zeros
+            'S' => 'SS', // English ordinal suffix for the day of the month, 2 characters (st, nd, rd, or th. works well with j)
             'D' => 'DDD'		// Textual representation of day of the week (Sun, Mon, Tue, Wed)
 
         );
@@ -227,7 +229,7 @@ class Date_Time_Converter
         $vals = array();
 
         //loop through each character of $mask starting at the beginning
-        for ($i=0; $i<strlen($mask_orig); $i++) {
+        for ($i = 0; $i < strlen($mask_orig); $i++) {
             //get the current character
             $thischar = substr($mask_orig, $i, 1);
 
@@ -247,33 +249,37 @@ class Date_Time_Converter
                 /*		START FIX FOR UNITS WITHOUT LEADING ZEROS		*/
                 if ($type == "n" || $type == "j" || $type == "g" || $type == "G") {
                     //if its not numeric, try a shorter digit
-                    if (!is_numeric($val) || strval(intval($val))!==$val) {
-                        $val = substr($thedate, $pos, strlen($chars)-1);
+                    if (!is_numeric($val) || strval(intval($val)) !== $val) {
+                        $val = substr($thedate, $pos, strlen($chars) - 1);
                         $mask = str_replace($chars, $type, $mask);
                     } else {
                         //try numeric value checking
                         switch ($type) {
                             case "n":
-                                if ($val > 12 || $val < 1) {  //month must be between 1-12
-                                    $val = substr($thedate, $pos, strlen($chars)-1);
+                                if ($val > 12 || $val < 1) {
+//month must be between 1-12
+                                    $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "j":
-                                if ($val > 31 || $val < 1) {  //day must be between 1-31
-                                    $val = substr($thedate, $pos, strlen($chars)-1);
+                                if ($val > 31 || $val < 1) {
+//day must be between 1-31
+                                    $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "g":
-                                if ($val > 12 || $val < 1) {  //day must be between 1-12
-                                    $val = substr($thedate, $pos, strlen($chars)-1);
+                                if ($val > 12 || $val < 1) {
+//day must be between 1-12
+                                    $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
                             case "G":
-                                if ($val > 24 || $val < 1) {  //day must be between 1-24
-                                    $val = substr($thedate, $pos, strlen($chars)-1);
+                                if ($val > 24 || $val < 1) {
+//day must be between 1-24
+                                    $val = substr($thedate, $pos, strlen($chars) - 1);
                                     $mask = str_replace($chars, $type, $mask);
                                 }
                                 break;
@@ -290,7 +296,7 @@ class Date_Time_Converter
 
         foreach ($vals as $type => $val) {
 
-            switch($type) {
+            switch ($type) {
                 case 's':
                     $this->seconds = $val;
                     break;
@@ -336,7 +342,8 @@ class Date_Time_Converter
             }
         }
 
-        if (strtolower($this->ampm) == "pm" && $this->hours < 12) { //if its pm, add 12 hours
+        if (strtolower($this->ampm) == "pm" && $this->hours < 12) {
+//if its pm, add 12 hours
             $this->hours = $this->hours + 12;
         }
 

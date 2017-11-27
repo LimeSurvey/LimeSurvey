@@ -6,50 +6,22 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
+ * @group dateforward
  */
 class DateTimeForwardBackTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
+        $_POST = [];
+        $_SESSION = [];
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_917744.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_917744.lss';
+        self::importSurvey($surveyFile);
     }
 
     /**

@@ -1,5 +1,13 @@
 <?php
-    App()->getClientScript()->registerPackage('jquery-selectboxes');
+/**
+ * @var $tgis AdminController
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('globalsettings');
+
+App()->getClientScript()->registerPackage('jquery-selectboxes');
+
 ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.",'js'); ?>';
@@ -67,6 +75,12 @@
 
     <div id="interfaces" class="tab-pane col-md-6 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_interfaces"); ?>
+    </div>
+
+    <div id="storage" class="tab-pane col-md-6 col-md-offset-1">
+        <?php
+            $this->renderPartial("./global_settings/_storage");
+        ?>
     </div>
 </div>
     <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>

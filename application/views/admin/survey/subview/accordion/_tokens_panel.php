@@ -5,6 +5,9 @@
  * @var Survey $oSurvey
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
+
 ?>
 <script type="text/javascript">
     var jsonUrl = '';
@@ -17,7 +20,7 @@
     var sAddParam = '';
 </script>
 <!-- tokens panel -->
-<div id='tokens' class="container-fluid">
+<div id='tokens-panel' class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <!--  Set token length to -->

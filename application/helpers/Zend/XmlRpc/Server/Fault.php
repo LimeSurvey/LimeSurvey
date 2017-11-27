@@ -159,8 +159,7 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
     {
         if (!is_string($class)
             || !class_exists($class)
-            || !is_callable(array($class, 'observe')))
-        {
+            || !is_callable(array($class, 'observe'))) {
             return false;
         }
 

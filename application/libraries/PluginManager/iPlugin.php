@@ -1,6 +1,7 @@
 <?php
 namespace LimeSurvey\PluginManager;
-interface iPlugin {
+interface iPlugin
+{
 
     /**
      * Should return the description for this plugin
@@ -64,5 +65,5 @@ interface iPlugin {
      * @param PluginEvent $event
      * @return PluginBase
      */
-   public function setEvent(PluginEvent $event);
+    public function setEvent(PluginEvent $event);
 }

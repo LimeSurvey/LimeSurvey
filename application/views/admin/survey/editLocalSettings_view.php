@@ -6,7 +6,12 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyTexts');
+
 ?>
+
 <script type="text/javascript">
     var jsonUrl = '';
     var sAction = '';
@@ -31,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <hr class="col-sm-12"></hr>
+            <hr class="col-sm-12" />
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">

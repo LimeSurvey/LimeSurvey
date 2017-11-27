@@ -733,7 +733,7 @@
 
             mouseenter: function (e) {
                 $(document.body).unbind('mousemove.jqs');
-                $(document.body).bind('mousemove.jqs', $.proxy(this.mousemove, this));
+                $(document.body).on('mousemove.jqs', $.proxy(this.mousemove, this));
                 this.over = true;
                 this.currentPageX = e.pageX;
                 this.currentPageY = e.pageY;
@@ -853,7 +853,7 @@
                 this.offsetTop = offset.top;
                 this.hidden = true;
                 $(window).unbind('resize.jqs scroll.jqs');
-                $(window).bind('resize.jqs scroll.jqs', $.proxy(this.updateWindowDims, this));
+                $(window).on('resize.jqs scroll.jqs', $.proxy(this.updateWindowDims, this));
                 this.updateWindowDims();
             },
 

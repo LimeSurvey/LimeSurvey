@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /**
  * Core packages , no third_party
  * sees third_party.php for third party package
@@ -11,16 +13,16 @@
  */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
-$minVersion = ($debug>0) ? "":".min";
+$minVersion = ($debug > 0) ? "" : ".min";
 /* needed ? @see third_party.php */
-if(isset($_GET['isAjax'])){
+if (isset($_GET['isAjax'])) {
     return array();
 }
 return array(
     /* For public template functionnality */
     'limesurvey-public'=>array(
         'devBaseUrl'  => 'assets/packages/limesurvey/',
-        'basePath' => 'core.limesurvey',/* public part only : rename directory ? */
+        'basePath' => 'core.limesurvey', /* public part only : rename directory ? */
         'css'=> array(
             'survey.css',
         ),
@@ -81,40 +83,42 @@ return array(
     'question-ranking'=>array(
         'devBaseUrl'  => 'assets/packages/questions/ranking/',
         'basePath' => 'core.questions.ranking',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'ranking.css',
+            'css/ranking.css',
         ),
         'js'=>array(
-            'ranking.js',
+            'scripts/sortable.min.js',
+            'scripts/ranking.js',
         ),
         'depends' => array(
-            'rubaxa-sortable',
-            'jquery-actual',
+            'jquery',
         )
     ),
     /* numeric slider question : numerci question type with slider */
     'question-numeric-slider'=>array(
         'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
         'basePath' => 'core.questions.numeric-slider',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'numeric-slider.css',
+            'css/numeric-slider.css',
         ),
         'js'=>array(
-            'numeric-slider.js',
+            'scripts/numeric-slider.js',
         ),
         'depends' => array(
             'bootstrap-slider',
         )
     ),
     'ckeditor' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditor/',
+        'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
         'js' => array(
             'ckeditor.js',
+            'config.js',
         ),
         'depends' => array(
-            'jquery',
-            'bootstrap'
+            'adminbasics',
         ),
     ),
     'ckeditoradditions' => array(
@@ -131,28 +135,61 @@ return array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
         'js' => array(
-            'pjax.js',
+            'pjax'.$minVersion.'.js',
+            'loadPjax'.$minVersion.'.js'
         ),
     ),
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
-        'coreScriptPosition'=>CClientScript::POS_END,
-        'defaultScriptFilePosition' =>CClientScript::POS_END,
-        'defaultScriptPosition' =>CClientScript::POS_END,
-        'position' =>CClientScript::POS_END,
         'js' => array(
             'build/lsadminpanel'.$minVersion.'.js',
             'lib/surveysettings.js'
         ),
         'css' => array(
             'build/lsadminpanel.css'
-            )
         ),
         'depends' => array(
-            'pjax',
-            'jquery'
+            'adminbasics'
         )
-          
+    ),
+    'lstutorial' => array(
+        'devBaseUrl' => 'assets/packages/lstutorial/',
+        'basePath' => 'core.lstutorial',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/lstutorial'.$minVersion.'.js',
+        ),
+        'css' => array(
+            'build/lstutorial.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+    'adminbasics' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/admin_core.js',
+            'js/notifications.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'pjax',
+        )
+    ),
+    'surveymenufunctions' => array(
+        'devBaseUrl' => 'assets/packages/surveymenufunctions/',
+        'basePath' => 'core.surveymenufunctions',
+        'js' => array(
+            'surveymenufunctionswrapper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+    
     
 );

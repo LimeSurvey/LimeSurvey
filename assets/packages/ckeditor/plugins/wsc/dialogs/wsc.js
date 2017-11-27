@@ -1,92 +1,3168 @@
-﻿/*
- Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
-(function(){function z(a){return a&&a.domId&&a.getInputElement().$?a.getInputElement():a&&a.$?a:!1}function I(a){if(!a)throw"Languages-by-groups list are required for construct selectbox";var c=[],e="",d;for(d in a)for(var f in a[d]){var h=a[d][f];"en_US"==h?e=h:c.push(h)}c.sort();e&&c.unshift(e);return{getCurrentLangGroup:function(c){a:{for(var d in a)for(var e in a[d])if(e.toUpperCase()===c.toUpperCase()){c=d;break a}c=""}return c},setLangList:function(){var c={},d;for(d in a)for(var e in a[d])c[a[d][e]]=
-e;return c}()}}var g=function(){var a=function(a,b,d){d=d||{};var f=d.expires;if("number"==typeof f&&f){var h=new Date;h.setTime(h.getTime()+1E3*f);f=d.expires=h}f&&f.toUTCString&&(d.expires=f.toUTCString());b=encodeURIComponent(b);a=a+"\x3d"+b;for(var k in d)b=d[k],a+="; "+k,!0!==b&&(a+="\x3d"+b);document.cookie=a};return{postMessage:{init:function(a){window.addEventListener?window.addEventListener("message",a,!1):window.attachEvent("onmessage",a)},send:function(a){var b=Object.prototype.toString,
-d=a.fn||null,f=a.id||"",h=a.target||window,k=a.message||{id:f};a.message&&"[object Object]"==b.call(a.message)&&(a.message.id?a.message.id:a.message.id=f,k=a.message);a=window.JSON.stringify(k,d);h.postMessage(a,"*")},unbindHandler:function(a){window.removeEventListener?window.removeEventListener("message",a,!1):window.detachEvent("onmessage",a)}},hash:{create:function(){},parse:function(){}},cookie:{set:a,get:function(a){return(a=document.cookie.match(new RegExp("(?:^|; )"+a.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,
-"\\$1")+"\x3d([^;]*)")))?decodeURIComponent(a[1]):void 0},remove:function(c){a(c,"",{expires:-1})}},misc:{findFocusable:function(a){var b=null;a&&(b=a.find("a[href], area[href], input, select, textarea, button, *[tabindex], *[contenteditable]"));return b},isVisible:function(a){var b;(b=0===a.offsetWidth||0==a.offsetHeight)||(b="none"===(document.defaultView&&document.defaultView.getComputedStyle?document.defaultView.getComputedStyle(a,null).display:a.currentStyle?a.currentStyle.display:a.style.display));
-return!b},hasClass:function(a,b){return!(!a.className||!a.className.match(new RegExp("(\\s|^)"+b+"(\\s|$)")))}}}}(),a=a||{};a.TextAreaNumber=null;a.load=!0;a.cmd={SpellTab:"spell",Thesaurus:"thes",GrammTab:"grammar"};a.dialog=null;a.optionNode=null;a.selectNode=null;a.grammerSuggest=null;a.textNode={};a.iframeMain=null;a.dataTemp="";a.div_overlay=null;a.textNodeInfo={};a.selectNode={};a.selectNodeResponce={};a.langList=null;a.langSelectbox=null;a.banner="";a.show_grammar=null;a.div_overlay_no_check=
-null;a.targetFromFrame={};a.onLoadOverlay=null;a.LocalizationComing={};a.OverlayPlace=null;a.sessionid="";a.LocalizationButton={ChangeTo_button:{instance:null,text:"Change to",localizationID:"ChangeTo"},ChangeAll:{instance:null,text:"Change All"},IgnoreWord:{instance:null,text:"Ignore word"},IgnoreAllWords:{instance:null,text:"Ignore all words"},Options:{instance:null,text:"Options",optionsDialog:{instance:null}},AddWord:{instance:null,text:"Add word"},FinishChecking_button:{instance:null,text:"Finish Checking",
-localizationID:"FinishChecking"},Option_button:{instance:null,text:"Options",localizationID:"Options"},FinishChecking_button_block:{instance:null,text:"Finish Checking",localizationID:"FinishChecking"}};a.LocalizationLabel={ChangeTo_label:{instance:null,text:"Change to",localizationID:"ChangeTo"},Suggestions:{instance:null,text:"Suggestions"},Categories:{instance:null,text:"Categories"},Synonyms:{instance:null,text:"Synonyms"}};var J=function(b){var c,e,d;for(d in b){if(c=a.dialog.getContentElement(a.dialog._.currentTabId,
-d))c=c.getElement();else if(b[d].instance)c=b[d].instance.getElement().getFirst()||b[d].instance.getElement();else continue;e=b[d].localizationID||d;c.setText(a.LocalizationComing[e])}},K=function(b){var c,e,d;for(d in b)c=a.dialog.getContentElement(a.dialog._.currentTabId,d),c||(c=b[d].instance),c.setLabel&&(e=b[d].localizationID||d,c.setLabel(a.LocalizationComing[e]+":"))},t,A;a.framesetHtml=function(b){return"\x3ciframe id\x3d"+a.iframeNumber+"_"+b+' frameborder\x3d"0" allowtransparency\x3d"1" style\x3d"width:100%;border: 1px solid #AEB3B9;overflow: auto;background:#fff; border-radius: 3px;"\x3e\x3c/iframe\x3e'};
-a.setIframe=function(b,c){var e;e=a.framesetHtml(c);var d=a.iframeNumber+"_"+c;b.getElement().setHtml(e);e=document.getElementById(d);e=e.contentWindow?e.contentWindow:e.contentDocument.document?e.contentDocument.document:e.contentDocument;e.document.open();e.document.write('\x3c!DOCTYPE html\x3e\x3chtml\x3e\x3chead\x3e\x3cmeta charset\x3d"UTF-8"\x3e\x3ctitle\x3eiframe\x3c/title\x3e\x3cstyle\x3ehtml,body{margin: 0;height: 100%;font: 13px/1.555 "Trebuchet MS", sans-serif;}a{color: #888;font-weight: bold;text-decoration: none;border-bottom: 1px solid #888;}.main-box {color:#252525;padding: 3px 5px;text-align: justify;}.main-box p{margin: 0 0 14px;}.main-box .cerr{color: #f00000;border-bottom-color: #f00000;}\x3c/style\x3e\x3c/head\x3e\x3cbody\x3e\x3cdiv id\x3d"content" class\x3d"main-box"\x3e\x3c/div\x3e\x3ciframe src\x3d"" frameborder\x3d"0" id\x3d"spelltext" name\x3d"spelltext" style\x3d"display:none; width: 100%" \x3e\x3c/iframe\x3e\x3ciframe src\x3d"" frameborder\x3d"0" id\x3d"loadsuggestfirst" name\x3d"loadsuggestfirst" style\x3d"display:none; width: 100%" \x3e\x3c/iframe\x3e\x3ciframe src\x3d"" frameborder\x3d"0" id\x3d"loadspellsuggestall" name\x3d"loadspellsuggestall" style\x3d"display:none; width: 100%" \x3e\x3c/iframe\x3e\x3ciframe src\x3d"" frameborder\x3d"0" id\x3d"loadOptionsForm" name\x3d"loadOptionsForm" style\x3d"display:none; width: 100%" \x3e\x3c/iframe\x3e\x3cscript\x3e(function(window) {var ManagerPostMessage \x3d function() {var _init \x3d function(handler) {if (document.addEventListener) {window.addEventListener("message", handler, false);} else {window.attachEvent("onmessage", handler);};};var _sendCmd \x3d function(o) {var str,type \x3d Object.prototype.toString,fn \x3d o.fn || null,id \x3d o.id || "",target \x3d o.target || window,message \x3d o.message || { "id": id };if (o.message \x26\x26 type.call(o.message) \x3d\x3d "[object Object]") {(o.message["id"]) ? o.message["id"] : o.message["id"] \x3d id;message \x3d o.message;};str \x3d JSON.stringify(message, fn);target.postMessage(str, "*");};return {init: _init,send: _sendCmd};};var manageMessageTmp \x3d new ManagerPostMessage;var appString \x3d (function(){var spell \x3d parent.CKEDITOR.config.wsc.DefaultParams.scriptPath;var serverUrl \x3d parent.CKEDITOR.config.wsc.DefaultParams.serviceHost;return serverUrl + spell;})();function loadScript(src, callback) {var scriptTag \x3d document.createElement("script");scriptTag.type \x3d "text/javascript";callback ? callback : callback \x3d function() {};if(scriptTag.readyState) {scriptTag.onreadystatechange \x3d function() {if (scriptTag.readyState \x3d\x3d "loaded" ||scriptTag.readyState \x3d\x3d "complete") {scriptTag.onreadystatechange \x3d null;setTimeout(function(){scriptTag.parentNode.removeChild(scriptTag)},1);callback();}};}else{scriptTag.onload \x3d function() {setTimeout(function(){scriptTag.parentNode.removeChild(scriptTag)},1);callback();};};scriptTag.src \x3d src;document.getElementsByTagName("head")[0].appendChild(scriptTag);};window.onload \x3d function(){loadScript(appString, function(){manageMessageTmp.send({"id": "iframeOnload","target": window.parent});});}})(this);\x3c/script\x3e\x3c/body\x3e\x3c/html\x3e');
-e.document.close();a.div_overlay.setEnable()};a.setCurrentIframe=function(b){a.setIframe(a.dialog._.contents[b].Content,b)};a.setHeightBannerFrame=function(){var b=a.dialog.getContentElement("SpellTab","banner").getElement(),c=a.dialog.getContentElement("GrammTab","banner").getElement(),e=a.dialog.getContentElement("Thesaurus","banner").getElement();b.setStyle("height","90px");c.setStyle("height","90px");e.setStyle("height","90px")};a.setHeightFrame=function(){document.getElementById(a.iframeNumber+
-"_"+a.dialog._.currentTabId).style.height="240px"};a.sendData=function(b){var c=b._.currentTabId,e=b._.contents[c].Content,d,f;a.previousTab=c;a.setIframe(e,c);var h=function(h){c=b._.currentTabId;h=h||window.event;h.data.getTarget().is("a")&&c!==a.previousTab&&(a.previousTab=c,e=b._.contents[c].Content,d=a.iframeNumber+"_"+c,a.div_overlay.setEnable(),e.getElement().getChildCount()?E(a.targetFromFrame[d],a.cmd[c]):(a.setIframe(e,c),f=document.getElementById(d),a.targetFromFrame[d]=f.contentWindow))};
-b.parts.tabs.removeListener("click",h);b.parts.tabs.on("click",h)};a.buildSelectLang=function(a){var c=new CKEDITOR.dom.element("div"),e=new CKEDITOR.dom.element("select");a="wscLang"+a;c.addClass("cke_dialog_ui_input_select");c.setAttribute("role","presentation");c.setStyles({height:"auto",position:"absolute",right:"0",top:"-1px",width:"160px","white-space":"normal"});e.setAttribute("id",a);e.addClass("cke_dialog_ui_input_select");e.setStyles({width:"160px"});c.append(e);return c};a.buildOptionLang=
-function(b,c){var e=document.getElementById("wscLang"+c),d=document.createDocumentFragment(),f,h,k=[];if(0===e.options.length){for(f in b)k.push([f,b[f]]);k.sort();for(var p=0;p<k.length;p++)f=document.createElement("option"),f.setAttribute("value",k[p][1]),h=document.createTextNode(k[p][0]),f.appendChild(h),d.appendChild(f);e.appendChild(d)}for(d=0;d<e.options.length;d++)e.options[d].value==a.selectingLang&&(e.options[d].selected="selected")};a.buildOptionSynonyms=function(b){b=a.selectNodeResponce[b];
-var c=z(a.selectNode.Synonyms);a.selectNode.Synonyms.clear();for(var e=0;e<b.length;e++){var d=document.createElement("option");d.text=b[e];d.value=b[e];c.$.add(d,e)}a.selectNode.Synonyms.getInputElement().$.firstChild.selected=!0;a.textNode.Thesaurus.setValue(a.selectNode.Synonyms.getInputElement().getValue())};var B=function(a){var c=document,e=a.target||c.body,d=a.id||"overlayBlock",f=a.opacity||"0.9";a=a.background||"#f1f1f1";var h=c.getElementById(d),k=h||c.createElement("div");k.style.cssText=
-"position: absolute;top:30px;bottom:41px;left:1px;right:1px;z-index: 10020;padding:0;margin:0;background:"+a+";opacity: "+f+";filter: alpha(opacity\x3d"+100*f+");display: none;";k.id=d;h||e.appendChild(k);return{setDisable:function(){k.style.display="none"},setEnable:function(){k.style.display="block"}}},L=function(b,c,e){var d=new CKEDITOR.dom.element("div"),f=new CKEDITOR.dom.element("input"),h=new CKEDITOR.dom.element("label"),k="wscGrammerSuggest"+b+"_"+c;d.addClass("cke_dialog_ui_input_radio");
-d.setAttribute("role","presentation");d.setStyles({width:"97%",padding:"5px","white-space":"normal"});f.setAttributes({type:"radio",value:c,name:"wscGrammerSuggest",id:k});f.setStyles({"float":"left"});f.on("click",function(b){a.textNode.GrammTab.setValue(b.sender.getValue())});e?f.setAttribute("checked",!0):!1;f.addClass("cke_dialog_ui_radio_input");h.appendText(b);h.setAttribute("for",k);h.setStyles({display:"block","line-height":"16px","margin-left":"18px","white-space":"normal"});d.append(f);
-d.append(h);return d},F=function(a){a=a||"true";null!==a&&"false"==a&&u()},w=function(b){var c=new I(b);b="wscLang"+a.dialog.getParentEditor().name;b=document.getElementById(b);var e=a.iframeNumber+"_"+a.dialog._.currentTabId;a.buildOptionLang(c.setLangList,a.dialog.getParentEditor().name);v[c.getCurrentLangGroup(a.selectingLang)].onShow();F(a.show_grammar);b.onchange=function(b){b=c.getCurrentLangGroup(this.value);var f=a.dialog._.currentTabId;v[b].onShow();F(a.show_grammar);a.div_overlay.setEnable();
-a.selectingLang=this.value;f=a.cmd[f];b&&v[b]&&v[b].allowedTabCommands[f]||(f=v[b].defaultTabCommand);for(var h in a.cmd)if(a.cmd[h]==f){a.previousTab=h;break}g.postMessage.send({message:{changeLang:a.selectingLang,interfaceLang:a.interfaceLang,text:a.dataTemp,cmd:f},target:a.targetFromFrame[e],id:"selectionLang_outer__page"})}},M=function(b){var c,e=function(b){b=a.dialog.getContentElement(a.dialog._.currentTabId,b)||a.LocalizationButton[b].instance;b.getElement().hasClass("cke_disabled")?b.getElement().setStyle("color",
-"#a0a0a0"):b.disable()};c=function(b){b=a.dialog.getContentElement(a.dialog._.currentTabId,b)||a.LocalizationButton[b].instance;b.enable();b.getElement().setStyle("color","#333")};"no_any_suggestions"==b?(b="No suggestions",c=a.dialog.getContentElement(a.dialog._.currentTabId,"ChangeTo_button")||a.LocalizationButton.ChangeTo_button.instance,c.disable(),c=a.dialog.getContentElement(a.dialog._.currentTabId,"ChangeAll")||a.LocalizationButton.ChangeAll.instance,c.disable(),e("ChangeTo_button"),e("ChangeAll")):
-(c("ChangeTo_button"),c("ChangeAll"));return b},O={iframeOnload:function(b){b=a.dialog._.currentTabId;E(a.targetFromFrame[a.iframeNumber+"_"+b],a.cmd[b])},suggestlist:function(b){delete b.id;a.div_overlay_no_check.setDisable();C();w(a.langList);var c=M(b.word),e="";c instanceof Array&&(c=b.word[0]);e=c=c.split(",");a.textNode.SpellTab.setValue(e[0]);b=z(A);A.clear();for(c=0;c<e.length;c++){var d=document.createElement("option");d.text=e[c];d.value=e[c];b.$.add(d,c)}l();a.div_overlay.setDisable()},
-grammerSuggest:function(b){delete b.id;delete b.mocklangs;C();w(a.langList);var c=b.grammSuggest[0];a.grammerSuggest.getElement().setHtml("");a.textNode.GrammTab.reset();a.textNode.GrammTab.setValue(c);a.textNodeInfo.GrammTab.getElement().setHtml("");a.textNodeInfo.GrammTab.getElement().setText(b.info);b=b.grammSuggest;for(var c=b.length,e=!0,d=0;d<c;d++)a.grammerSuggest.getElement().append(L(b[d],b[d],e)),e=!1;l();a.div_overlay.setDisable()},thesaurusSuggest:function(b){delete b.id;delete b.mocklangs;
-C();w(a.langList);a.selectNodeResponce=b;a.textNode.Thesaurus.reset();var c=z(a.selectNode.Categories),e=0;a.selectNode.Categories.clear();for(var d in b)b=document.createElement("option"),b.text=d,b.value=d,c.$.add(b,e),e++;c=a.selectNode.Categories.getInputElement().getChildren().$[0].value;a.selectNode.Categories.getInputElement().getChildren().$[0].selected=!0;a.buildOptionSynonyms(c);l();a.div_overlay.setDisable()},finish:function(b){delete b.id;N();b=a.dialog.getContentElement(a.dialog._.currentTabId,
-"BlockFinishChecking").getElement();b.removeStyle("display");b.removeStyle("position");b.removeStyle("left");b.show();a.div_overlay.setDisable()},settext:function(b){delete b.id;a.dialog.getParentEditor().getCommand("checkspell");var c=a.dialog.getParentEditor();if(c.scayt&&c.wsc.isSsrvSame){var e=c.wsc.udn;e?c.wsc.DataStorage.setData("scayt_user_dictionary_name",e):c.wsc.DataStorage.setData("scayt_user_dictionary_name","")}try{c.focus()}catch(d){}c.setData(b.text,function(){a.dataTemp="";c.unlockSelection();
-c.fire("saveSnapshot");a.dialog.hide()})},ReplaceText:function(b){delete b.id;a.div_overlay.setEnable();a.dataTemp=b.text;a.selectingLang=b.currentLang;(b.cmd="0"!==b.len&&b.len)?a.div_overlay.setDisable():window.setTimeout(function(){try{a.div_overlay.setDisable()}catch(b){}},500);J(a.LocalizationButton);K(a.LocalizationLabel)},options_checkbox_send:function(b){delete b.id;b={osp:g.cookie.get("osp"),udn:g.cookie.get("udn"),cust_dic_ids:a.cust_dic_ids};g.postMessage.send({message:b,target:a.targetFromFrame[a.iframeNumber+
-"_"+a.dialog._.currentTabId],id:"options_outer__page"})},getOptions:function(b){var c=b.DefOptions.udn;a.LocalizationComing=b.DefOptions.localizationButtonsAndText;a.show_grammar=b.show_grammar;a.langList=b.lang;a.bnr=b.bannerId;a.sessionid=b.sessionid;if(b.bannerId){a.setHeightBannerFrame();var e=b.banner;a.dialog.getContentElement(a.dialog._.currentTabId,"banner").getElement().setHtml(e)}else a.setHeightFrame();"undefined"==c&&(a.userDictionaryName?(c=a.userDictionaryName,e={osp:g.cookie.get("osp"),
-udn:a.userDictionaryName,cust_dic_ids:a.cust_dic_ids,id:"options_dic_send",udnCmd:"create"},g.postMessage.send({message:e,target:a.targetFromFrame[void 0]})):c="");g.cookie.set("osp",b.DefOptions.osp);g.cookie.set("udn",c);g.cookie.set("cust_dic_ids",b.DefOptions.cust_dic_ids);g.postMessage.send({id:"giveOptions"})},options_dic_send:function(b){b={osp:g.cookie.get("osp"),udn:g.cookie.get("udn"),cust_dic_ids:a.cust_dic_ids,id:"options_dic_send",udnCmd:g.cookie.get("udnCmd")};g.postMessage.send({message:b,
-target:a.targetFromFrame[a.iframeNumber+"_"+a.dialog._.currentTabId]})},data:function(a){delete a.id},giveOptions:function(){},setOptionsConfirmF:function(){},setOptionsConfirmT:function(){t.setValue("")},clickBusy:function(){a.div_overlay.setEnable()},suggestAllCame:function(){a.div_overlay.setDisable();a.div_overlay_no_check.setDisable()},TextCorrect:function(){w(a.langList)}},G=function(a){a=a||window.event;if((a=window.JSON.parse(a.data))&&a.id)O[a.id](a)},E=function(b,c,e,d){c=c||CKEDITOR.config.wsc_cmd;
-e=e||a.dataTemp;g.postMessage.send({message:{customerId:a.wsc_customerId,text:e,txt_ctrl:a.TextAreaNumber,cmd:c,cust_dic_ids:a.cust_dic_ids,udn:a.userDictionaryName,slang:a.selectingLang,interfaceLang:a.interfaceLang,reset_suggest:d||!1,sessionid:a.sessionid},target:b,id:"data_outer__page"});a.div_overlay.setEnable()},v={superset:{onShow:function(){a.dialog.showPage("Thesaurus");a.dialog.showPage("GrammTab");q()},allowedTabCommands:{spell:!0,grammar:!0,thes:!0},defaultTabCommand:"spell"},usual:{onShow:function(){x();
-u();q()},allowedTabCommands:{spell:!0},defaultTabCommand:"spell"},rtl:{onShow:function(){x();u();q()},allowedTabCommands:{spell:!0},defaultTabCommand:"spell"},spellgrammar:{onShow:function(){x();a.dialog.showPage("GrammTab");q()},allowedTabCommands:{spell:!0,grammar:!0},defaultTabCommand:"spell"},spellthes:{onShow:function(){a.dialog.showPage("Thesaurus");u();q()},allowedTabCommands:{spell:!0,thes:!0},defaultTabCommand:"spell"}},H=function(b){var c=(new function(a){var b={};return{getCmdByTab:function(c){for(var h in a)b[a[h]]=
-h;return b[c]}}}(a.cmd)).getCmdByTab(CKEDITOR.config.wsc_cmd);l();b.selectPage(c);a.sendData(b)},x=function(){a.dialog.hidePage("Thesaurus")},u=function(){a.dialog.hidePage("GrammTab")},q=function(){a.dialog.showPage("SpellTab")},l=function(){var b=a.dialog.getContentElement(a.dialog._.currentTabId,"bottomGroup").getElement();b.removeStyle("display");b.removeStyle("position");b.removeStyle("left");b.show()},N=function(){var b=a.dialog.getContentElement(a.dialog._.currentTabId,"bottomGroup").getElement(),
-c=document.activeElement,e;b.setStyles({display:"block",position:"absolute",left:"-9999px"});setTimeout(function(){b.removeStyle("display");b.removeStyle("position");b.removeStyle("left");b.hide();a.dialog._.editor.focusManager.currentActive.focusNext();e=g.misc.findFocusable(a.dialog.parts.contents);if(g.misc.hasClass(c,"cke_dialog_tab")||g.misc.hasClass(c,"cke_dialog_contents_body")||!g.misc.isVisible(c))for(var d=0,f;d<e.count();d++){if(f=e.getItem(d),g.misc.isVisible(f.$)){try{f.$.focus()}catch(h){}break}}else try{c.focus()}catch(k){}},
-0)},C=function(){var b=a.dialog.getContentElement(a.dialog._.currentTabId,"BlockFinishChecking").getElement(),c=document.activeElement,e;b.setStyles({display:"block",position:"absolute",left:"-9999px"});setTimeout(function(){b.removeStyle("display");b.removeStyle("position");b.removeStyle("left");b.hide();a.dialog._.editor.focusManager.currentActive.focusNext();e=g.misc.findFocusable(a.dialog.parts.contents);if(g.misc.hasClass(c,"cke_dialog_tab")||g.misc.hasClass(c,"cke_dialog_contents_body")||!g.misc.isVisible(c))for(var d=
-0,f;d<e.count();d++){if(f=e.getItem(d),g.misc.isVisible(f.$)){try{f.$.focus()}catch(h){}break}}else try{c.focus()}catch(k){}},0)};CKEDITOR.dialog.add("checkspell",function(b){function c(a){var c=parseInt(b.config.wsc_left,10),d=parseInt(b.config.wsc_top,10),e=parseInt(b.config.wsc_width,10),g=parseInt(b.config.wsc_height,10),m=CKEDITOR.document.getWindow().getViewPaneSize();a.getPosition();var n=a.getSize(),r=0;if(!a._.resized){var r=n.height-a.parts.contents.getSize("height",!(CKEDITOR.env.gecko||
-CKEDITOR.env.opera||CKEDITOR.env.ie&&CKEDITOR.env.quirks)),D=n.width-a.parts.contents.getSize("width",1);if(e<f.minWidth||isNaN(e))e=f.minWidth;e>m.width-D&&(e=m.width-D);if(g<f.minHeight||isNaN(g))g=f.minHeight;g>m.height-r&&(g=m.height-r);n.width=e+D;n.height=g+r;a._.fromResizeEvent=!1;a.resize(e,g);setTimeout(function(){a._.fromResizeEvent=!1;CKEDITOR.dialog.fire("resize",{dialog:a,width:e,height:g},b)},300)}a._.moved||(r=isNaN(c)&&isNaN(d)?0:1,isNaN(c)&&(c=(m.width-n.width)/2),0>c&&(c=0),c>m.width-
-n.width&&(c=m.width-n.width),isNaN(d)&&(d=(m.height-n.height)/2),0>d&&(d=0),d>m.height-n.height&&(d=m.height-n.height),a.move(c,d,r))}function e(){b.wsc={};(function(a){var b={separator:"\x3c$\x3e",getDataType:function(a){return"undefined"===typeof a?"undefined":null===a?"null":Object.prototype.toString.call(a).slice(8,-1)},convertDataToString:function(a){return this.getDataType(a).toLowerCase()+this.separator+a},restoreDataFromString:function(a){var b=a,c;a=this.backCompatibility(a);if("string"===
-typeof a)switch(b=a.indexOf(this.separator),c=a.substring(0,b),b=a.substring(b+this.separator.length),c){case "boolean":b="true"===b;break;case "number":b=parseFloat(b);break;case "array":b=""===b?[]:b.split(",");break;case "null":b=null;break;case "undefined":b=void 0}return b},backCompatibility:function(a){var b=a,c;"string"===typeof a&&(c=a.indexOf(this.separator),0>c&&(b=parseFloat(a),isNaN(b)&&("["===a[0]&&"]"===a[a.length-1]?(a=a.replace("[",""),a=a.replace("]",""),b=""===a?[]:a.split(",")):
-b="true"===a||"false"===a?"true"===a:a),b=this.convertDataToString(b)));return b}},c={get:function(a){return b.restoreDataFromString(window.localStorage.getItem(a))},set:function(a,c){var d=b.convertDataToString(c);window.localStorage.setItem(a,d)},del:function(a){window.localStorage.removeItem(a)},clear:function(){window.localStorage.clear()}},d={expiration:31622400,get:function(a){return b.restoreDataFromString(this.getCookie(a))},set:function(a,c){var d=b.convertDataToString(c);this.setCookie(a,
-d,{expires:this.expiration})},del:function(a){this.deleteCookie(a)},getCookie:function(a){return(a=document.cookie.match(new RegExp("(?:^|; )"+a.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,"\\$1")+"\x3d([^;]*)")))?decodeURIComponent(a[1]):void 0},setCookie:function(a,b,c){c=c||{};var d=c.expires;if("number"===typeof d&&d){var e=new Date;e.setTime(e.getTime()+1E3*d);d=c.expires=e}d&&d.toUTCString&&(c.expires=d.toUTCString());b=encodeURIComponent(b);a=a+"\x3d"+b;for(var h in c)b=c[h],a+="; "+h,!0!==b&&(a+=
-"\x3d"+b);document.cookie=a},deleteCookie:function(a){this.setCookie(a,null,{expires:-1})},clear:function(){for(var a=document.cookie.split(";"),b=0;b<a.length;b++){var c=a[b],d=c.indexOf("\x3d"),c=-1<d?c.substr(0,d):c;this.deleteCookie(c)}}},e=window.localStorage?c:d;a.DataStorage={getData:function(a){return e.get(a)},setData:function(a,b){e.set(a,b)},deleteData:function(a){e.del(a)},clear:function(){e.clear()}}})(b.wsc);b.wsc.operationWithUDN=function(b,c){g.postMessage.send({message:{udn:c,id:"operationWithUDN",
-udnCmd:b},target:a.targetFromFrame[a.iframeNumber+"_"+a.dialog._.currentTabId]})};b.wsc.getLocalStorageUDN=function(){var a=b.wsc.DataStorage.getData("scayt_user_dictionary_name");if(a)return a};b.wsc.getLocalStorageUD=function(){var a=b.wsc.DataStorage.getData("scayt_user_dictionary");if(a)return a};b.wsc.addWords=function(a,c){var d=b.config.wsc.DefaultParams.serviceHost+b.config.wsc.DefaultParams.ssrvHost+"?cmd\x3ddictionary\x26format\x3djson\x26customerid\x3d1%3AncttD3-fIoSf2-huzwE4-Y5muI2-mD0Tt-kG9Wz-UEDFC-tYu243-1Uq474-d9Z2l3\x26action\x3daddword\x26word\x3d"+
-a+"\x26callback\x3dtoString\x26synchronization\x3dtrue",e=document.createElement("script");e.type="text/javascript";e.src=d;document.getElementsByTagName("head")[0].appendChild(e);e.onload=c;e.onreadystatechange=function(){"loaded"===this.readyState&&c()}};b.wsc.cgiOrigin=function(){var a=b.config.wsc.DefaultParams.serviceHost.split("/");return a[0]+"//"+a[2]};b.wsc.isSsrvSame=!1}var d=function(c){this.getElement().focus();a.div_overlay.setEnable();c=a.dialog._.currentTabId;var d=a.iframeNumber+"_"+
-c,e=a.textNode[c].getValue(),f=this.getElement().getAttribute("title-cmd");g.postMessage.send({message:{cmd:f,tabId:c,new_word:e},target:a.targetFromFrame[d],id:"cmd_outer__page"});"ChangeTo"!=f&&"ChangeAll"!=f||b.fire("saveSnapshot");"FinishChecking"==f&&b.config.wsc_onFinish.call(CKEDITOR.document.getWindow().getFrame())},f={minWidth:560,minHeight:444};return{title:b.config.wsc_dialogTitle||b.lang.wsc.title,minWidth:f.minWidth,minHeight:f.minHeight,buttons:[CKEDITOR.dialog.cancelButton],onLoad:function(){a.dialog=
-this;x();u();q();b.plugins.scayt&&e()},onShow:function(){a.dialog=this;b.lockSelection(b.getSelection());a.TextAreaNumber="cke_textarea_"+b.name;g.postMessage.init(G);a.dataTemp=b.getData();a.OverlayPlace=a.dialog.parts.tabs.getParent().$;if(CKEDITOR&&CKEDITOR.config){a.wsc_customerId=b.config.wsc_customerId;a.cust_dic_ids=b.config.wsc_customDictionaryIds;a.userDictionaryName=b.config.wsc_userDictionaryName;a.defaultLanguage=CKEDITOR.config.defaultLanguage;var d="file:"==document.location.protocol?
-"http:":document.location.protocol,d=b.config.wsc_customLoaderScript||d+"//www.webspellchecker.net/spellcheck3/script/ssrv.cgi?plugin\x3dfck2\x26customerid\x3d"+a.wsc_customerId+"\x26cmd\x3dscript\x26doc\x3dwsc\x26schema\x3d22";c(this);CKEDITOR.scriptLoader.load(d,function(c){CKEDITOR.config&&CKEDITOR.config.wsc&&CKEDITOR.config.wsc.DefaultParams?(a.serverLocationHash=CKEDITOR.config.wsc.DefaultParams.serviceHost,a.logotype=CKEDITOR.config.wsc.DefaultParams.logoPath,a.loadIcon=CKEDITOR.config.wsc.DefaultParams.iconPath,
-a.loadIconEmptyEditor=CKEDITOR.config.wsc.DefaultParams.iconPathEmptyEditor,a.LangComparer=new CKEDITOR.config.wsc.DefaultParams._SP_FCK_LangCompare):(a.serverLocationHash=DefaultParams.serviceHost,a.logotype=DefaultParams.logoPath,a.loadIcon=DefaultParams.iconPath,a.loadIconEmptyEditor=DefaultParams.iconPathEmptyEditor,a.LangComparer=new _SP_FCK_LangCompare);a.pluginPath=CKEDITOR.getUrl(b.plugins.wsc.path);a.iframeNumber=a.TextAreaNumber;a.templatePath=a.pluginPath+"dialogs/tmp.html";a.LangComparer.setDefaulLangCode(a.defaultLanguage);
-a.currentLang=b.config.wsc_lang||a.LangComparer.getSPLangCode(b.langCode)||"en_US";a.interfaceLang=b.config.wsc_interfaceLang;a.selectingLang=a.currentLang;a.div_overlay=new B({opacity:"1",background:"#fff url("+a.loadIcon+") no-repeat 50% 50%",target:a.OverlayPlace});var d=a.dialog.parts.tabs.getId(),d=CKEDITOR.document.getById(d);d.setStyle("width","97%");d.getElementsByTag("DIV").count()||d.append(a.buildSelectLang(a.dialog.getParentEditor().name));a.div_overlay_no_check=new B({opacity:"1",id:"no_check_over",
-background:"#fff url("+a.loadIconEmptyEditor+") no-repeat 50% 50%",target:a.OverlayPlace});c&&(H(a.dialog),a.dialog.setupContent(a.dialog));b.plugins.scayt&&(b.wsc.isSsrvSame=function(){var a=CKEDITOR.config.wsc.DefaultParams.serviceHost.replace("lf/22/js/../../../","").split("//")[1],c=CKEDITOR.config.wsc.DefaultParams.ssrvHost,d=b.config.scayt_srcUrl,e,h,f,g,p;window.SCAYT&&window.SCAYT.CKSCAYT&&(f=SCAYT.CKSCAYT.prototype.basePath,f.split("//"),g=f.split("//")[1].split("/")[0],p=f.split(g+"/")[1].replace("/lf/scayt3/ckscayt/",
-"")+"/script/ssrv.cgi");!d||f||b.config.scayt_servicePath||(d.split("//"),e=d.split("//")[1].split("/")[0],h=d.split(e+"/")[1].replace("/lf/scayt3/ckscayt/ckscayt.js","")+"/script/ssrv.cgi");return"//"+a+c==="//"+(b.config.scayt_serviceHost||g||e)+"/"+(b.config.scayt_servicePath||p||h)}());if(window.SCAYT&&b.wsc&&b.wsc.isSsrvSame){var e=b.wsc.cgiOrigin();b.wsc.syncIsDone=!1;c=function(a){a.origin===e&&(a=JSON.parse(a.data),a.ud&&"undefined"!==a.ud?b.wsc.ud=a.ud:"undefined"===a.ud&&(b.wsc.ud=void 0),
-a.udn&&"undefined"!==a.udn?b.wsc.udn=a.udn:"undefined"===a.udn&&(b.wsc.udn=void 0),b.wsc.syncIsDone||(h(b.wsc.ud),b.wsc.syncIsDone=!0))};var h=function(c){c=b.wsc.getLocalStorageUD();var d;c instanceof Array&&(d=c.toString());void 0!==d&&""!==d&&setTimeout(function(){b.wsc.addWords(d,function(){H(a.dialog);a.dialog.setupContent(a.dialog)})},400)};window.addEventListener?addEventListener("message",c,!1):window.attachEvent("onmessage",c);setTimeout(function(){var a=b.wsc.getLocalStorageUDN();void 0!==
-a&&b.wsc.operationWithUDN("restore",a)},500)}})}else a.dialog.hide()},onHide:function(){var c=CKEDITOR.plugins.scayt,d=b.scayt;b.unlockSelection();c&&d&&c.state[b.name]&&d.setMarkupPaused(!1);a.dataTemp="";a.sessionid="";g.postMessage.unbindHandler(G);if(b.plugins.scayt&&b.wsc&&b.wsc.isSsrvSame){var c=b.wsc.udn,e=b.wsc.ud,f,l;b.scayt?(c?(b.wsc.DataStorage.setData("scayt_user_dictionary_name",c),b.scayt.restoreUserDictionary(c)):(b.wsc.DataStorage.setData("scayt_user_dictionary_name",""),b.scayt.removeUserDictionary()),
-e&&setTimeout(function(){f=e.split(",");for(l=0;l<f.length;l+=1)b.scayt.addWordToUserDictionary(f[l])},200),e||b.wsc.DataStorage.setData("scayt_user_dictionary",[])):(c?b.wsc.DataStorage.setData("scayt_user_dictionary_name",c):b.wsc.DataStorage.setData("scayt_user_dictionary_name",""),e&&(f=e.split(","),b.wsc.DataStorage.setData("scayt_user_dictionary",f)))}},contents:[{id:"SpellTab",label:"SpellChecker",accessKey:"S",elements:[{type:"html",id:"banner",label:"banner",style:"",html:"\x3cdiv\x3e\x3c/div\x3e"},
-{type:"html",id:"Content",label:"spellContent",html:"",setup:function(b){b=a.iframeNumber+"_"+b._.currentTabId;var c=document.getElementById(b);a.targetFromFrame[b]=c.contentWindow}},{type:"hbox",id:"bottomGroup",style:"width:560px; margin: 0 auto;",widths:["50%","50%"],className:"wsc-spelltab-bottom",children:[{type:"hbox",id:"leftCol",align:"left",width:"50%",children:[{type:"vbox",id:"rightCol1",widths:["50%","50%"],children:[{type:"text",id:"ChangeTo_label",label:a.LocalizationLabel.ChangeTo_label.text+
-":",labelLayout:"horizontal",labelStyle:"font: 12px/25px arial, sans-serif;",width:"140px","default":"",onShow:function(){a.textNode.SpellTab=this;a.LocalizationLabel.ChangeTo_label.instance=this},onHide:function(){this.reset()}},{type:"hbox",id:"rightCol",align:"right",width:"30%",children:[{type:"vbox",id:"rightCol_col__left",children:[{type:"text",id:"labelSuggestions",label:a.LocalizationLabel.Suggestions.text+":",onShow:function(){a.LocalizationLabel.Suggestions.instance=this;this.getInputElement().setStyles({display:"none"})}},
-{type:"html",id:"logo",html:'\x3cimg width\x3d"99" height\x3d"68" border\x3d"0" src\x3d"" title\x3d"logo" alt\x3d"logo" style\x3d"display: inline-block;"\x3e',setup:function(b){this.getElement().$.src=a.logotype;this.getElement().getParent().setStyles({"text-align":"left"})}}]},{type:"select",id:"list_of_suggestions",labelStyle:"font: 12px/25px arial, sans-serif;",size:"6",inputStyle:"width: 140px; height: auto;",items:[["loading..."]],onShow:function(){A=this},onChange:function(){a.textNode.SpellTab.setValue(this.getValue())}}]}]}]},
-{type:"hbox",id:"rightCol",align:"right",width:"50%",children:[{type:"vbox",id:"rightCol_col__left",widths:["50%","50%","50%","50%"],children:[{type:"button",id:"ChangeTo_button",label:a.LocalizationButton.ChangeTo_button.text,title:"Change to",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd","ChangeTo");a.LocalizationButton.ChangeTo_button.instance=this},onClick:d},{type:"button",id:"ChangeAll",label:a.LocalizationButton.ChangeAll.text,title:"Change All",style:"width: 100%;",
-onLoad:function(){this.getElement().setAttribute("title-cmd",this.id);a.LocalizationButton.ChangeAll.instance=this},onClick:d},{type:"button",id:"AddWord",label:a.LocalizationButton.AddWord.text,title:"Add word",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id);a.LocalizationButton.AddWord.instance=this},onClick:d},{type:"button",id:"FinishChecking_button",label:a.LocalizationButton.FinishChecking_button.text,title:"Finish Checking",style:"width: 100%;margin-top: 9px;",
-onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking");a.LocalizationButton.FinishChecking_button.instance=this},onClick:d}]},{type:"vbox",id:"rightCol_col__right",widths:["50%","50%","50%"],children:[{type:"button",id:"IgnoreWord",label:a.LocalizationButton.IgnoreWord.text,title:"Ignore word",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id);a.LocalizationButton.IgnoreWord.instance=this},onClick:d},{type:"button",id:"IgnoreAllWords",
-label:a.LocalizationButton.IgnoreAllWords.text,title:"Ignore all words",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id);a.LocalizationButton.IgnoreAllWords.instance=this},onClick:d},{type:"button",id:"Options",label:a.LocalizationButton.Options.text,title:"Option",style:"width: 100%;",onLoad:function(){a.LocalizationButton.Options.instance=this;"file:"==document.location.protocol&&this.disable()},onClick:function(){this.getElement().focus();"file:"==document.location.protocol?
-alert("WSC: Options functionality is disabled when runing from file system"):(y=document.activeElement,b.openDialog("options"))}}]}]}]},{type:"hbox",id:"BlockFinishChecking",style:"width:560px; margin: 0 auto;",widths:["70%","30%"],onShow:function(){this.getElement().setStyles({display:"block",position:"absolute",left:"-9999px"})},onHide:l,children:[{type:"hbox",id:"leftCol",align:"left",width:"70%",children:[{type:"vbox",id:"rightCol1",setup:function(){this.getChild()[0].getElement().$.src=a.logotype;
-this.getChild()[0].getElement().getParent().setStyles({"text-align":"center"})},children:[{type:"html",id:"logo",html:'\x3cimg width\x3d"99" height\x3d"68" border\x3d"0" src\x3d"" title\x3d"logo" alt\x3d"logo" style\x3d"display: inline-block;"\x3e'}]}]},{type:"hbox",id:"rightCol",align:"right",width:"30%",children:[{type:"vbox",id:"rightCol_col__left",children:[{type:"button",id:"Option_button",label:a.LocalizationButton.Options.text,title:"Option",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",
-this.id);"file:"==document.location.protocol&&this.disable()},onClick:function(){this.getElement().focus();"file:"==document.location.protocol?alert("WSC: Options functionality is disabled when runing from file system"):(y=document.activeElement,b.openDialog("options"))}},{type:"button",id:"FinishChecking_button_block",label:a.LocalizationButton.FinishChecking_button_block.text,title:"Finish Checking",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking")},
-onClick:d}]}]}]}]},{id:"GrammTab",label:"Grammar",accessKey:"G",elements:[{type:"html",id:"banner",label:"banner",style:"",html:"\x3cdiv\x3e\x3c/div\x3e"},{type:"html",id:"Content",label:"GrammarContent",html:"",setup:function(){var b=a.iframeNumber+"_"+a.dialog._.currentTabId,c=document.getElementById(b);a.targetFromFrame[b]=c.contentWindow}},{type:"vbox",id:"bottomGroup",style:"width:560px; margin: 0 auto;",children:[{type:"hbox",id:"leftCol",widths:["66%","34%"],children:[{type:"vbox",children:[{type:"text",
-id:"text",label:"Change to:",labelLayout:"horizontal",labelStyle:"font: 12px/25px arial, sans-serif;",inputStyle:"float: right; width: 200px;","default":"",onShow:function(){a.textNode.GrammTab=this},onHide:function(){this.reset()}},{type:"html",id:"html_text",html:"\x3cdiv style\x3d'min-height: 17px; line-height: 17px; padding: 5px; text-align: left;background: #F1F1F1;color: #595959; white-space: normal!important;'\x3e\x3c/div\x3e",onShow:function(b){a.textNodeInfo.GrammTab=this}},{type:"html",
-id:"radio",html:"",onShow:function(){a.grammerSuggest=this}}]},{type:"vbox",children:[{type:"button",id:"ChangeTo_button",label:"Change to",title:"Change to",style:"width: 133px; float: right;",onLoad:function(){this.getElement().setAttribute("title-cmd","ChangeTo")},onClick:d},{type:"button",id:"IgnoreWord",label:"Ignore word",title:"Ignore word",style:"width: 133px; float: right;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},onClick:d},{type:"button",id:"IgnoreAllWords",
-label:"Ignore Problem",title:"Ignore Problem",style:"width: 133px; float: right;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},onClick:d},{type:"button",id:"FinishChecking_button",label:a.LocalizationButton.FinishChecking_button.text,title:"Finish Checking",style:"width: 133px; float: right; margin-top: 9px;",onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking")},onClick:d}]}]}]},{type:"hbox",id:"BlockFinishChecking",style:"width:560px; margin: 0 auto;",
-widths:["70%","30%"],onShow:function(){this.getElement().setStyles({display:"block",position:"absolute",left:"-9999px"})},onHide:l,children:[{type:"hbox",id:"leftCol",align:"left",width:"70%",children:[{type:"vbox",id:"rightCol1",children:[{type:"html",id:"logo",html:'\x3cimg width\x3d"99" height\x3d"68" border\x3d"0" src\x3d"" title\x3d"logo" alt\x3d"logo" style\x3d"display: inline-block;"\x3e',setup:function(){this.getElement().$.src=a.logotype;this.getElement().getParent().setStyles({"text-align":"center"})}}]}]},
-{type:"hbox",id:"rightCol",align:"right",width:"30%",children:[{type:"vbox",id:"rightCol_col__left",children:[{type:"button",id:"FinishChecking_button_block",label:a.LocalizationButton.FinishChecking_button_block.text,title:"Finish Checking",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking")},onClick:d}]}]}]}]},{id:"Thesaurus",label:"Thesaurus",accessKey:"T",elements:[{type:"html",id:"banner",label:"banner",style:"",html:"\x3cdiv\x3e\x3c/div\x3e"},
-{type:"html",id:"Content",label:"spellContent",html:"",setup:function(){var b=a.iframeNumber+"_"+a.dialog._.currentTabId,c=document.getElementById(b);a.targetFromFrame[b]=c.contentWindow}},{type:"vbox",id:"bottomGroup",style:"width:560px; margin: -10px auto; overflow: hidden;",children:[{type:"hbox",widths:["75%","25%"],children:[{type:"vbox",children:[{type:"hbox",widths:["65%","35%"],children:[{type:"text",id:"ChangeTo_label",label:a.LocalizationLabel.ChangeTo_label.text+":",labelLayout:"horizontal",
-inputStyle:"width: 160px;",labelStyle:"font: 12px/25px arial, sans-serif;","default":"",onShow:function(b){a.textNode.Thesaurus=this;a.LocalizationLabel.ChangeTo_label.instance=this},onHide:function(){this.reset()}},{type:"button",id:"ChangeTo_button",label:a.LocalizationButton.ChangeTo_button.text,title:"Change to",style:"width: 121px; margin-top: 1px;",onLoad:function(){this.getElement().setAttribute("title-cmd","ChangeTo");a.LocalizationButton.ChangeTo_button.instance=this},onClick:d}]},{type:"hbox",
-children:[{type:"select",id:"Categories",label:a.LocalizationLabel.Categories.text+":",labelStyle:"font: 12px/25px arial, sans-serif;",size:"5",inputStyle:"width: 180px; height: auto;",items:[],onShow:function(){a.selectNode.Categories=this;a.LocalizationLabel.Categories.instance=this},onChange:function(){a.buildOptionSynonyms(this.getValue())}},{type:"select",id:"Synonyms",label:a.LocalizationLabel.Synonyms.text+":",labelStyle:"font: 12px/25px arial, sans-serif;",size:"5",inputStyle:"width: 180px; height: auto;",
-items:[],onShow:function(){a.selectNode.Synonyms=this;a.textNode.Thesaurus.setValue(this.getValue());a.LocalizationLabel.Synonyms.instance=this},onChange:function(b){a.textNode.Thesaurus.setValue(this.getValue())}}]}]},{type:"vbox",width:"120px",style:"margin-top:46px;",children:[{type:"html",id:"logotype",label:"WebSpellChecker.net",html:'\x3cimg width\x3d"99" height\x3d"68" border\x3d"0" src\x3d"" title\x3d"logo" alt\x3d"logo" style\x3d"display: inline-block;"\x3e',setup:function(){this.getElement().$.src=
-a.logotype;this.getElement().getParent().setStyles({"text-align":"center"})}},{type:"button",id:"FinishChecking_button",label:a.LocalizationButton.FinishChecking_button.text,title:"Finish Checking",style:"width: 100%; float: right; margin-top: 9px;",onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking")},onClick:d}]}]}]},{type:"hbox",id:"BlockFinishChecking",style:"width:560px; margin: 0 auto;",widths:["70%","30%"],onShow:function(){this.getElement().setStyles({display:"block",
-position:"absolute",left:"-9999px"})},children:[{type:"hbox",id:"leftCol",align:"left",width:"70%",children:[{type:"vbox",id:"rightCol1",children:[{type:"html",id:"logo",html:'\x3cimg width\x3d"99" height\x3d"68" border\x3d"0" src\x3d"" title\x3d"logo" alt\x3d"logo" style\x3d"display: inline-block;"\x3e',setup:function(){this.getElement().$.src=a.logotype;this.getElement().getParent().setStyles({"text-align":"center"})}}]}]},{type:"hbox",id:"rightCol",align:"right",width:"30%",children:[{type:"vbox",
-id:"rightCol_col__left",children:[{type:"button",id:"FinishChecking_button_block",label:a.LocalizationButton.FinishChecking_button_block.text,title:"Finish Checking",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd","FinishChecking")},onClick:d}]}]}]}]}]}});var y=null;CKEDITOR.dialog.add("options",function(b){var c=null,e={},d={},f=null,h=null;g.cookie.get("udn");g.cookie.get("osp");b=function(a){h=this.getElement().getAttribute("title-cmd");a=[];a[0]=d.IgnoreAllCapsWords;
-a[1]=d.IgnoreWordsNumbers;a[2]=d.IgnoreMixedCaseWords;a[3]=d.IgnoreDomainNames;a=a.toString().replace(/,/g,"");g.cookie.set("osp",a);g.cookie.set("udnCmd",h?h:"ignore");"delete"!=h&&(a="",""!==t.getValue()&&(a=t.getValue()),g.cookie.set("udn",a));g.postMessage.send({id:"options_dic_send"})};var k=function(){f.getElement().setHtml(a.LocalizationComing.error);f.getElement().show()};return{title:a.LocalizationComing.Options,minWidth:430,minHeight:130,resizable:CKEDITOR.DIALOG_RESIZE_NONE,contents:[{id:"OptionsTab",
-label:"Options",accessKey:"O",elements:[{type:"hbox",id:"options_error",children:[{type:"html",style:"display: block;text-align: center;white-space: normal!important; font-size: 12px;color:red",html:"\x3cdiv\x3e\x3c/div\x3e",onShow:function(){f=this}}]},{type:"vbox",id:"Options_content",children:[{type:"hbox",id:"Options_manager",widths:["52%","48%"],children:[{type:"fieldset",label:"Spell Checking Options",style:"border: none;margin-top: 13px;padding: 10px 0 10px 10px",onShow:function(){this.getInputElement().$.children[0].innerHTML=
-a.LocalizationComing.SpellCheckingOptions},children:[{type:"vbox",id:"Options_checkbox",children:[{type:"checkbox",id:"IgnoreAllCapsWords",label:"Ignore All-Caps Words",labelStyle:"margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;",style:"float:left; min-height: 16px;","default":"",onClick:function(){d[this.id]=this.getValue()?1:0}},{type:"checkbox",id:"IgnoreWordsNumbers",label:"Ignore Words with Numbers",labelStyle:"margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;",
-style:"float:left; min-height: 16px;","default":"",onClick:function(){d[this.id]=this.getValue()?1:0}},{type:"checkbox",id:"IgnoreMixedCaseWords",label:"Ignore Mixed-Case Words",labelStyle:"margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;",style:"float:left; min-height: 16px;","default":"",onClick:function(){d[this.id]=this.getValue()?1:0}},{type:"checkbox",id:"IgnoreDomainNames",label:"Ignore Domain Names",labelStyle:"margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;",
-style:"float:left; min-height: 16px;","default":"",onClick:function(){d[this.id]=this.getValue()?1:0}}]}]},{type:"vbox",id:"Options_DictionaryName",children:[{type:"text",id:"DictionaryName",style:"margin-bottom: 10px",label:"Dictionary Name:",labelLayout:"vertical",labelStyle:"font: 12px/25px arial, sans-serif;","default":"",onLoad:function(){t=this;var b=a.userDictionaryName?a.userDictionaryName:(g.cookie.get("udn"),this.getValue());this.setValue(b)},onShow:function(){t=this;var b=g.cookie.get("udn")?
-g.cookie.get("udn"):this.getValue();this.setValue(b);this.setLabel(a.LocalizationComing.DictionaryName)},onHide:function(){this.reset()}},{type:"hbox",id:"Options_buttons",children:[{type:"vbox",id:"Options_leftCol_col",widths:["50%","50%"],children:[{type:"button",id:"create",label:"Create",title:"Create",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},onShow:function(){(this.getElement().getFirst()||this.getElement()).setText(a.LocalizationComing.Create)},
-onClick:b},{type:"button",id:"restore",label:"Restore",title:"Restore",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},onShow:function(){(this.getElement().getFirst()||this.getElement()).setText(a.LocalizationComing.Restore)},onClick:b}]},{type:"vbox",id:"Options_rightCol_col",widths:["50%","50%"],children:[{type:"button",id:"rename",label:"Rename",title:"Rename",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},
-onShow:function(){(this.getElement().getFirst()||this.getElement()).setText(a.LocalizationComing.Rename)},onClick:b},{type:"button",id:"delete",label:"Remove",title:"Remove",style:"width: 100%;",onLoad:function(){this.getElement().setAttribute("title-cmd",this.id)},onShow:function(){(this.getElement().getFirst()||this.getElement()).setText(a.LocalizationComing.Remove)},onClick:b}]}]}]}]},{type:"hbox",id:"Options_text",children:[{type:"html",style:"text-align: justify;margin-top: 15px;white-space: normal!important; font-size: 12px;color:#777;",
-html:"\x3cdiv\x3e"+a.LocalizationComing.OptionsTextIntro+"\x3c/div\x3e",onShow:function(){this.getElement().setText(a.LocalizationComing.OptionsTextIntro)}}]}]}]}],buttons:[CKEDITOR.dialog.okButton,CKEDITOR.dialog.cancelButton],onOk:function(){var a=[];a[0]=d.IgnoreAllCapsWords;a[1]=d.IgnoreWordsNumbers;a[2]=d.IgnoreMixedCaseWords;a[3]=d.IgnoreDomainNames;a=a.toString().replace(/,/g,"");g.cookie.set("osp",a);g.postMessage.send({id:"options_checkbox_send"});f.getElement().hide();f.getElement().setHtml(" ")},
-onLoad:function(){c=this;e.IgnoreAllCapsWords=c.getContentElement("OptionsTab","IgnoreAllCapsWords");e.IgnoreWordsNumbers=c.getContentElement("OptionsTab","IgnoreWordsNumbers");e.IgnoreMixedCaseWords=c.getContentElement("OptionsTab","IgnoreMixedCaseWords");e.IgnoreDomainNames=c.getContentElement("OptionsTab","IgnoreDomainNames")},onShow:function(){g.postMessage.init(k);var b=g.cookie.get("osp").split("");d.IgnoreAllCapsWords=b[0];d.IgnoreWordsNumbers=b[1];d.IgnoreMixedCaseWords=b[2];d.IgnoreDomainNames=
-b[3];parseInt(d.IgnoreAllCapsWords,10)?e.IgnoreAllCapsWords.setValue("checked",!1):e.IgnoreAllCapsWords.setValue("",!1);parseInt(d.IgnoreWordsNumbers,10)?e.IgnoreWordsNumbers.setValue("checked",!1):e.IgnoreWordsNumbers.setValue("",!1);parseInt(d.IgnoreMixedCaseWords,10)?e.IgnoreMixedCaseWords.setValue("checked",!1):e.IgnoreMixedCaseWords.setValue("",!1);parseInt(d.IgnoreDomainNames,10)?e.IgnoreDomainNames.setValue("checked",!1):e.IgnoreDomainNames.setValue("",!1);d.IgnoreAllCapsWords=e.IgnoreAllCapsWords.getValue()?
-1:0;d.IgnoreWordsNumbers=e.IgnoreWordsNumbers.getValue()?1:0;d.IgnoreMixedCaseWords=e.IgnoreMixedCaseWords.getValue()?1:0;d.IgnoreDomainNames=e.IgnoreDomainNames.getValue()?1:0;e.IgnoreAllCapsWords.getElement().$.lastChild.innerHTML=a.LocalizationComing.IgnoreAllCapsWords;e.IgnoreWordsNumbers.getElement().$.lastChild.innerHTML=a.LocalizationComing.IgnoreWordsWithNumbers;e.IgnoreMixedCaseWords.getElement().$.lastChild.innerHTML=a.LocalizationComing.IgnoreMixedCaseWords;e.IgnoreDomainNames.getElement().$.lastChild.innerHTML=
-a.LocalizationComing.IgnoreDomainNames},onHide:function(){g.postMessage.unbindHandler(k);if(y)try{y.focus()}catch(a){}}}});CKEDITOR.dialog.on("resize",function(b){b=b.data;var c=b.dialog,e=CKEDITOR.document.getById(a.iframeNumber+"_"+c._.currentTabId);"checkspell"==c._.name&&(a.bnr?e&&e.setSize("height",b.height-310):e&&e.setSize("height",b.height-220),c._.fromResizeEvent&&!c._.resized&&(c._.resized=!0),c._.fromResizeEvent=!0)});CKEDITOR.on("dialogDefinition",function(b){if("checkspell"===b.data.name){var c=
-b.data.definition;a.onLoadOverlay=new B({opacity:"1",background:"#fff",target:c.dialog.parts.tabs.getParent().$});a.onLoadOverlay.setEnable();c.dialog.on("cancel",function(b){c.dialog.getParentEditor().config.wsc_onClose.call(this.document.getWindow().getFrame());a.div_overlay.setDisable();a.onLoadOverlay.setDisable();return!1},this,null,-1)}})})();
+﻿/**
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.html or http://ckeditor.com/license
+ */
+ (function() {
+  // Create support tools
+ var appTools = (function(){
+ 	var inited = {};
+
+ 	var _init = function(handler) {
+		if (window.addEventListener) {
+			window.addEventListener('message', handler, false);
+		} else {
+			window.attachEvent("onmessage", handler);
+		}
+	};
+
+	var unbindHandler = function(handler) {
+		if (window.removeEventListener) {
+			window.removeEventListener('message', handler, false);
+		} else {
+			window.detachEvent('onmessage', handler);
+		}
+	};
+
+	var _sendCmd = function(o) {
+		var str,
+			type = Object.prototype.toString,
+			objObject = "[object Object]",
+			fn = o.fn || null,
+			id = o.id || '',
+			target = o.target || window,
+			message = o.message || {
+				'id': id
+			};
+
+		if (o.message && type.call(o.message) == objObject) {
+			(o.message.id) ? o.message.id : o.message.id = id;
+			message = o.message;
+		}
+
+		str = window.JSON.stringify(message, fn);
+		target.postMessage(str, '*');
+	};
+
+	var _hashCreate = function(o, fn) {
+		fn = fn || null;
+		var str = window.JSON.stringify(o, fn);
+		return str;
+	};
+
+	var _hashParse = function(str, fn) {
+		fn = fn || null;
+		return window.JSON.parse(str, fn);
+	};
+
+	var setCookie = function(name, value, options) {
+	  options = options || {};
+
+	  var expires = options.expires;
+
+	  if (typeof expires == "number" && expires) {
+	    var d = new Date();
+	    d.setTime(d.getTime() + expires*1000);
+	    expires = options.expires = d;
+	  }
+	  if (expires && expires.toUTCString) {
+	  	options.expires = expires.toUTCString();
+	  }
+
+	  value = encodeURIComponent(value);
+	  var updatedCookie = name + "=" + value;
+
+	  for(var propName in options) {
+	  	var propValue = options[propName];
+	    	updatedCookie += "; " + propName;
+	    if (propValue !== true) {
+			updatedCookie += "=" + propValue;
+		}
+	  }
+	  document.cookie = updatedCookie;
+	};
+
+	var getCookie = function(name) {
+	  var matches = document.cookie.match(new RegExp(
+	    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	  ));
+	  return matches ? decodeURIComponent(matches[1]) : undefined;
+	};
+
+	var deleteCookie = function(name) {
+	  setCookie(name, "", { expires: -1 });
+	};
+
+	var findFocusable = function(ckEl) {
+		var result = null,
+			focusableSelectors = 'a[href], area[href], input, select, textarea, button, *[tabindex], *[contenteditable]';
+
+		if(ckEl) {
+			result = ckEl.find(focusableSelectors);
+		}
+
+		return result;
+	};
+
+	var getStyle = function(el, prop) {
+		if(document.defaultView && document.defaultView.getComputedStyle) {
+			return document.defaultView.getComputedStyle(el, null)[prop];
+		} else if(el.currentStyle) {
+			return el.currentStyle[prop];
+		} else {
+			return el.style[prop];
+		}
+	};
+
+	var isHidden = function(el) {
+		return el.offsetWidth === 0 || el.offsetHeight == 0 || getStyle(el, 'display') === 'none';
+	};
+
+	var isVisible = function(el) {
+		return !isHidden(el);
+	};
+
+	var hasClass = function (obj, cname) {
+		return !!(obj.className ? obj.className.match(new RegExp('(\\s|^)'+cname+'(\\s|$)')) : false);
+	};
+
+	return {
+		postMessage: {
+			init: _init,
+			send: _sendCmd,
+			unbindHandler: unbindHandler
+		},
+		hash: {
+			create: function() {
+
+			},
+
+			parse: function() {
+
+			}
+		},
+		cookie: {
+			set: setCookie,
+			get: getCookie,
+			remove: deleteCookie
+		},
+		misc: {
+			findFocusable: findFocusable,
+			isVisible: isVisible,
+			hasClass: hasClass
+		}
+	};
+ })();
+
+	var NS = NS || {};
+		NS.TextAreaNumber = null;
+		NS.load = true;
+		NS.cmd = {
+			"SpellTab": 'spell',
+			"Thesaurus": 'thes',
+			"GrammTab": 'grammar'
+		};
+		NS.dialog = null;
+		NS.optionNode = null;
+		NS.selectNode = null;
+		NS.grammerSuggest = null;
+		NS.textNode = {};
+		NS.iframeMain = null;
+		NS.dataTemp = '';
+		NS.div_overlay = null;
+		NS.textNodeInfo = {};
+		NS.selectNode = {};
+		NS.selectNodeResponce = {};
+		NS.langList = null;
+		NS.langSelectbox = null;
+		NS.banner = '';
+		NS.show_grammar = null;
+		NS.div_overlay_no_check = null;
+		NS.targetFromFrame = {};
+		NS.onLoadOverlay = null;
+		NS.LocalizationComing = {};
+		NS.OverlayPlace = null;
+		NS.sessionid = '';
+		NS.LocalizationButton = {
+			'ChangeTo_button': {
+				'instance' : null,
+				'text' : 'Change to',
+				'localizationID': 'ChangeTo'
+			},
+
+			'ChangeAll': {
+				'instance' : null,
+				'text' : 'Change All'
+			},
+
+			'IgnoreWord': {
+				'instance' : null,
+				'text' : 'Ignore word'
+			},
+
+			'IgnoreAllWords': {
+				'instance' : null,
+				'text' : 'Ignore all words'
+			},
+
+			'Options': {
+				'instance' : null,
+				'text' : 'Options',
+				'optionsDialog': {
+					'instance' : null
+				}
+			},
+
+			'AddWord': {
+				'instance' : null,
+				'text' : 'Add word'
+			},
+
+			'FinishChecking_button': {
+				'instance' : null,
+				'text' : 'Finish Checking',
+				'localizationID': 'FinishChecking'
+			},
+
+			'Option_button': {
+				'instance' : null,
+				'text' : 'Options',
+				'localizationID': 'Options'
+			},
+
+			'FinishChecking_button_block': {
+				'instance' : null,
+				'text' : 'Finish Checking',
+				'localizationID': 'FinishChecking'
+			}
+		};
+
+		NS.LocalizationLabel = {
+			'ChangeTo_label': {
+				'instance' : null,
+				'text' : 'Change to',
+				'localizationID': 'ChangeTo'
+			},
+
+			'Suggestions': {
+				'instance' : null,
+				'text' : 'Suggestions'
+			},
+
+			'Categories': {
+				'instance' : null,
+				'text' : 'Categories'
+			},
+
+			'Synonyms': {
+				'instance' : null,
+				'text' : 'Synonyms'
+			}
+		};
+
+	var SetLocalizationButton = function(obj) {
+		var el, localizationID;
+
+		for(var i in obj) {
+			el = NS.dialog.getContentElement(NS.dialog._.currentTabId, i);
+
+			if(el) {
+				el = el.getElement();
+			} else if(obj[i].instance){
+				el = obj[i].instance.getElement().getFirst() || obj[i].instance.getElement();
+			} else{
+				continue;
+			}
+
+			localizationID = obj[i].localizationID || i;
+			el.setText(NS.LocalizationComing[localizationID]);
+		}
+	};
+
+	var SetLocalizationLabel = function(obj) {
+		var el, localizationID;
+
+		for(var i in obj) {
+			el = NS.dialog.getContentElement(NS.dialog._.currentTabId, i);
+
+			if(!el) {
+				el = obj[i].instance;
+			}
+
+			if(el.setLabel) {
+				localizationID = obj[i].localizationID || i;
+				el.setLabel(NS.LocalizationComing[localizationID] + ':');
+			}
+		}
+	};
+	var OptionsConfirm = function(state) {
+		if (state) {
+			nameNode.setValue('');
+		}
+	};
+
+	var iframeOnload = false;
+	var nameNode, selectNode, frameId;
+
+	NS.framesetHtml = function(tab) {
+		var str = '<iframe id=' + NS.iframeNumber + '_' + tab + ' frameborder="0" allowtransparency="1" style="width:100%;border: 1px solid #AEB3B9;overflow: auto;background:#fff; border-radius: 3px;"></iframe>';
+		return str;
+	};
+
+	NS.setIframe = function(that, nameTab) {
+		var iframe,
+			str = NS.framesetHtml(nameTab),
+			iframeId = NS.iframeNumber + '_' + nameTab,
+			// tmp.html from wsc/dialogs
+			iframeInnerHtml =
+				'<!DOCTYPE html>' +
+				'<html>' +
+					'<head>' +
+						'<meta charset="UTF-8">' +
+						'<title>iframe</title>' +
+
+						'<style>' +
+							'html,body{' +
+								'margin: 0;' +
+								'height: 100%;' +
+								'font: 13px/1.555 "Trebuchet MS", sans-serif;' +
+							'}' +
+							'a{' +
+							    'color: #888;' +
+							    'font-weight: bold;' +
+							    'text-decoration: none;' +
+							    'border-bottom: 1px solid #888;' +
+							'}' +
+							'.main-box {' +
+								'color:#252525;' +
+								'padding: 3px 5px;' +
+								'text-align: justify;' +
+							'}' +
+							'.main-box p{margin: 0 0 14px;}' +
+							'.main-box .cerr{' +
+							    'color: #f00000;' +
+							    'border-bottom-color: #f00000;' +
+							'}' +
+						'</style>' +
+					'</head>' +
+					'<body>' +
+						'<div id="content" class="main-box"></div>' +
+						'<iframe src="" frameborder="0" id="spelltext" name="spelltext" style="display:none; width: 100%" ></iframe>' +
+						'<iframe src="" frameborder="0" id="loadsuggestfirst" name="loadsuggestfirst" style="display:none; width: 100%" ></iframe>' +
+						'<iframe src="" frameborder="0" id="loadspellsuggestall" name="loadspellsuggestall" style="display:none; width: 100%" ></iframe>' +
+						'<iframe src="" frameborder="0" id="loadOptionsForm" name="loadOptionsForm" style="display:none; width: 100%" ></iframe>' +
+						'<script>' +
+							'(function(window) {' +
+								// Constructor Manager PostMessage
+
+								'var ManagerPostMessage = function() {' +
+									'var _init = function(handler) {' +
+										'if (document.addEventListener) {' +
+											'window.addEventListener("message", handler, false);' +
+										'} else {' +
+											'window.attachEvent("onmessage", handler);' +
+										'};' +
+									'};' +
+									'var _sendCmd = function(o) {' +
+										'var str,' +
+											'type = Object.prototype.toString,' +
+											'fn = o.fn || null,' +
+											'id = o.id || "",' +
+											'target = o.target || window,' +
+											'message = o.message || { "id": id };' +
+
+										'if (o.message && type.call(o.message) == "[object Object]") {' +
+											'(o.message["id"]) ? o.message["id"] : o.message["id"] = id;' +
+											'message = o.message;' +
+										'};' +
+
+										'str = JSON.stringify(message, fn);' +
+										'target.postMessage(str, "*");' +
+									'};' +
+
+									'return {' +
+										'init: _init,' +
+										'send: _sendCmd' +
+									'};' +
+								'};' +
+
+								'var manageMessageTmp = new ManagerPostMessage;' +
+
+
+								'var appString = (function(){' +
+									'var spell = parent.CKEDITOR.config.wsc.DefaultParams.scriptPath;' +
+									'var serverUrl = parent.CKEDITOR.config.wsc.DefaultParams.serviceHost;' +
+									'return serverUrl + spell;' +
+								'})();' +
+
+								'function loadScript(src, callback) {' +
+								    'var scriptTag = document.createElement("script");' +
+								   		'scriptTag.type = "text/javascript";' +
+								   	'callback ? callback : callback = function() {};' +
+								    'if(scriptTag.readyState) {' +
+								        //IE
+								        'scriptTag.onreadystatechange = function() {' +
+								            'if (scriptTag.readyState == "loaded" ||' +
+								            'scriptTag.readyState == "complete") {' +
+								                'scriptTag.onreadystatechange = null;' +
+								                'setTimeout(function(){scriptTag.parentNode.removeChild(scriptTag)},1);' +
+								                'callback();' +
+								            '}' +
+								        '};' +
+								    '}else{' +
+								        //Others
+								        'scriptTag.onload = function() {' +
+								           'setTimeout(function(){scriptTag.parentNode.removeChild(scriptTag)},1);' +
+								           'callback();' +
+								        '};' +
+								    '};' +
+								    'scriptTag.src = src;' +
+								    'document.getElementsByTagName("head")[0].appendChild(scriptTag);' +
+								'};' +
+
+
+								'window.onload = function(){' +
+									 'loadScript(appString, function(){' +
+										'manageMessageTmp.send({' +
+											'"id": "iframeOnload",' +
+											'"target": window.parent' +
+										'});' +
+									'});' +
+								'}' +
+							'})(this);' +
+						'</script>' +
+					'</body>' +
+				'</html>';
+
+		that.getElement().setHtml(str);
+		iframe = document.getElementById(iframeId);
+		iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+		iframe.document.open();
+		iframe.document.write(iframeInnerHtml);
+		iframe.document.close();
+		NS.div_overlay.setEnable();
+		iframeOnload = true;
+	};
+
+	NS.setCurrentIframe = function(currentTab) {
+		var that = NS.dialog._.contents[currentTab].Content,
+			tabID, iframe;
+
+		NS.setIframe(that, currentTab);
+
+	};
+
+	NS.setHeightBannerFrame = function() {
+		var height = "90px",
+			bannerPlaceSpellTab = NS.dialog.getContentElement('SpellTab', 'banner').getElement(),
+			bannerPlaceGrammTab = NS.dialog.getContentElement('GrammTab', 'banner').getElement(),
+			bannerPlaceThesaurus = NS.dialog.getContentElement('Thesaurus', 'banner').getElement();
+
+		bannerPlaceSpellTab.setStyle('height', height);
+		bannerPlaceGrammTab.setStyle('height', height);
+		bannerPlaceThesaurus.setStyle('height', height);
+	};
+
+	NS.setHeightFrame = function() {
+		var currentTab = NS.dialog._.currentTabId,
+			tabID = NS.iframeNumber + '_' + currentTab,
+			iframe = document.getElementById(tabID);
+
+		iframe.style.height = '240px';
+	};
+
+	NS.sendData = function(scope) {
+		var currentTab = scope._.currentTabId,
+			that = scope._.contents[currentTab].Content,
+			tabID, iframe;
+
+		NS.previousTab = currentTab;
+		NS.setIframe(that, currentTab);
+
+		var loadNewTab = function(event) {
+			currentTab = scope._.currentTabId;
+			event = event || window.event;
+
+			if (!event.data.getTarget().is('a')) {
+				return;
+			}
+
+			if(currentTab === NS.previousTab) return;
+			NS.previousTab = currentTab;
+
+			that = scope._.contents[currentTab].Content;
+			tabID = NS.iframeNumber + '_' + currentTab;
+			NS.div_overlay.setEnable();
+
+			if (!that.getElement().getChildCount()) {
+				NS.setIframe(that, currentTab);
+				iframe = document.getElementById(tabID);
+				NS.targetFromFrame[tabID] = iframe.contentWindow;
+			} else {
+				sendData(NS.targetFromFrame[tabID], NS.cmd[currentTab]);
+			}
+		};
+
+		scope.parts.tabs.removeListener('click', loadNewTab);
+		scope.parts.tabs.on('click', loadNewTab);
+	};
+
+	NS.buildSelectLang = function(aId) {
+		var divContainer = new CKEDITOR.dom.element('div'),
+			selectContainer = new CKEDITOR.dom.element('select'),
+			id = "wscLang" + aId;
+
+		divContainer.addClass("cke_dialog_ui_input_select");
+		divContainer.setAttribute("role", "presentation");
+		divContainer.setStyles({
+			'height': 'auto',
+			'position': 'absolute',
+			'right': '0',
+			'top': '-1px',
+			'width': '160px',
+			'white-space': 'normal'
+		});
+
+		selectContainer.setAttribute('id', id);
+		selectContainer.addClass("cke_dialog_ui_input_select");
+		selectContainer.setStyles({
+			'width': '160px'
+		});
+		var currentTabId = NS.dialog._.currentTabId,
+				frameId = NS.iframeNumber + '_' + currentTabId;
+
+		divContainer.append(selectContainer);
+
+		return  divContainer;
+
+	};
+
+	NS.buildOptionLang = function(key, aId) {
+		var id = "wscLang" + aId;
+		var select = document.getElementById(id),
+			fragment = document.createDocumentFragment(),
+			create_option, txt_option,
+			sort = [];
+
+		if(select.options.length === 0) {
+			for (var lang in key) {
+				sort.push([lang, key[lang]]);
+			}
+			sort.sort();
+
+			for (var i = 0; i < sort.length; i++) {
+				create_option=document.createElement("option");
+				create_option.setAttribute("value", sort[i][1]);
+				txt_option = document.createTextNode(sort[i][0]);
+				create_option.appendChild(txt_option);
+
+				fragment.appendChild(create_option);
+			}
+			select.appendChild(fragment);
+		}
+
+		// make appropriate option selected according to current selected language
+		for (var j = 0; j < select.options.length; j++) {
+			if (select.options[j].value == NS.selectingLang) {
+				select.options[j].selected = "selected";
+			}
+		}
+	};
+
+	NS.buildOptionSynonyms = function(key) {
+		var syn = NS.selectNodeResponce[key];
+
+		var select = getSelect( NS.selectNode['Synonyms'] );
+
+		NS.selectNode['Synonyms'].clear();
+
+		for (var i = 0; i < syn.length; i++) {
+			var option = document.createElement('option');
+				option.text = syn[i];
+				option.value = syn[i];
+
+			select.$.add(option, i);
+		}
+
+		NS.selectNode['Synonyms'].getInputElement().$.firstChild.selected = true;
+		NS.textNode['Thesaurus'].setValue(NS.selectNode['Synonyms'].getInputElement().getValue());
+	};
+
+	var setBannerInPlace = function(htmlBanner) {
+		var findBannerPlace = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'banner').getElement();
+		findBannerPlace.setHtml(htmlBanner);
+
+	};
+
+	var overlayBlock = function overlayBlock(opt) {
+		var progress = opt.progress || "",
+			doc = document,
+			target = opt.target || doc.body,
+			overlayId = opt.id || "overlayBlock",
+			opacity = opt.opacity || "0.9",
+			background = opt.background || "#f1f1f1",
+			getOverlay = doc.getElementById(overlayId),
+			thisOverlay = getOverlay || doc.createElement("div");
+
+		thisOverlay.style.cssText = "position: absolute;" +
+			"top:30px;" +
+			"bottom:41px;" +
+			"left:1px;" +
+			"right:1px;" +
+			"z-index: 10020;" +
+			"padding:0;" +
+			"margin:0;" +
+			"background:" + background + ";" +
+			"opacity: " + opacity + ";" +
+			"filter: alpha(opacity=" + opacity * 100 + ");" +
+			"display: none;";
+		thisOverlay.id = overlayId;
+
+		if (!getOverlay) {
+		target.appendChild(thisOverlay);
+		}
+
+		return {
+			setDisable: function() {
+				thisOverlay.style.display = "none";
+			},
+			setEnable: function() {
+				thisOverlay.style.display = "block";
+			}
+		};
+	};
+
+	var buildRadioInputs = function(key, value, check) {
+		var divContainer = new CKEDITOR.dom.element('div'),
+			radioButton = new CKEDITOR.dom.element('input'),
+			radioLabel = new CKEDITOR.dom.element('label'),
+			id = "wscGrammerSuggest" + key + "_" + value;
+
+		divContainer.addClass("cke_dialog_ui_input_radio");
+		divContainer.setAttribute("role", "presentation");
+		divContainer.setStyles({
+			width: "97%",
+			padding: "5px",
+			'white-space': 'normal'
+		});
+
+		radioButton.setAttributes({
+			type: "radio",
+			value: value,
+			name: 'wscGrammerSuggest',
+			id: id
+		});
+		radioButton.setStyles({
+			"float":"left"
+		});
+
+		radioButton.on("click", function(data) {
+			NS.textNode['GrammTab'].setValue(data.sender.getValue());
+		});
+
+		(check) ? radioButton.setAttribute("checked", true) : false;
+
+		radioButton.addClass("cke_dialog_ui_radio_input");
+
+		radioLabel.appendText(key);
+		radioLabel.setAttribute("for", id);
+		radioLabel.setStyles({
+			'display': "block",
+			'line-height': '16px',
+			'margin-left': '18px',
+			'white-space': 'normal'
+		});
+
+		divContainer.append(radioButton);
+		divContainer.append(radioLabel);
+
+		return divContainer;
+	};
+
+	var statusGrammarTab = function(aState) {  //#19221
+		aState = aState || 'true';
+		if(aState !== null && aState == 'false'){
+			hideGrammTab();
+		}
+	};
+
+	var langConstructor = function(lang) {
+		var langSelectBox = new __constructLangSelectbox(lang),
+			selectId = "wscLang" + NS.dialog.getParentEditor().name,
+			selectContainer = document.getElementById(selectId),
+			currentTabId = NS.dialog._.currentTabId,
+			langGroup,
+			frameId = NS.iframeNumber + '_' + currentTabId;
+
+		NS.buildOptionLang(langSelectBox.setLangList, NS.dialog.getParentEditor().name);
+
+		langGroup = langSelectBox.getCurrentLangGroup(NS.selectingLang);
+		if(langGroup) {
+			tabView[langGroup].onShow();
+		}
+		statusGrammarTab(NS.show_grammar);
+
+		selectContainer.onchange = function(e) {
+			var langGroup = langSelectBox.getCurrentLangGroup(this.value),
+				currentTabId = NS.dialog._.currentTabId,
+				cmd;
+
+			e = e || window.event;
+
+			tabView[langGroup].onShow();
+			statusGrammarTab(NS.show_grammar);
+			NS.div_overlay.setEnable();
+			NS.selectingLang = this.value;
+
+			// get command for current opened tan
+			cmd = NS.cmd[currentTabId];
+			// check whether current tab can be opened after language switching
+			if(!langGroup || !tabView[langGroup] || !tabView[langGroup].allowedTabCommands[cmd]) {
+				// if not so - set default tab to open after reload
+				cmd = tabView[langGroup].defaultTabCommand;
+			}
+
+			for(var key in NS.cmd) {
+				if(NS.cmd[key] == cmd) {
+					NS.previousTab = key;
+					break;
+				}
+			}
+
+			appTools.postMessage.send({
+			 	'message': {
+			 		'changeLang': NS.selectingLang,
+			 		'interfaceLang' : NS.interfaceLang,
+			 		'text': NS.dataTemp,
+			 		'cmd': cmd
+			 	},
+				'target': NS.targetFromFrame[frameId],
+				'id': 'selectionLang_outer__page'
+			});
+		};
+
+	};
+
+	var disableButtonSuggest = function(word) {
+		var changeToButton, changeAllButton,
+			styleDisable = function(instanceButton) {
+				var button = NS.dialog.getContentElement(NS.dialog._.currentTabId, instanceButton) || NS.LocalizationButton[instanceButton].instance;
+				button.getElement().hasClass('cke_disabled') ? button.getElement().setStyle('color', '#a0a0a0') : button.disable();
+			},
+			styleEnable = function(instanceButton) {
+				var button = NS.dialog.getContentElement(NS.dialog._.currentTabId, instanceButton) || NS.LocalizationButton[instanceButton].instance;
+				button.enable();
+				button.getElement().setStyle('color', '#333');
+			};
+
+		if (word == 'no_any_suggestions') {
+			word = 'No suggestions';
+
+			changeToButton = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'ChangeTo_button') || NS.LocalizationButton['ChangeTo_button'].instance;
+			changeToButton.disable();
+			changeAllButton = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'ChangeAll') || NS.LocalizationButton['ChangeAll'].instance;
+			changeAllButton.disable();
+
+			styleDisable('ChangeTo_button');
+			styleDisable('ChangeAll');
+
+			return word;
+		} else {
+			styleEnable('ChangeTo_button');
+			styleEnable('ChangeAll');
+
+			return word;
+		}
+	};
+
+	function getSelect( obj ) {
+		if ( obj && obj.domId && obj.getInputElement().$ )
+		return obj.getInputElement();
+		else if ( obj && obj.$ )
+			return obj;
+		return false;
+	}
+
+	var handlerId = {
+		iframeOnload: function(response) {
+			var currentTab = NS.dialog._.currentTabId,
+				tabId = NS.iframeNumber + '_' + currentTab;
+			sendData(NS.targetFromFrame[tabId], NS.cmd[currentTab]);
+		},
+
+		suggestlist: function(response) {
+			delete response.id;
+			NS.div_overlay_no_check.setDisable();
+			hideCurrentFinishChecking();
+			langConstructor(NS.langList);
+
+			var word =  disableButtonSuggest(response.word),
+				suggestionsList = '';
+
+			if (word instanceof Array) {
+				word = response.word[0];
+			}
+
+			word = word.split(',');
+			suggestionsList = word;
+
+			NS.textNode['SpellTab'].setValue(suggestionsList[0]);
+
+			var select = getSelect( selectNode );
+
+			selectNode.clear();
+
+			for (var i = 0; i < suggestionsList.length; i++) {
+				var option = document.createElement('option');
+					option.text = suggestionsList[i];
+					option.value = suggestionsList[i];
+
+				select.$.add(option, i);
+			}
+
+			showCurrentTabs();
+			NS.div_overlay.setDisable();
+
+		},
+
+		grammerSuggest: function(response) {
+			delete response.id;
+			delete response.mocklangs;
+
+			hideCurrentFinishChecking();
+			langConstructor(NS.langList);	// Show select language for this command CKEDITOR.config.wsc_cmd
+			var firstSuggestValue = response.grammSuggest[0];// ? firstSuggestValue = response.grammSuggest[0] : firstSuggestValue = 'No suggestion for this words';
+			NS.grammerSuggest.getElement().setHtml('');
+
+			NS.textNode['GrammTab'].reset();
+			NS.textNode['GrammTab'].setValue(firstSuggestValue);
+
+			NS.textNodeInfo['GrammTab'].getElement().setHtml('');
+			NS.textNodeInfo['GrammTab'].getElement().setText(response.info);
+
+			var arr = response.grammSuggest,
+				len = arr.length,
+				check = true;
+
+				for (var i = 0; i < len; i++) {
+					NS.grammerSuggest.getElement().append(buildRadioInputs(arr[i], arr[i], check));
+					check = false;
+				}
+
+			showCurrentTabs();
+			NS.div_overlay.setDisable();
+		},
+
+		thesaurusSuggest: function(response) {
+			delete response.id;
+			delete response.mocklangs;
+
+			hideCurrentFinishChecking();
+			langConstructor(NS.langList);	// Show select language for this command CKEDITOR.config.wsc_cmd
+			NS.selectNodeResponce = response;
+
+			NS.textNode['Thesaurus'].reset();
+
+			var select = getSelect( NS.selectNode['Categories'] ),
+				count = 0;
+
+			NS.selectNode['Categories'].clear();
+
+			for (var i in response) {
+
+				var option = document.createElement('option');
+					option.text = i;
+					option.value = i;
+
+				select.$.add(option, count);
+				count++
+			}
+
+			var synKey = NS.selectNode['Categories'].getInputElement().getChildren().$[0].value;
+			NS.selectNode['Categories'].getInputElement().getChildren().$[0].selected = true;
+			NS.buildOptionSynonyms(synKey);
+
+			showCurrentTabs();
+			NS.div_overlay.setDisable();
+			count = 0;
+		},
+		finish: function(response) {
+			delete response.id;
+
+			hideCurrentTabs();
+			showCurrentFinishChecking();
+			NS.div_overlay.setDisable();
+		},
+		settext: function(response) {
+			delete response.id;
+
+			var command = NS.dialog.getParentEditor().getCommand( 'checkspell' ),
+				editor = NS.dialog.getParentEditor();
+
+			//set local storage for synchronization before scayt reinit
+			if (editor.scayt && editor.wsc.isSsrvSame) {
+				var	wscUDN = editor.wsc.udn;
+
+					if (!wscUDN) {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', '');
+					} else {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', wscUDN);
+					}
+			}
+
+
+			try {
+				editor.focus();
+			} catch(e) {}
+
+			editor.setData(response.text, function(){
+				NS.dataTemp = '';
+				editor.unlockSelection();
+				editor.fire('saveSnapshot');
+				NS.dialog.hide();
+			});
+
+		},
+		ReplaceText: function(response) {
+
+			delete response.id;
+			NS.div_overlay.setEnable();
+
+			NS.dataTemp = response.text;
+			NS.selectingLang = response.currentLang;
+
+			if (response.cmd = 'spell' && response.len !== '0' && response.len) {
+				NS.div_overlay.setDisable();
+			} else {
+				window.setTimeout(function() {
+					try {
+						NS.div_overlay.setDisable();
+					} catch(e) {}
+				}, 500);
+			}
+
+			SetLocalizationButton(NS.LocalizationButton);
+			SetLocalizationLabel(NS.LocalizationLabel);
+
+		},
+		options_checkbox_send: function(response) {
+			delete response.id;
+
+			var obj = {
+				'osp': appTools.cookie.get('osp'),
+				'udn': appTools.cookie.get('udn'),
+				'cust_dic_ids': NS.cust_dic_ids
+			};
+
+			var currentTabId = NS.dialog._.currentTabId,
+				frameId = NS.iframeNumber + '_' + currentTabId;
+
+			appTools.postMessage.send({
+				'message': obj,
+				'target': NS.targetFromFrame[frameId],
+				'id': 'options_outer__page'
+			});
+		},
+
+		getOptions: function(response) {
+			var udn = response.DefOptions.udn;
+			NS.LocalizationComing = response.DefOptions.localizationButtonsAndText;
+			NS.show_grammar = response.show_grammar;
+			NS.langList = response.lang;
+			NS.bnr = response.bannerId;
+			NS.sessionid = response.sessionid;
+			if (response.bannerId) {
+				NS.setHeightBannerFrame();
+				setBannerInPlace(response.banner);
+			} else {
+				NS.setHeightFrame();
+			}
+
+			if (udn == 'undefined') {
+				if (NS.userDictionaryName) {
+					udn = NS.userDictionaryName;
+
+					var obj = {
+						'osp': appTools.cookie.get('osp'),
+						'udn': NS.userDictionaryName,
+						'cust_dic_ids': NS.cust_dic_ids,
+						'id': 'options_dic_send',
+						'udnCmd': 'create'
+					};
+
+					appTools.postMessage.send({
+						'message': obj,
+						'target': NS.targetFromFrame[frameId]
+					});
+
+				} else{
+					udn = '';
+				}
+			}
+
+			appTools.cookie.set('osp', response.DefOptions.osp);
+			appTools.cookie.set('udn', udn);
+			appTools.cookie.set('cust_dic_ids', response.DefOptions.cust_dic_ids);
+
+			appTools.postMessage.send({
+				'id': 'giveOptions'
+			});
+		},
+
+		options_dic_send: function(response) {
+
+			var obj = {
+				'osp': appTools.cookie.get('osp'),
+				'udn': appTools.cookie.get('udn'),
+				'cust_dic_ids': NS.cust_dic_ids,
+				'id': 'options_dic_send',
+				'udnCmd': appTools.cookie.get('udnCmd')
+			};
+
+			var currentTabId = NS.dialog._.currentTabId,
+				frameId = NS.iframeNumber + '_' + currentTabId;
+
+			appTools.postMessage.send({
+				'message': obj,
+				'target': NS.targetFromFrame[frameId]
+			});
+		},
+		data: function(response) {
+			delete response.id;
+		},
+
+		giveOptions: function() {
+
+		},
+
+		setOptionsConfirmF:function() {
+			 OptionsConfirm(false);
+		},
+
+		setOptionsConfirmT:function() {
+			OptionsConfirm(true);
+		},
+
+		clickBusy: function() {
+			NS.div_overlay.setEnable();
+		},
+
+		suggestAllCame: function() {
+			NS.div_overlay.setDisable();
+			NS.div_overlay_no_check.setDisable();
+		},
+
+		TextCorrect: function() {
+			langConstructor(NS.langList);
+		}
+
+	};
+
+	var handlerIncomingData = function(event) {
+		event = event || window.event;
+		var response = window.JSON.parse(event.data);
+
+		if(response && response.id) {
+			handlerId[response.id](response);
+		}
+	};
+
+	var handlerButtonOptions = function(event) {
+		event = event || window.event;
+
+		var currentTabId = NS.dialog._.currentTabId,
+			frameId = NS.iframeNumber + '_' + currentTabId;
+
+		appTools.postMessage.send({
+			'message': {
+				'cmd': 'Options'
+			},
+			'target': NS.targetFromFrame[frameId],
+			'id': 'cmd'
+		});
+
+	};
+
+	var sendData = function(frameTarget, cmd, sendText, reset_suggest) {
+		cmd = cmd || CKEDITOR.config.wsc_cmd;
+		reset_suggest = reset_suggest || false;
+		sendText = sendText || NS.dataTemp;
+		appTools.postMessage.send({
+			'message': {
+				'customerId': NS.wsc_customerId,
+				'text': sendText,
+				'txt_ctrl': NS.TextAreaNumber,
+				'cmd': cmd,
+				'cust_dic_ids': NS.cust_dic_ids,
+				'udn': NS.userDictionaryName,
+				'slang': NS.selectingLang,
+				'interfaceLang' : NS.interfaceLang,
+				'reset_suggest': reset_suggest,
+				'sessionid': NS.sessionid
+			},
+			'target': frameTarget,
+			'id': 'data_outer__page'
+		});
+
+		NS.div_overlay.setEnable();
+	};
+
+	var tabView = {
+		"superset": {
+			onShow: function() {
+				showThesaurusTab();
+				showGrammTab();
+				showSpellTab();
+			},
+			allowedTabCommands: {
+				"spell": true,
+				"grammar": true,
+				"thes": true
+			},
+			defaultTabCommand: "spell"
+		},
+		"usual": {
+			onShow: function() {
+				hideThesaurusTab();
+				hideGrammTab();
+				showSpellTab();
+			},
+			allowedTabCommands: {
+				"spell": true
+			},
+			defaultTabCommand: "spell"
+		},
+		"rtl": {
+			onShow: function() {
+				hideThesaurusTab();
+				hideGrammTab();
+				showSpellTab();
+			},
+			allowedTabCommands: {
+				"spell": true
+			},
+			defaultTabCommand: "spell"
+		},
+		"spellgrammar": {
+			onShow: function() {
+				hideThesaurusTab();
+				showGrammTab();
+				showSpellTab();
+			},
+			allowedTabCommands: {
+				"spell": true,
+				"grammar": true
+			},
+			defaultTabCommand: "spell"
+		},
+		"spellthes": {
+			onShow: function() {
+				showThesaurusTab();
+				hideGrammTab();
+				showSpellTab();
+			},
+			allowedTabCommands: {
+				"spell": true,
+				"thes": true
+			},
+			defaultTabCommand: "spell"
+		}
+	};
+
+	var showFirstTab = function(scope) {
+		var cmdManger = function(cmdView) {
+			var obj = {};
+			var _getCmd = function(cmd) {
+				for (var tabId in cmdView) {
+					obj[cmdView[tabId]] = tabId;
+				}
+			return obj[cmd];
+			};
+			return {
+				getCmdByTab: _getCmd
+			};
+		};
+
+		var cmdM = new cmdManger(NS.cmd),
+			tabToOpen = cmdM.getCmdByTab(CKEDITOR.config.wsc_cmd);
+
+		showCurrentTabs();
+		scope.selectPage(tabToOpen);
+		NS.sendData(scope);
+	};
+
+	var showThesaurusTab = function() {
+		NS.dialog.showPage('Thesaurus');
+	};
+
+	var hideThesaurusTab = function() {
+		NS.dialog.hidePage('Thesaurus');
+	};
+
+	var showGrammTab = function() {
+		NS.dialog.showPage('GrammTab');
+	};
+
+	var hideGrammTab = function() {
+		NS.dialog.hidePage('GrammTab');
+	};
+
+	var showSpellTab = function() {
+		NS.dialog.showPage('SpellTab');
+	};
+
+	var hideSpellTab = function() {
+		NS.dialog.hidePage('SpellTab');
+	};
+
+	var showCurrentTabs = function() {
+		var target = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'bottomGroup').getElement();
+
+		target.removeStyle('display');
+		target.removeStyle('position');
+		target.removeStyle('left');
+
+		target.show();
+	};
+
+	var hideCurrentTabs = function() {
+		var target = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'bottomGroup').getElement(),
+			activeElement = document.activeElement,
+			focusableElements;
+
+		target.setStyles({
+			display: 'block',
+			position: 'absolute',
+			left: '-9999px'
+		});
+
+		setTimeout(function() {
+			target.removeStyle('display');
+			target.removeStyle('position');
+			target.removeStyle('left');
+
+			target.hide();
+
+			NS.dialog._.editor.focusManager.currentActive.focusNext();
+
+			focusableElements = appTools.misc.findFocusable(NS.dialog.parts.contents);
+			if(!appTools.misc.hasClass(activeElement, 'cke_dialog_tab') && !appTools.misc.hasClass(activeElement, 'cke_dialog_contents_body') && appTools.misc.isVisible(activeElement)) {
+				try {
+					activeElement.focus();
+				} catch(e) {}
+			} else {
+				for(var i = 0, tmpCkEl; i < focusableElements.count(); i++) {
+					tmpCkEl = focusableElements.getItem(i);
+					if(appTools.misc.isVisible(tmpCkEl.$)) {
+						try {
+							tmpCkEl.$.focus();
+						} catch(e) {}
+
+						break;
+					}
+				}
+			}
+		}, 0);
+	};
+
+	var showCurrentFinishChecking = function() {
+		var target = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'BlockFinishChecking').getElement();
+
+		target.removeStyle('display');
+		target.removeStyle('position');
+		target.removeStyle('left');
+
+		target.show();
+	};
+
+	var hideCurrentFinishChecking = function() {
+		var target = NS.dialog.getContentElement(NS.dialog._.currentTabId, 'BlockFinishChecking').getElement(),
+			activeElement = document.activeElement,
+			focusableElements;
+
+		target.setStyles({
+			display: 'block',
+			position: 'absolute',
+			left: '-9999px'
+		});
+
+		setTimeout(function() {
+			target.removeStyle('display');
+			target.removeStyle('position');
+			target.removeStyle('left');
+
+			target.hide();
+
+			NS.dialog._.editor.focusManager.currentActive.focusNext();
+
+			focusableElements = appTools.misc.findFocusable(NS.dialog.parts.contents);
+			if(!appTools.misc.hasClass(activeElement, 'cke_dialog_tab') && !appTools.misc.hasClass(activeElement, 'cke_dialog_contents_body') && appTools.misc.isVisible(activeElement)) {
+				try {
+					activeElement.focus();
+				} catch(e) {}
+			} else {
+				for(var i = 0, tmpCkEl; i < focusableElements.count(); i++) {
+					tmpCkEl = focusableElements.getItem(i);
+					if(appTools.misc.isVisible(tmpCkEl.$)) {
+						try {
+							tmpCkEl.$.focus();
+						} catch(e) {}
+
+						break;
+					}
+				}
+			}
+		}, 0);
+	};
+
+
+
+function __constructLangSelectbox(languageGroup) {
+	if( !languageGroup ) { throw "Languages-by-groups list are required for construct selectbox"; }
+
+	var that = this,
+		o_arr = [],
+		priorLang ="en_US",
+		priorLangTitle = "",
+		currLang = NS.selectingLang;
+
+	for ( var group in languageGroup){
+		for ( var langCode in languageGroup[group]){
+			var langName = languageGroup[group][langCode];
+			if ( langName == priorLang ) {
+				priorLangTitle = langName;
+			} else {
+				o_arr.push( langName );
+			}
+		}
+	}
+
+	o_arr.sort();
+	if(priorLangTitle) {
+		o_arr.unshift( priorLangTitle );
+	}
+
+	var searchGroup = function ( code ){
+		for ( var group in languageGroup){
+			for ( var langCode in languageGroup[group]){
+				if ( langCode.toUpperCase() === code.toUpperCase() ) {
+					return group;
+				}
+			}
+		}
+		return "";
+	};
+
+	var _setLangList = function() {
+		var langList = {},
+			langArray = [];
+		for (var group in languageGroup) {
+			for ( var langCode in languageGroup[group]){
+				langList[languageGroup[group][langCode]] = langCode;
+			}
+		}
+		return langList;
+	};
+
+	var _return = {
+		getCurrentLangGroup: function(code) {
+			return searchGroup(code);
+		},
+		setLangList: _setLangList()
+	};
+
+	return _return;
+}
+
+CKEDITOR.dialog.add('checkspell', function(editor) {
+	var handlerButtons = function(event) {
+			event = event || window.event;
+
+			// because in chrome and safary document.activeElement returns <body> tag. We need to signal that clicked element is active
+			this.getElement().focus();
+
+			NS.div_overlay.setEnable();
+			var currentTabId = NS.dialog._.currentTabId,
+				frameId = NS.iframeNumber + '_' + currentTabId,
+				new_word = NS.textNode[currentTabId].getValue(),
+				cmd = this.getElement().getAttribute("title-cmd");
+
+			appTools.postMessage.send({
+				'message': {
+					'cmd': cmd,
+					'tabId': currentTabId,
+					'new_word': new_word
+				},
+				'target': NS.targetFromFrame[frameId],
+				'id': 'cmd_outer__page'
+			});
+
+			if (cmd == 'ChangeTo' || cmd == 'ChangeAll') {
+				editor.fire('saveSnapshot');
+			}
+
+			if (cmd == 'FinishChecking') {
+				editor.config.wsc_onFinish.call(CKEDITOR.document.getWindow().getFrame());
+			}
+
+		},
+		constraints = {
+			minWidth: 560,
+			minHeight: 444
+		};
+
+	function initView(dialog) {
+		var newViewSettings = {
+				left: parseInt(editor.config.wsc_left, 10),
+				top: parseInt(editor.config.wsc_top, 10),
+				width: parseInt(editor.config.wsc_width, 10),
+				height: parseInt(editor.config.wsc_height, 10)
+			},
+			viewSize = CKEDITOR.document.getWindow().getViewPaneSize(),
+			currentPosition = dialog.getPosition(),
+			currentSize = dialog.getSize(),
+			savePosition = 0;
+
+		if(!dialog._.resized) {
+			var wrapperHeight = currentSize.height - dialog.parts.contents.getSize('height',  !(CKEDITOR.env.gecko || CKEDITOR.env.opera || CKEDITOR.env.ie && CKEDITOR.env.quirks)),
+				wrapperWidth = currentSize.width - dialog.parts.contents.getSize('width', 1);
+
+			if(newViewSettings.width < constraints.minWidth || isNaN(newViewSettings.width)) {
+				newViewSettings.width = constraints.minWidth;
+			}
+			if(newViewSettings.width > viewSize.width - wrapperWidth) {
+				newViewSettings.width = viewSize.width - wrapperWidth;
+			}
+
+			if(newViewSettings.height < constraints.minHeight || isNaN(newViewSettings.height)) {
+				newViewSettings.height = constraints.minHeight;
+			}
+			if(newViewSettings.height > viewSize.height - wrapperHeight) {
+				newViewSettings.height = viewSize.height - wrapperHeight;
+			}
+
+			currentSize.width = newViewSettings.width + wrapperWidth;
+			currentSize.height = newViewSettings.height + wrapperHeight;
+
+			dialog._.fromResizeEvent = false;
+			dialog.resize(newViewSettings.width, newViewSettings.height);
+			setTimeout(function() {
+				dialog._.fromResizeEvent = false;
+				CKEDITOR.dialog.fire('resize', {
+					dialog: dialog,
+					width: newViewSettings.width,
+					height: newViewSettings.height
+				}, editor);
+			}, 300);
+		}
+
+		if(!dialog._.moved) {
+			savePosition = isNaN(newViewSettings.left) && isNaN(newViewSettings.top) ? 0 : 1;
+
+			if(isNaN(newViewSettings.left)) {
+				newViewSettings.left = (viewSize.width - currentSize.width) / 2;
+			}
+			if(newViewSettings.left < 0) {
+				newViewSettings.left = 0;
+			}
+			if(newViewSettings.left > viewSize.width - currentSize.width) {
+				newViewSettings.left = viewSize.width - currentSize.width;
+			}
+
+			if(isNaN(newViewSettings.top)) {
+				newViewSettings.top = (viewSize.height - currentSize.height) / 2;
+			}
+			if(newViewSettings.top < 0) {
+				newViewSettings.top = 0;
+			}
+			if(newViewSettings.top > viewSize.height - currentSize.height) {
+				newViewSettings.top = viewSize.height - currentSize.height;
+			}
+
+			dialog.move(newViewSettings.left, newViewSettings.top, savePosition);
+		}
+	}
+
+	function createWscObjectForUdAndUdnSyncrhonization() {
+		editor.wsc = {};
+
+		//DataStorage object for cookies and localStorage manipulation
+		(function( object ) {
+			'use strict';
+
+			var DataTypeManager = {
+				separator: '<$>',
+				getDataType: function(value) {
+					var type;
+
+					if(typeof value === 'undefined') {
+						type = 'undefined';
+					} else if(value === null) {
+						type = 'null';
+					} else {
+						type = Object.prototype.toString.call(value).slice(8, -1);
+					}
+					return type;
+				},
+				convertDataToString: function(value) {
+					var str,
+						type = this.getDataType(value).toLowerCase();
+
+					str = type + this.separator + value;
+					return str;
+				},
+				// get value type and convert value due to type, since all stored values are String
+				restoreDataFromString: function(str) {
+					var value = str,
+						type,
+						separatorStartIndex;
+
+					// @TODO: remove this line much later. Support of old format for options
+					str = this.backCompatibility(str);
+
+					if(typeof str === 'string') {
+						separatorStartIndex = str.indexOf(this.separator);
+						type = str.substring(0, separatorStartIndex);
+						value = str.substring(separatorStartIndex + this.separator.length);
+
+						switch(type) {
+							case 'boolean':
+								value = value === 'true';
+							break;
+							case 'number':
+								value = parseFloat(value);
+							break;
+							// we assume that we will store string values only, due to performance
+							case 'array':
+								value = value === '' ? [] : value.split(',');
+							break;
+							case 'null':
+								value = null;
+							break;
+							case 'undefined':
+								value = undefined;
+							break;
+						}
+					}
+					return value;
+				},
+				// old data type support
+				// here we trying to convert data from old format into new
+				// @TODO: remove this function much later
+				backCompatibility: function(str) {
+					var convertedStr = str,
+						value,
+						separatorStartIndex;
+
+					if(typeof str === 'string') {
+						separatorStartIndex = str.indexOf(this.separator);
+						// is it old format?
+						if(separatorStartIndex < 0) {
+							// try to get number from string
+							value = parseFloat(str);
+							// is it not a number?
+							if(isNaN(value)) {
+								// yes, this is not a number. Lets check is this is an array "[comma,separated,values]"
+								if((str[0] === '[') && (str[str.length - 1] === ']')) {
+									// this is an array. Lets remove brackets symbols and extract the words
+									str = str.replace('[', '');
+									str = str.replace(']', '');
+									if(str === '') {
+										value = [];
+									} else {
+										value = str.split(',');
+									}
+									// value = str === '[]' ? [] : str.split(',');
+								} else if(str === 'true' || str === 'false') {
+									// this is boolean value
+									value = str === 'true';
+								} else {
+									// this is string
+									value = str;
+								}
+							}
+
+							convertedStr = this.convertDataToString(value);
+						}
+					}
+
+					return convertedStr;
+				}
+			};
+
+			var LocalStorage = {
+
+				get: function( key ) {
+					var value = DataTypeManager.restoreDataFromString( window.localStorage.getItem(key) );
+					return value;
+				},
+
+				set: function( key, value ) {
+					var _value = DataTypeManager.convertDataToString( value );
+					window.localStorage.setItem( key, _value );
+				},
+
+				del: function( key ) {
+					window.localStorage.removeItem( key );
+				},
+
+				clear: function() {
+					window.localStorage.clear();
+				}
+			};
+
+			var CookiesStorage = {
+
+				expiration: (function() {
+					return 60 * 60 * 24 * 366;
+				}()),
+
+				get: function(key) {
+					var value = DataTypeManager.restoreDataFromString(this.getCookie(key));
+					return value;
+				},
+
+				set: function(key, value) {
+					var _value = DataTypeManager.convertDataToString(value);
+					this.setCookie(key, _value, {expires: this.expiration});
+				},
+
+				del: function(key) {
+					this.deleteCookie(key);
+				},
+
+				getCookie: function(name) {
+					var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+					return matches ? decodeURIComponent(matches[1]) : undefined;
+				},
+
+				setCookie: function(name, value, props) {
+					props = props || {};
+					var exp = props.expires;
+
+					if (typeof exp === "number" && exp) {
+						var d = new Date();
+
+						d.setTime(d.getTime() + exp * 1000);
+						exp = props.expires = d;
+					}
+
+					if(exp && exp.toUTCString) {
+						props.expires = exp.toUTCString();
+					}
+
+					value = encodeURIComponent(value);
+					var updatedCookie = name + "=" + value;
+
+					for(var propName in props) {
+						var propValue = props[propName];
+
+						updatedCookie += "; " + propName;
+
+						if(propValue !== true) {
+							updatedCookie += "=" + propValue;
+						}
+					}
+
+					document.cookie = updatedCookie;
+				},
+
+				deleteCookie: function(name) {
+					this.setCookie(name, null, {expires: -1});
+				},
+
+				// delete all cookies
+				clear: function() {
+					var cookies = document.cookie.split(";");
+
+					for (var i = 0; i < cookies.length; i++) {
+						var cookie = cookies[i];
+						var eqPos = cookie.indexOf("=");
+						var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+
+						this.deleteCookie(name);
+					}
+				}
+			};
+
+			var strategy = window.localStorage ? LocalStorage : CookiesStorage;
+
+			var DataStorage = {
+				// Get data within storage for key
+				getData: function( key ) {
+					return strategy.get( key );
+				},
+
+				// Set data within storage
+				setData: function( key, value ) {
+					strategy.set( key, value );
+				},
+
+				// Delete data within storage for key
+				deleteData: function( key ) {
+					strategy.del( key );
+				},
+
+				// Clear storage
+				clear: function() {
+					strategy.clear();
+				}
+			};
+
+			// Static Module of Storage Data in the localStorage.
+			object.DataStorage = DataStorage;
+		}( editor.wsc ));
+
+		editor.wsc.operationWithUDN = function(command, UDName) {
+			var obj = {
+				'udn': UDName,
+				'id': 'operationWithUDN',
+				'udnCmd': command
+			};
+			var currentTabId = NS.dialog._.currentTabId,
+				frameId = NS.iframeNumber + '_' + currentTabId;
+
+			appTools.postMessage.send({
+				'message': obj,
+				'target': NS.targetFromFrame[frameId]
+			});
+		};
+		editor.wsc.getLocalStorageUDN = function() {
+			var udn = editor.wsc.DataStorage.getData('scayt_user_dictionary_name');
+
+			if (!udn) {
+				return;
+			}
+
+			return udn;
+		};
+		editor.wsc.getLocalStorageUD = function() {
+			var ud = editor.wsc.DataStorage.getData('scayt_user_dictionary');
+
+			if (!ud) {
+				return;
+			}
+
+			return ud;
+		};
+		editor.wsc.addWords = function(words, callback) {
+			var url = editor.config.wsc.DefaultParams.serviceHost + editor.config.wsc.DefaultParams.ssrvHost +
+						'?cmd=dictionary&format=json&' +
+						'customerid=1%3AncttD3-fIoSf2-huzwE4-Y5muI2-mD0Tt-kG9Wz-UEDFC-tYu243-1Uq474-d9Z2l3&' +
+						'action=addword&word='+ words + '&callback=toString&synchronization=true',
+				script = document.createElement('script');
+
+			script['type'] = 'text/javascript';
+			script['src'] = url;
+			document.getElementsByTagName("head")[0].appendChild(script);
+
+			//chrome, firefox, safari
+			script.onload = callback;
+
+			//IE
+			script.onreadystatechange = function() {
+				if (this.readyState === 'loaded') {
+					callback();
+				}
+			};
+		};
+		editor.wsc.cgiOrigin = function() {
+			var wscServiceHostString = editor.config.wsc.DefaultParams.serviceHost,
+				wscServiceHostArray = wscServiceHostString.split('/'),
+				cgiOrigin = wscServiceHostArray[0] + '//' + wscServiceHostArray[2];
+
+			return cgiOrigin;
+		};
+		editor.wsc.isSsrvSame = false;
+	}
+
+ return {
+		title: editor.config.wsc_dialogTitle || editor.lang.wsc.title,
+		minWidth: constraints.minWidth,
+		minHeight: constraints.minHeight,
+		buttons: [CKEDITOR.dialog.cancelButton],
+		onLoad: function() {
+			NS.dialog = this;
+			hideThesaurusTab();
+			hideGrammTab();
+			showSpellTab();
+
+			//creating wsc object for UD synchronization between wsc and scayt
+			if (editor.plugins.scayt) {
+				createWscObjectForUdAndUdnSyncrhonization();
+			}
+		},
+		onShow: function() {
+			NS.dialog = this;
+
+			editor.lockSelection(editor.getSelection());
+
+			NS.TextAreaNumber = 'cke_textarea_' + editor.name;
+			appTools.postMessage.init(handlerIncomingData);
+			NS.dataTemp = editor.getData();
+			//NS.div_overlay.setDisable();
+			NS.OverlayPlace = NS.dialog.parts.tabs.getParent().$;
+			if(CKEDITOR && CKEDITOR.config){
+				NS.wsc_customerId =  editor.config.wsc_customerId;
+				NS.cust_dic_ids = editor.config.wsc_customDictionaryIds;
+				NS.userDictionaryName = editor.config.wsc_userDictionaryName;
+				NS.defaultLanguage = CKEDITOR.config.defaultLanguage;
+				var	protocol = document.location.protocol == "file:" ? "http:" : document.location.protocol;
+				var wscCoreUrl = editor.config.wsc_customLoaderScript  || ( protocol + '//www.webspellchecker.net/spellcheck3/script/ssrv.cgi?plugin=fck2&customerid=' + NS.wsc_customerId + '&cmd=script&doc=wsc&schema=22');
+			} else {
+				NS.dialog.hide();
+				return;
+			}
+
+			initView(this);
+			CKEDITOR.scriptLoader.load(wscCoreUrl, function(success) {
+				if(CKEDITOR.config && CKEDITOR.config.wsc && CKEDITOR.config.wsc.DefaultParams){
+					NS.serverLocationHash = CKEDITOR.config.wsc.DefaultParams.serviceHost;
+					NS.logotype = CKEDITOR.config.wsc.DefaultParams.logoPath;
+					NS.loadIcon = CKEDITOR.config.wsc.DefaultParams.iconPath;
+					NS.loadIconEmptyEditor = CKEDITOR.config.wsc.DefaultParams.iconPathEmptyEditor;
+					NS.LangComparer = new CKEDITOR.config.wsc.DefaultParams._SP_FCK_LangCompare();
+				}else{
+					NS.serverLocationHash = DefaultParams.serviceHost;
+					NS.logotype = DefaultParams.logoPath;
+					NS.loadIcon = DefaultParams.iconPath;
+					NS.loadIconEmptyEditor = DefaultParams.iconPathEmptyEditor;
+					NS.LangComparer = new _SP_FCK_LangCompare();
+				}
+
+				NS.pluginPath = CKEDITOR.getUrl(editor.plugins.wsc.path);
+				NS.iframeNumber = NS.TextAreaNumber;
+				NS.templatePath = NS.pluginPath + 'dialogs/tmp.html';
+				NS.LangComparer.setDefaulLangCode( NS.defaultLanguage );
+				NS.currentLang = editor.config.wsc_lang || NS.LangComparer.getSPLangCode( editor.langCode ) || 'en_US';
+				NS.interfaceLang = editor.config.wsc_interfaceLang; //option to customize the interface language 12/28/2015
+				NS.selectingLang = NS.currentLang;
+				NS.div_overlay = new overlayBlock({
+					opacity: "1",
+					background: "#fff url(" + NS.loadIcon + ") no-repeat 50% 50%",
+					target: NS.OverlayPlace
+
+				});
+
+				var number_ck = NS.dialog.parts.tabs.getId(),
+					dialogPartsTab = CKEDITOR.document.getById(number_ck);
+
+				dialogPartsTab.setStyle('width', '97%');
+				if (!dialogPartsTab.getElementsByTag('DIV').count()){
+					dialogPartsTab.append(NS.buildSelectLang(NS.dialog.getParentEditor().name));
+				}
+
+				NS.div_overlay_no_check = new overlayBlock({
+					opacity: "1",
+					id: 'no_check_over',
+					background: "#fff url(" + NS.loadIconEmptyEditor + ") no-repeat 50% 50%",
+					target: NS.OverlayPlace
+				});
+
+				if (success) {
+					showFirstTab(NS.dialog);
+					NS.dialog.setupContent(NS.dialog);
+				}
+
+				if (editor.plugins.scayt) {
+					//is ssrv.cgi path for WSC and scayt same
+					editor.wsc.isSsrvSame = (function() {
+						var wscSsrvWholePath,
+							wscServiceHost = CKEDITOR.config.wsc.DefaultParams.serviceHost.replace('lf/22/js/../../../', '').split('//')[1],
+							wscSsrvHost = CKEDITOR.config.wsc.DefaultParams.ssrvHost,
+							scaytSsrvWholePath,
+							scaytSsrvProtocol,
+							scaytSsrvHost,
+							scaytSsrvPath,
+
+							scaytSrcUrl = editor.config.scayt_srcUrl,
+							scaytSsrvSrcUrlSsrvProtocol,
+							scaytSsrvSrcUrlSsrvHost,
+							scaytSsrvSrcUrlSsrvPath,
+
+							scaytBasePath,
+							scaytBasePathSsrvProtocol,
+							scaytBasePathSsrvHost,
+							scaytBasePathSsrvPath;
+
+						if (window.SCAYT && window.SCAYT.CKSCAYT) {
+							scaytBasePath = SCAYT.CKSCAYT.prototype.basePath;
+							scaytBasePathSsrvProtocol = scaytBasePath.split('//')[0];
+							scaytBasePathSsrvHost = scaytBasePath.split('//')[1].split('/')[0];
+							scaytBasePathSsrvPath = scaytBasePath.split(scaytBasePathSsrvHost + '/')[1].replace('/lf/scayt3/ckscayt/', '') + '/script/ssrv.cgi';
+						}
+
+						if (scaytSrcUrl && !scaytBasePath && !editor.config.scayt_servicePath) {
+							scaytSsrvSrcUrlSsrvProtocol = scaytSrcUrl.split('//')[0];
+							scaytSsrvSrcUrlSsrvHost = scaytSrcUrl.split('//')[1].split('/')[0];
+							scaytSsrvSrcUrlSsrvPath = scaytSrcUrl.split(scaytSsrvSrcUrlSsrvHost + '/')[1].replace('/lf/scayt3/ckscayt/ckscayt.js', '') + '/script/ssrv.cgi';
+						}
+
+						scaytSsrvProtocol = editor.config.scayt_serviceProtocol || scaytBasePathSsrvProtocol || scaytSsrvSrcUrlSsrvProtocol;
+						scaytSsrvHost = editor.config.scayt_serviceHost || scaytBasePathSsrvHost || scaytSsrvSrcUrlSsrvHost;
+						scaytSsrvPath = editor.config.scayt_servicePath || scaytBasePathSsrvPath || scaytSsrvSrcUrlSsrvPath;
+
+						wscSsrvWholePath = '//' + wscServiceHost + wscSsrvHost;
+						scaytSsrvWholePath = '//' + scaytSsrvHost + '/' + scaytSsrvPath;
+
+						return wscSsrvWholePath === scaytSsrvWholePath;
+					})();
+				}
+
+				//wsc on scayt UserDictionary and UserDictionaryName synchronization
+				if (window.SCAYT && editor.wsc && editor.wsc.isSsrvSame) {
+					var cgiOrigin = editor.wsc.cgiOrigin();
+					editor.wsc.syncIsDone = false;
+
+					var getUdOrUdn = function (e) {
+						if (e.origin === cgiOrigin) {
+							var data = JSON.parse(e.data);
+
+							if (data.ud && data.ud !== 'undefined') {
+								editor.wsc.ud = data.ud;
+							} else if (data.ud === 'undefined') {
+								editor.wsc.ud = undefined;
+							}
+
+							if (data.udn && data.udn !== 'undefined') {
+								editor.wsc.udn = data.udn;
+							} else if (data.udn === 'undefined') {
+								editor.wsc.udn = undefined;
+							}
+
+							if (!editor.wsc.syncIsDone) {
+								udSynchronization(editor.wsc.ud);
+								editor.wsc.syncIsDone = true;
+							}
+						}
+					};
+
+					var udSynchronization = function(cookieUd) {
+						var localStorageUdArray = editor.wsc.getLocalStorageUD(),
+							newUd;
+
+						if (localStorageUdArray instanceof Array) {
+							newUd = localStorageUdArray.toString();
+						}
+
+						if (newUd !== undefined && newUd !== '') {
+							setTimeout(function() {
+								editor.wsc.addWords(newUd, function() {
+									showFirstTab(NS.dialog);
+									NS.dialog.setupContent(NS.dialog);
+								});
+							}, 400);
+						}
+					};
+
+					if (window.addEventListener){
+						addEventListener("message", getUdOrUdn, false);
+					} else {
+						window.attachEvent("onmessage", getUdOrUdn);
+					}
+
+					//wsc on scayt UserDictionaryName synchronization
+					setTimeout(
+						function() {
+							var udn = editor.wsc.getLocalStorageUDN();
+
+							if (udn !== undefined) {
+								editor.wsc.operationWithUDN('restore', udn);
+							}
+
+						},
+					500); //need to wait spell.js file to load
+
+				}
+			});
+
+		},
+		onHide: function() {
+			var scaytPlugin = CKEDITOR.plugins.scayt,
+				scaytInstance = editor.scayt;
+
+			editor.unlockSelection();
+
+			if(scaytPlugin && scaytInstance && scaytPlugin.state[editor.name]) {
+				scaytInstance.setMarkupPaused(false);
+			}
+
+			NS.dataTemp = '';
+			NS.sessionid = '';
+			appTools.postMessage.unbindHandler(handlerIncomingData);
+
+			//scayt on wsc UserDictionary and UserDictionaryName synchronization
+			if (editor.plugins.scayt && editor.wsc && editor.wsc.isSsrvSame) {
+				var	wscUDN = editor.wsc.udn,
+					wscUD = editor.wsc.ud,
+					wscUDarray,
+					i;
+
+				if (editor.scayt) { // if SCAYT active
+					if (!wscUDN) {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', '');
+						editor.scayt.removeUserDictionary();
+					} else {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', wscUDN);
+						editor.scayt.restoreUserDictionary(wscUDN);
+					}
+
+					if (wscUD) {
+						setTimeout(function() {
+							wscUDarray = wscUD.split(',');
+							for (i = 0; i < wscUDarray.length; i += 1) {
+								editor.scayt.addWordToUserDictionary(wscUDarray[i]);
+							}
+						}, 200); //wait for 'removeUserDictionary' command response
+					}
+
+					if (!wscUD) {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary', []);
+					}
+
+				} else { //if SCAYT not active
+
+					if (!wscUDN) {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', '');
+					} else {
+						editor.wsc.DataStorage.setData('scayt_user_dictionary_name', wscUDN);
+					}
+
+					if (wscUD) {
+						wscUDarray = wscUD.split(',');
+						editor.wsc.DataStorage.setData('scayt_user_dictionary', wscUDarray);
+					}
+				}
+			}
+		},
+		contents: [
+			{
+				id: 'SpellTab',
+				label: 'SpellChecker',
+				accessKey: 'S',
+				elements: [
+					{
+						type: 'html',
+						id: 'banner',
+						label: 'banner',
+						style: '', //TODO
+						html: '<div></div>'
+					},
+					{
+						type: 'html',
+						id: 'Content',
+						label: 'spellContent',
+						html: '',
+						setup: function(dialog) {
+							var tabId = NS.iframeNumber + '_' + dialog._.currentTabId;
+							var iframe = document.getElementById(tabId);
+							NS.targetFromFrame[tabId] = iframe.contentWindow;
+						}
+					},
+					{
+						type: 'hbox',
+						id: 'bottomGroup',
+						style: 'width:560px; margin: 0 auto;',
+						widths: ['50%', '50%'],
+						className: 'wsc-spelltab-bottom',
+						children: [
+							{
+								type: 'hbox',
+								id: 'leftCol',
+								align: 'left',
+								width: '50%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol1',
+										widths: ['50%', '50%'],
+										children: [
+											{
+												type: 'text',
+												id: 'ChangeTo_label',
+												label: NS.LocalizationLabel['ChangeTo_label'].text + ':',
+												labelLayout: 'horizontal',
+												labelStyle: 'font: 12px/25px arial, sans-serif;',
+												width: '140px',
+												'default': '',
+												onShow: function() {
+													NS.textNode['SpellTab'] = this;
+													NS.LocalizationLabel['ChangeTo_label'].instance = this;
+												},
+												onHide: function() {
+													this.reset();
+												}
+											},
+											{
+												type: 'hbox',
+												id: 'rightCol',
+												align: 'right',
+												width: '30%',
+												children: [
+													{
+														type: 'vbox',
+														id: 'rightCol_col__left',
+														children: [
+															{
+																type: 'text',
+																id: 'labelSuggestions',
+																label: NS.LocalizationLabel['Suggestions'].text + ':',
+																onShow: function() {
+																	NS.LocalizationLabel['Suggestions'].instance = this;
+																	this.getInputElement().setStyles({
+																		display: 'none'
+																	});
+																}
+															},
+						 									{
+																type: 'html',
+																id: 'logo',
+																html: '',
+																setup: function(dialog) {
+																	this.getElement().$.src = NS.logotype;
+																	this.getElement().getParent().setStyles({
+																		"text-align": "left"
+																	});
+																}
+															}
+														]
+													},
+													{
+														type: 'select',
+														id: 'list_of_suggestions',
+														labelStyle: 'font: 12px/25px arial, sans-serif;',
+														size: '6',
+														inputStyle: 'width: 140px; height: auto;',
+														items: [['loading...']],
+														onShow: function() {
+															selectNode = this;
+														},
+														onChange: function() {
+															NS.textNode['SpellTab'].setValue(this.getValue());
+														}
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								type: 'hbox',
+								id: 'rightCol',
+								align: 'right',
+								width: '50%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol_col__left',
+										widths: ['50%', '50%', '50%', '50%'],
+										children: [
+											{
+												type: 'button',
+												id: 'ChangeTo_button',
+												label: NS.LocalizationButton['ChangeTo_button'].text,
+												title: 'Change to',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'ChangeTo');
+													NS.LocalizationButton['ChangeTo_button'].instance = this;
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'ChangeAll',
+												label: NS.LocalizationButton['ChangeAll'].text,
+												title: 'Change All',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+													NS.LocalizationButton['ChangeAll'].instance = this;
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'AddWord',
+												label: NS.LocalizationButton['AddWord'].text,
+												title: 'Add word',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+													NS.LocalizationButton['AddWord'].instance = this;
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'FinishChecking_button',
+												label: NS.LocalizationButton['FinishChecking_button'].text,
+												title: 'Finish Checking',
+												style: 'width: 100%;margin-top: 9px;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'FinishChecking');
+													NS.LocalizationButton['FinishChecking_button'].instance = this;
+												},
+												onClick: handlerButtons
+											}
+										]
+									},
+									{
+										type: 'vbox',
+										id: 'rightCol_col__right',
+										widths: ['50%', '50%', '50%'],
+										children: [
+											{
+												type: 'button',
+												id: 'IgnoreWord',
+												label: NS.LocalizationButton['IgnoreWord'].text,
+												title: 'Ignore word',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+													NS.LocalizationButton['IgnoreWord'].instance = this;
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'IgnoreAllWords',
+												label: NS.LocalizationButton['IgnoreAllWords'].text,
+												title: 'Ignore all words',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+													NS.LocalizationButton['IgnoreAllWords'].instance = this;
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'Options',
+												label: NS.LocalizationButton['Options'].text,
+												title: 'Option',
+												style: 'width: 100%;',
+												onLoad: function() {
+													NS.LocalizationButton['Options'].instance = this;
+													if (document.location.protocol == "file:") {
+														this.disable();
+													}
+												},
+												onClick: function() {
+													// because in chrome and safary document.activeElement returns <body> tag. We need to signal that clicked element is active
+													this.getElement().focus();
+
+													if (document.location.protocol == "file:") {
+														alert('WSC: Options functionality is disabled when runing from file system');
+													} else {
+														activeElement = document.activeElement;
+														editor.openDialog('options');
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+				]
+			},
+			{
+				type: 'hbox',
+				id: 'BlockFinishChecking',
+				style: 'width:560px; margin: 0 auto;',
+				widths: ['70%', '30%'],
+				onShow: function() {
+					this.getElement().setStyles({
+						display: 'block',
+						position: 'absolute',
+						left: '-9999px'
+					});
+				},
+				onHide: showCurrentTabs,
+				children: [
+					{
+						type: 'hbox',
+						id: 'leftCol',
+						align: 'left',
+						width: '70%',
+						children: [
+							{
+								type: 'vbox',
+								id: 'rightCol1',
+								setup: function() {
+									this.getChild()[0].getElement().$.src = NS.logotype;
+									this.getChild()[0].getElement().getParent().setStyles({
+										"text-align": "center"
+									});
+								},
+								children: [
+									{
+										type: 'html',
+										id: 'logo',
+										html: ''
+									}
+								]
+							}
+						]
+					},
+					{
+						type: 'hbox',
+						id: 'rightCol',
+						align: 'right',
+						width: '30%',
+						children: [
+							{
+								type: 'vbox',
+								id: 'rightCol_col__left',
+								children: [
+									{
+										type: 'button',
+										id: 'Option_button',
+										label: NS.LocalizationButton['Options'].text,
+										title: 'Option',
+										style: 'width: 100%;',
+										onLoad: function() {
+											this.getElement().setAttribute("title-cmd", this.id);
+											if (document.location.protocol == "file:") {
+												this.disable();
+											}
+										},
+										onClick: function() {
+											// because in chrome and safary document.activeElement returns <body> tag. We need to signal that clicked element is active
+											this.getElement().focus();
+
+											if (document.location.protocol == "file:") {
+												alert('WSC: Options functionality is disabled when runing from file system');
+											} else {
+												activeElement = document.activeElement;
+												editor.openDialog('options');
+											}
+										}
+									},
+									{
+										type: 'button',
+										id: 'FinishChecking_button_block',
+										label: NS.LocalizationButton['FinishChecking_button_block'].text,
+										title: 'Finish Checking',
+										style: 'width: 100%;',
+										onLoad: function() {
+											this.getElement().setAttribute("title-cmd", 'FinishChecking');
+										},
+										onClick: handlerButtons
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+		},
+			{
+				id: 'GrammTab',
+				label: 'Grammar',
+				accessKey: 'G',
+				elements: [
+					{
+						type: 'html',
+						id: 'banner',
+						label: 'banner',
+						style: '', //TODO
+						html: '<div></div>'
+					},
+					{
+						type: 'html',
+						id: 'Content',
+						label: 'GrammarContent',
+						html: '',
+						setup: function() {
+							var tabId = NS.iframeNumber + '_' + NS.dialog._.currentTabId;
+							var iframe = document.getElementById(tabId);
+							NS.targetFromFrame[tabId] = iframe.contentWindow;
+						}
+					},
+					{
+						type: 'vbox',
+						id: 'bottomGroup',
+						style: 'width:560px; margin: 0 auto;',
+						children: [
+							{
+								type: 'hbox',
+								id: 'leftCol',
+								widths: ['66%', '34%'],
+								children: [
+									{
+										type: 'vbox',
+										children: [
+											{
+												type: 'text',
+												id: 'text',
+												label: "Change to:",
+												labelLayout: 'horizontal',
+												labelStyle: 'font: 12px/25px arial, sans-serif;',
+												inputStyle: 'float: right; width: 200px;',
+												'default': '',
+												onShow: function() {
+													NS.textNode['GrammTab'] = this;
+												},
+												onHide: function() {
+													this.reset();
+												}
+											},
+											{
+												type: 'html',
+												id: 'html_text',
+												html: "<div style='min-height: 17px; line-height: 17px; padding: 5px; text-align: left;background: #F1F1F1;color: #595959; white-space: normal!important;'></div>",
+												onShow: function(e) {
+													NS.textNodeInfo['GrammTab'] = this;
+												}
+											},
+											{
+												type: 'html',
+												id: 'radio',
+												html: "",
+												onShow: function() {
+													NS.grammerSuggest = this;
+												}
+											}
+										]
+									},
+									{
+										type: 'vbox',
+										children: [
+											{
+												type: 'button',
+												id: 'ChangeTo_button',
+												label: 'Change to',
+												title: 'Change to',
+												style: 'width: 133px; float: right;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'ChangeTo');
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'IgnoreWord',
+												label: 'Ignore word',
+												title: 'Ignore word',
+												style: 'width: 133px; float: right;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'IgnoreAllWords',
+												label: 'Ignore Problem',
+												title: 'Ignore Problem',
+												style: 'width: 133px; float: right;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", this.id);
+												},
+												onClick: handlerButtons
+											},
+											{
+												type: 'button',
+												id: 'FinishChecking_button',
+												label: NS.LocalizationButton['FinishChecking_button'].text,
+												title: 'Finish Checking',
+												style: 'width: 133px; float: right; margin-top: 9px;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'FinishChecking');
+												},
+												onClick: handlerButtons
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						type: 'hbox',
+						id: 'BlockFinishChecking',
+						style: 'width:560px; margin: 0 auto;',
+						widths: ['70%', '30%'],
+						onShow: function() {
+							this.getElement().setStyles({
+								display: 'block',
+								position: 'absolute',
+								left: '-9999px'
+							});
+						},
+						onHide: showCurrentTabs,
+						children: [
+							{
+								type: 'hbox',
+								id: 'leftCol',
+								align: 'left',
+								width: '70%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol1',
+										children: [
+											{
+												type: 'html',
+												id: 'logo',
+												html: '',
+												setup: function() {
+													this.getElement().$.src = NS.logotype;
+													this.getElement().getParent().setStyles({
+														"text-align": "center"
+													});
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								type: 'hbox',
+								id: 'rightCol',
+								align: 'right',
+								width: '30%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol_col__left',
+										children: [
+											{
+												type: 'button',
+												id: 'FinishChecking_button_block',
+												label: NS.LocalizationButton['FinishChecking_button_block'].text,
+												title: 'Finish Checking',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'FinishChecking');
+												},
+												onClick: handlerButtons
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				id: 'Thesaurus',
+				label: 'Thesaurus',
+				accessKey: 'T',
+				elements: [
+					{
+						type: 'html',
+						id: 'banner',
+						label: 'banner',
+						style: '', //TODO
+						html: '<div></div>'
+					},
+					{
+						type: 'html',
+						id: 'Content',
+						label: 'spellContent',
+						html: '',
+						setup: function() {
+							var tabId = NS.iframeNumber + '_' + NS.dialog._.currentTabId;
+							var iframe = document.getElementById(tabId);
+							NS.targetFromFrame[tabId] = iframe.contentWindow;
+						}
+					},
+					{
+						type: 'vbox',
+						id: 'bottomGroup',
+						style: 'width:560px; margin: -10px auto; overflow: hidden;',
+						children: [
+							{
+								type: 'hbox',
+								widths: ['75%', '25%'],
+								children: [
+									{
+										type: 'vbox',
+										children: [
+											{
+												type: 'hbox',
+												widths: ['65%', '35%'],
+												children: [
+													{
+														type: 'text',
+														id: 'ChangeTo_label',
+														label: NS.LocalizationLabel['ChangeTo_label'].text + ':',
+														labelLayout: 'horizontal',
+														inputStyle: 'width: 160px;',
+														labelStyle: 'font: 12px/25px arial, sans-serif;',
+														'default': '',
+														onShow: function(e) {
+															NS.textNode['Thesaurus'] = this;
+															NS.LocalizationLabel['ChangeTo_label'].instance = this;
+														},
+														onHide: function() {
+															this.reset();
+														}
+													},
+													{
+														type: 'button',
+														id: 'ChangeTo_button',
+														label: NS.LocalizationButton['ChangeTo_button'].text,
+														title: 'Change to',
+														style: 'width: 121px; margin-top: 1px;',
+														onLoad: function() {
+															this.getElement().setAttribute("title-cmd", 'ChangeTo');
+															NS.LocalizationButton['ChangeTo_button'].instance = this;
+														},
+														onClick: handlerButtons
+													}
+												]
+											},
+											{
+												type: 'hbox',
+												children: [
+													{
+														type: 'select',
+														id: 'Categories',
+														label: NS.LocalizationLabel['Categories'].text + ':',
+														labelStyle: 'font: 12px/25px arial, sans-serif;',
+														size: '5',
+														inputStyle: 'width: 180px; height: auto;',
+														items: [],
+														onShow: function() {
+															NS.selectNode['Categories'] = this;
+															NS.LocalizationLabel['Categories'].instance = this;
+														},
+														onChange: function() {
+															NS.buildOptionSynonyms(this.getValue());
+														}
+													},
+													{
+														type: 'select',
+														id: 'Synonyms',
+														label: NS.LocalizationLabel['Synonyms'].text + ':',
+														labelStyle: 'font: 12px/25px arial, sans-serif;',
+														size: '5',
+														inputStyle: 'width: 180px; height: auto;',
+														items: [],
+														onShow: function() {
+															NS.selectNode['Synonyms'] = this;
+															NS.textNode['Thesaurus'].setValue(this.getValue());
+															NS.LocalizationLabel['Synonyms'].instance = this;
+														},
+														onChange: function(e) {
+															NS.textNode['Thesaurus'].setValue(this.getValue());
+														}
+													}
+												]
+											}
+										]
+									},
+									{
+										type: 'vbox',
+										width: '120px',
+										style: "margin-top:46px;",
+										children: [
+											{
+												type: 'html',
+												id: 'logotype',
+												label: 'WebSpellChecker.net',
+												html: '',
+												setup: function() {
+													this.getElement().$.src = NS.logotype;
+													this.getElement().getParent().setStyles({
+														"text-align": "center"
+													});
+												}
+											},
+											{
+												type: 'button',
+												id: 'FinishChecking_button',
+												label: NS.LocalizationButton['FinishChecking_button'].text,
+												title: 'Finish Checking',
+												style: 'width: 100%; float: right; margin-top: 9px;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'FinishChecking');
+												},
+												onClick: handlerButtons
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						type: 'hbox',
+						id: 'BlockFinishChecking',
+						style: 'width:560px; margin: 0 auto;',
+						widths: ['70%', '30%'],
+						onShow: function() {
+							this.getElement().setStyles({
+								display: 'block',
+								position: 'absolute',
+								left: '-9999px'
+							});
+						},
+						children: [
+							{
+								type: 'hbox',
+								id: 'leftCol',
+								align: 'left',
+								width: '70%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol1',
+										children: [
+											{
+												type: 'html',
+												id: 'logo',
+												html: '',
+												setup: function() {
+													this.getElement().$.src = NS.logotype;
+													this.getElement().getParent().setStyles({
+														"text-align": "center"
+													});
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								type: 'hbox',
+								id: 'rightCol',
+								align: 'right',
+								width: '30%',
+								children: [
+									{
+										type: 'vbox',
+										id: 'rightCol_col__left',
+										children: [
+											{
+												type: 'button',
+												id: 'FinishChecking_button_block',
+												label: NS.LocalizationButton['FinishChecking_button_block'].text,
+												title: 'Finish Checking',
+												style: 'width: 100%;',
+												onLoad: function() {
+													this.getElement().setAttribute("title-cmd", 'FinishChecking');
+												},
+												onClick: handlerButtons
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	};
+});
+
+var activeElement = null;
+
+// Options dialog
+CKEDITOR.dialog.add('options', function(editor) {
+	var dialog = null;
+	var linkOnCheckbox = {};
+	var checkboxState = {};
+	var ospString = null;
+	var OptionsTextError = null;
+	var cmd = null;
+
+	var set_osp = [];
+	var dictionaryState = {
+		'udn': appTools.cookie.get('udn'),
+		'osp': appTools.cookie.get('osp')
+	};
+
+	var setHandlerOptions = function() {
+		var osp = appTools.cookie.get('osp'),
+			strToArr =  osp.split("");
+
+		checkboxState['IgnoreAllCapsWords']		= strToArr[0];
+		checkboxState['IgnoreWordsNumbers']		= strToArr[1];
+		checkboxState['IgnoreMixedCaseWords']	= strToArr[2];
+		checkboxState['IgnoreDomainNames']		= strToArr[3];
+	};
+
+	var sendDicOptions = function(event) {
+		event = event || window.event;
+		cmd = this.getElement().getAttribute("title-cmd");
+		var osp = [];
+
+		osp[0] = checkboxState['IgnoreAllCapsWords'];
+		osp[1] = checkboxState['IgnoreWordsNumbers'];
+		osp[2] = checkboxState['IgnoreMixedCaseWords'];
+		osp[3] = checkboxState['IgnoreDomainNames'];
+
+		osp = osp.toString().replace(/,/g, "");
+
+
+		appTools.cookie.set('osp', osp);
+		appTools.cookie.set('udnCmd', cmd ? cmd : 'ignore');
+		if (cmd == "delete") {
+
+			appTools.postMessage.send({
+				'id': 'options_dic_send'
+			});
+		} else {
+			var udn = '';
+			if(nameNode.getValue() !== ''){
+				udn = nameNode.getValue();
+			}
+			appTools.cookie.set('udn', udn);
+			appTools.postMessage.send({
+				'id': 'options_dic_send'
+			});
+		}
+
+	};
+
+
+	var sendAllOptions = function() {
+		var osp = [];
+
+		osp[0] = checkboxState['IgnoreAllCapsWords'];
+		osp[1] = checkboxState['IgnoreWordsNumbers'];
+		osp[2] = checkboxState['IgnoreMixedCaseWords'];
+		osp[3] = checkboxState['IgnoreDomainNames'];
+
+		osp = osp.toString().replace(/,/g, "");
+
+		appTools.cookie.set('osp', osp);
+
+		appTools.postMessage.send({
+			'id': 'options_checkbox_send'
+		});
+
+
+	};
+
+	var cameOptions = function() {
+		OptionsTextError.getElement().setHtml(NS.LocalizationComing['error']);
+		OptionsTextError.getElement().show();
+	};
+
+	return {
+		title: NS.LocalizationComing['Options'],
+		minWidth: 430,
+		minHeight: 130,
+		resizable: CKEDITOR.DIALOG_RESIZE_NONE,
+		contents: [
+			{
+			id: 'OptionsTab',
+			label: 'Options',
+			accessKey: 'O',
+			elements: [
+				{
+					type: 'hbox',
+					id: 'options_error',
+					children: [
+						{
+							type: 'html',
+							style: "display: block;text-align: center;white-space: normal!important; font-size: 12px;color:red",
+							html: '<div></div>',
+							onShow: function() {
+								OptionsTextError = this;
+							}
+						}
+					]
+				},
+				{
+				type: 'vbox',
+				id: 'Options_content',
+				children: [
+					{
+						type: 'hbox',
+						id: 'Options_manager',
+						widths: ['52%', '48%'],
+						children: [
+							{
+								type: 'fieldset',
+								label: 'Spell Checking Options',
+								style: 'border: none;margin-top: 13px;padding: 10px 0 10px 10px',
+								onShow: function() {
+									this.getInputElement().$.children[0].innerHTML = NS.LocalizationComing['SpellCheckingOptions'];
+								},
+								children: [
+									{
+										type: 'vbox',
+										id: 'Options_checkbox',
+										children: [
+											{
+												type: 'checkbox',
+												id: 'IgnoreAllCapsWords',
+												label: 'Ignore All-Caps Words',
+												labelStyle: 'margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;',
+												style: "float:left; min-height: 16px;",
+												'default': '',
+												onClick: function() {
+													checkboxState[this.id] = (!this.getValue()) ? 0 : 1;
+												}
+											},
+											{
+												type: 'checkbox',
+												id: 'IgnoreWordsNumbers',
+												label: 'Ignore Words with Numbers',
+												labelStyle: 'margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;',
+												style: "float:left; min-height: 16px;",
+												'default': '',
+												onClick: function() {
+													checkboxState[this.id] = (!this.getValue()) ? 0 : 1;
+												}
+											},
+											{
+												type: 'checkbox',
+												id: 'IgnoreMixedCaseWords',
+												label: 'Ignore Mixed-Case Words',
+												labelStyle: 'margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;',
+												style: "float:left; min-height: 16px;",
+												'default': '',
+												onClick: function() {
+													checkboxState[this.id] = (!this.getValue()) ? 0 : 1;
+												}
+											},
+											{
+												type: 'checkbox',
+												id: 'IgnoreDomainNames',
+												label: 'Ignore Domain Names',
+												labelStyle: 'margin-left: 5px; font: 12px/16px arial, sans-serif;display: inline-block;white-space: normal;',
+												style: "float:left; min-height: 16px;",
+												'default': '',
+												onClick: function() {
+													checkboxState[this.id] = (!this.getValue()) ? 0 : 1;
+												}
+											}
+									]
+								}
+							]
+						},
+						{
+							type: 'vbox',
+							id: 'Options_DictionaryName',
+							children: [
+								{
+									type: 'text',
+									id: 'DictionaryName',
+									style: 'margin-bottom: 10px',
+									label: 'Dictionary Name:',
+									labelLayout: 'vertical',
+									labelStyle: 'font: 12px/25px arial, sans-serif;',
+									'default': '',
+									onLoad: function() {
+										nameNode = this;
+										var udn = NS.userDictionaryName ? NS.userDictionaryName : appTools.cookie.get('udn') && undefined ? ' ' : this.getValue();
+										this.setValue(udn);
+									},
+									onShow: function() {
+										nameNode = this;
+										var udn = !appTools.cookie.get('udn') ? this.getValue() : appTools.cookie.get('udn');
+										this.setValue(udn);
+										this.setLabel(NS.LocalizationComing['DictionaryName']);
+									},
+									onHide: function() {
+										this.reset();
+									}
+								},
+								{
+									type: 'hbox',
+									id: 'Options_buttons',
+									children: [
+										{
+											type: 'vbox',
+											id: 'Options_leftCol_col',
+											widths: ['50%', '50%'],
+											children: [
+												{
+													type: 'button',
+													id: 'create',
+													label: 'Create',
+													title: 'Create',
+													style: 'width: 100%;',
+													onLoad: function() {
+														this.getElement().setAttribute("title-cmd", this.id);
+													},
+													onShow: function() {
+														var el = this.getElement().getFirst() || this.getElement();
+
+														el.setText(NS.LocalizationComing['Create']);
+													},
+													onClick: sendDicOptions
+												},
+												{
+													type: 'button',
+													id: 'restore',
+													label: 'Restore',
+													title: 'Restore',
+													style: 'width: 100%;',
+													onLoad: function() {
+														this.getElement().setAttribute("title-cmd", this.id);
+													},
+													onShow: function() {
+														var el = this.getElement().getFirst() || this.getElement();
+
+														el.setText(NS.LocalizationComing['Restore']);
+													},
+													onClick: sendDicOptions
+												}
+											]
+										},
+										{
+											type: 'vbox',
+											id: 'Options_rightCol_col',
+											widths: ['50%', '50%'],
+											children: [
+												{
+													type: 'button',
+													id: 'rename',
+													label: 'Rename',
+													title: 'Rename',
+													style: 'width: 100%;',
+													onLoad: function() {
+														this.getElement().setAttribute("title-cmd", this.id);
+													},
+													onShow: function() {
+														var el = this.getElement().getFirst() || this.getElement();
+
+														el.setText(NS.LocalizationComing['Rename']);
+													},
+													onClick: sendDicOptions
+												},
+												{
+													type: 'button',
+													id: 'delete',
+													label: 'Remove',
+													title: 'Remove',
+													style: 'width: 100%;',
+													onLoad: function() {
+														this.getElement().setAttribute("title-cmd", this.id);
+													},
+													onShow: function() {
+														var el = this.getElement().getFirst() || this.getElement();
+
+														el.setText(NS.LocalizationComing['Remove']);
+													},
+													onClick: sendDicOptions
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					type: 'hbox',
+					id: 'Options_text',
+					children: [
+						{
+							type: 'html',
+							style: "text-align: justify;margin-top: 15px;white-space: normal!important; font-size: 12px;color:#777;",
+							html: "<div>" + NS.LocalizationComing['OptionsTextIntro'] + "</div>",
+							onShow: function() {
+								this.getElement().setText(NS.LocalizationComing['OptionsTextIntro']);
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
+],
+		buttons: [CKEDITOR.dialog.okButton, CKEDITOR.dialog.cancelButton],
+		onOk: function() {
+			sendAllOptions();
+			OptionsTextError.getElement().hide();
+			OptionsTextError.getElement().setHtml(' ');
+		},
+		onLoad: function() {
+			dialog = this;
+			// appTools.postMessage.init(cameOptions);
+
+			linkOnCheckbox['IgnoreAllCapsWords'] = dialog.getContentElement('OptionsTab', 'IgnoreAllCapsWords');
+			linkOnCheckbox['IgnoreWordsNumbers'] = dialog.getContentElement('OptionsTab', 'IgnoreWordsNumbers');
+			linkOnCheckbox['IgnoreMixedCaseWords'] = dialog.getContentElement('OptionsTab', 'IgnoreMixedCaseWords');
+			linkOnCheckbox['IgnoreDomainNames'] = dialog.getContentElement('OptionsTab', 'IgnoreDomainNames');
+
+		},
+		onShow: function() {
+			appTools.postMessage.init(cameOptions);
+			setHandlerOptions();
+
+			(!parseInt(checkboxState['IgnoreAllCapsWords'], 10)) ? linkOnCheckbox['IgnoreAllCapsWords'].setValue('', false) : linkOnCheckbox['IgnoreAllCapsWords'].setValue('checked', false);
+			(!parseInt(checkboxState['IgnoreWordsNumbers'], 10)) ? linkOnCheckbox['IgnoreWordsNumbers'].setValue('', false) : linkOnCheckbox['IgnoreWordsNumbers'].setValue('checked', false);
+			(!parseInt(checkboxState['IgnoreMixedCaseWords'], 10)) ? linkOnCheckbox['IgnoreMixedCaseWords'].setValue('', false) : linkOnCheckbox['IgnoreMixedCaseWords'].setValue('checked', false);
+			(!parseInt(checkboxState['IgnoreDomainNames'], 10)) ? linkOnCheckbox['IgnoreDomainNames'].setValue('', false) : linkOnCheckbox['IgnoreDomainNames'].setValue('checked', false);
+
+			checkboxState['IgnoreAllCapsWords'] = (!linkOnCheckbox['IgnoreAllCapsWords'].getValue()) ? 0 : 1;
+			checkboxState['IgnoreWordsNumbers'] = (!linkOnCheckbox['IgnoreWordsNumbers'].getValue()) ? 0 : 1;
+			checkboxState['IgnoreMixedCaseWords'] = (!linkOnCheckbox['IgnoreMixedCaseWords'].getValue()) ? 0 : 1;
+			checkboxState['IgnoreDomainNames'] = (!linkOnCheckbox['IgnoreDomainNames'].getValue()) ? 0 : 1;
+
+			linkOnCheckbox['IgnoreAllCapsWords'].getElement().$.lastChild.innerHTML = NS.LocalizationComing['IgnoreAllCapsWords'];
+			linkOnCheckbox['IgnoreWordsNumbers'].getElement().$.lastChild.innerHTML = NS.LocalizationComing['IgnoreWordsWithNumbers'];
+			linkOnCheckbox['IgnoreMixedCaseWords'].getElement().$.lastChild.innerHTML = NS.LocalizationComing['IgnoreMixedCaseWords'];
+			linkOnCheckbox['IgnoreDomainNames'].getElement().$.lastChild.innerHTML = NS.LocalizationComing['IgnoreDomainNames'];
+		},
+		onHide: function() {
+			appTools.postMessage.unbindHandler(cameOptions);
+			if(activeElement) {
+				try {
+					activeElement.focus();
+				} catch(e) {}
+			}
+		}
+	};
+});
+
+// Expand the spell-check frame when dialog resized. (#6829)
+CKEDITOR.dialog.on( 'resize', function( evt ) {
+	var data = evt.data,
+		dialog = data.dialog,
+		currentTabId = dialog._.currentTabId,
+		tabID = NS.iframeNumber + '_' + currentTabId,
+		iframe = CKEDITOR.document.getById(tabID);
+
+	if ( dialog._.name == 'checkspell' ) {
+		if (NS.bnr) {
+			iframe && iframe.setSize( 'height', data.height - '310' );
+		} else {
+			iframe && iframe.setSize( 'height', data.height - '220' );
+		}
+
+		// add flag that indicate whether dialog has been resized by user
+		if(dialog._.fromResizeEvent && !dialog._.resized) {
+			dialog._.resized = true;
+		}
+		dialog._.fromResizeEvent = true;
+	}
+});
+
+CKEDITOR.on('dialogDefinition', function(dialogDefinitionEvent) {
+
+    if(dialogDefinitionEvent.data.name === 'checkspell') {
+		var dialogDefinition = dialogDefinitionEvent.data.definition;
+
+		 NS.onLoadOverlay = new overlayBlock({
+			opacity: "1",
+			background: "#fff",
+			target: dialogDefinition.dialog.parts.tabs.getParent().$
+		});
+
+		NS.onLoadOverlay.setEnable();
+
+		dialogDefinition.dialog.on('cancel', function(cancelEvent) {
+			dialogDefinition.dialog.getParentEditor().config.wsc_onClose.call(this.document.getWindow().getFrame());
+    		NS.div_overlay.setDisable();
+    		NS.onLoadOverlay.setDisable();
+			return false;
+		}, this, null, -1);
+	}
+});
+})();

@@ -186,7 +186,7 @@ class Zend_XmlRpc_Client
     }
 
 
-   /**
+    /**
      * The request of the last method call
      *
      * @return Zend_XmlRpc_Request
@@ -262,7 +262,7 @@ class Zend_XmlRpc_Client
         iconv_set_encoding('internal_encoding', 'UTF-8');
 
         $http = $this->getHttpClient();
-        if($http->getUri() === null) {
+        if ($http->getUri() === null) {
             $http->setUri($this->_serverAddress);
         }
 
@@ -279,7 +279,7 @@ class Zend_XmlRpc_Client
         $http->setRawData($xml);
         $httpResponse = $http->request(Zend_Http_Client::POST);
 
-        if (! $httpResponse->isSuccessful()) {
+        if (!$httpResponse->isSuccessful()) {
             /**
              * Exception thrown when an HTTP error occurs
              * @see Zend_XmlRpc_Client_HttpException
@@ -305,7 +305,7 @@ class Zend_XmlRpc_Client
      * @return mixed
      * @throws Zend_XmlRpc_Client_FaultException
      */
-    public function call($method, $params=array())
+    public function call($method, $params = array())
     {
         if (!$this->skipSystemLookup() && ('system.' != substr($method, 0, 7))) {
             // Ensure empty array/struct params are cast correctly
@@ -334,8 +334,7 @@ class Zend_XmlRpc_Client
                     $params = array($params);
                 }
 
-                foreach ($params as $key => $param)
-                {
+                foreach ($params as $key => $param) {
                     if ($param instanceof Zend_XmlRpc_Value) {
                         continue;
                     }

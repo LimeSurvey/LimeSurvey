@@ -176,7 +176,7 @@
     if (version_compare(PHP_VERSION, '5.3.3', '<'))
         die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 
-    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/third_party/autoload.php';
 
 /*
  * --------------------------------------------------------------------

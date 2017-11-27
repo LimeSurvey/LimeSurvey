@@ -188,7 +188,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<'))
     die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../third_party/autoload.php';
 
 /*
  * --------------------------------------------------------------------
@@ -221,4 +221,10 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
 
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
+require_once(__DIR__ . '/TestBaseClassWeb.php');
+require_once(__DIR__ . '/TestBaseClassView.php');
 require_once(__DIR__ . '/DummyController.php');
+
+
+
+define('PHP_ENV', 'test');

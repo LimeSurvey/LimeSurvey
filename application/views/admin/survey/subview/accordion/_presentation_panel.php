@@ -4,6 +4,10 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPresentationOptions');
+
 ?>
 <script type="text/javascript">
     var jsonUrl = '';
@@ -16,7 +20,7 @@
     var sAddParam = '';
 </script>
 <!-- Presentation panel -->
-<div id='presentation' class="container-fluid">
+<div id='presentation-panel' class="container-fluid">
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">

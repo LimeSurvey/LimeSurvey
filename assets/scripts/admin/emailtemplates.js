@@ -12,7 +12,7 @@ $(document).on('ready  pjax:complete',  function(){
     */
 
     // Binds the Default value buttons for each email template subject and body text
-    $('.fillin').bind('click', function(e) {
+    $('.fillin').on('click', function(e) {
         e.preventDefault;
         var newval = $(this).attr('data-value');
         var target = $('#' + $(this).attr('data-target'));
@@ -139,10 +139,10 @@ function addAttachment(target, url, relevance, size)
     }
 
 
-    $('span.edit-relevance-equation').unbind('click').bind('click', editAttachmentRelevance);
-    $('.btnattachmentremove').unbind('click').bind('click', removeAttachment);
+    $('span.edit-relevance-equation').off('click').on('click', editAttachmentRelevance);
+    $('.btnattachmentremove').off('click').on('click', removeAttachment);
 
-    $('span.filename').unbind('click').bind('click', function(e) {
+    $('span.filename').off('click').on('click', function(e) {
         e.preventDefault();
         var target = $(this).parents('tr');
         openKCFinder_singleFile(target);

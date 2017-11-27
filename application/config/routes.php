@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -18,7 +20,7 @@ $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/si
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
 $route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
 $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
-$route['<sid:\d+>'] = array('survey/index','matchValue'=>true);
+$route['<sid:\d+>'] = array('survey/index', 'matchValue'=>true);
 
 //Admin Routes
 $route['admin/index'] = "admin";
@@ -34,9 +36,9 @@ $route['admin/expressions'] = "admin/expressions/index";
 
 //optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
-$route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens','matchValue'=>true);
-$route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens','matchValue'=>true);
-$route['statistics_user/<surveyid:\d+>'] =  array('statistics_user/action','matchValue'=>true);
+$route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue'=>true);
+$route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue'=>true);
+$route['statistics_user/<surveyid:\d+>'] = array('statistics_user/action', 'matchValue'=>true);
 
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

@@ -7,8 +7,11 @@
  */
 
 $templateData['oSurvey'] = $oSurvey;
-?>
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyGeneralSettings');
+
+?>
 <script type="text/javascript">
     var formId = '<?=$entryData['name']?>';
 </script>
@@ -64,6 +67,7 @@ $(document).on('ready pjax:complete', function(){
         method:'POST',
         data: data,
         success: function(result){
+            console.log({result: result});
           if(result.redirecturl != undefined ){
             window.location.href=result.redirecturl;
           } else {

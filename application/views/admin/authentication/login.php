@@ -2,6 +2,10 @@
 /**
  * Login Form
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('login');
+
 ?>
 <noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
@@ -98,19 +102,17 @@
 
 
                                 echo CHtml::label(gT('Language'), 'loginlang');
-
+                                
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'name' => 'loginlang',
                                     'data' => $languageData,
+                                    'value' => $language,
                                     'pluginOptions' => array(
-                                    'options' => array(
-                                        'value' => 'default'
-                                    ),
-                                    'htmlOptions' => array(
-                                        'id' => 'loginlang'
-                                    ),
-
-                                )));
+                                        'htmlOptions' => array(
+                                            'id' => 'loginlang'
+                                        ),
+                                    )
+                                ));
                                 ?>
 
                                 <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)

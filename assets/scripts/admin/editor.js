@@ -9,8 +9,7 @@ $(document).on('ready  pjax:complete', function(){
     if (sHTMLEditorMode=='inline') {
         $('textarea.fulledit').ckeditor(function() { /* callback code */ }, {	toolbar : sHTMLEditorMode,
                                                                                 language : sEditorLanguage,
-                                                                                width: 660,
-                                                                                customConfig : '/scripts/admin/ckeditor-config.js' });
+                                                                                width: 660 });
     }
 
 });

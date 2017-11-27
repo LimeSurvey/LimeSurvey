@@ -54,12 +54,14 @@
                             <input
                                 type='submit'
                                 class='btn btn-default'
+                                id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
                                 onclick="<?php echo $closedOnclickAction;?>"
                                 />
                             <input
                                 type='submit'
                                 class='btn btn-default'
+                                id='activateTokenTable__selector--no'
                                 value='<?php eT("No, thanks."); ?>'
                                 onclick="<?php echo $noOnclickAction;?>"
                                 />

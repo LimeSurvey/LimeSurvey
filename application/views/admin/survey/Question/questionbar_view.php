@@ -73,7 +73,7 @@ $aReplacementData=array();
                 <?php else:?>
 
                     <!-- test/execute survey -->
-                    <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+                    <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
                             <?php eT('Preview survey');?>
@@ -104,7 +104,7 @@ $aReplacementData=array();
 
             <!-- Edit button -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                <a class="btn btn-default " href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
+                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
                     <span class="icon-edit"></span>
                     <?php eT("Edit");?>
                 </a>
@@ -113,7 +113,7 @@ $aReplacementData=array();
 
             <!-- Check logic -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
                     <span class="icon-expressionmanagercheck"></span>
                     <?php eT("Check logic"); ?>
                 </a>
@@ -164,7 +164,7 @@ $aReplacementData=array();
 
             <!-- conditions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                     <span class="icon-conditions"></span>
                     <?php eT("Set conditions "); ?>
                 </a>
@@ -174,7 +174,7 @@ $aReplacementData=array();
             <!-- subquestions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
                 <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a id="adminpanel__topbar--selectorAddSubquestions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit subquestions "); ?>
                     </a>
@@ -184,7 +184,7 @@ $aReplacementData=array();
 
             <!-- Answer Options -->
             <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                <a id="adminpanel__topbar--selectorAddAnswerOptions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                     <span class="icon-defaultanswers"></span>
                     <?php eT("Edit answer options "); ?>
                 </a>
@@ -193,7 +193,7 @@ $aReplacementData=array();
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
                     </a>
@@ -204,17 +204,17 @@ $aReplacementData=array();
 
     <?php if(isset($questionbar['buttons']['conditions'])):?>
         <div class="col-sm-12 form form-inline">
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="fa fa-info-sign"></span>
                 <?php eT("Show conditions for this question");?>
             </a>
 
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-conditions_add"></span>
                 <?php eT("Add and edit conditions");?>
             </a>
 
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-copy"></span>
                 <?php eT("Copy conditions");?>
             </a>
@@ -271,7 +271,8 @@ $aReplacementData=array();
                     <?php eT("Save");?>
 
                 </a>
-                <?php/*
+                <?php
+                /*
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
@@ -280,7 +281,8 @@ $aReplacementData=array();
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
-                */?>
+                */
+                ?>
             </div>
         <?php endif;?>
 

@@ -248,7 +248,7 @@ abstract class Zend_XmlRpc_Value
 
             default:
                 require_once 'Zend/XmlRpc/Value/Exception.php';
-                throw new Zend_XmlRpc_Value_Exception('Given type is not a '. __CLASS__ .' constant');
+                throw new Zend_XmlRpc_Value_Exception('Given type is not a '.__CLASS__.' constant');
         }
     }
 
@@ -308,15 +308,14 @@ abstract class Zend_XmlRpc_Value
             if ($value instanceof Zend_Crypt_Math_BigInteger) {
                 require_once 'Zend/XmlRpc/Value/Exception.php';
                 throw new Zend_XmlRpc_Value_Exception(
-                    'Using Zend_Crypt_Math_BigInteger to get an ' .
-                    'instance of Zend_XmlRpc_Value_BigInteger is not ' .
+                    'Using Zend_Crypt_Math_BigInteger to get an '.
+                    'instance of Zend_XmlRpc_Value_BigInteger is not '.
                     'available anymore.'
                 );
             }
         }
 
-        switch (self::getXmlRpcTypeByValue($value))
-        {
+        switch (self::getXmlRpcTypeByValue($value)) {
             case self::XMLRPC_TYPE_DATETIME:
                 require_once 'Zend/XmlRpc/Value/DateTime.php';
                 return new Zend_XmlRpc_Value_DateTime($value);
@@ -424,7 +423,7 @@ abstract class Zend_XmlRpc_Value
 
                 if (null === $data) {
                     require_once 'Zend/XmlRpc/Value/Exception.php';
-                    throw new Zend_XmlRpc_Value_Exception('Invalid XML for XML-RPC native '. self::XMLRPC_TYPE_ARRAY .' type: ARRAY tag must contain DATA tag');
+                    throw new Zend_XmlRpc_Value_Exception('Invalid XML for XML-RPC native '.self::XMLRPC_TYPE_ARRAY.' type: ARRAY tag must contain DATA tag');
                 }
                 $values = array();
                 // Parse all the elements of the array from the XML string
@@ -446,14 +445,14 @@ abstract class Zend_XmlRpc_Value
                         continue;
                         //throw new Zend_XmlRpc_Value_Exception('Member of the '. self::XMLRPC_TYPE_STRUCT .' XML-RPC native type must contain a VALUE tag');
                     }
-                    $values[(string)$member->name] = self::_xmlStringToNativeXmlRpc($member->value);
+                    $values[(string) $member->name] = self::_xmlStringToNativeXmlRpc($member->value);
                 }
                 require_once 'Zend/XmlRpc/Value/Struct.php';
                 $xmlrpcValue = new Zend_XmlRpc_Value_Struct($values);
                 break;
             default:
                 require_once 'Zend/XmlRpc/Value/Exception.php';
-                throw new Zend_XmlRpc_Value_Exception('Value type \''. $type .'\' parsed from the XML string is not a known XML-RPC native type');
+                throw new Zend_XmlRpc_Value_Exception('Value type \''.$type.'\' parsed from the XML string is not a known XML-RPC native type');
                 break;
         }
         $xmlrpcValue->_setXML($xml->asXML());
@@ -472,7 +471,7 @@ abstract class Zend_XmlRpc_Value
         } catch (Exception $e) {
             // The given string is not a valid XML
             require_once 'Zend/XmlRpc/Value/Exception.php';
-            throw new Zend_XmlRpc_Value_Exception('Failed to create XML-RPC value from XML string: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new Zend_XmlRpc_Value_Exception('Failed to create XML-RPC value from XML string: '.$e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -494,7 +493,7 @@ abstract class Zend_XmlRpc_Value
                 $namespaceXml = $xml->children($namespaceUri);
                 list($type, $value) = each($namespaceXml);
                 if ($type !== null) {
-                    $type = $namespaceName . ':' . $type;
+                    $type = $namespaceName.':'.$type;
                     break;
                 }
             }

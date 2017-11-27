@@ -7,17 +7,14 @@
 ?>
 
   <script type="text/javascript">
-    var standardtemplaterooturl = '<?php echo Yii::app()->getConfig('
-    standardtemplaterooturl ');?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('
-    usertemplaterooturl ');?>';
+    var standardthemerooturl = '<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
+    var templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl');?>';
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'
-    js '); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address."); ?>'
     var sURLParameters = '';
     var sAddParam = '';
   </script>
@@ -48,19 +45,19 @@ $surveyid = $aTabContents['surveyid'];
         </div>
         <div class="col-md-6">
              <div class="form-group">
-                <label for="createsample" class=" control-label"><?php eT("Create example question and question group?") ?></label>
+                <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'createsample',
-                            'value' => 1,
+                            'value' => 0,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                         )); ?>
                 </div>
             </div>
         </div>
-        <hr class="col-sm-12"></hr>
+        <hr class="col-sm-12" />
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">

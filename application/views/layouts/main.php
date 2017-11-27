@@ -8,7 +8,7 @@
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-superfish');
             App()->getClientScript()->registerPackage('js-cookie');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+            // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
@@ -18,13 +18,16 @@
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
 
         ?>
-        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
         <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title>Limesurvey Administration</title>
     </head>
     <body>
+        <div id="beginScripts">
+        <###begin###>
+        </div>
         <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
@@ -37,6 +40,9 @@
             </div>
         </div>
         <?php $this->widget('ext.AdminFooter.AdminFooter'); ?>
+        <div id="bottomScripts">
+        <###end###>
+        </div>
     </body>
 
 </html>

@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -16,7 +18,7 @@
 /**
  * Class Assessment
  *
- * @property integer $id
+ * @property integer $id Primary key
  * @property integer $sid Survey id
  * @property integer $gid Group id
  * @property string $scope
@@ -28,46 +30,49 @@
  */
 class Assessment extends LSActiveRecord
 {
-	/**
+    /**
      * @inheritdoc
      * @return Assessment
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
     /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('name,message','LSYii_Validators'),
+            array('name,message', 'LSYii_Validators'),
         );
     }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{assessments}}';
-	}
+    public function tableName()
+    {
+        return '{{assessments}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return array('id', 'language');
-	}
+    public function primaryKey()
+    {
+        return array('id', 'language');
+    }
 
     /**
      * @param array $data
      * @return Assessment
      */
-	public static function insertRecords($data)
+    public static function insertRecords($data)
     {
         $assessment = new self;
 
-		foreach ($data as $k => $v)
-			$assessment->$k = $v;
-		$assessment->save();
+        foreach ($data as $k => $v) {
+                    $assessment->$k = $v;
+        }
+        $assessment->save();
 
         return $assessment;
     }
@@ -82,8 +87,9 @@ class Assessment extends LSActiveRecord
     {
         $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
         if (!is_null($assessment)) {
-            foreach ($data as $k => $v)
-                $assessment->$k = $v;
+            foreach ($data as $k => $v) {
+                            $assessment->$k = $v;
+            }
             $assessment->save();
         }
     }

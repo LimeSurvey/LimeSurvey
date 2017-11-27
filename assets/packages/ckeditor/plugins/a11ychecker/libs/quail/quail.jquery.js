@@ -1,4 +1,5 @@
-﻿/*! QUAIL quailjs.org | quailjs.org/license */
+﻿// %LEAVE_UNMINIFIED% %REMOVE_LINE%
+/*! QUAIL quailjs.org | quailjs.org/license */
 ;(function($) {
 'use strict';
 // Polyfill Function.prototype.bind

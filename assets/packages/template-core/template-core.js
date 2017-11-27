@@ -15,7 +15,7 @@ $(function() {
  */
 /* showStartPopups : replace core function : allow HTML and use it. */
 function showStartPopups(){
-    if(LSvar.showpopup && $(LSvar.startPopups).length){
+    if(LSvar.showpopup && typeof(LSvar.startPopups) == 'array' && LSvar.startPopups.length){
         startPopup=LSvar.startPopups.map(function(text) {
             return "<p>"+text+"</p>";
         });
@@ -68,7 +68,7 @@ function addHoverColumn(){
 function triggerEmClassChangeTemplate(){
     $('.ls-em-tip').each(function(){
         $(this).on('classChangeError', function() {
-            console.log('change error');
+            console.trace('change error');
             /* If user choose hide-tip : leave it */
              $parent = $(this).parent('div.hide-tip');
              if ($parent.hasClass('hide-tip'))

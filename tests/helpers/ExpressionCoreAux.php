@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Helper class for expression core tests.
  */
-class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
+class ExpressionCoreAux extends TestCase
 {
     /**
      * If true, compares JS result with json_encode(PHP result)
@@ -150,7 +150,7 @@ class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
                     return {value: $value};
                 }
             }
-            eval(fs.readFileSync('./scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
+            eval(fs.readFileSync('./assets/scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
             LEMradix = ',';
             LEMmode = 'survey';
             LEMalias2varName = {

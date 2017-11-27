@@ -2,6 +2,10 @@
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
 /* @var Survey $oSurvey */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuestion');
+
 ?>
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
@@ -320,7 +324,8 @@
             <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
-        <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='close-after-save' value='true' />
         </form>
     </div>
 </div>

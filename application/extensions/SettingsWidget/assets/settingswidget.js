@@ -40,7 +40,7 @@ $(document).on('ready  pjax:complete',function() {
         newRow.fadeIn();
 
     }
-    $('.settingswidget .setting-list a.remove').bind('click',removeRow);
-    $('.settingswidget .setting-list a.add').bind('click', addRow);
+    $('.settingswidget .setting-list a.remove').on('click',removeRow);
+    $('.settingswidget .setting-list a.add').on('click', addRow);
 
 })

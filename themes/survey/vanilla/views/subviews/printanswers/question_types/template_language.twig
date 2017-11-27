@@ -1,0 +1,12 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-4 text-right">
+        </div>
+        <div class="col-md-8 text-left">
+            {{question.languageArray.description}} ({{question.answervalue}})
+        </div>
+    </div>
+</div>
+{% endblock %}

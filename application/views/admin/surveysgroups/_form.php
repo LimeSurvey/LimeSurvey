@@ -46,10 +46,10 @@
     </div>
 
     <div class="row">
-        <?php $model->order = $model->order ? $model->order : $model->getNextOrderPosition(); ?>
-        <?php echo $form->labelEx($model,'order'); ?>
-        <?php echo $form->textField($model,'order'); ?>
-        <?php echo $form->error($model,'order'); ?>
+        <?php $model->sortorder = $model->sortorder ? $model->sortorder : $model->getNextOrderPosition(); ?>
+        <?php echo $form->labelEx($model,'sortorder'); ?>
+        <?php echo $form->textField($model,'sortorder'); ?>
+        <?php echo $form->error($model,'sortorder'); ?>
     </div>
 
     <!-- should be a selector based on group name -->

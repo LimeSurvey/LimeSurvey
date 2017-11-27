@@ -46,8 +46,8 @@ abstract class Zend_XmlRpc_Value_Scalar extends Zend_XmlRpc_Value
         $generator = $this->getGenerator();
 
         $generator->openElement('value')
-                  ->openElement($this->_type, $this->_value)
-                  ->closeElement($this->_type)
-                  ->closeElement('value');
+                    ->openElement($this->_type, $this->_value)
+                    ->closeElement($this->_type)
+                    ->closeElement('value');
     }
 }

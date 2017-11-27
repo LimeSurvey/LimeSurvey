@@ -68,41 +68,47 @@
         <div class="col-md-6 col-sm-12">
             <!-- Base language -->
             <div class="form-group">
+
                 <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="" style="padding-top: 7px;">
+                    <?php if($oSurvey->isNewRecord):?>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'asDropDownList' => true,
+                        'htmlOptions'=>array('style'=>"width: 80%"),
+                        'data' => getLanguageDataRestricted (false,'short'),
+                        'value' => $oSurvey->language,
+                        'name' => 'language',
+                        'pluginOptions' => array()
+                    ));?>
+                    <?php else:?>
                     <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
+                    <?php endif;?>
                 </div>
             </div>
 
+            <?php if(!$oSurvey->isNewRecord):?>
             <!-- Additional Languages -->
             <div class="form-group">
                 <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
                 <div class="">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
-                    $aAdditionalLanguages = (isset($surveyid) && $surveyid!=0) ?  Survey::model()->findByPk($surveyid)->additionalLanguages : [];
-                    foreach( $aAdditionalLanguages as $sSurveyLang)
-                    {
-                        if(!array_key_exists($sSurveyLang,$aAllLanguages))
-                        {
-                            $aAllLanguages[$sSurveyLang]=getLanguageNameFromCode($sSurveyLang,false);
-                        }
-                    }
                     unset($aAllLanguages[$oSurvey->language]);
 
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
                         'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                         'data' => $aAllLanguages,
-                        'value' =>  $aAdditionalLanguages,
+                        'value' =>  $oSurvey->additionalLanguages,
                         'name' => 'additional_languages',
                         'pluginOptions' => array(
                             'placeholder' => gt('Select additional languages','unescaped'),
                     )));
                     ?>
-                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $aAdditionalLanguages); ?>'>
+                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
                 </div>
             </div>
+            <?php endif;?>
 
             <!-- Survey owner -->
             <?php
@@ -112,7 +118,9 @@
                     <div class=""><?php
                         Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                             'asDropDownList' => true,
-                            'htmlOptions'=>array('style'=>"width: 80%"),
+                            'htmlOptions'=>array(
+                                'style'=>'width:100%;'
+                            ),
                             'data' => isset($users) ?  $users : [],
                             'value' => $oSurvey->owner_id,
                             'name' => 'owner_id',
@@ -127,7 +135,7 @@
             <!-- Administrator -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin = ($oSurvey->owner ? $oSurvey->owner->full_name : $oSurvey->admin); ?>
+                <?php $admin = empty($oSurvey->admin) && !empty($oSurvey->owner) ? $oSurvey->owner->full_name : $oSurvey->admin; ?>
                 <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
@@ -137,7 +145,7 @@
             <!-- Admin email -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin_email = $oSurvey->adminemail ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
+                <?php $admin_email = empty($oSurvey->adminemail) && !empty($oSurvey->owner) ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
                 <label class=" control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="">
                     <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
@@ -237,7 +245,7 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                     'asDropDownList' => true,
-                    'htmlOptions'=>array('style'=>"width: 80%"),
+                    'htmlOptions'=>array('style'=>"width: 100%"),
                     'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
                     'value' => $oSurvey->gsid,
                     'name' => 'gsid',
@@ -266,14 +274,14 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>'>
+                <select id='template' class="form-control"  name='template' data-standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>'>
                     <?php foreach (array_keys(getTemplateList()) as $tname) {
 
                         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
                             <option value='<?php echo $tname; ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($tname) == $oSurvey->template) { ?>
                                     selected='selected'
-                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttheme')) { ?>
                                     selected='selected'
                                     <?php } ?>
                                 ><?php echo $tname; ?></option>

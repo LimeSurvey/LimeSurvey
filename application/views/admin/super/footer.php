@@ -30,7 +30,9 @@
         </div>
     </div>
 </footer>
-
+<div id="bottomScripts">
+    <###end###>
+</div>
 <!-- Modal for confirmation -->
 <?php
 /**
