@@ -147,7 +147,7 @@ return array(
             'lib/surveysettings.js'
         ),
         'css' => array(
-            'build/lsadminpanel.css'
+            'build/lsadminpanel'.$minVersion.'.css'
         ),
         'depends' => array(
             'adminbasics'

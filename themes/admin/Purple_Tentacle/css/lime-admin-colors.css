@@ -2047,10 +2047,23 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     background: radial-gradient(circle at center, #993399 0px, #993399 10px, #ffffff 10px, #ffffff 100%); }
   100% {
     background: radial-gradient(circle at center, #993399 0px, #993399 8px, #ffffff 9px, #ffffff 100%); } }
-.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
-  border-bottom: 1px solid #35363f; }
+.ls-ba .list-group {
+  padding-right: 0; }
+  .ls-ba .list-group > .list-group-item {
+    padding-right: 0; }
+    .ls-ba .list-group > .list-group-item .list-group {
+      margin-bottom: 0; }
+      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
+        border-bottom: 1px solid #dadada;
+        margin-bottom: 10px; }
 .ls-ba .breadcrumb > li + li:before {
-  color: #ffffff; }
+  padding: 0 5px;
+  color: #ccc;
+  content: "\f061";
+  font: normal normal normal 18px/1 FontAwesome; }
+.ls-ba .pager li > a, .ls-ba .pager li > span {
+  border-radius: 4px;
+  margin: 1px; }
 
 ol.breadcrumb.title-bar-breadcrumb {
   background: transparent;

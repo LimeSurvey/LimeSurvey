@@ -1940,7 +1940,7 @@ h3,.h3 {
     word-wrap: break-word;
 }
 
-.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container .pager, .pager-container .pager .pagination{
+.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container ls-ba .pager, .pager-container ls-ba .pager .pagination{
     margin: 0;
     margin-bottom: 20px;
 }
