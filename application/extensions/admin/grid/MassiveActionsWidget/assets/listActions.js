@@ -65,7 +65,7 @@ $(document).on('click', '.listActions a', function ()
     {
         // postUrl is defined as a var in the View
         $(this).load(postUrl, {
-            participantid:$oCheckedItems},function(){
+            itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
         return;
@@ -172,12 +172,16 @@ $(document).on('click', '.listActions a', function ()
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                 }
 
+                if (html.ajaxHelper) {
+                    LS.ajaxHelperOnSuccess(html);
+                    return;
+                }
+
                 if (onSuccess) {
                     var func = eval(onSuccess);
                     func(html);
                     return;
                 }
-
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
@@ -256,7 +260,12 @@ function prepareBsDateTimePicker($gridid){
 }
 // get user session datetimesettings
 function getDefaultDateTimePickerSettings() {
-    var url = 'index.php?r=admin/survey&sa=datetimesettings';
+    //Switch between path and get based routing
+    if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
+        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+    } else {
+        var url = "/index.php/admin/survey/sa/datetimesettings";
+    }
     var mydata = [];
     $.ajaxSetup({
         async: false

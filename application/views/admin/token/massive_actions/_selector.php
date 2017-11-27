@@ -16,6 +16,26 @@
 
             'aActions'    => array(
 
+                // Massive update
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'edit',
+                    'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
+                    'iconClasses' => 'fa fa-pencil text-success',
+                    'text'        => gT('Batch-edit participants'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('Apply'),
+                    'no'            => gT('Cancel'),
+                    'keepopen'      => 'yes',
+                    'sModalTitle'   => gT('Batch-edit participants'),
+                    'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat'])), true),
+                ),
+
                 // Delete
                 array(
                     // li element

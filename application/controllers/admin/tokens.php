@@ -404,6 +404,104 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * The fields with a value "lskeep" will not be updated
+     */
+    public function editMultiple()
+    {
+        $aTokenIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $iSurveyId = Yii::app()->request->getPost('sid');
+        $aResults     = array();
+
+        if ( Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ){
+            // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+            if (tableExists('{{tokens_' . $iSurveyId . '}}')){
+
+                // First we create the array of fields to update
+                $aData = array();
+                $aResults['global']['result']  = true;
+                // Valid from
+                if (trim(Yii::app()->request->getPost('validfrom', 'lskeep' )) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '')
+                        $aData['validfrom'] = null;
+                    else
+                        $aData['validfrom']= date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+                }
+
+                // Valid until
+                if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost('validuntil')) == '')
+                        $aData['validuntil'] = null;
+                    else
+                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+                }
+
+                // Email
+                if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep'){
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    if ($isValid)
+                        $aData['email'] = 'lskeep';
+                    else
+                        $aData['email'] = Yii::app()->request->getPost('email');
+                }
+
+                // Core Fields
+                $aCoreTokenFields = array('firstname', 'lastname',  'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
+                foreach($aCoreTokenFields as $sCoreTokenField)
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep'){
+                    $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+                }
+
+                // Attibutes fields
+                $attrfieldnames = GetParticipantAttributes($iSurveyId);
+                foreach ($attrfieldnames as $attr_name => $desc){
+                    if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep'){
+                        $value = flattenText(Yii::app()->request->getPost($attr_name));
+                        if ($desc['mandatory'] == 'Y' && trim($value) == '') {
+                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                            $this->getController()->refresh();
+                        }
+                        $aData[$attr_name] = $value;
+                    }
+                }
+
+                if (count($aData) > 0){
+                    foreach ($aTokenIds as $iTokenId){
+                        $iTokenId = (int) $iTokenId;
+                        $token = Token::model($iSurveyId)->find('tid=' . $iTokenId);
+
+                        foreach ($aData as $k => $v){
+                            $token->$k = $v;
+                        }
+
+                        $bUpdateSuccess = $token->update();
+                        if ( $bUpdateSuccess ){
+                            $aResults[$iTokenId]['status']    = true;
+                            $aResults[$iTokenId]['message']   = gT('Updated');
+                        }else{
+                            $aResults[$iTokenId]['status']    = false;
+                            $aResults[$iTokenId]['message']   = $token->error;
+                        }
+                    }
+                }else{
+                    $aResults['global']['result']  = false;
+                    $aResults['global']['message'] = gT('Nothing to update');
+                }
+
+            }else{
+                $aResults['global']['result']  = false;
+                $aResults['global']['message'] = gT('No participant table found for this survey!');
+            }
+        }else{
+            $aResults['global']['result'] = false;
+            $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
+        }
+
+
+        Yii::app()->getController()->renderPartial('/admin/token/massive_actions/_update_results', array('aResults'=>$aResults));
+
+    }
+
+    /**
      * Called by if a token is saved after editing
      * @todo Check if method is still in use
      * @param int $iSurveyId The Survey ID
@@ -719,14 +817,13 @@ class tokens extends Survey_Common_Action
             $aTokenData['remindersent'] = flattenText($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval(flattenText($request->getPost('remindercount')));
             $udresult = Token::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$sSanitizedToken'");
-
+            $sOutput='';
             if (count($udresult) == 0) {
                 $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     $value = $request->getPost($attr_name);
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
-                        $this->getController()->refresh();
+                        $sOutput.=sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']).'<br>';
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
@@ -739,7 +836,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->save();
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess($sOutput.gT('The survey participant was successfully updated.'));
                 }
                 else {
                     $errors = $token->getErrors();
@@ -1864,7 +1961,7 @@ class tokens extends Survey_Common_Action
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]))
                                     $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
 
-                                // In case Ldap Server encoding isn't UTF-8, let's translate
+                                // In case LDAP Server encoding isn't UTF-8, let's translate
                                 // the strings to UTF-8
                                 if ($ldapencoding != '')
                                 {
@@ -1958,7 +2055,13 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    $aData['sError'] = gT("Can't bind to the LDAP directory");
+                    $sErrorMessage=ldap_error($ds);
+                    define(LDAP_OPT_DIAGNOSTIC_MESSAGE, 0x0032);
+                    if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error))
+                    {
+                       $sErrorMessage.= ' - '.$extended_error; 
+                    }
+                    $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"),ldap_error($ds));
                     $this->_renderWrappedTemplate('token', array( 'ldapform'), $aData);
                 }
                 @ldap_close($ds);

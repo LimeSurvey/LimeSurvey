@@ -14,7 +14,11 @@
  */
 
 /**
- * This is the model class for table "{{plugins}}".
+ * Class Plugin
+ *
+ * @property integer $id primary key
+ * @property string $name
+ * @property integer $active
  */
 class Plugin extends CActiveRecord {
 
@@ -25,8 +29,26 @@ class Plugin extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
+    /**
+    * Returns the table's name
+    *
+    * @access public
+    * @return string
+    */
     public function tableName() {
         return '{{plugins}}';
+    }
+
+    /**
+    * Returns the validation rules for attributes.
+    * @return array[]
+    */
+    public function rules() {
+        return array(
+            array('name','length', 'max'=>255),
+            array('active','default', 'value'=>0),
+            array('active','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        );
     }
 }

@@ -93,9 +93,6 @@ $config['showpopups']         =   1;                // Show popup messages if ma
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-// Enable or Disable LDAP feature
-$config['enableLdap'] = false;
-
 // Experimental parameters, only change if you know what you're doing
 //
 // filterout_incomplete_answers
@@ -593,16 +590,13 @@ $config['InsertansUnsupportedtypes'] = array();
 $config['proxy_host_name'] = '';
 $config['proxy_host_port'] = 80;
 
+/** Forced superadmin rights, users in this array can not have superadmin total right disable.
+ * Default use the user created at the installation.
+ * @var integer[]
+ */
+$config['forcedsuperadmin'] = array(1);
 
 // === Advanced Setup
-// The following parameters need information from config.php
-// and thus are defined here (After reading your config.php file).
-// This means that if you want to tweak these very advanced parameters
-// you'll have to do this in this file and not in config.php
-// In this case, don't forget to backup your config-defaults.php settings when upgrading LS
-// and report them to the new config-defaults.php file (Do not simply overwrite the new
-// config-defaults file with your old one
-
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 

@@ -36,7 +36,18 @@ $.fn.YesNoDate = function(options)
         // When user change date
         $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
-        })
+        });
+
+        $(document).on('keyup', '.action_validate_email', function(){
+            console.log('keyup email field');
+            //This is the official w3c regex to check for valid email addresses seperated by commas
+            var regexemail = /^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/;
+            if(regexemail.test($(this).val())){
+                $($(this).data('targetfield')).val('OK');
+            } else {
+                $($(this).data('targetfield')).val('ERROR');
+            }
+        });
     });
 }
 
@@ -205,7 +216,7 @@ $(document).ready(function(){
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
         $modal.modal('show');
-        $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
+        $modal.find('.modal-footer-yes-no').find('a.btn-ok').unbind('click').on('click', function(click){
             $.ajax({
                 url: actionUrl,
                 method: "GET",

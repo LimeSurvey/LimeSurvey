@@ -461,15 +461,13 @@ class UserAction extends Survey_Common_Action
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
-        if (Yii::app()->session['loginID']==$iUserID) {
+        if (Yii::app()->session['loginID'] == $iUserID) {
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
-        {
-            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
+        // Can not update forced superadmin  rights
+        if ( Permission::isForcedSuperAdmin($iUserID) ) {
+            Yii::app()->setFlashMessage(gT("The permissions of this superadmin cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
@@ -477,19 +475,13 @@ class UserAction extends Survey_Common_Action
         $aPermissions=array();
         foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
         {
-            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
-            {
-                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
-
-                if ($CRUDValue)
-                {
-                    if(isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])){
-                        $aPermissions[$sPermissionKey][$sCRUDKey]=1;
-                    }
-                    else
-                    {
-                        $aPermissions[$sPermissionKey][$sCRUDKey]=0;
-                    }
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue) {
+                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) {
+                    continue;
+                }
+                if ($CRUDValue) {
+                    $sPermissionPostValue=Yii::app()->getRequest()->getPost("perm_{$sPermissionKey}_{$sCRUDKey}",'');
+                    $aPermissions[$sPermissionKey][$sCRUDKey] = $sPermissionPostValue=='on'?1:0;
                 }
             }
         }
@@ -510,30 +502,20 @@ class UserAction extends Survey_Common_Action
     public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
-
-        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // Trying to update the original superadmin !!!
-        {
-            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
-        if ($iUserID)
-        {
-            //Never update 1st admin
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+        if ($iUserID) {
+            //Only super admin (read) can update other user
+            if(Permission::model()->hasGlobalPermission('superadmin','read')) {
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
-            else
+            } else {
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+            }
         }
 
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
             foreach  ($aBasePermissions as $PermissionName=>$aPermission)
@@ -543,24 +525,20 @@ class UserAction extends Survey_Common_Action
                     if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
                 }
                 // Only show a row for that permission if there is at least one permission he may give to other users
-                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export'])
-                {
+                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                     $aFilteredPermissions[$PermissionName]=$aPermission;
                 }
             }
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        if(isset($oUser))
-        {
+        if(isset($oUser)) {
             if ( $oUser  && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
             {
-                // Only the original superadmin (UID 1) may create superadmins
-                if (Yii::app()->session['loginID']!=1)
-                {
+                // Show superadmin right if create is set (review for delete too ?)
+                if (!Permission::model()->hasGlobalPermission('superadmin','create') ) {
                     unset($aBasePermissions['superadmin']);
                 }
-
                 $aData = array();
                 $aData['aBasePermissions'] = $aBasePermissions;
                 $aData['oUser'] = $oUser;
@@ -788,7 +766,19 @@ class UserAction extends Survey_Common_Action
                 $post = new Template;
                 $post->folder = $tp;
                 $post->creator = Yii::app()->session['loginID'];
-                $post->save();
+
+                try {
+                    $post->save();
+                } catch (Exception $ex) {
+                    Yii::app()->setFlashMessage(
+                        sprintf(
+                            gT('Could not save template %s: %s'),
+                            $tp,
+                            $ex->getMessage()
+                        ),
+                        'error'
+                    );
+                }
             }
         }
         return true;

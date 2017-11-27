@@ -82,6 +82,15 @@ class AjaxHelper
     }
 
     /**
+     * @return void
+     */
+    public static function outputHtml($html, $target)
+    {
+        $output = new JsonOutputHtml($html, $target);
+        self::echoString($output);
+    }
+
+    /**
      * Echo $str with json header
      * @param string str
      * @param JsonOutput $str
@@ -157,11 +166,12 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
-            'success' => $this->success,
-            'result' => $this->result,
-            'error' => $this->error,
-            'loggedIn' => $this->loggedIn,
-            'hasPermission' => $this->hasPermission,
+            'ajaxHelper'       => true,  // To help JS parse in some cases.
+            'success'          => $this->success,
+            'result'           => $this->result,
+            'error'            => $this->error,
+            'loggedIn'         => $this->loggedIn,
+            'hasPermission'    => $this->hasPermission,
             'noPermissionText' => gT('No permission')
         ));
     }
@@ -289,5 +299,48 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
 
         $this->hasPermission = true;
         $this->loggedIn = false;
+    }
+}
+
+/**
+ * Echo HTML and put it in a <div> with id $target.
+ */
+class JsonOutputHtml extends JsonOutput
+{
+
+    /**
+     * Content.
+     * @var string
+     */
+    public $html;
+
+    /**
+     * ID of element to put HTML in.
+     * @var string
+     */
+    public $target;
+
+    /**
+     * @param string $html
+     * @param string $target ID of element to put HTML in.
+     */
+    public function __construct($html, $target)
+    {
+        $this->html    = $html;
+        $this->target  = $target;
+    }
+
+    public function __toString()
+    {
+        return json_encode(
+            array(
+                'loggedIn'      => true,
+                'hasPermission' => true,
+                'success'       => true,
+                'html'          => $this->html,
+                'outputType'    => 'jsonoutputhtml',
+                'target'        => $this->target
+            )
+        );
     }
 }

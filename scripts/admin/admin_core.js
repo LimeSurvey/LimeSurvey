@@ -229,6 +229,7 @@ $(document).ready(function(){
             var postDatas   = $(e.relatedTarget).data('post');
             var gridid      = $(e.relatedTarget).data('gridid');
 
+            $(this).find('.btn-ok').unbind('click');
             $(this).find('.btn-ok').on('click', function(ev)
             {
                 $.ajax({
@@ -236,13 +237,18 @@ $(document).ready(function(){
                     url: $(e.relatedTarget).data('ajax-url'),
                     data: postDatas,
 
-                    success : function(html, statut)
+                    success : function(response, status)
                     {
                         $.fn.yiiGridView.update(gridid);                   // Update the surveys list
                         $('#confirmation-modal').modal('hide');
+
+                        // Use Ajax helper here if it's used on server.
+                        if (response.ajaxHelper) {
+                            LS.ajaxHelperOnSuccess(response);
+                        }
                     },
-                    error :  function(html, statut){
-                        $('#confirmation-modal .modal-body-text').append(html.responseText);
+                    error :  function(response, status){
+                        $('#confirmation-modal .modal-body-text').append(response.responseText);
                     }
 
                 });
@@ -962,6 +968,11 @@ LS.ajaxHelperOnSuccess = function(response) {
     // Error popup
     else if (response.error) {
         notifyFader(response.error.message, 'well-lg bg-danger text-center');
+    }
+    // Put HTML into element.
+    else if (response.outputType == 'jsonoutputhtml') {
+        $('#' + response.target).html(response.html);
+        doToolTip();
     }
     // Success popup
     else if (response.success) {

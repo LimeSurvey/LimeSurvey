@@ -13,7 +13,7 @@ function doFileUpload(){
     if (filecount > 0)
     {
         var jsontext = window.parent.window.$('#'+fieldname).val();
-        var json = eval('(' + jsontext + ')');
+        var json = JSON.parse(jsontext);
         if( $('#field'+fieldname+'_listfiles').length==0){
             $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
         }
@@ -133,7 +133,7 @@ function doFileUpload(){
 
             // Once the file has been uploaded via AJAX,
             // the preview is appended to the list of files
-            var metadata = eval('(' + response + ')');
+            var metadata = JSON.parse(response);
 
             var count = parseInt($('#'+fieldname+'_licount').val());
             count++;
@@ -221,34 +221,36 @@ function isValueInArray(arr, val) {
 
 // pass the JSON data from the iframe to the main survey page
 function passJSON(fieldname, show_title, show_comment, pos) {
-    var json = "[";
+    var preJson = [];
     var filecount = 0;
     var licount   = parseInt($('#'+fieldname+'_licount').val());
     var i = 1;
+
     while (i <= licount)
     {
-
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
-            if (filecount > 0)
-                json += ",";
-            json += '{ ';
-
+            var passDataObject = {};
             if ($("#"+fieldname+"_show_title").val() == 1)
-                json += '"title":"' +$("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"')+'",';
+                passDataObject.title = $("#"+fieldname+"_title_"  +i).val();
+
             if ($("#"+fieldname+"_show_comment").val() == 1)
-                json += '"comment":"'+$("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\\"')+'",';
-            json += '"size":"'   +$("#"+fieldname+"_size_"   +i).val()+'",'+
-                    '"name":"'   +$("#"+fieldname+"_name_"   +i).val()+'",'+
-                    '"filename":"'   +$("#"+fieldname+"_filename_"   +i).val()+'",'+
-                    '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
+                passDataObject.comment = $("#"+fieldname+"_comment_"+i).val();
+
+            passDataObject.size     = $("#"+fieldname+"_size_"   +i).val();
+            passDataObject.name     = $("#"+fieldname+"_name_"   +i).val();
+            passDataObject.filename = $("#"+fieldname+"_filename_"   +i).val();
+            passDataObject.ext      = $("#"+fieldname+"_ext_"    +i).val();
 
             filecount += 1;
+            preJson.push(passDataObject);
         }
         i += 1;
     }
-    json += "]";
-    window.parent.window.copyJSON(json, filecount, fieldname, show_title, show_comment, pos);
+    
+    var jsonString = JSON.stringify(preJson);
+
+    window.parent.window.copyJSON(jsonString, filecount, fieldname, show_title, show_comment, pos);
 }
 function saveAndExit(fieldname, show_title, show_comment, pos) {
     var filecount = parseInt($('#'+fieldname+'_filecount').val());

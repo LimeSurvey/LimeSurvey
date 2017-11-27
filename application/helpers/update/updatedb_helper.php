@@ -1617,6 +1617,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         Yii::app()->user->setFlash('error', gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />');
         return false;
     }
+    
+    // Activate schema cache again because otherwise it won't refresh.
+    $oDB->schemaCachingDuration=3600;
+
     // Load all tables of the application in the schema
     $oDB->schema->getTables();
     // clear the cache of all loaded tables
@@ -1625,6 +1629,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $oDB->active=true;
     // Force User model to refresh meta data (for updates from very old versions) 
     User::model()->refreshMetaData();
+    Notification::model()->refreshMetaData();
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(

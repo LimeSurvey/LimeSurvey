@@ -18,6 +18,10 @@
     text-align: center;
 }
 
+#responses-grid table tbody tr td.response-buttons {
+    text-align: left;
+}
+
 #responses-grid table thead tr th.checkbox-column {
     min-width: 40px;
 }

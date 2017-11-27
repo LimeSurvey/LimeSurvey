@@ -535,7 +535,7 @@ function submittokens($quotaexit=false)
                 $aReplacementVars["TOKEN"]=$token->token;
                 $aReplacementVars["EMAIL"]=$token->email;
                 // added survey url in replacement vars
-                $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
+                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
 
                 $attrfieldnames=getAttributeFieldNames($surveyid);
@@ -634,7 +634,7 @@ function sendSubmitNotifications($surveyid)
         return;
     }
 
-    $homeurl=Yii::app()->createAbsoluteUrl('/admin');
+    $homeurl=Yii::app()->getController()->createAbsoluteUrl('/admin');
 
     $sitename = Yii::app()->getConfig("sitename");
 
@@ -663,9 +663,9 @@ function sendSubmitNotifications($surveyid)
         $srid = $_SESSION['survey_'.$surveyid]['srid'];
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-    $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
-    $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
-    $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
+    $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['EDITRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['STATISTICSURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
     if ($bIsHTML)
     {
         $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";

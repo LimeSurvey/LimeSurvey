@@ -267,7 +267,6 @@
                         <!-- dropdown -->
                         <ul class="dropdown-menu">
                               <?php if ($surveydelete): ?>
-
                                   <!-- Delete survey -->
                                   <li>
                                       <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
@@ -320,8 +319,9 @@
                                           </a>
                                       <?php endif; ?>
                                   </li>
+                              <?php endif; ?>
 
-                              <?php if (isset($extraToolsMenuItems)): ?>
+                              <?php if (!empty($extraToolsMenuItems)): ?>
                                   <?php foreach ($extraToolsMenuItems as $menuItem): ?>
                                       <?php if ($menuItem->isDivider()): ?>
                                           <li class="divider"></li>
@@ -341,6 +341,7 @@
                                   <?php endforeach; ?>
                               <?php endif; ?>
 
+                              <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                                   <?php if(!$activated): ?>
                                               <li role="separator" class="divider"></li>
 

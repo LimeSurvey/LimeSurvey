@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
+ * @group date
  */
 class DateTimeTest extends TestBaseClass
 {
@@ -142,7 +143,7 @@ class DateTimeTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $this->assertNotEmpty($result);
         $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
-        $this->assertEquals('asd', $result[$sgqa]['value']);
+        $this->assertEquals('INVALID', $result[$sgqa]['value']);
 
         $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
         \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
@@ -199,7 +200,6 @@ class DateTimeTest extends TestBaseClass
 
     /**
      * q1 is hidden question with default answer "now".
-     * @group q1
      */
     public function testQ1()
     {

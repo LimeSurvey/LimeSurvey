@@ -111,6 +111,90 @@ class GlobalSettings extends Survey_Common_Action
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
+    /**
+     * Loaded by Ajax when user clicks "Calculate storage".
+     * @return void
+     */
+    public function getStorageData()
+    {
+        Yii::import('application.helpers.admin.ajax_helper', true);
+        $data = array();
+
+        $uploaddir = Yii::app()->getConfig("uploaddir");
+        $decimals = 1;
+
+        $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
+        $data['templateSize'] = humanFilesize(folderSize($uploaddir . '/templates'), $decimals);
+        $data['surveySize']   = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
+        $data['labelSize']    = humanFilesize(folderSize($uploaddir . '/labels'), $decimals);
+
+        $data['surveys']   = $this->getSurveyFolderStorage($uploaddir, $decimals);
+        $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
+
+        $html = Yii::app()->getController()->renderPartial(
+            '/admin/global_settings/_storage_ajax',
+            $data,
+            true
+        );
+
+        ls\ajax\AjaxHelper::outputHtml($html, 'global-settings-storage');
+    }
+
+    /**
+     * Get storage of folder storage.
+     * @param string $uploaddir
+     * @param int $decimals
+     * @return array
+     */
+    protected function getSurveyFolderStorage($uploaddir, $decimals)
+    {
+        $surveyFolders = array_filter(glob($uploaddir . '/surveys/*'), 'is_dir');
+        $surveys = array();
+        foreach ($surveyFolders as $folder) {
+            $parts = explode('/', $folder);
+            $surveyId = (int) end($parts);
+            $surveyinfo = getSurveyInfo($surveyId);
+            $size = folderSize($folder);
+            if ($size > 0) {
+                $surveys[] = array(
+                    'sizeInBytes' => $size,
+                    'size'        => humanFilesize($size, $decimals),
+                    'name'        => $surveyinfo === false ? '(' . gT('deleted') . ')' : $surveyinfo['name'],
+                    'deleted'     => $surveyinfo === false,
+                    'showPurgeButton' => Permission::model()->hasGlobalPermission('superadmin', 'delete')
+                                         && $surveyinfo === false,
+                    'sid'         => $surveyId
+                );
+            }
+        }
+        return $surveys;
+    }
+
+    /**
+     * Get storage of template folders.
+     * @param string $uploaddir
+     * @param int $decimals
+     * @return array
+     */
+    protected function getTemplateFolderStorage($uploaddir, $decimals)
+    {
+        $templateFolders = array_filter(glob($uploaddir . '/templates/*'), 'is_dir');
+        $templates = array();
+        foreach ($templateFolders as $folder) {
+            $parts = explode('/', $folder);
+            $templateName = end($parts);
+            $size = folderSize($folder);
+            if ($size > 0) {
+                $templates[] = array(
+                    'sizeInBytes' => $size,
+                    'size'        => humanFilesize($size, $decimals),
+                    'name'        => $templateName
+                );
+            }
+        }
+        return $templates;
+    }
+
     private function _saveSettings()
     {
         if ($_POST['action'] !== "globalsettingssave") {

@@ -17,26 +17,26 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     protected $settings = array(
         'server' => array(
             'type' => 'string',
-            'label' => 'Ldap server',
+            'label' => 'LDAP server',
             'help' => 'e.g. ldap://ldap.example.com or ldaps://ldap.example.com'
-            ),
+        ),
         'ldapport' => array(
             'type' => 'string',
             'label' => 'Port number',
             'help' => 'Default when omitted is 389',
-            ),
+        ),
         'ldapversion' => array(
             'type' => 'select',
             'label' => 'LDAP version',
             'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
             'default' => '2',
             'submitonchange'=> true
-            ),
+        ),
         'ldapoptreferrals' => array(
             'type' => 'boolean',
             'label' => 'Select true if referrals must be followed (use false for ActiveDirectory)',
             'default' => '0'
-            ),
+        ),
         'ldaptls' => array(
             'type' => 'boolean',
             'help' => 'Check to enable Start-TLS encryption, when using LDAPv3',
@@ -56,60 +56,64 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             'help' => 'e.g. cn= or uid=',
             ),
         'domainsuffix' => array(
-                'type' => 'string',
-                'label' => 'Username suffix',
-                'help' => 'e.g. @mydomain.com or remaining part of ldap query',
-                ),
+            'type' => 'string',
+            'label' => 'Username suffix',
+            'help' => 'e.g. @mydomain.com or remaining part of ldap query',
+        ),
         'searchuserattribute' => array(
-                'type' => 'string',
-                'label' => 'Attribute to compare to the given login can be uid, cn, mail, ...'
-                ),
+            'type' => 'string',
+            'label' => 'Attribute to compare to the given login can be uid, cn, mail, ...'
+        ),
         'usersearchbase' => array(
-                'type' => 'string',
-                'label' => 'Base DN for the user search operation. Multiple bases may be separated by a semicolon (;)'
-                ),
+            'type' => 'string',
+            'label' => 'Base DN for the user search operation. Multiple bases may be separated by a semicolon (;)'
+        ),
         'extrauserfilter' => array(
-                'type' => 'string',
-                'label' => 'Optional extra LDAP filter to be ANDed to the basic (searchuserattribute=username) filter. Don\'t forget the outmost enclosing parentheses'
-                ),
+            'type' => 'string',
+            'label' => 'Optional extra LDAP filter to be ANDed to the basic (searchuserattribute=username) filter. Don\'t forget the outmost enclosing parentheses'
+        ),
         'binddn' => array(
-                'type' => 'string',
-                'label' => 'Optional DN of the LDAP account used to search for the end-user\'s DN. An anonymous bind is performed if empty.'
-                ),
+            'type' => 'string',
+            'label' => 'Optional DN of the LDAP account used to search for the end-user\'s DN. An anonymous bind is performed if empty.'
+        ),
         'bindpwd' => array(
-                'type' => 'password',
-                'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
-                ),
+            'type' => 'password',
+            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+        ),
         'mailattribute' => array(
-                'type' => 'string',
-                'label' => 'LDAP attribute of email address'
-                ),
+            'type' => 'string',
+            'label' => 'LDAP attribute of email address'
+        ),
         'fullnameattribute' => array(
-                'type' => 'string',
-                'label' => 'LDAP attribute of full name'
-                ),
+            'type' => 'string',
+            'label' => 'LDAP attribute of full name'
+        ),
         'is_default' => array(
-                'type' => 'checkbox',
-                'label' => 'Check to make default authentication method'
-                ),
+            'type' => 'checkbox',
+            'label' => 'Check to make default authentication method'
+        ),
         'autocreate' => array(
-                'type' => 'checkbox',
-                'label' => 'Automatically create user if it exists in LDAP server'
-                ),
+            'type' => 'checkbox',
+            'label' => 'Automatically create user if it exists in LDAP server'
+        ),
         'automaticsurveycreation' => array(
-                'type' => 'checkbox',
-                'label' => 'Grant survey creation permission to automatically created users'
-        	),
+            'type' => 'checkbox',
+            'label' => 'Grant survey creation permission to automatically created users'
+        ),
         'groupsearchbase' => array(
-                'type' => 'string',
-                'label' => 'Optional base DN for group restriction',
-                'help' => 'E.g., ou=Groups,dc=example,dc=com'
-                ),
+            'type' => 'string',
+            'label' => 'Optional base DN for group restriction',
+            'help' => 'E.g., ou=Groups,dc=example,dc=com'
+        ),
         'groupsearchfilter' => array(
-                'type' => 'string',
-                'label' => 'Optional filter for group restriction',
-                'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
-                )
+            'type' => 'string',
+            'label' => 'Optional filter for group restriction',
+            'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
+        ),
+        'allowInitialUser' => array(
+            'type' => 'checkbox',
+            'label' => 'Allow initial user to login via LDAP',
+        )
     );
 
     public function init() {
@@ -134,7 +138,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         if (!function_exists("ldap_connect")){
             $event = $this->getEvent();
             $event->set('success', false);
-
             $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
         }
     }
@@ -147,8 +150,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     public function createNewUser()
     {
         // Do nothing if the user to be added is not LDAP type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'LDAP')
-        {
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'LDAP') {
             return;
         }
 
@@ -224,21 +226,20 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
         // Search for the user
-	$userentry = false;
-	// try each semicolon-separated search base in order
-	foreach(explode(";",$usersearchbase) as $usb)
-	{
-          $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
-          $rescount=ldap_count_entries($ldapconn,$dnsearchres);
-          if ($rescount == 1)
-          {
-              $userentry=ldap_get_entries($ldapconn, $dnsearchres);
-              $new_email = flattenText($userentry[0][$mailattribute][0]);
-              $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
-	      break;
-          }
-	}
-	if(!$userentry)
+        $userentry = false;
+        // try each semicolon-separated search base in order
+        foreach(explode(";",$usersearchbase) as $usb)
+        {
+            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
+            $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+            if ($rescount == 1) {
+                $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+                $new_email = flattenText($userentry[0][$mailattribute][0]);
+                $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
+                break;
+            }
+        }
+        if(!$userentry)
         {
             $oEvent->set('errorCode',self::ERROR_LDAP_NO_SEARCH_RESULT);
             $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));
@@ -256,12 +257,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
         $new_pass = createPassword();
         // If user is being auto created we set parent ID to 1 (admin user)
-        if (isset(Yii::app()->session['loginID']))
-        {
+        if (isset(Yii::app()->session['loginID'])) {
             $parentID = Yii::app()->session['loginID'];
-        }
-        else
-        {
+        } else {
             $parentID = 1;
         }
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
@@ -426,10 +424,15 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
               return;
             }
         }
-        if ($user !== null && ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)))
-        {
-            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
-            return;
+        if ($user !== null) {
+            //If user cannot login via LDAP: setAuthFailure
+            if( ( $user->uid == 1 && !$this->get('allowInitialUser') )
+                ||
+                !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)
+            ) {
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
+                return;
+            }
         }
 
         if (empty($password))

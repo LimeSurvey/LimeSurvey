@@ -3240,3 +3240,13 @@ input[type="file"].form-control {
 .custom.custom-margin-responsive.small.bottom-35 {
   margin-bottom: 35px;
 }
+
+/* No white-space wrap for buttons. */
+.response-buttons {
+    white-space: nowrap;
+}
+
+/* Reset children back to normal wrap, for tooltips. */
+.response-buttons * {
+    white-space: normal;
+}

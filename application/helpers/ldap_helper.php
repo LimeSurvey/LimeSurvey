@@ -109,7 +109,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
     $userattrs=array();
 
     // First let's lowercase the ldap query values
-    prepareLdapQuery($ldapq);
+    prepareLDAPQuery($ldapq);
 
     // Retrieve the ldap user attribute-list to read
     $userparams = array('firstname_attr','lastname_attr',
@@ -308,7 +308,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
     return $totalrescount;
 }
 
-function prepareLdapQuery($queryId)
+function prepareLDAPQuery($queryId)
 {
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
     $QueryName=$ldap_queries[$queryId]['name'];

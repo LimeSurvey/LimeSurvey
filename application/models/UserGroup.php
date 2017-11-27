@@ -297,7 +297,7 @@ class UserGroup extends LSActiveRecord {
 
         $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('usergroups','read'))
         {
             if ($isMine)
             {

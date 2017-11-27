@@ -30,7 +30,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $xml                   = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
 
-    if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+    if ($xml===false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
@@ -858,6 +858,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $results['quota']=0;
     $results['quotals']=0;
     $results['quotamembers']=0;
+    $results['plugin_settings']=0;
     $results['survey_url_parameters']=0;
     $results['importwarnings']=array();
 
@@ -1535,6 +1536,34 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             $result=SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error").": Failed to insert data[14]<br />");
             $results['survey_url_parameters']++;
+        }
+    }
+
+    // Import Survey plugins settings
+    if(isset($xml->plugin_settings)) {
+        $pluginNamesWarning=array(); // To shown not exist warning only one time.
+        foreach ($xml->plugin_settings->rows->row as $row)
+        {
+            // Find plugin id
+            if(isset($row->name)) {
+                $oPlugin = Plugin::model()->find("name = :name",array(":name"=>$row->name));
+                if($oPlugin) {
+                    $setting = new PluginSetting;
+                    $setting->plugin_id = $oPlugin->id;
+                    $setting->model = "Survey";
+                    $setting->model_id = $iNewSID;
+                    $setting->key = (string) $row->key;
+                    $setting->value = (string) $row->value;
+                    if($setting->save()) {
+                        $results['plugin_settings']++;
+                    } else {
+                        $results['importwarnings'][] = sprintf(gT("Error when saving %s for plugin %s"),CHtml::encode($row->key),CHtml::encode($row->name));
+                    }
+                } elseif(!isset($pluginNamesWarning[(string)$row->name])) {
+                    $results['importwarnings'][] = sprintf(gT("Plugin %s didn't exist, settings not imported"),CHtml::encode($row->name));
+                    $pluginNamesWarning[(string)$row->name] = 1;
+                }
+            }
         }
     }
 

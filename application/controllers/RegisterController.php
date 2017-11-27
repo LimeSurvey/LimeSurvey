@@ -243,9 +243,9 @@ class RegisterController extends LSYii_Controller {
         $useHtmlEmail = (getEmailFormat($iSurveyId) == 'html');
         $aMail['subject']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['subject']);
         $aMail['message']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['message']);
-        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=>$sToken));
-        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
-        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
+        $aReplacementFields["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=>$sToken));
+        $aReplacementFields["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
+        $aReplacementFields["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
         foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
         {
             $url = $aReplacementFields["{{$key}URL}"];
@@ -316,19 +316,41 @@ class RegisterController extends LSYii_Controller {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent=$today;
             $oToken->save();
+            $event = new PluginEvent('afterRegister'); // 2017-09-01 ayh new event.. Beware... using beforeRegister with sMessage return will not trigger this event!
+            $event->set('survey', $iSurveyId);
+            $event->set('token', $sToken);
+            $event->set('TokenEmailSuccess', true);
+            App()->getPluginManager()->dispatchEvent($event);
+            if(is_null($event->get('sMessage'))) {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
                 . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
+            }
+            else
+            {
+                $this->sMessage = $event->get('sMessage');
+            }
         }
         else
         {
+            $event = new PluginEvent('afterRegister'); // 2017-09-01 ayh new event.. Beware... using beforeRegister with sMessage return will not trigger this event!
+            $event->set('survey', $iSurveyId);
+            $event->set('token', $sToken);
+            $event->set('TokenEmailSuccess', false);
+            App()->getPluginManager()->dispatchEvent($event);
+            if(is_null($event->get('sMessage'))) {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.")."</p>\n"
                 . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
+            }
+            else
+            {
+                $this->sMessage = $event->get('sMessage');
+            }
         }
         // Allways return true : if we come here, we allways trye to send an email
         return true;

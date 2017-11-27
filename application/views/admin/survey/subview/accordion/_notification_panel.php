@@ -4,7 +4,7 @@
  */
 ?>
 <!-- Notification panel -->
-<div id='notification'  class="tab-pane fade in">
+<div  id='notification'  class="tab-pane fade in">
 
     <!-- email basic to -->
     <div class="form-group">
@@ -50,7 +50,7 @@
                     $this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'datestampModal',
                         'header' => gt('Warning','unescaped'),
-                        'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
+                        'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));
                     }

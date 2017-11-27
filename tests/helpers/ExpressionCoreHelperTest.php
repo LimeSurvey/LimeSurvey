@@ -14,8 +14,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
     /**
      * List of expressions to test.
-     * Value and expression.
-     * @var array
+     * @var array [[string $value, string $expression], ...]
      */
     public $expressions = [
         ['', '((563168X136X5376.NAOK == " "))'],
@@ -102,6 +101,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
      */
     public function testNumericalQuestion()
     {
+        $this->markTestSkipped();
         $sgqa = '563168X136X5376';
         foreach ($this->expressions as $expr) {
             $questionType = 'N';
@@ -117,6 +117,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
      */
     public function testShortTextQuestion()
     {
+        $this->markTestSkipped();
         $sgqa = '563168X136X5376';
         foreach ($this->expressions as $expr) {
             $questionType = 'S';

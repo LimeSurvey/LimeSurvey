@@ -2394,9 +2394,9 @@ class statistics_helper {
         if ($usegraph==1 && $outputType != 'html')
         {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
+            require_once(APPPATH.'/third_party/pchart/pChart.class.php');
+            require_once(APPPATH.'/third_party/pchart/pData.class.php');
+            require_once(APPPATH.'/third_party/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir.'/');
         }
 
@@ -2574,7 +2574,7 @@ class statistics_helper {
                 $row=Yii::app()->db->createCommand($query)->queryScalar();
             } catch (Exception $ex) {
                 $row = 0;
-                Yii::app()->setFlashMessage(gT('Faulty query: ') . $query, 'error');
+                Yii::app()->setFlashMessage('Faulty query: ' . htmlspecialchars($query), 'error');
             }
 
             //store temporarily value of answer count of question type '5' and 'A'.

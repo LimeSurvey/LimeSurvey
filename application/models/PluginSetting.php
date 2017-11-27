@@ -14,8 +14,16 @@
  */
 
 /**
- * This is the model class for table "{{plugin_settings}}".
+ * Class PluginSetting
+ *
+ * @property integer $id primary key
+ * @property integer $plugin_id see \Plugin
+ * @property string $model
+ * @property integer $model_id
+ * @property string $key
+ * @property string $value
  */
+
 class PluginSetting extends CActiveRecord {
 
     /**
@@ -25,8 +33,27 @@ class PluginSetting extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
+    /**
+    * Returns the table's name
+    *
+    * @access public
+    * @return string
+    */
     public function tableName() {
         return '{{plugin_settings}}';
+    }
+
+    /**
+    * Returns the validation rules for attributes.
+    * @return array[]
+    */
+    public function rules() {
+        return array(
+            array('plugin_id','numerical', 'integerOnly'=>true), // 'allowEmpty'=>false ?
+            array('model','length', 'max'=>255,'allowEmpty'=>true),
+            array('model_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('key','length', 'max'=>255),
+        );
     }
 }
