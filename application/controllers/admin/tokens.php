@@ -714,8 +714,8 @@ class tokens extends Survey_Common_Action
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
-        $iSurveyId = (int)$iSurveyId;
-        $iTokenId = (int)$iTokenId);
+        $iSurveyId = (int) $iSurveyId;
+        $iTokenId = (int) $iTokenId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
         // Check permission
