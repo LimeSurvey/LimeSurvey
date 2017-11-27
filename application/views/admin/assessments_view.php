@@ -24,10 +24,43 @@
     </form>
 <?php else:?>
     <h4><?php eT("Assessment rules");?></h4>
-          <div class="row">
+        <div class="row">
             <div class="col-sm-12">
+            <?php $this->widget('bootstrap.widgets.TbGridView', array(
+					'dataProvider' => $model->search(),
+					// Number of row per page selection
+					'id' => 'assessements-grid',
+					'columns' => $model->getColumns(),
+					'filter' => $model,
+					'emptyText'=>gT('No customizable entries found.'),
+					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+						CHtml::dropDownList(
+							'pageSizeAsessements',
+							$pageSizeAsessements,
+							Yii::app()->params['pageSizeOptions'],
+							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+						)
+					),
+					'rowHtmlOptionsExpression' => '["data-assessement-id" => $data->id]',
+					'htmlOptions' => array('class'=> 'table-responsive'),
+					'itemsCssClass' => 'table table-responsive table-striped',
+					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+					'ajaxType' => 'POST',
+                    'ajaxUpdate' => 'assessements-grid',
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+    				'afterAjaxUpdate'=>'bindAction',
+				));
+            ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-success" id="selector__assessement-add-new"><?=eT("Add new assessment rule")?></button>
+            </div>
+        </div>
+<?php /*
                 <!-- List assesments -->
-                <table class='table'>
+                <table class='table table-striped' id="selector__assessement-table">
                     <!-- header -->
                     <thead>
                         <tr>
@@ -142,22 +175,22 @@
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-
+*/ ?>
                 <!-- Edition - Modal -->
                 <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")): ?>
                 <div id="assesements-edit-add" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header"> 
-                                <h4 class="modal-title"> 
-                                    <?php echo $actiontitle;?> 
-                                </h4> 
-                            </div>
-                            <div class="modal-body">
-                                <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
+                            <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
+                                <div class="modal-header"> 
+                                    <h4 class="modal-title"> 
+                                        <?php echo $actiontitle;?> 
+                                    </h4> 
+                                </div>
+                                <div class="modal-body">
                                     <!-- Scope, Total, Group -->
                                     <div class='row'>
-                                        <div class='form-group col-md-6'>
+                                        <div class='form-group col-md-12'>
                                             <label class='control-label col-sm-2'>
                                                 <?php eT("Scope:");?>
                                             </label>
@@ -178,7 +211,7 @@
                                             </div>
                                         </div>
                                     <!-- Question group -->
-                                        <div class='form-group col-md-6'>
+                                        <div class='form-group col-md-12'>
                                             <label class='control-label col-sm-2' for='gid'>
                                                 <?php eT("Question group:");?>
                                             </label>
@@ -199,7 +232,7 @@
                                     </div>
                                     <div class='row'>
                                         <!-- Minimum -->
-                                        <div class='form-group col-md-6'>
+                                        <div class='form-group col-md-12'>
                                             <label class='control-label col-sm-2' for='minimum'>
                                                 <?php eT("Minimum:");?>
                                             </label>
@@ -210,7 +243,7 @@
                                         </div>
 
                                         <!-- Maximum -->
-                                        <div class='form-group col-md-6'>
+                                        <div class='form-group col-md-12'>
                                         <label class='control-label col-sm-2' for='maximum'>
                                             <?php eT("Maximum:");?>
                                         </label>
@@ -283,12 +316,16 @@
 
                                     <!-- action buttons -->
                                     <div>
-                                    <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-                                    <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
-                                    <input type='hidden' name='id' value='<?php echo $editId;?>' />
+                                        <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
+                                        <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
+                                        <input type='hidden' name='id' value='<?php echo $editId;?>' />
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-success" id="selector__assessements-save-modal" data-dismiss="modal">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

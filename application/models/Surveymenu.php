@@ -195,6 +195,7 @@ class Surveymenu extends LSActiveRecord
             'created_by'	=> gT('Created by'),
         );
     }
+    
     public function getButtons()
     {
         $buttons = "<div style='white-space: nowrap'>";

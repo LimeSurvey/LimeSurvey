@@ -96,9 +96,11 @@ class Assessments extends Survey_Common_Action
     private function _showAssessments($iSurveyID, $action)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
-        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
+        $oAssessments = Assessment::model();
+        $oAssessments->sid = $iSurveyID;
         $aData = $this->_collectGroupData($iSurveyID);
+        $aData['model'] = $oAssessments;
+        $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
         $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
@@ -119,8 +121,6 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        // FIXME this must be in VIEWS!
-
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
             $aData['asessementNotActivated'] = array(
@@ -133,6 +133,7 @@ class Assessments extends Survey_Common_Action
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls['assessments_view'][] = $aData;
+        
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
 

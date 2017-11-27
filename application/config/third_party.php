@@ -356,6 +356,7 @@ return array(
     ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'datatables.min.css'
         ),

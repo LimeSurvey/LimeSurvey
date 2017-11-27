@@ -26,8 +26,24 @@ function jquery_goodchars(e, goods)
    return false;
 }
 
+var assessementTable = '#selector__assessement-table',
+    $assessementTable = $(assessementTable);
+var bindAction = function(){
+    $('.action_assessements_editModal').on('click.assessements', function(){
+        $('#assesements-edit-add').modal('show');
+    });
+    $('#selector__assessement-add-new').on('click.assessements', function(){
+        $('#assesements-edit-add').modal('show');
+    });
+    $('#assesements-edit-add').on('shown.bs.modal', function(){
+        $('#selector__assessements-save-modal').on('click.assessements', function(){
+            $(this).closest('form').trigger('submit');
+        });
+    });
+}
 
 $(document).on('ready  pjax:scriptcomplete', function(){
+    bindAction();
     //$('#languagetabs').tabs();
     if ($(".assessmentlist tbody tr").size()>0)
     {

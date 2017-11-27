@@ -61,6 +61,115 @@ class Assessment extends LSActiveRecord
         return array('id', 'language');
     }
 
+        /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'scope' => gT("Scope"),
+            'name' => gT("Name"),
+            'minimum' => gT("Minimum"),
+            'maximum' => gT("Maximum"),
+            'message' => gT("Message"),
+            'language' => gT("Language"),
+        );
+    }
+
+    public function getButtons()
+    {
+        $buttons = "<div style='white-space: nowrap'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>" //icon class
+            . "</button>";
+		
+        if (Permission::model()->hasGlobalPermission('assessements', 'update')) {
+            $editData = array(
+                'action_assessements_editModal',
+                'text-danger',
+                gT("Edit this assessement rule"),
+                'edit'
+            );
+            $deleteData = array(
+                'action_assessements_deleteModal',
+                'text-danger',
+                gT("Delete this assessement rule"),
+                'trash text-danger'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+            $buttons .= vsprintf($raw_button_template, $editData);
+        }
+
+        $buttons .= '</div>';
+		
+        return $buttons;
+    }
+
+    public function getColumns(){
+        return array(
+            array(
+                'name' => 'id',
+                'filter' => false
+                ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                'name' => 'scope',
+                'value' => '$data->scope == "G" ? eT("Global") : eT("Total")',
+                'htmlOptions' => ['class' => 'col-sm-1'],
+                'filter' => TbHtml::dropDownList('Assessement["scope"]', 'scope', [ '' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
+            ),
+            array(
+                'name' => 'name',
+                'htmlOptions' => ['class' => 'col-sm-2']
+            ),
+            array(
+                'name' => 'minimum',
+                'htmlOptions' => ['class' => 'col-sm-1']
+            ),
+            array(
+                'name' => 'maximum',
+                'htmlOptions' => ['class' => 'col-sm-1']
+            ),
+            array(
+                'name' => 'message',
+                'htmlOptions' => ['class' => 'col-sm-5']
+            ),
+            array(
+            'name' => 'language',
+            'value' => 'getLanguageNameFromCode($data->language, false)',
+            'htmlOptions' => ['class' => 'col-sm-1']
+            ),
+        );
+    }
+
+    public function search(){
+// @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sid', $this->sid);
+        $criteria->compare('gid', $this->gid);
+        $criteria->compare('scope', $this->scope);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('minimum', $this->minimum);
+        $criteria->compare('maximum', $this->maximum);
+        $criteria->compare('message', $this->message, true);
+        $criteria->compare('language', $this->language);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
     /**
      * @param array $data
      * @return Assessment
