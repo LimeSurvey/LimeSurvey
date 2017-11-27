@@ -17,5 +17,5 @@ $config['masterversion'] = '2.67.3'; //The current masters version merged into t
 $config['dbversionnumber'] = 330;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '3011';
+$config['assetsversionnumber'] = '3012';
 return $config;
