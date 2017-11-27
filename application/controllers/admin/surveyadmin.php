@@ -1828,11 +1828,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array(
             'rows' => []
         );
-        foreach($aSurveyParameters as $oSurveyParameter){
+        foreach($aSurveyParameters as $oSurveyParameter) {
             $row = $oSurveyParameter->attributes;
             $row['questionTitle'] = $oSurveyParameter->question->title;
             
-            if($oSurveyParameter->targetsqid != ''){
+            if($oSurveyParameter->targetsqid != '') {
                 $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
             }
             

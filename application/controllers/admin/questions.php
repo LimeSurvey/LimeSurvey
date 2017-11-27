@@ -140,13 +140,13 @@ class questions extends Survey_Common_Action
      */
     public function importView($groupid = null, $surveyid)
     {
-        $iSurveyID = (int)$surveyid;
+        $iSurveyID = (int) $surveyid;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
             Yii::app()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$iSurveyID));
         }
         $survey = Survey::model()->findByPk($iSurveyID);
-        $aData=[];
+        $aData = [];
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['questiongroups'] = true;
         $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyID; // Close button
@@ -173,7 +173,7 @@ class questions extends Survey_Common_Action
         $gid = returnGlobal('gid');
         $aViewUrls = array();
 
-        $aData=[];
+        $aData = [];
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
@@ -210,7 +210,7 @@ class questions extends Survey_Common_Action
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             Yii::app()->loadHelper('admin/import');
 
-            $aImportResults=array();
+            $aImportResults = array();
             if (strtolower($sExtension) == 'lsq') {
                 $aImportResults = XMLImportQuestion($sFullFilepath, $iSurveyID, $gid, array('autorename'=>Yii::app()->request->getPost('autorename') == '1' ?true:false));
             } else {
@@ -462,9 +462,9 @@ class questions extends Survey_Common_Action
     public function _editansweroptions($surveyid, $gid, $qid)
     {
         Yii::app()->loadHelper('database');
-        $iSurveyID = (int)$surveyid;
-        $qid = (int)$qid;
-        $gid = (int)$gid;
+        $iSurveyID = (int) $surveyid;
+        $qid = (int) $qid;
+        $gid = (int) $gid;
 
         // Get languages select on survey.
         $anslangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -619,10 +619,10 @@ class questions extends Survey_Common_Action
      */
     public function subquestions($surveyid, $gid, $qid)
     {
-        $aData=[];
-        $aData['surveyid'] = $surveyid = (int)$surveyid;
-        $aData['gid'] = $gid = (int)$gid;
-        $aData['qid'] = $qid = (int)$qid;
+        $aData = [];
+        $aData['surveyid'] = $surveyid = (int) $surveyid;
+        $aData['gid'] = $gid = (int) $gid;
+        $aData['qid'] = $qid = (int) $qid;
 
         // Abort if user lacks permission to update survey content
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
@@ -675,7 +675,7 @@ class questions extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $surveyid = (int)$surveyid;
+        $surveyid = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
@@ -1951,7 +1951,7 @@ class questions extends Survey_Common_Action
         // TODO: Longterm, change 'other' to boolean; change the model rules
         $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
 
-        $iSurveyId = (int)$surveyid;
+        $iSurveyId = (int) $surveyid;
         $iQid = $qid;
         $oSurvey = Survey::model()->findByPk($surveyid);
         if ($oSurvey) {

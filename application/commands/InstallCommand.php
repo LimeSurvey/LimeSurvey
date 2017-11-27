@@ -60,7 +60,7 @@ class InstallCommand extends CConsoleCommand
                 case 'mssql':
                 case 'sqlsrv':
                     break;
-                 default:
+                    default:
                     throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
             }
 

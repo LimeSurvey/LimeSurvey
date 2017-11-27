@@ -202,7 +202,7 @@ class surveypermission extends Survey_Common_Action
             . "<li><label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>".gT("User").": </label>
                  <div class='col-sm-4'>
                 <select id='uidselect' name='uid'  class='form-control'>\n"
-            . getSurveyUserList( false, $iSurveyID)
+            . getSurveyUserList(false, $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default' type='submit' value='".gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".gT("Please select a user first", "js")."'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"

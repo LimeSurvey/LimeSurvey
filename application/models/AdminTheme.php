@@ -188,7 +188,7 @@ class AdminTheme extends CFormModel
             }
         }
 
-        if (!empty($this->config->files->js->filename)){
+        if (!empty($this->config->files->js->filename)) {
             foreach ($this->config->files->js->filename as $jsfile) {
                 $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
             }
