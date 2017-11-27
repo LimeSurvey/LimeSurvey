@@ -89,7 +89,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $thissurvey=getSurveyInfo($_surveyid,$s_lang);
     }
 
-
     Yii::app()->loadHelper('surveytranslator');
 
     if (isset($thissurvey['sid'])) {
@@ -295,6 +294,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_clearall = "";
     }
 
+    if (isset($surveyid))
+    {
+        $_quexmlpdf=CHtml::link(gT("Save as PDF"),array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"),array('data-toggle'=>'tooltip','data-placement'=>'right','title'=>gT("Note: Print will not include items on this page")));
+    }
+    else
+    {
+        $_quexmlpdf = "";
+    }
+
     if (isset(Yii::app()->session['datestamp']))
     {
         $_datestamp = Yii::app()->session['datestamp'];
@@ -421,6 +429,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
     $coreReplacements['CLEARALL'] = $_clearall;
+    $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;

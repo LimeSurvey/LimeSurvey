@@ -80,7 +80,7 @@
             //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             //Survey is not finished or don't exist
-            if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
+            if (!isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
                 $this->sTemplate=$oTemplate->sTemplateName;
@@ -132,7 +132,7 @@
             $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
             
-            if (empty($sExportType))
+            if (empty($sExportType) && isset($_SESSION['survey_'.$iSurveyID]['finished']))
             {
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
             }
