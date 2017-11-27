@@ -422,7 +422,10 @@ class questions extends Survey_Common_Action
 
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'answers.js');
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts').'answers.js',
+            LSYii_ClientScript::POS_BEGIN
+        );
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
