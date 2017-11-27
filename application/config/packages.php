@@ -172,7 +172,6 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/font-roboto.css',
             'css/lime-admin-common.css',
             'css/jcarousel.responsive.css',
             'css/attributeMap.css',
