@@ -194,7 +194,6 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/font-roboto.css',
             'css/adminstyle-rtl.css',
             'css/rtl/lime-admin-common-rtl.css',
             'css/rtl/jcarousel.responsive-rtl.css',
@@ -226,6 +225,14 @@ return array(
             'jquery',
             'pjax',
         )
+    ),
+
+    'font-roboto' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'roboto.css',
+        ),
     ),
 
     'surveymenufunctions' => array(
