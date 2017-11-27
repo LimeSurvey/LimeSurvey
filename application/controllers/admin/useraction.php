@@ -673,7 +673,7 @@ class UserAction extends Survey_Common_Action
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
 
                 //Now check if the old password matches the old password saved
-                } else if($oUserModel->password !== $oldPasswordHash){
+                } else if( (((gettype($oUserModel->password)=='resource'))?stream_get_contents($oUserModel->password,-1,0):$oUserModel->password) !== $oldPasswordHash){
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."),'error');
                 
                 //At last if everything worked set the new password
