@@ -25,6 +25,7 @@ return array(
     'jquery' => array(
         'devBaseUrl' => 'third_party/jquery',
         'basePath' => 'third_party.jquery',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-3.1.1'.$minVersion.'.js',
             'jquery-migrate-3.0.0'.$minVersion.'.js',
@@ -164,6 +165,7 @@ return array(
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
         ),

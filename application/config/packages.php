@@ -181,7 +181,7 @@ return array(
         ),
         'js' => array(
             'js/admin_core.js',
-            'js/notifications.js'
+            'js/notifications.js',
         ),
         'depends' => array(
             'jquery',
@@ -190,7 +190,7 @@ return array(
     ),
 
     'adminbasicsrtl' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/rtl',
+        'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
@@ -204,7 +204,23 @@ return array(
         ),
         'js' => array(
             'js/admin_core.js',
-            'js/notifications.js'
+            'js/notifications.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'pjax',
+        )
+    ),
+
+    'adminbasicjs' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_HEAD,
+        'js' => array(
+            'js/notify.js',
+            'js/panelclickable.js',
+            'js/panelsanimation.js',
+            'js/save.js',
         ),
         'depends' => array(
             'jquery',

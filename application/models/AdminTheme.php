@@ -149,6 +149,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('bootstrap-select2');
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
+            App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminpanel'); // The new admin panel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
@@ -174,7 +175,8 @@ class AdminTheme extends CFormModel
             foreach ($this->config->files->rtl->css->filename as $cssfile) {
                 $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
             }
-            
+
+            App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->unregisterPackage('adminbasics');
             App()->getClientScript()->registerPackage('adminbasicsrtl');
 
@@ -185,9 +187,12 @@ class AdminTheme extends CFormModel
             }
         }
 
-        foreach ($this->config->files->js->filename as $jsfile) {
-            $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+        if (!empty($this->config->files->js->filename)){
+            foreach ($this->config->files->js->filename as $jsfile) {
+                $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+            }
         }
+
 
         $package = array();
 
