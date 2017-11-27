@@ -233,7 +233,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * key/value pairs in the $data array.
      *
      * @param array $data
-     * @param string $condition
+     * @param string|array $condition
      * @param bool $xssfiltering
      * @return bool
      */

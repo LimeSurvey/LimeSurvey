@@ -46,7 +46,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
  */
 function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('', $sTextToTranslate, $iCount), $sEscapeMode);
+    return quoteText(Yii::t('', $sTextToTranslate), $sEscapeMode);
 }
 
 /**
@@ -275,16 +275,14 @@ function getTemplateList()
 /**
 * getGidPrevious() returns the Gid of the group prior to the current active group
 *
-* @param string $surveyid
-* @param string $gid
+* @param integer $surveyid
+* @param integer $gid
 *
 * @return integer|string The GID of the previous group or blank string if no group
 */
 function getGidPrevious($surveyid, $gid)
 {
-
-
-    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
+    $surveyid=(int)$surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
@@ -304,15 +302,14 @@ function getGidPrevious($surveyid, $gid)
 /**
 * getGidNext() returns the Gid of the group next to the current active group
 *
-* @param string $surveyid
-* @param string $gid
+* @param integer $surveyid
+* @param integer $gid
 *
 * @return integer|string The Gid of the next group or blank string if no group
 */
 function getGidNext($surveyid, $gid)
 {
-
-    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
+    $surveyid=(int)$surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
@@ -794,8 +791,6 @@ function getGroupListLang($gid, $language, $surveyid)
 
 function getUserList($outputformat = 'fullinfoarray')
 {
-
-
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
@@ -833,7 +828,7 @@ function getUserList($outputformat = 'fullinfoarray')
 
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
-    if (count($uresult) == 0) {
+    if (count($uresult) == 0 && !empty($myuid)) {
 //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=".$myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
@@ -1318,10 +1313,11 @@ function validateEmailAddress($sEmailAddress)
 * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
 * @param mixed $aEmailAddressList  Email address to check
+* @returns array
 */
 function validateEmailAddresses($aEmailAddressList)
 {
-    $aOutList = false;
+    $aOutList = [];
     if (!is_array($aEmailAddressList)) {
         $aEmailAddressList = explode(';', $aEmailAddressList);
     }
@@ -1329,7 +1325,7 @@ function validateEmailAddresses($aEmailAddressList)
     foreach ($aEmailAddressList as $sEmailAddress) {
         $sEmailAddress = trim($sEmailAddress);
         if (validateEmailAddress($sEmailAddress)) {
-            $aOutList = $sEmailAddress;
+            $aOutList[] = $sEmailAddress;
         }
     }
     return $aOutList;
@@ -1345,105 +1341,104 @@ function validateEmailAddresses($aEmailAddressList)
  */
 function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 {
-
-        foreach ($aFilters as $flt) {
+    $allfields=[];
+    foreach ($aFilters as $flt) {
         Yii::app()->loadHelper("surveytranslator");
         $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
         if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
-                    $sLanguage = $oSurvey->language;
+            $sLanguage = $oSurvey->language;
         }
-        $allfields = [];
         switch ($flt['type']) {
-                    case "K": // Multiple Numerical
-                    case "Q": // Multiple Short Text
-                        //get answers
-                        $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+            case "K": // Multiple Numerical
+            case "Q": // Multiple Short Text
+                //get answers
+                $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
-                        //go through all the (multiple) answers
-                        foreach ($result as $row) {
-                            $myfield2 = $flt['type'].$myfield.reset($row);
-                            $allfields[] = $myfield2;
-                        }
-                        break;
-                    case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-                    case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                    case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                    case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-                    case "F": // FlEXIBLE ARRAY
-                    case "H": // ARRAY (By Column)
-                        //get answers
-                        $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                //go through all the (multiple) answers
+                foreach ($result as $row) {
+                    $myfield2 = $flt['type'].$myfield.reset($row);
+                    $allfields[] = $myfield2;
+                }
+                break;
+            case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+            case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+            case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+            case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+            case "F": // FlEXIBLE ARRAY
+            case "H": // ARRAY (By Column)
+                //get answers
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
-                        //go through all the (multiple) answers
-                        foreach ($result as $row) {
-                            $myfield2 = $myfield.reset($row);
-                            $allfields[] = $myfield2;
-                        }
-                        break;
-                    // all "free text" types (T, U, S)  get the same prefix ("T")
-                    case "T": // Long free text
-                    case "U": // Huge free text
-                    case "S": // Short free text
-                        $myfield = "T$myfield";
-                        $allfields[] = $myfield;
-                        break;
-                    case ";":  //ARRAY (Multi Flex) (Text)
-                    case ":":  //ARRAY (Multi Flex) (Numbers)
-                        $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
+                //go through all the (multiple) answers
+                foreach ($result as $row) {
+                    $myfield2 = $myfield.reset($row);
+                    $allfields[] = $myfield2;
+                }
+                break;
+                // all "free text" types (T, U, S)  get the same prefix ("T")
+            case "T": // Long free text
+            case "U": // Huge free text
+            case "S": // Short free text
+                $myfield = "T$myfield";
+                $allfields[] = $myfield;
+                break;
+            case ";":  //ARRAY (Multi Flex) (Text)
+            case ":":  //ARRAY (Multi Flex) (Numbers)
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
 
-                        foreach ($result as $row) {
-                            $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
-                            foreach ($fresult as $frow) {
-                                $myfield2 = $myfield.reset($row)."_".$frow['title'];
-                            $allfields[] = $myfield2;
-                        }
-                        }
-                        break;
-                    case "R": //RANKING
-                        //get some answers
-                        $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
-                        //get number of answers
-                        //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                        $i = 0;
-                        foreach ($result as $row) {
-                            $i++;
-                            $myfield2 = "R".$myfield.$i."-".strlen($i);
-                            $allfields[] = $myfield2;
-                        }
+                foreach ($result as $row) {
+                    $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
+                    foreach ($fresult as $frow) {
+                        $myfield2 = $myfield.reset($row)."_".$frow['title'];
+                        $allfields[] = $myfield2;
+                    }
+                }
+                break;
+            case "R": //RANKING
+                //get some answers
+                $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
+                //get number of answers
+                //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                $i = 0;
+                foreach ($result as $row) {
+                    $i++;
+                    $myfield2 = "R".$myfield.$i."-".strlen($i);
+                    $allfields[] = $myfield2;
+                }
 
-                        break;
-                    //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                    case "X":  //This is a boilerplate question and it has no business in this script
-                        break;
-                    case "1": // MULTI SCALE
-                        //get answers
-                        $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
-                        //loop through answers
-                        foreach ($result as $row) {
-                            //----------------- LABEL 1 ---------------------
-                            $myfield2 = $myfield.reset($row)."#0";
-                            $allfields[] = $myfield2;
-                            //----------------- LABEL 2 ---------------------
-                            $myfield2 = $myfield.reset($row)."#1";
-                            $allfields[] = $myfield2;
-                        }   //end WHILE -> loop through all answers
-                        break;
+                break;
+                //Boilerplate questions are only used to put some text between other questions -> no analysis needed
+            case "X":  //This is a boilerplate question and it has no business in this script
+                break;
+            case "1": // MULTI SCALE
+                //get answers
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                //loop through answers
+                foreach ($result as $row) {
+                    //----------------- LABEL 1 ---------------------
+                    $myfield2 = $myfield.reset($row)."#0";
+                    $allfields[] = $myfield2;
+                    //----------------- LABEL 2 ---------------------
+                    $myfield2 = $myfield.reset($row)."#1";
+                    $allfields[] = $myfield2;
+                }   //end WHILE -> loop through all answers
+                break;
 
-                    case "P":  //P - Multiple choice with comments
-                    case "M":  //M - Multiple choice
-                    case "N":  //N - Numerical input
-                    case "D":  //D - Date
-                        $myfield2 = $flt['type'].$myfield;
-                                $allfields[] = $myfield2;
-                        break;
-                    default:   //Default settings
-                        $allfields[] = $myfield;
-                        break;
+            case "P":  //P - Multiple choice with comments
+            case "M":  //M - Multiple choice
+            case "N":  //N - Numerical input
+            case "D":  //D - Date
+                $myfield2 = $flt['type'].$myfield;
+                $allfields[] = $myfield2;
+                break;
+            default:   //Default settings
+                $allfields[] = $myfield;
+                break;
 
-            } //end switch
-        }
+        } //end switch
+    }
 
     return $allfields;
 
@@ -2783,11 +2778,14 @@ function getEmailFormat($surveyid)
 }
 
 // Check if user has manage rights for a template
-function hasTemplateManageRights($userid, $templatefolder)
+function hasTemplateManageRights($userid, $sThemeFolder)
 {
-    $userid = sanitize_int($userid);
-    $templatefolder = sanitize_paranoid_string($templatefolder);
-    return Permission::model()->hasTemplatePermission($templatefolder, 'read', $userid);
+    $userid = (int)$userid;
+    $sThemeFolder = sanitize_paranoid_string($sThemeFolder);
+    if ($sThemeFolder===false) {
+        return false;
+    }
+    return Permission::model()->hasTemplatePermission($sThemeFolder, 'read', $userid);
 }
 
 
@@ -2935,12 +2933,19 @@ function breakToNewline($data)
     return preg_replace('!<br.*>!iU', "\n", $data);
 }
 
-function safeDie($text)
-{
+/**
+* Provides a safe way to end the application
+* 
+* @param mixed $sText
+* @returns boolean Fake return so Scrutinizes shuts up
+*/
+function safeDie($sText)
+{   
     //Only allowed tag: <br />
-    $textarray = explode('<br />', $text);
+    $textarray = explode('<br />', $sText);
     $textarray = array_map('htmlspecialchars', $textarray);
-    safeDie(implode('<br />', $textarray));
+    die(implode('<br />', $textarray));
+    return false; // do not remove
 }
 
 /**
@@ -3149,14 +3154,14 @@ function cleanTempDirectory()
     $dp = opendir($dir) or safeDie('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-            @unlink($dir.$file); /** @scrutinizer ignore-unhandled */
+            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file); 
         }
     }
     $dir = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary upload directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-            @unlink($dir.$file); /** @scrutinizer ignore-unhandled */
+            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file); 
         }
     }
     closedir($dp);
@@ -4277,7 +4282,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 
 /**
 * Get a list of all user groups
-* 
+* @returns array
 */
 function getUserGroupList()
 {
@@ -4575,7 +4580,7 @@ function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
  * Return HTML <option> list of user groups
  * @param string $outputformat
  * @param int $surveyid
- * @return string
+ * @return string|array 
  */
 function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
 {
@@ -4595,7 +4600,7 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
 
     $authorizedGroupsList = [];
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedGroupsList = getUserGroupList(null, 'simplegidarray');
+        $authorizedGroupsList = getUserGroupList();
     }
 
     $svexist = false;
