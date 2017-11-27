@@ -213,7 +213,7 @@ return array(
     'adminbasicjs' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_HEAD,
+        'position' =>CClientScript::POS_BEGIN,
         'js' => array(
             'js/notify.js',
             'js/panelclickable.js',
