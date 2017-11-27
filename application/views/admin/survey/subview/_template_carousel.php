@@ -7,7 +7,10 @@
  * @var $iSurveyId
  */
  $count = 0;
- App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'jcarousel.responsive.min.js');
+
+ App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'jcarousel.min.js', LSYii_ClientScript::POS_BEGIN);
+ App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'template.jcarousel.js', LSYii_ClientScript::POS_BEGIN);
+
 ?>
 
 <div class="row template-caroussel">
