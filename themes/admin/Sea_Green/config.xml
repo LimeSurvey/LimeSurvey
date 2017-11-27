@@ -31,7 +31,6 @@
         <css>
             <filename>lime-admin-common.css</filename>
             <filename>lime-admin-colors.css</filename>
-            <filename>fonts.css</filename>
             <filename>statistics.css</filename>
             <filename>jcarousel.responsive.css</filename>
             <filename>attributeMap.css</filename>
@@ -58,7 +57,6 @@
             <css>
                 <!-- Still need these files -->
                 <filename>lime-admin-colors.css</filename>
-                <filename>fonts.css</filename>
 
                 <!-- Specific RTL-files -->
                 <filename>adminstyle-rtl.css</filename>

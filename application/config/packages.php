@@ -171,6 +171,9 @@ return array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/font-roboto.css'
+        ),
         'js' => array(
             'js/admin_core.js',
             'js/notifications.js'
@@ -190,6 +193,6 @@ return array(
             'adminbasics',
         )
     ),
-    
-    
+
+
 );
