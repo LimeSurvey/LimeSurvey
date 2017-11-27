@@ -351,8 +351,6 @@ class Survey_Common_Action extends CAction
         if (!empty($aData['surveyid'])) {
             echo '</div>';
             echo '</div>';
-            echo '</div>';
-            echo '</div>';
         }
 
 
