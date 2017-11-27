@@ -59,7 +59,11 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
      */
     public function tearDown()
     {
-        self::$survey->delete();
+        if (self::$testSurvey) {
+            self::$testSurvey->delete();
+            // NB: Unset so static teardown won't find it.
+            self::$testSurvey = null;
+        }
     }
 
     /**
@@ -140,6 +144,8 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $answer2 = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="answer_en_1_1"]'));
         $answer2->sendKeys('abc');
 
+        sleep(1);
+
         $savebutton = self::$webDriver->findElement(WebDriverBy::id('save-button'));
         $savebutton->click();
 
@@ -149,6 +155,5 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertCount(2, $answers, 'Two answer options saved');
-
     }
 }
