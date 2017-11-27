@@ -97,7 +97,7 @@ class PluginHelper extends Survey_Common_Action
         try {
             $refMethod = $refClass->getMethod($methodName);
         } catch (ReflectionException $ex) {
-            throw new \CException("Plugin $pluginName has no method $methodName");
+            throw new \CException('Plugin '.$pluginName.' has no method '.$methodName);
         }
 
         return array($pluginInstance, $refMethod);

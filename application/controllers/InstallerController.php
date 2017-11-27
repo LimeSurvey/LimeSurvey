@@ -277,11 +277,11 @@ class InstallerController extends CController
                     $bTablesDoNotExist = false;
 
                     // Check if the surveys table exists or not
-                    if ($bDBExists == true) {
+                    if ($bDBExists === true) {
                         try {
-                            if ($dataReader = $this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
-                                    // DBLIB does not throw an exception on a missing table
-                                    $bTablesDoNotExist = true;
+                            // We do the following check because DBLIB does not throw an exception on a missing table
+                            if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
+                                $bTablesDoNotExist = true;
                             }
                         } catch (Exception $e) {
                             $bTablesDoNotExist = true;
@@ -299,7 +299,7 @@ class InstallerController extends CController
                         Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
                         Yii::app()->session['step3'] = true;
 
-                        //wrte config file! as we no longer redirect to optional view
+                        //Write config file as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
                         header("refresh:5;url=".$this->createUrl("/admin"));
@@ -310,7 +310,7 @@ class InstallerController extends CController
                     }
 
                     if (in_array($oModel->dbtype, array('mysql', 'mysqli'))) {
-                        //for development - use mysql in the strictest mode  //Checked)
+                        //for development - use mysql in the strictest mode  
                         if (Yii::app()->getConfig('debug') > 1) {
                             $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
                         }
@@ -318,17 +318,18 @@ class InstallerController extends CController
                         if (version_compare($sMySQLVersion, '4.1', '<')) {
                             die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                         }
-                        @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); //Checked
-                        @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute(); //Checked
+                        @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); 
+                        @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
                     }
 
-                    // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
+                    // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
                     if (in_array($oModel->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
-                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute(); //Checked
-                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute(); //Checked
+                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
+                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
                     }
 
                     //$aData array won't work here. changing the name
+                    $aValues=[];
                     $aValues['title'] = gT('Database settings');
                     $aValues['descp'] = gT('Database settings');
                     $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
@@ -398,8 +399,8 @@ class InstallerController extends CController
         if (!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
         }
-
-        $aData['model'] = $model = new InstallerConfigForm;
+        $aData = [];
+        $aData['model'] = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
@@ -436,7 +437,7 @@ class InstallerController extends CController
             try {
                 $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
             } catch (Exception $e) {
-                $createdb = false;
+                $bCreateDB = false;
             }
             break;
             default:
@@ -515,23 +516,8 @@ class InstallerController extends CController
         extract($aDbConfig);
         self::_dbConnect($aDbConfig, $aData);
 
-        /* @todo Use Yii as it supports various db types and would better handle this process */
-
-        switch ($sDatabaseType) {
-            case 'mysqli':
-            case 'mysql':
-                $sql_file = 'mysql';
-                break;
-            case 'dblib':
-            case 'sqlsrv':
-            case 'mssql':
-                $sql_file = 'mssql';
-                break;
-            case 'pgsql':
-                $sql_file = 'pgsql';
-                break;
-            default:
-                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
+        if (!in_array($sDatabaseType,['mysqli','mysql','dblib','sqlsrv','mssql','pgsql'])){
+            throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
         //checking DB Connection
@@ -576,12 +562,7 @@ class InstallerController extends CController
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
         // Backup the default, needed only for $sDefaultAdminPassword
-        $sDefaultAdminUserName = $model->adminLoginName;
         $sDefaultAdminPassword = $model->adminLoginPwd;
-        $sDefaultAdminRealName = $model->adminName;
-        $sDefaultSiteName = $model->siteName;
-        $sDefaultSiteLanguage = $model->surveylang;
-        $sDefaultAdminEmail = $model->adminEmail;
         if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
@@ -944,7 +925,6 @@ class InstallerController extends CController
 
             if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
                 if (substr($sLine, $iLineLength - 1, 1) == ';') {
-                    $line = substr($sLine, 0, $iLineLength - 1);
                     $sCommand .= $sLine;
                     $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
 
@@ -1241,9 +1221,8 @@ class InstallerController extends CController
 
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         if (!self::dbTest($aDbConfig, $aData)) {
-// Remove sDatabaseName from the connexion is not exist
+            // Remove sDatabaseName from the connexion is not exist
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
-            $bDbExist = false;
         }
         try {
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
@@ -1261,7 +1240,7 @@ class InstallerController extends CController
      * Trye a connexion to the DB and add error in model if exist
      * @param array $aDbConfig : The config to be tested
      * @param array $aData
-     * @return void, bool if connection is done
+     * @return bool if connection is done
      */
     private function dbTest($aDbConfig = array(), $aData = array())
     {
@@ -1271,7 +1250,7 @@ class InstallerController extends CController
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         try {
-            $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         } catch (Exception $e) {
             if ($sDatabaseType == 'mysql' && $e->getCode() == 1049) {
                 return false;
@@ -1283,7 +1262,7 @@ class InstallerController extends CController
             /* using same behaviuor than before : test without dbname : db creation can break */
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
             try {
-                $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+                new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             } catch (Exception $e) {
                 /* With pgsql : sending "" to tablename => tablename==username , we are unsure if this must be OK */
                 /* But Yii sedn exception in same condition : the show this error */
@@ -1297,7 +1276,6 @@ class InstallerController extends CController
                     throw new DbConnection('CDbConnection failed to open the DB connection.', (int) $e->getCode(), $e->errorInfo);
                 }
             }
-            $testPdo = null;
             return false;
         }
         $sMinimumMySQLVersion = '5.5.3';
@@ -1308,8 +1286,6 @@ class InstallerController extends CController
                 Yii::app()->end();
             }
         }
-        $testPdo = null;
-
         return true;
     }
 

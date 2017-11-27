@@ -58,7 +58,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
 					'ajaxType' => 'POST',
                     'ajaxUpdate' => true,
-                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
     				'afterAjaxUpdate'=>'bindAction',
 				));
 				?>
@@ -128,5 +128,5 @@ var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu',
   }),
   bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenus();
 
-  $(document).on('ready pjax:complete', bindAction);
+  $(document).on('ready pjax:scriptcomplete', bindAction);
 </script>

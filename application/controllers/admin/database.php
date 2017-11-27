@@ -71,7 +71,7 @@ class database extends Survey_Common_Action
                 'alloweditaftercompletion' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'googleanalyticsapikeysetting' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsapikeysetting' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -315,20 +315,21 @@ class database extends Survey_Common_Action
                 if (isset($sOldCode) && $sCode !== $sOldCode) {
                     Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
                 }
-            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
 
-            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
-            if (!Yii::app()->request->getPost('bFullPOST')) {
-                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
-            } else {
-                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
-            }
-            LimeExpressionManager::SetDirtyFlag();
-            if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
-            }
-            $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }
+
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        if (!Yii::app()->request->getPost('bFullPOST')) {
+            Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
+        } else {
+            Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
+        }
+        LimeExpressionManager::SetDirtyFlag();
+        if (Yii::app()->request->getPost('close-after-save') === 'true') {
+            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+        }
+        $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
     }
 
     /**
@@ -999,10 +1000,10 @@ class database extends Survey_Common_Action
                 unset($aURLParam['targetQuestionText']);
                 unset($aURLParam['sqid']);
                 if ($aURLParam['targetqid'] == '') {
-                    $aURLParam['targetqid'] = NULL;
+                    $aURLParam['targetqid'] = null;
                 }
                 if ($aURLParam['targetsqid'] == '') {
-                    $aURLParam['targetsqid'] = NULL;
+                    $aURLParam['targetsqid'] = null;
                 }
                 $aURLParam['sid'] = $iSurveyID;
 

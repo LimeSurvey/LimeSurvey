@@ -25,7 +25,6 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
                 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
-                <input type='hidden' name='close-after-save' value='true' />
 
                 <?php if($viewType=='subQuestions'): ?>
                     <input type='hidden' id='action' name='action' value='updatesubquestions' />

@@ -55,7 +55,7 @@ gulp.task('sass:production', function (cb) {
       outputStyle: 'compressed'
     }).on('error', sass.logError),
     autoprefixer(),
-    concat('lsadminpanel.css'),
+    concat('lsadminpanel.min.css'),
     sourcemaps.write(),
     gulp.dest('./build')
   ], cb);

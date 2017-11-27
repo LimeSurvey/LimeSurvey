@@ -135,7 +135,7 @@ var AjaxSubmitObject = function () {
 
 
 
-            //         //also trigger the pjax:complete event to load all adherent scripts
+            //         //also trigger the pjax:scriptcomplete event to load all adherent scripts
                     
             //     },
                 
@@ -144,7 +144,7 @@ var AjaxSubmitObject = function () {
             //         console.log(result);
             //     }
 
-            $(document).on('pjax:complete.onreload', function(){
+            $(document).on('pjax:scriptcomplete.onreload', function(){
                 // We end the loading animation
                 endLoadingBar();
                 //free submitting again
@@ -156,7 +156,7 @@ var AjaxSubmitObject = function () {
                     $('#bottomScripts').text("");
                 }
                 
-                $(document).off('pjax:complete.onreload');
+                $(document).off('pjax:scriptcomplete.onreload');
             });
             
         });

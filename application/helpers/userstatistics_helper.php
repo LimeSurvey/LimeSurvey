@@ -117,8 +117,8 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $counter = 0;
             $maxyvalue = 0;
             foreach ($grawdata as $datapoint) {
-                $DataSet->AddPoint(array($datapoint), "Serie$counter");
-                $DataSet->AddSerie("Serie$counter");
+                $DataSet->AddPoint(array($datapoint), "Serie".$counter);
+                $DataSet->AddSerie("Serie".$counter);
 
                 $counter++;
                 if ($datapoint > $maxyvalue) {
@@ -155,7 +155,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
             $counter = 0;
             foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie$counter");
+                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie".$counter);
                 $counter++;
             }
 
@@ -178,15 +178,15 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
-                $graph->drawGraphArea(254, 254, 254, TRUE);
-                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, TRUE, 90, 0, TRUE, 5, false);
-                $graph->drawGrid(4, TRUE, 230, 230, 230, 50);
+                $graph->drawGraphArea(254, 254, 254, true);
+                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, true, 90, 0, true, 5, false);
+                $graph->drawGrid(4, true, 230, 230, 230, 50);
                 // Draw the 0 line
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $graph->drawTreshold(0, 143, 55, 72, TRUE, TRUE);
+                $graph->drawTreshold(0, 143, 55, 72, true, true);
 
                 // Draw the bar graph
-                $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), FALSE);
+                $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), false);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
@@ -263,7 +263,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 // Draw the pie chart
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
-                $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, TRUE, 50, 20, 5);
+                $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, true, 50, 20, 5);
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
                 $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
                 $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData(), $graph);
@@ -2591,18 +2591,18 @@ class userstatistics_helper
                 $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
                 // Multiple choice get special treatment
-                if ($field['type'] == "M") {$myField = "M$myField"; }
-                if ($field['type'] == "P") {$myField = "P$myField"; }
+                if ($field['type'] == "M") {$myField = "M".$myField; }
+                if ($field['type'] == "P") {$myField = "P".$myField; }
                 //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == "N") {$myField = "N$myField"; }
+                if ($field['type'] == "N") {$myField = "N".$myField; }
 
-                if ($field['type'] == "|") {$myField = "|$myField"; }
+                if ($field['type'] == "|") {$myField = "|".$myField; }
 
-                if ($field['type'] == "Q") {$myField = "Q$myField"; }
+                if ($field['type'] == "Q") {$myField = "Q".$myField; }
                 // textfields get special treatment
-                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U") {$myField = "T$myField"; }
+                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U") {$myField = "T".$myField; }
                 //statistics for Date questions are not implemented yet.
-                if ($field['type'] == "D") {$myField = "D$myField"; }
+                if ($field['type'] == "D") {$myField = "D".$myField; }
                 if ($field['type'] == "F" || $field['type'] == "H") {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";

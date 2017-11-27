@@ -94,7 +94,7 @@
         {% if(aSurveyInfo.options.ajaxmode == "on") %}
             <script type="text/javascript">
                 var ajaxHandler = new AjaxSubmitObject();
-                $(document).on('ready pjax:complete', function () {
+                $(document).on('ready pjax:scriptcomplete', function () {
                     ajaxHandler.bindActions();
                 });
             </script>

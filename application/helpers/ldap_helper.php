@@ -23,7 +23,7 @@ function ldap_getCnx($server_id = null)
     $ldap_server = Yii::app()->getConfig('ldap_server');
 
     if (is_null($server_id)) {
-        return False;
+        return false;
     } else {
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
             $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
@@ -171,10 +171,10 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
             // and get user attrs
             foreach ($userCandidates as $key => $user) {
 
-                $user_is_dn = TRUE; // Suppose group members are DNs by default
+                $user_is_dn = true; // Suppose group members are DNs by default
                 if (isset($ldap_queries[$ldapq]['groupmemberisdn']) &&
-                $ldap_queries[$ldapq]['groupmemberisdn'] == False) {
-                    $user_is_dn = False;
+                $ldap_queries[$ldapq]['groupmemberisdn'] == false) {
+                    $user_is_dn = false;
                 }
 
                 if ($user_is_dn) {

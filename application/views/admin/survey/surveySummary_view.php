@@ -30,7 +30,9 @@ $surveyid = $oSurvey->sid;
         <div class="col-sm-12 h3 pagetitle"><?php eT('Survey summary'); ?></div>
     </div>
     <div class="row">
-        <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>    
+        <div class="col-sm-12">
+            <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>    
+        </div>
     </div>
     <div class="row">
         <!-- Survey summary -->

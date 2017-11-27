@@ -850,7 +850,7 @@ EOD;
             $tokens = $em->asSplitStringOnExpressions($test);
             print '<b>'.$test.'</b><hr/>';
             print '<code>';
-            print implode("<br/>\n", explode("\n", print_r($tokens, TRUE)));
+            print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
         }
     }
@@ -885,7 +885,7 @@ EOD;
             $tokens = array(); //$em->RDP_Tokenize($test);
             print '<b>'.$test.'</b><hr/>';
             print '<code>';
-            print implode("<br/>\n", explode("\n", print_r($tokens, TRUE)));
+            print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
         }
     }

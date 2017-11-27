@@ -149,6 +149,8 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('bootstrap-select2');
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
+            App()->getClientScript()->registerPackage('font-roboto');
+            App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminpanel'); // The new admin panel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
@@ -174,8 +176,11 @@ class AdminTheme extends CFormModel
             foreach ($this->config->files->rtl->css->filename as $cssfile) {
                 $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
             }
+            App()->getClientScript()->registerPackage('font-roboto');
+            App()->getClientScript()->registerPackage('adminbasicjs');
+            App()->getClientScript()->unregisterPackage('adminbasics');
+            App()->getClientScript()->registerPackage('adminbasicsrtl');
 
-            $aCssFiles[] = 'css/adminstyle-rtl.css'; // This file is needed for rtl
         } else {
             // Non-RTL style
             foreach ($this->config->files->css->filename as $cssfile) {
@@ -183,9 +188,12 @@ class AdminTheme extends CFormModel
             }
         }
 
-        foreach ($this->config->files->js->filename as $jsfile) {
-            $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+        if (!empty($this->config->files->js->filename)) {
+            foreach ($this->config->files->js->filename as $jsfile) {
+                $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+            }
         }
+
 
         $package = array();
 
@@ -223,62 +231,6 @@ class AdminTheme extends CFormModel
             self::$instance->setAdminTheme();
         }
         return self::$instance;
-    }
-
-    /**
-     * Touch each directory in standard admin theme directory to force assset manager to republish them
-     * NB: This function still makes problem, because it's touching direcories inside application, which could be unwritable.
-     * But: if people used comfortUpdate, the probably made it writable
-     * TODO: check if 'force' parameter could be used to publish new assets here
-     * see: http://www.yiiframework.com/doc/api/1.1/CAssetManager#forceCopy-detail
-     */
-    public static function forceAssets()
-    {
-        // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) {
-            return;
-        }
-
-        // Touch all the admin themes
-        $standardTemplatesPath = Yii::app()->getConfig("styledir");
-        self::touchSubDirectories($standardTemplatesPath);
-
-        //Touch all the assets folders of extensions and third party
-        $otherAssets = self::getOtherAssets();
-
-        $sRootDir = App()->getConfig("rootdir");
-        foreach ($otherAssets as $otherAsset) {
-            $sDirToTouch = $sRootDir.DIRECTORY_SEPARATOR.$otherAsset;
-            if (is_dir($sDirToTouch)) {
-                if (is_writable($sDirToTouch)) {
-                    touch($sDirToTouch);
-                }
-            }
-        }
-
-
-        // Touch all the root folders of third party
-        $sPath = $sRootDir.DIRECTORY_SEPARATOR.'third_party';
-        self::touchSubDirectories($sPath);
-
-        //Touch all the root folders of extensions
-        $sPath = $sRootDir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions';
-        self::touchSubDirectories($sPath);
-    }
-
-    /**
-     * @param string $sPath
-     */
-    public static function touchSubDirectories($sPath)
-    {
-        $Resource = opendir($sPath);
-        while ($Item = readdir($Resource)) {
-            if (is_dir($sPath.DIRECTORY_SEPARATOR.$Item) && $Item != "." && $Item != "..") {
-                if (is_writable($sPath.DIRECTORY_SEPARATOR.$Item)) {
-                                    touch($sPath.DIRECTORY_SEPARATOR.$Item);
-                }
-            }
-        }
     }
 
     /**

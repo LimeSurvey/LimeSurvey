@@ -371,16 +371,16 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], null, false, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
                     $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], NULL, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, false, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
-                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, false, 3, 1, false, true, false);
                 }
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
@@ -562,7 +562,7 @@ class SurveyRuntimeHelper
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
-            $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true); // to do INSERTANS substitutions
+            $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
 
 
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -632,7 +632,7 @@ class SurveyRuntimeHelper
             'hyperlinkSyntaxHighlighting' => (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
             'ipaddr'                      => ($this->aSurveyInfo['ipaddr'] == 'Y'),
             'radix'                       => $radix,
-            'refurl'                      => (($this->aSurveyInfo['refurl'] == "Y" && isset($_SESSION[$this->LEMsessid]['refurl'])) ? $_SESSION[$this->LEMsessid]['refurl'] : NULL),
+            'refurl'                      => (($this->aSurveyInfo['refurl'] == "Y" && isset($_SESSION[$this->LEMsessid]['refurl'])) ? $_SESSION[$this->LEMsessid]['refurl'] : null),
             'savetimings'                 => ($this->aSurveyInfo['savetimings'] == "Y"),
             'surveyls_dateformat'         => isset($this->aSurveyInfo['surveyls_dateformat']) ? $this->aSurveyInfo['surveyls_dateformat'] : 1,
             'startlanguage'               => (isset(App()->language) ? App()->language : $this->aSurveyInfo['language']),
@@ -1042,7 +1042,7 @@ class SurveyRuntimeHelper
 
                 $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
-                $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true);
+                $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
                 $this->completed = $completed;
 
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit_preview.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
@@ -1069,7 +1069,7 @@ class SurveyRuntimeHelper
                 } else {
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
                 }
 
                 // Link to Print Answer Preview  **********

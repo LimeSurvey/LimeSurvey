@@ -65,7 +65,7 @@ if (!defined('BASEPATH')) {
 */
 class update extends Survey_Common_Action
 {
-    
+
     /**
      * First function to be called, when comming to admin/update
      *
@@ -230,7 +230,7 @@ class update extends Survey_Common_Action
                 $updateModel = new UpdateForm();
                 $localChecks = $updateModel->getLocalChecks($destinationBuild);
                 $aData['localChecks'] = $localChecks;
-                $aData['changelog'] = NULL;
+                $aData['changelog'] = null;
                 $aData['destinationBuild'] = $destinationBuild;
                 $aData['access_token'] = $access_token;
 
@@ -258,7 +258,7 @@ class update extends Survey_Common_Action
                 $changelog = $updateModel->getChangeLog($destinationBuild);
 
                 if ($changelog->result) {
-                    $aData['errors'] = FALSE;
+                    $aData['errors'] = false;
                     $aData['changelogs'] = $changelog;
                     $aData['html_from_server'] = $changelog->html;
                     $aData['destinationBuild'] = $destinationBuild;
@@ -377,9 +377,6 @@ class update extends Survey_Common_Action
                                 $updateModel->removeTmpFile('update.zip');
                                 $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
-                                // Force asset manager to republish the assets for all templates
-                                Template::model()->forceAssets();
-
                                 Yii::app()->session['update_result'] = null;
                                 Yii::app()->session['security_update'] = null;
                                 $today = new DateTime("now");
@@ -484,7 +481,7 @@ class update extends Survey_Common_Action
                     // If the key is validated by server, we update the local database with this key
                     $updateKey = $updateModel->setUpdateKey($submittedUpdateKey);
                     $check = new stdClass();
-                    $check->result = TRUE;
+                    $check->result = true;
                     $check->view = "key_updated";
                 }
                 // then, we render the what returned the server (views and key infos or error )
@@ -577,7 +574,7 @@ class update extends Survey_Common_Action
                 }
                 return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate), false, false);
             } else {
-                $serverAnswer->result = FALSE;
+                $serverAnswer->result = false;
                 $serverAnswer->error = "unknown_view";
             }
         }
@@ -604,7 +601,7 @@ class update extends Survey_Common_Action
     private function _renderErrorString($error)
     {
             $errorObject = new stdClass();
-            $errorObject->result = FALSE;
+            $errorObject->result = false;
             $errorObject->error = $error;
             return $this->_renderError($errorObject);
     }

@@ -53,7 +53,7 @@ class TokenDynamic extends LSActiveRecord
      * @inheritdoc
      * @return TokenDynamic
      */
-    public static function model($sid = NULL)
+    public static function model($sid = null)
     {
         $refresh = false;
         if (!is_null($sid)) {

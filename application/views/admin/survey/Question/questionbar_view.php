@@ -227,12 +227,10 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <?php /*
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
-                        <span class="fa fa-saved"></span>
-                        <?php eT("Save and close");?>
-                    </a>
-                */ ?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
+                    <span class="fa fa-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
 
                 <?php /*
                 <!-- Close -->
@@ -271,15 +269,15 @@ $aReplacementData=array();
                     <?php eT("Save");?>
 
                 </a>
-                <?php
-                /*
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
+                <?php
+                /*
                 <a class="btn btn-danger" href="<?php echo $organizebar['closebuttonright']['url']; ?>" role="button">
-                    <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
+                <span class="fa fa-close"></span>
+                <?php eT("Close");?>
                 </a>
                 */
                 ?>

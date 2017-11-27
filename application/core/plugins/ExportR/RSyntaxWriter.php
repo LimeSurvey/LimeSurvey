@@ -72,7 +72,7 @@ class RSyntaxWriter extends Writer
                 }
 
                 if (trim($strTmp) != '') {
-                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $field['size'] > 16)) {
+                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === false || $field['size'] > 16)) {
                         $field['SPSStype'] = 'A';
                     }
                 }

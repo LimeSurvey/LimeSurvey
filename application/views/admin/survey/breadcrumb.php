@@ -132,5 +132,4 @@
             </div>
         </div>
     </div>
-</div>
-<input type="hidden" id="gettheuserid" value="<?php echo Yii::app()->user->id; ?>" />
+    <input type="hidden" id="gettheuserid" value="<?php echo Yii::app()->user->id; ?>" />

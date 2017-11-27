@@ -43,8 +43,8 @@ $.fn.YesNoDate = function(options)
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     };
-    $(document).on('ready  pjax:complete', that.onReadyMethod);
-    $(document).on(' pjax:complete',that.onReadyMethod);
+    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
+    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
 }
 
 $.fn.YesNo = function(options)
@@ -72,8 +72,8 @@ $.fn.YesNo = function(options)
         })
 
     };
-    $(document).on('ready  pjax:complete', that.onReadyMethod);
-    $(document).on(' pjax:complete',that.onReadyMethod);
+    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
+    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
 }
 
 /**
@@ -161,7 +161,7 @@ function submitEditToken(){
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {

@@ -8,16 +8,16 @@ export default {
         'translate': {type: Object},
         'parameterRow': {type: Object},
         'questions' : {type: Array},
-        'isNew' : {type: Boolean}
+        'isNew' : {type: Boolean},
     },
     data(){
         return {
-            
+            'currentQuestion' : this.selectedQuestion
         };
     },
     computed : {
         selectedQuestion(){
-            return _.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( !item.sqid || item.sqid == this.parameterRow.sqid)); });
+            return _.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( item.sqid == null || item.sqid == this.parameterRow.sqid)); });
         },
         popupTitle(){
             return this.isNew ? this.translate.popup.newParam : this.translate.popup.editParam ;
@@ -62,10 +62,11 @@ export default {
             this.$emit('canceledit');
 
         },
-        updateValues(){
-            this.parameterRow.qid = this.selectedQuestion.qid;
-            this.parameterRow.sqid = this.selectedQuestion.sqid || '';
-            this.parameterRow.targetQuestionText = this.printQuestion(this.selectedQuestion);
+        updateValues($event){
+            this.currentQuestion = this.questions[$event.target.value];
+            this.parameterRow.qid = this.currentQuestion.qid;
+            this.parameterRow.sqid = this.currentQuestion.sqid || '';
+            this.parameterRow.targetQuestionText = this.printQuestion(this.currentQuestion);
         }
     },
     created(){},
@@ -90,9 +91,9 @@ export default {
                 <div class='form-group'>
                     <label class='control-label ' for='targetquestion'>{{translate.popup.targetQuestion}}</label>
                     <div class=''>
-                        <select class='form-control' name='targetquestion' size='1' v-model="selectedQuestion" @change="updateValues()">
+                        <select class='form-control' name='targetquestion' size='1' @change="updateValues($event)">
                             <option value=''>{{translate.popup.noTargetQuestion}}</option>
-                            <option v-for="question in questions" v-bind:key="question.qid" :value="question" :selected="question.qid==parameterRow.qid">
+                            <option v-for="(question, index) in questions" v-bind:key="question.qid" :value="index" :selected="question.qid==parameterRow.qid">
                                 {{printQuestion(question)}} 
                             </option>
                         </select>

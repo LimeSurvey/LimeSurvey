@@ -183,7 +183,7 @@ $ldap_queries[$query_id]['groupscope'] = 'sub';
 // Define which attribute within the group entry contains users' IDs
 $ldap_queries[$query_id]['groupmemberattr'] = 'memberuid';
 // Declare that groupmemberattr contains users' IDs and not DNs
-$ldap_queries[$query_id]['groupmemberisdn'] = FALSE;
+$ldap_queries[$query_id]['groupmemberisdn'] = false;
 // Give the name of the attribute in the user entry that matches the
 // 'groupmemberattr' value
 $ldap_queries[$query_id]['useridattr'] = 'uid';
@@ -210,4 +210,3 @@ $ldap_queries[$query_id]['attr2'] = '';
 //DO NOT CHANGE BELOW HERE --------------------
 
 return array('ldap_server' => $ldap_server, 'ldap_queries' => $ldap_queries);
-?>

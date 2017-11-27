@@ -13,14 +13,10 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>3.0</version>
         <description>LimeSurvey admin interface template, purple variation.</description>
         <basecolor>#993399</basecolor>
-        <!--
-             The last_update field must be updated before each release,
-             to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
-         -->
-        <last_update>2016-05-11 13:00:00</last_update>
+        <last_update>2017-27-11 17:00:00</last_update>
     </metadatas>
 
     <!--
@@ -29,25 +25,11 @@
     -->
     <files>
         <css>
-            <filename>lime-admin-common.css</filename>
             <filename>lime-admin-colors.css</filename>
-            <filename>fonts.css</filename>
             <filename>statistics.css</filename>
-            <filename>bootstrap-switch.min.css</filename>
-            <filename>jcarousel.responsive.css</filename>
-            <filename>attributeMap.css</filename>
-            <filename>attributeMapToken.css</filename>
         </css>
-        <js>
-            <filename>notify.js</filename>
-            <filename>save.js</filename>
-            <filename>panelclickable.js</filename>
-            <filename>panelsanimation.js</filename>
-            <filename>sidemenu.js</filename>
-            <filename>bootstrap-switch.min.js</filename>
-            <filename>jquery.jcarousel.min.js</filename>
-            <filename>jcarousel.responsive.js</filename>
-        </js>
+
+        <js></js>
 
         <!--
             Those files will be loaded for right to left languages only
@@ -58,16 +40,13 @@
         -->
         <rtl>
             <css>
-                <filename>template-rtl.css</filename>
-                <filename>attributeMapToken-rtl.css</filename>
-                <filename>bootstrap-switch.min-rtl.css</filename>
-                <filename>displayParticipants-rtl.css</filename>
-                <filename>lime-admin-common-rtl.css</filename>
+                <!-- Still need these files -->
+                <filename>lime-admin-colors.css</filename>
+                <filename>statistics-rtl.css</filename>
             </css>
             <js>
             </js>
         </rtl>
-
     </files>
 
     <engine>

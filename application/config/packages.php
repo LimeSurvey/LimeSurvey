@@ -147,7 +147,7 @@ return array(
             'lib/surveysettings.js'
         ),
         'css' => array(
-            'build/lsadminpanel.css'
+            'build/lsadminpanel'.$minVersion.'.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -171,15 +171,70 @@ return array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/lime-admin-common.css',
+            'css/jcarousel.responsive.css',
+            'css/attributeMap.css',
+            'css/attributeMapToken.css',
+            'css/displayParticipants.css',
+        ),
         'js' => array(
             'js/admin_core.js',
-            'js/notifications.js'
+            'js/notifications.js',
         ),
         'depends' => array(
             'jquery',
             'pjax',
         )
     ),
+
+    'adminbasicsrtl' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/adminstyle-rtl.css',
+            'css/rtl/lime-admin-common-rtl.css',
+            'css/rtl/jcarousel.responsive-rtl.css',
+            'css/rtl/attributeMap-rtl.css',
+            'css/rtl/attributeMapToken-rtl.css',
+            'css/rtl/displayParticipants-rtl.css',
+        ),
+        'js' => array(
+            'js/admin_core.js',
+            'js/notifications.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'pjax',
+        )
+    ),
+
+    'adminbasicjs' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/notify.js',
+            'js/panelclickable.js',
+            'js/panelsanimation.js',
+            'js/save.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'pjax',
+        )
+    ),
+
+    'font-roboto' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'roboto.css',
+        ),
+    ),
+
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',
@@ -190,6 +245,6 @@ return array(
             'adminbasics',
         )
     ),
-    
-    
+
+
 );

@@ -144,7 +144,7 @@ class Survey_Common_Action extends CAction
         // iGroupId/gid can be found with qid/iQuestionId
         if (!empty($params['iQuestionId'])) {
             if ((string) (int) $params['iQuestionId'] !== (string) $params['iQuestionId']) {
-// pgsql need filtering before find
+                // pgsql need filtering before find
                 throw new CHttpException(403, gT("Invalid question id"));
             }
             $oQuestion = Question::model()->find("qid=:qid", array(":qid"=>$params['iQuestionId'])); //Move this in model to use cache
@@ -158,7 +158,7 @@ class Survey_Common_Action extends CAction
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
-// pgsql need filtering before find
+                // pgsql need filtering before find
                 throw new CHttpException(403, gT("Invalid group id"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid"=>$params['iGroupId'])); //Move this in model to use cache
@@ -172,7 +172,7 @@ class Survey_Common_Action extends CAction
         // Finally control validity of sid
         if (!empty($params['iSurveyId'])) {
             if ((string) (int) $params['iSurveyId'] !== (string) $params['iSurveyId']) {
-// pgsql need filtering before find
+                // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
                 throw new CHttpException(403, gT("Invalid survey id"));
             }
@@ -349,8 +349,6 @@ class Survey_Common_Action extends CAction
         echo '</div>';
 
         if (!empty($aData['surveyid'])) {
-            echo '</div>';
-            echo '</div>';
             echo '</div>';
             echo '</div>';
         }

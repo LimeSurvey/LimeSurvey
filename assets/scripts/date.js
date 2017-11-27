@@ -27,7 +27,7 @@ function doPopupDate(qId) {
  */
 function doDropDownDate(qId){
     $(document).on("change",'#question'+qId+' select',dateUpdater);
-    $(document).on('ready pjax:complete',function(){
+    $(document).on('ready pjax:scriptcomplete',function(){
         $("#question"+qId+" select").filter(':first').trigger("change");
         //dateUpdater();
     });

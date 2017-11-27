@@ -619,11 +619,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
 
             $headerArray = ['name', 'folder', 'title', 'creation_date', 'author', 'author_email', 'author_url', 'copyright', 'license', 'version', 'api_version', 'view_folder', 'files_folder', 'description', 'last_update', 'owner_id', 'extends'];
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", null, 1, '']));
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', null, 1, 'default']));
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', NULL, 1, '']));
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', null, 1, '']));
 
 
             // template_configuration
@@ -651,11 +651,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
             $headerArray = ['template_name', 'sid', 'gsid', 'uid', 'files_css', 'files_js', 'files_print_css', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js', 'packages_to_load', 'packages_ltr', 'packages_rtl'];
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['default', NULL, NULL, NULL, '{"add": ["css/animate.css","css/template.css"]}', '{"add": ["scripts/template.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '["pjax"]', '', '']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['default', null, null, null, '{"add": ["css/animate.css","css/template.css"]}', '{"add": ["scripts/template.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['material', NULL, NULL, NULL, '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}', '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}', '', '["pjax"]', '', '']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['material', null, null, null, '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}', '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['monochrome', NULL, NULL, NULL, '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}', '{"add":["scripts/template.js","scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{}', '', '["pjax"]', '', '']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['monochrome', null, null, null, '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}', '{"add":["scripts/template.js","scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{}', '', '["pjax"]', '', '']));
 
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'), "name='template_options'");
 
@@ -687,23 +687,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(128) NOT NULL');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), 'name = "generalsettings" AND menu_id = 2');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), 'name = "surveypermissions" AND menu_id = 2');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), 'name = "quotas" AND menu_id = 2');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'assessments_collapsed'), 'name = "assessments" AND menu_id = 2');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'emailtemplates_collapsed'), 'name = "emailtemplates" AND menu_id = 2');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'tokens_collapsed'), 'name = "tokens" AND menu_id = 2');
-            $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'assessments_collapsed'), "name = 'assessments' AND menu_id = 2");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'emailtemplates_collapsed'), "name = 'emailtemplates' AND menu_id = 2");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'tokens_collapsed'), "name = 'tokens' AND menu_id = 2");
+            $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', "name", true);
 
             $oDB->createCommand()->addColumn('{{surveymenu}}', 'name', 'string(128) NULL');
             $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'mainmenu'), 'id = 1');
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
             $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128) NOT NULL');
-            
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 330) {
+            $oTransaction = $oDB->beginTransaction();
+            upgrade330($oDB);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>330), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -747,6 +755,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     return true;
 }
 
+/**
+* @param $oDB
+* @return void
+*/
+function upgrade330($oDB)
+{
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'files_css'       => '{"add": ["css/animate.css","css/theme.css"]}',
+            'files_js'        => '{"add": ["scripts/theme.js", "scripts/ajaxify.js"]}',
+            'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='default' AND  files_css != 'inherit' ");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'files_css'       => '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/theme.css"]}',
+            'files_js'        => '{"add": ["scripts/theme.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}',
+            'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='material' AND  files_css != 'inherit'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'files_css'       => '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/theme.css"]}',
+            'files_js'        => '{"add":["scripts/theme.js","scripts/ajaxify.js"]}',
+            'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='monochrome' AND  files_css != 'inherit'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'files_css'       => '{"css/theme.css"]}',
+            'files_js'        => '{"add":["scripts/theme.js"]}',
+            'files_print_css' => '{"add":"css/print_theme.css"}',
+    ), "template_name='vanilla' AND  files_css != 'inherit'");
+}
 
 /**
 * @param $oDB
@@ -780,7 +818,7 @@ function upgrade327($oDB)
     // Update the survey menu so it uses the themeoptions controller
     $oDB->createCommand()->update('{{surveymenu_entries}}', array(
         'menu_id'          => 1,
-        'user_id'          => NULL,
+        'user_id'          => null,
         'ordering'         => 4,
         'name'             => 'theme_options',
         'title'            => 'Theme options',
@@ -865,8 +903,8 @@ function createSurveyMenuTable293($oDB)
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            'parent_id' => NULL,
-            'survey_id' => NULL,
+            'parent_id' => null,
+            'survey_id' => null,
             'order' => 0,
             'level' => 0,
             'title' => 'Survey menu',
@@ -908,19 +946,19 @@ function createSurveyMenuTable293($oDB)
 
     $colsToAdd = array("menu_id", "order", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
     $rowsToAdd = array(
-        array(1, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', NULL, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 4, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', NULL, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 5, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', NULL, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 6, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 7, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', NULL, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 10, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', NULL, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 11, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 12, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', NULL, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 13, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', NULL, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
+        array(1, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', null, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 4, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', null, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 5, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', null, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 6, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 7, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', null, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 10, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', null, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 11, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 12, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', null, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 13, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', null, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
     );
     foreach ($rowsToAdd as $row) {
         $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));
@@ -969,9 +1007,9 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            "parent_id" =>NULL,
-            "survey_id" =>NULL,
-            "user_id" =>NULL,
+            "parent_id" =>null,
+            "survey_id" =>null,
+            "user_id" =>null,
             "ordering" =>1,
             "level" =>0,
             "title" =>'Survey Menu',
@@ -985,9 +1023,9 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            "parent_id" =>NULL,
-            "survey_id" =>NULL,
-            "user_id" =>NULL,
+            "parent_id" =>null,
+            "survey_id" =>null,
+            "user_id" =>null,
             "ordering" =>1,
             "level" =>0,
             "title" =>'Quick menu',
@@ -1032,37 +1070,37 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
 
     $colsToAdd = array("menu_id", "user_id", "ordering", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
     $rowsToAdd = array(
-        array(1, NULL, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', NULL, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 4, 'template_options', 'Template options', 'Template options', 'Edit Template options for this survey', 'paint-brush', 'fontawesome', '', 'admin/templateoptions/sa/updatesurvey', '', '', '', '', 'templates', 'read', '{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 5, 'participants', 'Survey participants', 'Survey participants', 'Go to survey participant and token settings', 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 6, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', NULL, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 7, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', NULL, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 8, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 9, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', NULL, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 10, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 11, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 12, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', NULL, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 13, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 14, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', NULL, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, NULL, 15, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', NULL, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 1, 'activateSurvey', 'Activate survey', 'Activate survey', 'Activate survey', 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 2, 'deactivateSurvey', 'Stop this survey', 'Stop this survey', 'Stop this survey', 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 3, 'testSurvey', 'Go to survey', 'Go to survey', 'Go to survey', 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 4, 'listQuestions', 'List questions', 'List questions', 'List questions', 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 5, 'listQuestionGroups', 'List question groups', 'List question groups', 'List question groups', 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 6, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 7, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 12, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 15, 'statistics', 'Statistics', 'Statistics', 'Statistics', 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, NULL, 16, 'reorder', 'Reorder questions/question groups', 'Reorder questions/question groups', 'Reorder questions/question groups', 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
+        array(1, null, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', null, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 4, 'template_options', 'Template options', 'Template options', 'Edit Template options for this survey', 'paint-brush', 'fontawesome', '', 'admin/templateoptions/sa/updatesurvey', '', '', '', '', 'templates', 'read', '{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 5, 'participants', 'Survey participants', 'Survey participants', 'Go to survey participant and token settings', 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 6, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', null, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 7, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', null, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 8, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 9, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', null, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 10, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 11, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 12, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', null, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 13, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 14, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', null, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, null, 15, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', null, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 1, 'activateSurvey', 'Activate survey', 'Activate survey', 'Activate survey', 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 2, 'deactivateSurvey', 'Stop this survey', 'Stop this survey', 'Stop this survey', 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 3, 'testSurvey', 'Go to survey', 'Go to survey', 'Go to survey', 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 4, 'listQuestions', 'List questions', 'List questions', 'List questions', 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 5, 'listQuestionGroups', 'List question groups', 'List question groups', 'List question groups', 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 6, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 7, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 12, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 15, 'statistics', 'Statistics', 'Statistics', 'Statistics', 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 16, 'reorder', 'Reorder questions/question groups', 'Reorder questions/question groups', 'Reorder questions/question groups', 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
     );
     foreach ($rowsToAdd as $row) {
         $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));

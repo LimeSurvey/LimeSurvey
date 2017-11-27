@@ -27,7 +27,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
@@ -36,9 +36,9 @@ $(document).on('ready  pjax:complete', function(){
         update:aftermove,
         distance:3});
 
-    $(document).on("click", '.btnaddanswer', addinput);
-    $(document).on("click", '.btndelanswer', deleteinput);
-    $(document).on("click", '.btnlsbrowser', lsbrowser );
+    $('.btnaddanswer').on("click", addinput);
+    $('.btndelanswer').on("click", deleteinput);
+    $('.btnlsbrowser').on("click", lsbrowser );
 
     //$('.btnaddanswer').click(addinput);
     //$('.btndelanswer').click(deleteinput);

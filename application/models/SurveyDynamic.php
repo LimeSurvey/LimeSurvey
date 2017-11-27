@@ -40,7 +40,7 @@ class SurveyDynamic extends LSActiveRecord
      * @inheritdoc
      * @return SurveyDynamic
      */
-    public static function model($sid = NULL)
+    public static function model($sid = null)
     {
         $refresh = false;
         $survey = Survey::model()->findByPk($sid);

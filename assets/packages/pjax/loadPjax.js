@@ -24,7 +24,8 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#pjax-content': switchInnerHTML,
                     '#breadcrumb-container': switchInnerHTML,
                 },
-                debug: true
+                debug: true,
+                forceRedirectOnFail: true
             });
         }
 

@@ -31,7 +31,7 @@ final class SettingsStorage extends ArrayObject
 
     public static function getInstance()
     {
-        if (self::$_instance === NULL) {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
         return self::$_instance;

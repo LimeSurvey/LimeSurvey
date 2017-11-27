@@ -112,7 +112,7 @@ class jsonRPCClient
 
         // sets notification or request task
         if ($this->notification) {
-            $currentId = NULL;
+            $currentId = null;
         } else {
             $currentId = $this->id;
         }

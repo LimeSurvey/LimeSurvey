@@ -94,7 +94,7 @@ class printablesurvey extends Survey_Common_Action
                 define('PRINT_TEMPLATE_URL', $sFullTemplateUrl, true);
             }
 
-            LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
+            LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             LimeExpressionManager::NavigateForwards();
             Yii::app()->clientScript->reset(); // Remove all scripts
             /* Add css */

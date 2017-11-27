@@ -54,7 +54,7 @@ if(isset($scripts))
     </div>
 </div>
 <script type="text/javascript">
-$(document).on('ready pjax:complete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     $('#<?=$entryData['name']?>').off('submit');
 

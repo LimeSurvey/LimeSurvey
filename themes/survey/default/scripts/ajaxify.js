@@ -75,7 +75,7 @@ var AjaxSubmitObject = function () {
             //start the loading animation
             startLoadingBar();
 
-            $(document).on('pjax:complete.onreload', function(){
+            $(document).on('pjax:scriptcomplete.onreload', function(){
                 // We end the loading animation
                 endLoadingBar();
                 //free submitting again
@@ -87,7 +87,7 @@ var AjaxSubmitObject = function () {
                     $('#bottomScripts').text("");
                 }
                 
-                $(document).off('pjax:complete.onreload');
+                $(document).off('pjax:scriptcomplete.onreload');
             });
             
         });

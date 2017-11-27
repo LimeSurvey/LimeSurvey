@@ -516,8 +516,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['pap-AW']['radixpoint'] = 1;
     $supportedLanguages['pap-AW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
 
-    // Papiamento (CuraÃ§ao and Bonaire)
-    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao and Bonaire)');
+    // Papiamento (CuraÃƒÂ§ao and Bonaire)
+    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (CuraÃ§ao and Bonaire)');
     $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
     $supportedLanguages['pap-CW']['rtl'] = false;
     $supportedLanguages['pap-CW']['dateformat'] = 2;
@@ -908,7 +908,15 @@ function getLanguageCodefromLanguage($languagetosearch)
 
 
 
-
+/**
+* Returns a language name from the code
+* 
+* @param string $codetosearch
+* @param boolean $withnative
+* @param string $sTranslationLanguage
+* @returns string|array
+* @todo Should not give back different data types
+*/
 function getLanguageNameFromCode($codetosearch, $withnative = true, $sTranslationLanguage = null)
 {
     if (is_null($sTranslationLanguage)) {
@@ -921,10 +929,9 @@ function getLanguageNameFromCode($codetosearch, $withnative = true, $sTranslatio
         } else {
             return $detaillanguages[$codetosearch]['description'];
         }
-    } else {
-// else return code
-        return $codetosearch;
     }
+// else return code
+    return $codetosearch;
 }
 
 

@@ -1,4 +1,4 @@
-$(document).on('ready pjax:complete',function(){
+$(document).on('ready pjax:scriptcomplete',function(){
 
      /* End of show/hide sections */
 

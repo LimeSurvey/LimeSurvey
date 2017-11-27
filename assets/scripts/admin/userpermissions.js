@@ -3,7 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     $('#perm_superadmin_read').insertAfter($('#all_superadmin'));
     $('#all_superadmin').remove();
     $(".userpermissions").tablesorter({

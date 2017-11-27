@@ -31,7 +31,7 @@
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
 */
-function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false, $oTemplate = '')
+function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = null, $registerdata = array(), $bStaticReplacement = false, $oTemplate = '')
 {
     $allowedvars = array(
         'assessments',
@@ -157,7 +157,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
-        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1, true);
+        return LimeExpressionManager::ProcessString($line, $questionNum, null, false, 1, 1, true);
     }
 
     if (
@@ -373,7 +373,7 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
         foreach ($fieldsarray as $key => $value) {
             $replacements[substr($key, 1, -1)] = $value;
         }
-        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
+        $text = LimeExpressionManager::ProcessString($text, null, $replacements, false, 2, 1, false, false, $staticReplace);
     } else {
         foreach ($fieldsarray as $key => $value) {
             $text = str_replace($key, $value, $text);

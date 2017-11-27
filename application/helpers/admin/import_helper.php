@@ -689,7 +689,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
  * @param string $sNewSurveyName
  * @param integer $DestSurveyID
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = NULL, $DestSurveyID = NULL)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -782,12 +782,12 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param string $sXMLdata
 */
-function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NULL, $iDesiredSurveyId = NULL, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
     Yii::app()->loadHelper('database');
 
     $aGIDReplacements = array();
-    if ($sXMLdata == NULL) {
+    if ($sXMLdata == null) {
         $sXMLdata = file_get_contents($sFullFilePath);
     }
 
@@ -835,7 +835,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
         }
 
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
-        if ($iDesiredSurveyId != NULL) {
+        if ($iDesiredSurveyId != null) {
             $insertdata['wishSID'] = GetNewSurveyID($iDesiredSurveyId);
         } else {
             $insertdata['wishSID'] = $iOldSID;
@@ -855,7 +855,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
         $insertdata['owner_id'] = Yii::app()->session['loginID'];
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '') {
-            $insertdata['bouncetime'] = NULL;
+            $insertdata['bouncetime'] = null;
         }
 
         if (isset($insertdata['showXquestions'])) {
@@ -914,7 +914,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = NULL, $sNewSurveyName = NUL
         $insertdata['surveyls_survey_id'] = $iNewSID;
 
         // Assign new survey name (if a copy)
-        if ($sNewSurveyName != NULL) {
+        if ($sNewSurveyName != null) {
             $insertdata['surveyls_title'] = $sNewSurveyName;
         }
 
@@ -2063,7 +2063,7 @@ function TSVImportSurvey($sFullFilePath)
     }
 
     $adata = array();
-    while (($row = fgetcsv($tmp, 0, "\t", '"')) !== FALSE) {
+    while (($row = fgetcsv($tmp, 0, "\t", '"')) !== false) {
         $rowarray = array();
         for ($i = 0; $i < count($rowheaders); ++$i) {
             $val = (isset($row[$i]) ? $row[$i] : '');
@@ -2114,7 +2114,7 @@ function TSVImportSurvey($sFullFilePath)
 
 
     // Create the survey entry
-    $surveyinfo['startdate'] = NULL;
+    $surveyinfo['startdate'] = null;
     $surveyinfo['active'] = 'N';
     // unset($surveyinfo['datecreated']);
     $newSurvey = Survey::model()->insertNewSurvey($surveyinfo); //or safeDie(gT("Error").": Failed to insert survey<br />");
@@ -2233,7 +2233,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['parent_qid'] = 0;
 
                 // For multi numeric survey : same name, add the gid to have same name on different gid. Bad for EM.
-                $fullqname = "G{$gid}_".$qname;
+                $fullqname = 'G'.$gid.'_'.$qname;
                 if (isset($qinfo[$fullqname])) {
                     $qseq = $qinfo[$fullqname]['question_order'];
                     $qid = $qinfo[$fullqname]['qid'];
@@ -2282,7 +2282,7 @@ function TSVImportSurvey($sFullFilePath)
                                 if ($aAttributeList[$qtype][$key]['i18n']) {
                                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                                 } else {
-                                    $insertdata['language'] = NULL;
+                                    $insertdata['language'] = null;
                                 }
                                 $insertdata['attribute'] = $key;
                                 $insertdata['value'] = $val;
@@ -2350,7 +2350,7 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
                     $insertdata['scale_id'] = $scale_id;
                     // For multi nueric language, qid is needed, why not gid. name is not unique.
-                    $fullsqname = "G{$gid}Q{$qid}_{$scale_id}_{$sqname}";
+                    $fullsqname = 'G'.$gid.'Q'.$qid.'_'.$scale_id.'_'.$sqname;
                     if (isset($sqinfo[$fullsqname])) {
                         $qseq = $sqinfo[$fullsqname]['question_order'];
                         $sqid = $sqinfo[$fullsqname]['sqid'];

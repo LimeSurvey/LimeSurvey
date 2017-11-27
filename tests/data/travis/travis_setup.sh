@@ -21,7 +21,7 @@ php application/commands/console.php install admin password TravisLS no@email.co
 cp application/config/config-sample-mysql.php application/config/config.php
 
 sudo apt-get update > /dev/null
-sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs chromium-browser
+sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs firefox
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
 sudo a2enmod rewrite actions fastcgi alias
@@ -33,7 +33,13 @@ sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-defaul
 sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
 sudo service apache2 restart
 
-wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip
+# Chromedriver does not work on Travis.
+#wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+#unzip chromedriver_linux64.zip
 
-# TODO: For firefox, export MOZ_HEADLESS=1, install selenium.
+# Firefox headless.
+wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
+wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz"
+tar xvzf geckodriver-v0.19.1-linux64.tar.gz
+export MOZ_HEADLESS=1
+java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false 2> /dev/null &

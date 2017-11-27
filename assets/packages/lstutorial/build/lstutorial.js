@@ -139,7 +139,7 @@ const TourLibrary = function () {
 };
 
 
-$(document).on('ready pjax:complete', function () {
+$(document).on('ready pjax:scriptcomplete', function () {
     if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
     }

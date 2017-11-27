@@ -25,6 +25,7 @@ return array(
     'jquery' => array(
         'devBaseUrl' => 'third_party/jquery',
         'basePath' => 'third_party.jquery',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-3.1.1'.$minVersion.'.js',
             'jquery-migrate-3.0.0'.$minVersion.'.js',
@@ -153,8 +154,8 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'devBaseUrl' => 'assets/fonts/fontawesome/',
-        'basePath' => 'fonts.fontawesome',
+        'devBaseUrl' => 'assets/fonts/src/fontawesome/',
+        'basePath' => 'fonts.src.fontawesome',
         'css'=> array(
             'css/font-awesome'.$minVersion.'.css',
         ),
@@ -164,6 +165,7 @@ return array(
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
         ),
@@ -234,6 +236,7 @@ return array(
     // qTip2
     'qTip2' => array(
         'basePath' => 'third_party.qTip2',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'dist/jquery.qtip.min.js'
         ),
@@ -353,6 +356,7 @@ return array(
     ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'datatables.min.css'
         ),

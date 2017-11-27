@@ -277,7 +277,7 @@ function getDefaultDateTimePickerSettings() {
 }
 
 
-$(document).on('ready  pjax:complete', function() {
+$(document).on('ready  pjax:scriptcomplete', function() {
 
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);

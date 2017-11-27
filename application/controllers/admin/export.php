@@ -62,7 +62,7 @@ class export extends Survey_Common_Action
             $iSurveyID = (int) $iSurveyID;
 
             if ($iSurveyID > 0) {
-                $aExportedFiles[$iSurveyID] = $this->_exportarchive($iSurveyID, FALSE);
+                $aExportedFiles[$iSurveyID] = $this->_exportarchive($iSurveyID, false);
             }
         }
 
@@ -296,7 +296,7 @@ class export extends Survey_Common_Action
         if (in_array('email_address', Yii::app()->request->getPost('attribute_select', array()))) {
             $options->selectedColumns[] = "email";
         }
-        $attributeFields = array_keys(getTokenFieldsAndNames($iSurveyID, TRUE));
+        $attributeFields = array_keys(getTokenFieldsAndNames($iSurveyID, true));
         foreach ($attributeFields as $attr_name) {
             if (in_array($attr_name, Yii::app()->request->getPost('attribute_select', array()))) {
                 $options->selectedColumns[] = $attr_name;
@@ -772,7 +772,7 @@ class export extends Survey_Common_Action
 
         $xml->openURI('php://output');
 
-        $xml->setIndent(TRUE);
+        $xml->setIndent(true);
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
@@ -827,7 +827,7 @@ class export extends Survey_Common_Action
     {
         $aSurveys = json_decode($sSurveys);
         $aResults = array();
-        Yii::import('application.libraries.admin.pclzip', TRUE);
+        Yii::import('application.libraries.admin.pclzip', true);
         $bArchiveIsEmpty = true;
         $sTempDir        = Yii::app()->getConfig("tempdir");
         $sZip            = randomChars(30);
@@ -930,7 +930,7 @@ class export extends Survey_Common_Action
      * @param boolean $bSendToBrowser If TRUE (default) then the ZIP file is sent to the browser
      * @return string Full path of the ZIP filename if $bSendToBrowser is set to TRUE, otherwise no return value
      */
-    private function _exportarchive($iSurveyID, $bSendToBrowser = TRUE)
+    private function _exportarchive($iSurveyID, $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -944,7 +944,7 @@ class export extends Survey_Common_Action
         $sLSTFileName = $sTempDir.DIRECTORY_SEPARATOR.randomChars(30);
         $sLSIFileName = $sTempDir.DIRECTORY_SEPARATOR.randomChars(30);
 
-        Yii::import('application.libraries.admin.pclzip', TRUE);
+        Yii::import('application.libraries.admin.pclzip', true);
         $zip = new PclZip($aZIPFileName);
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
@@ -954,7 +954,7 @@ class export extends Survey_Common_Action
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_'.$iSurveyID, 'Responses', 'responses', $sLSRFileName, FALSE);
+            getXMLDataSingleTable($iSurveyID, 'survey_'.$iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
             $this->_addToZip($zip, $sLSRFileName, 'survey_'.$iSurveyID.'_responses.lsr');
             unlink($sLSRFileName);
         }
@@ -1031,7 +1031,7 @@ class export extends Survey_Common_Action
                 $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
             }
 
-            if (!(isset($noheader) && $noheader == TRUE)) {
+            if (!(isset($noheader) && $noheader == true)) {
                 $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
 
                 $this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
@@ -1116,13 +1116,13 @@ class export extends Survey_Common_Action
 
         array_unshift($aData['slangs'], $aData['baselang']);
 
-        Yii::import("application.libraries.admin.quexmlpdf", TRUE);
+        Yii::import("application.libraries.admin.quexmlpdf", true);
         $defaultquexmlpdf = new quexmlpdf($this->getController());
 
         foreach ($queXMLSettings as $s) {
             $aData[$s] = getGlobalSetting($s);
 
-            if ($aData[$s] === NULL || trim($aData[$s]) === '') {
+            if ($aData[$s] === null || trim($aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
                 $aData[$s] = $defaultquexmlpdf->$method();
             }

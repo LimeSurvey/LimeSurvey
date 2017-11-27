@@ -324,8 +324,8 @@ class Survey extends LSActiveRecord
         return array(
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
-            array('startdate', 'default', 'value'=>NULL),
-            array('expires', 'default', 'value'=>NULL),
+            array('startdate', 'default', 'value'=>null),
+            array('expires', 'default', 'value'=>null),
             array('admin,faxto', 'LSYii_Validators'),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
@@ -1402,7 +1402,7 @@ class Survey extends LSActiveRecord
 
         //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
         //$previewUrl .= '/'.$this->sid;
-        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye-open"  ></span></a> ';
+        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         return $button;
     }

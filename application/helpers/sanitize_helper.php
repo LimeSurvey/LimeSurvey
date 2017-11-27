@@ -87,7 +87,7 @@ define("UTF8", 128);
 
 // get magic_quotes_gpc ini setting - jp
 $magic_quotes = (bool) @ini_get('magic_quotes_gpc');
-if ($magic_quotes == TRUE) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_QUOTES", 0); }
+if ($magic_quotes == true) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_QUOTES", 0); }
 
 // addslashes wrapper to check for gpc_magic_quotes - gz
 function nice_addslashes($string)
@@ -191,7 +191,7 @@ function sanitize_paranoid_string($string, $min = '', $max = '')
         $string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
-                return FALSE;
+                return false;
         }
         return $string;
     }
@@ -203,7 +203,7 @@ function sanitize_cquestions($string, $min = '', $max = '')
         $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
-                return FALSE;
+                return false;
         }
         return $string;
     }
@@ -221,7 +221,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         $string = '"'.preg_replace('/\$/', '\\\$', $string).'"'; //make sure this is only interpretted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
-            return FALSE;
+            return false;
         }
         return $string;
     }
@@ -250,7 +250,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
     $pattern = '/(\)|\(|\||&)/';
     $len = strlen($string);
     if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
-        return FALSE;
+        return false;
     }
     return preg_replace($pattern, '', $string);
 }
@@ -289,7 +289,7 @@ function sanitize_int($integer, $min = '', $max = '')
 {
     $int = preg_replace("#[^0-9]#", "", $integer);
     if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
-        return FALSE;
+        return false;
     }
     if ($int == '') {
         return null;
@@ -335,7 +335,7 @@ function sanitize_float($float, $min = '', $max = '')
     if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
         if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0)) {
-            return FALSE;
+            return false;
         } else {
             return gmp_strval($gNumber);
         }
@@ -343,7 +343,7 @@ function sanitize_float($float, $min = '', $max = '')
         $fNumber = str_replace(',', '.', $float);
         $fNumber = floatval($fNumber);
         if ((($min != '') && ($fNumber < $min)) || (($max != '') && ($fNumber > $max))) {
-                    return FALSE;
+                    return false;
         }
         return $fNumber;
     }
@@ -377,50 +377,50 @@ function sanitize($input, $flags, $min = '', $max = '')
 function check_paranoid_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_paranoid_string($input, $min, $max)) {
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 function check_int($input, $min = '', $max = '')
 {
     if ($input != sanitize_int($input, $min, $max)) {
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 function check_float($input, $min = '', $max = '')
 {
     if ($input != sanitize_float($input, $min, $max)) {
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 function check_html_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_html_string($input)) {
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 
 function check_ldap_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_string($input, $min, $max)) {
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 // glue together all the other functions
@@ -449,9 +449,9 @@ function check($input, $flags, $min = '', $max = '')
         $input = sanitize_system_string($input, $min, $max);
     }
     if ($input != $oldput) {
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 function sanitize_languagecode($codetosanitize)
@@ -475,7 +475,7 @@ function sanitize_signedint($integer, $min = '', $max = '')
     $int = (int) $integer;
 
     if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
-        return FALSE; // Oops! Outside limits.
+        return false; // Oops! Outside limits.
     }
 
     return $int;

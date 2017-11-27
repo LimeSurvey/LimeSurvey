@@ -1,11 +1,56 @@
+build:
+    tests:
+        override:
+            - true
+
+    nodes:
+        tests: true
 filter:
-    excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/helpers/adodb/*, application/libraries/admin/http/*, application/libraries/admin/pclzip/*, application/extensions/*, application/views/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
     paths: [application/*]
+    excluded_paths: 
+        - 'application/views/*'
+    dependency_paths:
+        - 'framework/'
+        - 'application/helpers/adodb/*'
+        - 'application/libraries/admin/http/*'
+        - 'application/libraries/admin/pclzip/*'
+        - 'application/extensions/*'
+        - 'application/third_party/*'
+        - 'third_party/*'
+        - 'installer/*'
 checks:
+    javascript: true 
     php:
         code_rating: true
         duplication: true
         one_class_per_file: true
+tools:
+    php_cs_fixer:
+        enabled:              true
+        config:
+            level:            psr2
+            lowercase_keywords: false
+        filter:
+            excluded_paths:
+                - 'framework/*'
+                - 'locale/*'
+                - 'docs/*'
+                - 'fonts/*'
+                - 'third_party/*'
+                - 'application/helpers/adodb/*'
+                - 'application/libraries/admin/http/*'
+                - 'application/libraries/admin/pclzip/*'
+                - 'application/extensions/*'
+                - 'application/views/*'
+                - 'application/third_party/*'
+                - 'images/*'
+                - 'styles/*'
+                - 'styles-public/*'
+                - 'templates/*'
+                - 'themes/*'
+                - 'tmp/*'
+                - 'upload/*'
+                - 'tests/*'
 coding_style:
     php:    
         braces:
@@ -25,4 +70,7 @@ coding_style:
                 opening: end-of-line
             try:
                 opening: end-of-line
+        upper_lower_casing:
+            constants:
+                true_false_null: lower
                 

@@ -64,7 +64,7 @@ class Assessments extends Survey_Common_Action
             }
 
 
-            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
+            $this->_showAssessments($iSurveyID, $sAction);
         } else {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array("admin/"));
@@ -96,9 +96,11 @@ class Assessments extends Survey_Common_Action
     private function _showAssessments($iSurveyID, $action)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
-        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
+        $oAssessments = Assessment::model();
+        $oAssessments->sid = $iSurveyID;
         $aData = $this->_collectGroupData($iSurveyID);
+        $aData['model'] = $oAssessments;
+        $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
         $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
@@ -119,10 +121,6 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        // FIXME this must be in VIEWS!
-        $urls['output'] = '<div class="side-body '.getSideBodyClass(false).'">';
-        $urls['output'] .= viewHelper::getViewTestTag('surveyAssessments');
-        $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
             $aData['asessementNotActivated'] = array(
@@ -134,7 +132,9 @@ class Assessments extends Survey_Common_Action
                     .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
+        $urls=[];
         $urls['assessments_view'][] = $aData;
+        
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
 
@@ -186,11 +186,11 @@ class Assessments extends Survey_Common_Action
             foreach ($aLanguages as $sLanguage) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $sLanguage);
 
-                if ($bFirst == false) {
+                if ($bFirst === false) {
                     $aData['id'] = $iAssessmentID;
                 }
                 $assessment = Assessment::model()->insertRecords($aData);
-                if ($bFirst == true) {
+                if ($bFirst === true) {
                     $bFirst = false;
                     $iAssessmentID = $assessment->id;
                 }
@@ -205,7 +205,7 @@ class Assessments extends Survey_Common_Action
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
 
-            $aid = sanitize_int($_POST['id']);
+            $aid = (int)$_POST['id'];
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);

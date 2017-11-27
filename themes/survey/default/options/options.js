@@ -4,8 +4,9 @@ var prepare = function(){
     //activate the bootstrap switch for checkboxes
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     //get option Object from Template configuration options
-    var optionObject = {"general_inherit" : 1}
-    var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
+    var optionObject = {};
+    var inheritPossible = ($('#general_inherit_active').length > 0 ) ;
+    var generalInherit = function(){return ($('#TemplateConfiguration_options').val() === 'inherit' || $('#TemplateConfiguration_options').val() == ''); };
     var updateFieldSettings = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
             optionObject[$(item).attr('name')] = $(item).val();
@@ -15,6 +16,7 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
     };
+
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
         $('.action_hide_on_inherit').addClass('hidden');
@@ -34,9 +36,24 @@ var prepare = function(){
         //Update values in the form to the template options
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
 
+            
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
-            $(item).val(itemValue);
 
+            if(itemValue == null || itemValue == undefined){
+                itemValue = inheritPossible ? 'inherit' : false;
+                optionObject[$(item).attr('name')] = itemValue;
+            }
+            
+            $(item).val(itemValue);
+            
+            if($(item).hasClass('selector_image_selector')){
+                if($(item).val() == 'inherit'){
+                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
+                } else {
+                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
+                }
+            }
+            
         });
 
         //hotwapping the select fields to the radiobuttons
@@ -47,16 +64,31 @@ var prepare = function(){
                 } else {
                     $(selectorItem).prop('disabled', true);
                 }
+
+                if($(selectorItem).hasClass('selector_image_selector')){
+                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                }
             });
         });
         
         $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
+            
+            console.log('Simple options | Item value => ', itemValue);
+            
+            if(itemValue == null || itemValue == undefined){
+                itemValue = inheritPossible ? 'inherit' : 'off';
+                optionObject[$(item).attr('name')] = itemValue;
+            }
+
+            console.log('Simple options | Item value after parsing => ', itemValue);
+
             //if it is a radio selector, check it and propagate the change to bootstrapSwitch
             if($(item).val() == itemValue){
                 $(item).prop('checked', true).trigger('change');
                 $(item).closest('label').addClass('active');
             }
+
         });
 
         //if the save button is clicked write everything into the template option field and send the form
@@ -95,10 +127,18 @@ var prepare = function(){
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
             console.log(evt);
+            if($(this).hasClass('selector_image_selector')){
+                if($(this).val() == 'inherit'){
+                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
+                } else {
+                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
+                }
+            }
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
             }
+
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
         //hotswapping the radio fields
@@ -134,7 +174,7 @@ var prepare = function(){
             })
         }
     }
-    setTimeout(function(){deferred.resolve()},650);
+    setTimeout(function(){deferred.resolve(updateFieldSettings)},650);
 
     return deferred.promise();
 };
@@ -142,9 +182,21 @@ var prepare = function(){
 
 $(document).on('ready pjax:scriptcomplete',function(){
     $('.simple-template-edit-loading').css('display','block');
-    prepare().then(function(){
+    prepare().then(function(runsesolve){
         $('.simple-template-edit-loading').remove();
     });
+    
+    $('.selector__open_lightbox').on('click', function(e){
+        e.preventDefault();
+        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('target')).val();
+        if(imgTitle !== 'inherit'){
+            $('#lightbox-modal').find('.selector__title').text(imgTitle);
+            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
+        }
+        $('#lightbox-modal').modal('show');
+    });
+
     var uploadImageBind = new bindUpload({
         form: '#upload_frontend',
         input: '#upload_image_frontend',

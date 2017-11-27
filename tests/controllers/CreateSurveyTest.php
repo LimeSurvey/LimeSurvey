@@ -231,6 +231,8 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
             $execute->click();
 
+            sleep(1);
+
             // Switch to new tab.
             $windowHandles = self::$webDriver->getWindowHandles();
             self::$webDriver->switchTo()->window(

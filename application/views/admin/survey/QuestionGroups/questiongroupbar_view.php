@@ -244,22 +244,21 @@
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="fa fa-floppy-o"></span>
+                    <i class="fa fa-floppy-o"></i>
                     <?php eT("Save");?>
                 </a>
                
                 <?php endif; ?>
             <?php endif; ?>
             
-            <?php /*
+
             <!-- Save and close -->
             <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
                 <a id="save-and-close-button" class="btn btn-default" role="button">
-                    <span class="fa fa-saved"></span>
+                    <i class="fa fa-check-square"></i>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
-            */ ?>
             
  
             <?php /*

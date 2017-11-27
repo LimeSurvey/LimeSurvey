@@ -25,6 +25,9 @@ if (!defined('BASEPATH')) {
 *
 * @package        LimeSurvey
 * @subpackage    Backend
+* 
+* @method void redirect($string|array $url, boolean $terminate, integer $statusCode)
+
 */
 class Authentication extends Survey_Common_Action
 {
@@ -235,12 +238,12 @@ class Authentication extends Survey_Common_Action
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
-
+            $aData=[];
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
             } else {
-                $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
+                $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields[0]).'</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
@@ -251,12 +254,12 @@ class Authentication extends Survey_Common_Action
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = getGlobalSetting('DBVersion');
-        }
-        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
-            // Try a silent update first
-            Yii::app()->loadHelper('update/updatedb');
-            if (!db_upgrade_all(intval($sDBVersion), true)) {
-                $this->redirect(array('/admin/databaseupdate/sa/db'));
+            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
+                // Try a silent update first
+                Yii::app()->loadHelper('update/updatedb');
+                if (!db_upgrade_all(intval($sDBVersion), true)) {
+                    Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
+                }
             }
         }
     }
@@ -276,7 +279,7 @@ class Authentication extends Survey_Common_Action
         $sSiteName = Yii::app()->getConfig('sitename');
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
-        $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
+        $username = sprintf(gT('Username: %s'), $aFields['users_name']);
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
@@ -286,7 +289,7 @@ class Authentication extends Survey_Common_Action
         $body   = implode("\n", $body);
 
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
-            User::updatePassword($aFields[0]['uid'], $sNewPass);
+            User::updatePassword($aFields['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
         } else {
@@ -316,7 +319,7 @@ class Authentication extends Survey_Common_Action
             case 'login' :
             default :
                 $sSummary = '<br />'.sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']).'<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE) {
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
                     . ' content="1;URL='.Yii::app()->session['redirect_after_login'].'" />';
                     $sSummary = '<p><font size="1"><i>'.gT('Reloading screen. Please wait.').'</i></font>';
@@ -335,23 +338,7 @@ class Authentication extends Survey_Common_Action
     {
         if (!Yii::app()->user->getIsGuest()) {
             $this->runDbUpgrade();
-            $this->getController()->redirect(array('/admin'));
-        }
-    }
-
-    /**
-     * Check if a user can log in
-     * @return bool|array
-     */
-    private function _userCanLogin()
-    {
-        $failed_login_attempts = FailedLoginAttempt::model();
-        $failed_login_attempts->cleanOutOldAttempts();
-
-        if ($failed_login_attempts->isLockedOut()) {
-            return $this->_getAuthenticationFailedErrorMessage();
-        } else {
-            return true;
+            Yii::app()->getController()->redirect(array('/admin'));
         }
     }
 

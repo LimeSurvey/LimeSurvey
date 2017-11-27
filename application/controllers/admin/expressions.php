@@ -75,15 +75,15 @@ class Expressions extends Survey_Common_Action
             return;
         }
         
-        $gid = Yii::app()->request->getParam('gid', NULL);
-        $qid = Yii::app()->request->getParam('qid', NULL);
+        $gid = Yii::app()->request->getParam('gid', null);
+        $qid = Yii::app()->request->getParam('qid', null);
         
         
         $oSurvey = Survey::model()->findByPk($sid);
 
-        $language = Yii::app()->request->getParam('lang', NULL); 
+        $language = Yii::app()->request->getParam('lang', null); 
         
-        if ($language !== NULL) {
+        if ($language !== null) {
                     $language = sanitize_languagecode($language);
         }
 
@@ -112,13 +112,13 @@ class Expressions extends Survey_Common_Action
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
-        if ($gid !== NULL) {
+        if ($gid !== null) {
             $gid = sanitize_int($gid);
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;
         }
         
-        if ($qid !== NULL) {
+        if ($qid !== null) {
             $qid = sanitize_int($qid);
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
             $aData['qid'] = $qid;

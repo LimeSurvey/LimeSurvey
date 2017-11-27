@@ -175,10 +175,10 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param bool $return_query
      * @return mixed
      */
-    public function getAllRecords($condition = FALSE, $return_query = TRUE)
+    public function getAllRecords($condition = false, $return_query = true)
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != FALSE) {
+        if ($condition != false) {
             $query->where($condition);
         }
         return ($return_query) ? $query->queryAll() : $query;
@@ -204,7 +204,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param bool $hasPermission
      * @return mixed
      */
-    public function getAllSurveys($hasPermission = FALSE)
+    public function getAllSurveys($hasPermission = false)
     {
         $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
         $this->db->from('surveys AS a');
@@ -233,7 +233,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * key/value pairs in the $data array.
      *
      * @param array $data
-     * @param string $condition
+     * @param string|array $condition
      * @param bool $xssfiltering
      * @return bool
      */

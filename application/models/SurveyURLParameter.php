@@ -45,7 +45,15 @@ class SurveyURLParameter extends LSActiveRecord
     {
         return '{{survey_url_parameters}}';
     }
-
+    /** @inheritdoc */
+    public function relations()
+    {
+        return array(
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid', 'together' => true),
+            'question' => array(self::BELONGS_TO, 'Question', array('targetqid' => 'qid')),
+            'subquestion' => array(self::BELONGS_TO, 'Question', array('targetsqid' => 'qid'))
+        );
+    }
     /**
      * @param integer $iSurveyID
      * @return mixed

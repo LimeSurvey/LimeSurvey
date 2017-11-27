@@ -87,6 +87,9 @@ $(document).on('ready', function () {
             'display': 'block'
         });
     });
+    $(document).on('pjax:error', (event) => {
+        console.log(event);
+    });
     $(document).on('pjax:success', () => {
         $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});
         $('#pjax-file-load-container').find('div').css('width', '100%');

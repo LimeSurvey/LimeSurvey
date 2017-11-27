@@ -40,7 +40,7 @@
          * @param bool $printableexport
          * @return
          */
-        function actionView($surveyid, $printableexport = FALSE)
+        function actionView($surveyid, $printableexport = false)
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
@@ -159,7 +159,7 @@
                 LimeExpressionManager::FinishProcessingPage();
             } else if ($sExportType == 'quexmlpdf') {
 
-                Yii::import("application.libraries.admin.quexmlpdf", TRUE);
+                Yii::import("application.libraries.admin.quexmlpdf", true);
 
                 $quexmlpdf = new quexmlpdf();
 

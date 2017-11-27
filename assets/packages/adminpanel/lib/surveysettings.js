@@ -30,7 +30,7 @@ $(document).on('click','[data-copy] :submit',function(){
 // $(document).on('submit',"#addnewsurvey",function(){
 //     $('#addnewsurvey').attr('action',$('#addnewsurvey').attr('action')+location.hash);// Maybe validate before ?
 // });
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
   $('#template').on('change keyup', function(event){
     templatechange($(this).val(), $('#template').data('standardtemplaterooturl'), $('#template').data('templaterooturl'));

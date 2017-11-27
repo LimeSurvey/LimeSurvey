@@ -3,7 +3,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     $("input:radio[id^='emailmethod']").on('change',Emailchange);
     Emailchange();
     $("input:radio[id^='bounceaccounttype']").on('change',BounceChange);

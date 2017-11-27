@@ -399,7 +399,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
         $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
-        $aData['sidemenu']["survey_menu"] = TRUE;
+        $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
@@ -944,7 +944,6 @@ class SurveyAdmin extends Survey_Common_Action
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
-            Yii::app()->end();
         }
 
         $templateData = is_array($menuEntry->data) ? $menuEntry->data : [];
@@ -1825,27 +1824,21 @@ class SurveyAdmin extends Survey_Common_Action
         left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
-        $i = 0;
+        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID ]);
         $aData = array(
-            'rows' => array()
+            'rows' => []
         );
-        foreach ($oResult as $oRow) {
-            $row = array();
-            $row['id'] = $oRow['id'];
-            if (!is_null($oRow['question'])) {
-                        $oRow['title'] .= ': '.ellipsize(flattenText($oRow['question'], false, true), 43, .70);
-            } else {
-                        $oRow['title'] = gT('(No target question)');
+        foreach($aSurveyParameters as $oSurveyParameter) {
+            $row = $oSurveyParameter->attributes;
+            $row['questionTitle'] = $oSurveyParameter->question->title;
+            
+            if($oSurveyParameter->targetsqid != '') {
+                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
             }
-            if ($oRow['sqquestion'] != '') {
-                $oRow['title'] .= (' - '.ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
-            }
-            $row['question'] = $oRow['title'];
-            $row['parameter'] = $oRow['parameter'];
-            $row['datas'] = $oRow;
-
+            
+            $row['qid'] = $oSurveyParameter->targetqid;
+            $row['sqid'] = $oSurveyParameter->targetsqid;
             $aData['rows'][] = $row;
-            $i++;
         }
 
         $aData['page'] = 1;

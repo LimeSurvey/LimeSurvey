@@ -748,7 +748,7 @@ var exportImages = function () {
         });
 };
 
-$(document).on('ready  pjax:complete', function () {
+$(document).on('ready  pjax:scriptcomplete', function () {
     LS.onDocumentReady.Statistics2();
     $('body').addClass('onStatistics');
     var exportImagesButton = $('<button class="btn btn-info" style="margin: auto;">Export images</button>');

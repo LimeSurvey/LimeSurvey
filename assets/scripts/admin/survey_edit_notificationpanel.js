@@ -13,7 +13,7 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
         $("#googleanalyticsstyle").find('label').removeClass('disabled');
         $("#googleanalyticsstyle").closest('div.form-group').slideDown(400);
 
-        $("#googleanalyticsapikey").removeAttr('disabled');
+        $("#googleanalyticsapikey").prop('disabled',false);
         $("#googleanalyticsapikey").closest('div.form-group').slideDown(400);
         if($("#googleanalyticsapikey").val() == "9999useGlobal9999"){
             $("#googleanalyticsapikey").val("");
@@ -25,22 +25,22 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
         $("#googleanalyticsstyle").find('label').addClass('disabled');
         $("#googleanalyticsstyle").closest('div.form-group').slideUp(400);
 
-        $("#googleanalyticsapikey").attr('disabled','disabled');
+        $("#googleanalyticsapikey").prop('disabled',true);
         $("#googleanalyticsapikey").closest('div.form-group').slideUp(400);
     }
-    else 
+    else if($('#googleanalyticsapikeysetting input:radio:checked').val()=='G') 
     {
         $("#googleanalyticsstyle").find('label').removeClass('disabled');
         $("#googleanalyticsstyle").closest('div.form-group').slideDown(400);
 
-        $("#googleanalyticsapikey").attr('disabled','disabled');
+        $("#googleanalyticsapikey").prop('disabled',true);
         $("#googleanalyticsapikey").closest('div.form-group').slideUp(400);
     }
 }
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     updateParameters();
-    $("input:radio[id^='googleanalyticsapikeysetting']").on('change',function(){
+    $("#googleanalyticsapikeysetting").on('change', 'input', function(){
         updateParameters();
     });
 });
