@@ -229,4 +229,4 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
         </div>
     </div>
 </div>
-<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js'); ?>
+<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js', LSYii_ClientScript::POS_BEGIN); ?>

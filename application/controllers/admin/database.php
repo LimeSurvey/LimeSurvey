@@ -71,7 +71,7 @@ class database extends Survey_Common_Action
                 'alloweditaftercompletion' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'googleanalyticsapikeysetting' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsapikeysetting' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
