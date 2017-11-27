@@ -13,14 +13,10 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>3.0</version>
         <description>LimeSurvey admin interface template, red variation.</description>
         <basecolor>#AA4340</basecolor>
-        <!--
-             The last_update field must be updated before each release,
-             to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
-         -->
-        <last_update>2016-05-09 13:00:00</last_update>
+        <last_update>2017-27-11 17:00:00</last_update>
     </metadatas>
 
     <!--
