@@ -174,8 +174,10 @@ class AdminTheme extends CFormModel
             foreach ($this->config->files->rtl->css->filename as $cssfile) {
                 $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
             }
+            
+            App()->getClientScript()->unregisterPackage('adminbasics');
+            App()->getClientScript()->registerPackage('adminbasicsrtl');
 
-            $aCssFiles[] = 'css/adminstyle-rtl.css'; // This file is needed for rtl
         } else {
             // Non-RTL style
             foreach ($this->config->files->css->filename as $cssfile) {

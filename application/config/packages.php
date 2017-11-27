@@ -188,6 +188,30 @@ return array(
             'pjax',
         )
     ),
+
+    'adminbasicsrtl' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/rtl',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/font-roboto.css',
+            'css/adminstyle-rtl.css',
+            'css/rtl/lime-admin-common-rtl.css',
+            'css/rtl/jcarousel.responsive-rtl.css',
+            'css/rtl/attributeMap-rtl.css',
+            'css/rtl/attributeMapToken-rtl.css',
+            'css/rtl/displayParticipants-rtl.css',
+        ),
+        'js' => array(
+            'js/admin_core.js',
+            'js/notifications.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'pjax',
+        )
+    ),
+
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',
