@@ -228,6 +228,7 @@ return array(
 
     'font-roboto' => array(
         'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'roboto.css',
