@@ -64,7 +64,7 @@ class Assessments extends Survey_Common_Action
             }
 
 
-            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
+            $this->_showAssessments($iSurveyID, $sAction);
         } else {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array("admin/"));
@@ -132,6 +132,7 @@ class Assessments extends Survey_Common_Action
                     .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
+        $urls=[];
         $urls['assessments_view'][] = $aData;
         
         $this->_renderWrappedTemplate('', $urls, $aData);
@@ -185,11 +186,11 @@ class Assessments extends Survey_Common_Action
             foreach ($aLanguages as $sLanguage) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $sLanguage);
 
-                if ($bFirst == false) {
+                if ($bFirst === false) {
                     $aData['id'] = $iAssessmentID;
                 }
                 $assessment = Assessment::model()->insertRecords($aData);
-                if ($bFirst == true) {
+                if ($bFirst === true) {
                     $bFirst = false;
                     $iAssessmentID = $assessment->id;
                 }
@@ -204,7 +205,7 @@ class Assessments extends Survey_Common_Action
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
 
-            $aid = sanitize_int($_POST['id']);
+            $aid = (int)$_POST['id'];
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);

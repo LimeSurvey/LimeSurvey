@@ -25,6 +25,8 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property CHttpRequest $request The request component. 
 * @property CDbConnection $db The database connection.
 * @property string $baseUrl The relative URL for the application.
+* @property CWebUser $user The user session information.
+* 
 */
 class LSYii_Application extends CWebApplication
 {

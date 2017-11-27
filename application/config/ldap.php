@@ -210,4 +210,3 @@ $ldap_queries[$query_id]['attr2'] = '';
 //DO NOT CHANGE BELOW HERE --------------------
 
 return array('ldap_server' => $ldap_server, 'ldap_queries' => $ldap_queries);
-?>

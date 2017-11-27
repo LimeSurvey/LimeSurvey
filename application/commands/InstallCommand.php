@@ -141,6 +141,7 @@ class InstallCommand extends CConsoleCommand
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
         try {
+            $this->output('Opening connection...');
             $this->connection->active = true;
         } catch (Exception $e) {
             throw new CException("Invalid access data. Check your config.php db access data");
