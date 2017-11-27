@@ -944,7 +944,6 @@ class SurveyAdmin extends Survey_Common_Action
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
-            Yii::app()->end();
         }
 
         $templateData = is_array($menuEntry->data) ? $menuEntry->data : [];

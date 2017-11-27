@@ -75,7 +75,7 @@ class surveypermission extends Survey_Common_Action
             // Foot first
 
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-                $authorizedGroupsList = getUserGroupList(null, 'simplegidarray');
+                $authorizedGroupsList = getUserGroupList();
             }
 
             $surveysecurity .= "<tbody>\n";
@@ -202,7 +202,7 @@ class surveypermission extends Survey_Common_Action
             . "<li><label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>".gT("User").": </label>
                  <div class='col-sm-4'>
                 <select id='uidselect' name='uid'  class='form-control'>\n"
-            . getSurveyUserList(false, false, $iSurveyID)
+            . getSurveyUserList( false, $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default' type='submit' value='".gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".gT("Please select a user first", "js")."'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"
@@ -430,7 +430,7 @@ class surveypermission extends Survey_Common_Action
                 $this->getController()->error('Access denied');
             }
         } elseif ($action == "setusergroupsurveysecurity") {
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray'))) {
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && !in_array($postusergroupid, getUserGroupList())) {
                 // User can not change own security (except for superadmin ?)
                 $this->getController()->error('Access denied');
             }
@@ -607,7 +607,7 @@ class surveypermission extends Survey_Common_Action
 
         if ($postuserid && !in_array($postuserid, getUserList('onlyuidarray'))) {
             $this->getController()->error('Access denied');
-        } elseif ($postusergroupid && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray'))) {
+        } elseif ($postusergroupid && !in_array($postusergroupid, getUserGroupList())) {
             $this->getController()->error('Access denied');
         }
 
