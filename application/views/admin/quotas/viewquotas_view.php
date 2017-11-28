@@ -15,20 +15,17 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyQuotas');
 
+Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change', "
+    $('#pageSize').on('change', function()
+    {
+        $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
+    });
+", LSYii_ClientScript::POS_POSTSCRIPT);
+
 ?>
 
 <!-- To update grid when pageSize is changed -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        jQuery(function($)
-        {
-            jQuery(document).on("change", '#pageSize', function()
-            {
-                $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
-            });
-        });
-    });
-</script>
+
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">

@@ -36,13 +36,13 @@ var bindAction = function(){
     });
 
     $('.action_assessments_editModal').on('click.assessments', function(){
-        $('input[name=action]').val('assessmentupdate');
-        $('#assesements-edit-add').modal('show');
+        $('input[name=action]').val('assessmentupdate');    
         $.ajax({
             url: loadEditUrl,
             data: {id: $(this).closest('tr').data('assessment-id')},
             method: 'GET',
             success: function(responseData){
+                $("#in_survey_common").css({cursor: ""});        
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
                     if(!itemToChange.is('input[type=checkbox]') &&  !itemToChange.is('input[type=radio]')) {
@@ -51,7 +51,7 @@ var bindAction = function(){
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }
                 });
-                $('#languagetabs').tabs();
+                $('#assesements-edit-add').modal('show');
             },
             error: function(err){
                 try {console.error(err); } catch(e) { console.log("ERROR!", error );}

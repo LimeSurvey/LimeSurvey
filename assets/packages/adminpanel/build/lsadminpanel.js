@@ -36325,7 +36325,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     methods: {
         updatePjaxLinks: function () {
-            this.$store.commit('updatePjax');
+            // this.$store.commit('updatePjax');
         }
     }
 });
@@ -36363,6 +36363,10 @@ $(document).on('ready', function () {
                     this.controlWindowSize();
                 });
 
+                $(document).on('vue-resize-height',  ()=>{
+                    this.controlWindowSize();
+                });
+
                 $(document).on('vue-sidebar-collapse',  ()=>{
                     this.$store.commit('changeIsCollapsed', true);
                 });
@@ -36391,7 +36395,8 @@ $(document).on('ready', function () {
         global.vueGeneralApp = vueGeneralApp;
     }
 
-    $(document).on('pjax:send', () => {
+    $(document).on('pjax:send', (e) => {
+        console.trace('PJAX SEND Event:', e);
         $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
         $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
         $('#pjax-file-load-container').find('div').css({
@@ -36402,9 +36407,10 @@ $(document).on('ready', function () {
     $(document).on('pjax:error', (event) => {
         console.log(event);
     });
-    $(document).on('pjax:success', () => {
-        $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});
+    $(document).on('pjax:success', (e) => {
+        console.trace('PJAX SUCCESS Event:', e);
         $('#pjax-file-load-container').find('div').css('width', '100%');
+        $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
         $(document).trigger('vue-sidemenu-update-link');
         setTimeout(function () {
             $('#pjax-file-load-container').find('div').css({
