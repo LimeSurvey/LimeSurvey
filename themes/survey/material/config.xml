@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Default configuration for the theme.
+    Material Design Theme.
     In future versions of LimeSurvey, it will be used to fill a theme table,
     and to give user control on theme configuration (like variables to use to render the questions, banners, background, etc.)
 -->
@@ -17,7 +17,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Advanced Theme</strong><br> A theme extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>]]></description>
+        <description><![CDATA[<strong>LimeSurvey Material Design Theme</strong><br> A theme based on FezVrasta's Material design for Bootstrap 3 <a href='https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/index.html'></a>]]></description>
         <last_update></last_update>
         <extends>default</extends>
     </metadatas>
