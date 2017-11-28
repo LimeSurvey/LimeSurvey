@@ -323,7 +323,6 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function registerPackage($name)
     {
-        echo $name;
         return Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
     }
 
