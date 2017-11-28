@@ -712,6 +712,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+
+        if ($iOldDBVersion < 331) {
+            $oTransaction = $oDB->beginTransaction();
+            upgrade331($oDB);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>331), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -753,6 +761,48 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+/**
+* @param $oDB
+* @return void
+*/
+function upgrade331($oDB)
+{
+    $oDB->createCommand()->update('{{templates}}', array(
+        'name'        => 'bootswatch',
+        'folder'      => 'bootswatch',
+        'title'       => 'Bootswatch Theme',
+        'description' => '<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href=\'https://bootswatch.com/3/\'>Visit BootsWatch page</a>',
+    ), "name='default'");
+
+    $oDB->createCommand()->update('{{templates}}', array(
+        'extends' => 'bootswatch',
+    ), "extends='default'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'template_name'   => 'bootswatch',
+    ), "template_name='default'");
+
+    $oDB->createCommand()->update('{{templates}}', array(
+        'description' => '<strong>LimeSurvey Material Design Theme</strong><br> A theme based on FezVrasta\'s Material design for Bootstrap 3 <a href=\'https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/index.html\'></a>',
+    ), "name='material'");
+
+    $oDB->createCommand()->update('{{templates}}', array(
+        'name'        => 'fruity',
+        'folder'      => 'fruity',
+        'title'       => 'Fruity Theme',
+        'description' => '<strong>LimeSurvey Fruity Theme</strong><br>Some color themes for a flexible use. This theme offers many options.',
+    ), "name='monochrome'");
+
+    $oDB->createCommand()->update('{{templates}}', array(
+        'extends' => 'fruity',
+    ), "extends='monochrome'");
+
+    $oDB->createCommand()->update('{{template_configuration}}', array(
+            'template_name'   => 'fruity',
+    ), "template_name='monochrome'");
+
 }
 
 /**
