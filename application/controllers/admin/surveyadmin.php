@@ -1824,15 +1824,15 @@ class SurveyAdmin extends Survey_Common_Action
         left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
-        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID ]);
+        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []
         );
-        foreach($aSurveyParameters as $oSurveyParameter) {
+        foreach ($aSurveyParameters as $oSurveyParameter) {
             $row = $oSurveyParameter->attributes;
             $row['questionTitle'] = $oSurveyParameter->question->title;
             
-            if($oSurveyParameter->targetsqid != '') {
+            if ($oSurveyParameter->targetsqid != '') {
                 $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
             }
             

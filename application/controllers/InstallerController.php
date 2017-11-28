@@ -329,7 +329,7 @@ class InstallerController extends CController
                     }
 
                     //$aData array won't work here. changing the name
-                    $aValues=[];
+                    $aValues = [];
                     $aValues['title'] = gT('Database settings');
                     $aValues['descp'] = gT('Database settings');
                     $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
@@ -516,7 +516,7 @@ class InstallerController extends CController
         extract($aDbConfig);
         self::_dbConnect($aDbConfig, $aData);
 
-        if (!in_array($sDatabaseType,['mysqli','mysql','dblib','sqlsrv','mssql','pgsql'])){
+        if (!in_array($sDatabaseType, ['mysqli', 'mysql', 'dblib', 'sqlsrv', 'mssql', 'pgsql'])) {
             throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 

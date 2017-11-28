@@ -23,7 +23,7 @@
 
 $config = array();
 
-$config['rootdir']                  = (string)Yii::getPathOfAlias('webroot');
+$config['rootdir']                  = (string) Yii::getPathOfAlias('webroot');
 
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
