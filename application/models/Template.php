@@ -159,8 +159,8 @@ class Template extends LSActiveRecord
             return self::templateNameFilter($sDefaultTemplate);
         }
 
-        /* Last solution : default */
-        return Yii::app()->getConfig('defaulttheme');
+        /* Last solution :  hard encode the name of the default template here */
+        return 'fruity';
     }
 
 

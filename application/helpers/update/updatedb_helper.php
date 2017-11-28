@@ -803,6 +803,8 @@ function upgrade331($oDB)
             'template_name'   => 'fruity',
     ), "template_name='monochrome'");
 
+    $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>'fruity'), "stg_name='defaulttheme'");
+
 }
 
 /**
