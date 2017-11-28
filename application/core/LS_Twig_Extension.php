@@ -140,7 +140,7 @@ class LS_Twig_Extension extends Twig_Extension
             case "POS_END":
                 $position = LSYii_ClientScript::POS_END;
                 break;
-                
+
             case "POS_POSTSCRIPT":
                 $position = LSYii_ClientScript::POS_POSTSCRIPT;
                 break;
@@ -177,8 +177,8 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' ls-hidden';
         }
 
+        /* Can use aQuestionAttributes too */
         if ($lemQuestionInfo['hidden']) {
-/* Can use aQuestionAttributes too */
             $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
             $aQuestionClass .= ' ls-hidden';
         }
@@ -213,8 +213,8 @@ class LS_Twig_Extension extends Twig_Extension
             'buttonLabel' => gt('Reload image', 'unescaped')
         ));
     }
-    
-    
+
+
     public static function createUrl($url, $params = array())
     {
         return App()->getController()->createUrl($url, $params);
@@ -242,7 +242,7 @@ class LS_Twig_Extension extends Twig_Extension
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         } else {
-            $sUrlImgAsset = '';            
+            $sUrlImgAsset = '';
             // TODO: publish a default image "not found"
         }
 
@@ -251,7 +251,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     /**
      * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string                 an alternative image if the provided one cant be found 
+     * @var $default     string                 an alternative image if the provided one cant be found
      * @return string
      */
     /* @TODO => implement the default in a secure way */
@@ -319,6 +319,12 @@ class LS_Twig_Extension extends Twig_Extension
     public static function unregisterScriptFile($name)
     {
         return Yii::app()->getClientScript()->unregisterScriptFile($name);
+    }
+
+    public static function registerPackage($name)
+    {
+        echo $name;
+        return Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
     }
 
     /**

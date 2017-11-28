@@ -217,6 +217,7 @@ $internalConfig = array(
                 'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
                 'registerTemplateScript'  => 'LS_Twig_Extension::registerTemplateScript',
                 'registerScript'          => 'LS_Twig_Extension::registerScript',
+                'registerPackage'         => 'LS_Twig_Extension::registerPackage',
                 'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
                 'unregisterScriptFile'    => 'LS_Twig_Extension::unregisterScriptFile',
                 'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
@@ -262,7 +263,7 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'createUrl'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'createUrl'),
             ),
 
         ),
