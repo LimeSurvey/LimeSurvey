@@ -97,16 +97,16 @@ class conditionsaction extends Survey_Common_Action
     public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
     {
         $request = Yii::app()->request;
-        $iSurveyID = sanitize_int($iSurveyID);
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $iSurveyID = (int)$iSurveyID;
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
-        $gid = sanitize_int($gid);
-        $qid = sanitize_int($qid);
+        $gid = (int)$gid;
+        $qid = (int)$qid;
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
         
+        $aData=[];
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = gT("Conditions designer");
         
@@ -141,22 +141,18 @@ class conditionsaction extends Survey_Common_Action
     if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
     if (!isset($qid)) { $qid = returnGlobal('qid'); }
     if (!isset($gid)) { $gid = returnGlobal('gid'); }
-    if (!isset($p_scenario)) {$p_scenario = returnGlobal('scenario'); }
-    if (!isset($p_cqid)) {
-        $p_cqid = returnGlobal('cqid');
-        if ($p_cqid == '') {
-// we are not using another question as source of condition 
-            $p_cqid = 0; 
-        }
+    $p_scenario = returnGlobal('scenario');
+    $p_cqid = returnGlobal('cqid');
+    if ($p_cqid == '') {
+        // we are not using another question as source of condition 
+        $p_cqid = 0; 
     }
     
-    if (!isset($p_cid)) { $p_cid = returnGlobal('cid'); }
-    if (!isset($p_subaction)) {
-        $p_subaction = $subaction;
-    }
-    if (!isset($p_cquestions)) {$p_cquestions = returnGlobal('cquestions'); }
-    if (!isset($p_csrctoken)) {$p_csrctoken = returnGlobal('csrctoken'); }
-    if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa = returnGlobal('prevQuestionSGQA'); }
+    $p_cid = returnGlobal('cid');
+    $p_subaction = $subaction;
+    $p_cquestions = returnGlobal('cquestions');
+    $p_csrctoken = returnGlobal('csrctoken'); 
+    $p_prevquestionsgqa = returnGlobal('prevQuestionSGQA');
     
     $p_canswers = null;
     if (is_array($request->getPost('canswers'))) {
@@ -619,44 +615,6 @@ $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
 }
 
 /**
-* @param string $hinttext
-* @return string html
-* @todo Not used?
-*/
-private function _showSpeaker($hinttext)
-{
-    global $max;
-    
-    $imageurl = Yii::app()->getConfig("adminimageurl");
-    
-    if (!isset($max)) {
-        $max = 20;
-    }
-    $htmlhinttext = str_replace("'", '&#039;', $hinttext); //the string is already HTML except for single quotes so we just replace these only
-    $jshinttext = javascriptEscape($hinttext, true, true);
-    
-    if (strlen(html_entity_decode($hinttext, ENT_QUOTES, 'UTF-8')) > ($max + 3)) {
-        $shortstring = flattenText($hinttext, true);
-        
-        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring, ENT_QUOTES, 'UTF-8'), 0, $max, 'UTF-8'));
-        
-        //output with hoover effect
-        $reshtml = "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-        ." onclick=\"alert('".gT("Question", "js").": $jshinttext')\" />"
-        ." \"$shortstring...\" </span>"
-        ."<span class='fa fa-commenting-o text-success' style='cursor: hand'  title='".$htmlhinttext."'></span>"
-        ." onclick=\"alert('".gT("Question", "js").": $jshinttext')\" />";
-    } else {
-        $shortstring = flattenText($hinttext, true);
-        
-        $reshtml = "<span title='".$shortstring."'> \"$shortstring\"</span>";
-    }
-    
-    return $reshtml;
-    
-}
-
-/**
 * This array will be used to explain wich conditions is used to evaluate the question
 * @return array
 */
@@ -1040,10 +998,7 @@ protected function renumberScenarios(array $args)
     $newindex = 1;
     
     foreach ($result->readAll() as $srow) {
-        // new var $update_result == old var $result2
-        $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), true,
-        array('qid'=>$qid, 'scenario'=>$srow['scenario'])
-        );
+        Condition::model()->insertRecords(array('scenario'=>$newindex), true, array('qid'=>$qid, 'scenario'=>$srow['scenario']));
         $newindex++;
     }
     LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
@@ -1112,7 +1067,7 @@ protected function copyConditions(array $args)
                 
                 if ($countduplicates == 0) {
 //If there is no match, add the condition.
-                    $result = Condition::model()->insertRecords($conditions_data);
+                    Condition::model()->insertRecords($conditions_data);
                     $conditionCopied = true;
                 } else {
                     $conditionDuplicated = true;
@@ -1156,7 +1111,7 @@ protected function applySubaction($p_subaction, array $args)
         // Delete entry if this is delete
         case "delete":
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
+            Condition::model()->deleteRecords(array('cid'=>$p_cid));
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             $this->redirectToConditionStart($qid, $gid);
             break;
@@ -1164,7 +1119,7 @@ protected function applySubaction($p_subaction, array $args)
         // Delete all conditions in this scenario
         case "deletescenario":
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
+            Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             $this->redirectToConditionStart($qid, $gid);
             break;
@@ -1172,7 +1127,7 @@ protected function applySubaction($p_subaction, array $args)
         // Update scenario
         case "updatescenario":
             // TODO: Check if $p_newscenarionum is null
-            $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), true, array(
+            Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), true, array(
             'qid'=>$qid, 'scenario'=>$p_scenario));
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
             break;
@@ -1180,7 +1135,7 @@ protected function applySubaction($p_subaction, array $args)
         // Delete all conditions for this question
         case "deleteallconditions":
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('qid'=>$qid));
+            Condition::model()->deleteRecords(array('qid'=>$qid));
             Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
                 $this->redirectToConditionStart($qid, $gid);
             break;
@@ -1467,6 +1422,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
             ->query() or safeDie("Couldn't get answers to Array questions<br />$aquery<br />");
             
+            $x_axis=[];
             foreach ($x_axis_db->readAll() as $frow) {
                 $x_axis[$frow['title']] = $frow['question'];
             }
@@ -1551,6 +1507,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             
             $acount = count($aresult);
             
+            $quicky=[];
             foreach ($aresult as $arow) {
                 $theanswer = $arow['answer'];
                 $quicky[] = array($arow['code'], $theanswer);
@@ -2151,7 +2108,7 @@ protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandT
 
 /**
 * @param int $qid
-* @return Condition[]
+* @return object Condition[]
 */
 protected function getAllScenarios($qid)
 {

@@ -26,7 +26,7 @@ if (!defined('BASEPATH')) {
 * @package        LimeSurvey
 * @subpackage    Backend
 * 
-* @method void redirect($string|array $url, boolean $terminate, integer $statusCode)
+* @method void redirect(string|array $url, boolean $terminate, integer $statusCode)
 
 */
 class Authentication extends Survey_Common_Action

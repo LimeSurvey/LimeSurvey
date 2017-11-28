@@ -19,8 +19,7 @@ if (!defined('BASEPATH')) {
 /**
  * Class Question
  *
- * @property integer $qid Question ID. NB! Primary key is qid & language columns combined!
- * @property integer $parent_qid Questions parent question ID eg for subquestions
+ * @property integer $qid Question ID. Note: Primary key is qid & language columns combined
  * @property integer $sid Survey ID
  * @property integer $gid QuestionGroup ID where question is diepolayed
  * @property string $type
@@ -31,7 +30,8 @@ if (!defined('BASEPATH')) {
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whther question is mandatory (Y/N)
  * @property integer $question_order Question order in greoup
- * @property string $language Question language code. NB! Primary key is qid & language columns combined!
+ * @property integer $parent_qid Questions parent question ID eg for subquestions
+ * @property string $language Question language code. Note: Primary key is qid & language columns combined
  * @property integer $scale_qid
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
  * @property string $relevance Questions relevane equation
