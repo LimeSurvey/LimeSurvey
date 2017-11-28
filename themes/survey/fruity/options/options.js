@@ -117,7 +117,7 @@ var prepare = function(){
             var currentThemeObject = 'inherit';
             if($('#TemplateConfiguration_files_css').val() !== 'inherit'){
 
-                currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/sea_green.css', 'css/template.css']};
+                currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/sea_green.css', 'css/theme.css']};
                 try{
                     currentThemeObject = JSON.parse($('#TemplateConfiguration_files_css').val());
                 } catch(e){ console.error('No valid monochrom theme field!'); }
@@ -132,7 +132,7 @@ var prepare = function(){
                 } else {
 
                     currentThemeObject = {};
-                    currentThemeObject.add = ['css/animate.css','css/ajaxify.css', $('#simple_edit_add_css').val(), 'css/template.css'];
+                    currentThemeObject.add = ['css/animate.css','css/ajaxify.css', $('#simple_edit_add_css').val(), 'css/theme.css'];
                     $('#TemplateConfiguration_files_css').val(JSON.stringify(currentThemeObject));
                 }
             })
