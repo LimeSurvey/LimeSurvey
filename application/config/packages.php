@@ -232,6 +232,7 @@ return array(
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'roboto.css',
+            'icomoon.css',
         ),
     ),
 
