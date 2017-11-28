@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Default configuration for the theme.
+    Bootwatch configuration for the theme.
     In future versions of LimeSurvey, it will be used to fill a template table,
     and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
 -->
@@ -8,7 +8,7 @@
 <config>
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadatas>
-        <name>default</name>
+        <name>bootwatch</name>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
@@ -17,7 +17,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>2.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Advanced Theme</strong><br>A theme with custom options to show what it's possible to do with the new engines. Each theme provider will be able to offer its own option page (loaded from theme)]]></description>
+        <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href="https://bootswatch.com/3/">Visit BootsWatch page</a> ]]></description>
         <last_update>2016-11-14 17:21:00</last_update>
     </metadatas>
 
