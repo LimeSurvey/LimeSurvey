@@ -404,7 +404,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array( Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'monochrome');
+        $standardTemplates = array( Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch');
         return $standardTemplates;
 
         /*
