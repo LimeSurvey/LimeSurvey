@@ -245,6 +245,14 @@ return array(
         ),
     ),
 
+    'font-noto' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'noto.css',
+        ),
+    ),
 
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
