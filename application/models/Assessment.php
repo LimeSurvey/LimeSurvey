@@ -85,17 +85,17 @@ class Assessment extends LSActiveRecord
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 		
-        if (Permission::model()->hasGlobalPermission('assessements', 'update')) {
+        if (Permission::model()->hasGlobalPermission('assessments', 'update')) {
             $editData = array(
-                'action_assessements_editModal',
+                'action_assessments_editModal',
                 'text-danger',
-                gT("Edit this assessement rule"),
+                gT("Edit this assessment rule"),
                 'edit'
             );
             $deleteData = array(
-                'action_assessements_deleteModal',
+                'action_assessments_deleteModal',
                 'text-danger',
-                gT("Delete this assessement rule"),
+                gT("Delete this assessment rule"),
                 'trash text-danger'
             );
 
@@ -124,7 +124,7 @@ class Assessment extends LSActiveRecord
                 'name' => 'scope',
                 'value' => '$data->scope == "G" ? eT("Global") : eT("Total")',
                 'htmlOptions' => ['class' => 'col-sm-1'],
-                'filter' => TbHtml::dropDownList('Assessement["scope"]', 'scope', [ '' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
+                'filter' => TbHtml::dropDownList('assessment["scope"]', 'scope', [ '' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
             ),
             array(
                 'name' => 'name',
@@ -141,12 +141,7 @@ class Assessment extends LSActiveRecord
             array(
                 'name' => 'message',
                 'htmlOptions' => ['class' => 'col-sm-5']
-            ),
-            array(
-            'name' => 'language',
-            'value' => 'getLanguageNameFromCode($data->language, false)',
-            'htmlOptions' => ['class' => 'col-sm-1']
-            ),
+            )
         );
     }
 
@@ -163,7 +158,8 @@ class Assessment extends LSActiveRecord
         $criteria->compare('minimum', $this->minimum);
         $criteria->compare('maximum', $this->maximum);
         $criteria->compare('message', $this->message, true);
-        $criteria->compare('language', $this->language);
+        
+        $criteria->group = 'id';
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

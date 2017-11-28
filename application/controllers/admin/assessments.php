@@ -55,6 +55,10 @@ class Assessments extends Survey_Common_Action
                             $this->_update($iSurveyID);
             }
 
+            if ($sAction == "assessmentopenedit") {
+                            $this->_edit($iSurveyID);
+            }
+
             if ($sAction == "assessmentdelete") {
                             $this->_delete($iSurveyID, $_POST['id']);
             }
@@ -89,37 +93,67 @@ class Assessments extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid'] = null;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    }
+
+    private function _prepareDataArray(&$aData, $collectEdit = false){
+        $iSurveyID = $aData['surveyid'];
+        
+        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
+        $aData['headings'] = $aHeadings;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oAssessments = Assessment::model();
+        $oAssessments->sid = $iSurveyID;
+        $this->_collectGroupData($iSurveyID, $aData);
+        
+        $aData['model'] = $oAssessments;
+        $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
+        $aData['actiontitle'] = gT("Add");
+        $aData['actionvalue'] = "assessmentadd";
+        $aData['editId'] = '';
+
+        if ($collectEdit === true) {
+            $aData = $this->_collectEditData($aData);
+        }
+
+        $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
+        $aData['assessments'] = $oAssessments;
+        $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
+        $aData['baselang'] = $oSurvey->language;
+        $aData['subaction'] = gT("Assessments");
+        $aData['gid'] = App()->request->getPost('gid', '' );
+        return $aData;
+    }
+
+    public function _edit($surveyid) {
+        $iAsessementId = App()->request->getParam('id');
+        $oAssessments = Assessment::model()->findAll("id=:id", [':id' => $iAsessementId]);
+        if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) {
+            $aData = [];
+            $aData['editData'] = $oAssessments[0]->attributes;
+            foreach($oAssessments as $oAssessment){
+                $aData['models'][] = $oAssessment;
+                $aData['editData']['name_'.$oAssessment->language] = $oAssessment->name;
+                $aData['editData']['assessmentmessage_'.$oAssessment->language] = $oAssessment->message;
+            }
+            $action = 'assessmentedit';
+            $aData['action'] = $action;
+
+            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
+        }     
     }
 
     private function _showAssessments($iSurveyID, $action)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $oAssessments = Assessment::model();
-        $oAssessments->sid = $iSurveyID;
-        $aData = $this->_collectGroupData($iSurveyID);
-        $aData['model'] = $oAssessments;
-        $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
-        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
-        $aData['actiontitle'] = gT("Add");
-        $aData['actionvalue'] = "assessmentadd";
-        $aData['editId'] = '';
 
-        if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
-            $aData = $this->_collectEditData($aData);
-        }
-        $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['surveyid'] = $iSurveyID;
-        $aData['headings'] = $aHeadings;
-        $aData['assessments'] = $oAssessments;
-        $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
-        $aData['baselang'] = $oSurvey->language;
         $aData['action'] = $action;
-        $aData['subaction'] = gT("Assessments");
-        $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
-
+        
         Yii::app()->loadHelper('admin/htmleditor');
+
+        $this->_prepareDataArray( $aData );
 
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
@@ -132,10 +166,9 @@ class Assessments extends Survey_Common_Action
                     .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
-        $urls=[];
-        $urls['assessments_view'][] = $aData;
+        $urls['assessments']['assessments_view'][] = $aData;
         
-        $this->_renderWrappedTemplate('', $urls, $aData);
+        $this->_renderWrappedTemplate('', 'assessments/assessments_view', $aData);
     }
 
     private function _activateAsessement($iSurveyID)
@@ -146,9 +179,9 @@ class Assessments extends Survey_Common_Action
         return ['success' => true];
     }
 
-    private function _collectGroupData($iSurveyID)
+    private function _collectGroupData($iSurveyID, &$aData = array())
     {
-        $aData = array();
+        //$aData = array();
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
             $groupId = $group->attributes['gid'];
@@ -203,9 +236,9 @@ class Assessments extends Survey_Common_Action
      */
     private function _update($iSurveyID)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && App()->request->getPost('id', null) != null) {
 
-            $aid = (int)$_POST['id'];
+            $aid = App()->request->getPost('id', null);
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);
@@ -232,13 +265,13 @@ class Assessments extends Survey_Common_Action
 
         return array(
             'sid' => $iSurveyID,
-            'scope' => sanitize_paranoid_string($_POST['scope']),
-            'gid' => sanitize_int($_POST['gid']),
-            'minimum' => intval($_POST['minimum']),
-            'maximum' => intval($_POST['maximum']),
-            'name' => $_POST['name_'.$language],
+            'scope' => sanitize_paranoid_string(App()->request->getPost('scope')),
+            'gid' => App()->request->getPost('gid'),
+            'minimum' => App()->request->getPost('minimum', 0, 'integer'),
+            'maximum' => App()->request->getPost('maximum', 0, 'integer'),
+            'name' => App()->request->getPost('name_'.$language),
             'language' => $language,
-            'message' => $_POST['assessmentmessage_'.$language]
+            'message' => App()->request->getPost('assessmentmessage_'.$language)
         );
     }
 }

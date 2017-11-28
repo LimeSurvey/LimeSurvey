@@ -26,21 +26,70 @@ function jquery_goodchars(e, goods)
    return false;
 }
 
-var assessementTable = '#selector__assessement-table',
-    $assessementTable = $(assessementTable);
+var assessmentTable = '#selector__assessment-table',
+    $assessmentTable = $(assessmentTable);
 var bindAction = function(){
-    $('.action_assessements_editModal').on('click.assessements', function(){
-        $('#assesements-edit-add').modal('show');
+
+    $('.action_assessments_deleteModal').on('click.assessments', function(){
+        $('#assessmentsdeleteform').find('input[name=id]').val($(this).closest('tr').data('assessment-id'));
+        $('#assesements-delete').modal('show');
     });
-    $('#selector__assessement-add-new').on('click.assessements', function(){
+
+    $('.action_assessments_editModal').on('click.assessments', function(){
+        $('input[name=action]').val('assessmentedit');
         $('#assesements-edit-add').modal('show');
-    });
-    $('#assesements-edit-add').on('shown.bs.modal', function(){
-        $('#selector__assessements-save-modal').on('click.assessements', function(){
-            $(this).closest('form').trigger('submit');
+        $.ajax({
+            url: loadEditUrl,
+            data: {id: $(this).closest('tr').data('assessment-id')},
+            method: 'GET',
+            success: function(responseData){
+                $.each(responseData.editData, function(key, value){
+                    var itemToChange = $('#assessmentsform').find('[name='+key+']');
+                    if(!itemToChange.is('input[type=checkbox]') &&  !itemToChange.is('input[type=radio]')) {
+                        itemToChange.val(value).trigger('change');
+                    } else {
+                        $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
+                    }
+                });
+                $('#languagetabs').tabs();
+            },
+            error: function(err){
+                try {console.error(err); } catch(e) { console.log("ERROR!", error );}
+            }
         });
     });
-}
+
+    $('#selector__assessment-add-new').on('click.assessments', function(){
+        $('#assesements-edit-add').modal('show');
+    });
+
+    $('#assessmentsdeleteform').on('submit', function(e){
+        e.preventDefault();
+        var params = $('#assessmentsdeleteform').serializeArray();
+        var url = $('#assessmentsdeleteform').attr('action');
+        $.ajax({
+            url : url,
+            method: 'post',
+            data: params,
+            success : function(){
+                $('#assessmentsdeleteform').find('input[name=id]').val(' ');
+                $('#assesements-delete').modal('hide');
+                $.fn.yiiGridView.update('assessments-grid');
+            },
+            error: function(err){
+                try {console.error(err); } catch(e) { console.log("ERROR!", error );}
+            }
+        })
+    });
+
+    $('#selector__assessements-delete-modal').on('click.assessments', function(){
+        $(this).closest('form').trigger('submit');
+    });
+
+    $('#selector__assessments-save-modal').on('click.assessments', function(){
+        $(this).closest('form').trigger('submit');
+    });
+};
 
 $(document).on('ready  pjax:scriptcomplete', function(){
     bindAction();
