@@ -112,7 +112,7 @@ var prepare = function(){
         });
 
 
-        // Monochrom Theming
+        // Fruity Theming
         if($('#simple_edit_add_css').length>0){
             var currentThemeObject = 'inherit';
             if($('#TemplateConfiguration_files_css').val() !== 'inherit'){

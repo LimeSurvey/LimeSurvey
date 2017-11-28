@@ -29,6 +29,7 @@
         <css>
             <add>css/animate.css</add>
             <add>css/ajaxify.css</add>
+            <add>css/sea_green.css</add>
             <add>css/theme.css</add>
         </css>
         <js>
