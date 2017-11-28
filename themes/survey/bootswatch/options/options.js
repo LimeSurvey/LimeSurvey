@@ -73,16 +73,11 @@ var prepare = function(){
         
         $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
-            
-            console.log('Simple options | Item value => ', itemValue);
-            
             if(itemValue == null || itemValue == undefined){
                 itemValue = inheritPossible ? 'inherit' : 'off';
                 optionObject[$(item).attr('name')] = itemValue;
             }
-
-            console.log('Simple options | Item value after parsing => ', itemValue);
-
+            
             //if it is a radio selector, check it and propagate the change to bootstrapSwitch
             if($(item).val() == itemValue){
                 $(item).prop('checked', true).trigger('change');

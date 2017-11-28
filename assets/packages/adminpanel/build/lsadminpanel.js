@@ -36396,7 +36396,6 @@ $(document).on('ready', function () {
     }
 
     $(document).on('pjax:send', (e) => {
-        console.trace('PJAX SEND Event:', e);
         $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
         $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
         $('#pjax-file-load-container').find('div').css({
@@ -36407,8 +36406,8 @@ $(document).on('ready', function () {
     $(document).on('pjax:error', (event) => {
         console.log(event);
     });
+    
     $(document).on('pjax:success', (e) => {
-        console.trace('PJAX SUCCESS Event:', e);
         $('#pjax-file-load-container').find('div').css('width', '100%');
         $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
         $(document).trigger('vue-sidemenu-update-link');

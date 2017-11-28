@@ -230,10 +230,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 });
 
 function renderBootstrapSwitch(){
-    try{
-        $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-    } catch(e){}
-
     $('[data-is-bootstrap-switch]').bootstrapSwitch();
 }
 
@@ -725,7 +721,7 @@ function linksInDialog()
 {
     $(function () {
         var iframe = $('<iframe id="dialog" title='+$(this).attr("title")+' allowfullscreen></iframe>');
-        var dialog = $("<div></div>").append(iframe).appendTo("#pjax-content").dialog({
+        var dialog = $("<div class='hidden'></div>").append(iframe).appendTo("#pjax-content").dialog({
             autoOpen: false,
             modal: false,
             resizable: true,
