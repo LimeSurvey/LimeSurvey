@@ -68,7 +68,7 @@ Yii::app()->getClientScript()->registerScript(
         <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')) ) { ?>
             <?php Yii::app()->getController()->renderPartial('/admin/assessments/assessments_delete', [
                 'surveyid' => $surveyid, 
-            ]) ?>;
+            ]); ?>
 
             <?php Yii::app()->getController()->renderPartial('/admin/assessments/assessments_edit', [
                 'surveyid' => $surveyid, 

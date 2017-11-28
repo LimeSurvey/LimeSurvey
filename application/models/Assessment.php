@@ -140,7 +140,8 @@ class Assessment extends LSActiveRecord
             ),
             array(
                 'name' => 'message',
-                'htmlOptions' => ['class' => 'col-sm-5']
+                'htmlOptions' => ['class' => 'col-sm-5'],
+                "type" => 'raw',
             )
         );
     }

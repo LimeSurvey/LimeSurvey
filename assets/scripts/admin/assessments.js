@@ -36,7 +36,7 @@ var bindAction = function(){
     });
 
     $('.action_assessments_editModal').on('click.assessments', function(){
-        $('input[name=action]').val('assessmentedit');
+        $('input[name=action]').val('assessmentupdate');
         $('#assesements-edit-add').modal('show');
         $.ajax({
             url: loadEditUrl,
