@@ -254,6 +254,15 @@ return array(
         ),
     ),
 
+    'font-news_cycle' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'news_cycle.css',
+        ),
+    ),
+
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',
