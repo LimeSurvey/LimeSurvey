@@ -65,7 +65,7 @@ class Expressions extends Survey_Common_Action
         
         $aData = array();
         
-        $sid = sanitize_int(Yii::app()->request->getParam('sid', 0));
+        $sid = Yii::app()->request->getParam('surveyid', 0, 'integer');
 
         if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
