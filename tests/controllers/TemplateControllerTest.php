@@ -38,7 +38,7 @@ class TemplateControllerTest extends TestBaseClass
 
         // Simulate a POST.
         $_POST['newname'] = $newname;
-        $_POST['copydir'] = 'default';
+        $_POST['copydir'] = 'fruity';
         $_SERVER['SERVER_NAME'] = 'localhost';
 
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
