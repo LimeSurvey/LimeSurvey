@@ -293,11 +293,9 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css');//self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
-
-
 
 
         // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
@@ -810,6 +808,30 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
         return $aAssetsToRemove;
+    }
+
+
+
+    /**
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
+     */
+    static public function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        $oAssetsToReplaceFormated = new stdClass();
+        if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
+            //var_dump($oEngine->cssframework->$sType);  die();
+
+            $sAssetsToReplace   = (string) $oEngine->cssframework->$sType->attributes()->replace;
+            $sAssetsReplacement = (string) $oEngine->cssframework->$sType;
+
+            // {"replace":[["css/bootstrap.css","css/cerulean.css"]]}
+            $oAssetsToReplaceFormated->replace = array(array($sAssetsToReplace, $sAssetsReplacement));
+
+        }
+        return $oAssetsToReplaceFormated;
     }
 
     /**
