@@ -236,6 +236,16 @@ return array(
         ),
     ),
 
+    'font-icomoon' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'icomoon.css',
+        ),
+    ),
+
+
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',
