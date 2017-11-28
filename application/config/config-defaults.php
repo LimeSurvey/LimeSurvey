@@ -64,30 +64,30 @@ $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed
 
 // Only applicable, of course, if you have chosen 'R' for $dropdowns and/or $lwcdropdowns
-$config['repeatheadings']     = '25'; // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
-$config['minrepeatheadings']  = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
-$config['defaultlang']        = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
-
-$config['timeadjust']         = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']   = 0; // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$config['maxdumpdbrecords']   = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
-$config['deletenonvalues']    = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
+$config['repeatheadings']            = '25'; // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
+$config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
+$config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
+$config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$config['allowexportalldb']          = 0; // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']       = 1; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
-$config['blacklistallsurveys']     = 'N'; // Blacklist all current surveys for participant once the global field is set
-$config['blacklistnewsurveys']     = 'N'; // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys'] = 'Y'; // Don't allow blacklisted participants to be added to new survey
-$config['hideblacklisted'] = 'N'; // Don't show blacklisted participants
-$config['deleteblacklisted'] = 'N'; // Delete globally blacklisted participant from the database
-$config['allowunblacklist'] = 'N'; // Allow participant to unblacklist himself/herself
-$config['userideditable'] = 'N'; // Allow editing of user IDs
-$config['defaulttheme'] = 'default'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['shownoanswer']              = 1; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
+$config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
+$config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
+$config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
+$config['hideblacklisted']           = 'N';     // Don't show blacklisted participants
+$config['deleteblacklisted']         = 'N';  // Delete globally blacklisted participant from the database
+$config['allowunblacklist']          = 'N';   // Allow participant to unblacklist himself/herself
+$config['userideditable']            = 'N';     // Allow editing of user IDs
+
+$config['defaulttheme']              = 'fruity';  // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2'; // File types allowed to be uploaded in the themes section.
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$config['memory_limit'] = '128'; // This sets how much memory LimeSurvey can access in megabytes. 128 MB is the minimum recommended - if you are using PDF functions up to 256 MB may be needed
+$config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
 $config['showpopups']         = 1; // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
