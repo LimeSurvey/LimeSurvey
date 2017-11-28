@@ -272,7 +272,7 @@ class database extends Survey_Common_Action
         for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
             $iMaxCount = (int) Yii::app()->request->getPost('answercount_'.$iScaleID);
             for ($iSortOrderID = 1; $iSortOrderID < $iMaxCount; $iSortOrderID++) {
-                $sCode = (string)sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
+                $sCode = (string) sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
                 $iAssessmentValue = (int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
                 foreach ($survey->allLanguages as $sLanguage) {
                     $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
@@ -929,7 +929,7 @@ class database extends Survey_Common_Action
             $oSurvey->usecookie = $this->_filterEmptyFields($oSurvey, 'usecookie');
             $oSurvey->allowregister = $this->_filterEmptyFields($oSurvey, 'allowregister');
             $oSurvey->allowsave = $this->_filterEmptyFields($oSurvey, 'allowsave');
-            $oSurvey->navigationdelay = (int)$this->_filterEmptyFields($oSurvey, 'navigationdelay');
+            $oSurvey->navigationdelay = (int) $this->_filterEmptyFields($oSurvey, 'navigationdelay');
             $oSurvey->printanswers = $this->_filterEmptyFields($oSurvey, 'printanswers');
             $oSurvey->publicstatistics = $this->_filterEmptyFields($oSurvey, 'publicstatistics');
             $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey, 'autoredirect');
@@ -939,7 +939,7 @@ class database extends Survey_Common_Action
             $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
             $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
-            $oSurvey->questionindex = (int)$this->_filterEmptyFields($oSurvey, 'questionindex');
+            $oSurvey->questionindex = (int) $this->_filterEmptyFields($oSurvey, 'questionindex');
             $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey, 'nokeyboard');
             $oSurvey->showprogress = $this->_filterEmptyFields($oSurvey, 'showprogress');
             $oSurvey->listpublic = $this->_filterEmptyFields($oSurvey, 'listpublic');
@@ -962,7 +962,7 @@ class database extends Survey_Common_Action
             $oSurvey->googleanalyticsstyle = $this->_filterEmptyFields($oSurvey, 'googleanalyticsstyle');
             
             $tokenlength = $this->_filterEmptyFields($oSurvey, 'tokenlength');
-            $oSurvey->tokenlength = (int)(($tokenlength < 5 || $tokenlength > 36) ? 15 : $tokenlength);
+            $oSurvey->tokenlength = (int) (($tokenlength < 5 || $tokenlength > 36) ? 15 : $tokenlength);
 
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
@@ -1026,8 +1026,8 @@ class database extends Survey_Common_Action
                         'DEBUG' => ['POST'=>$_POST, 
                                     'reloaded'=>$oSurvey->attributes, 
                                     'aURLParams' => $aURLParams, 
-                                    'initial'=>isset($aOldAttributes)?$aOldAttributes:'', 
-                                    'afterApply'=>isset($aAfterApplyAttributes)?$aAfterApplyAttributes:'']
+                                    'initial'=>isset($aOldAttributes) ? $aOldAttributes : '', 
+                                    'afterApply'=>isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
                     ],
                 ),
                 false,
@@ -1223,7 +1223,7 @@ class database extends Survey_Common_Action
             $oQuestion->other = Yii::app()->request->getPost('other');
 
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');
-            $oQuestion->question_order = (int)$iQuestionOrder;
+            $oQuestion->question_order = (int) $iQuestionOrder;
             $oQuestion->language = $sBaseLanguage;
             $oQuestion->save();
             if ($oQuestion) {
@@ -1338,7 +1338,7 @@ class database extends Survey_Common_Action
                     }
                 } else {
                     $validAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
-                    $aAttributeValues=[];
+                    $aAttributeValues = [];
                     // If the question has a custom template, we first check if it provides custom attributes
                     $aAttributeValues['question_template'] = 'core';
                     // @todo Bug: Where does $cqr come from?

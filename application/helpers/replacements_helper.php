@@ -231,7 +231,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (isset($surveyid)) {
-        $_quexmlpdf=CHtml::link(gT("Save as PDF"),array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"),array('data-toggle'=>'tooltip','data-placement'=>'right','title'=>gT("Note: Print will not include items on this page")));
+        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle'=>'tooltip', 'data-placement'=>'right', 'title'=>gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
     }

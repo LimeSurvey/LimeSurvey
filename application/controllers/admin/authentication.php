@@ -27,8 +27,7 @@ if (!defined('BASEPATH')) {
 * @subpackage    Backend
 * 
 * @method void redirect(string|array $url, boolean $terminate, integer $statusCode)
-
-*/
+ */
 class Authentication extends Survey_Common_Action
 {
 
@@ -238,7 +237,7 @@ class Authentication extends Survey_Common_Action
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
-            $aData=[];
+            $aData = [];
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';

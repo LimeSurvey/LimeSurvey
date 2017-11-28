@@ -62,8 +62,8 @@ class Assessment extends LSActiveRecord
     }
 
         /**
-     * @return array customized attribute labels (name=>label)
-     */
+         * @return array customized attribute labels (name=>label)
+         */
     public function attributeLabels()
     {
         return array(
@@ -108,7 +108,7 @@ class Assessment extends LSActiveRecord
         return $buttons;
     }
 
-    public function getColumns(){
+    public function getColumns() {
         return array(
             array(
                 'name' => 'id',
@@ -124,7 +124,7 @@ class Assessment extends LSActiveRecord
                 'name' => 'scope',
                 'value' => '$data->scope == "G" ? eT("Global") : eT("Total")',
                 'htmlOptions' => ['class' => 'col-sm-1'],
-                'filter' => TbHtml::dropDownList('assessment["scope"]', 'scope', [ '' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
+                'filter' => TbHtml::dropDownList('assessment["scope"]', 'scope', ['' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
             ),
             array(
                 'name' => 'name',
@@ -146,7 +146,7 @@ class Assessment extends LSActiveRecord
         );
     }
 
-    public function search(){
+    public function search() {
 // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;

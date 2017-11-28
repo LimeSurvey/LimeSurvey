@@ -282,7 +282,7 @@ function getTemplateList()
 */
 function getGidPrevious($surveyid, $gid)
 {
-    $surveyid=(int)$surveyid;
+    $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
@@ -309,7 +309,7 @@ function getGidPrevious($surveyid, $gid)
 */
 function getGidNext($surveyid, $gid)
 {
-    $surveyid=(int)$surveyid;
+    $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
@@ -1341,7 +1341,7 @@ function validateEmailAddresses($aEmailAddressList)
  */
 function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 {
-    $allfields=[];
+    $allfields = [];
     foreach ($aFilters as $flt) {
         Yii::app()->loadHelper("surveytranslator");
         $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
@@ -2780,9 +2780,9 @@ function getEmailFormat($surveyid)
 // Check if user has manage rights for a template
 function hasTemplateManageRights($userid, $sThemeFolder)
 {
-    $userid = (int)$userid;
+    $userid = (int) $userid;
     $sThemeFolder = sanitize_paranoid_string($sThemeFolder);
-    if ($sThemeFolder===false) {
+    if ($sThemeFolder === false) {
         return false;
     }
     return Permission::model()->hasTemplatePermission($sThemeFolder, 'read', $userid);
