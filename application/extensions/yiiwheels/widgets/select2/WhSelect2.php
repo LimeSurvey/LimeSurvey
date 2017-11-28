@@ -97,14 +97,14 @@ class WhSelect2 extends CInputWidget
         if ($this->language) {
             $cs->registerScriptFile(
                 $assetsUrl . '/js/i18n/' . $this->language . '.js',
-                CClientScript::POS_END
+                CClientScript::POS_POSTSCRIPT
             );
         }
 
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
         $this->pluginOptions['theme']='bootstrap';
-        $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, LSYii_ClientScript::POS_END);
-        $this->getApi()->registerEvents($selector, $this->events, LSYii_ClientScript::POS_END);
+        $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
+        $this->getApi()->registerEvents($selector, $this->events, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 }

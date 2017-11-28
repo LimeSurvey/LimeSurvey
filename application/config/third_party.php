@@ -89,6 +89,7 @@ return array(
     'bootstrap-multiselect' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/multiselect',
         'basePath' => 'core.bootstrap.plugins.multiselect',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'js/bootstrap-multiselect.js',
         ),
