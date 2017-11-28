@@ -27,3 +27,6 @@
   src: url('../fonts/Noto/NotoSans-BoldItalic.ttf');
 }
 
+.font-noto{
+    font-family: 'Noto Sans';
+}

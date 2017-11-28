@@ -25,3 +25,7 @@
        url('../fonts/news-cycle-v13-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
        url('../fonts/news-cycle-v13-latin-700.svg#NewsCycle') format('svg'); /* Legacy iOS */
 }
+
+.font-news_cycle{
+    font-family: 'News Cycle';
+}

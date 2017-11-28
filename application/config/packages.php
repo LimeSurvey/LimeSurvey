@@ -281,6 +281,16 @@ return array(
         ),
     ),
 
+    // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
+    'font-websafe' => array(
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'websafe.css',
+        ),
+    ),
+
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',

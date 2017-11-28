@@ -165,3 +165,7 @@
        url('./src/Roboto-900italic/Roboto-900italic.ttf') format('truetype'),
        url('./src/Roboto-900italic/Roboto-900italic.svg#Roboto') format('svg');
 }
+
+.font-roboto{
+    font-family: 'Roboto';
+}
