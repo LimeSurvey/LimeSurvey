@@ -208,8 +208,7 @@
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
 
-        $htmlcode .= ""
-        . "<script type=\"text/javascript\">\n"
+        $scriptCode .= ""
         . "$(document).on('ready pjax:scriptcomplete triggerCreateCKEditor', 
             function(){ 
                 if($('#".$fieldname."').length >0){
@@ -230,8 +229,6 @@
                 }
         });";
 
-        $htmlcode .= '</script>';
-
-        return $htmlcode;
+        Yii::app()->getClientScript()->registerScript('ckEditorScripts', $scriptCode, LSYii_ClientScript::POS_END);
     }
 

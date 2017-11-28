@@ -44,9 +44,10 @@ function createDatabase($oDB){
             'minimum' =>    'string(50)',
             'maximum' =>    'string(50)',
             'message' =>    'text',
-            'language' =>   "string(20) DEFAULT 'en'",
-            'composite_pk' => array('id', 'language')
+            'language' =>   "string(20) DEFAULT 'en'"
         ));
+
+        $oDB->createCommand()->addPrimaryKey('{{assessments_pk}}', '{{assessments}}', ['id', 'language']);
         $oDB->createCommand()->createIndex('{{assessments_idx2}}', '{{assessments}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{assessments_idx3}}', '{{assessments}}', 'gid', false);
 

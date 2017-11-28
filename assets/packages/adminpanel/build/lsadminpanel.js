@@ -36318,9 +36318,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+//Ignore phpunits testing tags
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.ignoredElements = ['x-test']
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js___default.a);
-
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     methods: {
         updatePjaxLinks: function () {

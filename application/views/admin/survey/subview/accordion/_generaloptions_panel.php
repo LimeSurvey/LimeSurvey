@@ -4,17 +4,22 @@
  * @var AdminController $this
  * @var Survey $oSurvey
 */
+    $scriptVarsNeccessary = "
+        var jsonUrl = '';
+        var sAction = '';
+        var sParameter = '';
+        var sTargetQuestion = '';
+        var sNoParametersDefined = '';
+        var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+        var sURLParameters = '';
+        var sAddParam = '';
+    "; 
+    Yii::app()->getClientScript()->registerScript( 
+        "GeneralOption-variables", 
+        $scriptVarsNeccessary,
+        LSYii_ClientScript::POS_BEGIN
+    );
 ?>
-<script type="text/javascript">
-    var jsonUrl = '';
-    var sAction = '';
-    var sParameter = '';
-    var sTargetQuestion = '';
-    var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
-    var sURLParameters = '';
-    var sAddParam = '';
-</script>
 <!-- General options -->
     <?php
     $yii = Yii::app();
@@ -24,41 +29,38 @@
 <?php if($action=='editsurveysettings'):?>
     <?php
     $sConfirmLanguageScript="
-    $(document).on('submit','#globalsetting',function(){
-      if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
-        return false;
-      }
-    });
-    function ConfirmLanguageChange(confirmtxt)
-    {
-    if ($('#oldlanguages').val().trim()=='')
-    {
-    mylangs= []
-    }
-    else{
-    mylangs=$('#oldlanguages').val().split(' ');
-    }
-    if (checkSelect2Languages(mylangs))
-    {
-    return true;
-    } else
-    {
-    return confirm(confirmtxt);
-    }
-    };
-    function checkSelect2Languages(mylangs)
-    {
-    newLanguages=$('#additional_languages').val();
-    for (x = 0; x < mylangs.length; x++)
-    {
-    if ($.inArray(mylangs[x],newLanguages)==-1)
-    {
-    return false;
-    }
-    }
-    return true;
-    };";
-    echo "<script type='text/javascript'>".$sConfirmLanguageScript."</script>";
+        $(document).on('submit','#globalsetting',function(){
+        if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
+            return false;
+        }
+        });
+        
+        function ConfirmLanguageChange(confirmtxt) {
+        
+            if ($('#oldlanguages').val().trim()=='') {
+                mylangs= [];
+            } else {
+                mylangs=$('#oldlanguages').val().split(' ');
+            }
+        
+            if (checkSelect2Languages(mylangs)) {
+                return true;
+            } else {
+                return confirm(confirmtxt);
+            }
+        }
+
+        function checkSelect2Languages(mylangs) {
+            newLanguages=$('#additional_languages').val();
+            for (x = 0; x < mylangs.length; x++) {
+                if ($.inArray(mylangs[x],newLanguages)==-1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    ";
+    Yii::app()->getClientScript()->registerScript( "GeneralOption-confirm-language", $sConfirmLanguageScript, LSYii_ClientScript::POS_POSTSCRIPT) ;
     // var_dump($owner);
     ?>
 

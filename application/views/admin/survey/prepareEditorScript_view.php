@@ -1,6 +1,6 @@
 <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>-->
-<script type='text/javascript'>
-    <!--
+<?php 
+$script = "
     CKEDITOR.on('dialogDefinition', function (ev) {
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
@@ -19,8 +19,8 @@
         }
     });
 
-    var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
-    var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
+    var sReplacementFieldTitle = '".gT('Placeholder fields','js')."';
+    var sReplacementFieldButton = '".gT('Insert/edit placeholder field','js')."';
     var editorwindowsHash = new Object();
 
     function find_popup_editor(fieldname)
@@ -49,7 +49,7 @@
             document.getElementsByName(fieldname)[0].readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/sa/index'); ?>/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/<?php echo App()->language; ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            popup = window.open('".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
             editorwindowsHash[fieldname] = popup;
         }
@@ -75,5 +75,7 @@
         }
     }
 
-    -->
-</script>
+-->
+";
+
+Yii::app()->getClientScript()->registerScript('ckEditorPreparingSettings', $script, LSYii_ClientScript::POS_BEGIN);

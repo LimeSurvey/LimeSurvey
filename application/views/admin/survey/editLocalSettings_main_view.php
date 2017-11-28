@@ -11,12 +11,11 @@ $templateData['oSurvey'] = $oSurvey;
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');
 
-?>
-<script type="text/javascript">
-    var formId = '<?=$entryData['name']?>';
-</script>
+Yii::app()->getClientScript()->registerScript( "editLocalSettings_formid_".$entryData['name'], "
+    var formId = '".$entryData['name']."';
+", LSYii_ClientScript::POS_BEGIN );
 
-<?php
+
 $count = 0;
 if(isset($scripts))
     echo $scripts;
@@ -53,12 +52,12 @@ if(isset($scripts))
         </form>
     </div>
 </div>
-<script type="text/javascript">
-$(document).on('ready pjax:scriptcomplete', function(){
+<?php
+Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit_".$entryData['name'], "
 
-    $('#<?=$entryData['name']?>').off('submit');
+    $('#".$entryData['name']."').off('.editLocalsettings');
 
-    $('#<?=$entryData['name']?>').on('submit', function(e){
+    $('#".$entryData['name']."').on('submit.editLocalsettings', function(e){
       e.preventDefault();
       var data = $(this).serializeArray();
       var uri = $(this).attr('action');
@@ -80,5 +79,5 @@ $(document).on('ready pjax:scriptcomplete', function(){
       });
       return false;
     });
-});
-</script>
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?> 
