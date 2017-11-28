@@ -708,9 +708,11 @@ class TemplateConfiguration extends TemplateConfig
         $this->packages = $this->getDependsPackages($this);
         if (!empty($this->packages_to_load)) {
             $templateToLoadPackages = json_decode($this->packages_to_load);
-            if (is_array($templateToLoadPackages)) {
-                            $this->packages = array_merge($templateToLoadPackages, $this->getDependsPackages($this));
+            if (!empty($templateToLoadPackages->add)) {
+                $this->packages = array_merge($templateToLoadPackages->add, $this->getDependsPackages($this));
             }
+
+            // TODO: the remove methode
         }
 
         // Add depend package according to packages
