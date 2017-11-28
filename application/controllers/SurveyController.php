@@ -20,7 +20,7 @@ class SurveyController extends LSYii_Controller
     /* @var string : Default layout when using render : leave at bare actually : just send content */
     public $layout = 'bare';
     /* @var string the template name to be used when using layout */
-    public $sTemplate = 'default';
+    public $sTemplate;
     /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
     public $aReplacementData = array();
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
@@ -131,7 +131,7 @@ class SurveyController extends LSYii_Controller
         $aReplacementData['message'] = $message;
         $aReplacementData['URL'] = $url;
         $aReplacementData['title'] = $error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-        
+
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTemplate = $oSurvey->templateModel;
 

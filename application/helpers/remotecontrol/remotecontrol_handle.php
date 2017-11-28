@@ -26,12 +26,12 @@ class remotecontrol_handle
      *
      * Using this function you can create a new XML-RPC/JSON-RPC session key.
      * This is mandatory for all following LSRC2 function calls.
-     * 
+     *
      * * In case of success : Return the session key in string
      * * In case of error:
      *     * for protocol-level errors (invalid format etc), an error message.
      *     * For invalid username and password, returns a null error and the result body contains a 'status' name-value pair with the error message.
-     * 
+     *
      * @access public
      * @param string $username
      * @param string $password
@@ -79,7 +79,7 @@ class remotecontrol_handle
      * Get a global setting
      *
      * Function to query site settings. Can only be used by super administrators.
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth Credentials
      * @param string $sSetttingName Name of the setting to get
@@ -108,7 +108,7 @@ class remotecontrol_handle
 
     /**
      * Add an empty survey with minimum details
-     * 
+     *
      * This just tries to create an empty survey with the minimal settings.
      *
      * Failure status: Invalid session key, No permission, Faulty parameters, Creation Failed result
@@ -133,7 +133,8 @@ class remotecontrol_handle
                                     return array('status' => 'Faulty parameters');
                 }
 
-                $aInsertData = array('template' => 'default',
+                $aInsertData = array(
+                    'template' => App()->getConfig('defaulttheme'),
                     'owner_id' => Yii::app()->session['loginID'],
                     'active' => 'N',
                     'language'=>$sSurveyLanguage,
@@ -179,7 +180,7 @@ class remotecontrol_handle
      * Delete a survey.
      *
      * Failure status: Invalid session key, No permission
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID The ID of the Survey to be deleted
@@ -206,7 +207,7 @@ class remotecontrol_handle
      * Allow importing lss, csv, xls or survey zip archive in BASE 64 encoded.
      *
      * Failure status: Invalid session key, No permission, The import error
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth Credentials
      * @param string $sImportData String containing the BASE 64 encoded data of a lss, csv, txt or survey lsa archive
@@ -298,14 +299,14 @@ class remotecontrol_handle
             return array('status' => 'OK', 'newsid'=>$aImportResults['newsid']);
         }
     }
-  
+
     /**
      * RPC Routine to get survey properties.
-     * Get properties of a survey 
+     * Get properties of a survey
      *
      * All internal properties of a survey are available.
      * @see \Survey for the list of available properties
-     * 
+     *
      * Failure status : Invalid survey ID, Invalid session key, No permission, No valid Data
      *
      * @access public
@@ -366,7 +367,7 @@ class remotecontrol_handle
      * In case of partial success : return an array with key as properties and value as boolean , true if saved with success.
      *
      * Failure status : Invalid survey ID, Invalid session key, No permission, No valid Data
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID - ID of the Survey
@@ -471,7 +472,7 @@ class remotecontrol_handle
      * Export statistics of a survey to a user.
      *
      * Allow to export statistics available Returns string - base64 encoding of the statistics.
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey
@@ -617,9 +618,9 @@ class remotecontrol_handle
 
     /**
      * Get survey summary, regarding token usage and survey participation.
-     * 
+     *
      * Returns the requested value as string, or all status in an array
-     * 
+     *
      * Available status are
      * * For Survey stats
      *     * completed_responses
@@ -632,14 +633,14 @@ class remotecontrol_handle
      *     * token_opted_out
      *     * token_completed
      * All available status can be sent using `all`
-     * 
+     *
      * Failure status : No available data, No such property, Invalid session key, No permission
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to get summary
      * @param string $sStatName (optional) Name of the summary option, or all to send all in an array (all by default)
-     * @return string|array in case of success the requested value or an array of all values 
+     * @return string|array in case of success the requested value or an array of all values
      */
     public function get_summary($sSessionKey, $iSurveyID, $sStatName = 'all')
     {
@@ -886,7 +887,7 @@ class remotecontrol_handle
      * Some properties can not be set
      * * surveyls_language
      * * surveyls_survey_id
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
@@ -1211,7 +1212,7 @@ class remotecontrol_handle
      * Some attribute can not be set
      * * sid
      * * gid
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iGroupID  - ID of the Survey
@@ -1433,7 +1434,7 @@ class remotecontrol_handle
                     }
 
                     libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    
+
 
                     try {
                         $oQuestion->save();
@@ -1453,10 +1454,10 @@ class remotecontrol_handle
 
     /**
      * Get properties of a question in a survey.
-     * 
+     *
      * @see \Question for available properties.
      * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, defaultvalue
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iQuestionID ID of the question to get properties
@@ -1594,7 +1595,7 @@ class remotecontrol_handle
      * * language
      * * type
      * * question_order in some condition (with dependecies)
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iQuestionID  - ID of the question
@@ -1786,7 +1787,7 @@ class remotecontrol_handle
      * Get settings of a token/participant of a survey.
      *
      * Allow to request for a specific participant. If more than one participant is returned with specified attribute(s) an error is returned.
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to get token properties
@@ -1946,7 +1947,7 @@ class remotecontrol_handle
 
     /**
      * Return the ids and propertries of token/participants of a survey.
-     * 
+     *
      * if $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      *
@@ -1955,7 +1956,7 @@ class remotecontrol_handle
      * * token : the token for this participant
      * * participant_info : an array with firstname, lastname and email
      * Parameter $aAttributes can be used to add more attribute in participant_info array
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to list participants
@@ -2140,7 +2141,7 @@ class remotecontrol_handle
      *
      * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
      * Else only the surveys belonging to the user requesting will be shown.
-     * 
+     *
      * Returns array with
      * * `sid` the ids of survey
      * * `surveyls_title` the title of the survey
@@ -2189,13 +2190,13 @@ class remotecontrol_handle
         }
     }
 
-/**  
+/**
  * Get list the ids and info of users.
- * 
+ *
  * Returns array of ids and info.
  *
  * Failure status : No users found, Invalid session key, No permission (super admin is required)
- * 
+ *
  * @param string $sSessionKey Auth credentials
  * @param int $uid Optional parameter user id.
  * @return array The list of users in case of success
@@ -2282,14 +2283,14 @@ class remotecontrol_handle
      * Returns array of results of sending
      *
      * Default behaviour is to send register emails to not invited, not reminded, not completed and in valid frame date participant.
-     * 
+     *
      * $overrideAllConditions replaces this default conditions for selecting the participants. A typical use case is to select only one participant
      * ````
      * $overrideAllConditions = Array();
      * $overrideAllConditions[] = 'tid = 2';
      * $response = $myJSONRPCClient->mail_registered_participants( $sessionKey, $survey_id, $overrideAllConditions );
      * ````
-     * 
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that participants belong
@@ -2948,7 +2949,7 @@ class remotecontrol_handle
         $uploaded_files = array();
         foreach ($oResponse->getFiles() as $aFile) {
             $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
-            
+
             if (!file_exists($sFileRealName)) {
                 return array('status' => 'Could not find uploaded files');
             }

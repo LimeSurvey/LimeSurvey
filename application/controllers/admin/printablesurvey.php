@@ -77,13 +77,7 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate = '';
             }
             //Fix $templatename : control if print_survey.pstpl exist
-            $oTemplate = Template::model()->getTemplateConfiguration($templatename);            
-            if ($oTemplate->pstplPath.DIRECTORY_SEPARATOR.'print_survey.pstpl') {
-            } elseif (is_file(getTemplatePath(Yii::app()->getConfig("defaulttheme")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
-                $templatename = Yii::app()->getConfig("defaulttheme");
-            } else {
-                $templatename = "default";
-            }
+            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
 
             $sFullTemplatePath = $oTemplate->path;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";

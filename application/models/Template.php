@@ -139,7 +139,7 @@ class Template extends LSActiveRecord
      */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttheme', 'Default template');
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttheme');
         $sTemplateName    = empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */
@@ -160,7 +160,7 @@ class Template extends LSActiveRecord
         }
 
         /* Last solution : default */
-        return 'default';
+        return Yii::app()->getConfig('defaulttheme');
     }
 
 
@@ -375,7 +375,7 @@ class Template extends LSActiveRecord
     {
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
-            $sTemplateName = "default";
+            $sTemplateName = Yii::app()->getConfig('defaulttheme');
         }
 
         if ($bForceXML === null) {
@@ -404,7 +404,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array('default', 'vanilla', 'material', 'no_bootstrap', 'monochrome');
+        $standardTemplates = array( Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'monochrome');
         return $standardTemplates;
 
         /*
@@ -422,7 +422,7 @@ class Template extends LSActiveRecord
                 closedir($handle);
             }
             ksort($standardTemplates);
-            if(!in_array("default",$standardTemplates)){
+            if(!in_array(Yii::app()->getConfig('defaulttheme'),$standardTemplates)){
                 throw new Exception('There are no default template in stantard template root dir.');
             }
             self::$standardTemplates = $standardTemplates;

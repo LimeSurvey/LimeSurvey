@@ -9,7 +9,7 @@
         /* @var string : Default layout when using render : leave at bare actually : just send content */
         public $layout = 'public';
         /* @var string the template name to be used when using layout */
-        public $sTemplate = 'default';
+        public $sTemplate;
         /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
         public $aReplacementData = array();
         /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
@@ -27,15 +27,8 @@
             }
 
 
-            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
-            //$oTemplate->registerAssets();
-
-
+            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
             $this->sTemplate = $oTemplate->sTemplateName;
-            //Yii::app()->clientScript->registerPackage( 'survey-template' );
-            //Yii::app()->clientScript->registerPackage( 'survey-template-'.$oTemplate->sTemplateName );
-            //var_dump('survey-template-'.$oTemplate->sTemplateName);
-
 
             $aData = array(
                     'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),

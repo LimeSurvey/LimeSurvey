@@ -157,9 +157,9 @@ class TemplateConfiguration extends TemplateConfig
             array(':template_name'=>$sTemplateName)
         );
 
-        // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one. 
+        // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one.
         if (!is_a($oInstance, 'TemplateConfiguration')) {
-            $oInstance = self::getInstanceFromTemplateName('default');
+            $oInstance = self::getInstanceFromTemplateName(Yii::app()->getConfig('defaulttheme'));
         }
 
         return $oInstance;
@@ -373,7 +373,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Prepare all the needed datas to render the temple
-     * If any problem (like template doesn't exist), it will load the default template configuration
+     * If any problem (like template doesn't exist), it will load the default theme configuration
      * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
      *
@@ -490,7 +490,7 @@ class TemplateConfiguration extends TemplateConfig
         } else {
             $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
 
-            if ($this->template_name != 'default') {
+            if ($this->template_name != Yii::app()->getConfig('defaulttheme') ) {
                 $sButtons .= '<br><br>'.$sUninstallLink;
             }
         }
@@ -665,7 +665,7 @@ class TemplateConfiguration extends TemplateConfig
             if ($this->oMotherTemplate->checkTemplate()) {
                 $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null); // Object Recursion
             } else {
-                // Throw exception? Set to default template?
+                // Throw exception? Set to default theme?
             }
         }
     }
