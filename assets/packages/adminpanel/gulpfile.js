@@ -151,7 +151,7 @@ gulp.task('compresslibs', function (cb) {
                 presets: ['es2015']
             }),
             uglify(),
-            rename({ suffix: '.min' })
+            rename({ suffix: '.min' }),
             gulp.dest('lib')
         ],
         cb

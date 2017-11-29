@@ -144,8 +144,8 @@ return array(
         'basePath' => 'core.adminpanel',
         'js' => array(
             'build/lsadminpanel'.$minVersion.'.js',
-            'lib/surveysettings.js',
-            'lib/hammer.js'
+            'lib/surveysettings'.$minVersion.'.js',
+            'lib/hammer'.$minVersion.'.js'
         ),
         'css' => array(
             'build/lsadminpanel'.$minVersion.'.css'
