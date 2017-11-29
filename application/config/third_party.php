@@ -264,6 +264,7 @@ return array(
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
         'basePath' => 'third_party.jquery-nestedSortable',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.mjs.nestedSortable.js'
         ),
