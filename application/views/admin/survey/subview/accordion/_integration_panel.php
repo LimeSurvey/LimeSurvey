@@ -38,33 +38,22 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
     }
 }"></lspanelparametertable>
 
-  <?php /*
-<div class="container-fluid">
-<div class="row">
-<div class="col-sm-12">
-<table id="urlparams" class='table dataTable table-striped table-borders' >
-<thead>
-<tr>
-<th></th><th><?php eT('Action');?>
-    </th>
-    <th>
-      <?php eT('Parameter');?>
-    </th>
-    <th>
-      <?php eT('Target question');?>
-    </th>
-    <th></th>
-    <th></th>
-    <th></th>
-    </tr>
-    </thead>
-    </table>
-    <input type='hidden' id='allurlparams' name='allurlparams' value='' />
-    </div>
-    </div>
-    </div>
-
-    <!-- Modal box to add a parameter -->
-    <div data-copy="submitsurveybutton"></div>
-    <?php $this->renderPartial('survey/subview/addPanelIntegrationParameter_view', array('questions' => $questions)); ?>
-      */?>
+<?php  
+    App()->getClientScript()->registerScript('IntegrationPanel-variables', " 
+    var jsonUrl = '".App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))."';  
+    var imageUrl = '".$yii->getConfig("adminimageurl ")."';  
+    var sProgress = '".gT('Showing _START_ to _END_ of _TOTAL_ entries','js')."';  
+    var sAction = '".gT('Action','js')."';  
+    var sParameter = '".gT('Parameter','js')."';  
+    var sTargetQuestion = '".gT('Target question','js')."';  
+    var sURLParameters = '".gT('URL parameters','js')."';  
+    var sNoParametersDefined = '".gT('No parameters defined','js')."';  
+    var sSearchPrompt = '".gT('Search:','js')."';  
+    var sSureDelete = '".gT('Are you sure you want to delete this URL parameter?','js')."';  
+    var sEnterValidParam = '".gT('You have to enter a valid parameter name.','js')."';  
+    var sAddParam = '".gT('Add URL parameter','js')."';  
+    var sEditParam = '".gT('Edit URL parameter','js')."';  
+    var iSurveyId = '".$surveyid."';  
+    var questionArray = JSON.parse('".json_encode($questions)."');  
+    ", LSYii_ClientScript::POS_BEGIN ); 
+?> 
