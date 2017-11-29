@@ -97,7 +97,7 @@ class Assessments extends Survey_Common_Action
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
-    private function _prepareDataArray(&$aData, $collectEdit = false){
+    private function _prepareDataArray(&$aData, $collectEdit = false) {
         $iSurveyID = $aData['surveyid'];
         
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
@@ -122,17 +122,17 @@ class Assessments extends Survey_Common_Action
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
         $aData['baselang'] = $oSurvey->language;
         $aData['subaction'] = gT("Assessments");
-        $aData['gid'] = App()->request->getPost('gid', '' );
+        $aData['gid'] = App()->request->getPost('gid', '');
         return $aData;
     }
 
     public function _edit($surveyid) {
         $iAsessementId = App()->request->getParam('id');
         $oAssessments = Assessment::model()->findAll("id=:id", [':id' => $iAsessementId]);
-        if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) {
+        if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update')) {
             $aData = [];
             $aData['editData'] = $oAssessments[0]->attributes;
-            foreach($oAssessments as $oAssessment){
+            foreach ($oAssessments as $oAssessment) {
                 $aData['models'][] = $oAssessment;
                 $aData['editData']['name_'.$oAssessment->language] = $oAssessment->name;
                 $aData['editData']['assessmentmessage_'.$oAssessment->language] = $oAssessment->message;
@@ -153,7 +153,7 @@ class Assessments extends Survey_Common_Action
         
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $this->_prepareDataArray( $aData );
+        $this->_prepareDataArray($aData);
 
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {

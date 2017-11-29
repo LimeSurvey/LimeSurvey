@@ -293,7 +293,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css');//self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
@@ -527,12 +527,12 @@ class TemplateManifest extends TemplateConfiguration
     {
         $this->xmlFile         = $this->path.'config.xml';
 
-        if (file_exists(realpath($this->xmlFile))){
+        if (file_exists(realpath($this->xmlFile))) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $this->config          = simplexml_load_string($sXMLConfigFile); // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
             libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }else{
+        } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
         }
     }
