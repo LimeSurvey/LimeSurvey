@@ -15,13 +15,12 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
-$(document).on('click', '.listActions a', function ()
-{
+var onClickListAction =  function () {
     var $that          = $(this);                                                             // The cliked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
-    var $gridid        = $('.listActions').data('grid-id');
-    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
+    var $gridid        = $(this).closest('div.listActions').data('grid-id');
+    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
 
@@ -193,7 +192,7 @@ $(document).on('click', '.listActions a', function ()
 
     // open the modal
     $modal.modal();
-});
+};
 
 /**
  * Bootstrap switch extension
@@ -277,11 +276,9 @@ function getDefaultDateTimePickerSettings() {
 }
 
 
-$(document).on('ready  pjax:scriptcomplete', function() {
-
+$(document).off('pjax:scriptcomplete.listActions').on('ready  pjax:scriptcomplete.listActions', function() {
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);
-
 
     // Grid refresh: see point 3
     $(document).on('actions-updated', '#'+gridId,  function(){
@@ -289,4 +286,6 @@ $(document).on('ready  pjax:scriptcomplete', function() {
         prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
     });
+    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
+
 });

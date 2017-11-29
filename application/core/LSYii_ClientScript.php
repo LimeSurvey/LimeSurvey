@@ -520,7 +520,7 @@ class LSYii_ClientScript extends CClientScript
         if (isset($this->scripts[self::POS_POSTSCRIPT])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                $scripts[] = "jQuery(document).off('pjax:scriptcomplete').on('ready pjax:scriptcomplete', function() {\n".implode("\n", $this->scripts[self::POS_POSTSCRIPT])."\n});";
+                $scripts[] = "jQuery(document).off('pjax:scriptcomplete.mainBottom').on('ready pjax:scriptcomplete.mainBottom', function() {\n".implode("\n", $this->scripts[self::POS_POSTSCRIPT])."\n});";
             } else {
                             $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }

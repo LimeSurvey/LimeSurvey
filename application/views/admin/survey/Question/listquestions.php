@@ -156,16 +156,6 @@
 </div>
 
 
-<!-- To update rows per page via ajax -->
-<script type="text/javascript">
-jQuery(function($) {
-jQuery(document).on("change", '#pageSize', function(){
-    $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
-    });
-});
-</script>
-
-
 
 <div class="modal fade" id="question-preview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -184,4 +174,14 @@ jQuery(document).on("change", '#pageSize', function(){
   </div>
 </div>
 
-<?php // $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group', array('model'=>$model, 'oSurvey'=>$oSurvey)); ?>
+
+<!-- To update rows per page via ajax -->
+<?php App()->getClientScript()->registerScript("ListQuestions-pagination", "
+        var bindPageSizeChange = function(){
+            $('#pageSize').on('change', function(){
+                $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
+            });
+        };
+    ", LSYii_ClientScript::POS_BEGIN); ?>
+    
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>

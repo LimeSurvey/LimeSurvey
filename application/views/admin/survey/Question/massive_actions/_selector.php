@@ -197,11 +197,9 @@
 <!--
     Some widgets in the modals need to be reloaded after grid update
 -->
-<script>
-$(document).ready(function() {
-
+<?php App()->getClientScript()->registerScript("ListQuestions-massiveAction-1", "
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();
     });
-});
-</script>
+ ", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+
