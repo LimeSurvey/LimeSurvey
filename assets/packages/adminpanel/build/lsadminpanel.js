@@ -37132,6 +37132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
+            $event.dataTransfer.setData('text/plain', 'node');
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
