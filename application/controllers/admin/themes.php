@@ -374,7 +374,7 @@ class themes extends Survey_Common_Action
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars($templatename, ENT_QUOTES)), 'error');
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=> Yii::app()->getConfig("defaulttheme") ));
+            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=> Yii::app()->getConfig("defaulttheme")));
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
@@ -384,7 +384,7 @@ class themes extends Survey_Common_Action
             $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
         } catch (Exception $ex) {
             Yii::app()->user->setFlash('error', $ex->getMessage());
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>Yii::app()->getConfig("defaulttheme") ));
+            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>Yii::app()->getConfig("defaulttheme")));
         }
 
         App()->getClientScript()->reset();

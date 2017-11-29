@@ -413,7 +413,7 @@ class LSYii_ClientScript extends CClientScript
             //############################################################################################
             //######  This has to correctly resolved by either updateing jquery ui or removing it!  ######
             //############################################################################################
-            $html.="<script> jQuery.migrateMute = true; </script>";
+            $html .= "<script> jQuery.migrateMute = true; </script>";
                 if (isset($this->scripts[self::POS_HEAD])) {
                                 $html .= $this->renderScriptBatch($this->scripts[self::POS_HEAD]);
                 }

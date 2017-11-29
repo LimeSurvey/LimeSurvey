@@ -490,7 +490,7 @@ class TemplateConfiguration extends TemplateConfig
         } else {
             $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
 
-            if ($this->template_name != Yii::app()->getConfig('defaulttheme') ) {
+            if ($this->template_name != Yii::app()->getConfig('defaulttheme')) {
                 $sButtons .= '<br><br>'.$sUninstallLink;
             }
         }

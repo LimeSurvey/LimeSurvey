@@ -97,16 +97,16 @@ class conditionsaction extends Survey_Common_Action
     public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
     {
         $request = Yii::app()->request;
-        $iSurveyID = (int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
-        $gid = (int)$gid;
-        $qid = (int)$qid;
+        $gid = (int) $gid;
+        $qid = (int) $qid;
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
         
-        $aData=[];
+        $aData = [];
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = gT("Conditions designer");
         
@@ -1422,7 +1422,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
             ->query() or safeDie("Couldn't get answers to Array questions<br />$aquery<br />");
             
-            $x_axis=[];
+            $x_axis = [];
             foreach ($x_axis_db->readAll() as $frow) {
                 $x_axis[$frow['title']] = $frow['question'];
             }
@@ -1507,7 +1507,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             
             $acount = count($aresult);
             
-            $quicky=[];
+            $quicky = [];
             foreach ($aresult as $arow) {
                 $theanswer = $arow['answer'];
                 $quicky[] = array($arow['code'], $theanswer);

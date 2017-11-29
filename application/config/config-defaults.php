@@ -76,12 +76,12 @@ $config['shownoanswer']              = 1; // Show 'no answer' for non mandatory 
 $config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
-$config['hideblacklisted']           = 'N';     // Don't show blacklisted participants
-$config['deleteblacklisted']         = 'N';  // Delete globally blacklisted participant from the database
-$config['allowunblacklist']          = 'N';   // Allow participant to unblacklist himself/herself
-$config['userideditable']            = 'N';     // Allow editing of user IDs
+$config['hideblacklisted']           = 'N'; // Don't show blacklisted participants
+$config['deleteblacklisted']         = 'N'; // Delete globally blacklisted participant from the database
+$config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
+$config['userideditable']            = 'N'; // Allow editing of user IDs
 
-$config['defaulttheme']              = 'fruity';  // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2'; // File types allowed to be uploaded in the themes section.
 
