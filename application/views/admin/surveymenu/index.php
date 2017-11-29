@@ -19,23 +19,22 @@ echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
 <div class="container-fluid ls-space padding left-50 right-50">
-	<div class="ls-flex-column ls-space padding left-35 right-35">
-		<div class="ls-flex-row">
-			<div class="col-12 h1">
-				<?php eT('Survey menus')?> 
-				<a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
-                    <i class="fa fa-plus"></i>&nbsp;<?php eT('New menu') ?>
-                </a>	
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
-                    <i class="fa fa-refresh"></i>&nbsp;
-                    <?php eT('Reset menus') ?>
-                </a>
+    <div class="ls-flex-column ls-space padding left-35 right-35">
+        <div class="col-12 h1 pagetitle">
+            <?php eT('Survey menus')?> 
+        </div>
+        <div class="col-12">
+            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
+                <i class="fa fa-plus"></i>&nbsp;<?php eT('New') ?>
+            </a>	
+            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
+            <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
+                <i class="fa fa-refresh"></i>&nbsp;
+                <?php eT('Reset') ?>
+            </a>
             <?php endif; ?>	
-			</div>
-		</div>
-
-		<div class="ls-flex-row">
+        </div>
+		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
 				<?php $this->widget('bootstrap.widgets.TbGridView', array(
 					'dataProvider' => $model->search(),

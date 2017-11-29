@@ -21,20 +21,22 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
-        <div class="col-12 h1">
+        <div class="col-12 h1 pagetitle">
             <?php eT('Menu entries')?>
-            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenuentry">
+        </div>
+        <div class="col-12">
+            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-1" id="createnewmenuentry">
                 <i class="fa fa-plus"></i>&nbsp;
-                <?php eT('New menu entry') ?>
+                <?php eT('New') ?>
             </a>
-            <a class="btn btn-warning pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" id="reorderentries">
-                <i class="fa fa-plus"></i>&nbsp;
-                <?php eT('Reorder entries') ?>
+            <a class="btn btn-warning pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-1" id="reorderentries">
+                <i class="fa fa-sort"></i>&nbsp;
+                <?php eT('Reorder') ?>
             </a>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
+                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-1" href="#restoremodal" data-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
-                    <?php eT('Reset menu entries') ?>
+                    <?php eT('Reset') ?>
                 </a>
             <?php endif; ?>
         </div>
