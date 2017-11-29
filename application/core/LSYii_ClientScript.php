@@ -528,8 +528,11 @@ class LSYii_ClientScript extends CClientScript
             }
         }
         if(App()->getConfig('debug') > 0){
-            $scripts[] = "jQuery(document).off('pjax:scriptcomplete.debugger').on('pjax:scriptcomplete.debugger',function(e) { console.log('PJAX scriptcomplete', e); });";
-            $scripts[] = "jQuery(document).off('pjax:complete.debugger').on('pjax:complete.debugger',function(e) { console.log('PJAX complete', e);});";
+            $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.log('PJAX scriptsuccess', e); });";
+            $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.log('PJAX scripterror', e); });";
+            $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.log('PJAX scripttimeout', e); });";
+            $scripts[] = "jQuery(document).off('pjax:success.debugger').on('pjax:success.debugger',function(e) { console.log('PJAX success', e);});";
+            $scripts[] = "jQuery(document).off('pjax:error.debugger').on('pjax:error.debugger',function(e) { console.log('PJAX error', e);});";
         }
         
         //All scripts are wrapped into a section to be able to reload them accordingly
