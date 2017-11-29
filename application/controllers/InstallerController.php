@@ -1250,7 +1250,7 @@ class InstallerController extends CController
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         try {
-            new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         } catch (Exception $e) {
             if ($sDatabaseType == 'mysql' && $e->getCode() == 1049) {
                 return false;
