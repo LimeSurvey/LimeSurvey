@@ -707,14 +707,14 @@ class InstallerController extends CController
         {
             $sFolder = opendir($sDirectory);
             while ($sFile = readdir($sFolder)) {
-                            if ($sFile != '.' && $sFile != '..' &&
+                if ($sFile != '.' && $sFile != '..' &&
                     (!is_writable($sDirectory."/".$sFile) ||
-                        (is_dir($sDirectory."/".$sFile) && !is_writable_recursive($sDirectory."/".$sFile)))) {
-                        closedir($sFolder);
-            }
-                        return false;
+                    (is_dir($sDirectory."/".$sFile) && !is_writable_recursive($sDirectory."/".$sFile)))) {
+                    closedir($sFolder);
+                    return false;
                 }
-                closedir($sFolder);
+            }
+            closedir($sFolder);
             return true;
         }
 
@@ -828,17 +828,17 @@ class InstallerController extends CController
 
         // config directory
         if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror')) {
-                    $bProceed = false;
+            $bProceed = false;
         }
 
         // templates directory check
         if (!check_DirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $aData, 'tmpdir', 'tperror', true)) {
-                    $bProceed = false;
+            $bProceed = false;
         }
 
         //upload directory check
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror', true)) {
-                    $bProceed = false;
+            $bProceed = false;
         }
 
         // Session writable check
