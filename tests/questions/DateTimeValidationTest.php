@@ -57,15 +57,17 @@ class DateTimeValidationTest extends TestBaseClassWeb
         }
 
         $this->assertNotEmpty($submit);
-        self::$webDriver->wait(10, 1000)->until(
-            WebDriverExpectedCondition::visibilityOf($submit)
+        self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+		WebDriverBy::id('ls-button-submit')
+	    )
         );
         $submit->click();
 
         // After submit we should see the complete page.
         try {
             // Wait max 10 second to find this div.
-            self::$webDriver->wait(10)->until(
+            self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::className('completed-text')
                 )
