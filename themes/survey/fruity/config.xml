@@ -57,6 +57,7 @@
         <questionanimation>flipInX</questionanimation>
         <animatealert>off</animatealert>
         <alertanimation>shake</alertanimation>
+        <font>noto</font>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
@@ -77,7 +78,7 @@
         <!-- Example: <packages>moment</packages> -->
         <packages>
             <add>pjax</add>
-            <add>font-websafe</add>
+            <add>font-noto</add>
         </packages>
 
 

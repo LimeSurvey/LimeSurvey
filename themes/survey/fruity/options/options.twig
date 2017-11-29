@@ -15,6 +15,13 @@
 
 #}
 
+{{ registerPackage('font-roboto') }}
+{{ registerPackage('font-noto') }}
+{{ registerPackage('font-news_cycle') }}
+{{ registerPackage('font-ubuntu') }}
+{{ registerPackage('font-lato') }}
+{{ registerPackage('font-websafe') }}
+
 {# The animation options are pulled from animate.css #}
 {% set animationOptions = '' %}
 {# For surveyspecific settings add an inherit option #}
@@ -192,27 +199,59 @@
 </optgroup>
 {% endset %}
 
-{# The default template offers the variety of the basic bootswatch styles #}
-{% set monochromOption = '' %}
+{# The default template offers the variety of styles #}
+{% set fruityOptions = '' %}
 
 {# For surveyspecific settings add an inherit option #}
 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-    {% set monochromOption = monochromOption ~ '<option value = "inherit" > Inherit</option>' %}
+    {% set fruityOptions = fruityOptions ~ '<option value = "inherit" > Inherit</option>' %}
 {% endif %}
 
 {# List of Bootswatch styles #}
-{% set monochromOption %}
-{{monochromOption}}
+{% set fruityOptions %}
+{{fruityOptions}}
 <option value="css/sea_green.css">Sea Green</option>
 <option value="css/apple_blossom.css">Apple Blossom</option>
 <option value="css/bay_of_many.css">Bay of Many</option>
 <option value="css/black_pearl.css">Black Pearl</option>
 <option value="css/dark_sky.css">Dark Sky</option>
 <option value="css/free_magenta.css">Free Magenta</option>
-<option value="css/noto_all_languages.css">Noto (All languages)</option>
 <option value="css/purple_tentacle.css">Purple Tentacle</option>
 <option value="css/sunset_orange.css">Sunset_Orange</option>
+{% endset %}
 
+{# The default template offers the variety of styles #}
+{% set fontOptions = '' %}
+
+{# For surveyspecific settings add an inherit option #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set fontOptions = fontOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+
+{% set fontOptions %}
+    {{fontOptions}}
+    <optgroup  label="{{ "Local Server" | t }}">
+            <option class="font-roboto"     value="roboto"     data-font-package="roboto"      >Roboto</option>
+            <option class="font-news_cycle" value="news_cycle" data-font-package="news_cycle"  >News Cycle</option>
+            <option class="font-lato"       value="lato"       data-font-package="lato"        >Lato</option>
+            <option class="font-noto"       value="noto"       data-font-package="noto"        >Noto Sans</option>
+            <option class="font-ubuntu"     value="ubuntu"     data-font-package="ubuntu"        >Noto Sans</option>
+    </optgroup>
+
+    <optgroup  label="{{ "User browser" | t }}">
+
+      <option class="font-georgia         " value="georgia"        data-font-package="websafe" >Georgia</option>
+      <option class="font-palatino        " value="palatino"       data-font-package="websafe" >Palatino Linotype</option>
+      <option class="font-times_new_roman " value="times_new_roman"data-font-package="websafe" >Times New Roman</option>
+      <option class="font-arial           " value="arial"          data-font-package="websafe" >Arial</option>
+      <option class="font-arial_black     " value="arial_black"    data-font-package="websafe" >Arial Black</option>
+      <option class="font-comic_sans      " value="comic_sans"     data-font-package="websafe" >Comic Sans</option>
+      <option class="font-impact          " value="impact"         data-font-package="websafe" >Impact</option>
+      <option class="font-lucida_sans     " value="lucida_sans"    data-font-package="websafe" >Lucida Sans</option>
+      <option class="font-trebuchet       " value="trebuchet"      data-font-package="websafe" >Trebuchet</option>
+      <option class="font-courier         " value="courier"        data-font-package="websafe" >Courier New</option>
+      <option class="font-lucida_console  " value="lucida_console" data-font-package="websafe" >Lucida Console</option>
+    </optgroup>
 {% endset %}
 
 <style>
@@ -220,6 +259,7 @@
         outline: none !important;
     }
 </style>
+
 <div class="container-fluid" style="position:relative">
     {# Small loading animation to give the scripts time to parse and render the correct values #}
     <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
@@ -499,17 +539,42 @@
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>
+
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>Bootstrap theme</div>
+                        <div class='panel-heading'>{{ "Fruity Fonts" | t }}</div>
                         <div class='panel-body'>
-                            {# Bootstrap Bootswatch theme #}
+                            <div class='form-group row'>
+                                <label for='font' class='control-label'>{{ "Select font:" | t }}</label>
+                                <div class='col-sm-12'>
+                                    <select class='form-control selector_option_value_field' id='font' name='font'>
+                                        {{ fontOptions }}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class='row ls-space margin top-15 bottom-15 '>
+                <hr/>
+            </div>
+
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='panel panel-default'>
+                        <div class='panel-heading'>{{ "Fruity Variations" | t }} </div>
+                        <div class='panel-body'>
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>Fruity theme</label>
                                 <div class='col-sm-12'>
                                     <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework'>
-                                        {{monochromOption}}
+                                        {{fruityOptions}}
                                     </select>
                                 </div>
                             </div>

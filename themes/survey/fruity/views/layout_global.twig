@@ -20,7 +20,7 @@
         {# Headers, metadata, etc #}
         {{ include('./subviews/head.twig') }}
 
-        <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+        <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
         {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
             <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
                 <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">

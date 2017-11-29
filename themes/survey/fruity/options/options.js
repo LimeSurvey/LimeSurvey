@@ -115,6 +115,7 @@ var prepare = function(){
         // Fruity Theming
         if($('#simple_edit_add_css').length>0){
             var currentThemeObject = 'inherit';
+
             if($('#TemplateConfiguration_files_css').val() !== 'inherit'){
 
                 currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/sea_green.css', 'css/theme.css']};
@@ -135,6 +136,33 @@ var prepare = function(){
                     currentThemeObject.add = ['css/animate.css','css/ajaxify.css', $('#simple_edit_add_css').val(), 'css/theme.css'];
                     $('#TemplateConfiguration_files_css').val(JSON.stringify(currentThemeObject));
                 }
+            })
+        }
+
+
+        // Fruity Fonts
+        if($('#font').length>0){
+            var currentFontObject = 'inherit';
+
+            if( optionObject.font !== 'inherit'){
+                $('#font').val(optionObject.font);
+            }
+
+            $('#font').on('change', function(evt){
+                if($('#font').val() === 'inherit'){
+                    $('#TemplateConfiguration_packages_to_load').val('inherit');
+                } else {
+
+                    currentFontObject = {};
+                    var selectedFontPackage = $(this).find('option:selected');
+                    var packageName         = selectedFontPackage.data('font-package');
+                    var formatedPackageName = "font-"+packageName;
+
+
+                    currentFontObject.add = ["pjax", formatedPackageName ];
+
+                }
+                $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentFontObject));
             })
         }
     }
