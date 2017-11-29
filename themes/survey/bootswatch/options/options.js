@@ -121,7 +121,7 @@ var prepare = function(){
         });
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
-            console.log(evt);
+           
             if($(this).hasClass('selector_image_selector')){
                 if($(this).val() == 'inherit'){
                     $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
@@ -129,6 +129,7 @@ var prepare = function(){
                     $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
                 }
             }
+            
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -175,7 +176,7 @@ var prepare = function(){
 };
 
 
-$(document).off('pjax:scriptcomplete').on('ready pjax:scriptcomplete',function(){
+$(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomplete.templateOptions',function(){
     $('.simple-template-edit-loading').css('display','block');
     prepare().then(function(runsesolve){
         $('.simple-template-edit-loading').remove();

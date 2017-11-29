@@ -3,7 +3,7 @@ var prepare = function(){
     var deferred = $.Deferred();
     //activate the bootstrap switch for checkboxes
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
-
+    var inheritPossible = ($('#general_inherit_active').length > 0 ) ;
     //get option Object from Template configuration options
     var optionObject = {"general_inherit" : 1}
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
@@ -37,7 +37,21 @@ var prepare = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
 
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
+            
+            if(itemValue == null || itemValue == undefined){
+                itemValue = inheritPossible ? 'inherit' : false;
+                optionObject[$(item).attr('name')] = itemValue;
+            }
+
             $(item).val(itemValue);
+
+            if($(item).hasClass('selector_image_selector')){
+                if($(item).val() == 'inherit'){
+                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
+                } else {
+                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
+                }
+            }
 
         });
 
@@ -49,11 +63,21 @@ var prepare = function(){
                 } else {
                     $(selectorItem).prop('disabled', true);
                 }
+
+                if($(selectorItem).hasClass('selector_image_selector')){
+                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                }
             });
         });
 
         $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
+            //if it is a radio selector, check it and propagate the change to bootstrapSwitch
+            if(itemValue == null || itemValue == undefined){
+                itemValue = inheritPossible ? 'inherit' : 'off';
+                optionObject[$(item).attr('name')] = itemValue;
+            }
+
             //if it is a radio selector, check it and propagate the change to bootstrapSwitch
             if($(item).val() == itemValue){
                 $(item).prop('checked', true).trigger('change');
@@ -97,6 +121,15 @@ var prepare = function(){
 
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+            
+            if($(this).hasClass('selector_image_selector')){
+                if($(this).val() == 'inherit'){
+                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
+                } else {
+                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
+                }
+            }
+
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -141,15 +174,16 @@ var prepare = function(){
 
 
         // Fruity Fonts
-        if($('#font').length>0){
+        if($('#simple_edit_font').length>0){
             var currentFontObject = 'inherit';
+            optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
 
-            if( optionObject.font !== 'inherit'){
-                $('#font').val(optionObject.font);
+            if( optionObject.font !== 'inherit' ){
+                $('#simple_edit_font').val(optionObject.font);
             }
 
-            $('#font').on('change', function(evt){
-                if($('#font').val() === 'inherit'){
+            $('#simple_edit_font').on('change', function(evt){
+                if($('#simple_edit_font').val() === 'inherit'){
                     $('#TemplateConfiguration_packages_to_load').val('inherit');
                 } else {
 
@@ -170,9 +204,34 @@ var prepare = function(){
 
     return deferred.promise();
 };
-$(document).on('ready pjax:scriptcomplete',function(){
+
+
+
+$(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomplete.templateOptions',function(){
     $('.simple-template-edit-loading').css('display','block');
-    prepare().then(function(){
+    prepare().then(function(runsesolve){
         $('.simple-template-edit-loading').remove();
-    })
+    });
+    
+    $('.selector__open_lightbox').on('click', function(e){
+        e.preventDefault();
+        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('target')).val();
+        if(imgTitle !== 'inherit'){
+            $('#lightbox-modal').find('.selector__title').text(imgTitle);
+            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
+        }
+        $('#lightbox-modal').modal('show');
+    });
+
+    var uploadImageBind = new bindUpload({
+        form: '#upload_frontend',
+        input: '#upload_image_frontend',
+        progress: '#upload_progress_frontend',
+        onSuccess : function(){ 
+            var triggerEvent = new Event('pjax:load');
+            triggerEvent.url =  window.location.href;
+            window.dispatchEvent( triggerEvent );
+        }
+    });
 });
