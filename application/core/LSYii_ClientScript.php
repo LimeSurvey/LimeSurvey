@@ -511,21 +511,27 @@ class LSYii_ClientScript extends CClientScript
         if (isset($this->scripts[self::POS_LOAD])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
+                
+                
                 $scripts[] = "jQuery(document).on('ready pjax:complete',function() {\n".implode("\n", $this->scripts[self::POS_LOAD])."\n});";
             } else {
                             $scripts[] = implode("\n", $this->scripts[self::POS_LOAD]);
             }
         }
-
+        
         if (isset($this->scripts[self::POS_POSTSCRIPT])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
                 $scripts[] = "jQuery(document).off('pjax:scriptcomplete.mainBottom').on('ready pjax:scriptcomplete.mainBottom', function() {\n".implode("\n", $this->scripts[self::POS_POSTSCRIPT])."\n});";
             } else {
-                            $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
+                $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-
+        if(App()->getConfig('debug') > 0){
+            $scripts[] = "jQuery(document).off('pjax:scriptcomplete.debugger').on('pjax:scriptcomplete.debugger',function(e) { console.log('PJAX scriptcomplete', e); });";
+            $scripts[] = "jQuery(document).off('pjax:complete.debugger').on('pjax:complete.debugger',function(e) { console.log('PJAX complete', e);});";
+        }
+        
         //All scripts are wrapped into a section to be able to reload them accordingly
         if (!empty($scripts)) {
             $html .= $this->renderScriptBatch($scripts);

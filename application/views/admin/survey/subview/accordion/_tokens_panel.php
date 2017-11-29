@@ -17,6 +17,18 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
+    
+    function alertPrivacy()
+    {
+        if ($('#tokenanswerspersistence').is(':checked') == true) {
+            $('#alertPrivacy1').modal();
+            document.getElementById('anonymized').value = '0';
+        }
+        else if ($('#anonymized').is(':checked') == true) {
+            $('#alertPrivacy2').modal();
+        }
+    }
+    
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 
@@ -36,20 +48,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             <!-- Anonymized responses -->
             <div class="form-group">
                 <label  class=" control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
-                    <?php  eT("Anonymized responses:");
-                    ?>
-                    <script type="text/javascript"><!--
-                        function alertPrivacy()
-                        {
-                            if ($('#tokenanswerspersistence').is(':checked') == true) {
-                                $('#alertPrivacy1').modal();
-                                document.getElementById('anonymized').value = '0';
-                            }
-                            else if ($('#anonymized').is(':checked') == true) {
-                                $('#alertPrivacy2').modal();
-                            }
-                        }
-                        //--></script>
+                    <?php  eT("Anonymized responses:"); ?>
                 </label>
                 <div class="">
                     <?php if ($oSurvey->isActive) {
