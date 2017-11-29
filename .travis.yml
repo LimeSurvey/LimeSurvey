@@ -25,7 +25,7 @@ before_script:
     - chmod -R 776 tmp
     - chmod -R 776 tmp/runtime
     - chmod -R 776 upload
-    - chmod -R 776 themes
+    - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - mkdir -p tests/tmp/runtime
     - chmod -R 776 tests/tmp
     - chmod -R 776 tests/tmp/runtime
