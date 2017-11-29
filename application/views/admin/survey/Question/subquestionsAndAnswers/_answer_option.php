@@ -98,7 +98,7 @@
         </td>
     <?php elseif ($assessmentvisible): ?>
         <td class="assessment-value">
-            <?php echo $row['assessment_value']; ?>
+            <?php echo $assessment_value; ?>
         </td>
     <?php else: ?>
         <td style='display:none;' class="assessment-value">
