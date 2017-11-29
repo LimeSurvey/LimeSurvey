@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\TimeOutException;;
 
 /**
  * @since 2017-10-27
@@ -72,7 +73,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $div = self::$webDriver->findElement(WebDriverBy::className('completed-text'));
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
-            $screenshot = $this->webDriver->takeScreenshot();
+            $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
@@ -80,6 +81,16 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }
+        } catch (TimeOutException $ex) {
+            $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
+	    var_dump($body->getText());
+	    $reflect = new \ReflectionClass($this);
+	    //if ($reflect->getShortName() === 'Name') {
+            self::$testHelper->takeScreenshot(self::$webDriver, $reflect->getShortName() . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+	}
     }
 }
