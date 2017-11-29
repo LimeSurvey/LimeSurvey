@@ -18,49 +18,27 @@ echo viewHelper::getViewTestTag('surveyResources');
     var sAddParam = '';
 </script>
 <!-- ressources panel -->
-<div id='resources' >
+<div id='resources' class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 col-md-4">
-            <ul class="list-unstyled">
-
-                <!-- Browse -->
-                <li>
-                    <label>&nbsp;</label>
-                    <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped')), array('class'=>'btn btn-default')); ?>
-                    <a id="loadiframe" class="btn btn-default" href="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" target='_blank'>
-                        <?php  eT("Browse uploaded resources") ?>
-                    </a>
-                </li>
-
-                <!-- Export -->
-                <li>
-                    <br/>
-                    <label>&nbsp;</label>
-                    <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-default">
-                        <?php  eT("Export resources as ZIP archive") ?>
-                    </a>
-                </li>
-
-                <!-- Export -->
-                <li>
-                    <br/>
-                    <label>&nbsp;</label>
-                    <a class="btn btn-default" href="" target='_blank' data-toggle="modal" data-target="#importRessourcesModal">
-                        <span class="fa fa-download"></span>
-                        <?php  eT("Import resources ZIP archive"); ?>
-                    </a>
-                </li>
-            </ul>
+        <!-- Export -->
+        <div class="col-sm-6">
+            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-default">
+                <?php  eT("Export resources as ZIP archive") ?>
+            </a>
+            <a class="btn btn-default" href="" target='_blank' data-toggle="modal" data-target="#importRessourcesModal">
+                <span class="fa fa-download"></span>
+                <?php  eT("Import resources ZIP archive"); ?>
+            </a>
         </div>
-        <div class="col-sm-12 col-md-8">
+    </div>
+    <div class="row">
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
             <iframe id="browseiframe" src="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
         </div>
     </div>
 </div>
-<script>
-    $('#loadiframe').on('click', function(e){
-        e.preventDefault();
-        $('#browseiframe').attr('src', $(this).attr('href'));
-    })
-</script>
+
 <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', ['surveyid'=>$surveyid, 'ZIPimportAction' => $ZIPimportAction]); ?>

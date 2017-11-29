@@ -175,7 +175,7 @@ var prepare = function(){
 };
 
 
-$(document).on('ready pjax:scriptcomplete',function(){
+$(document).off('pjax:scriptcomplete').on('ready pjax:scriptcomplete',function(){
     $('.simple-template-edit-loading').css('display','block');
     prepare().then(function(runsesolve){
         $('.simple-template-edit-loading').remove();

@@ -329,5 +329,10 @@
             </div>
         </div>
     </div>
-    <script>$(function(){$('#survey-action-chevron').on('click', surveyQuickActionTrigger);});</script>
 </div>
+<?php 
+    Yii::app()->getClientScript()->registerScript('Quickaction-activate', 
+        "$('#survey-action-chevron').off('click').on('click', surveyQuickActionTrigger);", 
+        LSYii_ClientScript::POS_POSTSCRIPT
+    ); 
+?>

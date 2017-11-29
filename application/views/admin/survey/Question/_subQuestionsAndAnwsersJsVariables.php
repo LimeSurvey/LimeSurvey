@@ -3,53 +3,55 @@
  * This subview render the javaScript variables for subQuestion_view and answerOptions_view
  * @var $jsVariableType  Define which type of javascript variables should be render
  */
-?>
-<script type='text/javascript'>
-    // Common variables between subquestions / answers options
-    var cancel                  = '<?php eT('Cancel'); ?>';
-    var check                   = true;
-    var lafail                  = '<?php eT('Sorry, the request failed!'); ?>';
-    var lanameurl               = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
-    var langs                   = '<?php echo implode(';',$anslangs); ?>';
-    var languagecount           = <?php echo count($anslangs); ?>;
-    var lasaveurl               = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
-    var lasuccess               = '<?php eT('The records have been saved successfully!'); ?>';
-    var lsbrowsertitle          = '<?php eT('Label set browser','js'); ?>';
-    var lsdetailurl             = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
-    var lspickurl               = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
-    var ok                      = '<?php eT('Ok'); ?>';
-    var saveaslabletitle        = '<?php eT('Save as label set','js'); ?>';
-    var sCheckLabelURL          = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
-    var sImageURL               = '<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
-    var sLabelSetName           = '<?php eT('Label set name','js'); ?>';
-    var strcode                 = '<?php eT('Code','js'); ?>';
-    var strlabel                = '<?php eT('Label','js'); ?>';
-    var strNoLabelSet           = '<?php eT('There are no label sets which match the survey default language','js'); ?>';
-</script>
 
-<?php if ($viewType=='subQuestions'): ?>
-    <script>
+
+$scriptVariables = "
+    // Common variables between subquestions / answers options
+    var cancel                  = '".gT('Cancel')."';
+    var check                   = true;
+    var lafail                  = '".gT('Sorry, the request failed!')."';
+    var lanameurl               = '".Yii::app()->createUrl('/admin/labels/sa/getAllSets')."';
+    var langs                   = '".implode(';',$anslangs)."';
+    var languagecount           =  ".count($anslangs).";
+    var lasaveurl               = '".Yii::app()->createUrl('/admin/labels/sa/ajaxSets')."';
+    var lasuccess               = '".gT('The records have been saved successfully!')."';
+    var lsbrowsertitle          = '".gT('Label set browser','js')."';
+    var lsdetailurl             = '".Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails')."';
+    var lspickurl               = '".Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker')."';
+    var ok                      = '".gT('Ok')."';
+    var saveaslabletitle        = '".gT('Save as label set','js')."';
+    var sCheckLabelURL          = '".Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel')."';
+    var sImageURL               = '".Yii::app()->getConfig('adminimageurl')."';
+    var sLabelSetName           = '".gT('Label set name','js')."';
+    var strcode                 = '".gT('Code','js')."';
+    var strlabel                = '".gT('Label','js')."';
+    var strNoLabelSet           = '".gT('There are no label sets which match the survey default language','js')."';
+";
+if ($viewType=='subQuestions') {
+    $scriptVariables .= "
         // variables with different values in subqestions / answer options
-        var newansweroption_text    = '<?php eT('New answer option','js'); ?>';
-        var quickaddtitle           = '<?php eT('Quick-add answers','js'); ?>';
-        var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last answer option.','js'); ?>';
-        var duplicatesubquestioncode = '<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
-        var clickToExpand           = '<?php eT('Click to expand'); ?>';
-    </script>
-<?php elseif($viewType=='answerOptions'):?>
-    <script>
+        var newansweroption_text     = '".gT('New answer option','js')."';
+        var quickaddtitle            = '".gT('Quick-add answers','js')."';
+        var strCantDeleteLastAnswer  = '".gT('You cannot delete the last answer option.','js')."';
+        var duplicatesubquestioncode = '".gT('Error: You are trying to use duplicate subquestion codes.','js')."';
+        var clickToExpand            = '".gT('Click to expand')."';
+    ";
+} elseif($viewType=='answerOptions') {
+    $scriptVariables .= "
         // variables with different values in subqestions / answer options
-        var newansweroption_text    = '<?php eT('New answer option','js'); ?>';
-        var quickaddtitle           = '<?php eT('Quick-add answers','js'); ?>';
-        var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last answer option.','js'); ?>';
+        var newansweroption_text    = '".gT('New answer option','js')."';
+        var quickaddtitle           = '".gT('Quick-add answers','js')."';
+        var strCantDeleteLastAnswer = '".gT('You cannot delete the last answer option.','js')."';
 
         // answer options variables
-        var assessmentvisible       = <?php echo $assessmentvisible?'true':'false'; ?>;
-        var duplicateanswercode     = '<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
-        var sAssessmentValue        = '<?php eT('Assessment value','js'); ?>';
-        var scalecount              = <?php echo $scalecount; ?>;
+        var assessmentvisible       =  ".( $assessmentvisible ? 'true' : 'false' ).";
+        var duplicateanswercode     = '".gT('Error: You are trying to use duplicate answer codes.','js')."';
+        var sAssessmentValue        = '".gT('Assessment value','js')."';
+        var scalecount              =  ".$scalecount.";
 
-    </script>
-<?php endif; ?>
+    ";
+}
 
-<?php echo PrepareEditorScript(true, $this); ?>
+Yii::app()->getClientScript()->registerScript('SubquestionandAnswers-variables',  $scriptVariables, LSYii_ClientScript::POS_BEGIN );
+
+echo PrepareEditorScript(true, $this);
