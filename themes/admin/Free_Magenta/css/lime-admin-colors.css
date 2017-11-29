@@ -1980,7 +1980,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 #sidebar .tabbutton.btn-primary {
   outline: none; }
   #sidebar .tabbutton.btn-primary:hover:after, #sidebar .tabbutton.btn-primary:focus:after, #sidebar .tabbutton.btn-primary:active:after {
-    color: #762047; }
+    color: #9e2b60; }
   #sidebar .tabbutton.btn-primary:after {
     color: #C63678; }
 #sidebar .background.white {

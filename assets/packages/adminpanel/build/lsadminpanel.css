@@ -8,7 +8,7 @@
     #sidebar .tabbutton.btn-primary:after {
       position: absolute;
       left: 43%;
-      bottom: -10px;
+      bottom: -12px;
       font: normal normal normal 14px/1 FontAwesome;
       font-size: 28px;
       text-rendering: auto;
