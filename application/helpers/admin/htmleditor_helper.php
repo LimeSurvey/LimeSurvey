@@ -208,7 +208,7 @@
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
 
-        $scriptCode .= ""
+        $scriptCode = ""
         . "$(document).on('ready pjax:scriptcomplete triggerCreateCKEditor', 
             function(){ 
                 if($('#".$fieldname."').length >0){
