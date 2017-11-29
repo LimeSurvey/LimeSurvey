@@ -8,17 +8,17 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyNotificationOptions');
 
-?>
-<script type="text/javascript">
+App()->getClientScript()->registerScript("notification-panel-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- Notification panel -->
 <div id='notification'  class="container-fluid">
     <div class="row">

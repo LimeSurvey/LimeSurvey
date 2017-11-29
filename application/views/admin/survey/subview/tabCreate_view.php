@@ -11,21 +11,22 @@
 extract($data);
 Yii::app()->loadHelper('admin/htmleditor');
 PrepareEditorScript(false, $this);
-?>
-<script type="text/javascript">
+
+App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-    var standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
+    var standardthemerooturl='".Yii::app()->getConfig('standardthemerooturl')."';
+    var templaterooturl='".Yii::app()->getConfig('userthemerooturl')."';
     var formId = 'addnewsurvey';
-
-</script>
+    
+", LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- Form submited by save button menu bar -->
 <?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <div class="ls-flex-row align-items-center align-content-center">

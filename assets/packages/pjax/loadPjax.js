@@ -25,7 +25,8 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#breadcrumb-container': switchInnerHTML,
                 },
                 // debug: true,
-                forceRedirectOnFail: true
+                forceRedirectOnFail: true,
+                reRenderCSS : true
             });
         }
 

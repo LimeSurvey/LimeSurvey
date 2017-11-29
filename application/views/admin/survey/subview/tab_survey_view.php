@@ -8,17 +8,17 @@
 
 $active = (isset($_GET['tab']))?$_GET['tab']:'create';
 
-?>
-<script type="text/javascript">
+App()->getClientScript()->registerScript("tab-survey-view-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN);
+?>
 
 <!-- Tabs -->
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
