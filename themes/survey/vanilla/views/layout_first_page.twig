@@ -23,31 +23,5 @@
 
 {# Replace the content block #}
 {% block content %}
-
-    {# render the layout_global content block #}
-    {{ parent() }}
-
-    {# Include the form opening tag #}
-    {{ include('./subviews/start_form.twig') }} <!-- main form -->
-
-        {# This will display the script and the hidden inputs needed for Expression Manager #}
-        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-
-        {# Include the alert for no JavaScript #}
-        {{ include('./subviews/no_js_alert.twig') }}
-
-        {# Include the language changer selector #}
-        {{ include('./subviews/language_changer.twig') }}
-
-        {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
-        {{ include('./subviews/welcome.twig') }}
-
-        {% if(aSurveyInfo.anonymized) == "Y" %}
-            {{ include('./subviews/privacy/privacy.twig') }}
-        {% endif %}
-
-        {# Presents the navigator #}
-        {{ include('./subviews/navigation/navigator.twig') }}
-    </form> <!-- main form -->
-
+    {% include './subviews/outerframe.twig' with {'include_content': './subviews/layout/content_firstpage.twig'} %}
 {% endblock %}

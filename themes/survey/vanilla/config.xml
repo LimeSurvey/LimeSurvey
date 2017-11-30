@@ -111,7 +111,9 @@
                 <welcome>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_first_page.twig</file>
-                    <file type="view" role="subview">outerframe_container.twig</file>
+                    <file type="view" role="subview">layout_content/mainrow.twig</file>
+                    <file type="view" role="subview">layout_content/outerframe.twig</file>
+                    <file type="view" role="subview">layout_content/content_firstpage.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>

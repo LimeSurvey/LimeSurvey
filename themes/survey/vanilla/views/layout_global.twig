@@ -53,21 +53,9 @@
                 {% endblock %}
 
                 <!-- Outer Frame Container -->
-                <div class="{{ aSurveyInfo.class.outerframe }} container" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
-
-                    <!-- Main Row -->
-                    <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
-                        <!-- Main Col -->
-                        <div class="{{ aSurveyInfo.class.maincol }} col-centered  space-col" id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
-
-                            {# This is the main block that will be replaced/extended by other layouts#}
-                            {% block content %}
-                                {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                                {{ include('./subviews/warnings.twig') }}
-                            {% endblock %}
-                        </div> <!-- main col -->
-                    </div> <!-- main row -->
-                </div> <!-- outer frame container -->
+                {% block content %}
+                    {% include './subviews/layout/outerframe.twig' with {'include_content': ''} %}
+                {% endblock %}
 
                 {# Bootstrap alert modal #}
                 {{ include('./subviews/bootstrap_alert_modal.twig') }}
