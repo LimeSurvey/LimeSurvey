@@ -471,7 +471,7 @@ class themes extends Survey_Common_Action
                             setGlobalSetting('defaulttheme', $sNewName);
                         }
 
-                        $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>'layout_first_page.twig', 'screenname'=>'welcome', 'templatename'=>$sNewName));
+                        $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>'layout_global.twig', 'screenname'=>'welcome', 'templatename'=>$sNewName));
                     } else {
                         Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
@@ -482,7 +482,7 @@ class themes extends Survey_Common_Action
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-        $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>'layout_first_page.twig', 'screenname'=>'welcome', 'templatename'=>$sOldName));
+        $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>'layout_global.twig', 'screenname'=>'welcome', 'templatename'=>$sOldName));
     }
 
 

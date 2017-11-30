@@ -114,7 +114,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $result    = $this->convertTwigToHtml($line, $aDatas, $oEditedTemplate);
             return $result;
         } else {
-            trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
+            trigger_error("Can't find a theme for view: ".$sView, E_USER_ERROR);
         }
     }
 

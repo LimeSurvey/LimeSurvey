@@ -112,7 +112,6 @@
 
                 <welcome>
                     <file type="view" role="global">layout_global.twig</file>
-                    <file type="view" role="layout">layout_first_page.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="subview">./subviews/content/firstpage.twig</file>
