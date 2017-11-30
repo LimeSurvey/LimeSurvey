@@ -625,11 +625,17 @@ class TemplateConfiguration extends TemplateConfig
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
 
                 } else {
-                    $oTemplate = $this->getTemplateForFile($sFileName, $this);
-                    if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)) {
-                        Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
-                        unset($aSettings[$key]);
-                    }
+                    // File doesn't exist locally, so it should be removed
+                    $key = array_search($sFileName, $aSettings);
+                    //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
+                    unset($aSettings[$key]);
+                    /* Old way todo
+                        $oTemplate = $this->getTemplateForFile($sFileName, $this);
+                        if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)) {
+                            Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
+                            unset($aSettings[$key]);
+                        }
+                    */
                 }
             }
         }
