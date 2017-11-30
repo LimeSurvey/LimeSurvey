@@ -119,8 +119,8 @@ class TemplateConfig extends CActiveRecord
             while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
                 $oMotherTemplate = $oRTemplate->oMotherTemplate;
                 if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                    TemplateConfiguration::uninstall($this->template_name);
-                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
+                    TemplateConfiguration::uninstall($this->sTemplateName);
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
                     Yii::app()->getController()->redirect(array("admin/themeoptions"));
                     break;
                 }
