@@ -9,22 +9,12 @@
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
 
-    (¯`·._.·(¯`·._.· Registration Layout  ·._.·´¯)·._.·´¯)
+    (¯`·._.·(¯`·._.· Registration Content  ·._.·´¯)·._.·´¯)
 
     This file displays the page shown to user when a participant registers for taking a survey.
 
-    NOTE: see layout_main.twig for more infos
+    NOTE: see layout_global.twig for more infos
 #}
-
-
-{# Call the global layout #}
-{% extends "./layout_global.twig" %}
-
-{# Replace the content block #}
-{% block content %}
-
-    {# render the layout_global content block #}
-    {{ parent() }}
 
     <div class="{{ aSurveyInfo.class.register }} container" {{ aSurveyInfo.attr.register }}>
         {# This will display the script and the hidden inputs needed for Expression Manager #}
@@ -44,5 +34,3 @@
         </div>
     </div>
     <input type='hidden' class='hidemenubutton'/>
-
-{% endblock %}

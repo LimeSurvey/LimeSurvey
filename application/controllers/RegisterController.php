@@ -487,23 +487,8 @@ class RegisterController extends LSYii_Controller
         $aData['aSurveyInfo'] = self::getRegisterForm($iSurveyId);
 
         $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
+        $aData['aSurveyInfo']['include_content'] = './subviews/content/register.twig';
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
-
-
-        Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig', $aData, false);
-
-        // // Test if we come from index or from register
-        // if(empty(App()->clientScript->scripts)){
-        //     /* This surely can be moved to layout , but remove iot from surveyController before */
-        //     $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        //     Yii::app()->clientScript->registerPackage( 'survey-template' );
-        //     App()->getClientScript()->registerPackage('jqueryui');
-        //     App()->getClientScript()->registerPackage('jquery-touch-punch');
-        //     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-
-        // }else{
-        //     // Survey/index need renderPartial
-        //     Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig',$aData, false);
-        // }
     }
 }
