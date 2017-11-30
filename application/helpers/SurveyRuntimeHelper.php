@@ -1471,8 +1471,8 @@ class SurveyRuntimeHelper
             $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->iSurveyid", $restartparam);
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
-
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_clearall.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
+            $thissurvey['include_content'] = './subviews/content/clearall.twig';
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
 

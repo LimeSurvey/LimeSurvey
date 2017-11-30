@@ -9,20 +9,13 @@
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
 
-    (¯`·._.·(¯`·._.· Clear All Layout  ·._.·´¯)·._.·´¯)
+    (¯`·._.·(¯`·._.· Clear All  ·._.·´¯)·._.·´¯)
 
     This file displays the page shown to a respondent when they have cleared the survey (only show "Restart this survey")
-    NOTE: see layout_main.twig for more infos
 #}
 
-{# Call the global layout #}
-{% extends "./layout_global.twig" %}
-
-{# Replace the content block #}
-{% block content %}
-    <div class='{{ aSurveyInfo.class.clearall }}' {{ aSurveyInfo.attr.clearall }}>
-        <div class=" {{ aSurveyInfo.class.clearalldiv }} " {{ aSurveyInfo.attr.clearalldiv }}>
-            <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.clearalla }}" {{ aSurveyInfo.attr.clearalla }}>{{ "Restart this Survey" | t}}</a>
-        </div>
+<div class='{{ aSurveyInfo.class.clearall }}' {{ aSurveyInfo.attr.clearall }}>
+    <div class=" {{ aSurveyInfo.class.clearalldiv }} " {{ aSurveyInfo.attr.clearalldiv }}>
+        <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.clearalla }}" {{ aSurveyInfo.attr.clearalla }}>{{ "Restart this Survey" | t}}</a>
     </div>
-{% endblock %}
+</div>
