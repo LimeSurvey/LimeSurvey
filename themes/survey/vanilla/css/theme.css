@@ -67,7 +67,6 @@ body {
 .top-container {
     width: 100%;
     padding: 0;
-    border-bottom: none;
     color: inherit;
 }
 
@@ -87,9 +86,6 @@ body {
 .top-container .progress {
     height: 21px;
     margin-bottom: 0;
-}
-.top-container .progress {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
 }
 .progress .progress-bar {
     line-height:19px;
@@ -116,14 +112,11 @@ body {
 
 .question-container {
   margin-bottom: 2em;
-  background:white;
-  border-bottom: 1px solid #dbdbdb;
 }
 .question-container-printanswers {
   margin-top: 2em ;
   margin-bottom: 2em ;
   padding-bottom: 2em ;
-  border-bottom: 1px solid rgba(225, 225, 255, 0.6);
 }
 
 .question-title-container {
@@ -151,15 +144,6 @@ body {
 .question-valid-container .text-info{
   font-weight: bold;
 }
-.answer-container, .question-help-container {
-    border-color: #dbdbdb;
-}
-.answer-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-  padding-top: 0.5em;
-  padding-bottom:0.5em;
-}
 
 .ls-answers{
   padding-top:15px;
@@ -167,10 +151,6 @@ body {
   margin-bottom:0;
 }
 
-.question-help-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-}
 /* little icon near the question-help */
 .ls-questionhelp{position: relative;}
 .dir-ltr .ls-questionhelp{margin-left:1.2em;}
@@ -270,7 +250,6 @@ body {
 
     bottom: 0px;
     height: 60px;
-    background-color: rgba(236, 240, 241, 0.2);
 }
 
 /**
@@ -288,24 +267,6 @@ body {
 
 .slider-item {
     min-height: 50px;
-}
-.slider.slider-horizontal .slider-tick.triangle,
-.slider.slider-horizontal .slider-handle.triangle {
-  border-bottom-color: #2c3e50;
-}
-.slider.slider-vertical .slider-tick.triangle,
-.slider.slider-vertical .slider-handle.triangle {
-  border-left-color: #2c3e50;
-  border-right-color: #2c3e50;
-}
-.slider-handle {
-  background-color: #2c3e50;
-}
-.slider-handle.custom::before {
-  color: #2c3e50;
-}
-.slider-tick.custom::before {
-  color: #2c3e50;
 }
 
 
@@ -325,21 +286,18 @@ body {
 }
 /* table color */
 .ls-even{
-background-color:#f9f9f9;
 }
 /* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
-.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
+.ls-group-dynamic .form-control-static{ padding-left:15px;padding-right:15px;}
 /* array by column hover column */
 .table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
 .table-col-hover col.hover /* Actual solution : js only*/
 {
-    background-color: #ecf0f1;
 }
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
     .ls-answers > tbody > tr.ls-even:hover {
-        background-color:#f9f9f9;
     }
 }
 /**
@@ -437,7 +395,7 @@ Responsive navbar-brand image CSS
 }
 
 body .navbar-default .navbar-brand:hover {
-    color: #ffffff;
+
 }
 
 /* Only use <label> to get vertical align easy. Don't want boldness. */
@@ -482,13 +440,12 @@ only screen and (max-width: 760px),
         padding: 0 1em 0 1em;
     }
     table.ls-answers  tr{
-        border: 0 none;
         padding: 1em;
     }
     table.ls-answers  tr th {
         font-size: 1.1em;
         text-align: center;
-        color: #317eac;
+
     }
     /*
         No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
@@ -513,7 +470,6 @@ only screen and (max-width: 760px),
     }
 
     table.ls-answers  tr{
-        border: 1px solid #ccc;
         padding: 0;
         margin-bottom:1em;
     }
@@ -522,7 +478,6 @@ only screen and (max-width: 760px),
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: left;
-        color: #317eac;
     }
 
     .array-by-columns .answertext {
@@ -539,7 +494,6 @@ only screen and (max-width: 760px),
     table.ls-answers td {
         /* Behave  like a "row" */
         min-height: 2em;
-        border: none;
         position: relative;
         /*padding-left: 95%;*/
         padding-bottom: 1em;
@@ -587,7 +541,6 @@ only screen and (max-width: 760px),
 @media only screen and (max-width: 400px) {
 
     .array-by-columns-div .radio-list {
-        border: 1px solid #ccc;
         padding: 1em;
         margin: 1em;
     }
@@ -668,22 +621,6 @@ only screen and (max-width: 760px),
   padding-bottom:0.5em;
 }
 
-/* Arrow */
-/* Will confuse survey takers?
-.questionvalidcontainer:after {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-top-color: #233140;
-    border-width: 0.9em;
-    margin-left: -0.9em;
-}
-*/
 
 /* Asterix */
 .input-error .asterisk {
@@ -728,29 +665,6 @@ div.yes-no .btn-group label {
     font-style: italic;
 }
 
-/*** Divider for Bootstrap ***/
-
-.horizontal-divider.top{
-  border-top: 3px solid #323232;
-}
-.horizontal-divider.bottom{
-  border-bottom: 3px solid #323232;
-}
-
-.vertical-divider.left {
-  border-left: 3px solid #323232;
-}
-.vertical-divider.right {
-  border-right: 3px solid #323232;
-}
-@media (max-width: 800px){
-    .vertical-divider.left {
-    border: none;
-    }
-    .vertical-divider.right {
-    border: none;
-    }
-}
 
 @media only screen and (max-device-width: 760px){
 
@@ -781,10 +695,6 @@ div.yes-no .btn-group label {
     font-size:14px;
   }
 
-  .table-bordered{
-    border:none;
-  }
-
   .ls-answers tbody:last-child tr:last-child{
     margin-bottom:0;
   }
@@ -801,9 +711,6 @@ div.yes-no .btn-group label {
     padding-left:28px;
   }
 
-  .ls-answers.table > tbody + tbody {
-    border-top: none; /*overriding Bootstrap */
-  }
 
   .help-block:last-child{
     margin-bottom:0;
@@ -838,21 +745,4 @@ p.return-to-survey{
     font-size: 50%;
     vertical-align: top;
 }
-}
-
-
-/* Remove question container*/
-#navbar {
-    background: none; border: none;
-}
-.question-title-container, .question-container, .question-valid-container{
-    background: none; border: none;
-}
-.answer-container, .question-container{
-    border: none;
-}
-
-
-.navbar-default .navbar-brand, .navbar-default  {
-    border: none;
 }

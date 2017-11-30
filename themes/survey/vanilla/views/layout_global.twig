@@ -75,10 +75,8 @@
 
     <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
         {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
-            <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
-                <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
-                </div>
-            </div>
+            {# In vanilla, this file is empty, we keep it to have a common layout between all core themes #}
+            {{ include('./subviews/navigation/ajax_indicator.twig') }}
         {% endif %}
 
         {# This used for the pjax system #}
