@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (¯`·._.·(¯`·._.· Vanilla Theme Manifest  ·._.·´¯)·._.·´¯)
+    (¯`·._.·(¯`·._.· Bootswatch Theme Manifest  ·._.·´¯)·._.·´¯)
 
     Base configuration for Vanilla Theme.
     The content of this file is imported into DB when you install the template.
@@ -32,9 +32,9 @@
     -->
     <files>
         <css>
-            <add>css/animate.css</add>
             <add>css/ajaxify.css</add>
             <add>css/theme.css</add>
+            <add>css/custom.css</add>
         </css>
         <js>
             <add>scripts/theme.js</add>

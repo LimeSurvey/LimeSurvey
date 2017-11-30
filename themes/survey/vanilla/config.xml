@@ -32,6 +32,7 @@
     -->
     <files>
         <css>
+            <add>css/ajaxify.css</add>
             <add>css/theme.css</add>
             <add>css/custom.css</add>
         </css>
