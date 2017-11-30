@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
-    Default configuration for the theme.
-    In future versions of LimeSurvey, it will be used to fill a theme table,
-    and to give user control on theme configuration (like variables to use to render the questions, banners, background, etc.)
+
+    (¯`·._.·(¯`·._.· Vanilla Theme Manifest  ·._.·´¯)·._.·´¯)
+
+    Base configuration for Vanilla Theme.
+    The content of this file is imported into DB when you install the template.
+
 -->
 
 <config>
-    <!-- Those metadata will be displayed in the theme configuration page. They are not used for now. -->
+    <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadatas>
-        <name>Vanilla</name>
+        <name>vanilla</name>
+        <title>Bootstrap Vanilla</title>
         <creationDate>16/10/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>3.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Vanilla Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
+        <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
         <last_update>2017-10-16 17:21:00</last_update>
     </metadatas>
 
     <!--
-        Here the list of the css/js files to load.
-        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+        Here the list of the css/js files to add to the template package.
+        About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
     -->
     <files>
         <css>
             <add>css/theme.css</add>
+            <add>css/custom.css</add>
         </css>
         <js>
             <add>scripts/theme.js</add>
+            <add>scripts/ajaxify.js</add>
+            <add>scripts/custom.js</add>
         </js>
         <print_css>
             <add>css/print_theme.css</add>
         </print_css>
     </files>
 
-    <!-- no options in this theme. Check the Advanced Theme to see how to add your own custom options to your theme !-->
+    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <options>
+        <ajaxmode>on</ajaxmode>
+        <brandlogo>on</brandlogo>
+        <brandlogofile>./files/logo.png</brandlogofile>
+        <font>noto</font>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -48,7 +61,7 @@
             <name>bootstrap</name>
         </cssframework>
 
-        <!-- Path of the views files (can be different than pstpl -->
+        <!-- Path of the views files (can be different than views -->
         <viewdirectory>views</viewdirectory>
 
         <!-- Asset manager will copy the whole theme directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
@@ -57,6 +70,8 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
+            <add>pjax</add>
+            <add>font-noto</add>
         </packages>
 
         <!--
@@ -68,6 +83,7 @@
                 <question>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_main.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
                     <file type="view" role="subview">./subviews/nav_bar.twig</file>
@@ -78,39 +94,53 @@
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </question>
 
                 <surveylist>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </surveylist>
 
                 <welcome>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_first_page.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </welcome>
 
                 <completed>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </completed>
 
                 <assessments>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </assessments>
 
                 <error>
@@ -120,8 +150,11 @@
                 <clearall>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_clearall.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </clearall>
 
                 <load>
@@ -129,13 +162,18 @@
                     <file type="view" role="layout">layout_load.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </load>
 
                 <save>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_save.twig</file>
+                    <file type="view" role="subview">outerframe_container.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
+                    <file type="css">.css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
                 </save>
             </screens>
 

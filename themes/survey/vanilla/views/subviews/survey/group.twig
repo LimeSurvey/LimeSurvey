@@ -21,15 +21,15 @@
 #}
 
 <!-- START THE GROUP: {{ aGroup.name }} {{ aGroup.gid }}  -->
-<div id='group-{{ aGroup.gseq }}' class="{{ aGroup.class }}" {{ aSurveyInfo.attr.questiongroup }}>
-    <div class="{{ aSurveyInfo.class.groupcontainer }}" {{ aSurveyInfo.attr.groupcontainer }}>
-        <div class="{{ aSurveyInfo.class.grouptitle }} text-center h3" {{ aSurveyInfo.attr.grouptitle }}>
+<div id='group-{{ aGroup.gseq }}' class="{{ aSurveyInfo.class.groupoutercontainer }}{{ aGroup.class }} space-col" {{ aSurveyInfo.attr.questiongroup }}>
+    <div class="{{ aSurveyInfo.class.groupcontainer }} space-col" {{ aSurveyInfo.attr.groupcontainer }}>
+        <div class="{{ aSurveyInfo.class.grouptitle }} text-center h3 space-col" {{ aSurveyInfo.attr.grouptitle }}>
             {{ aGroup.name }}
         </div>
 
         <!-- Group description -->
         {% if aGroup.description != '' %}
-            <div class="{{ aSurveyInfo.class.groupdesc }} row well" {{ aSurveyInfo.attr.groupdesc }}>
+            <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
                 {{ aGroup.description }}
             </div>
         {% endif %}
@@ -42,7 +42,7 @@
 
         <!-- PRESENT THE QUESTIONS -->
         {% for  aQuestion in aGroup.aQuestions %}
-             {{ include('./subviews/survey/question.twig') }}
+             {{ include('./subviews/survey/question_container.twig') }}
         {% endfor %}
 
         <!-- Hidden inputs -->

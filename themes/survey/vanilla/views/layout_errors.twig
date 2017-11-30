@@ -19,9 +19,12 @@
     It has no obligation to be the same layout as layout.twig, it can be completly different.
 
     NOTE: the main purpose of this file is to show how different the layouts can be. This one has a completely different design.
-    To see it: just try to preview a survey with an empty group.
+          To see it: just try to preview a survey with an empty group.
 
+    NOTE: see layout_main.twig for more infos
 #}
+{{ registerTemplateCssFile('css/errors.css') }}
+{% set aError     = aSurveyInfo.aError    %}
 
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>

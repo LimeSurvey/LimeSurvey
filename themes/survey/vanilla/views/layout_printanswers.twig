@@ -12,6 +12,8 @@
     (¯`·._.·(¯`·._.· Print answers Layout  ·._.·´¯)·._.·´¯)
 
     This file displays the page shown to user when a participant registers for taking a survey.
+
+    NOTE: see layout_main.twig for more infos
 #}
 
 
@@ -21,16 +23,16 @@
 {# Replace the content block #}
 {% block body %}
 
-    {% if (aSurveyInfo.printPdf != 1) %} 
-        {% block nav_bar %} 
-        {% endblock %} 
-    {% endif %} 
+    {% if (aSurveyInfo.printPdf != 1) %}
+        {% block nav_bar %}
+        {% endblock %}
+    {% endif %}
 
     <section>
-        {% if (aSurveyInfo.printPdf != 1) %} 
+        {% if (aSurveyInfo.printPdf != 1) %}
             {# This will display the script and the hidden inputs needed for Expression Manager #}
             {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-        {% endif %} 
+        {% endif %}
 
         {{ include('./subviews/printanswers/printanswers_head.twig') }}
         {{ include('./subviews/printanswers/printanswers_table.twig') }}

@@ -15,6 +15,7 @@
 
     This file renders the list of publicly listed surveys in your LimeSurvey home page.
 
+    NOTE: see layout_main.twig for more infos
 #}
 
 
@@ -23,6 +24,7 @@
 
 {# Replace the content block #}
 {% block content %}
+    {{  registerTemplateCssFile('./css/survey-list.css') }}
 
     <div class="{{ aSurveyInfo.class.surveylistrow }} row" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
 
@@ -30,7 +32,7 @@
         {{ include('./subviews/no_js_alert.twig') }}
 
         <div id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-            {{ image('./files/logo_340.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
+            {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
             {{ aSurveyInfo.sSiteName }}
         </div>
 

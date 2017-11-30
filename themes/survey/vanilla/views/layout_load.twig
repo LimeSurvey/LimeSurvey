@@ -26,6 +26,7 @@
     You can replace those inputs by pure Html (<input type="text" ... />), just be sure to use the correct options (id, classes, required, etc)
     @see: http://www.yiiframework.com/wiki/48/by-example-chtml/ , http://www.yiiframework.com/doc/api/1.1/CHtml
 
+    NOTE: see layout_main.twig for more infos
 #}
 
 
@@ -111,7 +112,7 @@
                         </label>
 
                         <div class='{{ aSurveyInfo.class.passwordrowinput }} col-sm-7'>
-                            <input class='form-control' {{ aSurveyInfo.attr.passwordrowinputi }}  required>
+                            <input class='form-control' {{ aSurveyInfo.attr.passwordrowinputi }} >
                         </div>
                     </div>
 

@@ -1,19 +1,16 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
  <div class="col-md-8">
-    {% if question.subquestions is empty %}
-            {{question.answervalue}}
-    {% else %}
-            {% for subquestionId, subquestion in question.subquestions %}
-                <div class="row">
-                    <div class="col-md-4 text-right">
-                        <b>{{subquestion.question}} ({{subquestion.qid}})</b>
-                    </div>
-                    <div class="col-md-8 text-left">
-                        {{subquestion.answervalue}}
-                    </div>
-                </div>
-            {% endfor %}
-    {% endif %}
+    {% for iterator, rankedvalue in question.answervalues %}
+        <div class="row">
+            <div class="col-md-4 text-right">
+                <b>{{gT('Rank')}} #{{(iterator+1)}}:</b>
+            </div>
+            <div class="col-md-8 text-left">
+                {{rankedvalue}}
+            </div>
+        </div>
+    {% endfor %}
+
 </div>
 {% endblock %}

@@ -19,6 +19,8 @@
     Data are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments.
     To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
     {{ dump(aSurveyInfo.aCompleted ) }}
+
+    NOTE: see layout_main.twig for more infos
 #}
 
 {# Call the global layout #}
@@ -78,7 +80,6 @@
 
                 {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
                 {{ aSurveyInfo.aCompleted.sSurveylsUrl }}
-
             </div>
         </div>
     </form> <!-- main form -->

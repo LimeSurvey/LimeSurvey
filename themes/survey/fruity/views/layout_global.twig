@@ -11,8 +11,9 @@
 
     (¯`·._.·(¯`·._.· Global Layout  ·._.·´¯)·._.·´¯)
 
-    This is the global layout that will be used to displayed most pages (less the error page)
+    This is the global layout. It is used to displayed most pages (less the error page)
     Other layout extend it, and will replace/extends the block "content".
+
 #}
     <!DOCTYPE html>
     <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
@@ -27,7 +28,7 @@
                 </div>
             </div>
         {% endif %}
-    <body>
+
         <div id="beginScripts">
             <###begin###>
         </div>
