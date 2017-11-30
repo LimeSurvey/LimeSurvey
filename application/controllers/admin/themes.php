@@ -823,11 +823,6 @@ class themes extends Survey_Common_Action
             $editfile == $files[0];
         }
 
-        // Standard Support Files
-        // These files may be edited or saved
-        $supportfiles[] = array('name' => 'print_img_radio.png');
-        $supportfiles[] = array('name' => 'print_img_checkbox.png');
-
         // Standard screens
         // Only these may be viewed
         $screens = array();

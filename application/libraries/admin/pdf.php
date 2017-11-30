@@ -669,7 +669,9 @@ class pdf extends TCPDF
      */
     function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
-    $sLogoFileName = Yii::app()->getConfig('pdflogofile');
+
+    $oTemplate = Template::model()->getInstance();
+    $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
     if (!file_exists(K_PATH_IMAGES.$sLogoFileName)) {
         $sLogoFileName = '';
     }
@@ -750,12 +752,12 @@ class pdf extends TCPDF
     if ($bYiiQuestionBorder == 0) {
         $bQuestionBorder = 0;
     }
-	
+
     $bYiiResponseBorder = Yii::app()->getConfig('bPdfResponseBorder');
     if ($bYiiResponseBorder == '0') {
         $bResponseBorder = 0;
     }
-	
+
     $oPurifier = new CHtmlPurifier();
     $sQuestionHTML = str_replace('-oth-', '', $sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
     $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)), ENT_COMPAT);
