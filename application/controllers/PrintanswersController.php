@@ -130,7 +130,8 @@
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
 
             if (empty($sExportType)) {
-                Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
+                $aData['aSurveyInfo']['include_content'] = './subviews/content/printanswers.twig';
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
             } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
@@ -148,7 +149,8 @@
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
                 $aData['aSurveyInfo']['printPdf'] = 1;
-                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
+                $aData['aSurveyInfo']['include_content'] = './subviews/content/printanswers.twig';
+                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, true);
                 Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
                 $oPDF->writeHTML($html, true, false, true, false, '');
 
