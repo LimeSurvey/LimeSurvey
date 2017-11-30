@@ -990,7 +990,7 @@ class SurveyRuntimeHelper
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
                 $this->aSurveyInfo['include_content'] = './subviews/content/save.twig';
-                Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);                
+                Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             }
 
             $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(true);
@@ -1048,7 +1048,8 @@ class SurveyRuntimeHelper
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
                 $this->completed = $completed;
 
-                Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit_preview.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
+                $this->aSurveyInfo['include_content'] = './subviews/content/submit_preview.twig';
+                Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
 
                 //Update the token if needed and send a confirmation email
