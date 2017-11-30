@@ -54,7 +54,7 @@
 
                 <!-- Outer Frame Container -->
                 {% block content %}
-                    {% include './subviews/layout/outerframe.twig' with {'include_content': ''} %}
+                    {% include './subviews/layout_content/outerframe.twig' with {'include_content': aSurveyInfo.include_content} %}
                 {% endblock %}
 
                 {# Bootstrap alert modal #}
