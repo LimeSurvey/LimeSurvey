@@ -12,9 +12,59 @@
     (¯`·._.·(¯`·._.· Global Layout  ·._.·´¯)·._.·´¯)
 
     This is the global layout that will be used to displayed most pages (less the error page)
-    Other layout extend it, and will replace/extends the block "content".
+    If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
+    This is different from the old LimeSurvey template engine, where you had to provide every one of the pstpl files.
+    Here, you must have a file called main_layout.twig (called from SurveyRuntimeHelper::run() ).
+    Other than that, you're free to organize your files and inclusions as you want.
 
-    NOTE: see layout_main.twig for more infos
+
+
+    (¯`·._.·(¯`·._.· Bootstrap ·._.·´¯)·._.·´¯)
+
+    LimeSurvey uses Bootstrap.
+    See: https://getbootstrap.com
+
+    This template is an instance of Bootswatch Theme Flatly.
+    See: https://bootswatch.com/
+
+
+
+    (¯`·._.·(¯`·._.· Twig Engine  ·._.·´¯)·._.·´¯)
+
+    The template engine uses Twig.
+    See: http://twig.sensiolabs.org/
+
+    The main variable is aSurveyInfo. It's an array containing the main information about the survey.
+    aSurveyInfo also contains other needed arrays, such as aNavigator, or aQuestionGroups (which contain aQuestions), etc.
+
+    If you want to see what is availabe in aSurveyInfo, turn debug mode on in application/config.php, and copy the following line to the end of the <body> element below:
+    {{ dump(aSurveyInfo) }}
+
+    To echo a variable, just insert                      : {{ variable }}
+    To translate a string, just insert                   : {{ string | t }}
+
+    NOTE: aSurveyInfo should be cleaned to remove the unnecessary data.
+
+
+    (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
+
+    For security reason, Twig is in a sandBox.
+    About sandBox, see: http://twig.sensiolabs.org/doc/2.x/api.html#sandbox-extension
+
+    Available functions/Object Methods are defined in internal.php: components => twigRenderer
+    Eg:
+         Functions : 'include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses', 'getShowqnumcode', 'intval'
+
+         Methods   :
+                    - CHtml::textfield() (and: form, link, emailField, beginForm, endForm, dropDownList,htmlButton)
+                    - Survey::getAllLanguages()
+                    - LSHttpRequest::getParam()
+
+    If you need to add simple functions or static methods, just add them to internal.php.
+    If you need to add complex process, use application/core/LS_Twig_Extension.php (more help/comments there)
+
+
+    NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.limesurvey.org/my_view_page.php
 #}
 
 <!DOCTYPE html>
@@ -54,7 +104,7 @@
 
                 <!-- Outer Frame Container -->
                 {% block content %}
-                    {% include './subviews/layout_content/outerframe.twig' with {'include_content': aSurveyInfo.include_content} %}
+                    {% include './subviews/content/outerframe.twig' with {'include_content': aSurveyInfo.include_content} %}
                 {% endblock %}
 
                 {# Bootstrap alert modal #}

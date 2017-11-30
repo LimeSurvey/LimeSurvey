@@ -451,7 +451,8 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->aMoveResult['message'];
         }
 
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_main.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
+        $this->aSurveyInfo['include_content'] = './subviews/content/main.twig';
+        Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
 
 
