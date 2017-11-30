@@ -37,7 +37,7 @@ var prepare = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
 
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
-            
+
             if(itemValue == null || itemValue == undefined){
                 itemValue = inheritPossible ? 'inherit' : false;
                 optionObject[$(item).attr('name')] = itemValue;
@@ -121,7 +121,7 @@ var prepare = function(){
 
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
-            
+
             if($(this).hasClass('selector_image_selector')){
                 if($(this).val() == 'inherit'){
                     $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
@@ -145,35 +145,7 @@ var prepare = function(){
         });
 
 
-        // Fruity Theming
-        if($('#simple_edit_add_css').length>0){
-            var currentThemeObject = 'inherit';
-
-            if($('#TemplateConfiguration_files_css').val() !== 'inherit'){
-
-                currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/sea_green.css', 'css/theme.css']};
-                try{
-                    currentThemeObject = JSON.parse($('#TemplateConfiguration_files_css').val());
-                } catch(e){ console.error('No valid monochrom theme field!'); }
-
-                $('#simple_edit_add_css').val(currentThemeObject.add[2]);
-            }
-
-
-            $('#simple_edit_add_css').on('change', function(evt){
-                if($('#simple_edit_add_css').val() === 'inherit'){
-                    $('#TemplateConfiguration_files_css').val('inherit');
-                } else {
-
-                    currentThemeObject = {};
-                    currentThemeObject.add = ['css/animate.css','css/ajaxify.css', $('#simple_edit_add_css').val(), 'css/theme.css'];
-                    $('#TemplateConfiguration_files_css').val(JSON.stringify(currentThemeObject));
-                }
-            })
-        }
-
-
-        // Fruity Fonts
+        // Fonts
         if($('#simple_edit_font').length>0){
             var currentFontObject = 'inherit';
             optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
@@ -212,7 +184,7 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
     prepare().then(function(runsesolve){
         $('.simple-template-edit-loading').remove();
     });
-    
+
     $('.selector__open_lightbox').on('click', function(e){
         e.preventDefault();
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
@@ -228,7 +200,7 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         form: '#upload_frontend',
         input: '#upload_image_frontend',
         progress: '#upload_progress_frontend',
-        onSuccess : function(){ 
+        onSuccess : function(){
             var triggerEvent = new Event('pjax:load');
             triggerEvent.url =  window.location.href;
             window.dispatchEvent( triggerEvent );
