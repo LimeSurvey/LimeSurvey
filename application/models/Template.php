@@ -48,6 +48,9 @@ class Template extends LSActiveRecord
     /** @var array $aTemplatesInStandardDir cache for the method getTemplateInStandard */
     public static $aTemplatesInStandardDir = null;
 
+    /** @var array $aTemplatesFileFolder cache for the method getTemplateFilesFolder */
+    public static $aTemplatesFileFolder = null;
+
     /** @var Template - The instance of template object */
     private static $instance;
 
@@ -279,6 +282,30 @@ class Template extends LSActiveRecord
 
     }
 
+
+
+    /**
+     * This function returns the complete URL path to a given template name
+     *
+     * @param string $sTemplateName
+     * @return string template url
+     */
+    public static function getTemplatesFileFolder($sTemplateName = "")
+    {
+        static $aTemplatesFileFolder = array();
+        if (isset($aTemplatesFileFolder[$sTemplateName])) {
+            return $aTemplatesFileFolder[$sTemplateName];
+        }
+
+        $oTemplate = self::model()->findByPk($sTemplateName);
+
+        if (is_object($oTemplate)) {
+            return $aTemplatesFileFolder[$sTemplateName] = $oTemplate->files_folder;
+        } else {
+            return '';
+        }
+
+    }
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid

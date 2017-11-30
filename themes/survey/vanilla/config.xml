@@ -81,10 +81,10 @@
         <template_editor>
             <screens>
                 <question>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="layout">./subviews/content/main.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
                     <file type="view" role="subview">./subviews/nav_bar.twig</file>
@@ -100,10 +100,10 @@
                 </question>
 
                 <surveylist>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="layout">./subviews/content/survey_list.twig</file>
+                    <file type="view" role="content">./subviews/content/survey_list.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">.css/custom.css</file>
@@ -111,10 +111,10 @@
                 </surveylist>
 
                 <welcome>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/firstpage.twig</file>
+                    <file type="view" role="content">./subviews/content/firstpage.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
@@ -126,10 +126,10 @@
                 </welcome>
 
                 <completed>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/submit.twig</file>
+                    <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">.css/custom.css</file>
@@ -137,10 +137,10 @@
                 </completed>
 
                 <assessments>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/submit.twig</file>
+                    <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
@@ -153,10 +153,10 @@
                 </error>
 
                 <clearall>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/clearall.twig</file>
+                    <file type="view" role="content">./subviews/content/clearall.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">.css/custom.css</file>
@@ -164,10 +164,10 @@
                 </clearall>
 
                 <load>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/load.twig</file>
+                    <file type="view" role="content">./subviews/content/load.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">.css/custom.css</file>
@@ -175,10 +175,10 @@
                 </load>
 
                 <save>
-                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="subview">./subviews/content/save.twig</file>
+                    <file type="view" role="content">./subviews/content/save.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">.css/custom.css</file>

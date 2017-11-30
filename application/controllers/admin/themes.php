@@ -909,8 +909,9 @@ class themes extends Survey_Common_Action
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
-        $files       = $oEditedTemplate->getValidScreenFiles("view", $screenname);
-        $sLayoutFile = $oEditedTemplate->getLayoutForScreen($screenname);
+        $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
+        $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
+        $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
 
         switch ($screenname) {
 
@@ -1060,21 +1061,11 @@ class themes extends Survey_Common_Action
                 break;
         }
 
-        try {
-            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor($sLayoutFile, array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-        } catch (Twig_Error_Syntax $ex) {
-            $myoutput = sprintf(
-                gT('No Twig output due to error in Twig theme: %s'),
-                $ex->getMessage()
-            );
-            Yii::app()->user->setFlash(
-                'error',
-                sprintf(
-                    gT('Twig syntax error: %s'),
-                    $ex->getMessage()
-                )
-            );
-        }
+        // NOTE: Twig already render return error, no try catch needed
+        $thissurvey['include_content'] = $sContentFile;
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor($sLayoutFile, array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+
+
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles, $jsfiles);

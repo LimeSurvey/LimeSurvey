@@ -88,9 +88,36 @@ class TemplateManifest extends TemplateConfiguration
 
         $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
+
         foreach ($filesFromXML as $file) {
 
             if ($file->attributes()->role == "layout") {
+                return (string) $file;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Returns the content file name for a given screen
+     *
+     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @return  string  the file name
+     */
+    public function getContentForScreen($sScreen)
+    {
+        if (empty($this->templateEditor)) {
+            return false;
+        }
+
+        $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
+
+        foreach ($filesFromXML as $file) {
+
+            if ($file->attributes()->role == "content") {
                 return (string) $file;
             }
         }
