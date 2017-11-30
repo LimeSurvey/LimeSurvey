@@ -144,6 +144,32 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
 
+
+        //Bootstwatch theming
+        if($('#simple_edit_cssframework').length>0){
+            var currentThemeObject = 'inherit';
+            if($('#TemplateConfiguration_cssframework_css').val() !== 'inherit'){
+                currentThemeObject = {"replace" : [['css/bootstrap.css','']]};
+                try{
+                    currentThemeObject = JSON.parse($('#TemplateConfiguration_cssframework_css').val());
+                } catch(e){ console.error('No valid css framework theme field!'); }
+
+                $('#simple_edit_cssframework').val(currentThemeObject.replace[0][1]);
+            }
+
+
+            $('#simple_edit_cssframework').on('change', function(evt){
+                if($('#simple_edit_cssframework').val() === 'inherit'){
+                    $('#TemplateConfiguration_cssframework_css').val('inherit');
+                } else {
+                    currentThemeObject = {};
+                    currentThemeObject.replace = [["css/bootstrap.css",$('#simple_edit_cssframework').val()]];
+                    $('#TemplateConfiguration_cssframework_css').val(JSON.stringify(currentThemeObject));
+                }
+
+            })
+        }
+
     }
     setTimeout(function(){deferred.resolve()},650);
 
