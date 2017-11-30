@@ -53,7 +53,7 @@
                 {% endblock %}
 
                 <!-- Outer Frame Container -->
-                <div class="{{ aSurveyInfo.class.outerframe }} container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
+                <div class="{{ aSurveyInfo.class.outerframe }} container" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
 
                     <!-- Main Row -->
                     <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
@@ -68,7 +68,7 @@
                         </div> <!-- main col -->
                     </div> <!-- main row -->
                 </div> <!-- outer frame container -->
-                
+
                 {# Bootstrap alert modal #}
                 {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
