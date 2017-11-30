@@ -1874,7 +1874,8 @@ function checkCompletedQuota($surveyid, $return = false)
             header("Location: ".$sUrl);
         }
     }
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+    $thissurvey['include_content'] = './subviews/content/quotas.twig';
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
