@@ -95,7 +95,7 @@
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </question>
 
@@ -106,7 +106,7 @@
                     <file type="view" role="content">./subviews/content/survey_list.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </surveylist>
 
@@ -121,7 +121,7 @@
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </welcome>
 
@@ -132,7 +132,7 @@
                     <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </completed>
 
@@ -144,7 +144,7 @@
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </assessments>
 
@@ -159,7 +159,7 @@
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </clearall>
 
@@ -170,7 +170,7 @@
                     <file type="view" role="content">./subviews/content/load.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </load>
 
@@ -181,7 +181,7 @@
                     <file type="view" role="content">./subviews/content/save.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
-                    <file type="css">.css/custom.css</file>
+                    <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </save>
             </screens>
