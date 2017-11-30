@@ -159,7 +159,7 @@ class TestHelper extends TestCase
         $this->assertTrue($isMysql, 'This test only works on MySQL');
 
         // Get database name.
-        preg_match("/dbname=([^;]*)/", \Yii::app()->db->connectionString, $matches);
+        preg_match("/dbname=([^;]*)/", $config['components']['db']['connectionString'], $matches);
         $this->assertEquals(2, count($matches));
         $oldDatabase = $matches[1];
 
@@ -194,7 +194,10 @@ class TestHelper extends TestCase
             $config['components']['db']['connectionString']
         );
         \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
-        return true;
+        $db->setActive(true);
+        \Yii::app()->db->schema->getTables();
+        \Yii::app()->db->schema->refresh();
+        return \Yii::app()->getDb();
     }
 
     /**
@@ -216,12 +219,12 @@ class TestHelper extends TestCase
      */
     public function updateDbFromVersion($version)
     {
-        $result = $this->connectToNewDatabase('__test_update_helper_' . $version);
-        $this->assertTrue($result, 'Could connect to new database');
+        $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
+        $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
+        $inst->connection = $connection;
 
         // Check SQL file.
         $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
@@ -273,11 +276,14 @@ class TestHelper extends TestCase
      * @param string $databaseName
      * @return void
      */
-    public function teardownDatabase($databaseName)
+    public function teardownDatabase($databaseName, $connection = null)
     {
-        $dbo = \Yii::app()->getDb();
+        if (is_null($connection)) {
+            $connection = \Yii::app()->getDb();
+        }
         try {
-            $dbo->createCommand('DROP DATABASE ' . $databaseName)->execute();
+            $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
+            $this->assertTrue(true);
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
             // Only this error is OK.

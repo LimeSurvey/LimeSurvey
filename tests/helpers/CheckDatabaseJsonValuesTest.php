@@ -35,8 +35,8 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $db = \Yii::app()->getDb();
 
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_check_database_json');
-        $this->assertTrue($result, 'Could connect to new database');
+        $connection = self::$testHelper->connectToNewDatabase('__test_check_database_json');
+        $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');

@@ -164,10 +164,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'title' => 'string not null', // varchar(255) in postgres
                 'message' => 'text not null',
                 'status' => "string(15) not null default 'new' ",
-                'importance' => 'integer default 1',
+                'importance' => 'integer not null default 1',
                 'display_class' => "string(31) default 'default'",
-                'created' => 'datetime not null',
-                'first_read' => 'datetime null'
+                'created' => 'datetime',
+                'first_read' => 'datetime'
             ));
             $oDB->createCommand()->createIndex('{{notif_index}}', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>259), "stg_name='DBVersion'");
@@ -414,8 +414,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 313) {
             $oTransaction = $oDB->beginTransaction();
 
-            addColumn('{{surveymenu_entries}}', 'active', "boolean DEFAULT '0'");
-            addColumn('{{surveymenu}}', 'active', "boolean DEFAULT '0'");
+            addColumn('{{surveymenu_entries}}', 'active', "boolean NOT NULL DEFAULT '0'");
+            addColumn('{{surveymenu}}', 'active', "boolean NOT NULL DEFAULT '0'");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
             $oDB->createCommand()->update('{{surveymenu}}', array('active'=>1));
 
@@ -686,7 +686,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(128) NOT NULL');
+            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168) NOT NULL');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
@@ -943,7 +943,7 @@ function createSurveyMenuTable293($oDB)
         "survey_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
         "level" => "int DEFAULT '0'",
-        "title" => "character varying(255)  NOT NULL DEFAULT ''",
+        "title" => "string(168) NOT NULL DEFAULT ''",
         "description" => "text ",
         "changed_at" => "datetime NULL",
         "changed_by" => "int NOT NULL DEFAULT '0'",
@@ -973,8 +973,8 @@ function createSurveyMenuTable293($oDB)
         "menu_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
         "name" => "character varying(255)  NOT NULL DEFAULT ''",
-        "title" => "character varying(255)  NOT NULL DEFAULT ''",
-        "menu_title" => "character varying(255)  NOT NULL DEFAULT ''",
+        "title" => "character varying(168)  NOT NULL DEFAULT ''",
+        "menu_title" => "character varying(168)  NOT NULL DEFAULT ''",
         "menu_description" => "text ",
         "menu_icon" => "character varying(255)  NOT NULL DEFAULT ''",
         "menu_icon_type" => "character varying(255)  NOT NULL DEFAULT ''",
@@ -1048,9 +1048,9 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "title" =>  "string(192)  NOT NULL DEFAULT ''",
         "position" =>  "string(192)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
-        "changed_at" =>  "datetime NULL",
+        "changed_at" =>  "datetime",
         "changed_by" =>  "integer NOT NULL DEFAULT '0'",
-        "created_at" =>  "datetime DEFAULT NULL",
+        "created_at" =>  "datetime",
         "created_by" =>  "integer NOT NULL DEFAULT '0'",
     ));
     $oDB->createCommand()->createIndex('{{idx_ordering}}', '{{surveymenu}}', 'ordering');
@@ -1095,7 +1095,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "menu_id" => "integer DEFAULT NULL",
         "user_id" => "integer DEFAULT NULL",
         "ordering" => "integer DEFAULT '0'",
-        "name" => "string(192)  NOT NULL DEFAULT ''",
+        "name" => "string(168)  NOT NULL DEFAULT ''",
         "title" => "string(168)  NOT NULL DEFAULT ''",
         "menu_title" => "string(168)  NOT NULL DEFAULT ''",
         "menu_description" => "text ",

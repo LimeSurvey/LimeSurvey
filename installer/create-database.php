@@ -22,12 +22,12 @@ function createDatabase($oDB){
     try{
         //answers table
         $oDB->createCommand()->createTable('{{answers}}', array(
-            'qid' => 'integer not null',
-            'code' => 'string(5) not null',
-            'answer' => 'text',
-            'sortorder' => 'integer',
-            'assessment_value' => 'integer',
-            'language' => "string(20) NOT NULL DEFAULT 'en'"	,
+            'qid' => 'integer NOT NULL',
+            'code' => 'string(5) NOT NULL',
+            'answer' => 'text NOT NULL',
+            'sortorder' => 'integer NOT NULL',
+            'assessment_value' => 'integer NOT NULL',
+            'language' => "string(20) NOT NULL DEFAULT 'en'",
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ));
 
@@ -37,14 +37,14 @@ function createDatabase($oDB){
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
             'id' =>         'autoincrement',
-            'sid' =>        'integer DEFAULT 0',
-            'scope' =>      'string(5)'	,
-            'gid' =>        'integer DEFAULT 0',
-            'name' =>       'text',
-            'minimum' =>    'string(50)',
-            'maximum' =>    'string(50)',
-            'message' =>    'text',
-            'language' =>   "string(20) DEFAULT 'en'",
+            'sid' =>        'integer NOT NULL DEFAULT 0',
+            'scope' =>      'string(5) NOT NULL'	,
+            'gid' =>        'integer NOT NULL DEFAULT 0',
+            'name' =>       'text NOT NULL',
+            'minimum' =>    'string(50) NOT NULL',
+            'maximum' =>    'string(50) NOT NULL',
+            'message' =>    'text NOT NULL',
+            'language' =>   "string(20) NOT NULL DEFAULT 'en'",
             'composite_pk' => array('id', 'language') 
         )); 
  
@@ -138,11 +138,11 @@ function createDatabase($oDB){
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
-            'lid' =>  "integer DEFAULT NULL",
+            'lid' =>  "integer NOT NULL DEFAULT 0",
             'code' =>  "string(5) NOT NULL default ''",
             'title' =>  "text",
             'sortorder' =>  "integer NOT NULL",
-            'language' =>  "string(20) default 'en'",
+            'language' =>  "string(20) NOT NULL DEFAULT 'en'",
             'assessment_value' =>  "integer NOT NULL default '0'",
         ));
 
@@ -155,8 +155,8 @@ function createDatabase($oDB){
         // labelsets
         $oDB->createCommand()->createTable('{{labelsets}}', array(
             'lid' => 'pk',
-            'label_name' =>  "string(100) default ''",
-            'languages' =>  "string(200) default 'en'",
+            'label_name' =>  "string(100) NOT NULL DEFAULT ''",
+            'languages' =>  "string(200) DEFAULT 'en'",
         ));
 
 
@@ -170,9 +170,9 @@ function createDatabase($oDB){
             'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
             'importance' =>  "integer NOT NULL DEFAULT 1",
             'display_class' =>  "string(31) DEFAULT 'default' ",
-            'hash' =>  "string(64) NULL ",
-            'created' =>  "datetime NULL",
-            'first_read' =>  "datetime NULL",
+            'hash' =>  "string(64)",
+            'created' =>  "datetime",
+            'first_read' =>  "datetime",
         ));
 
         $oDB->createCommand()->createIndex('{{notifications_pk}}', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
@@ -245,7 +245,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{participant_shares}}', array(
             'participant_id' =>  "string(50) NOT NULL",
             'share_uid' =>  "integer NOT NULL",
-            'date_added' =>  "datetime NULL",
+            'date_added' =>  "datetime NOT NULL",
             'can_edit' =>  "string(5) NOT NULL",
         ));
 
@@ -274,7 +274,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'active' =>  "integer NOT NULL default 0",
+            'active' =>  "boolean NOT NULL default 0",
             'version' =>  "string(32) NULL",
         ));
 
@@ -383,7 +383,7 @@ function createDatabase($oDB){
             'ip' => "text NOT NULL",
             'saved_thisstep' => "text NOT NULL",
             'status' => "string(1) NOT NULL default ''",
-            'saved_date' => "datetime NULL",
+            'saved_date' => "datetime NOT NULL",
             'refurl' => "text",
         ));
 
@@ -442,13 +442,13 @@ function createDatabase($oDB){
             'name' => "string(128)  NOT NULL",
             'ordering' => "integer NULL DEFAULT '0'",
             'level' => "integer NULL DEFAULT '0'",
-            'title' => "string(168)  NOT NULL DEFAULT ''",
+            'title' => "string(192)  NOT NULL DEFAULT ''",
             'position' => "string(192)  NOT NULL DEFAULT 'side'",
             'description' => "text ",
-            'active' => "integer NOT NULL DEFAULT '0'",
-            'changed_at' => "datetime NULL",
+            'active' => "boolean NOT NULL DEFAULT '0'",
+            'changed_at' => "datetime",
             'changed_by' => "integer NOT NULL DEFAULT '0'",
-            'created_at' => "datetime NULL",
+            'created_at' => "datetime",
             'created_by' => "integer NOT NULL DEFAULT '0'",
         ));
 
@@ -468,7 +468,7 @@ function createDatabase($oDB){
             'menu_id' =>  "integer NULL",
             'user_id' =>  "integer NULL",
             'ordering' =>  "integer DEFAULT '0'",
-            'name' =>  "string(192)  NOT NULL DEFAULT ''",
+            'name' =>  "string(168)  NOT NULL DEFAULT ''",
             'title' =>  "string(168)  NOT NULL DEFAULT ''",
             'menu_title' =>  "string(168)  NOT NULL DEFAULT ''",
             'menu_description' =>  "text ",
@@ -485,7 +485,7 @@ function createDatabase($oDB){
             'data' =>  "text ",
             'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
             'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-            'active' =>  "integer NOT NULL DEFAULT '0'",
+            'active' =>  "boolean NOT NULL DEFAULT '0'",
             'changed_at' =>  "datetime NULL",
             'changed_by' =>  "integer NOT NULL DEFAULT '0'",
             'created_at' =>  "datetime NULL",
@@ -644,7 +644,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
-            'surveyls_title' => "string(192) NOT NULL",
+            'surveyls_title' => "string(200) NOT NULL",
             'surveyls_description' => "TEXT NULL",
             'surveyls_welcometext' => "TEXT NULL",
             'surveyls_endtext' => "TEXT NULL",
@@ -805,7 +805,7 @@ function createDatabase($oDB){
             'full_name' => "string(50) NOT NULL",
             'parent_id' => "integer NOT NULL",
             'lang' => "string(20)",
-            'email' => "string(192)",
+            'email' => "string(254)",
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",

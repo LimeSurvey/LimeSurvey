@@ -232,7 +232,7 @@ CREATE TABLE `prefix_permissions` (
 CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
-  `active` int(1) NOT NULL default '0',
+  `active` tinyint(1) NOT NULL default '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -282,7 +282,7 @@ CREATE TABLE `prefix_questions` (
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   `scale_id` int(11) NOT NULL default '0',
-  `same_default` int(11) NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
+  `same_default` int(11) NOT NULL default '0',
   `relevance` text,
   `modulename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`qid`,`language`)
@@ -358,7 +358,7 @@ CREATE TABLE `prefix_saved_control` (
 CREATE TABLE `prefix_sessions`(
   `id` varchar(32) NOT NULL,
   `expire` int(11) DEFAULT NULL,
-  `data` longblob,
+  `data` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -559,13 +559,13 @@ CREATE TABLE `prefix_users` (
 --
 CREATE TABLE IF NOT EXISTS `prefix_boxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `position` int(11) DEFAULT NULL COMMENT 'position of the box',
-  `url` text NOT NULL COMMENT 'URL the box points',
-  `title` text NOT NULL COMMENT 'Box title',
-  `ico` varchar(255) DEFAULT NULL COMMENT 'the ico name in font',
-  `desc` text NOT NULL COMMENT 'Box description',
-  `page` text NOT NULL COMMENT 'Page name where the box should be shown ',
-  `usergroup` INT(11) NOT NULL COMMENT  'Those boxes will be shown for that user group',
+  `position` int(11) DEFAULT NULL,
+  `url` text NOT NULL,
+  `title` text NOT NULL,
+  `ico` varchar(255) DEFAULT NULL,
+  `desc` text NOT NULL,
+  `page` text NOT NULL,
+  `usergroup` INT(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
