@@ -1,8 +1,10 @@
 'use strict';
 var switchInnerHTML = function (oldEl, newEl, opt) {
         opt = opt || {};
-        oldEl.innerHTML = ' ';
-        oldEl.innerHTML = newEl.innerHTML;
+        // really remove all Events!
+        var parent = $(oldEl).parent();
+        $(oldEl).off().remove();
+        parent.append(newEl);
         this.onSwitch();
     },
     singletonPjax = function () {
@@ -24,9 +26,10 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#pjax-content': switchInnerHTML,
                     '#breadcrumb-container': switchInnerHTML,
                 },
-                // debug: true,
+                debug: true,
                 forceRedirectOnFail: true,
-                reRenderCSS : true
+                reRenderCSS : true,
+                scriptloadtimeout: 1500
             });
         }
 
@@ -35,6 +38,11 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
     forceRefreshPjax = function () {
         window.activePjax = null;
         singletonPjax();
+    },
+    unsetPjax = function (){
+        window.activePjax.parseDOMtoUnload();
+        $('a.pjax').off('click');
+        window.activePjax = null;
     },
     triggerLoadUrl = function(e){        
         singletonPjax().loadUrl(e.url, singletonPjax().options);
@@ -50,9 +58,11 @@ window.removeEventListener('pjax:reload', forceRefreshPjax);
 window.removeEventListener('pjax:create', singletonPjax);
 window.removeEventListener('pjax:refresh', reparseDocument);
 window.removeEventListener('pjax:load', triggerLoadUrl);
+window.removeEventListener('pjax:unload', unsetPjax);
 
 window.addEventListener('pjax:reload', forceRefreshPjax);
 window.addEventListener('pjax:create', singletonPjax);
 window.addEventListener('pjax:refresh', reparseDocument);
 window.addEventListener('pjax:load', triggerLoadUrl);
+window.addEventListener('pjax:unload', unsetPjax);
 

@@ -5,6 +5,7 @@
 (function( jQuery, window ) {
 "use strict";
 
+jQuery.migrateMute = true
 
 jQuery.migrateVersion = "3.0.0";
 

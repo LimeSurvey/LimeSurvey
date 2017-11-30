@@ -36394,31 +36394,41 @@ $(document).on('ready', function () {
         });
         global.vueGeneralApp = vueGeneralApp;
     }
-
-    $(document).on('pjax:send', (e) => {
-        $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
-        $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
-        $('#pjax-file-load-container').find('div').css({
-            'width': '20%',
-            'display': 'block'
-        });
-    });
-    $(document).on('pjax:error', (event) => {
-        console.log(event);
-    });
-    
-    $(document).on('pjax:success', (e) => {
-        $('#pjax-file-load-container').find('div').css('width', '100%');
-        $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
-        $(document).trigger('vue-sidemenu-update-link');
-        setTimeout(function () {
-            $('#pjax-file-load-container').find('div').css({
-                'width': '0%',
-                'display': 'none'
-            });
-        }, 2200);
-    });
 });
+
+let reloadcounter = 5;
+
+$(document).off('pjax:send.aploading').on('pjax:send.aploading', (e) => {
+    $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
+    $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
+    $('#pjax-file-load-container').find('div').css({
+        'width': '20%',
+        'display': 'block'
+    });
+    reloadcounter--;
+});
+
+$(document).off('pjax:error.aploading').on('pjax:error.aploading', (event) => {
+    console.log(event);
+});
+
+$(document).off('pjax:complete.aploading').on('pjax:complete.aploading', (e) => {
+    if(reloadcounter === 0){
+        location.reload();
+    }
+});
+$(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', (e) => {
+    $('#pjax-file-load-container').find('div').css('width', '100%');
+    $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
+    // $(document).trigger('vue-sidemenu-update-link');
+    setTimeout(function () {
+        $('#pjax-file-load-container').find('div').css({
+            'width': '0%',
+            'display': 'none'
+        });
+    }, 2200);
+});
+
 
 // const topmenu = new Vue(
 //   {  

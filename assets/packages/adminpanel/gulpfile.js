@@ -143,6 +143,10 @@ gulp.task('compress', function (cb) {
 });
 
 gulp.task('compresslibs', function (cb) {
+    pump([
+        gulp.src('lib/*.js'),
+        gulp.dest('build')
+    ],
     pump(
         [
             gulp.src('lib/*.js'),
@@ -152,8 +156,9 @@ gulp.task('compresslibs', function (cb) {
             }),
             uglify(),
             rename({ suffix: '.min' }),
-            gulp.dest('lib')
+            gulp.dest('build')
         ],
         cb
+    )
     );
 });
