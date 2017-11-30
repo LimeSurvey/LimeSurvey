@@ -50,8 +50,8 @@
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
 
-
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
+            $aData['aSurveyInfo']['include_content'] = './subviews/content/survey_list.twig';
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('aSurveyInfo'=>$aData), false);
 
         }
         /**
