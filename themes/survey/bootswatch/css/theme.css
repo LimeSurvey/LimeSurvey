@@ -1,9 +1,8 @@
 body {
      padding-bottom: 10px;
-     background-color: #f6f6f6;
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
-    
+
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }
@@ -39,7 +38,6 @@ body {
     width: 100%;
     padding: 0;
     border-bottom: none;
-    background-color: #ecf0f1;
     color: inherit;
 
 }
@@ -57,9 +55,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     height: 21px;
     margin-bottom: 0;
 }
-.top-container .progress {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
-}
+
 .progress .progress-bar {
     line-height:19px;
 }
@@ -239,7 +235,6 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 
     bottom: 0px;
     height: 60px;
-    background-color: rgba(236, 240, 241, 0.2);
 }
 
 /**
@@ -254,32 +249,6 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .js td.radio-item,.js td.checkbox-item{
     cursor: pointer;
 }
-/* slider : take bg-primary color */
-.bg-primary {
-  background-color: #2c3e50;
-}
-.slider-item {
-    min-height: 50px;
-}
-.slider.slider-horizontal .slider-tick.triangle,
-.slider.slider-horizontal .slider-handle.triangle {
-  border-bottom-color: #2c3e50;
-}
-.slider.slider-vertical .slider-tick.triangle,
-.slider.slider-vertical .slider-handle.triangle {
-  border-left-color: #2c3e50;
-  border-right-color: #2c3e50;
-}
-.slider-handle {
-  background-color: #2c3e50;
-}
-.slider-handle.custom::before {
-  color: #2c3e50;
-}
-.slider-tick.custom::before {
-  color: #2c3e50;
-}
-
 
 /* Show more the heading in table */
 .ls-answers .ls-heading th{font-weight:700}
