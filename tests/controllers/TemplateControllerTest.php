@@ -36,7 +36,7 @@ class TemplateControllerTest extends TestBaseClass
             exec('rm -r ' . $newdirname);
         }
 
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        $config = require(\Yii::app()->getBasePath() . '/config/config-defaults.php');
         // Simulate a POST.
         $_POST['newname'] = $newname;
         // NB: If default theme is not installed, this test will fail.
@@ -49,7 +49,12 @@ class TemplateControllerTest extends TestBaseClass
         $flashes = \Yii::app()->user->getFlashes();
         $this->assertEmpty($flashes, 'No flash messages');
 
-        $template = \Template::model()->find('name = \'foobartest\'');
+        $template = \Template::model()->find(
+            sprintf(
+                'name = \'%s\'',
+                $templateName
+            )
+        );
         $this->assertNotEmpty($template);
         $this->assertEquals($templateName, $template->name);
 
