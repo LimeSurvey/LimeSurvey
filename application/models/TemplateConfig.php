@@ -899,6 +899,8 @@ class TemplateConfig extends CActiveRecord
             $jFiled      = json_encode($oFiled);
         }
 
+        var_dump($jFiled);
+
         return $jFiled;
     }
 

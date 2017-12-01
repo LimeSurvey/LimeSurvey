@@ -1,27 +1,39 @@
 <?php
+
 /**
-* General container for create survey action
+ * General container for create survey action
  * @var AdminController $this
  * @var Survey $oSurvey
-*/
-?>
+ */
 
-<?php App()->getClientScript()->registerScript("createSurveyText-variables", "
-    var standardthemerooturl = '<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl');?>';
-    var jsonUrl = '';
-    var sAction = '';
-    var sParameter = '';
-    var sTargetQuestion = '';
-    var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.")."'
-    var sURLParameters = '';
-    var sAddParam = '';
-", LSYii_ClientScript::POS_BEGIN);
+$standardthemerooturl = Yii::app()->getConfig('standardthemerooturl');
+$templaterooturl      = Yii::app()->getConfig('userthemerooturl');
+$sAdminEmailAddressNeeded = gT("If you are using token functions or notifications emails you need to set an administrator email address.");
+
+App()->getClientScript()->registerScript(
+    "createSurveyText-variables",
+    sprintf(
+        "var standardthemerooturl = '%s';
+        var templaterooturl = '%s';
+        var jsonUrl = '';
+        var sAction = '';
+        var sParameter = '';
+        var sTargetQuestion = '';
+        var sNoParametersDefined = '';
+        var sAdminEmailAddressNeeded = '%s'
+        var sURLParameters = '';
+        var sAddParam = '';",
+        $standardthemerooturl,
+        $templaterooturl,
+        $sAdminEmailAddressNeeded
+    ),
+    LSYii_ClientScript::POS_BEGIN
+);
 
 $count = 0;
-if(isset($scripts))
-echo $scripts;
+if (isset($scripts)) {
+    echo $scripts;
+}
 
 $aSurveyLanguageSettings = $aTabContents['aSurveyLanguageSettings'];
 $surveyid = $aTabContents['surveyid'];
