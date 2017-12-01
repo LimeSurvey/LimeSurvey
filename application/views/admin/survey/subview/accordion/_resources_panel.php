@@ -23,6 +23,18 @@ App()->getClientScript()->registerScript("ressources-panel-variables", "
 <div id='resources' class="container-fluid">
     <div class="row">
         <!-- Export -->
+        <div class="col-sm-3">
+            <?php echo TbHtml::dropDownList('fileTypeShow', 'fileTypeShow', 
+            array(
+                'files' =>  gT('Files','unescaped'), 
+                'flash' =>  gT('Flash','unescaped'), 
+                'images' =>  gT('Images','unescaped')), 
+                array(
+                    'class'=>'btn btn-default',
+                    "data-href" => Yii::app()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK( App()->language)
+                )
+            ); ?> 
+        </div>
         <div class="col-sm-6">
             <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-default">
                 <?php  eT("Export resources as ZIP archive") ?>
@@ -44,3 +56,9 @@ App()->getClientScript()->registerScript("ressources-panel-variables", "
 </div>
 
 <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', ['surveyid'=>$surveyid, 'ZIPimportAction' => $ZIPimportAction]); ?>
+
+<?php App()->getClientScript()->registerScript(
+    "RessourcesPanelScripts","
+    $('#fileTypeShow').on('change', function(e){ e.preventDefault(); $('#browseiframe').attr('src', $(this).data('href')+'&type='+$(this).val()) });
+    ", LSYii_ClientScript::POS_POSTSCRIPT
+); ?>
