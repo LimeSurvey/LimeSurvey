@@ -36,10 +36,11 @@ class TemplateControllerTest extends TestBaseClass
             exec('rm -r ' . $newdirname);
         }
 
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         // Simulate a POST.
         $_POST['newname'] = $newname;
-        // NB: If vanilla is not installed, this test will fail.
-        $_POST['copydir'] = 'vanilla';
+        // NB: If default theme is not installed, this test will fail.
+        $_POST['copydir'] = $config['defaulttheme'];
         $_SERVER['SERVER_NAME'] = 'localhost';
 
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
