@@ -22,37 +22,9 @@
 
 <!-- START OF GROUP: {{ aGroup.name }} {{ aGroup.gid }}  -->
 <div id='group-{{ aGroup.gseq }}' class="{{ aSurveyInfo.class.groupoutercontainer }}{{ aGroup.class }} space-col" {{ aSurveyInfo.attr.questiongroup }}>
-    <div class="{{ aSurveyInfo.class.groupcontainer }} space-col" {{ aSurveyInfo.attr.groupcontainer }}>
-        <div class="{{ aSurveyInfo.class.grouptitle }} text-center h3 space-col" {{ aSurveyInfo.attr.grouptitle }}>
-            {{ aGroup.name }}
-        </div>
 
-        <!-- Group description -->
-        {% if aGroup.description != '' %}
-            <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
-                {{ aGroup.description }}
-            </div>
-        {% endif %}
+    {# The container div itself could often change from a template to another, so we clearly separate it. #}
+    {{ include('./subviews/survey/group_subviews/group_container.twig') }}
 
-        {#
-            PRESENT THE QUESTIONS
-
-            This is the main part. It will render each question for this group
-         #}
-
-        <!-- PRESENT THE QUESTIONS -->
-        {% for  aQuestion in aGroup.aQuestions %}
-             {{ include('./subviews/survey/question_container.twig') }}
-        {% endfor %}
-
-        <!-- Hidden inputs -->
-        {% if aGroup.show_last_group == true %}
-            <input type='hidden' name='lastgroup' value='{{ aGroup.lastgroup }}' id='lastgroup' />
-        {% endif %}
-
-        {% if aGroup.show_last_answer == true %}
-            <input type='hidden' name='lastanswer' value='{{ aGroup.lastanswer }}' id='lastanswer' />
-        {% endif %}
-    </div>
 </div>
 <!-- END OF GROUP: {{ aGroup.name }} {{ aGroup.gid }}  -->
