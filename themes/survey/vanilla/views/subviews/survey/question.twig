@@ -21,15 +21,14 @@
     {{ dump(aQuestion) }}
 
     All content of aQuestion itself is generated from qanda_helper.
-    To modify it, you must create a question template and apply it to the question in its display settings
-    (here, you're inside the survey template, applied to the survey in its settings).
+    To modify it, you must create a question theme and apply it to the question in its display settings
+    (here, you're inside the survey theme, applied to the survey in its settings).
 
 #}
 
 
 {# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
 {% set aShow        = aSurveyInfo.aShow   %}
-
 
     <!-- Question text -->
     <div class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-xs-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
@@ -77,7 +76,7 @@
     {# The rendering of the answers: the input elements the survey respondent interacts with. #}
     <!-- Answer -->
     <div class="{{ aSurveyInfo.class.answercontainer }} col-xs-12" {{ aSurveyInfo.attr.answercontainer }}>
-        {# NOTE: If you want to customize the question rendering, use a question template #}
+        {# NOTE: If you want to customize the question rendering, use a question theme #}
         {{ aQuestion.answer | raw }}
     </div>
 

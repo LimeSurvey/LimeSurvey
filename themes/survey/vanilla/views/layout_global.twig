@@ -102,6 +102,10 @@
 
                 <!-- Outer Frame Container -->
                 {% block content %}
+                    {#
+                        Content depends on the action (survey, questions, register, assesments, submit, etc)
+                        Action are in ./subviews/content/
+                    #}
                     {% include './subviews/content/outerframe.twig' with {'include_content': aSurveyInfo.include_content} %}
                 {% endblock %}
 
