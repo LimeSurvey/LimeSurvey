@@ -47,7 +47,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                     $this->renderHtmlPage($sHtml, $oTemplate);
                 }
             } else {
-                trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
+                throw new CException(
+                    sprintf(
+                        "Can't render layout %s for template %s",
+                        $sLayout,
+                        $oTemplate->template_name
+                    )
+                );
             }
         }
 
