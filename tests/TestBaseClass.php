@@ -82,7 +82,9 @@ class TestBaseClass extends TestCase
         parent::tearDownAfterClass();
         if(self::$testSurvey){
             if (!self::$testSurvey->delete()) {
-                die('Fatal error: Could not clean up survey ' . serialize(self::$testSurvey->errors));
+                die(
+                    'Fatal error: Could not clean up survey ' . self::$testSurvey->sid . '; errors: ' . json_encode(self::$testSurvey->errors)
+                );
             }
             self::$testSurvey = null;
         }
