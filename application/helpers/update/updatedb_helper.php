@@ -712,22 +712,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+
         if ($iOldDBVersion < 331) {
             $oTransaction = $oDB->beginTransaction();
             upgrade331($oDB);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>331), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
-
-        if ($iOldDBVersion < 332) {
-            $oTransaction = $oDB->beginTransaction();
-            TemplateConfiguration::uninstall('bootswatch');
-            TemplateConfiguration::uninstall('vanilla');
-            TemplateConfiguration::uninstall('fruity');
-            TemplateManifest::importManifest('vanilla');
-            TemplateManifest::importManifest('bootswatch');
-            TemplateManifest::importManifest('fruity');
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>332), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
