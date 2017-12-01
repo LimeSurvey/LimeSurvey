@@ -11,7 +11,8 @@ function createDatabase($oDB){
     */
 
     ////// Current database version: //////
-    $databaseCurrentVersion = "329";
+    $version = require(\Yii::app()->getBasePath() . '/config/version.php');
+    $databaseCurrentVersion = $version['dbversionnumber'];
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
