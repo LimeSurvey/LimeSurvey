@@ -379,7 +379,7 @@ function createDatabase($oDB){
             'srid' => "integer NOT NULL default '0'",
             'identifier' => "text NOT NULL",
             'access_code' => "text NOT NULL",
-            'email' => "string(254)",
+            'email' => "string(192)",
             'ip' => "text NOT NULL",
             'saved_thisstep' => "text NOT NULL",
             'status' => "string(1) NOT NULL default ''",

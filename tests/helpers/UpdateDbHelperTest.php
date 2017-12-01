@@ -158,7 +158,6 @@ class UpdateDbHelperTest extends TestBaseClass
          */
 
         \Yii::app()->cache->flush();
-        \Yii::app()->cache->gc();
 
         self::$testHelper->teardownDatabase('__test_install_script_compare');
         $connection = self::$testHelper->connectToNewDatabase('__test_install_script_compare');
