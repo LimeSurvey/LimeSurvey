@@ -30,41 +30,8 @@
 {# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
 {% set aShow        = aSurveyInfo.aShow   %}
 
-    <!-- Question text -->
-    <div class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-xs-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
-
-        {# If the question is mandatory, the asterisk will be shown  #}
-        {% if aQuestion.mandatory != '' %}
-            <!-- Add a visual information + just Mandatory string for aria : can be improved -->
-            <div class="{{ aSurveyInfo.class.questionasterix }} pull-left" {{ aSurveyInfo.attr.questionasterix }} >
-                <small class="{{ aSurveyInfo.class.questionasterixsmall }} text-danger fa fa-asterisk small" {{ aSurveyInfo.attr.questionasterixsmall }}></small>
-                <span class="{{ aSurveyInfo.class.questionasterixspan }} sr-only text-danger" {{ aSurveyInfo.attr.questionasterixspan }} >
-                    {{ "(This question is mandatory)" | t }}
-                </span>
-            </div>
-        {% endif %}
-
-        {# If the question number is to be shown (set in survey settings) #}
-        {% if (aShow.question_number) %}
-            <span class='{{ aSurveyInfo.class.questionnumber }}' {{ aSurveyInfo.attr.questionnumber }} >
-                {{ aQuestion.number }}
-            </span>
-        {% endif %}
-
-        {# If the question code is to be shown (set in survey settings) #}
-        {% if (aShow.question_code) %}
-            <span class='{{ aSurveyInfo.class.questioncode }}' {{ aSurveyInfo.attr.questioncode }}>
-                {{ aQuestion.code }}
-            </span>
-        {% endif %}
-
-        {# The question text as entered by the survey creator in question editing #}
-        <div class="{{ aSurveyInfo.class.questiontext }}" {{ aSurveyInfo.attr.questiontext }}>
-            <div id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
-                {{ aQuestion.text | raw }}
-            </div>
-        </div>
-    </div>
+    {# Question Text #}
+    {{ include('./subviews/survey/question_subviews/question_text_container.twig') }}
 
     <!-- LimeSurvey valid message and help -->
     <div class="{{ aSurveyInfo.class.questionvalidcontainer }} text-info col-xs-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
