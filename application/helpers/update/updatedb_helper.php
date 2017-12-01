@@ -832,9 +832,9 @@ function upgrade330($oDB)
     ), "template_name='monochrome' AND  files_css != 'inherit'");
 
     $oDB->createCommand()->update('{{template_configuration}}', array(
-            'files_css'       => '{"css/theme.css"]}',
-            'files_js'        => '{"add":["scripts/theme.js"]}',
-            'files_print_css' => '{"add":"css/print_theme.css"}',
+            'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+            'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+            'files_print_css'   => '{"add":["css/print_theme.css"]}',
     ), "template_name='vanilla' AND  files_css != 'inherit'");
 }
 
