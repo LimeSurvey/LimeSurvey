@@ -33,7 +33,7 @@
  * The general Template closure.
  * This is to capsule eventual errors inside of the template function, so the general script all run as the should
  */
-var Template = function(){
+var ThemeScripts = function(){
 
     /**
      * The function focusFirst puts the Focus on the first non-hidden element in the Survey.

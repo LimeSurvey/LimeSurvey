@@ -107,16 +107,10 @@
 
                 {# Bootstrap alert modal #}
                 {{ include('./subviews/bootstrap_alert_modal.twig') }}
+                
+            {# Basic ThemeScript options  #}
+            {{ registerScript("BasicThemeScripts", " if(window.theme === undefined){ window.theme = new ThemeScripts(); } theme.initGlobal(); ", POS_END) }}
 
-                <!-- some template.js function launched before ready -->
-                <script type="text/javascript">
-                    /*<![CDATA[*/
-                        if(template === undefined){
-                            var template = new Template();
-                        }
-                        template.initGlobal();
-                    /*]]>*/
-                </script>
             {% endblock %}
             </div>
         </article>
