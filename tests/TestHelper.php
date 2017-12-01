@@ -217,10 +217,12 @@ class TestHelper extends TestCase
      * @param int $version
      * @return CDbConnection
      */
-    public function updateDbFromVersion($version)
+    public function updateDbFromVersion($version, $connection = null)
     {
-        $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
-        $this->assertNotEmpty($connection, 'Could connect to new database');
+        if (is_null($connection)) {
+            $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
+            $this->assertNotEmpty($connection, 'Could connect to new database');
+        }
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
