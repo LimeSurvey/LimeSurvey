@@ -38,7 +38,8 @@ class TemplateControllerTest extends TestBaseClass
 
         // Simulate a POST.
         $_POST['newname'] = $newname;
-        $_POST['copydir'] = 'fruity';
+        // NB: If vanilla is not installed, this test will fail.
+        $_POST['copydir'] = 'vanilla';
         $_SERVER['SERVER_NAME'] = 'localhost';
 
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
