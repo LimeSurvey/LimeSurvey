@@ -26,7 +26,7 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#pjax-content': switchInnerHTML,
                     '#breadcrumb-container': switchInnerHTML,
                 },
-                debug: true,
+                debug: window.debugState>1,
                 forceRedirectOnFail: true,
                 reRenderCSS : true,
                 scriptloadtimeout: 1500

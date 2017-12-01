@@ -398,6 +398,11 @@ class LSYii_ClientScript extends CClientScript
         foreach ($this->cssFiles as $url=>$media) {
                     $html .= CHtml::cssFile($url, $media)."\n";
         }
+
+        //Propagate our debug settings into the javascript realm
+        $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+        $html .= "<script type='text/javascript'>window.debugState=".$debug.";</script>";
+
         if ($this->enableJavaScript) {
             if (isset($this->scriptFiles[self::POS_HEAD])) {
                 foreach ($this->scriptFiles[self::POS_HEAD] as $scriptFileValueUrl=>$scriptFileValue) {
