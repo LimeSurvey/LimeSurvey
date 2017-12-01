@@ -123,7 +123,7 @@ class WhDateTimePicker extends CInputWidget
 			? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId()) . '_datetimepicker'
 			: $this->selector;
 
-		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions);
+		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
 
 		if($this->events)
 		{
