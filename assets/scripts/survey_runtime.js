@@ -107,17 +107,19 @@ function checkconditions(value, name, type, evt_type)
 
     aQuestionsWithDependencies = $('#aQuestionsWithDependencies').data('qids');
 
-    var result;
-    if(typeof name !== 'undefined')
-    {
-        result = name.split('X');
-        result = result[2]
+    var questionCode;
+    if(typeof name !== 'undefined') {
+        var parts = name.split('X');
+        questionCode = parts[2];
+        if (LEMvarNameAttr['java' + name] != undefined) {
+            questionCode = '' + LEMvarNameAttr['java' + name].qid;
+        }
     }
 
-    var $isRelevant = $.inArray(result, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
-    //var $isRelevant = 1;
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
+    var $isRelevant = $.inArray(questionCode, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    }
 }
 
 /**
