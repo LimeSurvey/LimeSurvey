@@ -203,15 +203,9 @@
         {# Bootstrap alert modal #}
         {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            if(template === undefined){
-                var template = new Template();
-            }
-            template.initUserForms();
-            /*]]>*/
-        </script>
+        {# Basic ThemeScript options  #}
+        {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
+
     </body>
 </html>
 <!-- end of startpage.twig -->

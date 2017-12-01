@@ -68,10 +68,8 @@
             }}
             {% endif %}
 
-    <script>
-    $(document).on('ready pjax:scriptcomplete', function(){
-        template.initLanguageChanger('#langchangerSelectMain', 'form#limesurvey');
-    });
-    </script>
+    {# Activate the language changer  #}
+    {{ registerScript("BasicThemeScripts-LanguageChanger", "basicThemeScripts.initLanguageChanger('#langchangerSelectMain', 'form#limesurvey'); ", POS_POSTSCRIPT) }}
+
 
 {% endif %}

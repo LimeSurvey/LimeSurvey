@@ -72,9 +72,5 @@
 
 {% endif %}
 
-<script>
-    // Method for link
-    $(document).ready(function(){
-        template.initTopMenuLanguageChanger('.{{aSurveyInfo.class.lctdropdownlia}}', 'form#limesurvey');
-    });
-</script>
+{{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('." ~ aSurveyInfo.class.lctdropdownlia ~ "', 'form#limesurvey'); ", POS_READY) }}
+

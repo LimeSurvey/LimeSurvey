@@ -109,7 +109,7 @@
                 {{ include('./subviews/bootstrap_alert_modal.twig') }}
                 
             {# Basic ThemeScript options  #}
-            {{ registerScript("BasicThemeScripts", " if(window.theme === undefined){ window.theme = new ThemeScripts(); } theme.initGlobal(); ", POS_END) }}
+            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
 
             {% endblock %}
             </div>
