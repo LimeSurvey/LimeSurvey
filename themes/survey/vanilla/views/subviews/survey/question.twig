@@ -30,29 +30,19 @@
 {# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
 {% set aShow        = aSurveyInfo.aShow   %}
 
+    <!-- Question {{ aQuestion.code }} -->
+
     {# Question Text #}
     {{ include('./subviews/survey/question_subviews/question_text_container.twig') }}
 
-    <!-- LimeSurvey valid message and help -->
-    <div class="{{ aSurveyInfo.class.questionvalidcontainer }} text-info col-xs-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
-        {{ aQuestion.valid_message      | raw }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
-        {{ aQuestion.man_message        | raw }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
-        {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}
-    </div>
 
-    {# The rendering of the answers: the input elements the survey respondent interacts with. #}
-    <!-- Answer -->
-    <div class="{{ aSurveyInfo.class.answercontainer }} col-xs-12" {{ aSurveyInfo.attr.answercontainer }}>
-        {# NOTE: If you want to customize the question rendering, use a question theme #}
-        {{ aQuestion.answer | raw }}
-    </div>
+    {# Valide message and help #}
+    {{ include('./subviews/survey/question_subviews/valid_message_and_help.twig') }}
 
-    {# The additional question help as entered by the survey creator in question editing #}
-    <!-- Survey question help -->
-    <div class="{{ aSurveyInfo.class.helpcontainer }}  text-info col-xs-12 " {{ aSurveyInfo.attr.helpcontainer }}>
-        {% if aQuestion.help.show %}
-            <div class="{{ aSurveyInfo.class.lsquestionhelp }}">
-                {{ aQuestion.help.text | raw }}
-            </div>
-        {% endif %}
-    </div>
+    {# Answers #}
+    {{ include('./subviews/survey/question_subviews/answers.twig') }}
+
+    {# Survey question Help #}
+    {{ include('./subviews/survey/question_subviews/survey_question_help.twig') }}
+
+    <!-- End of question {{ aQuestion.code }} -->
