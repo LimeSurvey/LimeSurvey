@@ -400,7 +400,7 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+        $debug = Yii::app()->getConfig('debug', 0);
         $html .= "<script type='text/javascript'>window.debugState=".$debug.";</script>";
 
         if ($this->enableJavaScript) {

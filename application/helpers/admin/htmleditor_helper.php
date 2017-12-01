@@ -229,6 +229,6 @@
                 }
         });";
 
-        Yii::app()->getClientScript()->registerScript('ckEditorScripts', $scriptCode, LSYii_ClientScript::POS_END);
+        Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_END);
     }
 
