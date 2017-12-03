@@ -162,7 +162,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT("Let's add another question group"),
                                     'content' => gT("What good would your survey be without questions?").' '
                                         .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.')
-                                        .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button'").'</p>',
+                                        .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
