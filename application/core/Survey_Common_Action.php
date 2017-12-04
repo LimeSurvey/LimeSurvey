@@ -420,7 +420,7 @@ class Survey_Common_Action extends CAction
                             'title' => gT('New UNSTABLE update available')." ("
                                 . gT("Current version: ").$currentVersion.")",
                             'markAsNew' => false,
-                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
+                            'message' => gT('New UNSTABLE update available:')."<a href=".$urlUpdate.">"
                                 . gT('Click here to use ComfortUpdate.')."</a>",
                             'importance' => Notification::HIGH_IMPORTANCE
                         ),
