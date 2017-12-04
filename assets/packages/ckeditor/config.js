@@ -34,7 +34,7 @@ CKEDITOR.editorConfig = function (a) {
             ["ShowBlocks", "Templates"]
         ];
         a.toolbar_inline = [
-            ["Source", "Createlimereplacementfields"],
+            ["Maximize", "Source", "Createlimereplacementfields"],
             ["Cut",
                 "Copy", "Paste", "PasteText", "PasteFromWord"
             ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "VideoDetector", "Flash"],
