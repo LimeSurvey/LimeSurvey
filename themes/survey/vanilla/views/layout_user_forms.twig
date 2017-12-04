@@ -201,7 +201,7 @@
         </div> <!-- outer frame container -->
 
         {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+        {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
 
         {# Basic ThemeScript options  #}
         {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}

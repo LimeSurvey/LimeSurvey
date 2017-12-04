@@ -25,7 +25,7 @@
     <div class="{{ aSurveyInfo.class.surveylistrow }} row" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
 
         {# include the alert for no JavaScript #}
-        {{ include('./subviews/no_js_alert.twig') }}
+        {{ include('./subviews/messages/no_js_alert.twig') }}
 
         <div id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
             {{ image('./files/logo_340.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
