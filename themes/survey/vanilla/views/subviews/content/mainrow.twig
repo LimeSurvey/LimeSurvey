@@ -24,7 +24,7 @@
         {# This is the main block that will be replaced/extended by other layouts#}
 
             {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-            {{ include('./subviews/warnings.twig') }}
+            {{ include('./subviews/messages/warnings.twig') }}
 
             {# Wich file to include for content is decided inside the layout #}
             {% if(include_content) != "" %}
