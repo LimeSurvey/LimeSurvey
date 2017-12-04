@@ -118,7 +118,11 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($filesFromXML as $file) {
 
             if ($file->attributes()->role == "content") {
-                return (string) $file;
+
+                // The path of the file is defined inside the theme itself. 
+                $aExplodedFile = explode ( '/' ,  $file);
+                $sFormatedFile = end($aExplodedFile);
+                return (string) $sFormatedFile;
             }
         }
 
