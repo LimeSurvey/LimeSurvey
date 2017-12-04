@@ -13,6 +13,11 @@ In vanilla, layout_user_forms and layout_global are pretty similar, and share so
 
 ## Content system
 layout_global.twig renders the specific content via this statement:
-{% include './subviews/content/outerframe.twig' with {'include_content': aSurveyInfo.include_content} %}
+```
+{% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content %}
+{% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+```
 
-see: https://github.com/LimeSurvey/LimeSurvey/blob/1186f6f331b12cf52643e7b79196d7dce673ff4a/themes/survey/vanilla/views/layout_global.twig#L103-L110
+see: https://github.com/LimeSurvey/LimeSurvey/blob/7ffc17fbb872791a9ba1a6b6ab68cec0263f3eca/themes/survey/vanilla/views/layout_global.twig#L103-L111
+
+So, if you're creating a template from scratch, you're free to place the content views where ever you want. Just update the definition of sViewContent in layout_global
