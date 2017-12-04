@@ -198,8 +198,10 @@
     Some widgets in the modals need to be reloaded after grid update
 -->
 <?php App()->getClientScript()->registerScript("ListQuestions-massiveAction-1", "
-    $('#question-grid').on('actions-updated', function(){
-        loadPositionWidget();
+    $(function(){
+        $('#question-grid').on('actions-updated', function(){
+            loadPositionWidget();
+        });
     });
- ", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+ ", LSYii_ClientScript::POS_END); ?>
 

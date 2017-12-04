@@ -5,33 +5,30 @@
 ?>
 <div class='container-fluid <?php if (!isset($ajax) || $ajax = false):?> col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
 
-<?php if (!isset($ajax) || $ajax = false):?>
+<?php if (!isset($ajax) || $ajax = false) { ?>
   <h3>
   <?php
-    if ($subaction == "edit")
-    {
+
+    if ($subaction == "edit") {
         eT("Edit survey participant");
         foreach ($tokendata as $Key => $Value)
         {
             $$Key = $Value;
         }
-    } else
-    {
+    } else {
         eT("Add survey participant");
         $tokenid = "";
     }
+
     ?>
   </h3>
-<?php else {
-    :?>
+<?php } else { ?>
   <?php
-    foreach ($tokendata as $Key => $Value)
-    {
-        $$Key = $Value;
+    foreach ($tokendata as $Key => $Value) {
+            $$Key = $Value;
+        }
 }
-    }
-    ?>
-<?php endif;?>
+?>
 
 <div class="row">
   <div class="col-md-12 content-right">
@@ -70,9 +67,9 @@
                     <p class="form-control-static">
                     <?php
                     if ($subaction == "edit") {
-                                            echo $tokenid;
+                        echo $tokenid;
                     } else {
-                                            eT("Auto");
+                        eT("Auto");
                     }
                     ?>
                     </p>
@@ -115,7 +112,7 @@
                             'offLabel' => gT('No')));
                         ?>
                         </div>
-                    <?php else:?>
+                    <?php else: ?>
                         <div class="">
                         <?php
                         $completedDBFormat = $completed;
@@ -300,7 +297,8 @@
 
                 <div class="row">
                 <div class="">
-                    <?php if ($oSurvey->anonymized != 'Y'):?>
+                    <?php if ($oSurvey->anonymized != 'Y') {
+                        ?>
                     <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => "remind-switch",
@@ -310,8 +308,7 @@
                         'onLabel'=>gT('Yes'),
                         'offLabel' => gT('No')));
                     ?>
-                    <?php else {
-    :?>
+                    <?php } else { ?>
                         <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "sent-switch",
@@ -320,9 +317,8 @@
                             'value' => $bSwitchValue,
                             'onLabel'=>gT('Yes'),
                             'offLabel' => gT('No')));
-}
                         ?>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
 
                 <div class="">
@@ -455,5 +451,5 @@
   </div>
   <script>
     $(function(){$('.action_toggle_bootstrap_switch').bootstrapSwitch();});
-</script>
+  </script>
 </div>

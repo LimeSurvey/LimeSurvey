@@ -281,3 +281,9 @@ ol.breadcrumb.title-bar-breadcrumb {
     background: rgba(250,250,250,0.4);
     cursor: progress;
 }
+
+.makeDisabledInputsTransparent {
+    input:disabled {
+        color: transparent;
+    }
+}

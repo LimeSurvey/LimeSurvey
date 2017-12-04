@@ -9,14 +9,8 @@
  $sCointainerClass = ($oSurvey->anonymized != 'Y' ?  'yes-no-date-container' : 'yes-no-container');
 
 ?>
-<style>
-    input[type=text]:disabled,
-    input[type=email]:disabled{
-        color: transparent;
-    }
-</style>
 
-<form class="custom-modal-datas form form-horizontal">
+<form class="custom-modal-datas form form-horizontal makeDisabledInputsTransparent">
     <div id='updateTokens' >
             <!-- Tabs -->
             <?php if( count($attrfieldnames) > 0 ):?>
@@ -409,9 +403,10 @@
 </form>
 
 
-<script>
+<?php App()->getClientScript()->registerScript("Tokens:MassActionUpdateView_Scripts", "
+
    var bindBSSwitch = function(formGroup){
-       console.log("bindBSSwitch run on:",formGroup);
+       console.log(\"bindBSSwitch run on:\",formGroup);
     //Script to update the completed settings
     formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){
         
@@ -420,11 +415,13 @@
 
     });
    };
+
    var bindDatepicker = function(myFormGroup){
     myFormGroup.find('.action_datepickerUpdateHiddenField').on('change dp.change', function(){
         myFormGroup.find('.selector_submitField').val($(this).val());
     })
    }
+   var bindClicksInModal = function(){
     $('#email').on('keyup', function(){
         //Don't change emailstatus when it is still disabled
         if($('#emailstatus').prop('disabled')) return;
@@ -454,6 +451,12 @@
             bindBSSwitch(myFormGroup);
             bindDatepicker(myFormGroup);
         }
+        
+    });
+};
+bindClicksInModal(); 
+$(document).on('actions-updated', function(){
+    bindClicksInModal(); 
+});
 
-    })
-</script>
+", LSYii_ClientScript::POS_END); ?>

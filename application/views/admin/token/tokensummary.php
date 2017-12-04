@@ -67,7 +67,4 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         </div>
     </div>
 
-    <script type='text/javascript'>
-        surveyid = '<?php echo $surveyid; ?>'
-    </script>
 </div>

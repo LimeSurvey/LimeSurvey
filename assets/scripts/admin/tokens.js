@@ -471,5 +471,6 @@ function reinstallParticipantsFilterDatePicker() {
         var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
         $.fn.yiiGridView.update('token-grid', {data: data});
     });
+    $(document).trigger('actions-updated');
 
 }

@@ -176,11 +176,10 @@
     </form>
 </div>
 
-
-<script>
-    $( document ).ready(function(){
+<?php
+App()->getClientScript()->registerScript("Tokens:BindReminderView", "
         $('#send-reminders-button').on('click', function(){
-            $("#sendreminder").submit();
+            $('#sendreminder').submit();
         })
-    });
-</script>
+", LSYii_ClientScript::POS_POSTSCRIPT );
+?>

@@ -16,14 +16,13 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
-    var $that          = $(this);                                                             // The cliked link
+    var $that          = $(this);                                                             // The clicked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
     var $gridid        = $(this).closest('div.listActions').data('grid-id');
     var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
-
 
     if( $oCheckedItems == '[]' ) {
         //If no item selected, the error modal "please select first an item" is shown
@@ -116,7 +115,7 @@ var onClickListAction =  function () {
         {
             $.fn.yiiGridView.update($gridid);                         // Update the surveys list
             setTimeout(function(){
-                $('#'+$gridid).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+                $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
         }
 
     })
@@ -275,17 +274,21 @@ function getDefaultDateTimePickerSettings() {
     return mydata;
 }
 
+function bindListItemclick(){
+    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
+}
 
-$(document).off('pjax:scriptcomplete.listActions').on('ready  pjax:scriptcomplete.listActions', function() {
+
+$(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);
 
     // Grid refresh: see point 3
-    $(document).on('actions-updated', '#'+gridId,  function(){
+    $(document).on('actions-updated', function(){
         prepareBsSwitchBoolean(gridId);
         prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
+        bindListItemclick();
     });
-    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
-
 });
+
