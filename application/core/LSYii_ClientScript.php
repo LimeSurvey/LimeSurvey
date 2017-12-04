@@ -263,7 +263,7 @@ class LSYii_ClientScript extends CClientScript
         $sPath = '';
 
         // TODO: check if tmp directory can be named differently via config
-        if ($aUrlParams[1] == 'tmp') {
+        if (isset($aUrlParams[1]) && $aUrlParams[1] == 'tmp') {
             $sType = 'published';
         } else {
             if (file_exists($sFilePath)) {
