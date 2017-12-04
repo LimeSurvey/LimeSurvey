@@ -27,7 +27,7 @@
             {{ include('./subviews/messages/warnings.twig') }}
 
             {# Wich file to include for content is decided inside the layout #}
-            {% if(include_content) != "" %}
+            {% if(include_content) != "./subviews/content/" %}
                 {{ include(include_content) }}
             {% endif %}
 
