@@ -1707,20 +1707,19 @@ protected function getEditConditionForm(array $args)
     );
     $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
     
-    $result .= "<script type='text/javascript'>\n"
-    . "<!--\n"
+    $scriptResult = ""
     . "\t".$js_getAnswers_onload."\n";
     if (isset($p_method)) {
-        $result .= "\tdocument.getElementById('method').value='".$p_method."';\n";
+        $scriptResult .= "\tdocument.getElementById('method').value='".$p_method."';\n";
     }
     
-    $result .= $this->getEditFormJavascript($subaction);
+    $scriptResult .= $this->getEditFormJavascript($subaction);
     
     if (isset($p_scenario)) {
-        $result .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+        $scriptResult .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
     }
-    $result .= "-->\n"
-    . "</script>\n";
+    $scriptResult .= "\n";
+    App()->getClientScript()->registerScript('conditionsaction_onstartscripts', $scriptResult , LSYii_ClientScript::POS_END );
     
     return $result;
 }
@@ -1991,8 +1990,7 @@ protected function createNavigatorUrl($gid, $qid)
 */
 protected function getJavascriptForMatching(array $canswers, array $cquestions, $surveyIsAnonymized)
 {
-    $javascriptpre = CHtml::openTag('script', array('type' => 'text/javascript'))
-    . "<!--\n"
+    $javascriptpre = ""
     . "\tvar Fieldnames = new Array();\n"
     . "\tvar Codes = new Array();\n"
     . "\tvar Answers = new Array();\n"
@@ -2024,8 +2022,7 @@ protected function getJavascriptForMatching(array $canswers, array $cquestions, 
         $javascriptpre .= "isAnonymousSurvey = false;";
     }
     
-    $javascriptpre .= "//-->\n"
-    .CHtml::closeTag('script');
+    $javascriptpre .= "\n";
     
     return $javascriptpre;
 }

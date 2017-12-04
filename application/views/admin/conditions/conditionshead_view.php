@@ -52,7 +52,7 @@
 
 
 <?php echo $conditionsoutput_action_error;?>
-<?php echo $javascriptpre;?>
+<?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript", $javascriptpre, LSYii_ClientScript::POS_BEGIN);?>
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">

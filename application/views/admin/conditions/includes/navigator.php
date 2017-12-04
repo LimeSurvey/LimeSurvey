@@ -36,6 +36,4 @@ App()->getClientScript()->registerScript('conditionmovetoquestion',
     window.dispatchEvent( triggerEvent );
 });", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
-<script>
-    //onchange="window.open(this.options[this.selectedIndex].value,'_top')"
-</script>
+
