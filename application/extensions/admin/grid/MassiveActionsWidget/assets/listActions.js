@@ -290,5 +290,6 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
         prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
+    bindListItemclick();
 });
 
