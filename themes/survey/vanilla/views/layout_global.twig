@@ -71,7 +71,7 @@
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
 
     {# Headers, metadata, etc #}
-    {{ include('./subviews/head.twig') }}
+    {{ include('./subviews/header/head.twig') }}
 
     <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
         {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
@@ -111,7 +111,7 @@
 
                 {# Bootstrap alert modal #}
                 {{ include('./subviews/bootstrap_alert_modal.twig') }}
-                
+
             {# Basic ThemeScript options  #}
             {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
 
