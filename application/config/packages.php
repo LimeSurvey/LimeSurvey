@@ -180,6 +180,7 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
+            'js/bootstrap-remote-modals.js',
             'js/admin_core.js',
             'js/notifications.js',
         ),
@@ -301,6 +302,21 @@ return array(
             'adminbasics',
         )
     ),
+
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'popup-dialog.css'
+        ),
+        'js' => array(
+            'emailtemplates'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    )
 
 
 );

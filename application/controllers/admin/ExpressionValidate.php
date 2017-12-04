@@ -242,7 +242,7 @@ class ExpressionValidate extends Survey_Common_Action
         $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = sprintf(gT("Validate expression in email : %s"), $sType);
 
-        $this->getController()->render("/admin/expressions/validationList", $aData);
+        $this->getController()->renderPartial("/admin/expressions/validationList", $aData);
     }
 
     /**

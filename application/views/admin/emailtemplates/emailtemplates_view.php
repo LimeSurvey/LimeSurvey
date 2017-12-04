@@ -4,38 +4,25 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
-App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
+
 $count=0;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
 
-?>
-<script type='text/javascript'>
-    var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
-    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
+App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
+var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';
+var sKCFinderLanguage='".sTranslateLangCode2CK(App()->language)."';
 
-    var LS = LS || {};  // namespace
+var LS = LS || {};  // namespace
     LS.lang = LS.lang || {};  // object holding translations
-    LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
-    LS.lang['Edit relevance equation'] = '<?php echo eT("Edit relevance equation"); ?>';
+    LS.lang['Remove attachment'] = '".gT("Remove attachment")."';
+    LS.lang['Edit relevance equation'] = '".gT("Edit relevance equation")."';
+", LSYii_ClientScript::POS_BEGIN );
 
-    $(document).ready(function () {
-        $('button.add-attachment').click(function(e)
-        {
-            e.preventDefault();
-            var target = $(this).parent().parent().parent().find('table');
-            console.log("target = ");
-            console.log(target);
-            openKCFinder_singleFile(target);
-
-        });
-    });
-</script>
-
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+?>        
+        <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">

@@ -81,6 +81,9 @@ class emailtemplates extends Survey_Common_Action
         $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
+        
+        App()->getClientScript()->registerPackage('emailtemplates');
+
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }
 

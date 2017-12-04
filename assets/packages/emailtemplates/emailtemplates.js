@@ -22,6 +22,14 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
         }
         catch(err) {}
     });
+    
+    $('button.add-attachment').off('click.emailtemplates').on('click.emailtemplates', function(e) {
+        e.preventDefault();
+        var target = $($(this).data('target'));
+        console.log("target => ", target);
+        openKCFinder_singleFile(target);
+
+    });
 
 });
 
