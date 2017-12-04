@@ -37097,7 +37097,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
-            this.updatePjaxLinks();
+            let event = new Event('pjax:load');
+            event.url = question.link;
+            window.dispatchEvent(event);
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
@@ -37290,7 +37292,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         on: {
           "click": function($event) {
-            $event.stopPropagation();
+            $event.preventDefault();
             _vm.openQuestion(question)
           }
         }
