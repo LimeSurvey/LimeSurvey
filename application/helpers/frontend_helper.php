@@ -1874,7 +1874,7 @@ function checkCompletedQuota($surveyid, $return = false)
             header("Location: ".$sUrl);
         }
     }
-    $thissurvey['include_content'] = './subviews/content/quotas.twig';
+    $thissurvey['include_content'] = 'quotas.twig';
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
@@ -1969,7 +1969,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index", array("sid"=>$surveyid)); // For form action (will remove newtest)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
-    $thissurvey['include_content'] = './subviews/content/firstpage.twig';
+    $thissurvey['include_content'] = 'firstpage.twig';
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }

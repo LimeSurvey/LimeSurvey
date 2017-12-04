@@ -451,7 +451,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->aMoveResult['message'];
         }
 
-        $this->aSurveyInfo['include_content'] = './subviews/content/main.twig';
+        $this->aSurveyInfo['include_content'] = 'main.twig';
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
 
@@ -949,7 +949,7 @@ class SurveyRuntimeHelper
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
 
-                $this->aSurveyInfo['include_content'] = './subviews/content/save.twig';
+                $this->aSurveyInfo['include_content'] = 'save.twig';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -989,7 +989,7 @@ class SurveyRuntimeHelper
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
-                $this->aSurveyInfo['include_content'] = './subviews/content/save.twig';
+                $this->aSurveyInfo['include_content'] = 'save.twig';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             }
 
@@ -1048,7 +1048,7 @@ class SurveyRuntimeHelper
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
                 $this->completed = $completed;
 
-                $this->aSurveyInfo['include_content'] = './subviews/content/submit_preview.twig';
+                $this->aSurveyInfo['include_content'] = 'submit_preview.twig';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
 
@@ -1148,7 +1148,7 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
             }
-            $this->aSurveyInfo['include_content'] = './subviews/content/submit.twig';
+            $this->aSurveyInfo['include_content'] = 'submit.twig';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
@@ -1474,7 +1474,7 @@ class SurveyRuntimeHelper
             $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->iSurveyid", $restartparam);
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
-            $thissurvey['include_content'] = './subviews/content/clearall.twig';
+            $thissurvey['include_content'] = 'clearall.twig';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
