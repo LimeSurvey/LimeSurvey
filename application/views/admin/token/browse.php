@@ -54,10 +54,12 @@
         <?php 
         // To update rows per page via ajax 
         App()->getClientScript()->registerScript("Tokens:updateRowsPerPage", "
+            if($('token-grid').length > 0){
                 reinstallParticipantsFilterDatePicker();
                 jQuery(document).on('change', '#pageSize', function(){
                     $.fn.yiiGridView.update('token-grid',{ data:{ pageSize: $(this).val() }});
                 });
+            }
             ", LSYii_ClientScript::POS_POSTSCRIPT); 
         ?>
     </div>
