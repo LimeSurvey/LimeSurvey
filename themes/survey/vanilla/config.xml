@@ -115,9 +115,9 @@
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/firstpage.twig</file>
-                    <file type="view" role="subview">./subviews/welcome.twig</file>
-                    <file type="view" role="subview">./subviews/warnings.twig</file>
-                    <file type="view" role="subview">./subviews/no_js_alert.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/messages/warnings.twig</file>
+                    <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
@@ -141,7 +141,7 @@
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
-                    <file type="view" role="subview">./subviews/assessments.twig</file>
+                    <file type="view" role="subview">./subviews/messages/assessments.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
