@@ -198,20 +198,30 @@ $surveyid = $oSurvey->sid;
                             </div>
                             <div class="col-8">
                                 <?php 
-                                if (Permission::model()->hasGlobalPermission('templates','read'))
-                                {
-                                    $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid));
-                                    $sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('templatename' => $oSurvey->template));
-                                    //$sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template));
-                                    ?>
-                                    <?php echo $oSurvey->templateModel->title; ?> (<?php echo $oSurvey->templateModel->name; ?>)
-                                    <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
-                                    <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
-                                    <?php
-                                }
-                                else
-                                {
-                                    echo $templatename;
+                                // NB: If the template is uninstalled, templateModel will be null.
+                                if ($oSurvey->templateModel) {
+                                    if (Permission::model()->hasGlobalPermission('templates','read')) {
+                                        $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid));
+                                        $sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('templatename' => $oSurvey->template));
+                                        //$sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template));
+                                        ?>
+                                        <?php echo $oSurvey->templateModel->title; ?> (<?php echo $oSurvey->templateModel->name; ?>)
+                                        <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
+                                        <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
+                                        <?php
+                                    } else {
+                                        echo $templatename;
+                                    }
+                                } else {
+                                    $errorMessage = sprintf(
+                                        gT('Error: Theme "%s" is not installed.'),
+                                        $oSurvey->template
+                                    );
+                                    Yii::app()->user->setFlash(
+                                        'error',
+                                        $errorMessage
+                                    );
+                                    echo $errorMessage;
                                 }
                                 ?>
                             </div>
