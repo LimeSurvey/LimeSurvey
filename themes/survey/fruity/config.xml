@@ -10,7 +10,7 @@
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadatas>
-        <name>Fruity NV</name>
+        <name>Fruity</name>
         <title>Fruity Theme</title>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
