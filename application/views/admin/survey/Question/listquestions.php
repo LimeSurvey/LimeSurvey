@@ -147,6 +147,7 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                                 'columns' => $columns,
                                 'ajaxUpdate' => true,
+                                'afterAjaxUpdate' => 'bindPageSizeChange'
                             ));
                             ?>
                         </div>
@@ -181,6 +182,7 @@
             $('#pageSize').on('change', function(){
                 $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
             });
+            $(document).trigger('actions-updated');            
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
     

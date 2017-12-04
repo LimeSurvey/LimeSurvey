@@ -114,6 +114,7 @@
             $('#pageSize').on('change', function(){
                 $.fn.yiiGridView.update('question-group-grid',{ data:{ pageSize: $(this).val() }});
             });
+            $(document).trigger('actions-updated');
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
     
