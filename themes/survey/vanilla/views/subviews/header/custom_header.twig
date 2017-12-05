@@ -12,5 +12,14 @@
     (¯`·._.·(¯`·._.· Custom Header  ·._.·´¯)·._.·´¯)
 
     If you extend a template, and want to add custom headers (js, css, scripts, meta etc), you'd rather do it here.
-    This file is empty in vanilla
+
 #}
+
+{# Custom logo option #}
+{% if ( aSurveyInfo.options.brandlogo == "on" ) %}
+<style>
+    body .top-container {
+        margin-top: 50px;
+    }
+</style>
+{% endif %}

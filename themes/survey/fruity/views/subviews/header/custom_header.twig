@@ -16,16 +16,26 @@
 #}
 
 {# Custom backgroud option #}
-{% if (aSurveyInfo.options.backgroundimage == "on") %}
+{% if (aSurveyInfo.options.backgroundimage == "on" or aSurveyInfo.options.brandlogo == "on" ) %}
 <style>
+    {% if (aSurveyInfo.options.backgroundimage == "on" ) %}
     body {
         background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
         background-attachment: fixed;
         background-size: cover;
+
     }
 
     body .top-container {
         background-color: rgba(236, 240, 241, 0.2);
     }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.brandlogo == "on" ) %}
+    body .top-container {
+        margin-top: 50px;
+    }
+    {% endif %}
+
 </style>
 {% endif %}
