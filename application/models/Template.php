@@ -224,10 +224,12 @@ class Template extends LSActiveRecord
             $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
         }
 
+
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ($bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || !$oTemplateConfigurationModel->checkTemplate()) {
             $oTemplateConfigurationModel = new TemplateManifest;
             $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
+
         }
 
         //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
@@ -431,7 +433,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array( Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity');
+        $standardTemplates = array( Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embeded');
         return $standardTemplates;
 
         /*

@@ -119,7 +119,7 @@ class TemplateManifest extends TemplateConfiguration
 
             if ($file->attributes()->role == "content") {
 
-                // The path of the file is defined inside the theme itself. 
+                // The path of the file is defined inside the theme itself.
                 $aExplodedFile = explode ( '/' ,  $file);
                 $sFormatedFile = end($aExplodedFile);
                 return (string) $sFormatedFile;
@@ -607,6 +607,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
+
 
         // If it is called from the template editor, a template name will be provided.
         // If it is called for survey taking, a survey id will be provided
