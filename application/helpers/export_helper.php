@@ -1461,9 +1461,14 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $section->appendChild($sectionInfo);
         }
 
-
-
         $section->setAttribute("id", $gid);
+
+        if ($oSurvey->showgroupinfo == 'N' || $oSurvey->showgroupinfo == 'X') {
+            $section->setAttribute('hideinfo','true');
+        }
+        if ($oSurvey->showgroupinfo == 'D' || $oSurvey->showgroupinfo == 'X') {
+            $section->setAttribute('hidetitle','true');
+        }
 
         //boilerplate questions convert to sectionInfo elements
         $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
@@ -1499,10 +1504,10 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
             //if this is a multi-flexi style question, create multiple questions
             if ($type == ':' || $type == ';') {
-		
+
                 $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
                 $SQueryResult = Yii::app()->db->createCommand($Query)->query();
-		
+
                 foreach ($SQueryResult->readAll() as $SRow) {
                     $question = quexml_create_question($RowQ, $SRow['question']);
 
