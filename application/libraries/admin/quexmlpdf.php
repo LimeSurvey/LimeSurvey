@@ -3724,7 +3724,7 @@ class quexmlpdf extends pdf
             $mtitle = $this->sectionCP;
         }
 
-        $this->section[$this->sectionCP] = array('label' => $desc, 'mtitle' => $title);
+        $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $mtitle);
 
         if ($title !== false) {
              $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
