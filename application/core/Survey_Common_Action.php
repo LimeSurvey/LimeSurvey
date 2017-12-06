@@ -398,46 +398,9 @@ class Survey_Common_Action extends CAction
         if (!Yii::app()->user->isGuest && Yii::app()->getConfig('updatable')) {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $urlUpdate = Yii::app()->createUrl("admin/update");
-            $currentVersion = Yii::app()->getConfig("buildnumber");
-            $superadmins = User::model()->getSuperAdmins();
 
-            if ($updateNotification->result) {
-                if ($updateNotification->security_update) {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('Security update!')." (".gT("Current version: ")
-                                . $currentVersion.")",
-                            'message' => gT('A security update is available.')." <a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                } elseif (Yii::app()->session['unstable_update']) {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('New UNSTABLE update available')." ("
-                                . gT("Current version: ").$currentVersion.")",
-                            'markAsNew' => false,
-                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                } else {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
-                            'markAsNew' => false,
-                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                }
+            if($updateNotification->result) {
+                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available'=>$updateNotification->security_update));
             }
         }
     }

@@ -124,8 +124,13 @@ class TemplateConfiguration extends CFormModel
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
         // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+        $oXMLConfig = simplexml_load_string($sXMLConfigFile);
 
+        foreach($oXMLConfig->config->xpath("//filename") as $oFileName){
+            $oFileName[0] = get_absolute_path( $oFileName[0]);
+        }
+
+        $this->config  = json_decode( json_encode ( ( array ) $oXMLConfig, 1));
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
         $this->viewPath                 = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
@@ -134,6 +139,9 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
         $this->packages                 = (isset($this->config->engine->packages->package))        ? $this->config->engine->packages->package                                                                             : array();
 
+        foreach(@$this->config->files->css->filename as $name){
+            $name=get_absolute_path($name);
+        }
         // overwrite_question_views accept different values : "true" or "yes"
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 

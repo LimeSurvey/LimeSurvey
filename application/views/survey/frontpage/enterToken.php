@@ -1,3 +1,7 @@
+<?php
+    $currentUrl = $_SERVER['REQUEST_URI'];
+    $urlParted = parse_url($currentUrl);
+?>
 <div class="tokenmessage-wrapper">
     <?php if (isset($error)): ?>
         <span class='error'>$error</span><br/>
@@ -22,7 +26,7 @@
     <?php endif; ?>
 
     <div class="container">
-        <?php echo CHtml::beginForm(array("/survey/index/sid/{$iSurveyId}"), 'post', array(
+        <?php echo CHtml::beginForm($urlParted['path'].'?'.$urlParted['query'], 'post', array(
             'id' => 'tokenform',
             'class' => 'form-horizontal col-sm-12 col-md-10 col-md-offset-1'
         )); ?>
@@ -32,6 +36,13 @@
                     ));
                 ?>
             <div class="col-sm-12 col-md-6">
+
+                <?php
+                    // We use the token string in URL to prefill the form
+                    if (Yii::app()->request->getParam('token', false)){
+                        $token = $visibleToken = trim(Yii::app()->request->getParam('token'));
+                    }
+                ?>
 
                 <?php if(!isset($token)): ?>
                     <?php echo CHtml::passwordField('token', '', array(

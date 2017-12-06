@@ -817,14 +817,13 @@ class tokens extends Survey_Common_Action
             $aTokenData['remindersent'] = flattenText($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval(flattenText($request->getPost('remindercount')));
             $udresult = Token::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$sSanitizedToken'");
-
+            $sOutput='';
             if (count($udresult) == 0) {
                 $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     $value = $request->getPost($attr_name);
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
-                        $this->getController()->refresh();
+                        $sOutput.=sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']).'<br>';
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
@@ -837,7 +836,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->save();
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess($sOutput.gT('The survey participant was successfully updated.'));
                 }
                 else {
                     $errors = $token->getErrors();

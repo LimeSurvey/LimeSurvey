@@ -92,10 +92,14 @@ class index extends CAction {
         $thisstep = $param['thisstep'];
         $move=getMove();
         Yii::app()->setConfig('move',$move);
-        $clienttoken = trim($param['token']);
+
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
         if (is_null($thissurvey) && !is_null($surveyid))
             $thissurvey = getSurveyInfo($surveyid);
+
+        // If captcha is not enable, the token inside url can be used to load the session
+        // If cap cha is enable, token inside url should be used only to prefill the form (logic in view)        
+        $clienttoken = (isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha'])) ? trim(Yii::app()->request->getPost('token', null)):trim($param['token']);
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];

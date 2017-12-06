@@ -35,6 +35,62 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.72.4 (build 171020) to 2.72.5 (build 171121) Nov 21, 2017
+
+Fixed issue: Fix problem with answer option rows in admin (Olle Haerstedt)
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.72.3 (build 171020) to 2.72.4 (build 171020) Nov 10, 2017
+-Fixed issue: [Security] Possible to edit file outside of template directory from template editor (found and reported by Robin Peraglie from RIPS Technologies www.ripstech.com ) (LouisGac)
+-Fixed issue: [Security] Possible XSS in Resume later function (found and reported by Robin Peraglie from RIPS Technologies www.ripstech.com ) (Carsten Schmitz)
+-Fixed issue #12697: SPSS Export - responses truncated for incomplete answers (Denis Chenu)
+-Fixed issue #12734: SPSS exporting complete or uncomplete make different syntax (Denis Chenu)
+-Fixed issue #12851: Regex for trailing zeroes in numeric input matches only zeroes immediately after decimal sign (markusfluer)
+-Fixed issue #12866: Some participants cannot be saved for no obvious reason (Carsten Schmitz)
+-Fixed issue #12873: Captcha breaking token persistence (LouisGac)
+-Fixed issue #12876: Survey logic file completely unprintable (markusfluer)
+-Fixed issue: Deprecated error shown when using user statistics (Carsten Schmitz)
+#Updated translation: Arabic by Macropsyco, Macropsy
+#Updated translation: Bosnian by RebeccaAwdry
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by zfocuz, Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by tuxmaster, c_schmitz
+#Updated translation: German (Informal) by tuxmaster, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by bennylin, ysulistya, radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kirundi by Vicks
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ESH, UTeQ
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Romanian by cookiemonster, jmlorenzo, vundicind, icm76, enedelcu
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.72.2 (build 171017) to 2.72.3 (build 171020) Oct 20, 2017
 -Fixed issue #12805: Date fields are lost when persistent tokens are re-accessed (Carsten Schmitz)
 -Fixed issue #12806: RemoteControl: wrong datatype shows SQL error (Carsten Schmitz)

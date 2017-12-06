@@ -1629,6 +1629,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $oDB->active=true;
     // Force User model to refresh meta data (for updates from very old versions) 
     User::model()->refreshMetaData();
+    Notification::model()->refreshMetaData();
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(
