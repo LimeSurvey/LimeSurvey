@@ -55,7 +55,7 @@
         <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
-        <boxcontainer>on</boxcontainer>
+        <container>on</container>
         <backgroundimage>off</backgroundimage>
         <backgroundimagefile>./files/pattern.png</backgroundimagefile>
         <animatebody>off</animatebody>
