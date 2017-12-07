@@ -148,7 +148,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <td class="col-md-1"><?php echo $oTheme->preview; ?></td>
                                             <td class="col-md-2"><?php echo $oTheme->metadatas->name; ?></td>
                                             <td class="col-md-3"><?php echo $oTheme->metadatas->description; ?></td>
-                                            <td class="col-md-2"><?php eT('core admin theme');?></td>
+                                            <td class="col-md-2"><?php eT('Core admin theme');?></td>
                                             <td class="col-md-1">
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>

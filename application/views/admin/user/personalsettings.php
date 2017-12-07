@@ -61,7 +61,7 @@
                             <div class="col-md-3">
                                 <button class="btn btn-default btn-warning" id="selector__showChangePassword" style="color: white; outline: none;">
                                     <i class="fa fa-lock"></i>
-                                    <?=gT("Change Password")?>
+                                    <?=gT("Change password")?>
                                 </button>
                                 <br/>
                             </div>

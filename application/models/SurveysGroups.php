@@ -72,7 +72,7 @@ class SurveysGroups extends LSActiveRecord
             'parent_id' => 'Parent',
             'created' => 'Created',
             'modified' => 'Modified',
-            'created_by' => 'Created By',
+            'created_by' => 'Created by',
         );
     }
 
