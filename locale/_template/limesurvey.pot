@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-11-21 09:02:55+00:00\n"
+"POT-Creation-Date: 2017-12-07 10:18:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1458,7 +1458,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1058
 #: application/controllers/admin/quotas.php:608
 #: application/controllers/admin/tokens.php:2460
-#: application/core/Survey_Common_Action.php:1216
+#: application/core/Survey_Common_Action.php:1179
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:239
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:261
@@ -1523,8 +1523,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:148
 #: application/models/ParticipantShare.php:256
-#: application/models/Survey.php:542 application/models/Survey.php:844
-#: application/models/Survey.php:850
+#: application/models/Survey.php:542 application/models/Survey.php:845
+#: application/models/Survey.php:851
 #: application/views/admin/conditions/deleteAllConditions.php:15
 #: application/views/admin/dataentry/content_view.php:632
 #: application/views/admin/dataentry/content_view.php:700
@@ -1616,7 +1616,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1060
 #: application/controllers/admin/quotas.php:609
 #: application/controllers/admin/tokens.php:2462
-#: application/core/Survey_Common_Action.php:1212
+#: application/core/Survey_Common_Action.php:1175
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:265
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:276
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:54
@@ -1676,8 +1676,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:148
 #: application/models/ParticipantShare.php:256
-#: application/models/Survey.php:546 application/models/Survey.php:844
-#: application/models/Survey.php:850
+#: application/models/Survey.php:546 application/models/Survey.php:845
+#: application/models/Survey.php:851
 #: application/views/admin/dataentry/content_view.php:633
 #: application/views/admin/dataentry/content_view.php:702
 #: application/views/admin/dataentry/vvimport.php:40
@@ -2176,8 +2176,8 @@ msgid "Next choice"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:916
-#: application/core/Survey_Common_Action.php:523
-#: application/core/Survey_Common_Action.php:885
+#: application/core/Survey_Common_Action.php:486
+#: application/core/Survey_Common_Action.php:848
 #: application/helpers/common_helper.php:302
 #: application/helpers/common_helper.php:361
 #: application/helpers/common_helper.php:941
@@ -2661,7 +2661,7 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:764
 #: application/controllers/admin/surveyadmin.php:1542
 #: application/controllers/admin/templates.php:172
-#: application/core/Survey_Common_Action.php:1403
+#: application/core/Survey_Common_Action.php:1366
 #: application/helpers/frontend_helper.php:2585
 #: application/views/admin/homepagesettings/index.php:9
 #: application/views/admin/participants/participantsPanel_view.php:6
@@ -3099,9 +3099,9 @@ msgstr ""
 #: application/controllers/admin/questions.php:59
 #: application/controllers/admin/responses.php:69
 #: application/controllers/admin/surveyadmin.php:1023
-#: application/core/Survey_Common_Action.php:671
-#: application/core/Survey_Common_Action.php:976
-#: application/models/Survey.php:790
+#: application/core/Survey_Common_Action.php:634
+#: application/core/Survey_Common_Action.php:939
+#: application/models/Survey.php:791
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -3687,8 +3687,8 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_updater_update.php:27
 #: application/views/admin/update/updater/welcome/_welcome.php:84
 #: application/views/register/registerForm.php:57
-#: application/views/survey/frontpage/enterCaptcha.php:49
-#: application/views/survey/frontpage/enterToken.php:108
+#: application/views/survey/frontpage/enterCaptcha.php:53
+#: application/views/survey/frontpage/enterToken.php:112
 msgid "Continue"
 msgstr ""
 
@@ -4528,7 +4528,7 @@ msgid "Saved"
 msgstr ""
 
 #: application/controllers/admin/translate.php:284
-#: application/core/Survey_Common_Action.php:776
+#: application/core/Survey_Common_Action.php:739
 #: application/views/admin/survey/Question/questionbar_view.php:19
 #: application/views/admin/survey/Question/questionbar_view.php:79
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:22
@@ -4539,7 +4539,7 @@ msgid "Preview survey"
 msgstr ""
 
 #: application/controllers/admin/translate.php:284
-#: application/core/Survey_Common_Action.php:780
+#: application/core/Survey_Common_Action.php:743
 #: application/core/plugins/QuickMenu/QuickMenu.php:242
 #: application/views/admin/survey/Question/questionbar_view.php:21
 #: application/views/admin/survey/Question/questionbar_view.php:81
@@ -5013,7 +5013,7 @@ msgid "You have exceeded the number of maximum login attempts. Please wait %d mi
 msgstr ""
 
 #: application/core/LSUserIdentity.php:132
-#: application/core/Survey_Common_Action.php:504
+#: application/core/Survey_Common_Action.php:467
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
@@ -5065,127 +5065,94 @@ msgstr ""
 msgid "Survey not found"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:409
-#: application/views/admin/update/_update_notification.php:20
-msgid "Security update!"
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:409
-#: application/core/Survey_Common_Action.php:421
-#: application/core/Survey_Common_Action.php:432
-msgid "Current version: "
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:411
-#: application/core/Survey_Common_Action.php:423
-#: application/core/Survey_Common_Action.php:434
-#: application/views/admin/update/_update_notification.php:20
-msgid "A security update is available."
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:412
-#: application/core/Survey_Common_Action.php:424
-#: application/core/Survey_Common_Action.php:435
-#: application/views/admin/update/_update_notification.php:20
-msgid "Click here to use ComfortUpdate."
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:420
-msgid "New UNSTABLE update available"
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:432
-msgid "New update available"
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:519
+#: application/core/Survey_Common_Action.php:482
 msgid "Activated"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1089
+#: application/core/Survey_Common_Action.php:1052
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:32
 msgid "Responses to this survey are anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1093
+#: application/core/Survey_Common_Action.php:1056
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:30
 msgid "Responses to this survey are NOT anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1097
+#: application/core/Survey_Common_Action.php:1060
 msgid "It is presented question by question."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1101
+#: application/core/Survey_Common_Action.php:1064
 msgid "It is presented group by group."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1105
+#: application/core/Survey_Common_Action.php:1068
 msgid "It is presented on one single page."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1111
+#: application/core/Survey_Common_Action.php:1074
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1115
+#: application/core/Survey_Common_Action.php:1078
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1119
+#: application/core/Survey_Common_Action.php:1082
 msgid "A full question index will be shown; participants will be able to jump between relevant questions."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1124
+#: application/core/Survey_Common_Action.php:1087
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:33
 msgid "Responses will be date stamped."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1128
+#: application/core/Survey_Common_Action.php:1091
 msgid "IP Addresses will be logged"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1132
+#: application/core/Survey_Common_Action.php:1095
 msgid "Referrer URL will be saved."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1136
+#: application/core/Survey_Common_Action.php:1099
 msgid "It uses cookies for access control."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1140
+#: application/core/Survey_Common_Action.php:1103
 msgid "If tokens are used, the public may register for this survey"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1144
+#: application/core/Survey_Common_Action.php:1107
 msgid "Participants can save partially finished surveys"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1148
+#: application/core/Survey_Common_Action.php:1111
 msgid "Basic email notification is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1152
+#: application/core/Survey_Common_Action.php:1115
 msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1228
+#: application/core/Survey_Common_Action.php:1191
 msgid "Survey cannot be activated yet."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1231
+#: application/core/Survey_Common_Action.php:1194
 msgid "You need to add question groups"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1235
+#: application/core/Survey_Common_Action.php:1198
 msgid "You need to add questions"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1396
+#: application/core/Survey_Common_Action.php:1359
 msgid "Copy failed"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1412
+#: application/core/Survey_Common_Action.php:1375
 msgid "Forbidden Extension"
 msgstr ""
 
@@ -5336,7 +5303,7 @@ msgid "List question groups"
 msgstr ""
 
 #: application/core/plugins/QuickMenu/QuickMenu.php:262
-#: application/models/Survey.php:1082
+#: application/models/Survey.php:1083
 #: application/views/admin/survey/surveybar_view.php:166
 msgid "General settings & texts"
 msgstr ""
@@ -5376,7 +5343,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:387
 #: application/helpers/questionHelper.php:744
 #: application/helpers/userstatistics_helper.php:2933
-#: application/models/Permission.php:84 application/models/Survey.php:1087
+#: application/models/Permission.php:84 application/models/Survey.php:1088
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:14
@@ -6073,7 +6040,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:284 application/models/Quota.php:114
-#: application/models/Survey.php:956
+#: application/models/Survey.php:957
 msgid "Active"
 msgstr ""
 
@@ -6082,7 +6049,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:294 application/models/Survey.php:916
+#: application/helpers/common_helper.php:294 application/models/Survey.php:917
 msgid "Inactive"
 msgstr ""
 
@@ -6169,6 +6136,8 @@ msgstr ""
 #: application/helpers/replacements_helper.php:334
 #: application/views/admin/dataentry/active_html_view.php:99
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
+#: application/views/admin/update/manage/subscribe.php:39
+#: application/views/admin/update/updater/welcome/_subscribe.php:44
 msgid "Submit"
 msgstr ""
 
@@ -9892,15 +9861,15 @@ msgstr ""
 
 #: application/helpers/replacements_helper.php:529
 #: application/views/register/registerForm.php:32
-#: application/views/survey/frontpage/enterCaptcha.php:26
-#: application/views/survey/frontpage/enterToken.php:86
+#: application/views/survey/frontpage/enterCaptcha.php:30
+#: application/views/survey/frontpage/enterToken.php:90
 msgid "Please solve the following equation:"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:534
 #: application/views/register/registerForm.php:38
-#: application/views/survey/frontpage/enterCaptcha.php:31
-#: application/views/survey/frontpage/enterToken.php:91
+#: application/views/survey/frontpage/enterCaptcha.php:35
+#: application/views/survey/frontpage/enterToken.php:95
 msgid "Reload image"
 msgstr ""
 
@@ -11127,19 +11096,19 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:938
+#: application/models/Survey.php:939
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:939
+#: application/models/Survey.php:940
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:940
+#: application/models/Survey.php:941
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1097
+#: application/models/Survey.php:1098
 #: application/views/admin/survey/surveySummary_view.php:124
 #: application/views/admin/survey/surveySummary_view.php:170
 #: application/views/admin/survey/surveySummary_view.php:192
@@ -11149,7 +11118,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1101
+#: application/models/Survey.php:1102
 #: application/views/admin/survey/surveySummary_view.php:103
 #: application/views/admin/survey/surveySummary_view.php:148
 #: application/views/admin/survey/surveybar_view.php:25
@@ -17810,6 +17779,18 @@ msgstr ""
 msgid "You have an error inside your local installation of LimeSurvey. See:"
 msgstr ""
 
+#: application/views/admin/update/_update_notification.php:20
+msgid "Security update!"
+msgstr ""
+
+#: application/views/admin/update/_update_notification.php:20
+msgid "A security update is available."
+msgstr ""
+
+#: application/views/admin/update/_update_notification.php:20
+msgid "Click here to use ComfortUpdate."
+msgstr ""
+
 #: application/views/admin/update/_update_notification.php:25
 msgid "New UNSTABLE update available:"
 msgstr ""
@@ -18939,23 +18920,23 @@ msgstr ""
 msgid "Total records in survey"
 msgstr ""
 
-#: application/views/survey/frontpage/enterCaptcha.php:9
+#: application/views/survey/frontpage/enterCaptcha.php:13
 msgid "Before you start please complete the following small task."
 msgstr ""
 
-#: application/views/survey/frontpage/enterToken.php:8
+#: application/views/survey/frontpage/enterToken.php:12
 msgid "To participate in this restricted survey, you need a valid token."
 msgstr ""
 
-#: application/views/survey/frontpage/enterToken.php:10
+#: application/views/survey/frontpage/enterToken.php:14
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: application/views/survey/frontpage/enterToken.php:12
+#: application/views/survey/frontpage/enterToken.php:16
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: application/views/survey/frontpage/enterToken.php:30
+#: application/views/survey/frontpage/enterToken.php:34
 msgid "Token: "
 msgstr ""
 
