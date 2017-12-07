@@ -4888,15 +4888,20 @@ function humanFilesize($bytes, $decimals = 2)
 }
 
 /**
- * @param string $sSize
- * @return bool|int|string
- */
+* This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+* 
+* @param string $sSize
+* @return integer The value in bytes
+*/
 function convertPHPSizeToBytes($sSize)
 {
-    //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
-    $sSuffix = substr($sSize, -1);
+    //
+    $sSuffix = strtoupper(substr($sSize, -1));
+    if (!in_array($sSuffix,array('P','T','G','M','K'))){
+        return (int)$sSize;  
+    } 
     $iValue = substr($sSize, 0, -1);
-    switch (strtoupper($sSuffix)) {
+    switch ($sSuffix) {
         case 'P':
             $iValue *= 1024;
             // Fallthrough intended
@@ -4913,7 +4918,7 @@ function convertPHPSizeToBytes($sSize)
             $iValue *= 1024;
             break;
     }
-    return $iValue;
+    return (int)$iValue;
 }
 
 function getMaximumFileUploadSize()
