@@ -224,22 +224,22 @@ class Survey_Common_Action extends CAction
      * @inheritdoc
      */
     public function renderInternal($_viewFile_,$_data_=null,$_return_=false)
-	{
-		// we use special variable names here to avoid conflict when extracting data
-		if(is_array($_data_))
-			extract($_data_,EXTR_PREFIX_SAME,'data');
-		else
-			$data=$_data_;
-		if($_return_)
-		{
-			ob_start();
-			ob_implicit_flush(0);
-			require($_viewFile_);
-			return ob_get_clean();
-		}
-		else
-			require($_viewFile_);
-	}
+    {
+        // we use special variable names here to avoid conflict when extracting data
+        if(is_array($_data_))
+            extract($_data_,EXTR_PREFIX_SAME,'data');
+        else
+            $data=$_data_;
+        if($_return_)
+        {
+            ob_start();
+            ob_implicit_flush(0);
+            require($_viewFile_);
+            return ob_get_clean();
+        }
+        else
+            require($_viewFile_);
+    }
 
     /**
      * Rendering the subviews and views of _renderWrappedTemplate
@@ -249,7 +249,7 @@ class Survey_Common_Action extends CAction
      * @param array|null $aData
      * @return string
      */
-    private function renderCentralContents($sAction, $aViewUrls, $aData = []) 
+    private function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
@@ -329,7 +329,7 @@ class Survey_Common_Action extends CAction
         }
 
         $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
-        $out = $this->renderInternal($renderFile, ['content' => $content , 'aData' => $aData], true);
+        $out = $this->renderInternal($renderFile, ['content' => $content, 'aData' => $aData], true);
 
         App()->getClientScript()->render($out);
         echo $out;
