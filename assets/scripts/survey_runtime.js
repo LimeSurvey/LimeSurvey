@@ -116,10 +116,15 @@ function checkconditions(value, name, type, evt_type)
         }
     }
 
+    /*
+    // STILL NOT WORKING !!!!!
+    // But we're getting closer... 
     var $isRelevant = $.inArray(questionCode, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-    }
+    }*/
+
+    ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
 
 /**
