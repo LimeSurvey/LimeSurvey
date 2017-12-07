@@ -38,7 +38,7 @@
 
     {# Participants email #}
     <div class='{{ aSurveyInfo.class.registerformcolrowc }} form-group row' {{ aSurveyInfo.attr.registerformcolrowc }}>
-        <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("Email address:") }} {{ include('./subviews/messages/required.twig') }}</label>
+        <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("Email address:") }} {{ include('./subviews/registration/required.twig') }}</label>
         <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
             {{ C.Html.textField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control input-sm','required' : true})) }}
         </div>
