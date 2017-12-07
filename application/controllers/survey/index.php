@@ -594,7 +594,11 @@ class index extends CAction
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
-        $tmp->run($surveyid, $redata);
+        try {
+            $tmp->run($surveyid, $redata);
+        } catch (WrongTemplateVersionException $ex) {
+            echo $ex->getMessage();
+        }
 
         if (App()->request->getPost('saveall') || isset($flashmessage)) {
             App()->clientScript->registerScript("saveflashmessage", "alert('".gT("Your responses were successfully saved.", "js")."');", CClientScript::POS_READY);

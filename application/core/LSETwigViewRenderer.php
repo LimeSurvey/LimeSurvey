@@ -48,18 +48,22 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 }
             } else {
                 $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
+                // A possible solution to this error is to re-install the template.
                 if ($templateDbConf->config->metadatas->version != $oTemplate->template->version) {
                     throw new WrongTemplateVersionException(
                         sprintf(
-                            'Template version in database is %s, but in config.xml it\'s %s',
+                            gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
+                            $sLayout,
+                            $oTemplate->template_name,
                             $oTemplate->template->version,
                             $templateDbConf->config->metadatas->version
                         )
                     );
                 }
+                // TODO: Panic or default to something else?
                 throw new CException(
                     sprintf(
-                        "Can't render layout %s for template %s",
+                        gT("Can't render layout %s for template %s. Please try to re-install the template."),
                         $sLayout,
                         $oTemplate->template_name
                     )
