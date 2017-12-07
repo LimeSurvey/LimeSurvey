@@ -115,6 +115,7 @@ class UpdateDbHelperTest extends TestBaseClass
 
     /**
      * Compare database between upgrade and fresh install.
+     * @group dbcompare
      */
     public function testCompareUpgradeAndFreshInstall()
     {
@@ -221,6 +222,20 @@ class UpdateDbHelperTest extends TestBaseClass
                 }
             }
         }
+
+        /* Code to dump diff, but nearly useless due to collate difference.
+        $output = array();
+        exec(
+            sprintf(
+                'mysqldump -u %s -p%s __test_update_helper_%d > tests/tmp/__test_update_helper_%d-dump.sql',
+                $config['components']['db']['username'],
+                $config['components']['db']['password'],
+                $upgradedFrom,
+                $upgradedFrom
+            ),
+            $output
+        );
+         */
 
         // Connect to old database.
         $dbo->setActive(false);
