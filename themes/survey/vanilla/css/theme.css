@@ -112,6 +112,8 @@ body {
 
 .question-container {
   margin-bottom: 2em;
+  border: 1px solid #e7e7e7;
+  background-color: #f8f8f8;
 }
 .question-container-printanswers {
   margin-top: 2em ;
