@@ -2030,7 +2030,7 @@
                                 case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
-                                        $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
+                                        $sq_name = (string)substr($sq['jsVarName'],4) . '.NAOK';
                                     }
                                     else
                                     {
@@ -3907,7 +3907,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                        $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
+                        $rowdivid = substr($sgqa,0,(int)strpos($sgqa,'_'));
                         break;
                     default:
                         // TODO: Internal error if this happens
@@ -5013,7 +5013,7 @@
                 case 'group':
                     // First validate the current group
                     $LEM->StartProcessingPage();
-                    $updatedValues=$LEM->ProcessCurrentResponses();
+                    $LEM->ProcessCurrentResponses();
                     $message = '';
                     while (true)
                     {
@@ -5149,9 +5149,7 @@
                     $LEM->currentQset = array();    // reset active list of questions
                     $result = $LEM->_ValidateSurvey();
                     $message .= $result['message'];
-                    $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'] || $startingGroup == -1))
-                    {
+                    if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'] || $startingGroup == -1)) {
                         $finished=false;
                     }
                     else
@@ -5635,7 +5633,6 @@
                     $LEM->currentQset = array();    // reset active list of questions
                     $result = $LEM->_ValidateSurvey($force);
                     $message .= $result['message'];
-                    $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     $finished=false;
                     $message .= $LEM->_UpdateValuesInDatabase($finished);// This happen too for $processPOST=false : need to fix it ?
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
