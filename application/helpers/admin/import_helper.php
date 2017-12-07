@@ -1726,7 +1726,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     LimeExpressionManager::SetDirtyFlag(); // Be sure survey EM code are up to date
     $aLemFieldNames = LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames = array(); // An array assicated each fieldname with corresponding responses key
-    if (empty($aCsvHeader=) {
+    if (empty($aCsvHeader)) {
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
