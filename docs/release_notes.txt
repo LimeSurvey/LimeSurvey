@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.72.5 (build 171121) to 2.72.6 (build 171206) Dec 6, 2017
+
+-Fixed issue: Survey settings are not deleted when survey is deleted (Denis Chenu)
+-Fixed issue: Changing password not possible when using Postgres (jackom83)
+-Fixed issue: Wrong minimum upload size determined (Carsten Schmitz)
+-Fixed issue: Replaced wrong text string about security fixes (Markus Flür
+-Fixed issue: Survey url params not transferred after captcha (markusfluer)
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Valencian by joamuran
+
 Changes from 2.72.4 (build 171020) to 2.72.5 (build 171121) Nov 21, 2017
 
 Fixed issue: Fix problem with answer option rows in admin (Olle Haerstedt)
