@@ -232,7 +232,7 @@ class ExpressionValidate extends Survey_Common_Action
         foreach ($aTypeAttributes[$sType] as $key=>$aAttribute) {
             $sAttribute = $aAttribute['attribute'];
             // Email send do : templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
-            // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
+            // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
             $aExpressions[$key] = array(
                 'title'=>$aAttribute['title'],
                 'expression'=> $this->getHtmlExpression($aSurveyInfo[$sAttribute], $aReplacement, __METHOD__),

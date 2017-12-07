@@ -157,7 +157,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
-        return LimeExpressionManager::ProcessString($line, $questionNum, null, false, 1, 1, true);
+        return LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, true);
     }
 
     if (
@@ -353,7 +353,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
-    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
+    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, 3, 1, false, true, $bStaticReplacement);
 
     return $line;
 
@@ -370,7 +370,7 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
         foreach ($fieldsarray as $key => $value) {
             $replacements[substr($key, 1, -1)] = $value;
         }
-        $text = LimeExpressionManager::ProcessString($text, null, $replacements, false, 2, 1, false, false, $staticReplace);
+        $text = LimeExpressionManager::ProcessString($text, null, $replacements, 2, 1, false, false, $staticReplace);
     } else {
         foreach ($fieldsarray as $key => $value) {
             $text = str_replace($key, $value, $text);
