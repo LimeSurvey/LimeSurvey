@@ -7633,6 +7633,20 @@
                                 continue;   // don't make dependent upon off-page variables
                             }
                             $_qid = $knownVar['qid'];
+
+                            /**
+                             * https://bugs.limesurvey.org/view.php?id=8308#c26972
+                             * Thomas White explained: "LEMrelXX functions were specifically designed to only be called for questions that have some dependency upon others "
+                             * So $qrelQIDs contains those questions.
+                             */
+                            $sQid = str_replace("relChange","",$_qid);
+                            if(!in_array($sQid, $aQuestionsWithDependencies)  ){
+                                $aQuestionsWithDependencies[]=$sQid;
+                            }
+
+                            // We add the question having condition itself to the array of question to check
+                            $aQuestionsWithDependencies[] = $arg['qid'];
+
                             if ($_qid == $arg['qid']) {
                                 continue;   // don't make dependent upon itself
                             }
@@ -7641,26 +7655,10 @@
                         }
                     }
                     $qrelQIDs = array_unique($qrelQIDs);
+                    $aQuestionsWithDependencies = array_unique($aQuestionsWithDependencies);
                     if ($LEM->surveyMode=='question') {
                         $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
                     }
-
-                    /**
-                     * https://bugs.limesurvey.org/view.php?id=8308#c26972
-                     * Thomas White explained: "LEMrelXX functions were specifically designed to only be called for questions that have some dependency upon others "
-                     * So $qrelQIDs contains those questions.
-                     */
-                    foreach($qrelQIDs as $qrelQID)
-                    {
-                        $sQid = str_replace("relChange","",$qrelQID);
-                        if(!in_array($sQid, $aQuestionsWithDependencies)  ){
-                            $aQuestionsWithDependencies[]=$sQid;
-                        }
-
-                        // We add the question having condition itself to the array of question to check
-                        $aQuestionsWithDependencies[] = $arg['qid'];
-                    }
-
 
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
