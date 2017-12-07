@@ -12,6 +12,23 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
+
+    var getStorageUrl = '';
+    $('#global-settings-calculate-storage').on(
+        'click',
+        function(ev) {
+            ev.preventDefault();
+            var url = $('input[name="global-settings-storage-url"]').val();
+            LS.ajax({
+                url: url,
+                method: 'GET'
+            });
+            return false;
+        }
+    );
+
+
+
 });
 
 

@@ -940,6 +940,11 @@ LS.ajaxHelperOnSuccess = function(response) {
     else if (response.error) {
         notifyFader(response.error.message, 'well-lg bg-danger text-center');
     }
+    // Put HTML into element.
+    else if (response.outputType == 'jsonoutputhtml') {
+        $('#' + response.target).html(response.html);
+        doToolTip();
+    }
     // Success popup
     else if (response.success) {
         notifyFader(response.success, 'well-lg bg-primary text-center');
