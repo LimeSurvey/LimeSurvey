@@ -219,6 +219,79 @@ class Survey_Common_Action extends CAction
         return call_user_func_array(array($this, $sa), $func_args);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function renderInternal($_viewFile_,$_data_=null,$_return_=false)
+	{
+		// we use special variable names here to avoid conflict when extracting data
+		if(is_array($_data_))
+			extract($_data_,EXTR_PREFIX_SAME,'data');
+		else
+			$data=$_data_;
+		if($_return_)
+		{
+			ob_start();
+			ob_implicit_flush(false);
+			require($_viewFile_);
+			return ob_get_clean();
+		}
+		else
+			require($_viewFile_);
+	}
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    private function renderCentralContents($sAction, $aViewUrls, $aData) 
+    {
+        //// This will be handle by subviews inclusions
+        $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
+        if (!empty($sAction)) {
+                    $sViewPath .= $sAction.'/';
+        }
+        ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
+        // Load views
+        $content = "";
+        foreach ($aViewUrls as $sViewKey => $viewUrl) {
+            if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output'))) {
+                if (is_numeric($sViewKey)) {
+                    $content .= Yii::app()->getController()->renderPartial($sViewPath.$viewUrl, $aData, true);
+                } elseif (is_array($viewUrl)) {
+                    foreach ($viewUrl as $aSubData) {
+                        $aSubData = array_merge($aData, $aSubData);
+                        $content .= Yii::app()->getController()->renderPartial($sViewPath.$sViewKey, $aSubData, true);
+                    }
+                }
+            } else {
+                switch ($sViewKey) {
+                    //// We'll use some Bootstrap alerts, and call them inside each correct view.
+                    // Message
+                    case 'message' :
+                        if (empty($viewUrl['class'])) {
+                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], true);
+                        } else {
+                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class'], true);
+                        }
+                        break;
+
+                        // Output
+                    case 'output' :
+                        //// TODO : http://goo.gl/ABl5t5
+
+                        $content .= $viewUrl;
+
+                        if (isset($aViewUrls['afteroutput'])) {
+                            $content .= $aViewUrls['afteroutput'];
+                        }
+                        break;
+                }
+            }
+        }
+        return $content;
+    }
 
     /**
      * Renders template(s) wrapped in header and footer
@@ -242,134 +315,15 @@ class Survey_Common_Action extends CAction
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
-        //// This will be handle by subviews inclusions
-        $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
-        if (!empty($sAction)) {
-                    $sViewPath .= $sAction.'/';
-        }
-
-        ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
-
-        $this->_showHeaders($aData); //// THe headers will be called from the layout
-        $this->_showadminmenu($aData); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
-        $this->_userGroupBar($aData);
-
-        //// Here will start the rendering from the controller of the main view.
-        //// For example, the Group controller will use the main.php layout, and then render the view list_group.php
-        //// This view will call as a subview the questiongroupbar, and then _listquestiongroup subview.
-
-        //// This check will be useless when it will be handle directly by each specific controller.
-        if (!empty($aData['surveyid'])) {
+          if (!empty($aData['surveyid'])) {
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
-
-            // Needed to evaluate EM expressions in question summary
-            // See bug #11845
-            LimeExpressionManager::StartProcessingPage(false, true);
-            $aData['debug'] = $aData;
-            $this->_titlebar($aData);
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
-            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center" :style="{\'min-height\': $store.state.generalContainerHeight+\'px\'}">';
-            //// Each view will call the correct bar as a subview.
-            $this->_surveysidemenu($aData);
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" v-bind:style="\'max-width:\'+$store.getters.substractContainer" id="pjax-content">';
-            $this->_surveybar($aData);
-            $this->_nquestiongroupbar($aData);
-            $this->_questionbar($aData);
-            $this->_browsemenubar($aData);
-            $this->_tokenbar($aData);
-            $this->_organizequestionbar($aData);
-
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid ls-flex-column fill col-12 overflow-enabled" id="in_survey_common">';
-
-            $this->_updatenotification();
-            $this->_notifications();
-
-            //// Here the main content views.
-            $this->_listquestiongroups($aData);
-            $this->_listquestions($aData);
-            $this->_nsurveysummary($aData);
-
+            $renderFile = Yii::getPathOfAlias('application.views.admin.super').'/layout_insurvey.php';
         } else {
-            ///
-            $this->_fullpagebar($aData);
-            $this->_updatenotification();
-            $this->_notifications();
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '
-                    <!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
-                        <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
-                            ';
+            $renderFile = Yii::getPathOfAlias('application.views.admin.super').'/layout_main.php';
         }
+        
+        $out = $this->renderInternal($renderFile, ['content' => $this->renderCentralContents($sAction, $aViewUrls, $aData) , 'aData' => $aData], true);
 
-        //// Here the rendering of all the subviews process. Will not be use anymore, because each subview will be directly called from her parent view.
-
-        ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
-        // Load views
-        foreach ($aViewUrls as $sViewKey => $viewUrl) {
-            if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output'))) {
-                if (is_numeric($sViewKey)) {
-                    Yii::app()->getController()->renderPartial($sViewPath.$viewUrl, $aData);
-                } elseif (is_array($viewUrl)) {
-                    foreach ($viewUrl as $aSubData) {
-                        $aSubData = array_merge($aData, $aSubData);
-                        Yii::app()->getController()->renderPartial($sViewPath.$sViewKey, $aSubData);
-                    }
-                }
-            } else {
-                switch ($sViewKey) {
-                    //// We'll use some Bootstrap alerts, and call them inside each correct view.
-                    // Message
-                    case 'message' :
-                        if (empty($viewUrl['class'])) {
-                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
-                        } else {
-                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
-                        }
-                        break;
-
-                        // Output
-                    case 'output' :
-                        //// TODO : http://goo.gl/ABl5t5
-
-                        echo $viewUrl;
-
-                        if (isset($aViewUrls['afteroutput'])) {
-                                                    echo $aViewUrls['afteroutput'];
-                        }
-
-                        break;
-                }
-            }
-        }
-
-        //// TODO : Move this divs inside each correct view ASAP !
-        echo '</div>';
-
-        if (!empty($aData['surveyid'])) {
-            echo '</div>';
-            echo '</div>';
-        }
-
-
-        //// THe footer will be called directly from the layout.
-        // Footer
-        if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
-                    Yii::app()->getController()->_loadEndScripts();
-        }
-
-        if (!Yii::app()->user->isGuest) {
-            if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-                            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
-            }
-        } else {
-            echo '</body></html>';
-        }
-
-        $out = ob_get_contents();
-        ob_clean();
         App()->getClientScript()->render($out);
         echo $out;
     }
