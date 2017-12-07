@@ -47,6 +47,16 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                     $this->renderHtmlPage($sHtml, $oTemplate);
                 }
             } else {
+                $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
+                if ($templateDbConf->config->metadatas->version != $oTemplate->template->version) {
+                    throw new WrongTemplateVersionException(
+                        sprintf(
+                            'Template version in database is %s, but in config.xml it\'s %s',
+                            $oTemplate->template->version,
+                            $templateDbConf->config->metadatas->version
+                        )
+                    );
+                }
                 throw new CException(
                     sprintf(
                         "Can't render layout %s for template %s",
