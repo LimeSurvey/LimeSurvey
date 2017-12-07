@@ -1077,7 +1077,7 @@ class themes extends Survey_Common_Action
 
         $otherfiles = $oEditedTemplate->getOtherFiles();
         $editfile = (empty($editfile)) ? $sLayoutFile : $editfile;
-        $sEditfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
+        $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
 
         $extension = substr(strrchr($sEditfile, "."), 1);
         $highlighter = 'html';

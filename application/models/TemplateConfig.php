@@ -948,52 +948,52 @@ class TemplateConfig extends CActiveRecord
 
     public static function rename($sOldName, $sNewName)
     {
-}
+    }
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
-}
+    }
     public function addFileReplacement($sFile, $sType)
     {
-}
+    }
 
     protected function getTemplateForPath($oRTemplate, $sPath)
     {
-}
+    }
 
     /**
      * @param string $sType
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-}
+    }
 
     /**
      * @param string $sType
      */
     protected function changeMotherConfiguration($sType, $aSettings)
     {
-}
+    }
 
     /**
      * @param string $sType
      */
     protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
     {
-}
+    }
 
     /**
      * @param string $sType
      */
     protected function getFrameworkAssetsReplacement($sType)
     {
-}
+    }
     protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
     {
-}
+    }
     protected function setMotherTemplates()
     {
-}
+    }
     protected function setThisTemplate()
     {
-}
     }
+}

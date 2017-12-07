@@ -135,7 +135,7 @@ class TemplateManifest extends TemplateConfiguration
      *
      * @param string $sFile relative path to the file to edit
      */
-    public function getFilePathForEdition($sFile, $aAllowedFiles = null)
+    public function getFilePathForEditing($sFile, $aAllowedFiles = null)
     {
 
         // Check if the file is allowed for edition ($aAllowedFiles is produced via getValidScreenFiles() )
