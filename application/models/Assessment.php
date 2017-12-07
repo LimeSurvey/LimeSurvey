@@ -108,7 +108,8 @@ class Assessment extends LSActiveRecord
         return $buttons;
     }
 
-    public function getColumns() {
+    public function getColumns()
+    {
         return array(
             array(
                 'name' => 'id',
@@ -146,7 +147,8 @@ class Assessment extends LSActiveRecord
         );
     }
 
-    public function search() {
+    public function search()
+    {
 // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;

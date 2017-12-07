@@ -529,7 +529,7 @@ class LSYii_ClientScript extends CClientScript
                 $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-        if(App()->getConfig('debug') > 0){
+        if (App()->getConfig('debug') > 0) {
             $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.log('PJAX scriptsuccess', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.log('PJAX scripterror', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.log('PJAX scripttimeout', e); });";

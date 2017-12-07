@@ -671,7 +671,7 @@ class pdf extends TCPDF
     {
 
     $oTemplate = Template::model()->getInstance();
-    $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
+    $sLogoFileName = $oTemplate->filesPath.Yii::app()->getConfig('pdflogofile');
     if (!file_exists(K_PATH_IMAGES.$sLogoFileName)) {
         $sLogoFileName = '';
     }

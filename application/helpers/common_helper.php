@@ -2940,7 +2940,7 @@ function breakToNewline($data)
 * @returns boolean Fake return so Scrutinizes shuts up
 */
 function safeDie($sText)
-{   
+{
     //Only allowed tag: <br />
     $textarray = explode('<br />', $sText);
     $textarray = array_map('htmlspecialchars', $textarray);
@@ -4897,8 +4897,8 @@ function convertPHPSizeToBytes($sSize)
 {
     //
     $sSuffix = strtoupper(substr($sSize, -1));
-    if (!in_array($sSuffix,array('P','T','G','M','K'))){
-        return (int)$sSize;  
+    if (!in_array($sSuffix, array('P', 'T', 'G', 'M', 'K'))) {
+        return (int) $sSize;  
     } 
     $iValue = substr($sSize, 0, -1);
     switch ($sSuffix) {
@@ -4918,7 +4918,7 @@ function convertPHPSizeToBytes($sSize)
             $iValue *= 1024;
             break;
     }
-    return (int)$iValue;
+    return (int) $iValue;
 }
 
 function getMaximumFileUploadSize()
