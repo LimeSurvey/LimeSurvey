@@ -1739,6 +1739,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
         $aData['sCKEditorURL'] = $sCKEditorURL;
+        $aData['noform'] = true;
 
         return $aData;
     }

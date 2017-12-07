@@ -20,7 +20,7 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Notification panel -->
-<div id='notification'  class="container-fluid">
+<div id='notification-panel'  class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <!-- Date Stamp -->

@@ -26,7 +26,7 @@
                             <div id="editgrp_<?php echo $i;?>" class="tab-pane fade in <?php if($count==1) {echo "active"; $count++;}?> center-box">
 
                                 <div class="form-group">
-                                    <label class="control-label " id="question-group-title"><?php eT("Title:"); ?></label>
+                                    <label class="control-label " id="question-group-title-<?=$aGroupData[$i]['language']?>"><?php eT("Title:"); ?></label>
                                     <div class="">
                                         <?php echo CHtml::textField("group_name_{$aGroupData[$i]['language']}",$aGroupData[$i]['group_name'],array('class'=>'form-control','size'=>"80",'maxlength'=>'100','id'=>"group_name_{$aGroupData[$i]['language']}")); ?>
                                     </div>
@@ -57,7 +57,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label " id="randomization-group"><?php eT("Relevance equation:"); ?></label>
+                        <label class="control-label " id="relevance-group"><?php eT("Relevance equation:"); ?></label>
                         <div class="">
                             <?php echo CHtml::textArea("grelevance",$aGroupData[$aBaseLanguage]['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>
                         </div>

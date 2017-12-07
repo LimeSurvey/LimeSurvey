@@ -74,7 +74,7 @@ Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change',
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
                                             'aQuotaItems'=>$aQuotaItems,
-                                    )).'<p>';
+                                        ),true).'<p>';
                                     return $out;
                                 },
                             ),
@@ -101,21 +101,21 @@ Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change',
                                 'header'=>gT("Action"),
                                 'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
                                     /** @var Quota $oQuota */
-                                    $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
+                                    return $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
                                             'editUrl'=>$aEditUrls[$oQuota->getPrimaryKey()],
                                             'deleteUrl'=>$aDeleteUrls[$oQuota->getPrimaryKey()],
                                             'aQuotaItems'=>$aQuotaItems,
-                                        ));
+                                        ),true);
                                 },
+                                'type' => 'raw',
                                 'headerHtmlOptions'=>array(
                                     'style'=>'text-align:right;',
                                 ),
                                 'htmlOptions'=>array(
-                                    'align'=>'right',
-                                    'style'=>'vertical-align:top',
+                                    'style'=>'text-align: right; vertical-align:top',
                                 ),
                             ),
 

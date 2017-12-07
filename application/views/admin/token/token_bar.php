@@ -50,7 +50,9 @@
                 <!-- Import tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'import')): ?>
                     <li role="separator" class="divider"></li>
-                    <small><?php eT("Import participants from:"); ?></small>
+                    <li>
+                        <small><?php eT("Import participants from:"); ?></small>
+                    </li>
 
                     <!-- from CSV file -->
                     <li>
@@ -147,8 +149,8 @@
                         <?php endif;?>
 
                         <?php if (isset($eMessage)):?>
-                            <li>
-                                <a  href="#" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
+                            <li class="disabled">
+                                <a  href="#" class="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
                                     <span class="ui-bounceprocessing"></span>
                                     <?php eT("Start bounce processing"); ?>
                                 </a>
@@ -261,19 +263,6 @@
                 <p class='modal-body-text'>
 
                 </p>
-
-                <!-- the ajax loader -->
-                <div id="ajaxContainerLoading" >
-                    <p><?php eT('Please wait, loading data...');?></p>
-                    <div class="preloader loading">
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                    </div>
-                </div>
 
             </div>
             <div class="modal-footer">
