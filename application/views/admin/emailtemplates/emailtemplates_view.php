@@ -22,7 +22,7 @@ var LS = LS || {};  // namespace
 ", LSYii_ClientScript::POS_BEGIN );
 
 ?>        
-        <div class="side-body <?php echo getSideBodyClass(false); ?>">
+        <div class="side-body <?php echo getSideBodyClass(false); ?>" style="max-height: 75vh;">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">
@@ -72,6 +72,20 @@ var LS = LS || {};  // namespace
 
 </div>
 </div>
+</div>
+
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><?=gT("Choose file")?></h4>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="attachment-relevance-editor" class="modal fade">
