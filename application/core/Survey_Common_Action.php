@@ -20,7 +20,8 @@
 *
 * @package        LimeSurvey
 * @subpackage    Backend
-* @author        Shitiz Garg
+* @author        LimeSurvey Team
+* @method        void index()
 */
 class Survey_Common_Action extends CAction
 {
@@ -232,7 +233,7 @@ class Survey_Common_Action extends CAction
 		if($_return_)
 		{
 			ob_start();
-			ob_implicit_flush(false);
+			ob_implicit_flush(0);
 			require($_viewFile_);
 			return ob_get_clean();
 		}
@@ -241,11 +242,14 @@ class Survey_Common_Action extends CAction
 	}
 
     /**
-     * Undocumented function
+     * Rendering the subviews and views of _renderWrappedTemplate
      *
-     * @return void
+     * @param string $sAction
+     * @param array $aViewUrls
+     * @param array|null $aData
+     * @return string
      */
-    private function renderCentralContents($sAction, $aViewUrls, $aData) 
+    private function renderCentralContents($sAction, $aViewUrls, $aData = []) 
     {
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
@@ -315,14 +319,17 @@ class Survey_Common_Action extends CAction
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
-          if (!empty($aData['surveyid'])) {
+        $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
+
+        if (!empty($aData['surveyid'])) {
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
-            $renderFile = Yii::getPathOfAlias('application.views.admin.super').'/layout_insurvey.php';
+            $renderFile = $basePath.'/layout_insurvey.php';
         } else {
-            $renderFile = Yii::getPathOfAlias('application.views.admin.super').'/layout_main.php';
+            $renderFile = $basePath.'/layout_main.php';
         }
-        
-        $out = $this->renderInternal($renderFile, ['content' => $this->renderCentralContents($sAction, $aViewUrls, $aData) , 'aData' => $aData], true);
+
+        $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
+        $out = $this->renderInternal($renderFile, ['content' => $content , 'aData' => $aData], true);
 
         App()->getClientScript()->render($out);
         echo $out;
@@ -427,7 +434,7 @@ class Survey_Common_Action extends CAction
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('emailsmtpdebug') != null) {
+            if (getGlobalSetting('emailsmtpdebug') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -1087,7 +1094,7 @@ class Survey_Common_Action extends CAction
         // We get the state of the quickaction
         // If the survey is new (ie: it has no group), it is opened by default
         $quickactionState = SettingsUser::getUserSettingValue('quickaction_state');
-        if ($quickactionState == null) {
+        if ($quickactionState === null || $quickactionState === 0) {
             $quickactionState = 1;
             SettingsUser::setUserSetting('quickaction_state', 1);
         }

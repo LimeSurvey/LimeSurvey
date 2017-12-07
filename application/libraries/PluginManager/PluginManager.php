@@ -5,6 +5,7 @@ use Plugin;
 
 /**
  * Factory for limesurvey plugin objects.
+ * @method mixed dispatchEvent
  */
 class PluginManager extends \CApplicationComponent
 {

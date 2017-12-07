@@ -30,6 +30,12 @@ function injectglobalsettings()
     }
 }
 
+/**
+ * Undocumented function
+ *
+ * @param [type] $settingname
+ * @return string
+ */
 function getGlobalSetting($settingname)
 {
     $dbvalue = Yii::app()->getConfig($settingname);

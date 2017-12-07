@@ -21,6 +21,7 @@ if (!defined('BASEPATH')) {
 *
 * @package        LimeSurvey
 * @subpackage    Backend
+* @inheritdoc
 */
 class UpdateForm extends CFormModel
 {

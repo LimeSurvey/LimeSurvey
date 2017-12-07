@@ -43,6 +43,7 @@ if (!defined('BASEPATH')) {
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property string[] $quotableTypes Question types that can be used for quotas
+ * @inheritdoc
  */
 class Question extends LSActiveRecord
 {
