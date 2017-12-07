@@ -54,6 +54,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property Survey $survey
  * @property SurveyLink $surveylink
  * @property Response[] $responses
+ * @property CDbTableSchema $tableSchema 
  */
 abstract class Token extends Dynamic
 {

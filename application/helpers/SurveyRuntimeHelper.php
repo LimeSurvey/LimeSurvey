@@ -371,16 +371,16 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], null, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
                     $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
-                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                 }
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
@@ -1322,7 +1322,7 @@ class SurveyRuntimeHelper
         //add additional classes
         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
             /* Got to use static expression */
-            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), false, 1, 1, false, false, true)); /* static var is the lmast one ...*/
+            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
                 $aQuestionClass[] = Chtml::encode($emCssClass);
             }

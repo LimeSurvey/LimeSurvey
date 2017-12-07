@@ -638,7 +638,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= '<span class="five-point">';
                                 $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
                                 $aDataentryoutput .= '<label for="5-point-choice-'.$i.'">'.$i.'</label>';
-                                $aDataentryoutput .= '</span> Ã‚Â Ã‚Â ';
+                                $aDataentryoutput .= '</span>';
                             }
                             break;
                         case "D": //DATE
@@ -2143,7 +2143,7 @@ class dataentry extends Survey_Common_Action
 
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
                     $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view", $cdata, true);
-                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, false, 1, 1);
+                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, 1, 1);
                     $aDataentryoutput .= $viewdata_em;
                 }
                 LimeExpressionManager::FinishProcessingGroup();

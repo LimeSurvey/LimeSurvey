@@ -2671,13 +2671,13 @@ function do_multiplenumeric($ia)
         $coreClass           .= " slider-list";
         $slider_layout        = true;
         $extraclass          .= " withslider";
-        $slider_step          = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}", $ia[0], array(), false, 1, 1, false, false, true));
+        $slider_step          = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}", $ia[0], array(), 1, 1, false, false, true));
         $slider_step          = (is_numeric($slider_step)) ? $slider_step : 1;
-        $slider_min           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}", $ia[0], array(), false, 1, 1, false, false, true));
+        $slider_min           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}", $ia[0], array(), 1, 1, false, false, true));
         $slider_mintext       = $slider_min = (is_numeric($slider_min)) ? $slider_min : 0;
-        $slider_max           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}", $ia[0], array(), false, 1, 1, false, false, true));
+        $slider_max           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}", $ia[0], array(), 1, 1, false, false, true));
         $slider_maxtext       = $slider_max = (is_numeric($slider_max)) ? $slider_max : 100;
-        $slider_default       = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}", $ia[0], array(), false, 1, 1, false, false, true));
+        $slider_default       = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}", $ia[0], array(), 1, 1, false, false, true));
         $slider_default       = (is_numeric($slider_default)) ? $slider_default : "";
         $slider_default_set   = (bool) ($aQuestionAttributes['slider_default_set'] && $slider_default !== '');
         $slider_orientation   = (trim($aQuestionAttributes['slider_orientation']) == 0) ? 'horizontal' : 'vertical';
