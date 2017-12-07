@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-12-07 11:00:27+00:00\n"
+"POT-Creation-Date: 2017-12-07 11:07:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11078,10 +11078,12 @@ msgid "Changed by"
 msgstr ""
 
 #: application/models/Surveymenu.php:194
+#: application/models/SurveymenuEntries.php:205
 msgid "Created on"
 msgstr ""
 
-#: application/models/Surveymenu.php:195 application/models/User.php:479
+#: application/models/Surveymenu.php:195
+#: application/models/SurveymenuEntries.php:206 application/models/User.php:479
 msgid "Created by"
 msgstr ""
 
@@ -11127,7 +11129,7 @@ msgid "Template"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:199
-msgid "Permission grade"
+msgid "Permission level"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:200
@@ -11143,19 +11145,11 @@ msgid "Get data method"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:203
-msgid "Changed At"
+msgid "Modified on"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:204
-msgid "Changed By"
-msgstr ""
-
-#: application/models/SurveymenuEntries.php:205
-msgid "Created At"
-msgstr ""
-
-#: application/models/SurveymenuEntries.php:206
-msgid "Created By"
+msgid "Modified by"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:216
@@ -17773,7 +17767,7 @@ msgid "Permission?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:64
-msgid "Permission grade?"
+msgid "Permission level?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:94
@@ -17853,7 +17847,7 @@ msgid "Available admin themes:"
 msgstr ""
 
 #: application/views/admin/themeoptions/index.php:151
-msgid "core admin theme"
+msgid "Core admin theme"
 msgstr ""
 
 #: application/views/admin/themeoptions/index.php:154
@@ -19460,7 +19454,7 @@ msgid "My personal menu entries"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:64
-msgid "Change Password"
+msgid "Change password"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:73
