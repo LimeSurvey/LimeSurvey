@@ -1354,20 +1354,10 @@ class database extends Survey_Common_Action
                     $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
 
                     $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-                /* Start to fix some param before save (TODO : use models directly ?) */
-                /* Date management */
-                Yii::app()->loadHelper('surveytranslator');
-                $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-                $startdate = App()->request->getPost('startdate');
-                if (trim($startdate) != "") {
-                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $startdate);
-                    $startdate = $datetimeobj->format("Y-m-d H:i:s");
-                }
-                $expires = App()->request->getPost('expires');
-                if (trim($expires) != "") {
-                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $expires);
-                    $expires = $datetimeobj->format("Y-m-d H:i:s");
-                }
+                    /* Start to fix some param before save (TODO : use models directly ?) */
+                    /* Date management */
+                    Yii::app()->loadHelper('surveytranslator');
+
 
                     foreach ($validAttributes as $validAttribute) {
                         if ($validAttribute['i18n']) {
