@@ -232,7 +232,6 @@ $aReplacementData=array();
                     <?php eT("Save and close");?>
                 </a>
 
-                <?php /*
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
                     <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
@@ -240,7 +239,6 @@ $aReplacementData=array();
                         <?php eT("Close");?>
                     </a>
                 <?php endif;?>
-                */ ?>
 
                 <!-- Condition designer navigator -->
                 <?php if(isset($questionbar['buttons']['conditions'])):?>

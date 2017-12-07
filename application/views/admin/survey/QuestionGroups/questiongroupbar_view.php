@@ -261,7 +261,6 @@
             <?php endif; ?>
             
  
-            <?php /*
             <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
@@ -269,7 +268,6 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
-            */ ?>
 
             <!-- return -->
             <?php if(isset($questiongroupbar['returnbutton']['url'])):?>
