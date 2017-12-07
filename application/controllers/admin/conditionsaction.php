@@ -1719,7 +1719,7 @@ protected function getEditConditionForm(array $args)
         $scriptResult .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
     }
     $scriptResult .= "\n";
-    App()->getClientScript()->registerScript('conditionsaction_onstartscripts', $scriptResult , LSYii_ClientScript::POS_END );
+    App()->getClientScript()->registerScript('conditionsaction_onstartscripts', $scriptResult, LSYii_ClientScript::POS_END);
     
     return $result;
 }

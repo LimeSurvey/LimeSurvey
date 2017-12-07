@@ -97,7 +97,8 @@ class Assessments extends Survey_Common_Action
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
-    private function _prepareDataArray(&$aData, $collectEdit = false) {
+    private function _prepareDataArray(&$aData, $collectEdit = false)
+    {
         $iSurveyID = $aData['surveyid'];
         
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
@@ -126,7 +127,8 @@ class Assessments extends Survey_Common_Action
         return $aData;
     }
 
-    public function _edit($surveyid) {
+    public function _edit($surveyid)
+    {
         $iAsessementId = App()->request->getParam('id');
         $oAssessments = Assessment::model()->findAll("id=:id", [':id' => $iAsessementId]);
         if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update')) {

@@ -192,7 +192,7 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addInCondition('qid', $qids);
         Question::model()->deleteAll($criteria);
-        if (Question::model()->hasErrors()) {  
+        if (Question::model()->hasErrors()) {
             safeDie(join('<br>', Question::model()->getErrors()));
         }
         $aData['messages'][] = sprintf(gT('Deleting questions: %u questions deleted'), count($questions));
@@ -480,7 +480,7 @@ class CheckIntegrity extends Survey_Common_Action
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid'=>$gid)));
-                    if (QuestionGroup::model()->hasErrors()) {  
+                    if (QuestionGroup::model()->hasErrors()) {
                         safeDie(join('<br>', QuestionGroup::model()->getErrors()));
                     }
 

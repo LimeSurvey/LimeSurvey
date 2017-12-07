@@ -928,7 +928,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $aViewUrls = $aData = $activePanels = [];
             $menuaction = (string) $subaction;
-            $iSurveyID = (int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
             $survey = Survey::model()->findByPk($iSurveyID);
 
         //Get all languages
@@ -1179,7 +1179,7 @@ class SurveyAdmin extends Survey_Common_Action
             $sExtension = "";
 
             if ($action == 'importsurvey') {
-                $aData['sHeader']         = gT("Import survey data");
+                $aData['sHeader'] = gT("Import survey data");
                 $aData['sSummaryHeader'] = gT("Survey structure import summary");
                 $aPathInfo = pathinfo($_FILES['the_file']['name']);
 
@@ -1515,13 +1515,13 @@ class SurveyAdmin extends Survey_Common_Action
         } else {
             $owner['bounce_email'] = $owner['email'];
         }
-        $aData=[];
+        $aData = [];
         $aData['action'] = "newsurvey";
         $aData['owner'] = $owner;
         $aLanguageDetails = getLanguageDetails(Yii::app()->session['adminlang']);
         $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
         $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
-        $aRadixPointData=[];
+        $aRadixPointData = [];
         foreach (getRadixPointData() as $index=>$radixptdata) {
             $aRadixPointData[$index] = $radixptdata['desc'];
         }
@@ -1562,7 +1562,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = $aTabTitles = $aTabContents = array();
 
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        $aLanguageData=[];
+        $aLanguageData = [];
         if ($survey->sid) {
             foreach ($survey->allLanguages as $i => $sLang) {
                 $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
@@ -1588,7 +1588,7 @@ class SurveyAdmin extends Survey_Common_Action
         } else {
 
             $baseLang = Yii::app()->session['adminlang'];
-            $aTabTitles[$baseLang] = (string)getLanguageNameFromCode($baseLang, false).' ('.gT("Base language").')';
+            $aTabTitles[$baseLang] = (string) getLanguageNameFromCode($baseLang, false).' ('.gT("Base language").')';
             $aLanguageData['aSurveyLanguageSettings'] = [
                 'surveyls_language' => $baseLang,
                 'surveyls_title' => '',
@@ -1709,7 +1709,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
 
         App()->getClientScript()->registerPackage('jquery-datatable');
-        $aData=[];
+        $aData = [];
         $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
         $aData['questions'] = $oResult;
         return $aData;
@@ -1735,7 +1735,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (hasResources($survey->sid, 'survey') === false) {
             $disabledIfNoResources = " disabled='disabled'";
         }
-        $aData=[];
+        $aData = [];
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
         $aData['sCKEditorURL'] = $sCKEditorURL;

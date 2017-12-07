@@ -120,7 +120,7 @@ class TemplateManifest extends TemplateConfiguration
             if ($file->attributes()->role == "content") {
 
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = explode ( '/' ,  $file);
+                $aExplodedFile = explode('/', $file);
                 $sFormatedFile = end($aExplodedFile);
                 return (string) $sFormatedFile;
             }
@@ -556,7 +556,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function readManifest()
     {
-        $this->xmlFile         = $this->path.'config.xml';
+        $this->xmlFile = $this->path.'config.xml';
 
         if (file_exists(realpath($this->xmlFile))) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
