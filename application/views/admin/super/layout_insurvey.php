@@ -4,13 +4,13 @@
 
 //headers will be generated with the template file /admin/super/header.php
 $this->_showHeaders($aData);
-
     //The adminmenu bar will be generated from /admin/super/adminmenu.php
     $this->_showadminmenu($aData);
-    
+
     // Generated through /admin/usergroup/usergroupbar_view
     $this->_userGroupBar($aData);
 
+    echo "<!-- BEGIN LAYOUT_INSURVEY -->";
     // Needed to evaluate EM expressions in question summary
     // See bug #11845
     LimeExpressionManager::StartProcessingPage(false, true);
@@ -71,10 +71,10 @@ $this->_showHeaders($aData);
                 
                 echo $content;
 
-            echo '</div>';
-        echo '</div>';
-    echo '</div>';
-
+            echo "</div>\n";
+        echo "</div>\n";
+    echo "</div>\n";
+echo "<!-- END LAYOUT_INSURVEY -->";
     
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {

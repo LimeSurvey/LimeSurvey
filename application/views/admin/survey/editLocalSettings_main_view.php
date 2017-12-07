@@ -20,7 +20,7 @@ $count = 0;
 if(isset($scripts))
     echo $scripts;
 ?>
-
+<!-- START editLocalSettings -->
 <div class="row col-12">
     <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
@@ -52,6 +52,7 @@ if(isset($scripts))
         </form>
     </div>
 </div>
+<!-- END editLocalSettings -->
 <?php
 Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit_".$entryData['name'], "
 
