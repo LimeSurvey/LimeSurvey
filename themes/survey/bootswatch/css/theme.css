@@ -82,6 +82,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .question-container {
   margin-bottom: 2em;
   background:white;
+  color: #444;
   border-bottom: 1px solid #dbdbdb;
 }
 .question-container-printanswers {
@@ -379,7 +380,7 @@ Responsive navbar-brand image CSS
 }
 
 body .navbar-default .navbar-brand:hover {
-    
+
 }
 
 /* Only use <label> to get vertical align easy. Don't want boldness. */
