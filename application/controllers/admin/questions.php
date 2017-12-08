@@ -851,7 +851,7 @@ class questions extends Survey_Common_Action
 
 
 
-    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible = '')
+    public function getSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible = '')
     {
         $languages = explode(';', json_decode($languages));
         $html      = array();
@@ -869,7 +869,7 @@ class questions extends Survey_Common_Action
      * AJAX Method to QuickAdd multiple Rows AJAX-based
      * @todo Permission
      */
-    public function getSubquestionRowQuickAdd($surveyid, $gid, $qid)
+    public function getSubquestionRowQuickAdd($surveyid, $gid)
     {
         $qid               = '{{quid_placeholder}}';
         $request           = Yii::app()->request;
@@ -908,11 +908,11 @@ class questions extends Survey_Common_Action
         foreach ($stringCodes as $key => $stringCode) {
             // This will loop into the code, from the last character to the first letter
             $numericSuffix = ''; $n = 1; $numeric = true;
-            while ($numeric == true && $n <= strlen($stringCode)) {
-                $currentCharacter = substr($stringCode, -$n, 1); // get the current character
+            while ($numeric === true && $n <= strlen($stringCode)) {
+                $currentCharacter = (string)substr($stringCode, -$n, 1); // get the current character
 
                 if (ctype_digit($currentCharacter)) {
-// check if it's numerical
+                // check if it's numerical
                     $numericSuffix = $currentCharacter.$numericSuffix; // store it in a string
                     $n = $n + 1;
                 } else {
@@ -931,7 +931,7 @@ class questions extends Survey_Common_Action
 
         // We get the string part of it: it's the original string code, without the greates code with its 0 :
         // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
-        $stringPartOfNewCode    = substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
+        $stringPartOfNewCode    = (string)substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
 
         // We increment by one the greatest code
         $numericalPartOfNewCode = $newPosition = $greatestNumCode + 1;
@@ -1007,6 +1007,7 @@ class questions extends Survey_Common_Action
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
+        $aData = [];
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
         App()->getClientScript()->registerPackage('qTip2');
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -1033,6 +1034,7 @@ class questions extends Survey_Common_Action
         }
         $aData['ajaxDatas']['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
+        $eqrow = [];
         $eqrow['language'] = $baselang;
         $eqrow['title'] = '';
         $eqrow['question'] = '';
@@ -1102,7 +1104,7 @@ class questions extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['explorer']['state'] = true;
 
-
+        $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
         $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
 
@@ -1136,6 +1138,7 @@ class questions extends Survey_Common_Action
         $aViewUrls = array();
 
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+        $aData = [];
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
@@ -1180,14 +1183,14 @@ class questions extends Survey_Common_Action
                 $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
                 $aData['oQuestion'] = $oQuestion;
 
+                $basesettings = [];
                 $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-
                 foreach ($egresult as $esrow) {
                     if (!array_key_exists($esrow->language, $questlangs)) {
-// Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
+                    // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();
                     } else {
-                                            $questlangs[$esrow->language] = 99;
+                        $questlangs[$esrow->language] = 99;
                     }
 
                     if ($esrow->language == $baselang) {
@@ -1209,7 +1212,7 @@ class questions extends Survey_Common_Action
                     $this->getController()->error('Invalid question id');
                 }
 
-                while (list($key, $value) = each($questlangs)) {
+                foreach($questlangs as $key=>$value) {
                     if ($value != 99) {
                         $arQuestion = new Question;
                         $arQuestion->qid = $qid;
@@ -1236,7 +1239,7 @@ class questions extends Survey_Common_Action
                 ));
             } else {
                 // This is needed to properly color-code content if it contains replacements
-                LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl, true); // so can click on syntax highlighting to edit questions
+                LimeExpressionManager::StartProcessingPage(false, true); // so can click on syntax highlighting to edit questions
             }
 
             $qtypelist = getQuestionTypeList('', 'array');
@@ -1248,7 +1251,7 @@ class questions extends Survey_Common_Action
             }
             $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
-
+            $eqrow = [];
             if (!$adding) {
                 if (is_object($eqresult->groups)) {
                                     $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);
@@ -1307,7 +1310,7 @@ class questions extends Survey_Common_Action
                 if (Yii::app()->session['questionselectormode'] !== 'default') {
                     $selectormodeclass = Yii::app()->session['questionselectormode'];
                 } else {
-                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
+                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
                 }
 
                 $aData['selectormodeclass'] = $selectormodeclass;
@@ -1391,16 +1394,15 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $gid, $qid, $ajax = false)
+    public function delete($surveyid, $qid, $ajax = false)
     {
         $surveyid = sanitize_int($surveyid);
-        $gid = sanitize_int($gid);
-        $qid = sanitize_int($qid);
+        $qid = (int)$qid;
         $rqid = $qid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
-            if (!isset($qid)) {
-                            $qid = returnGlobal('qid');
+            if ($qid == 0) {
+                $qid = returnGlobal('qid');
             }
 
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
@@ -1412,13 +1414,6 @@ class questions extends Survey_Common_Action
 
             // There are conditions dependent on this question
             if ($cccount) {
-                // foreach ($ccresult as $ccr)
-                // {
-                //     $qidarray[] = $ccr->qid;
-                // }
-                // if (isset($qidarray))
-                //     $qidlist = implode(", ", $qidarray);
-
                 $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
 
                 if (!$ajax) {
@@ -1447,10 +1442,6 @@ class questions extends Survey_Common_Action
                 QuotaMember::model()->deleteAllByAttributes(array('qid' => $qid));
 
                 Question::model()->updateQuestionOrder($gid, $surveyid);
-
-                $qid = "";
-                // $postqid = "";
-                $_GET['qid'] = "";
             }
 
             $sMessage = gT("Question was successfully deleted.");
@@ -1658,7 +1649,7 @@ class questions extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($surveyid);
 
         if ($oSurvey === null) {
-            die();
+            App()->end();
         }
 
         $aLanguages = array_merge(
@@ -1692,6 +1683,7 @@ class questions extends Survey_Common_Action
                 }
             }
         }
+        $aData = [];
         $aData['bIsActive'] = ($oSurvey->active == 'Y');
         $aData['attributedata'] = $aAttributesPrepared;
         $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
@@ -1713,6 +1705,7 @@ class questions extends Survey_Common_Action
         $labelsetdata = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
 
         $labelsetlanguages = explode(' ', $labelsetdata->languages);
+        $resultdata = [];
         foreach ($labelsetlanguages as $language) {
 
             $criteria = new CDbCriteria;
@@ -1751,9 +1744,9 @@ class questions extends Survey_Common_Action
         $surveyid = returnglobal('sid');
         $survey = Survey::model()->findByPk($surveyid);
 
+        $language = null;
         if ($match == 1) {
             $language = $survey->language;
-            $language = null;
         }
 
         $resultdata = getlabelsets($language);
@@ -1907,7 +1900,7 @@ class questions extends Survey_Common_Action
         $content .= CHtml::form('index.php', 'post', array('id'=>"limesurvey", 'name'=>"limesurvey", 'autocomplete'=>'off', 'class'=>'survey-form-container Questions'));
         $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
 
-        $question_template = file_get_contents("$thistpl/question.pstpl");
+        $question_template = (string)file_get_contents("$thistpl/question.pstpl");
         // the following has been added for backwards compatiblity.
         if (substr_count($question_template, '{QUESTION_ESSENTIALS}') > 0) {
             // LS 1.87 and newer templates
@@ -1935,10 +1928,9 @@ class questions extends Survey_Common_Action
         if ($LEMdebugLevel >= 2) {
             echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
         }
-
         echo "</html>\n";
 
-        exit;
+        Yii::app()->end();
     }
 
     /**
@@ -1954,17 +1946,16 @@ class questions extends Survey_Common_Action
         $iSurveyId = (int) $surveyid;
         $iQid = $qid;
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if ($oSurvey) {
-            $sLanguage = $oSurvey->language; // Validate only on default language
-        } else {
+        if (empty($oSurvey)) {
             Yii::app()->end(); // Or throw error 500
         }
+        // Validate only on default language
         if (!$iQid) {
             $oQuestion = new Question('insert');
             $oQuestion->sid = $iSurveyId;
-            $oQuestion->language = $sLanguage;
+            $oQuestion->language = $oSurvey->language;
         } else {
-            $oQuestion = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
+            $oQuestion = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$oSurvey->language));
             if (!$oQuestion) {
                     throw new Exception('Invalid question id.');
             }

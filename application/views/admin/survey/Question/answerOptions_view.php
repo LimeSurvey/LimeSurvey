@@ -240,8 +240,7 @@
                                 array(
                                     'sa' => 'getSubquestionRowQuickAdd',
                                     'surveyid' => $surveyid,
-                                    'gid' => $gid,
-                                    'qid' => $qid
+                                    'gid' => $gid
                                 )
                             );?>"
                             data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"

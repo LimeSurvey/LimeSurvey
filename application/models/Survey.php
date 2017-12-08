@@ -776,9 +776,9 @@ class Survey extends LSActiveRecord
                 $aData['sid'] = randomChars(6, '123456789');
             }
             $isresult = self::model()->findByPk($aData['sid']);
+            unset($aData['wishSID']);
         }
         while (!is_null($isresult));
-        unset($aData['wishSID']);
 
         $survey = new self;
         foreach ($aData as $k => $v) {

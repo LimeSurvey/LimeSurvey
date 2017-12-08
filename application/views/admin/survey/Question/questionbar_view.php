@@ -124,7 +124,7 @@ $aReplacementData=array();
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
                 <a class="btn btn-default"
                    data-toggle="modal"
-                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
+                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/qid/$qid"); ?>"
                    data-target="#confirmation-modal"
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
