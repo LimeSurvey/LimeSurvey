@@ -24,7 +24,7 @@ class index extends CAction
         $this->action();
     }
 
-    function action()
+    public function action()
     {
         global $surveyid;
         global $thissurvey, $thisstep;
@@ -570,7 +570,7 @@ class index extends CAction
         }
 
         // Preview action : Preview right already tested before
-        if ($previewmode) {
+        if ($previewmode===true) {
 
             // Unset all SESSION: be sure to have the last version
             unset($_SESSION['fieldmap-'.$surveyid.App()->language]); // Needed by createFieldMap: else fieldmap can be outdated
@@ -600,19 +600,20 @@ class index extends CAction
             echo $ex->getMessage();
         }
 
-        if (App()->request->getPost('saveall') || isset($flashmessage)) {
+        if (App()->request->getPost('saveall')) {
             App()->clientScript->registerScript("saveflashmessage", "alert('".gT("Your responses were successfully saved.", "js")."');", CClientScript::POS_READY);
         }
     }
 
-    function _getParameters($args = array(), $post = array())
+    private function _getParameters($args = array(), $post = array())
     {
         $param = array();
         if (@$args[0] == __CLASS__) {
             array_shift($args);
         }
-        if (count($args) % 2 == 0) {
-            for ($i = 0; $i < count($args); $i += 2) {
+        $iArgCount = count($args);
+        if ($iArgCount % 2 == 0) {
+            for ($i = 0; $i < $iArgCount; $i += 2) {
                 //Sanitize input from URL with returnGlobal
                 $param[$args[$i]] = returnGlobal($args[$i], true);
             }
@@ -626,7 +627,7 @@ class index extends CAction
         return $param;
     }
 
-    function _loadRequiredHelpersAndLibraries()
+    private function _loadRequiredHelpersAndLibraries()
     {
         //Load helpers, libraries and config vars
         Yii::app()->loadHelper("database");
@@ -634,7 +635,7 @@ class index extends CAction
         Yii::app()->loadHelper("surveytranslator");
     }
 
-    function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
+    private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
         if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
             $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
@@ -647,23 +648,23 @@ class index extends CAction
         App()->setLanguage($baselang);
     }
 
-    function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
+    private function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
     }
 
-    function _isSurveyFinished($surveyid)
+    private function _isSurveyFinished($surveyid)
     {
         return isset($_SESSION['survey_'.$surveyid]['finished']) && $_SESSION['survey_'.$surveyid]['finished'] === true;
     }
 
-    function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
+    private function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true && !$this->_canUserPreviewSurvey($surveyid);
     }
 
-    function _didSessionTimeout($surveyid)
+    private function _didSessionTimeout($surveyid)
     {
         return (!isset($_SESSION['survey_'.$surveyid]['step']) && null !== App()->request->getPost('thisstep'));
     }

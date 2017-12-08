@@ -896,7 +896,7 @@ function do_date($ia)
 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
         } elseif ($date_time_em !== false) {
-            $maxdate = date("Y-m-d", $date_time_em);
+            $maxdate = (string)date("Y-m-d", $date_time_em);
         } else {
             $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
@@ -3915,8 +3915,6 @@ function do_array_yesnouncertain($ia)
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : array();
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
-    $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult                 = dbExecuteAssoc($qquery); //Checked
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
@@ -4013,8 +4011,6 @@ function do_array_increasesamedecrease($ia)
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : array();
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
-    $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult                 = dbExecuteAssoc($qquery); //Checked
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
@@ -4711,7 +4707,7 @@ function do_array_texts($ia)
 
         $showtotals = false; $total = '';
 
-        if ($show_totals == 'col' || $show_totals == 'both' || $grand_total == true) {
+        if ($show_totals == 'col' || $show_totals == 'both' || $grand_total !== '') {
             $showtotals = true;
 
             $iLabelCodeCount=count($labelcode);

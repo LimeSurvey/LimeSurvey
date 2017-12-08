@@ -822,7 +822,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     $results['languages'] = count($aLanguagesSupported);
-    $iOldSID = $results['oldsid'] = $insertdata['sid'];
 
     // Import surveys table ====================================================
     
@@ -832,6 +831,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         foreach ($row as $key=>$value) {
             $insertdata[(string) $key] = (string) $value;
         }
+        $iOldSID = $results['oldsid'] = $insertdata['sid'];
 
         if ($iDesiredSurveyId != null) {
             $insertdata['wishSID'] = GetNewSurveyID($iDesiredSurveyId);

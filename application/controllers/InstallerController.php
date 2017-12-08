@@ -882,7 +882,7 @@ class InstallerController extends CController
      * Function that actually modify the database. Read $sqlfile and execute it.
      * @param string $sFileName
      * @param array $aDbConfig
-     * @return string/true True if everything was okay - otherwise the error messages
+     * @return string|true True if everything was okay - otherwise the error messages
      */
     public function _setup_tables($sFileName, $aDbConfig = array())
     {
@@ -899,7 +899,8 @@ class InstallerController extends CController
             return array($e->getMessage());
         }
         require_once($sFileName);
-        return createDatabase($this->connection);
+        createDatabase($this->connection);
+        return true;
     }
 
     /**
@@ -908,7 +909,7 @@ class InstallerController extends CController
      * @param string $sFileName
      * @param string $sDatabasePrefix
      */
-    private function _executeSQLFile($sFileName, $sDatabasePrefix)
+    public function _executeSQLFile($sFileName, $sDatabasePrefix)
     {
         $aMessages = array();
         $sCommand = '';

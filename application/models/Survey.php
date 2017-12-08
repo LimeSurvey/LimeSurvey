@@ -772,13 +772,13 @@ class Survey extends LSActiveRecord
             // if wishSID is set check if it is not taken already
             if (isset($aData['wishSID'])) {
                 $aData['sid'] = $aData['wishSID'];
-                unset($aData['wishSID']);
             } else {
                 $aData['sid'] = randomChars(6, '123456789');
             }
             $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
+        unset($aData['wishSID']);
 
         $survey = new self;
         foreach ($aData as $k => $v) {
