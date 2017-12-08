@@ -937,7 +937,7 @@ class questions extends Survey_Common_Action
         $numericalPartOfNewCode = $newPosition = $greatestNumCode + 1;
 
         // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
-        $listOfZero = substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
+        $listOfZero = (string)substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
 
         // When no more zero are available we want to be sure that the last 9 unit will not left
         // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
@@ -1377,7 +1377,7 @@ class questions extends Survey_Common_Action
 
             if (is_object($oQuestion)) {
                 $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->question, true, 0);
-                $result = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true);
+                $result = $this->delete($oQuestion->sid, $iQid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
         }

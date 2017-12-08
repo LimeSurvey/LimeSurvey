@@ -1526,7 +1526,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 */
 function GetNewSurveyID($iDesiredSurveyId)
 {
-    debugbreak();
     Yii::app()->loadHelper('database');
     $aSurvey = Survey::model()->findByPk($iDesiredSurveyId);
     if (!empty($aSurvey) || $iDesiredSurveyId == 0) {

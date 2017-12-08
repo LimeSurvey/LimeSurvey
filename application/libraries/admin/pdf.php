@@ -235,7 +235,7 @@ class pdf extends TCPDF
      * Initialize and configure TCPDF with the settings in our config file
      *
      */
-    function __construct()
+    public function __construct()
     {
 
     # load the config file
@@ -311,7 +311,7 @@ class pdf extends TCPDF
      * @param $format
      * @return unknown_type
      */
-    function intopdf($text, $format = '')
+    public function intopdf($text, $format = '')
     {
     $text = $this->delete_html($text);
     $oldformat = $this->FontStyle;
@@ -326,7 +326,7 @@ class pdf extends TCPDF
      * @param $text
      * @return unknown_type
      */
-    function helptextintopdf($text)
+    public function helptextintopdf($text)
     {
     $oldsize = $this->FontSizePt;
     $this->SetFontSize($oldsize - 2);
@@ -341,7 +341,7 @@ class pdf extends TCPDF
      * @param $description
      * @return unknown_type
      */
-    function titleintopdf($title, $description = '')
+    public function titleintopdf($title, $description = '')
     {
     if (!empty($title)) {
         $title = $this->delete_html($title);
@@ -370,7 +370,7 @@ class pdf extends TCPDF
      * @param $array(0=>)
      * @return unknown_type
      */
-    function tablehead($array)
+    public function tablehead($array)
     {
     //$maxwidth = array();
     $maxwidth = $this->getEqualWidth($array);
@@ -393,7 +393,7 @@ class pdf extends TCPDF
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
      * @return unknown_type
      */
-    function equalTable($array, $modulo = 1)
+    public function equalTable($array, $modulo = 1)
     {
     //$maxwidth = array();
     $maxwidth = $this->getEqualWidth($array);
@@ -419,7 +419,7 @@ class pdf extends TCPDF
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is off, turn on with 1
      * @return unknown_type
      */
-    function tableintopdf($array, $modulo = 1)
+    public function tableintopdf($array, $modulo = 1)
     {
     $maxwidth = array();
     $maxwidth = $this->getFullWidth($array);
@@ -446,7 +446,7 @@ class pdf extends TCPDF
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is on, turn off with 0
      * @return unknown_type
      */
-    function headTable($head, $table, $modulo = 1)
+    public function headTable($head, $table, $modulo = 1)
     {
     $array = array_merge_recursive($head, $table);
     //print_r($array);
@@ -501,7 +501,7 @@ class pdf extends TCPDF
     }
     $this->ln(5);
     }
-    function getminwidth($array)
+    public function getminwidth($array)
     {
     $width = array();
     for ($i = 0; $i < sizeof($array); $i++) {
@@ -523,7 +523,7 @@ class pdf extends TCPDF
     }
     return $width;
     }
-    function getmaxwidth($array)
+    public function getmaxwidth($array)
     {
     for ($i = 0; $i < sizeof($array); $i++) {
         for ($j = 0; $j < sizeof($array[$i]); $j++) {
@@ -544,7 +544,7 @@ class pdf extends TCPDF
      * @param $array
      * @return array with column width
      */
-    function getFullWidth($array)
+    public function getFullWidth($array)
     {
     $maxlength = array();
     $width = array();
@@ -567,7 +567,7 @@ class pdf extends TCPDF
      * @param $array
      * @return unknown_type
      */
-    function getEqualWidth($array)
+    public function getEqualWidth($array)
     {
     $margins = $this->getMargins();
     $deadSpace = $margins['left'] + $margins['right'];
@@ -588,12 +588,12 @@ class pdf extends TCPDF
             return false;
     }
     }
-    function write_out($name)
+    public function write_out($name)
     {
     $this->Output($name, "D");
     }
 
-    function delete_html($text)
+    public function delete_html($text)
     {
     $text = html_entity_decode($text, null, 'UTF-8');
     $text = str_replace("\t", ' ', $text);
@@ -609,7 +609,7 @@ class pdf extends TCPDF
      * @param $sDefaultHeaderString - TCPDF header string
      * @return unknown_type
      */
-    function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
+    public function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
     {
     if (empty($sDefaultHeaderString)) {
             $sDefaultHeaderString = $sSurveyName;
@@ -640,7 +640,7 @@ class pdf extends TCPDF
      * @param $sSubtitle - Subtitle
      * @return unknown_type
      */
-    function addTitle($sTitle, $sSubtitle = "")
+    public function addTitle($sTitle, $sSubtitle = "")
     {
     if (!empty($sTitle)) {
         $this->ln(1);
@@ -667,7 +667,7 @@ class pdf extends TCPDF
      * @param $sDefaultHeaderString - TCPDF header string
      * @return unknown_type
      */
-    function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
+    public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
 
     $oTemplate = Template::model()->getInstance();
@@ -699,7 +699,7 @@ class pdf extends TCPDF
      * @param $bAllowBreakPage - Allow break cell in two pages
      * @return unknown_type
      */
-    function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage = false)
+    public function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage = false)
     {
     $oPurifier = new CHtmlPurifier();
     $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)), ENT_COMPAT);
@@ -738,7 +738,7 @@ class pdf extends TCPDF
      * @param $bAllowBreakPage - Allow break cell in two pages
      * @return unknown_type
      */
-    function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)
+    public function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)
     {
     $bYiiQuestionBorder = 1;
     $bQuestionFill = 1;
