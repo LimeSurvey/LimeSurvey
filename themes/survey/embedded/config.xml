@@ -9,7 +9,7 @@
 -->
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
-    <metadatas>
+    <metadata>
         <name>embedded</name>
         <title>Embedded Theme</title>
         <creationDate>06/12/2016</creationDate>
@@ -23,7 +23,7 @@
         <description><![CDATA[<strong>LimeSurvey Embedded Theme</strong><br>A fruity theme variation to use in embedded context, like an iFrame on a website. So you can easely embed a survey in your Joomla/Wordpress website.]]></description>
         <last_update>2017-12-06 13:15:00</last_update>
         <extends>fruity</extends>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.

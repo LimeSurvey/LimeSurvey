@@ -7,7 +7,7 @@
 
 <config>
     <!-- Those metadata will be displayed in the theme configuration page. They are not used for now. -->
-    <metadatas>
+    <metadata>
         <name>material</name>
         <creationDate>07/18/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
@@ -20,7 +20,7 @@
         <description><![CDATA[<strong>LimeSurvey Material Design Theme</strong><br> A theme based on FezVrasta's Material design for Bootstrap 3 <a href='https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/index.html'></a>]]></description>
         <last_update></last_update>
         <extends>default</extends>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to load.

@@ -75,7 +75,7 @@ class ProgressBar
 
     // constructor
 
-    function __construct($params = array())
+    public function __construct($params = array())
     {
  
         $defaults = array('width' => 0, 'height' => 0);
@@ -98,7 +98,7 @@ class ProgressBar
     /**
      * @param integer $step
      */
-    function _calculatePercent($step)
+    private function _calculatePercent($step)
     {
         $percent = round(($step - $this->min) / ($this->max - $this->min) * 100);
         if ($percent > 100) {$percent = 100; }
@@ -108,7 +108,7 @@ class ProgressBar
     /**
      * @param integer $step
      */
-    function _calculatePosition($step)
+    private function _calculatePosition($step)
     {
         switch ($this->direction) {
             case 'right':
@@ -157,7 +157,7 @@ class ProgressBar
     /**
      * @param integer $step
      */
-    function _setStep($step)
+    private function _setStep($step)
     {
         if ($step > $this->max) {$step = $this->max; }
         if ($step < $this->min) {$step = $this->min; }
@@ -166,7 +166,7 @@ class ProgressBar
 
     // public functions
 
-    function setFrame($width = 0, $height = 0)
+    public function setFrame($width = 0, $height = 0)
     {
         $this->frame = array(
             'show' => true,
@@ -187,7 +187,7 @@ class ProgressBar
      * @param string $type
      * @param string $name
      */
-    function addLabel($type, $name, $value = '&nbsp;')
+    public function addLabel($type, $name, $value = '&nbsp;')
     {
         switch ($type) {
             case 'text':
@@ -279,14 +279,14 @@ class ProgressBar
      * @param string $name
      * @param string $action
      */
-    function addButton($name, $value, $action, $target = 'self')
+    public function addButton($name, $value, $action, $target = 'self')
     {
         $this->addLabel('button', $name, $value);
         $this->label[$name]['action'] = $action;
         $this->label[$name]['target'] = $target;
     }
 
-    function setLabelPosition($name, $left, $top, $width, $height, $align = '')
+    public function setLabelPosition($name, $left, $top, $width, $height, $align = '')
     {
         $this->label[$name]['top'] = intval($top);
         $this->label[$name]['left'] = intval($left);
@@ -308,7 +308,7 @@ class ProgressBar
         }
     }
 
-    function setLabelColor($name, $color)
+    public function setLabelColor($name, $color)
     {
         $this->label[$name]['color'] = $color;
         if ($this->status != 'new') {
@@ -321,7 +321,7 @@ class ProgressBar
         }
     }
 
-    function setLabelBackground($name, $color)
+    public function setLabelBackground($name, $color)
     {
         $this->label[$name]['bgr_color'] = $color;
         if ($this->status != 'new') {
@@ -334,7 +334,7 @@ class ProgressBar
         }
     }
 
-    function setLabelFont($name, $size, $family = '', $weight = '')
+    public function setLabelFont($name, $size, $family = '', $weight = '')
     {
         $this->label[$name]['font-size'] = intval($size);
         if ($family != '') {$this->label[$name]['font-family'] = $family; }
@@ -355,7 +355,7 @@ class ProgressBar
     /**
      * @param string $name
      */
-    function setLabelValue($name, $value)
+    public function setLabelValue($name, $value)
     {
         $this->label[$name]['value'] = $value;
         if ($this->status != 'new') {
@@ -368,7 +368,7 @@ class ProgressBar
         }
     }
 
-    function setBarColor($color)
+    public function setBarColor($color)
     {
         $this->color = $color;
         if ($this->status != 'new') {
@@ -381,7 +381,7 @@ class ProgressBar
         }
     }
 
-    function setBarBackground($color)
+    public function setBarBackground($color)
     {
         $this->bgr_color = $color;
         if ($this->status != 'new') {
@@ -394,7 +394,7 @@ class ProgressBar
         }
     }
 
-    function setBarDirection($direction)
+    public function setBarDirection($direction)
     {
         $this->direction = $direction;
 
@@ -413,7 +413,7 @@ class ProgressBar
         }
     }
 
-    function getHtml()
+    public function getHtml()
     {
         $html = '';
         $js = '';
@@ -507,7 +507,7 @@ class ProgressBar
         return $html;
     }
 
-    function show()
+    public function show()
     {
         $this->status = 'show';
         echo $this->getHtml();
@@ -517,7 +517,7 @@ class ProgressBar
     /**
      * @param integer $step
      */
-    function moveStep($step)
+    public function moveStep($step)
     {
         $last_step = $this->step;
         $this->_setStep($step);
@@ -569,17 +569,17 @@ class ProgressBar
         }
     }
 
-    function moveNext()
+    public function moveNext()
     {
         $this->moveStep($this->step + 1);
     }
 
-    function moveMin()
+    public function moveMin()
     {
         $this->moveStep($this->min);
     }
 
-    function hide()
+    public function hide()
     {
         if ($this->status == 'show') {
             $this->status = 'hide';
@@ -596,7 +596,7 @@ class ProgressBar
         }
     }
 
-    function unhide()
+    public function unhide()
     {
         if ($this->status == 'hide') {
             $this->status = 'show';

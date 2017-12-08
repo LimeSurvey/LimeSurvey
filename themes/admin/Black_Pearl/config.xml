@@ -5,7 +5,7 @@
     and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
 -->
 <config>
-    <metadatas>
+    <metadata>
         <name>Black Pearl</name>
         <creationDate>08/12/2015</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
@@ -17,7 +17,7 @@
         <description>LimeSurvey admin interface template, dark blue variation.</description>
         <basecolor>#071630</basecolor>
         <last_update>2017-27-11 17:00:00</last_update>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to load.

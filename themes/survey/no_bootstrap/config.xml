@@ -7,7 +7,7 @@
 
 <config>
     <!-- Those metadata will be displayed in the theme configuration page. They are not used for now. -->
-    <metadatas>
+    <metadata>
         <name>no_bootstrap</name>
         <creationDate>16/10/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
@@ -19,7 +19,7 @@
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey No Bootstrap Theme</strong><br>A clean and simple base that can be used by developers to create their own theme without Bootstrap.]]></description>
         <last_update>2017-10-16 17:21:00</last_update>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to load.

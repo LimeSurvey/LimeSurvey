@@ -12,7 +12,7 @@ class SurveyObj
      * some of the more verbose output in a survey export.
      * array[recordNo][columnName]
      *
-     * @var array[int][string]mixed
+     * @var int[]|string[]|mixed[]
      */
     public $answers = array();
 
@@ -25,7 +25,7 @@ class SurveyObj
     /**
      * The groups in the survey.
      *
-     * @var array[int][string]mixed
+     * @var int[]|string[]|mixed[]
      */
     public $groups;
 
@@ -39,7 +39,7 @@ class SurveyObj
     /**
      * The questions in the survey.
      *
-     * @var array[int][string]mixed
+     * @var int[]|string[]|mixed[]
      */
     public $questions;
 
@@ -55,13 +55,13 @@ class SurveyObj
      * Stores the responses to the survey in a two dimensional array form.
      * array[recordNo][fieldMapName]
      *
-     * @var array[int][string]mixed
+     * @var int[]|string[]|mixed[]
      */
     public $responses;
 
     /**
      *
-     * @var array[int][string]mixed
+     * @var int[]|string[]|mixed[]
      */
     public $languageSettings;
 

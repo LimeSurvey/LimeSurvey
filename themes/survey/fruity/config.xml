@@ -9,7 +9,7 @@
 -->
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
-    <metadatas>
+    <metadata>
         <name>Fruity</name>
         <title>Fruity Theme</title>
         <creationDate>08/01/2016</creationDate>
@@ -23,7 +23,7 @@
         <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
         <last_update>2017-12-04 18:36:02</last_update>
         <extends>vanilla</extends>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.

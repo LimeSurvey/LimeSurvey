@@ -113,9 +113,9 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <tr class="odd">
                                                 <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
                                                 <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
-                                                <td class="col-md-3"><?php echo $oTemplate->config->metadatas->description; ?></td>
+                                                <td class="col-md-3"><?php echo $oTemplate->config->metadata->description; ?></td>
                                                 <td class="col-md-2"><?php eT('XML themes');?></td>
-                                                <td class="col-md-2"><?php echo $oTemplate->config->metadatas->extends; ?></td>
+                                                <td class="col-md-2"><?php echo $oTemplate->config->metadata->extends; ?></td>
                                                 <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
                                             </tr>
                                         <?php endforeach;?>
@@ -146,8 +146,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <?php foreach ($oAdminTheme->adminThemeList as $oTheme ):?>
                                         <tr class="odd">
                                             <td class="col-md-1"><?php echo $oTheme->preview; ?></td>
-                                            <td class="col-md-2"><?php echo $oTheme->metadatas->name; ?></td>
-                                            <td class="col-md-3"><?php echo $oTheme->metadatas->description; ?></td>
+                                            <td class="col-md-2"><?php echo $oTheme->metadata->name; ?></td>
+                                            <td class="col-md-3"><?php echo $oTheme->metadata->description; ?></td>
                                             <td class="col-md-2"><?php eT('Core admin theme');?></td>
                                             <td class="col-md-1">
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>

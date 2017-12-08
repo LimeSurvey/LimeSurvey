@@ -9,7 +9,7 @@
 -->
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
-    <metadatas>
+    <metadata>
         <name>bootswatch</name>
         <title>Bootswatch Theme</title>
 
@@ -24,7 +24,7 @@
         <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
         <last_update>2017-11-29 19:28:00</last_update>
         <extends>vanilla</extends>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.

@@ -11,7 +11,7 @@
 
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
-    <metadatas>
+    <metadata>
         <name>vanilla</name>
         <title>Bootstrap Vanilla</title>
         <creationDate>16/10/2017</creationDate>
@@ -24,7 +24,7 @@
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
         <last_update>2017-10-16 17:21:00</last_update>
-    </metadatas>
+    </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.

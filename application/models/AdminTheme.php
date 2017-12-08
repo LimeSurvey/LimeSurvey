@@ -327,8 +327,8 @@ class AdminTheme extends CFormModel
         }
 
         // Define presentation text on welcome page
-        if (isset($this->config->metadatas->presentation) && $this->config->metadatas->presentation) {
-            define('PRESENTATION', $this->config->metadatas->presentation);
+        if (isset($this->config->metadata->presentation) && $this->config->metadata->presentation) {
+            define('PRESENTATION', $this->config->metadata->presentation);
         } else {
             define('PRESENTATION', gT('This is the LimeSurvey admin interface. Start to build your survey from here.'));
         }

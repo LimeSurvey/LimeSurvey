@@ -40,7 +40,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         libxml_disable_entity_loader(false);
         $config = simplexml_load_file(realpath($this->xmlFile));
-        $config->metadatas->last_update = date("Y-m-d H:i:s");
+        $config->metadata->last_update = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
         libxml_disable_entity_loader(true);
@@ -300,7 +300,7 @@ class TemplateManifest extends TemplateConfiguration
     public static function importManifest($sTemplateName, $aDatas = array())
     {
         $oTemplate                  = Template::getTemplateConfiguration($sTemplateName, null, null, true);
-        $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadatas->extends;
+        $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadata->extends;
 
         if ($bExtends && !Template::model()->findByPk($bExtends)) {
             Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends), 'error');
@@ -308,13 +308,13 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         // Metadas is never inherited
-        $aDatas['api_version']      = (string) $oTemplate->config->metadatas->apiVersion;
-        $aDatas['author_email']     = (string) $oTemplate->config->metadatas->authorEmail;
-        $aDatas['author_url']       = (string) $oTemplate->config->metadatas->authorUrl;
-        $aDatas['copyright']        = (string) $oTemplate->config->metadatas->copyright;
-        $aDatas['version']          = (string) $oTemplate->config->metadatas->version;
-        $aDatas['license']          = (string) $oTemplate->config->metadatas->license;
-        $aDatas['description']      = (string) $oTemplate->config->metadatas->description;
+        $aDatas['api_version']      = (string) $oTemplate->config->metadata->apiVersion;
+        $aDatas['author_email']     = (string) $oTemplate->config->metadata->authorEmail;
+        $aDatas['author_url']       = (string) $oTemplate->config->metadata->authorUrl;
+        $aDatas['copyright']        = (string) $oTemplate->config->metadata->copyright;
+        $aDatas['version']          = (string) $oTemplate->config->metadata->version;
+        $aDatas['license']          = (string) $oTemplate->config->metadata->license;
+        $aDatas['description']      = (string) $oTemplate->config->metadata->description;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
@@ -350,7 +350,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oRTemplate = $oTemplate;
         while (!is_object($oRTemplate->config->$sFieldPath) || empty($oRTemplate->config->$sFieldPath)) {
-            $sRTemplateName = (string) $oRTemplate->config->metadatas->extends;
+            $sRTemplateName = (string) $oRTemplate->config->metadata->extends;
 
             if (!empty($sRTemplateName)) {
                 $oRTemplate = Template::getTemplateConfiguration($sRTemplateName, null, null, true);
@@ -402,10 +402,10 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeNameInDOM($oNewManifest, $sName)
     {
         $oConfig      = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oMetadatas   = $oConfig->getElementsByTagName('metadatas')->item(0);
-        $oOldNameNode = $oMetadatas->getElementsByTagName('name')->item(0);
+        $ometadata   = $oConfig->getElementsByTagName('metadata')->item(0);
+        $oOldNameNode = $ometadata->getElementsByTagName('name')->item(0);
         $oNvNameNode  = $oNewManifest->createElement('name', $sName);
-        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
+        $ometadata->replaceChild($oNvNameNode, $oOldNameNode);
     }
 
     /**
@@ -417,13 +417,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         $date           = (empty($date)) ?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $date;
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
-        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
+        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
+        $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
         $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
-        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
-        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
+        $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
+        $oOldUpdateNode = $ometadata->getElementsByTagName('last_update')->item(0);
         $oNvDateNode    = $oNewManifest->createElement('last_update', $sDate);
-        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
+        $ometadata->replaceChild($oNvDateNode, $oOldUpdateNode);
     }
 
     /**
@@ -474,10 +474,10 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeAuthorInDom($oNewManifest)
     {
         $oConfig          = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oMetadatas       = $oConfig->getElementsByTagName('metadatas')->item(0);
-        $oOldAuthorNode   = $oMetadatas->getElementsByTagName('author')->item(0);
+        $ometadata       = $oConfig->getElementsByTagName('metadata')->item(0);
+        $oOldAuthorNode   = $ometadata->getElementsByTagName('author')->item(0);
         $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
-        $oMetadatas->replaceChild($oNvAuthorNode, $oOldAuthorNode);
+        $ometadata->replaceChild($oNvAuthorNode, $oOldAuthorNode);
     }
 
     /**
@@ -488,10 +488,10 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeEmailInDom($oNewManifest)
     {
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
-        $oOldMailNode   = $oMetadatas->getElementsByTagName('authorEmail')->item(0);
+        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
+        $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
         $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
-        $oMetadatas->replaceChild($oNvMailNode, $oOldMailNode);
+        $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 
     /**
@@ -504,13 +504,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oExtendsNode = $oNewManifest->createElement('extends', $sToExtends);
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
+        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
 
         // We test if mother template already extends another template
-        if (!empty($oMetadatas->getElementsByTagName('extends')->item(0))) {
-            $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
+        if (!empty($ometadata->getElementsByTagName('extends')->item(0))) {
+            $ometadata->replaceChild($oExtendsNode, $ometadata->getElementsByTagName('extends')->item(0));
         } else {
-            $oMetadatas->appendChild($oExtendsNode);
+            $ometadata->appendChild($oExtendsNode);
         }
     }
 
@@ -760,8 +760,8 @@ class TemplateManifest extends TemplateConfiguration
      */
     protected function setMotherTemplates()
     {
-        if (isset($this->config->metadatas->extends)) {
-            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
+        if (isset($this->config->metadata->extends)) {
+            $sMotherTemplateName   = (string) $this->config->metadata->extends;
             $this->oMotherTemplate = new TemplateManifest;
             $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
         }
@@ -789,7 +789,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion : null;
+        $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
 
 
         $this->viewPath           = $this->path.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
@@ -817,8 +817,8 @@ class TemplateManifest extends TemplateConfiguration
 
     protected function addMotherTemplatePackage($packages)
     {
-        if (isset($this->config->metadatas->extends)) {
-            $sMotherTemplateName = (string) $this->config->metadatas->extends;
+        if (isset($this->config->metadata->extends)) {
+            $sMotherTemplateName = (string) $this->config->metadata->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
         return $packages;
