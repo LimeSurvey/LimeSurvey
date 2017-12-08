@@ -79,6 +79,9 @@ class TemplateConfig extends CActiveRecord
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     protected $xmlFile;
 
+    /** @var array $aCssFrameworkReplacement Css Framework Replacement */
+    protected $aCssFrameworkReplacement;
+
     public $allDbTemplateFolders = null;
 
     public static $aTemplatesWithoutDB = null;
@@ -151,6 +154,9 @@ class TemplateConfig extends CActiveRecord
             // First we add the framework replacement (bootstrap.css must be loaded before template.css)
             $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
             $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
+
+            // This variable will be used to add the variation name to the body class via $aClassAndAttributes['class']['body']
+            $this->aCssFrameworkReplacement = $aCssFiles;
 
             // Then we add the template config files
             $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
@@ -319,7 +325,15 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['id']['dynamicreload'] = 'dynamicReloadContainer';
 
         $aClassAndAttributes['class']['html']  = ' no-js ';
+
         $aClassAndAttributes['class']['body']  = $this->sTemplateName;
+
+        if (!empty($this->aCssFrameworkReplacement)){
+            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode( '.', end($aVariationFile) );
+            $sVariationName = $aVariationFile[0];
+            $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName ;
+        }
+
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ';
         $aClassAndAttributes['class']['maincol'] = ' ';
         $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
