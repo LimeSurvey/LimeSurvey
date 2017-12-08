@@ -25,7 +25,7 @@
 class quotas extends Survey_Common_Action
 {
 
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -70,7 +70,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function _redirectToIndex($iSurveyId)
+    private function _redirectToIndex($iSurveyId)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
@@ -80,7 +80,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function massiveAction()
+    public function massiveAction()
     {
 
         $action = Yii::app()->request->getQuery('action');
@@ -125,7 +125,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function index($iSurveyId, $quickreport = false)
+    public function index($iSurveyId, $quickreport = false)
     {
 
         $iSurveyId = sanitize_int($iSurveyId);
@@ -258,7 +258,7 @@ class quotas extends Survey_Common_Action
     }
 
 
-    function insertquotaanswer($iSurveyId)
+    public function insertquotaanswer($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
@@ -286,7 +286,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function delans($iSurveyId)
+    public function delans($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
@@ -300,7 +300,7 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
-    function delquota($iSurveyId)
+    public function delquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
@@ -374,7 +374,7 @@ class quotas extends Survey_Common_Action
     /**
      * Add new answer to quota
      */
-    function new_answer($iSurveyId, $sSubAction = 'new_answer')
+    public function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -422,7 +422,7 @@ class quotas extends Survey_Common_Action
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
-    function newquota($iSurveyId)
+    public function newquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -500,7 +500,7 @@ class quotas extends Survey_Common_Action
      * @param integer $iQuotaId
      * @return array
      */
-    function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
+    public function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
     {
         $iQuestionId = sanitize_int($iQuestionId);
         $iSurveyId   = sanitize_int($iSurveyId);
