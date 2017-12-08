@@ -2024,4 +2024,5 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   animation-duration: 1s;
   animation-iteration-count: 5; }
 
-/*# sourceMappingURL=lime-admin-colors.css.map */
+  /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+  body .answer-item label::after{background-color:#328637}
