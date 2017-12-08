@@ -56,26 +56,3 @@
         {% endif %}
     </div>
 </div>
-
-<!-- Save and load buttons-->
-<div class="{{ aSurveyInfo.class.loadsavecontainer }} navigator row" {{ aSurveyInfo.attr.loadsavecontainer }}>
-    <div class="{{ aSurveyInfo.class.loadsaveccol }} col-sm-6 " {{ aSurveyInfo.attr.loadsaveccol }} >
-
-        {# Loading survey must be allowed in survey settings, and it must not be shown once survey is completed #}
-        {% if aNavigator.load.show == "Y" %}
-            <!-- Button load unfinished survey -->
-            <button {{ aSurveyInfo.attr.loadbutton }}  class="{{ aSurveyInfo.class.loadbutton }}  btn btn-default" >
-                {{ "Load unfinished survey" | t }}
-            </button>
-        {% endif %}
-
-        {# Saving survey must be allowed in survey settings, and it must not be shown on welcome page or once survey is completed #}
-        {% if aNavigator.save.show == "Y" %}
-            <!-- Button resume later -->
-            <button {{ aSurveyInfo.attr.savebutton }} class="{{ aSurveyInfo.class.savebutton }}  btn btn-default" >
-                {{ "Resume later" | t }}
-            </button>
-        {% endif %}
-
-    </div>
-</div>
