@@ -520,12 +520,12 @@ class InstallerController extends CController
         if ($aErrors === false) {
             $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
             $this->render('/installer/dbconfig_view', $aData);
-        } elseif (count($aErrors) == 0) {
+        } elseif ($aErrors === true) {
             //$data1['adminoutput'] = '';
             //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
             //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
-        } else {
+        } elseif (is_array($aErrors) && count($aErrors) > 0) {
             $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
             foreach ($aErrors as $sError) {
                 $sConfirmation .= '<li>'.htmlspecialchars($sError).'</li>';
@@ -534,6 +534,8 @@ class InstallerController extends CController
             Yii::app()->session['populateerror'] = $sConfirmation;
 
             $this->redirect(array('installer/database'));
+        } else {
+            throw new UnexpectedValueException('_setup_tables is expected to return true, false or an array of strings');
         }
 
         Yii::app()->session['tablesexist'] = true;
@@ -879,10 +881,10 @@ class InstallerController extends CController
 
     /**
      * Installer::_setup_tables()
-     * Function that actually modify the database. Read $sqlfile and execute it.
+     * Function that actually modify the database.
      * @param string $sFileName
      * @param array $aDbConfig
-     * @return string|true True if everything was okay - otherwise the error messages
+     * @return string[]|true True if everything was okay, otherwise array of error messages.
      */
     public function _setup_tables($sFileName, $aDbConfig = array())
     {
