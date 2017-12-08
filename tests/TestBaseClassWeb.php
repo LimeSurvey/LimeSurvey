@@ -54,7 +54,7 @@ class TestBaseClassWeb extends TestBaseClass
         parent::setUpBeforeClass();
 
         if (empty(getenv('DOMAIN'))) {
-            echo ('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
+            echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
             exit(12);
         }
 
@@ -91,8 +91,6 @@ class TestBaseClassWeb extends TestBaseClass
 
         // Implicit timout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
-
-        self::deleteLoginTimeout();
     }
 
     public static function tearDownAfterClass()
