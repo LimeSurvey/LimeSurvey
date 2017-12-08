@@ -746,3 +746,6 @@ p.return-to-survey{
     vertical-align: top;
 }
 }
+
+/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+label::after{background-color:#337ab7}
