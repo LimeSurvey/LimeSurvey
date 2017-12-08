@@ -368,9 +368,9 @@ function mandatory_message($ia)
 
 /**
 *
-* @param <type> $ia
+* @param array $ia
 * @param boolean $show - true if should initially be visible
-* @return <type>
+* @return array
 */
 function validation_message($ia, $show)
 {
@@ -876,8 +876,8 @@ function do_date($ia)
         } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $mindate = $date_min;
-        } elseif ($date_time_em) {
-            $mindate = date("Y-m-d", $date_time_em);
+        } elseif ($date_time_em !== false) {
+            $mindate = (string)date("Y-m-d", $date_time_em);
         } else {
             $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
@@ -895,7 +895,7 @@ function do_date($ia)
         } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
-        } elseif ($date_time_em) {
+        } elseif ($date_time_em !== false) {
             $maxdate = date("Y-m-d", $date_time_em);
         } else {
             $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
@@ -1929,7 +1929,7 @@ function do_multiplechoice($ia)
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $coreClass = "ls-answers checkbox-list answers-list";
     // Question attribute variables
-    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
+    $aQuestionAttributes    = (array)QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
     if ($aQuestionAttributes['other_numbers_only'] == 1) {
@@ -1996,7 +1996,7 @@ function do_multiplechoice($ia)
         }
 
         $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
-        $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+        $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
         $inputnames[]            = $myfname;
 
         ////
@@ -2181,18 +2181,18 @@ function do_multiplechoice_withcomments($ia)
 /* old system or imported */
         $attributeLabelWidth = null;
     }
-    if (!$attributeInputContainerWidth && !$attributeLabelWidth) {
+    if (!$attributeInputContainerWidth !== null && !$attributeLabelWidth !== null) {
         $sInputContainerWidth = 8;
         $sLabelWidth = 4;
     } else {
-        if ($attributeInputContainerWidth) {
+        if ($attributeInputContainerWidth !== null) {
             $sInputContainerWidth = $attributeInputContainerWidth;
         } elseif ($attributeLabelWidth == 12) {
             $sInputContainerWidth = 12;
         } else {
             $sInputContainerWidth = 12 - $attributeLabelWidth;
         }
-        if ($attributeLabelWidth) {
+        if ($attributeLabelWidth !== null) {
             $sLabelWidth = $attributeLabelWidth;
         } elseif ($attributeInputContainerWidth == 12) {
             $sLabelWidth = 12;
@@ -2666,7 +2666,11 @@ function do_multiplenumeric($ia)
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
 
     $prefixclass = "numeric";
-
+    $sliders=0;
+    $slider_position = '';
+    $sliderWidth = 12;
+    $slider_default_set = false;
+    
     if ($aQuestionAttributes['slider_layout'] == 1) {
         $coreClass           .= " slider-list";
         $slider_layout        = true;
@@ -2703,12 +2707,10 @@ function do_multiplenumeric($ia)
 
         /* Put the slider init to initial state (when no click is set or when 'reset') */
         if ($slider_default !== '') {
-/* can be 0 */
+        /* can be 0 */
             $slider_position = $slider_default;
         } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
             $slider_position = intval(($slider_max + $slider_min) / 2);
-        } else {
-            $slider_position = '';
         }
 
         $slider_separator = (trim($aQuestionAttributes['slider_separator']) != '') ? $aQuestionAttributes['slider_separator'] : "";
@@ -2764,7 +2766,6 @@ function do_multiplenumeric($ia)
             }
 
             if ($slider_layout) {
-                $sliderWidth = 12;
                 if ($slider_separator != '') {
                     $aAnswer     = explode($slider_separator, $ansrow['question']);
                     $theanswer   = (isset($aAnswer[0])) ? $aAnswer[0] : "";
@@ -3107,6 +3108,7 @@ function do_shortfreetext($ia)
         $kpclass = "";
     }
     $answer = "";
+    $sQuestionHelpText = '';
 
     if (trim($aQuestionAttributes['display_rows']) != '') {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -3195,7 +3197,7 @@ function do_shortfreetext($ia)
             $questionHelp = false;
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;
-            $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
+            $sQuestionHelpText = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item', array(
             'extraclass'             => $extraclass,
@@ -3213,7 +3215,7 @@ function do_shortfreetext($ia)
             'location_mapzoom'       => $aQuestionAttributes['location_mapzoom'],
             'location_mapheight'     => $aQuestionAttributes['location_mapheight'],
             'questionHelp'           => $questionHelp,
-            'question_text_help'     => (isset($question_text)) ? $question_text['help'] : '',
+            'question_text_help'     => $sQuestionHelpText,
             'inputsize'              => $inputsize,
             'withColumn'             => $withColumn
             ), true);
@@ -3260,7 +3262,7 @@ function do_shortfreetext($ia)
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;
-            $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
+            $sQuestionHelpText = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
 
         $itemDatas = array(
@@ -3276,7 +3278,7 @@ function do_shortfreetext($ia)
             'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
             'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
             'questionHelp'=>(isset($questionHelp)) ? $questionHelp : '',
-            'question_text_help'=>$question_text['help'],
+            'question_text_help'=>$sQuestionHelpText,
             'location_value'=> $currentLatLong[0].' '.$currentLatLong[1],
             'currentLat'=>$currentLatLong[0],
             'currentLong'=>$currentLatLong[1],
@@ -3677,7 +3679,7 @@ function do_array_5point($ia)
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
-        if (strpos($answertext, '|')) {
+        if (strpos($answertext, '|')!==false) {
             $answertext = substr($answertext, 0, strpos($answertext, '|'));
         }
 
@@ -3776,7 +3778,6 @@ function do_array_10point($ia)
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : array();
     $coreClass = "ls-answers subquestion-list questions-list radio-array";
 
-    $caption = gT("A table with a subquestion on each row. The answers are values from 1 to 10 and are contained in the table header.");
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -3913,11 +3914,9 @@ function do_array_yesnouncertain($ia)
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : array();
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
-    $caption                 = gT("A table with a subquestion on each row. The answers are 'Yes', 'No', and 'Uncertain' and are in the table header.");
     $checkconditionFunction  = "checkconditions";
     $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult                 = dbExecuteAssoc($qquery); //Checked
-    $qrow                    = $qresult->readAll();
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
@@ -4027,11 +4026,6 @@ function do_array_increasesamedecrease($ia)
     }
 
     $cellwidth = round(((100 - $answerwidth) / $cellwidth), 1); // convert number of columns to percentage of table width
-
-    foreach ($qresult->readAll() as $qrow) {
-        // TODO why the loop?
-        $other = $qrow['other'];
-    }
 
     if ($aQuestionAttributes['random_order'] == 1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -4331,6 +4325,7 @@ function do_array($ia)
             $defaultWidth = true;
         }
         $columnswidth = 100 - $answerwidth;
+        $labels = [];
         foreach ($lresult as $lrow) {
             $labels[] = array(
                 'code'   => $lrow->code,
@@ -4620,6 +4615,7 @@ function do_array_texts($ia)
         $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') ?true:false;
 
         $sRows = '';
+        $answertext = '';
         foreach ($aQuestions as $j => $ansrow) {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $minrepeatheadings) {
@@ -4654,8 +4650,8 @@ function do_array_texts($ia)
             }
             $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if (strpos($answertext, '|')) {
-                $answertext = substr($answertext, 0, strpos($answertext, '|'));
+            if (strpos($answertext, '|')!==false) {
+                $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
             }
 
             $thiskey = 0;
@@ -4688,8 +4684,8 @@ function do_array_texts($ia)
 
             $rightTd = $rightTdEmpty = false;
 
-            if (strpos($answertextsave, '|')) {
-                $answertext = substr($answertextsave, strpos($answertextsave, '|') + 1);
+            if (strpos($answertextsave, '|') !== false) {
+                $answertext = (string)substr($answertextsave, strpos($answertextsave, '|') + 1);
                 $rightTd    = true; $rightTdEmpty = false;
             } elseif ($right_exists) {
                 $rightTd      = true;
@@ -4718,7 +4714,8 @@ function do_array_texts($ia)
         if ($show_totals == 'col' || $show_totals == 'both' || $grand_total == true) {
             $showtotals = true;
 
-            for ($a = 0; $a < count($labelcode); ++$a) {
+            $iLabelCodeCount=count($labelcode);
+            for ($a = 0; $a < $iLabelCodeCount; ++$a) {
                 $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $col_total);
 
             };
@@ -5002,8 +4999,8 @@ function do_array_multiflexi($ia)
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
 
-            if (strpos($answertext, '|')) {
-                $answertext = substr($answertext, 0, strpos($answertext, '|'));
+            if (strpos($answertext, '|')!==false) {
+                $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
             }
 
             $row_value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
@@ -5024,7 +5021,7 @@ function do_array_multiflexi($ia)
                     $value = str_replace('.', $sSeparator, $_SESSION[$surveyLabel][$myfname2]);
                 }
 
-                if ($checkboxlayout == false) {
+                if ($checkboxlayout === false) {
 
                     $answer_tds .= doRender('/survey/questions/answer/arrays/multiflexi/rows/cells/answer_td', array(
                         'dataTitle'                 => $labelans[$i],
@@ -5180,6 +5177,8 @@ function do_arraycolumns($ia)
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = $aQuestions;
 
+            $anscode = [];
+            $answers = [];
             foreach ($aQuestions as $ansrow) {
                 $anscode[] = $ansrow['title'];
                 $answers[] = $ansrow['question'];
@@ -5188,7 +5187,8 @@ function do_arraycolumns($ia)
             $aData['anscode'] = $anscode;
             $aData['answers'] = $answers;
 
-            for ($_i = 0; $_i < count($answers); ++$_i) {
+            $iAnswerCount = count($answers);
+            for ($_i = 0; $_i < $iAnswerCount; ++$_i) {
                 $myfname = $ia[1].$anscode[$_i];
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) {
@@ -5287,20 +5287,18 @@ function do_array_dual($ia)
         $coreClass .= " dropdown-array";
         $answertypeclass .= " dropdown";
         $doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
-        $caption = gT("A table with a subquestion on each row, with two answers to provide on each line.  Please select the answers.");
     } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
         $answertypeclass .= " radio";
         $doDualScaleFunction = "doDualScaleRadio";
-        $caption = gT("A table with one subquestion on each row and two answers to provide on each row. The related answer options are in the top table header row.");
     }
     if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings'] != "")) {
         $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
 
-    $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $leftheader = $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
+    $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
     $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
     if (trim($aQuestionAttributes['answer_width']) != '') {
         $answerwidth = trim($aQuestionAttributes['answer_width']);
@@ -5321,6 +5319,8 @@ function do_array_dual($ia)
     //~ $rightexists=false;
     //~ $centerexists=false;
     // Label and code for input
+    $labels0 = [];
+    $labels1 = [];
     foreach ($aAnswersScale0 as $lrow) {
         $labels0[] = Array('code' => $lrow['code'],
             'title' => $lrow['answer']);
@@ -5361,19 +5361,18 @@ function do_array_dual($ia)
             }
             /* right and center come from answer => go to answer part*/
             $numColExtraAnswer = 0;
+            $rightwidth = 0;
+            $separatorwidth = 4;
             if ($rightexists) {
                 $numColExtraAnswer++;
             } elseif ($shownoanswer) {
                 $columnswidth -= 4;
                 $rightwidth = 4;
-            } else {
-                $rightwidth = 0;
             }
             if ($centerexists) {
                 $numColExtraAnswer++;
             } else {
                 $columnswidth -= 4;
-                $separatorwidth = 4;
             }
             if ($numColExtraAnswer > 0) {
                 $extraanswerwidth = $answerwidth / $numColExtraAnswer; /* If there are 2 separator : set to 1/2 else to same */
@@ -5421,16 +5420,16 @@ function do_array_dual($ia)
                 $trbc = alternation($trbc, 'row');
                 $answertext = $ansrow['question'];
 
-                // rigth and center answertext: not explode for ? Why not
-                if (strpos($answertext, '|')) {
-                    $answertextright = substr($answertext, strpos($answertext, '|') + 1);
-                    $answertext = substr($answertext, 0, strpos($answertext, '|'));
+                // right and center answertext: not explode for ? Why not
+                if (strpos($answertext, '|')!==false) {
+                    $answertextright = (string)substr($answertext, strpos($answertext, '|') + 1);
+                    $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
                 } else {
                     $answertextright = "";
                 }
                 if (strpos($answertextright, '|')) {
-                    $answertextcenter = substr($answertextright, 0, strpos($answertextright, '|'));
-                    $answertextright = substr($answertextright, strpos($answertextright, '|') + 1);
+                    $answertextcenter = (string)substr($answertextright, 0, strpos($answertextright, '|'));
+                    $answertextright = (string)substr($answertextright, strpos($answertextright, '|') + 1);
                 } else {
                     $answertextcenter = "";
                 }
@@ -5451,7 +5450,7 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['answertextright'] = $answertextright;
 
                 $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
-                /* Check the Sub Q mandatory violation */
+                // Check the Sub Q mandatory violation
                 if ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ))) {
                     $aData['aSubQuestions'][$i]['showmandatoryviolation'] = true;
                 } else {
@@ -5459,11 +5458,6 @@ function do_array_dual($ia)
                 }
 
                 // Get array_filter stuff
-                //~ list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
-
-                //~ $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
-                //~ $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
-                // @todo return_display_style($ia, $aQuestionAttributes, $thissurvey, $ansrow);
                 $aData['aSubQuestions'][$i]['sDisplayStyle'] = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
                 array_push($inputnames, $myfname0);
 
@@ -5474,7 +5468,7 @@ function do_array_dual($ia)
                 }
 
                 if (count($labelans1) > 0) {
-// if second label set is used
+                // if second label set is used
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
@@ -5484,7 +5478,7 @@ function do_array_dual($ia)
                 }
 
                 foreach ($labelcode0 as $j => $ld) {
-// First label set
+                // First label set
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
                         $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
                     } else {
@@ -5493,9 +5487,9 @@ function do_array_dual($ia)
                 }
 
                 if (count($labelans1) > 0) {
-// if second label set is used
+                // if second label set is used
                     if ($shownoanswer) {
-// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
+                    // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
                             $aData['myfname0_notset'] = CHECKED;
@@ -5507,7 +5501,7 @@ function do_array_dual($ia)
                     array_push($inputnames, $myfname1);
 
                     foreach ($labelcode1 as $j => $ld) {
-// second label set
+                    // second label set
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
                             $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;
                         } else {
@@ -5640,13 +5634,12 @@ function do_array_dual($ia)
 
 /**
 * Find the label / input width
-* @param string|int labelwidth from attribute
-* @param string|int inputwidth from attribute
-* @return array: labelWidth as integer,inputWidth as integer,defaultWidth as boolean
-*/
+* @param string|int $labelAttributeWidth label width from attribute
+* @param string|int $inputAttributeWidth input width from attribute
+* @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
+*/              
 function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
 {
-
     $attributeInputContainerWidth = intval(trim($inputAttributeWidth));
     if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
         $attributeInputContainerWidth = null;
@@ -5662,12 +5655,12 @@ function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
             $attributeLabelWidth = null;
         }
     }
-    if (!$attributeInputContainerWidth && is_null($attributeLabelWidth)) {
+    if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
         $sInputContainerWidth = 8;
         $sLabelWidth = 4;
         $defaultWidth = true;
     } else {
-        if ($attributeInputContainerWidth) {
+        if ($attributeInputContainerWidth !== null) {
             $sInputContainerWidth = $attributeInputContainerWidth;
         } elseif ($attributeLabelWidth == 12) {
             $sInputContainerWidth = 12;

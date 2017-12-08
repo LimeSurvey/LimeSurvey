@@ -1,5 +1,7 @@
 <?php
-
+/**
+* @property boolean $active Whether the DB connection is established. 
+*/
 class DbConnection extends \CDbConnection
 {
     public function __construct($dsn = '', $username = '', $password = '')

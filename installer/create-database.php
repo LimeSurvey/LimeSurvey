@@ -865,10 +865,11 @@ function createDatabase($oDB){
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
 
         $oTransaction->commit();
-
+        return true;
     }catch(Exception $e){
 
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage()." ".$e->getTraceAsString());
     }
+    return false;
 }

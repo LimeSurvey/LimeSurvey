@@ -26,6 +26,7 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property CDbConnection $db The database connection.
 * @property string $baseUrl The relative URL for the application.
 * @property CWebUser $user The user session information.
+*  @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * 
 */
 class LSYii_Application extends CWebApplication
