@@ -2876,7 +2876,8 @@ function exprmgr_log($args)
 }
 /**
  * Get Unix timestamp for a date : false if parameters is invalid.
- * PHP 5.3.3 send E_STRICT notice without param, then replace by time if needed
+ * Get default value for unset (or null) value
+ * E_NOTICE if arguments are not integer (debug>0), then return test it before
  * @param int $hour
  * @param int $minute
  * @param int $second
@@ -2887,24 +2888,20 @@ function exprmgr_log($args)
  */
 function exprmgr_mktime($hour=null,$minute=null,$second=null,$month=null,$day=null,$year=null)
 {
-    $iNumArg=count(array_filter(array($hour,$minute,$second,$month,$day,$year),create_function('$a','return $a !== null;')));
-    switch($iNumArg)
-    {
-        case 0:
-            return time();
-        case 1:
-            return mktime($hour);
-        case 2:
-            return mktime($hour,$minute);
-        case 3:
-            return mktime($hour,$minute,$second);
-        case 4:
-            return mktime($hour,$minute,$second,$month);
-        case 5:
-            return mktime($hour,$minute,$second,$month,$day);
-        default:
-            return mktime($hour,$minute,$second,$month,$day,$year);
+    $hour = isset($hour) ? $hour : date("H");
+    $minute = isset($minute) ? $minute : date("i");
+    $second = isset($second) ? $second : date("s");
+    $month = isset($month) ? $month : date("n");
+    $day = isset($day) ? $day : date("j");
+    $year = isset($year) ? $year : date("Y");
+    $hour = isset($hour) ? $hour : date("H");
+    $iInvalidArg = count(array_filter(array($hour,$minute,$second,$month,$day,$year), function($timeValue) {
+        return strval($timeValue) !== strval(intval($timeValue));
+    }));
+    if($iInvalidArg) {
+        return false;
     }
+    return mktime($hour,$minute,$second,$month,$day,$year);
 }
 
 /**
