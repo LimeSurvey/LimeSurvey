@@ -177,7 +177,7 @@ class ExpressionManager {
 'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
 'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
 'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
-'date' => array('date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1,2),
+'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1,2),
 'exp' => array('exp', 'Math.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
 'floor' => array('floor', 'Math.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
@@ -292,7 +292,6 @@ class ExpressionManager {
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType = (!$bBothNumeric && !$bBothString);
-
         return array($bMismatchType, $bBothNumeric, $bBothString);
     }
 
@@ -2799,6 +2798,23 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
 }
 
 /**
+ * Return format a local time/date
+ * Need to test if timestamp is numeric (else E_WARNING with debug>0)
+ * @param string $format
+ * @param int $timestamp
+ * @return string|false
+ * @link http://php.net/function.date.php
+ */
+function exprmgr_date($format, $timestamp = null)
+{
+    $timestamp = isset($timestamp) ? $timestamp : time();
+    if(!is_numeric($timestamp)) {
+        return false;
+    }
+    /* PHP5.6 cast $timestamp as integer */
+    return date($format, $timestamp);
+}
+/**
  * If $test is true, return $ok, else return $error
  * @param mixed $test
  * @param mixed $ok
@@ -2876,8 +2892,7 @@ function exprmgr_log($args)
 }
 /**
  * Get Unix timestamp for a date : false if parameters is invalid.
- * Get default value for unset (or null) value
- * E_NOTICE if arguments are not integer (debug>0), then return test it before
+ * PHP 5.3.3 send E_STRICT notice without param, then replace by time if needed
  * @param int $hour
  * @param int $minute
  * @param int $second
@@ -2896,7 +2911,7 @@ function exprmgr_mktime($hour=null,$minute=null,$second=null,$month=null,$day=nu
     $year = isset($year) ? $year : date("Y");
     $hour = isset($hour) ? $hour : date("H");
     $iInvalidArg = count(array_filter(array($hour,$minute,$second,$month,$day,$year), function($timeValue) {
-        return strval($timeValue) !== strval(intval($timeValue));
+        return !is_numeric($timeValue); /* This allow get by string like "01.000" , same than javascript with 2.72.6 and default PHP(5.6) function*/
     }));
     if($iInvalidArg) {
         return false;
