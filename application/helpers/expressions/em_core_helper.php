@@ -2506,7 +2506,7 @@ function exprmgr_date($format, $timestamp = null)
 
 /**
  * If $test is true, return $iftrue, else return $iffalse
- * @param mixed $test
+ * @param mixed $testDone
  * @param mixed $iftrue
  * @param mixed $iffalse
  * @return mixed
