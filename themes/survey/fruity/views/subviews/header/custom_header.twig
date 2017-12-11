@@ -40,8 +40,8 @@
     body {
          padding-bottom: 10px;
          padding-top: 60px;/* now is redefine in JS to fit any title length */
-         background-color:{{ aSurveyInfo.options.bodybackgroundcolor  }}  /* #EEE */;
-         color: {{ aSurveyInfo.options.fontcolor  }} /* #444 */;
+         background-color:{{ aSurveyInfo.options.bodybackgroundcolor  }} ;
+         color: {{ aSurveyInfo.options.fontcolor  }};
     }
 
     .navbar-default .navbar-nav > li > a:hover {
@@ -50,7 +50,7 @@
 
 
     .question-container {
-      background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }}; /*  white; */
+      background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }};
 
       {% if (aSurveyInfo.options.questionborder == "on" ) %}
         border:  1px solid #e6e6e6;

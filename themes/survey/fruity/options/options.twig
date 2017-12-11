@@ -321,7 +321,7 @@
                 {# Container #}
                 <div class='col-sm-12 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_container' class='control-label'> {{ "Container" | t }} </label>
+                        <label for='simple_edit_options_container' class='control-label'> {{ "Survey container" | t }} </label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
@@ -337,6 +337,59 @@
                                     <label class="btn btn-default">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
                                         {{ "Inherit" | t }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Question Border #}
+                <div class='col-sm-12 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionborder' class='control-label'>{{ "Question borders" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionborder' value='on' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionborder' value='off' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                    {{ "No" | t}}
+                                </label>
+
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='questionborder' value='inherit' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Question Shadow #}
+                <div class='col-sm-12 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ "Question shadow" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questioncontainershadow' value='on' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                    {{ "Yes" | t }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questioncontainershadow' value='off' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                    {{ "No" | t }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='questioncontainershadow' value='inherit' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                        {{ "Inherit" | t}}
                                     </label>
                                 {% endif %}
                             </div>
