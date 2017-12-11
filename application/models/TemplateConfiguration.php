@@ -341,7 +341,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aDatas['version']         = $oMotherTemplate->template->version;
                 $aDatas['license']         = $oMotherTemplate->template->license;
                 $aDatas['files_folder']    = $oMotherTemplate->template->files_folder;
-                $aDatas['aOptions']        = (empty($aDatas['aOptions'])) ? json_decode($oMotherTemplate->options): $aDatas['aOptions'];
+                $aDatas['aOptions']        = (empty($aDatas['aOptions'])) ? json_decode($oMotherTemplate->options) : $aDatas['aOptions'];
             }
         }
 

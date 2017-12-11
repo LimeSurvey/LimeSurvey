@@ -411,7 +411,7 @@ class CheckIntegrity extends Survey_Common_Action
         $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
 
         foreach ($aResult->readAll() as $aRow) {
-            $sTableName = (string)substr(reset($aRow), strlen($sDBPrefix));
+            $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
                 continue;
             }
@@ -419,7 +419,7 @@ class CheckIntegrity extends Survey_Common_Action
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string)date('YmdHis').rand(1, 1000);
+                    $sDate = (string) date('YmdHis').rand(1, 1000);
                     $sOldTable = "survey_{$iSurveyID}";
                     $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
                     try {
@@ -435,10 +435,10 @@ class CheckIntegrity extends Survey_Common_Action
         /*** Check for active token tables with missing survey entry ***/
         $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%'));
         foreach ($aResult->readAll() as $aRow) {
-            $sTableName = (string)substr(reset($aRow), strlen($sDBPrefix));
-            $iSurveyID = (integer)substr($sTableName, strpos($sTableName, '_') + 1);
+            $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
+            $iSurveyID = (integer) substr($sTableName, strpos($sTableName, '_') + 1);
             if (!in_array($iSurveyID, $sSurveyIDs)) {
-                $sDate = (string)date('YmdHis').rand(1, 1000);
+                $sDate = (string) date('YmdHis').rand(1, 1000);
                 $sOldTable = "tokens_{$iSurveyID}";
                 $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
                 try {
@@ -726,7 +726,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = (int) substr($sDateTime, 6, 2);
                     $iHour = (int) substr($sDateTime, 8, 2);
                     $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = (string) date('Y-m-d H:i:s', (int)mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');

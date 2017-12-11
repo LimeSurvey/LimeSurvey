@@ -328,15 +328,15 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['body']  = $this->sTemplateName;
 
-        if (!empty($this->aCssFrameworkReplacement)){
-            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode( '.', end($aVariationFile) );
+        if (!empty($this->aCssFrameworkReplacement)) {
+            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
-            $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName ;
+            $aClassAndAttributes['class']['body']  .= ' '.$sVariationName;
         }
 
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ';
         $aClassAndAttributes['class']['maincol'] = ' ';
-        $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
+        $aClassAndAttributes['attr']['html'] = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
 
         // User forms
         $aClassAndAttributes['class']['maincoldivdiva']               = '  ';

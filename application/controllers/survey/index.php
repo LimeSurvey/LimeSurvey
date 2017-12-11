@@ -570,7 +570,7 @@ class index extends CAction
         }
 
         // Preview action : Preview right already tested before
-        if ($previewmode===true) {
+        if ($previewmode === true) {
 
             // Unset all SESSION: be sure to have the last version
             unset($_SESSION['fieldmap-'.$surveyid.App()->language]); // Needed by createFieldMap: else fieldmap can be outdated

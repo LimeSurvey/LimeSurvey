@@ -454,7 +454,7 @@ function getGroupOrder($surveyid, $gid)
 */
 function getMaxQuestionOrder($gid, $surveyid)
 {
-    $gid = (int)$gid;
+    $gid = (int) $gid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='{$gid}' AND language='{$s_lang}'";
     $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
@@ -463,7 +463,7 @@ function getMaxQuestionOrder($gid, $surveyid)
     if ($current_max == "") {
         return 0;
     } else {
-        return (int)$current_max;
+        return (int) $current_max;
     }
 }
 

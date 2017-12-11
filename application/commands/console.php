@@ -52,7 +52,7 @@
         $app = Yii::createApplication('ConsoleApplication', $config);
         define('APPPATH', Yii::app()->getBasePath().DIRECTORY_SEPARATOR);
         $app->commandRunner->addCommands(YII_PATH.'/cli/commands');
-        $env = (string)@getenv('YII_CONSOLE_COMMANDS');
+        $env = (string) @getenv('YII_CONSOLE_COMMANDS');
         if (!empty($env)) {
             $app->commandRunner->addCommands($env);
         }

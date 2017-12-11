@@ -6,4 +6,6 @@
  * db and in config.xml
  * @todo Put in another folder?
  */
-class WrongTemplateVersionException extends CException {}
+class WrongTemplateVersionException extends CException
+{
+}

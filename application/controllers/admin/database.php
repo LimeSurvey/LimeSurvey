@@ -98,10 +98,10 @@ class database extends Survey_Common_Action
     public function index()
     {
         $sAction = Yii::app()->request->getPost('action');
-        $iSurveyID = (isset($_POST['sid'])) ? (int)$_POST['sid'] : (int)returnGlobal('sid');
+        $iSurveyID = (isset($_POST['sid'])) ? (int) $_POST['sid'] : (int) returnGlobal('sid');
 
-        $this->iQuestionGroupID = (int)returnGlobal('gid');
-        $this->iQuestionID = (int)returnGlobal('qid');
+        $this->iQuestionGroupID = (int) returnGlobal('gid');
+        $this->iQuestionID = (int) returnGlobal('qid');
 
         $this->oFixCKeditor = new LSYii_Validators;
         $this->oFixCKeditor->fixCKeditor = true;
@@ -1307,7 +1307,7 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
-                        $r1 = Answer::model()->getAnswers((int)returnGlobal('oldqid'));
+                        $r1 = Answer::model()->getAnswers((int) returnGlobal('oldqid'));
                         $aAnswerOptions = $r1->readAll();
                         foreach ($aAnswerOptions as $qr1) {
                             Answer::model()->insertRecords(array(
