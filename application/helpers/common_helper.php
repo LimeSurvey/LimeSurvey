@@ -163,22 +163,22 @@ function isStandardTemplate($sTemplateName)
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
-* @param boolean $returnarray if set to true an array instead of an HTML option list is given back
+* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back
 * @return string|array This string is returned containing <option></option> formatted list of existing surveys
 *
 */
-function getSurveyList($returnarray = false, $surveyid = false)
+function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
     $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
+    $surveynames = array();
 
     if (is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
             ->findAll();
-        $surveynames = array();
         foreach ($surveyidresult as $result) {
             if (!empty($result->defaultlanguage)) {
                 $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
@@ -200,50 +200,39 @@ function getSurveyList($returnarray = false, $surveyid = false)
         $surveynames = $cached;
     }
     $surveyselecter = "";
-    if ($returnarray === true) {
+    if ($bReturnArray === true) {
         return $surveynames;
     }
     $activesurveys = '';
     $inactivesurveys = '';
     $expiredsurveys = '';
-    if ($surveynames) {
-        foreach ($surveynames as $sv) {
+    foreach ($surveynames as $sv) {
 
-            $surveylstitle = flattenText($sv['surveyls_title']);
-            if (strlen($surveylstitle) > 70) {
-                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8'))."...";
-            }
+        $surveylstitle = flattenText($sv['surveyls_title']);
+        if (strlen($surveylstitle) > 70) {
+            $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8'))."...";
+        }
 
-            if ($sv['active'] != 'Y') {
-                $inactivesurveys .= "<option ";
-                if (Yii::app()->user->getId() == $sv['owner_id']) {
-                    $inactivesurveys .= " class='mysurvey emphasis'";
-                }
-                if ($sv['sid'] == $surveyid) {
-                    $inactivesurveys .= " selected='selected'"; $svexist = 1;
-                }
-                $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-            } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
-                $expiredsurveys .= "<option ";
-                if (Yii::app()->user->getId() == $sv['owner_id']) {
-                    $expiredsurveys .= " class='mysurvey emphasis'";
-                }
-                if ($sv['sid'] == $surveyid) {
-                    $expiredsurveys .= " selected='selected'"; $svexist = 1;
-                }
-                $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-            } else {
-                $activesurveys .= "<option ";
-                if (Yii::app()->user->getId() == $sv['owner_id']) {
-                    $activesurveys .= " class='mysurvey emphasis'";
-                }
-                if ($sv['sid'] == $surveyid) {
-                    $activesurveys .= " selected='selected'"; $svexist = 1;
-                }
-                $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
+        if ($sv['active'] != 'Y') {
+            $inactivesurveys .= "<option ";
+            if (Yii::app()->user->getId() == $sv['owner_id']) {
+                $inactivesurveys .= " class='mysurvey emphasis'";
             }
-        } // End Foreach
-    }
+            $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
+        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+            $expiredsurveys .= "<option ";
+            if (Yii::app()->user->getId() == $sv['owner_id']) {
+                $expiredsurveys .= " class='mysurvey emphasis'";
+            }
+            $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
+        } else {
+            $activesurveys .= "<option ";
+            if (Yii::app()->user->getId() == $sv['owner_id']) {
+                $activesurveys .= " class='mysurvey emphasis'";
+            }
+            $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
+        }
+    } // End Foreach
 
     //Only show each activesurvey group if there are some
     if ($activesurveys != '') {

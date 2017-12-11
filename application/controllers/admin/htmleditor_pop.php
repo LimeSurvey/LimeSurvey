@@ -18,7 +18,7 @@
 class htmleditor_pop extends Survey_Common_Action
 {
 
-    function index()
+    public function index()
     {
         Yii::app()->loadHelper('admin/htmleditor');
         $aData = array(

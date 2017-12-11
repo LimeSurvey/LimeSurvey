@@ -247,7 +247,7 @@ class Survey_Common_Action extends CAction
      *
      * @param string $sAction
      * @param array $aViewUrls
-     * @param array $aData
+     * @param array|string $aData
      * @return string
      */
     private function renderCentralContents($sAction, $aViewUrls, $aData = [])
@@ -312,7 +312,7 @@ class Survey_Common_Action extends CAction
      * Comments starting with //// indicate how it should work in the future
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param array $aViewUrls View url(s)
+     * @param array|string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())

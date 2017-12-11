@@ -17,8 +17,9 @@ class Index extends Survey_Common_Action
 {
 
     public function run()
-    {
+    {                                            
         App()->loadHelper('surveytranslator');
+        $aData = [];
         $aData['issuperadmin'] = false;
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $aData['issuperadmin'] = true;
