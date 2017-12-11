@@ -411,7 +411,7 @@ class CheckIntegrity extends Survey_Common_Action
         $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
 
         foreach ($aResult->readAll() as $aRow) {
-            $sTableName = substr(reset($aRow), strlen($sDBPrefix));
+            $sTableName = (string)substr(reset($aRow), strlen($sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
                 continue;
             }
@@ -419,7 +419,7 @@ class CheckIntegrity extends Survey_Common_Action
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = date('YmdHis').rand(1, 1000);
+                    $sDate = (string)date('YmdHis').rand(1, 1000);
                     $sOldTable = "survey_{$iSurveyID}";
                     $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
                     try {
@@ -726,7 +726,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = (int) substr($sDateTime, 6, 2);
                     $iHour = (int) substr($sDateTime, 8, 2);
                     $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = date('Y-m-d H:i:s', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate = (string) date('Y-m-d H:i:s', (int)mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');
@@ -736,7 +736,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $sQuery = 'SELECT count(*) as recordcount FROM '.$sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
                     if ($aFirstRow['recordcount'] == 0) {
-// empty table - so add it to immediate deletion
+                    // empty table - so add it to immediate deletion
                         $aDelete['orphansurveytables'][] = $sTableName;
                     } else {
                         $aOldSurveyTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType));

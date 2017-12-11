@@ -150,6 +150,7 @@ class Assessments extends Survey_Common_Action
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
+        $aData = [];
         $aData['surveyid'] = $iSurveyID;
         $aData['action'] = $action;
         
@@ -168,6 +169,7 @@ class Assessments extends Survey_Common_Action
                     .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
+        $urls = [];
         $urls['assessments']['assessments_view'][] = $aData;
         
         $this->_renderWrappedTemplate('', 'assessments/assessments_view', $aData);
@@ -269,8 +271,8 @@ class Assessments extends Survey_Common_Action
             'sid' => $iSurveyID,
             'scope' => sanitize_paranoid_string(App()->request->getPost('scope')),
             'gid' => App()->request->getPost('gid'),
-            'minimum' => App()->request->getPost('minimum', 0, 'integer'),
-            'maximum' => App()->request->getPost('maximum', 0, 'integer'),
+            'minimum' => (int) App()->request->getPost('minimum', 0),
+            'maximum' => (int) App()->request->getPost('maximum', 0),
             'name' => App()->request->getPost('name_'.$language),
             'language' => $language,
             'message' => App()->request->getPost('assessmentmessage_'.$language)

@@ -22,6 +22,11 @@ class FlushAssetsCommand extends CConsoleCommand
     {
         $sCurrentDir = dirname(__FILE__);
         $tmpFolder = realpath($sCurrentDir.'/../../tmp/');
+        if ($tmpFolder==false)
+        {
+            echo 'Tmp folder  '.$sCurrentDir.'/../../tmp/ not found';
+            return; 
+        }
         echo "Flushing assets in ".$tmpFolder;
         echo "\n";
 
