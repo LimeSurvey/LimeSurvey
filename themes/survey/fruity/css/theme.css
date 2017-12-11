@@ -865,3 +865,11 @@ p.return-to-survey{
 .alert {
     background: none;
 }
+
+.question-item {
+    border: none;
+}
+
+body .answer-item label::after {
+    background-color: transparent;
+}

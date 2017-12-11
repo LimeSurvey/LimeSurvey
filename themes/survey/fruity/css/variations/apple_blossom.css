@@ -2021,3 +2021,5 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 body .answer-item label::after{background-color:#AA4340}
+
+.checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after { color: #AA4340 }
