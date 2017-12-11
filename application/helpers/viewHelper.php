@@ -202,7 +202,7 @@ class viewHelper
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
      * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
-     * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
+     * @param float $fPosition if abbreviated position to split (in % : 0 to 1)
      *
      * @return string
      */

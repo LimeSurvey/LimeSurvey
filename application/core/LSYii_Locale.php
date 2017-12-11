@@ -20,9 +20,8 @@ class LSYii_Locale extends CLocale
      * Converts a locale ID to its canonical form.
      * In canonical form, a locale ID consists of only underscores and lower-case letters.
      * @param string $id the locale ID to be converted
-     * @return string the locale ID in canonical form
+     * @return Clocale The locale ID in canonical form
      */
-
     public static function getInstance($id)
     {
         // Fix up the LimeSurvey language code for Yii

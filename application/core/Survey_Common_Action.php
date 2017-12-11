@@ -247,7 +247,7 @@ class Survey_Common_Action extends CAction
      *
      * @param string $sAction
      * @param array $aViewUrls
-     * @param array|null $aData
+     * @param array $aData
      * @return string
      */
     private function renderCentralContents($sAction, $aViewUrls, $aData = [])
@@ -312,7 +312,7 @@ class Survey_Common_Action extends CAction
      * Comments starting with //// indicate how it should work in the future
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
+     * @param array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
@@ -361,7 +361,7 @@ class Survey_Common_Action extends CAction
     /**
      * Display notifications
      */
-    function _notifications()
+    private function _notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
             unset(App()->session['arrayNotificationMessages']);
@@ -372,7 +372,7 @@ class Survey_Common_Action extends CAction
      * Survey summary
      * @param array $aData
      */
-    function _nsurveysummary($aData)
+    private function _nsurveysummary($aData)
     {
         if (isset($aData['display']['surveysummary'])) {
             if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
@@ -386,7 +386,7 @@ class Survey_Common_Action extends CAction
      * Header
      * @param array $aData
      */
-    function _showHeaders($aData)
+    private function _showHeaders($aData)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
@@ -394,7 +394,6 @@ class Survey_Common_Action extends CAction
             Yii::app()->getController()->_getAdminHeader();
         }
     }
-
 
     /**
      * _showadminmenu() function returns html text for the administration button bar
@@ -460,14 +459,14 @@ class Survey_Common_Action extends CAction
         return null;
     }
 
-    function _titlebar($aData)
+    private function _titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
             $this->getController()->renderPartial("/admin/super/title_bar", $aData);
         }
     }
 
-    function _tokenbar($aData)
+    private function _tokenbar($aData)
     {
         if (isset($aData['token_bar'])) {
 
@@ -488,7 +487,7 @@ class Survey_Common_Action extends CAction
      * @since 2014-09-30
      * @author Olle Haerstedt
      */
-    function _organizequestionbar($aData)
+    private function _organizequestionbar($aData)
     {
         if (isset($aData['organizebar'])) {
             if (isset($aData['questionbar']['closebutton']['url'])) {
@@ -543,7 +542,7 @@ class Survey_Common_Action extends CAction
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
-                $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+                $aData['qtypes'] = getQuestionTypeList('', 'array');
                 $aData['action'] = $action;
                 $aData['surveyid'] = $iSurveyID;
                 $aData['qid'] = $qid;
@@ -573,8 +572,7 @@ class Survey_Common_Action extends CAction
                     $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
                 }
                 $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
-                $finaldata['display'] = $questionsummary;
-                $this->getController()->renderPartial('/survey_view', $finaldata);
+                $this->getController()->renderPartial('/survey_view', ['display'=>$questionsummary]);
             } else {
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
                 $this->getController()->redirect(array("admin/index"));
@@ -732,7 +730,7 @@ class Survey_Common_Action extends CAction
                 || Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')
                 || !is_null($extraToolsMenuItems);
 
-            $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
+            $iConditionCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
             $aData['conditionscount'] = ($iConditionCount > 0);
@@ -765,7 +763,6 @@ class Survey_Common_Action extends CAction
                 $aData['permission'] = true;
             } else {
                 $aData['gid'] = $gid = null;
-                $qid = null;
                 $aData['permission'] = false;
             }
 
@@ -775,9 +772,9 @@ class Survey_Common_Action extends CAction
                 $aData['groups'] = "<option>".gT("None")."</option>";
             }
 
-            $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyID, $gid);
+            $aData['GidPrev'] = getGidPrevious($iSurveyID, $gid);
 
-            $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
+            $aData['GidNext'] = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
             if (isset($aData['surveybar']['closebutton']['url'])) {
@@ -791,12 +788,11 @@ class Survey_Common_Action extends CAction
         }
     }
 
-
     /**
      * Show side menu for survey view
      * @param array $aData all the needed data
      */
-    function _surveysidemenu($aData)
+    private function _surveysidemenu($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
@@ -809,8 +805,7 @@ class Survey_Common_Action extends CAction
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $aData['permission'] = true;
         } else {
-            $aData['gid'] = $gid = null;
-            $qid = null;
+            $aData['gid'] = null;
             $aData['permission'] = false;
         }
 
@@ -933,17 +928,17 @@ class Survey_Common_Action extends CAction
 
             // Global filter
             if (isset($_GET['Question'])) {
-                            $model->attributes = $_GET['Question'];
+                $model->setAttributes($_GET['Question'],false);
             }
 
             // Filter group
             if (isset($_GET['gid'])) {
-                            $model->gid = $_GET['gid'];
+                $model->gid = $_GET['gid'];
             }
 
             // Set number of page
             if (isset($_GET['pageSize'])) {
-                            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+                Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
             }
 
             // We filter the current survey id
@@ -1188,28 +1183,35 @@ class Survey_Common_Action extends CAction
         }
 
         $dh = opendir($extractdir);
-
+        if (!$dh)
+        {
+            $aErrorFilesInfo[] = array(
+                "filename" => '',
+                "status" => gT("Extracted files not found - maybe a permission problem?")
+            );    
+            return array($aImportedFilesInfo, $aErrorFilesInfo);                        
+        }
         while ($direntry = readdir($dh)) {
             if ($direntry != "." && $direntry != "..") {
                 if (is_file($extractdir."/".$direntry)) {
                     // is  a file
-                    $extfile = substr(strrchr($direntry, '.'), 1);
+                    $extfile = (string)substr(strrchr($direntry, '.'), 1);
                     if (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',', ','.$extfile.',') === false)) {
                         // Extension allowed
                         if (!copy($extractdir."/".$direntry, $destdir."/".$direntry)) {
-                            $aErrorFilesInfo[] = Array(
+                            $aErrorFilesInfo[] = array(
                             "filename" => $direntry,
                             "status" => gT("Copy failed")
                             );
                         } else {
-                            $aImportedFilesInfo[] = Array(
+                            $aImportedFilesInfo[] = array(
                             "filename" => $direntry,
                             "status" => gT("OK")
                             );
                         }
                     } else {
                         // Extension forbidden
-                        $aErrorFilesInfo[] = Array(
+                        $aErrorFilesInfo[] = array(
                         "filename" => $direntry,
                         "status" => gT("Forbidden Extension")
                         );
@@ -1221,7 +1223,6 @@ class Survey_Common_Action extends CAction
 
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
-
 
     /**
      * Creates a temporary directory

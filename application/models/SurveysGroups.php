@@ -14,6 +14,8 @@
  * @property string $created
  * @property string $modified
  * @property integer $created_by
+ * @property object $parentgroup
+ * @property boolean $hasSurveys 
  */
 class SurveysGroups extends LSActiveRecord
 {
@@ -205,6 +207,10 @@ class SurveysGroups extends LSActiveRecord
         }
     }
 
+    /**
+    * Returns true if survey group has surveys
+    * @return boolean
+    */
     public function getHasSurveys()
     {
         $nbSurvey = Survey::model()->countByAttributes(array("gsid"=>$this->gsid));
