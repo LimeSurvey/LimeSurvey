@@ -58,7 +58,7 @@ Y - Yes/No
 class dataentry extends Survey_Common_Action
 {
 
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -70,7 +70,7 @@ class dataentry extends Survey_Common_Action
      *
      * @return void
      */
-    function vvimport()
+    public function vvimport()
     {
         $aData = array();
 
@@ -105,7 +105,7 @@ class dataentry extends Survey_Common_Action
         }
     }
 
-    function iteratesurvey($surveyid)
+    public function iteratesurvey($surveyid)
     {
         $aData = array();
 
@@ -129,7 +129,6 @@ class dataentry extends Survey_Common_Action
     private function _handleFileUpload($iSurveyId, $aData)
     {
         $filePath = $this->_moveUploadedFile($aData);
-        //$aFileContents = $this->_readFile($filePath);
 
         Yii::app()->loadHelper('admin/import');
         // Fill option
@@ -165,34 +164,11 @@ class dataentry extends Survey_Common_Action
         $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
 
-    private function _getFieldInfo($aFileContents)
-    {
-        $aFieldnames = explode("\t", trim($aFileContents[1]));
-
-        $nbOfFields = count($aFieldnames) - 1;
-        while (trim($aFieldnames[$nbOfFields]) == "" && $nbOfFields > -1) {
-// get rid of blank entries
-            unset($aFieldnames[$nbOfFields]);
-            $nbOfFields--;
-        }
-        return array($aFieldnames, $nbOfFields);
-    }
-
-    private function _readFile($filePath)
-    {
-// Open the file for reading
-        $handle = fopen($filePath, "r");
-        $bigarray = array();
-        // Read the file
-        while (!feof($handle)) {
-            $buffer = fgets($handle); //To allow for very long lines
-            $bigarray[] = @mb_convert_encoding($buffer, "UTF-8", $this->_getUploadCharset($this->_getEncodingsArray()));
-        }
-        // Close the file
-        fclose($handle);
-        return $bigarray;
-    }
-
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $aData
+    */
     private function _moveUploadedFile($aData)
     {
         $sFullFilePath = Yii::app()->getConfig('tempdir')."/".randomChars(20);
@@ -1437,9 +1413,7 @@ class dataentry extends Survey_Common_Action
 
             $aDataentrymsgs = array();
             $hiddenfields = '';
-
             $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
-            $rlanguage = '';
 
             if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
                 $tokencompleted = "";
@@ -1650,7 +1624,7 @@ class dataentry extends Survey_Common_Action
                     $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
                         "refurl", 'saved_thisstep', "status", "saved_date");
                     $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".(string)getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
+                        "'".(string)getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
 
                     $SQL = "INSERT INTO $saved_control_table
                         (".implode(',', $columns).")
@@ -1780,7 +1754,7 @@ class dataentry extends Survey_Common_Action
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
             $aData['site_url'] = Yii::app()->homeUrl;
 
-            LimeExpressionManager::StartProcessingPage(true, (string)Yii::app()->baseUrl); // means that all variables are on the same page
+            LimeExpressionManager::StartProcessingPage(true); // means that all variables are on the same page
 
             $aViewUrls[] = 'caption_view';
 

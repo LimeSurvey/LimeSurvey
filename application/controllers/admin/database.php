@@ -98,10 +98,10 @@ class database extends Survey_Common_Action
     public function index()
     {
         $sAction = Yii::app()->request->getPost('action');
-        $iSurveyID = (isset($_POST['sid'])) ? $_POST['sid'] : returnGlobal('sid');
+        $iSurveyID = (isset($_POST['sid'])) ? (int)$_POST['sid'] : (int)returnGlobal('sid');
 
-        $this->iQuestionGroupID = returnGlobal('gid');
-        $this->iQuestionID = returnGlobal('qid');
+        $this->iQuestionGroupID = (int)returnGlobal('gid');
+        $this->iQuestionID = (int)returnGlobal('qid');
 
         $this->oFixCKeditor = new LSYii_Validators;
         $this->oFixCKeditor->fixCKeditor = true;
@@ -656,7 +656,7 @@ class database extends Survey_Common_Action
                 array_push($aSurveyLanguages, $sBaseLanguage);
                 foreach ($aSurveyLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
-                        // &eacute; to Ã© and &amp; to & : really needed ? Why not for answers ? (130307)
+                        // &eacute; to ÃƒÂ© and &amp; to & : really needed ? Why not for answers ? (130307)
                         $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');
                         $sQuestionHelp = Yii::app()->request->getPost('help_'.$qlang, '');
                         // Fix bug with FCKEditor saving strange BR types : in rules ?
@@ -1197,7 +1197,7 @@ class database extends Survey_Common_Action
                 $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
                 Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$this->iQuestionGroupID, ':order'=>$iQuestionOrder))->query();
             } else {
-                $iQuestionOrder = (getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID));
+                $iQuestionOrder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID);
                 $iQuestionOrder++;
             }
             $sQuestionText = Yii::app()->request->getPost('question_'.$sBaseLanguage, '');
@@ -1307,7 +1307,7 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
-                        $r1 = Answer::model()->getAnswers(returnGlobal('oldqid'));
+                        $r1 = Answer::model()->getAnswers((int)returnGlobal('oldqid'));
                         $aAnswerOptions = $r1->readAll();
                         foreach ($aAnswerOptions as $qr1) {
                             Answer::model()->insertRecords(array(

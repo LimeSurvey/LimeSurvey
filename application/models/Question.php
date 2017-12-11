@@ -32,7 +32,7 @@ if (!defined('BASEPATH')) {
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property string $language Question language code. Note: Primary key is qid & language columns combined
- * @property integer $scale_qid
+ * @property integer $scale_id  The scale ID
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
  * @property string $relevance Questions relevane equation
  * @property string $modulename

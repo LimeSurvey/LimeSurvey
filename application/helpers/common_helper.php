@@ -434,12 +434,8 @@ function getMaxGroupOrder($surveyid)
 */
 function getGroupOrder($surveyid, $gid)
 {
-
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
     $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
-    //var_dump($grporder_result); var_dump($surveyid); var_dump($gid); die();
     $grporder_row = $grporder_result->attributes;
     $group_order = $grporder_row['group_order'];
     if ($group_order == "") {
@@ -447,27 +443,29 @@ function getGroupOrder($surveyid, $gid)
     } else {
         return $group_order;
     }
-    }
+}
 
 /**
-* getMaxQuestionOrder($gid) queries the database for the maximum sortorder of a question.
-*
+* Queries the database for the maximum sort order of a question.
+* 
+* @param mixed $gid
+* @param mixed $surveyid
+* @return integer
 */
 function getMaxQuestionOrder($gid, $surveyid)
 {
-    $gid = sanitize_int($gid);
+    $gid = (int)$gid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='$gid' AND language='$s_lang'";
-
+    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='{$gid}' AND language='{$s_lang}'";
     $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
     $maxrow = $max_result->read();
     $current_max = $maxrow['max'];
     if ($current_max == "") {
-        return "0";
+        return 0;
     } else {
-        return $current_max;
+        return (int)$current_max;
     }
-    }
+}
 
 /**
 * getQuestionClass() returns a class name for a given question type to allow custom styling for each question type.

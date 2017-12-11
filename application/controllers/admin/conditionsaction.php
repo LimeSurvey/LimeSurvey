@@ -101,8 +101,6 @@ class conditionsaction extends Survey_Common_Action
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
-        $gid = (int) $gid;
-        $qid = (int) $qid;
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
         
@@ -141,6 +139,9 @@ class conditionsaction extends Survey_Common_Action
     if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
     if (!isset($qid)) { $qid = returnGlobal('qid'); }
     if (!isset($gid)) { $gid = returnGlobal('gid'); }
+    $gid = (int) $gid;
+    $qid = (int) $qid;
+    
     $p_scenario = returnGlobal('scenario');
     $p_cqid = returnGlobal('cqid');
     if ($p_cqid == '') {
@@ -248,7 +249,7 @@ class conditionsaction extends Survey_Common_Action
     // , and find out which number in that order this question is
     // Then, using the same array which is now properly sorted by group then question
     // Create an array of all the questions that appear AFTER the current one
-    $questionRows = $this->getQuestionRows($qid);
+    $questionRows = $this->getQuestionRows();
     $questionlist = $this->getQuestionList($qid, $questionRows);
     $postquestionlist = $this->getPostQuestionList($qid, $questionRows);
     
@@ -261,7 +262,7 @@ class conditionsaction extends Survey_Common_Action
     if (isset($postquestionscount) && $postquestionscount > 0) {
 //Build the array used for the questionNav and copyTo select boxes
         foreach ($postrows as $pr) {
-            $pquestions[] = array("text" => $pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
+            $pquestions[] = array("text" => $pr['title'].": ".(string)substr(strip_tags($pr['question']), 0, 80),
             "fieldname" => $pr['sid']."X".$pr['gid']."X".$pr['qid']);
         }
     }
@@ -1259,7 +1260,7 @@ protected function getSurveyIsAnonymized()
 * @param int $qid
 * @return array
 */
-protected function getQuestionRows($qid)
+protected function getQuestionRows()
 {
     $qresult = Question::model()->with(array(
     'groups' => array(
@@ -2105,7 +2106,7 @@ protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandT
 
 /**
 * @param int $qid
-* @return object Condition[]
+* @return array|array<mixed,object> Conditions
 */
 protected function getAllScenarios($qid)
 {

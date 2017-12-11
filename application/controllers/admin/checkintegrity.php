@@ -435,10 +435,10 @@ class CheckIntegrity extends Survey_Common_Action
         /*** Check for active token tables with missing survey entry ***/
         $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%'));
         foreach ($aResult->readAll() as $aRow) {
-            $sTableName = substr(reset($aRow), strlen($sDBPrefix));
-            $iSurveyID = substr($sTableName, strpos($sTableName, '_') + 1);
+            $sTableName = (string)substr(reset($aRow), strlen($sDBPrefix));
+            $iSurveyID = (integer)substr($sTableName, strpos($sTableName, '_') + 1);
             if (!in_array($iSurveyID, $sSurveyIDs)) {
-                $sDate = date('YmdHis').rand(1, 1000);
+                $sDate = (string)date('YmdHis').rand(1, 1000);
                 $sOldTable = "tokens_{$iSurveyID}";
                 $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
                 try {
