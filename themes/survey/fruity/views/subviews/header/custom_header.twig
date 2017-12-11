@@ -19,23 +19,48 @@
 {% if (aSurveyInfo.options.backgroundimage == "on" or aSurveyInfo.options.brandlogo == "on" ) %}
 <style>
     {% if (aSurveyInfo.options.backgroundimage == "on" ) %}
-    body {
-        background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
-        background-attachment: fixed;
-        background-size: cover;
+        body {
+            background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
+            background-attachment: fixed;
+            background-size: cover;
 
-    }
+        }
 
-    body .top-container {
-        background-color: rgba(236, 240, 241, 0.2);
-    }
+        body .top-container {
+            background-color: rgba(236, 240, 241, 0.2);
+        }
     {% endif %}
 
     {% if (aSurveyInfo.options.brandlogo == "on" ) %}
-    body .top-container {
-        margin-top: 70px;
-    }
+        body .top-container {
+            margin-top: 70px;
+        }
     {% endif %}
+
+    body {
+         padding-bottom: 10px;
+         padding-top: 60px;/* now is redefine in JS to fit any title length */
+         background-color:{{ aSurveyInfo.options.bodybackgroundcolor  }}  /* #EEE */;
+         color: {{ aSurveyInfo.options.fontcolor  }} /* #444 */;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover {
+        color: {{ aSurveyInfo.options.fontcolor  }};
+    }
+
+
+    .question-container {
+      background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }}; /*  white; */
+
+      {% if (aSurveyInfo.options.questionborder == "on" ) %}
+        border:  1px solid #e6e6e6;
+      {% endif %}
+
+      {% if (aSurveyInfo.options.questioncontainershadow == "on" ) %}
+        box-shadow: 0 1px 2px rgba(0,0,0,.2);
+      {% endif %}
+    }
+
 
 </style>
 {% endif %}

@@ -65,6 +65,11 @@
         <animatealert>off</animatealert>
         <alertanimation>shake</alertanimation>
         <font>noto</font>
+        <bodybackgroundcolor>#EEE</bodybackgroundcolor>
+        <fontcolor>#444</fontcolor>
+        <questionbackgroundcolor>white</questionbackgroundcolor>
+        <questionborder>on</questionborder>
+        <questioncontainershadow>on</questioncontainershadow>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->
