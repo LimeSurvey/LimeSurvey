@@ -91,14 +91,12 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $fieldsarray["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/langcode/".trim($aTokenRow['language'])."/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
         $fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/".trim($aTokenRow['language'])."/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
         $fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/".trim($aTokenRow['language'])."/");
-
+        $aBareboneURLs = [];
         if ($bHtml) {
             foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
                 $url = $fieldsarray["{{$key}URL}"];
                 $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
-                if ($key == 'SURVEY') {
-                    $barebone_link = $url;
-                }
+                $aBareboneURLs['@@'.$key.'URL@@']=$fieldsarray["{{$key}URL}"];
             }
         }
 
@@ -132,9 +130,9 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $modsubject = $sSubject;
         $modmessage = $sMessage;
 		
-        if (isset($barebone_link)) {
-            $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-            $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+        foreach ($aBareboneURLs as $sSearch=>$sReplace) {
+            $modsubject = str_replace($sSearch, $sReplace, $modsubject);
+            $modmessage = str_replace($sSearch, $sReplace, $modmessage);
         }
 
         $modsubject = ReplaceFields($modsubject, $fieldsarray);
