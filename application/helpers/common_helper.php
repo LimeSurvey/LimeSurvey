@@ -1062,7 +1062,7 @@ function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = null) /
  *
  * @param string $stringname
  * @param boolean $bRestrictToString
- * @return array|bool|mixed|null
+ * @return array|bool|mixed|int|null
  */
 function returnGlobal($stringname, $bRestrictToString = false)
 {
