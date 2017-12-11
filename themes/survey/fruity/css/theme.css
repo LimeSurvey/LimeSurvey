@@ -873,3 +873,8 @@ p.return-to-survey{
 body .answer-item label::after {
     background-color: transparent;
 }
+
+/* aligns navigator buttons with question borders */
+#navigator-container > div {
+    padding: 0px;
+}
