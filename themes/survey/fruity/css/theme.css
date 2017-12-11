@@ -870,7 +870,7 @@ p.return-to-survey{
     border: none;
 }
 
-body .answer-item label::after {
+body .checkbox-item label::after {
     background-color: transparent;
 }
 
