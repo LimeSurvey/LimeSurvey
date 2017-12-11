@@ -261,7 +261,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param mixed $sLanguageFilter
      * @return array
      */
-    function getVisibleAttributes($sLanguageFilter = null)
+    public function getVisibleAttributes($sLanguageFilter = null)
     {
         if ($sLanguageFilter == null) {
             $sLanguageFilter = Yii::app()->session['adminlang'];
@@ -319,7 +319,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param string $participant_id the id of the participant to return values/names for (if empty, returns all)
      * @return array
      */
-    function getParticipantVisibleAttribute($participant_id)
+    public function getParticipantVisibleAttribute($participant_id)
     {
         $output = array();
 
@@ -372,7 +372,7 @@ class ParticipantAttributeName extends LSActiveRecord
         }
     }
 
-    function getAttributeValue($participantid, $attributeid)
+    public function getAttributeValue($participantid, $attributeid)
     {
         $data = Yii::app()->db->createCommand()
             ->select('*')
@@ -417,7 +417,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param int $attribute_id
      * @return array
      */
-    function getAttributesValues($attribute_id = null)
+    public function getAttributesValues($attribute_id = null)
     {
         if (empty($attribute_id)) {
             return array();
@@ -438,7 +438,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param array $attributeIds
      * @return array
      */
-    function getNotAddedAttributes($attributeIds)
+    public function getNotAddedAttributes($attributeIds)
     {
         $output = array();
         $notin = array();
@@ -475,7 +475,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param mixed $data
      * @return bool|int
      */
-    function storeAttribute($data)
+    public function storeAttribute($data)
     {
         // Do not allow more than 60 attributes because queries will break because of too many joins
         if (ParticipantAttributeName::model()->count() > 59) {
@@ -495,7 +495,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $iAttributeID;
     }
 
-    function editParticipantAttributeValue($data)
+    public function editParticipantAttributeValue($data)
     {
         $query = ParticipantAttribute::model()
             ->find('participant_id = :participant_id AND attribute_id=:attribute_id',
@@ -520,7 +520,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param integer $attid
      * @return void
      */
-    public function delAttribute($attid)
+    public public function delAttribute($attid)
     {
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
@@ -558,7 +558,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param string $lang
      * @return ParticipantAttributeNameLang
      */
-    function getAttributeName($attributeid, $lang = 'en')
+    public function getAttributeName($attributeid, $lang = 'en')
     {
         return Yii::app()->db->createCommand()
             ->select('*')
@@ -576,7 +576,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @return ParticipantAttributeName
      * TODO: Tonis: this is a bad name for this method - it overrides parent method doing totally different thing
      */
-    function getAttribute($attribute_id)
+    public function getAttribute($attribute_id)
     {
         $data = Yii::app()->db->createCommand()
             ->select('*')
@@ -619,7 +619,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @todo Doc
      * @param array $data
      */
-    function saveAttributeLanguages($data)
+    public function saveAttributeLanguages($data)
     {
         $query = Yii::app()->db
             ->createCommand()
@@ -650,7 +650,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @param array $data
      */
-    public function storeAttributeValues($data)
+    public public function storeAttributeValues($data)
     {
         foreach ($data as $record) {
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}', $record);

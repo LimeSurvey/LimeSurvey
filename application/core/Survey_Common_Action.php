@@ -246,8 +246,8 @@ class Survey_Common_Action extends CAction
      * Rendering the subviews and views of _renderWrappedTemplate
      *
      * @param string $sAction
-     * @param array $aViewUrls
-     * @param array|string $aData
+     * @param array|string $aViewUrls
+     * @param array $aData
      * @return string
      */
     private function renderCentralContents($sAction, $aViewUrls, $aData = [])

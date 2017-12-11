@@ -39,6 +39,7 @@ tools:
                 - 'third_party/*'
                 - 'application/helpers/adodb/*'
                 - 'application/libraries/admin/http/*'
+                - 'application/libraries/admin/Services_JSON.php'
                 - 'application/libraries/admin/pclzip/*'
                 - 'application/extensions/*'
                 - 'application/views/*'
