@@ -877,7 +877,7 @@ function do_date($ia)
 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $mindate = $date_min;
         } elseif ($date_time_em !== false) {
-            $mindate = (string)date("Y-m-d", $date_time_em);
+            $mindate = (string) date("Y-m-d", $date_time_em);
         } else {
             $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
@@ -896,7 +896,7 @@ function do_date($ia)
 // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
             $maxdate = $date_max;
         } elseif ($date_time_em !== false) {
-            $maxdate = (string)date("Y-m-d", $date_time_em);
+            $maxdate = (string) date("Y-m-d", $date_time_em);
         } else {
             $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
@@ -1929,7 +1929,7 @@ function do_multiplechoice($ia)
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $coreClass = "ls-answers checkbox-list answers-list";
     // Question attribute variables
-    $aQuestionAttributes    = (array)QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
+    $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
     if ($aQuestionAttributes['other_numbers_only'] == 1) {
@@ -2666,7 +2666,7 @@ function do_multiplenumeric($ia)
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
 
     $prefixclass = "numeric";
-    $sliders=0;
+    $sliders = 0;
     $slider_position = '';
     $sliderWidth = 12;
     $slider_default_set = false;
@@ -3679,7 +3679,7 @@ function do_array_5point($ia)
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
-        if (strpos($answertext, '|')!==false) {
+        if (strpos($answertext, '|') !== false) {
             $answertext = substr($answertext, 0, strpos($answertext, '|'));
         }
 
@@ -4646,8 +4646,8 @@ function do_array_texts($ia)
             }
             $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if (strpos($answertext, '|')!==false) {
-                $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
+            if (strpos($answertext, '|') !== false) {
+                $answertext = (string) substr($answertext, 0, strpos($answertext, '|'));
             }
 
             $thiskey = 0;
@@ -4681,7 +4681,7 @@ function do_array_texts($ia)
             $rightTd = $rightTdEmpty = false;
 
             if (strpos($answertextsave, '|') !== false) {
-                $answertext = (string)substr($answertextsave, strpos($answertextsave, '|') + 1);
+                $answertext = (string) substr($answertextsave, strpos($answertextsave, '|') + 1);
                 $rightTd    = true; $rightTdEmpty = false;
             } elseif ($right_exists) {
                 $rightTd      = true;
@@ -4710,7 +4710,7 @@ function do_array_texts($ia)
         if ($show_totals == 'col' || $show_totals == 'both' || $grand_total !== '') {
             $showtotals = true;
 
-            $iLabelCodeCount=count($labelcode);
+            $iLabelCodeCount = count($labelcode);
             for ($a = 0; $a < $iLabelCodeCount; ++$a) {
                 $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $col_total);
 
@@ -4995,8 +4995,8 @@ function do_array_multiflexi($ia)
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
 
-            if (strpos($answertext, '|')!==false) {
-                $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
+            if (strpos($answertext, '|') !== false) {
+                $answertext = (string) substr($answertext, 0, strpos($answertext, '|'));
             }
 
             $row_value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
@@ -5417,15 +5417,15 @@ function do_array_dual($ia)
                 $answertext = $ansrow['question'];
 
                 // right and center answertext: not explode for ? Why not
-                if (strpos($answertext, '|')!==false) {
-                    $answertextright = (string)substr($answertext, strpos($answertext, '|') + 1);
-                    $answertext = (string)substr($answertext, 0, strpos($answertext, '|'));
+                if (strpos($answertext, '|') !== false) {
+                    $answertextright = (string) substr($answertext, strpos($answertext, '|') + 1);
+                    $answertext = (string) substr($answertext, 0, strpos($answertext, '|'));
                 } else {
                     $answertextright = "";
                 }
                 if (strpos($answertextright, '|')) {
-                    $answertextcenter = (string)substr($answertextright, 0, strpos($answertextright, '|'));
-                    $answertextright = (string)substr($answertextright, strpos($answertextright, '|') + 1);
+                    $answertextcenter = (string) substr($answertextright, 0, strpos($answertextright, '|'));
+                    $answertextright = (string) substr($answertextright, strpos($answertextright, '|') + 1);
                 } else {
                     $answertextcenter = "";
                 }

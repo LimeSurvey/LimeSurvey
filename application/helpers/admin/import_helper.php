@@ -586,7 +586,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
 function XMLImportLabelsets($sFullFilePath, $options)
 {
 
-    $sXMLdata = (string)file_get_contents($sFullFilePath);
+    $sXMLdata = (string) file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Label set') {
         safeDie('This is not a valid LimeSurvey label set structure XML file.');
@@ -786,7 +786,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results = [];
     $aGIDReplacements = array();
     if ($sXMLdata === null) {
-        $sXMLdata = (string)file_get_contents($sFullFilePath);    
+        $sXMLdata = (string) file_get_contents($sFullFilePath);    
     }
 
     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -1313,10 +1313,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
 
         $results['conditions'] = 0;
-        $oldcqid=0;
-        $oldqidanscode=0;
-        $oldcgid=0;
-        $oldcsid=0;
+        $oldcqid = 0;
+        $oldqidanscode = 0;
+        $oldcgid = 0;
+        $oldcsid = 0;
         foreach ($xml->conditions->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1551,7 +1551,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
 {
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
-    $sXMLdata = (string)file_get_contents($sFullFilePath);
+    $sXMLdata = (string) file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     $results = [];
     $results['warnings'] = array();
@@ -2047,13 +2047,13 @@ function TSVImportSurvey($sFullFilePath)
         // UTF16 Byte Order Mark present
         $encoding = 'UTF-16';
     } else {
-        $file_sample = (string)fread($handle, 1000).'e'; //read first 1000 bytes
+        $file_sample = (string) fread($handle, 1000).'e'; //read first 1000 bytes
         // + e is a workaround for mb_string bug
         rewind($handle);
 
         $encoding = mb_detect_encoding($file_sample, 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP');
     }
-    if ($encoding!==false && $encoding != 'UTF-8') {
+    if ($encoding !== false && $encoding != 'UTF-8') {
         stream_filter_append($handle, 'convert.iconv.'.$encoding.'/UTF-8');
     }
 
@@ -2259,7 +2259,7 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['question_order'] = $qseq;
                 }
                 $question = new Question();
-                $question->setAttributes($insertdata,false);
+                $question->setAttributes($insertdata, false);
                 if (!$question->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Could not insert question").". ".gT("Text file row number ").$rownumber." (".$qname.")";
                     break;
@@ -2330,7 +2330,7 @@ function TSVImportSurvey($sFullFilePath)
 
             case 'SQ':
                 $sqname = (isset($row['name']) ? $row['name'] : 'SQ'.$sqseq);
-                $sqid='';
+                $sqid = '';
                 if ($qtype == 'O' || $qtype == '|') {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {

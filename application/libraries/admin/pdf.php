@@ -171,11 +171,11 @@ class pdf extends TCPDF
 
 
     /**
-    * TCPDF system constants that map to settings in our config file
-    *
-    * @var array
-    * @access private
-    */
+     * TCPDF system constants that map to settings in our config file
+     *
+     * @var array
+     * @access private
+     */
     private $cfg_constant_map = array(
         'K_PATH_MAIN'	=> 'base_directory',
         'K_PATH_URL'	=> 'base_url',
@@ -188,43 +188,43 @@ class pdf extends TCPDF
 
 
     /**
-    * Settings from our APPPATH/config/tcpdf.php file
-    *
-    * @var array
-    * @access private
-    */
+     * Settings from our APPPATH/config/tcpdf.php file
+     *
+     * @var array
+     * @access private
+     */
     private $_config = array();
 
     /**
-    * Base font size for answer PDF export
-    *
-    * @var int
-    * @access private
-    */
+     * Base font size for answer PDF export
+     *
+     * @var int
+     * @access private
+     */
     private $_ibaseAnswerFontSize = 12;
 
     /**
-    * Cell height for answer PDF export
-    *
-    * @var int
-    * @access private
-    */
+     * Cell height for answer PDF export
+     *
+     * @var int
+     * @access private
+     */
     private $_iCellHeight = 6;
 
     /**
-    * Survey Information (preventing from passing to methods every time)
-    *
-    * @var array
-    * @access private
-    */
+     * Survey Information (preventing from passing to methods every time)
+     *
+     * @var array
+     * @access private
+     */
     private $_aSurveyInfo = array();
 
     /**
-    * Set _config for pdf
-    * @access public
-    * @param mixed $tcpdf
-    * @return
-    */
+     * Set _config for pdf
+     * @access public
+     * @param mixed $tcpdf
+     * @return
+     */
     public function setConfig($tcpdf)
     {
         $this->_config = $tcpdf;
@@ -232,9 +232,9 @@ class pdf extends TCPDF
 
 
     /**
-    * Initialize and configure TCPDF with the settings in our config file
-    *
-    */
+     * Initialize and configure TCPDF with the settings in our config file
+     *
+     */
     public function __construct()
     {
 
@@ -305,13 +305,13 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * 
-    * @param string $text
-    * @param $format
-    * @deprecated
-    * @return void
-    */
+     *
+     * 
+     * @param string $text
+     * @param $format
+     * @deprecated
+     * @return void
+     */
     public function intopdf($text, $format = '')
     {
         $text = $this->delete_html($text);
@@ -323,12 +323,12 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * Writes a big title in the page + description
-    * @param $title
-    * @param $description
-    * @return void
-    */
+     *
+     * Writes a big title in the page + description
+     * @param $title
+     * @param $description
+     * @return void
+     */
     public function titleintopdf($title, $description = '')
     {
         if (!empty($title)) {
@@ -353,11 +353,11 @@ class pdf extends TCPDF
         }
     }
     /**
-    *
-    * Creates a Table with equal cell width and Bold text. Used as Head for equalTable()
-    * @param $array(0=>)
-    * @return void
-    */
+     *
+     * Creates a Table with equal cell width and Bold text. Used as Head for equalTable()
+     * @param $array(0=>)
+     * @return void
+     */
     public function tablehead($array)
     {
         //$maxwidth = array();
@@ -374,13 +374,13 @@ class pdf extends TCPDF
         $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
     }
     /**
-    *
-    * Creates a Table with equal cell width.
-    * @param $array - table array( 0=> array("td", "td", "td"),
-    * 								1=> array("td", "td", "td"))
-    * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
-    * @return void
-    */
+     *
+     * Creates a Table with equal cell width.
+     * @param $array - table array( 0=> array("td", "td", "td"),
+     * 								1=> array("td", "td", "td"))
+     * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
+     * @return void
+     */
     public function equalTable($array, $modulo = 1)
     {
         $maxwidth = $this->getEqualWidth($array);
@@ -399,13 +399,13 @@ class pdf extends TCPDF
         $this->ln(5);
     }
     /**
-    *
-    * Creates a table using the full width of page
-    * @param $array Table array( 0=> array("td", "td", "td"),
-    * 								1=> array("td", "td", "td"))
-    * @param $modulo Fills each second row with a light-grey for better visibility. Default is off, turn on with 1
-    * @return void
-    */
+     *
+     * Creates a table using the full width of page
+     * @param $array Table array( 0=> array("td", "td", "td"),
+     * 								1=> array("td", "td", "td"))
+     * @param $modulo Fills each second row with a light-grey for better visibility. Default is off, turn on with 1
+     * @return void
+     */
     public function tableintopdf($array, $modulo = 1)
     {
         $maxwidth = array();
@@ -425,14 +425,14 @@ class pdf extends TCPDF
         $this->ln(5);
     }
     /**
-    *
-    * creates a table with a bold head using the full width of page
-    * @param $head - head array( 0=> array("th", "th", "th"))
-    * @param $table - table array( 0=> array("td", "td", "td"),
-    * 								1=> array("td", "td", "td"))
-    * @param $modulo - fills each second row with a light-grey for better visibility. Default is on, turn off with 0
-    * @return void
-    */
+     *
+     * creates a table with a bold head using the full width of page
+     * @param $head - head array( 0=> array("th", "th", "th"))
+     * @param $table - table array( 0=> array("td", "td", "td"),
+     * 								1=> array("td", "td", "td"))
+     * @param $modulo - fills each second row with a light-grey for better visibility. Default is on, turn off with 0
+     * @return void
+     */
     public function headTable($head, $table, $modulo = 1)
     {
         $array = array_merge_recursive($head, $table);
@@ -526,11 +526,11 @@ class pdf extends TCPDF
         return ($width);
     }
     /**
-    *
-    * Gets the width for columns in a table based on their Stringlength and the width of the page...
-    * @param $array
-    * @return array with column width
-    */
+     *
+     * Gets the width for columns in a table based on their Stringlength and the width of the page...
+     * @param $array
+     * @return array with column width
+     */
     public function getFullWidth($array)
     {
         $maxlength = array();
@@ -548,12 +548,12 @@ class pdf extends TCPDF
         return $maxlength;
     }
     /**
-    *
-    * gets the width for each column in tables, based on pagewidth and count of columns.
-    * Good for static tables with equal value String-length
-    * @param $array
-    * @return unknown_type
-    */
+     *
+     * gets the width for each column in tables, based on pagewidth and count of columns.
+     * Good for static tables with equal value String-length
+     * @param $array
+     * @return unknown_type
+     */
     public function getEqualWidth($array)
     {
         $margins = $this->getMargins();
@@ -587,15 +587,15 @@ class pdf extends TCPDF
         return strip_tags($text);
     }
     /**
-    *
-    * Create Answer PDF document, set metadata and set title
-    * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
-    * @param $aPdfLanguageSettings - Pdf language settings
-    * @param $sSiteName - LimeSurvey site name (header and metadata)
-    * @param $sSurveyName - Survey name (header, metadata and title),
-    * @param $sDefaultHeaderString - TCPDF header string
-    * @return void
-    */
+     *
+     * Create Answer PDF document, set metadata and set title
+     * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
+     * @param $aPdfLanguageSettings - Pdf language settings
+     * @param $sSiteName - LimeSurvey site name (header and metadata)
+     * @param $sSurveyName - Survey name (header, metadata and title),
+     * @param $sDefaultHeaderString - TCPDF header string
+     * @return void
+     */
     public function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
     {
         if (empty($sDefaultHeaderString)) {
@@ -621,12 +621,12 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * Add title to pdf
-    * @param $sTitle - Title
-    * @param $sSubtitle - Subtitle
-    * @return void
-    */
+     *
+     * Add title to pdf
+     * @param $sTitle - Title
+     * @param $sSubtitle - Subtitle
+     * @return void
+     */
     public function addTitle($sTitle, $sSubtitle = "")
     {
         if (!empty($sTitle)) {
@@ -647,13 +647,13 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * Add header to pdf
-    * @param $aPdfLanguageSettings - Pdf language settings
-    * @param $sSiteName - LimeSurvey site name (header and metadata)
-    * @param $sDefaultHeaderString - TCPDF header string
-    * @return void
-    */
+     *
+     * Add header to pdf
+     * @param $aPdfLanguageSettings - Pdf language settings
+     * @param $sSiteName - LimeSurvey site name (header and metadata)
+     * @param $sDefaultHeaderString - TCPDF header string
+     * @return void
+     */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
 
@@ -679,13 +679,13 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * Add GID text to PDF
-    * @param $sGroupName - Group name
-    * @param string $sGroupDescription - Group description
-    * @param $bAllowBreakPage - Allow break cell in two pages
-    * @return void
-    */
+     *
+     * Add GID text to PDF
+     * @param $sGroupName - Group name
+     * @param string $sGroupDescription - Group description
+     * @param $bAllowBreakPage - Allow break cell in two pages
+     * @return void
+     */
     public function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage = false)
     {
         $oPurifier = new CHtmlPurifier();
@@ -714,17 +714,17 @@ class pdf extends TCPDF
     }
 
     /**
-    *
-    * Add answer to PDF
-    *
-    * @param $sQuestion - Question field text array
-    * @param $sResponse - Answer field text array
-    * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
-    *                               because we can not interpret expressions so just purify.
-    *                               TODO: Find a universal valid method to interpret expressions
-    * @param $bAllowBreakPage - Allow break cell in two pages
-    * @return void
-    */
+     *
+     * Add answer to PDF
+     *
+     * @param $sQuestion - Question field text array
+     * @param $sResponse - Answer field text array
+     * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
+     *                               because we can not interpret expressions so just purify.
+     *                               TODO: Find a universal valid method to interpret expressions
+     * @param $bAllowBreakPage - Allow break cell in two pages
+     * @return void
+     */
     public function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)
     {
         $bYiiQuestionBorder = 1;

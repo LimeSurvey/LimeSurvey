@@ -402,7 +402,7 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeNameInDOM($oNewManifest, $sName)
     {
         $oConfig      = $oNewManifest->getElementsByTagName('config')->item(0);
-        $ometadata   = $oConfig->getElementsByTagName('metadata')->item(0);
+        $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldNameNode = $ometadata->getElementsByTagName('name')->item(0);
         $oNvNameNode  = $oNewManifest->createElement('name', $sName);
         $ometadata->replaceChild($oNvNameNode, $oOldNameNode);
@@ -417,7 +417,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $date           = (empty($date)) ?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $date;
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
+        $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
         $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
         $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
@@ -474,7 +474,7 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeAuthorInDom($oNewManifest)
     {
         $oConfig          = $oNewManifest->getElementsByTagName('config')->item(0);
-        $ometadata       = $oConfig->getElementsByTagName('metadata')->item(0);
+        $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldAuthorNode   = $ometadata->getElementsByTagName('author')->item(0);
         $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
         $ometadata->replaceChild($oNvAuthorNode, $oOldAuthorNode);
@@ -488,7 +488,7 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeEmailInDom($oNewManifest)
     {
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
+        $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
         $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
@@ -503,8 +503,8 @@ class TemplateManifest extends TemplateConfiguration
     public static function changeExtendsInDom($oNewManifest, $sToExtends)
     {
         $oExtendsNode = $oNewManifest->createElement('extends', $sToExtends);
-        $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
-        $ometadata     = $oConfig->getElementsByTagName('metadata')->item(0);
+        $oConfig = $oNewManifest->getElementsByTagName('config')->item(0);
+        $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
 
         // We test if mother template already extends another template
         if (!empty($ometadata->getElementsByTagName('extends')->item(0))) {

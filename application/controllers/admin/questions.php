@@ -909,7 +909,7 @@ class questions extends Survey_Common_Action
             // This will loop into the code, from the last character to the first letter
             $numericSuffix = ''; $n = 1; $numeric = true;
             while ($numeric === true && $n <= strlen($stringCode)) {
-                $currentCharacter = (string)substr($stringCode, -$n, 1); // get the current character
+                $currentCharacter = (string) substr($stringCode, -$n, 1); // get the current character
 
                 if (ctype_digit($currentCharacter)) {
                 // check if it's numerical
@@ -931,13 +931,13 @@ class questions extends Survey_Common_Action
 
         // We get the string part of it: it's the original string code, without the greates code with its 0 :
         // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
-        $stringPartOfNewCode    = (string)substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
+        $stringPartOfNewCode    = (string) substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
 
         // We increment by one the greatest code
         $numericalPartOfNewCode = $newPosition = $greatestNumCode + 1;
 
         // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
-        $listOfZero = (string)substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
+        $listOfZero = (string) substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
 
         // When no more zero are available we want to be sure that the last 9 unit will not left
         // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
@@ -1212,7 +1212,7 @@ class questions extends Survey_Common_Action
                     $this->getController()->error('Invalid question id');
                 }
 
-                foreach($questlangs as $key=>$value) {
+                foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
                         $arQuestion = new Question;
                         $arQuestion->qid = $qid;
@@ -1397,7 +1397,7 @@ class questions extends Survey_Common_Action
     public function delete($surveyid, $qid, $ajax = false)
     {
         $surveyid = sanitize_int($surveyid);
-        $qid = (int)$qid;
+        $qid = (int) $qid;
         $rqid = $qid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
@@ -1900,7 +1900,7 @@ class questions extends Survey_Common_Action
         $content .= CHtml::form('index.php', 'post', array('id'=>"limesurvey", 'name'=>"limesurvey", 'autocomplete'=>'off', 'class'=>'survey-form-container Questions'));
         $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
 
-        $question_template = (string)file_get_contents("$thistpl/question.pstpl");
+        $question_template = (string) file_get_contents("$thistpl/question.pstpl");
         // the following has been added for backwards compatiblity.
         if (substr_count($question_template, '{QUESTION_ESSENTIALS}') > 0) {
             // LS 1.87 and newer templates

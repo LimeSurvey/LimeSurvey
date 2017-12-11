@@ -262,7 +262,7 @@ class conditionsaction extends Survey_Common_Action
     if (isset($postquestionscount) && $postquestionscount > 0) {
 //Build the array used for the questionNav and copyTo select boxes
         foreach ($postrows as $pr) {
-            $pquestions[] = array("text" => $pr['title'].": ".(string)substr(strip_tags($pr['question']), 0, 80),
+            $pquestions[] = array("text" => $pr['title'].": ".(string) substr(strip_tags($pr['question']), 0, 80),
             "fieldname" => $pr['sid']."X".$pr['gid']."X".$pr['qid']);
         }
     }

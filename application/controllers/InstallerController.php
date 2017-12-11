@@ -159,7 +159,7 @@ class InstallerController extends CController
     private function stepLicense()
     {
         // $aData array contain all the information required by view.
-        $aData =[];
+        $aData = [];
         $aData['title'] = gT('License');
         $aData['descp'] = gT('GNU General Public License:');
         $aData['classesForStep'] = array('off', 'on', 'off', 'off', 'off', 'off');
@@ -180,7 +180,7 @@ class InstallerController extends CController
     public function stepViewLicense()
     {
         header('Content-Type: text/plain; charset=UTF-8');
-        readfile(dirname((string)BASEPATH).'/docs/license.txt');
+        readfile(dirname((string) BASEPATH).'/docs/license.txt');
         exit;
     }
 
@@ -238,7 +238,7 @@ class InstallerController extends CController
         }
 
         if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
-            $oModel->setAttributes(Yii::app()->request->getPost('InstallerConfigForm'),false);
+            $oModel->setAttributes(Yii::app()->request->getPost('InstallerConfigForm'), false);
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
@@ -319,8 +319,8 @@ class InstallerController extends CController
                         if (version_compare($sMySQLVersion, '4.1', '<')) {
                             die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                         }
-                         /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); 
-                         /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
+                            /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); 
+                            /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
                     }
 
                     // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
@@ -550,7 +550,7 @@ class InstallerController extends CController
      * Optional settings screen
      */
     private function stepOptionalConfiguration()
-    {   
+    {
         $aData = [];
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
         $aData['title'] = gT("Optional settings");
@@ -562,7 +562,7 @@ class InstallerController extends CController
         // Backup the default, needed only for $sDefaultAdminPassword
         $sDefaultAdminPassword = $model->adminLoginPwd;
         if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
-            $model->setAttributes(Yii::app()->request->getPost('InstallerConfigForm'),false);
+            $model->setAttributes(Yii::app()->request->getPost('InstallerConfigForm'), false);
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($model->validate()) {
@@ -704,7 +704,7 @@ class InstallerController extends CController
         function is_writable_recursive($sDirectory)
         {
             $sFolder = opendir($sDirectory);
-            if ($sFolder===false) {
+            if ($sFolder === false) {
                 return false; // Dir does not exist
             }
             while ($sFile = readdir($sFolder)) {

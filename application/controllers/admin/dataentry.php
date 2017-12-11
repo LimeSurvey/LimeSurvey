@@ -165,10 +165,10 @@ class dataentry extends Survey_Common_Action
     }
 
     /**
-    * put your comment there...
-    * 
-    * @param mixed $aData
-    */
+     * put your comment there...
+     * 
+     * @param mixed $aData
+     */
     private function _moveUploadedFile($aData)
     {
         $sFullFilePath = Yii::app()->getConfig('tempdir')."/".randomChars(20);
@@ -334,7 +334,7 @@ class dataentry extends Survey_Common_Action
 
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable = (string)substr(substr($sourceTable->tableName(), 0, (string)strrpos($sourceTable->tableName(), '_')).'_timings'.(string)substr($sourceTable->tableName(), (string)strrpos($sourceTable->tableName(), '_')), strlen(Yii::app()->db->tablePrefix));
+            $sOldTimingsTable = (string) substr(substr($sourceTable->tableName(), 0, (string) strrpos($sourceTable->tableName(), '_')).'_timings'.(string) substr($sourceTable->tableName(), (string) strrpos($sourceTable->tableName(), '_')), strlen(Yii::app()->db->tablePrefix));
             $sNewTimingsTable = "survey_{$surveyid}_timings";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
@@ -375,7 +375,7 @@ class dataentry extends Survey_Common_Action
 
         foreach ($tables as $table) {
             $count = PluginDynamic::model($table)->count();
-            $timestamp = date_format(new DateTime((string)substr($table, -14)), 'Y-m-d H:i:s');
+            $timestamp = date_format(new DateTime((string) substr($table, -14)), 'Y-m-d H:i:s');
             $list[$table] = "$timestamp ($count responses)";
         }
         return $list;
@@ -505,7 +505,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
-                $responses=[];
+                $responses = [];
                 foreach ($svresult as $svrow) {
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
@@ -521,7 +521,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 $results1['id'] = "";
-                $results1['datestamp'] = dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $results1['ipaddr'] = $saver['ip'];
                 $results[] = $results1;
             }
@@ -567,7 +567,7 @@ class dataentry extends Survey_Common_Action
                     $aDataentryoutput .= "</td>\n"
                     ."<td>\n";
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
-                    $qidattributes=[];
+                    $qidattributes = [];
                     if (isset($fname['qid']) && isset($fname['type'])) {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                     }
@@ -578,7 +578,7 @@ class dataentry extends Survey_Common_Action
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
-                                $mysubmitdate = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980)); // Note that the completed field only supports 17 chars (so no seconds!)
+                                $mysubmitdate = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980)); // Note that the completed field only supports 17 chars (so no seconds!)
                             } else {
                                 $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); // Note that the completed field only supports 17 chars (so no seconds!)
                             }
@@ -738,7 +738,7 @@ class dataentry extends Survey_Common_Action
 
                                 $oquery = "SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
                                 $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
-                                $fother='';
+                                $fother = '';
                                 foreach ($oresult->readAll() as $orow) {
                                     $fother = $orow['other'];
                                 }
@@ -1292,11 +1292,10 @@ class dataentry extends Survey_Common_Action
         $subaction = Yii::app()->request->getPost('subaction');
         if (isset($_REQUEST['surveyid'])) {
             $surveyid = $_REQUEST['surveyid'];
-        }
-        else {
+        } else {
             $surveyid = $_REQUEST['sid'];
         }
-        $surveyid = (int)($surveyid);
+        $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
 
         $id = Yii::app()->request->getPost('id');
@@ -1392,11 +1391,11 @@ class dataentry extends Survey_Common_Action
     public function insert()
     {
         $subaction = Yii::app()->request->getPost('subaction');
-        $surveyid = (int)Yii::app()->request->getPost('sid');
+        $surveyid = (int) Yii::app()->request->getPost('sid');
 
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : null;
         $survey = Survey::model()->findByPk($surveyid);
-        $password='';
+        $password = '';
         $aData = array(
             'surveyid' => $surveyid,
             'lang' => $lang
@@ -1408,7 +1407,7 @@ class dataentry extends Survey_Common_Action
             $errormsg = "";
 
             Yii::app()->loadHelper("database");
-            $aViewUrls=[];
+            $aViewUrls = [];
             $aViewUrls['display']['menu_bars']['browse'] = gT("Data entry");
 
             $aDataentrymsgs = array();
@@ -1507,12 +1506,12 @@ class dataentry extends Survey_Common_Action
                 if ($survey->isDateStamp) { $_POST['startdate'] = $_POST['datestamp']; }
                 if (isset($_POST['closerecord'])) {
                     if ($survey->isDateStamp) {
-                        $_POST['submitdate'] = dateShift((string)date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                        $_POST['submitdate'] = dateShift((string) date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                     } else {
-                        $_POST['submitdate'] = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+                        $_POST['submitdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                     }
                 }
-                $phparray=[];
+                $phparray = [];
                 foreach ($fieldmap as $irow) {
                     $fieldname = $irow['fieldname'];
                     if (isset($_POST[$fieldname])) {
@@ -1624,7 +1623,7 @@ class dataentry extends Survey_Common_Action
                     $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
                         "refurl", 'saved_thisstep', "status", "saved_date");
                     $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".(string)getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
+                        "'".(string) getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
 
                     $SQL = "INSERT INTO $saved_control_table
                         (".implode(',', $columns).")
@@ -1746,7 +1745,7 @@ class dataentry extends Survey_Common_Action
             LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             LimeExpressionManager::NavigateForwards();
 
-            $aData=[];
+            $aData = [];
             $aData['survey'] = $survey;
             $aData['thissurvey'] = $thissurvey;
             $aData['langlistbox'] = $langlistbox;
@@ -1905,7 +1904,7 @@ class dataentry extends Survey_Common_Action
 
                             $oquery = "SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
                             $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
-                            $fother='';
+                            $fother = '';
                             foreach ($oresult->readAll() as $orow) {
                                 $fother = $orow['other'];
                             }
@@ -2073,11 +2072,11 @@ class dataentry extends Survey_Common_Action
                         case ";": //ARRAY (Multi Flexi)
 
                             $lquery = "SELECT * FROM {{questions}} WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $lresult = dbExecuteAssoc($lquery) or safeDie ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+                            $lresult = dbExecuteAssoc($lquery) or safeDie("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult->readAll();
 
                             $meaquery = "SELECT * FROM {{questions}} WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+                            $mearesult = dbExecuteAssoc($meaquery) or safeDie("Couldn't get answers, Type \":\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
@@ -2171,7 +2170,7 @@ class dataentry extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array())
     {
         if (!isset($aData['display']['menu_bars']['browse'])) {
-            $iSurveyId=0;
+            $iSurveyId = 0;
             if (isset($aData['surveyid'])) {
                             $iSurveyId = $aData['surveyid'];
             }
