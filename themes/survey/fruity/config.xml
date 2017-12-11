@@ -51,6 +51,7 @@
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
+    <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
         <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
@@ -70,6 +71,7 @@
         <questionbackgroundcolor>white</questionbackgroundcolor>
         <questionborder>on</questionborder>
         <questioncontainershadow>on</questioncontainershadow>
+        <checkicon>f00c</checkicon>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

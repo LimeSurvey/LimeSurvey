@@ -60,4 +60,9 @@
       {% endif %}
     }
 
+    {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
+    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
+        content: {{ checkicon }};
+    }
+
 </style>
