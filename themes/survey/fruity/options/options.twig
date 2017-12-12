@@ -628,6 +628,8 @@
                     </div>
                 </div>
             </div>
+
+            {# Animate alert #}
             <div class='row action_hide_on_inherit'>
                 <div class='col-sm-12 col-md-4'>
                     {# Animate alert -> On/Off #}
@@ -666,6 +668,47 @@
                     </div>
                 </div>
             </div>
+
+            {# Animate checkbox #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate alert -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animatecheckbox' class='control-label'>{{ "Animate checkbox" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-12 col-md-8'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>

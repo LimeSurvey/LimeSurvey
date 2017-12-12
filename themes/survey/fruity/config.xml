@@ -72,6 +72,9 @@
         <questionborder>on</questionborder>
         <questioncontainershadow>on</questioncontainershadow>
         <checkicon>f00c</checkicon>
+        <animatecheckbox>on</animatecheckbox>
+        <checkboxanimation>rubberBand</checkboxanimation>
+        <checkboxanimationduration>1</checkboxanimationduration>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

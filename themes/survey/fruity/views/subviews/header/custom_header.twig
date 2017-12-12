@@ -65,4 +65,12 @@
         content: {{ checkicon }};
     }
 
+    {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
+        .checkbox-item input[type="checkbox"]:checked + label::after{
+            animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
+            animation-duration: {{ aSurveyInfo.options.checkboxanimationduration  }}s;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
 </style>
