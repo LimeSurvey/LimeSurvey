@@ -882,3 +882,10 @@ body .checkbox-item label::after {
 .btn:focus, .btn:hover {
     color: #fff;
 }
+
+/* Remove borders when checkbox is checked */
+.checkbox-item input[type="checkbox"]:checked + label::before{
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
