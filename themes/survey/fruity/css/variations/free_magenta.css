@@ -2022,3 +2022,11 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
   body .answer-item label::after{background-color:#C63678}
   .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after { color: white; background-color: #C63678 }
+
+
+  /* .btn-primary:hover */
+  .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+      color: #ffffff;
+      background-color: #9e2b60;
+      border: 1px solid #7d1344; 
+  }

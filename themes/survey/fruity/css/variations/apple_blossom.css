@@ -2023,3 +2023,11 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 body .answer-item label::after{background-color:#AA4340}
 
 .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {  color: white; background-color: #AA4340;  }
+
+
+/* .btn-primary:hover */
+.btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+    color: #ffffff;
+    background-color: #853432;
+    border: 1px solid #661b19;
+}

@@ -2028,3 +2028,10 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   body .answer-item label::after{background-color:#328637}
 
   .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after { background-color:#328637; color: white; }
+
+/* .btn-primary:hover */
+.btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+    color: #ffffff;
+    background-color: #246128;
+    border: 1px solid #0f3e12;
+}
