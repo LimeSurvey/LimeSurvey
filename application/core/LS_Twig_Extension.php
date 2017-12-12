@@ -123,6 +123,14 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * Convert a json object to a PHP array (so no troubles with object method in sandbox)
+     */
+    public static function json_decode($json)
+    {
+        return (array) json_decode($json);
+    }
+
+    /**
      * @param $position
      * @return string
      */
