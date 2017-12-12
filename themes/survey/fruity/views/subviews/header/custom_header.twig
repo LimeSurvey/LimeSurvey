@@ -81,4 +81,12 @@
         }
     {% endif %}
 
+
+    {% if (aSurveyInfo.options.animatequestion == "on" ) %}
+        .question-container {
+            animation-name: {{ aSurveyInfo.options.questionanimation  }};
+            animation-duration: 1.5s;
+            animation-fill-mode: both;
+        }
+    {% endif %}
 </style>
