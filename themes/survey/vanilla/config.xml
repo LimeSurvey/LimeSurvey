@@ -50,6 +50,8 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <options>
         <ajaxmode>on</ajaxmode>
+        <animatebody>off</animatebody>
+        <bodyanimation>fadeInRight</bodyanimation>        
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
