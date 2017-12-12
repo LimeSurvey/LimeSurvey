@@ -53,7 +53,7 @@ class CsvWriter extends Writer
             }
             
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
-            if ($this->doHeaders == true) {
+            if ($this->doHeaders === true) {
                 $index = 0;
                 foreach ($headers as $header) {
                     $headers[$index] = $this->csvEscape($header);

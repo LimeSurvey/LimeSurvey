@@ -15,6 +15,7 @@ filter:
         - 'application/libraries/admin/http/*'
         - 'application/libraries/admin/pclzip/*'
         - 'application/extensions/*'
+        - 'application/tests/*'
         - 'application/third_party/*'
         - 'third_party/*'
         - 'installer/*'
@@ -55,6 +56,8 @@ tools:
                 - 'tmp/*'
                 - 'upload/*'
                 - 'tests/*'
+                - 'application/tests/*'
+                
 coding_style:
     php:    
         braces:

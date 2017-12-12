@@ -101,15 +101,12 @@ function dbQuoteID($id)
         case "mysqli" :
         case "mysql" :
             return "`".$id."`";
-            break;
         case "dblib":
         case "mssql" :
         case "sqlsrv" :
             return "[".$id."]";
-            break;
         case "pgsql":
             return "\"".$id."\"";
-            break;
         default:
             return $id;
     }

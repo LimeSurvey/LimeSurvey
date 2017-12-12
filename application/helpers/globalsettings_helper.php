@@ -31,9 +31,9 @@ function injectglobalsettings()
 }
 
 /**
- * Undocumented function
+ * Returns a global setting
  *
- * @param [type] $settingname
+ * @param string $settingname
  * @return string
  */
 function getGlobalSetting($settingname)

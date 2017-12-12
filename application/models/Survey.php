@@ -141,7 +141,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowProgress how progress bar
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
- * 
+ * @property SurveyLanguageSetting $defaultlanguage
  * @method mixed active()
  */
 class Survey extends LSActiveRecord

@@ -257,7 +257,7 @@ class QuestionGroup extends LSActiveRecord
      * @param string[] $order
      * @return mixed
      */
-    function getAllGroups($condition, $order = false)
+    public function getAllGroups($condition, $order = false)
     {
         $command = Yii::app()->db->createCommand()
             ->where($condition)

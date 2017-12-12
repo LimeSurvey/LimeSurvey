@@ -69,14 +69,6 @@ class SurveyURLParameter extends LSActiveRecord
     }
 
     /**
-     * @param array $compareToArray
-     */
-    public function compareToArray($compareToArray)
-    {
-
-    }
-
-    /**
      * @param array $aConditions
      * @return mixed
      */
