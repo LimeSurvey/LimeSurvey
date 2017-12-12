@@ -100,4 +100,14 @@
     {% endif %}
 
 
+    {% if (aSurveyInfo.options.animatebody == "on" ) %}
+        #outerframeContainer {
+            animation-name: {{ aSurveyInfo.options.bodyanimation  }};
+            animation-duration: 1.5s;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
+
+
 </style>
