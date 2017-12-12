@@ -748,7 +748,7 @@ class Participant extends LSActiveRecord
     /**
      * Duplicated from getparticipants, only to have a count
      *
-     * @param int $attid
+     * @param array $attid
      * @param CDbCriteria $search
      * @param int $userid
      * @return int

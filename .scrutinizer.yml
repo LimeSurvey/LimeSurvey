@@ -18,6 +18,8 @@ filter:
         - 'application/third_party/*'
         - 'third_party/*'
         - 'installer/*'
+        - 'application/helpers/Zend/*'        
+        - 'application/libraries/admin/Services_JSON.php'
 checks:
     javascript: true 
     php:
@@ -38,6 +40,7 @@ tools:
                 - 'fonts/*'
                 - 'third_party/*'
                 - 'application/helpers/adodb/*'
+                - 'application/helpers/Zend/*'        
                 - 'application/libraries/admin/http/*'
                 - 'application/libraries/admin/Services_JSON.php'
                 - 'application/libraries/admin/pclzip/*'

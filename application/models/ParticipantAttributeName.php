@@ -20,9 +20,9 @@
  * @property string $attribute_type
  * @property string $defaultname
  * @property string $visible
- *
  * @property ParticipantAttributeNameLang[] $participant_attribute_names_lang
  * @property ParticipantAttribute $participant_attribute
+ * @property array $AttributeTypeDropdownArray 
  *
  */
 class ParticipantAttributeName extends LSActiveRecord

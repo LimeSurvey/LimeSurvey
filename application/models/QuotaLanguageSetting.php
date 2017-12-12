@@ -92,8 +92,7 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
-
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $settings = new self;
         foreach ($data as $k => $v) {
