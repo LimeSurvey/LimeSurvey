@@ -56,6 +56,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($inst->connection);
 
         // Connect to old database.
+        $db->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
@@ -72,6 +73,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($connection);
 
         $db = \Yii::app()->getDb();
+        $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
@@ -88,6 +90,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($connection);
 
         $db = \Yii::app()->getDb();
+        $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
