@@ -1286,7 +1286,12 @@ class database extends Survey_Common_Action
                     /** @var Question $oOldQuestion */
                     $oldQID = returnGlobal('oldqid');
                     if ($oldQID) {
-                        $oOldQuestion = Question::model()->findByPk($oldQID);
+                        $oOldQuestion = Question::model()->findByPk(
+                            array(
+                                'qid' => $oldQID,
+                                'language' => $survey->language
+                            )
+                        );
                     }
                     if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
                         $aSQIDMappings = [];
