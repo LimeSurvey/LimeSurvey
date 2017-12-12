@@ -39,7 +39,7 @@ class limereplacementfields extends Survey_Common_Action
             $questionlist = $this->_getQuestionList($action, $gid, $qid, $fieldmap, $fieldtype, $surveyformat);
             $childQuestions = $this->_getChildQuestions($questionlist);
         }
-
+        $data = [];
         $data['countfields'] = count($replacementFields);
         asort($replacementFields);
         $data['replFields'] = $replacementFields;

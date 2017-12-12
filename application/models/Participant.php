@@ -942,7 +942,7 @@ class Participant extends LSActiveRecord
      * Deletes CPDB participants identified by their participant ID from token tables
      *
      * @param string $sParticipantsIDs
-     * @return void
+     * @return integer Number of deleted participants
      */
     public function deleteParticipantToken($sParticipantsIDs)
     {
@@ -950,6 +950,7 @@ class Participant extends LSActiveRecord
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
         $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs), 100);
+        $iDeletedParticipants=0;
         foreach ($aParticipantsIDChunks as $aParticipantsIDs) {
             $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
             $aSurveyIDs = Yii::app()->db->createCommand()
@@ -966,8 +967,9 @@ class Participant extends LSActiveRecord
                     }
                 }
             }
-            $this->deleteParticipants($sParticipantsIDs, false);
+            $iDeletedParticipants += $this->deleteParticipants($sParticipantsIDs, false);
         }
+        return $iDeletedParticipants;
     }
 
     /**
@@ -977,12 +979,13 @@ class Participant extends LSActiveRecord
      * and then all the participants attributes.
      *
      * @param string $sParticipantsIDs
-     * @return void
+     * @return integer Number of deleted participants
      */
     public function deleteParticipantTokenAnswer($sParticipantsIDs)
     {
         $aParticipantsIDs = explode(",", $sParticipantsIDs);
         $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
+        $iDeletedParticipants=0;
 
         foreach ($aParticipantsIDs as $row) {
             /** @var SurveyLink[] $tokens */
@@ -1027,8 +1030,9 @@ class Participant extends LSActiveRecord
                     }
                 }
             }
-            $this->deleteParticipants($sParticipantsIDs, false);
+            $iDeletedParticipants += $this->deleteParticipants($sParticipantsIDs, false);
         }
+        return $iDeletedParticipants;
     }
 
     /**

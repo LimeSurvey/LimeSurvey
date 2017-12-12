@@ -650,7 +650,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @param array $data
      */
-    public public function storeAttributeValues($data)
+    public function storeAttributeValues($data)
     {
         foreach ($data as $record) {
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}', $record);

@@ -127,7 +127,7 @@ class NotificationController extends Survey_Common_Action
         $params = array(
             'sa' => 'clearAllNotifications',
         );
-        if ($surveyId) {
+        if ($surveyId!==null) {
             $params['surveyId'] = $surveyId;
         }
         $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', $params);
