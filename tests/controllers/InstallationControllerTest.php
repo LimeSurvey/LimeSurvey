@@ -23,21 +23,8 @@ class InstallationControllerTest extends TestBaseClassWeb
     public static function setupBeforeClass()
     {
         parent::setUpBeforeClass();
-
-        if (empty(getenv('DBPASSWORD'))) {
-            self::assertTrue(
-                false,
-                'Must specify DBPASSWORD environment variable to run this test'
-            );
-        }
-
-        if (empty(getenv('DBUSER'))) {
-            self::assertTrue(
-                false,
-                'Must specify DBUSER environment variable to run this test'
-            );
-        }
     }
+
     /**
      * 
      */
@@ -53,6 +40,17 @@ class InstallationControllerTest extends TestBaseClassWeb
         $password = getenv('PASSWORD');
         if (!$password) {
             $password = 'password';
+        }
+
+        $dbuser = getenv('DBUSER');
+        if (!$dbuser) {
+            $dbuser = 'root';
+            echo 'Default to database user "root".' . PHP_EOL;
+        }
+        $dbpwd = getenv('DBPASSWORD');
+        if (!$dbpwd) {
+            $dbpwd = '';
+            echo 'Default to empty database password.' . PHP_EOL;
         }
 
         if (file_exists($configFile)) {
@@ -95,12 +93,12 @@ class InstallationControllerTest extends TestBaseClassWeb
         $next->click();
 
         // Fill in database form.
-        $dbuser = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
-        $dbpwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
-        $dbname = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-        $dbuser->sendKeys(getenv('DBUSER'));
-        $dbpwd->sendKeys(getenv('DBPASSWORD'));
-        $dbname->sendKeys($databaseName);
+        $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
+        $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
+        $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
+        $dbuserInput->clear()->sendKeys($dbuser);
+        $dbpwdInput->clear()->sendKeys($dbpwd);
+        $dbnameInput->sendKeys($databaseName);
 
         // Click next.
         $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
@@ -129,6 +127,12 @@ class InstallationControllerTest extends TestBaseClassWeb
         // Go to administration.
         $button = self::$webDriver->findElement(WebDriverBy::id('ls-administration'));
         $button->click();
+
+        // Reset urlManager to adapt to latest config.
+        $configFile = \Yii::app()->getBasePath() . '/config/config.php';
+        $config = require($configFile);
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
 
         // Login.
         self::adminLogin($username, $password);
