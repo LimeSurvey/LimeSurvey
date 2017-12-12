@@ -38,7 +38,7 @@ element.style {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-    font-weight: bold;
+    text-decoration: underline;
 }
 
 .navbar-action-link{
