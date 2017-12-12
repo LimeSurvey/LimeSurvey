@@ -219,7 +219,7 @@ function getSurveyList($bReturnArray = false)
                 $inactivesurveys .= " class='mysurvey emphasis'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis'";
@@ -247,11 +247,7 @@ function getSurveyList($bReturnArray = false)
         $surveyselecter .= "<optgroup label='".gT("Inactive")."' class='inactivesurveyselect'>\n";
         $surveyselecter .= $inactivesurveys."</optgroup>";
     }
-    if (!isset($svexist)) {
-        $surveyselecter = "<option selected='selected' value=''>".gT("Please choose...")."</option>\n".$surveyselecter;
-    } else {
-        $surveyselecter = "<option value=''>".gT("None")."</option>\n".$surveyselecter;
-    }
+    $surveyselecter = "<option selected='selected' value=''>".gT("Please choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
 }
 

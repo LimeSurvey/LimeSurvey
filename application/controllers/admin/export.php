@@ -25,7 +25,7 @@
 class export extends Survey_Common_Action
 {
 
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -52,7 +52,7 @@ class export extends Survey_Common_Action
     public function surveyarchives()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            die('Access denied.');
+            safeDie('Access denied.');
         }
 
         $aSurveyIDs = $this->session->flashdata('sids');
@@ -314,7 +314,7 @@ class export extends Survey_Common_Action
         viewHelper::disableHtmlLogging();
         $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
-        exit;
+        Yii::app()->end();
     }
 
     /*
@@ -698,8 +698,7 @@ class export extends Survey_Common_Action
 
                 unset($sun);
             }
-
-            exit;
+            Yii::app()->end();
         }
     }
 
@@ -732,12 +731,12 @@ class export extends Survey_Common_Action
                 }
             }
             if ($zip->create($zipdirs, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0) {
-                die("Error : ".$zip->errorInfo(true));
+                safeDie("Error : ".$zip->errorInfo(true));
             } elseif (file_exists($zipfilepath)) {
                 $this->_addHeaders($zipfilename, 'application/force-download', 0);
                 readfile($zipfilepath);
                 unlink($zipfilepath);
-                exit;
+                Yii::app()->end();
             }
         }
     }
@@ -745,7 +744,7 @@ class export extends Survey_Common_Action
     public function dumplabel()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            die ('No permission.');
+            safeDie ('No permission.');
         }
         $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
@@ -756,7 +755,7 @@ class export extends Survey_Common_Action
         $lids = returnGlobal('lids');
 
         if (!$lid && !$lids) {
-            die('No LID has been provided. Cannot dump label set.');
+            safeDie('No LID has been provided. Cannot dump label set.');
         }
 
         if ($lid) {
@@ -787,7 +786,7 @@ class export extends Survey_Common_Action
         buildXMLFromQuery($xml, $lquery, 'labels');
         $xml->endElement(); // close columns
         $xml->endDocument();
-        exit;
+        Yii::app()->end();
     }
 
     /**
@@ -1016,14 +1015,14 @@ class export extends Survey_Common_Action
             $this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 
             echo surveyGetXMLData($iSurveyID);
-            exit;
+            Yii::app()->end();
         } elseif ($action == "exportstructurejson") {
             $fn = "limesurvey_survey_{$iSurveyID}.json";
             $this->_addHeaders($fn, "application/json", "Mon, 26 Jul 1997 05:00:00 GMT");
             $surveyInXmlFormat = surveyGetXMLData($iSurveyID);
             // now convert this xml into json format and then return
             echo _xmlToJson($surveyInXmlFormat);
-            exit;
+            Yii::app()->end();
         } elseif ($action == "exportstructurequexml") {
             if (isset($surveyprintlang) && !empty($surveyprintlang)) {
                 $quexmllang = $surveyprintlang;
@@ -1037,7 +1036,7 @@ class export extends Survey_Common_Action
                 $this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 
                 echo quexml_export($iSurveyID, $quexmllang);
-                exit;
+                Yii::app()->end();
             }
         } elseif ($action == 'exportstructuretsv') {
             $this->_exporttsv($iSurveyID);

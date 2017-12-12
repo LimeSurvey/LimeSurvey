@@ -22,7 +22,7 @@
 class GlobalSettings extends Survey_Common_Action
 {
 
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -56,17 +56,7 @@ class GlobalSettings extends Survey_Common_Action
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
-
-        // Save refurl from where global settings screen is called!
-        $refurl = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
-
-        // Some URLs are not to be allowed to refered back to.
-        // These exceptions can be added to the $aReplacements array
-        $aReplacements = array('admin/update/sa/step4b'=>'admin/sa/index',
-                                'admin/user/sa/adduser'=>'admin/user/sa/index',
-                                'admin/user/sa/setusertemplates'=>'admin/user/sa/index'
-                            );
-
+        $data = [];
         $data['title'] = "hi";
         $data['message'] = "message";
         foreach ($this->_checkSettings() as $key => $row) {
@@ -345,10 +335,10 @@ class GlobalSettings extends Survey_Common_Action
         if ($activesurveycount == false) {
             $activesurveycount = 0;
         }
-        if ($surveycount == false) {
+        if ($surveycount === false) {
             $surveycount = 0;
         }
-
+        $oldtokenlist = [];
         $tablelist = Yii::app()->db->schema->getTableNames();
         foreach ($tablelist as $table) {
             if (strpos($table, Yii::app()->db->tablePrefix."old_tokens_") !== false) {
@@ -365,11 +355,8 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $deactivatedsurveys = 0;
         }
-        if (isset($oldtokenlist) && is_array($oldtokenlist)) {
-            $deactivatedtokens = count($oldtokenlist);
-        } else {
-            $deactivatedtokens = 0;
-        }
+        $deactivatedtokens = count($oldtokenlist);
+
         if (isset($tokenlist) && is_array($tokenlist)) {
             $activetokens = count($tokenlist);
         } else {

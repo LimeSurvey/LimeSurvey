@@ -520,7 +520,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param integer $attid
      * @return void
      */
-    public public function delAttribute($attid)
+    public function delAttribute($attid)
     {
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
