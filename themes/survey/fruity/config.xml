@@ -74,7 +74,10 @@
         <checkicon>f00c</checkicon>
         <animatecheckbox>on</animatecheckbox>
         <checkboxanimation>rubberBand</checkboxanimation>
-        <checkboxanimationduration>1</checkboxanimationduration>
+        <checkboxanimationduration>0.5</checkboxanimationduration>
+        <animateradio>on</animateradio>
+        <radioanimation>zoomIn</radioanimation>
+        <radioanimationduration>0.3</radioanimationduration>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

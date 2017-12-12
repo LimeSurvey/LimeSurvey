@@ -709,6 +709,51 @@
                 </div>
             </div>
 
+
+
+
+            {# Animate radio #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate alert -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animateradio' class='control-label'>{{ "Animate radio buttons" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {# Animate alert -> Animation options #}
+            <div class='col-sm-12 col-md-8'>
+
+                <div class='form-group row'>
+                    <label for='simple_edit_options_radioanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                    <div class='col-sm-12'>
+                        <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
+                            {{animationOptions}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            </div>            
+
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>

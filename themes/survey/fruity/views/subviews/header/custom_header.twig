@@ -73,4 +73,12 @@
         }
     {% endif %}
 
+    {% if (aSurveyInfo.options.animateradio == "on" ) %}
+        .radio-item input[type="radio"]:checked + label::after{
+            animation-name: {{ aSurveyInfo.options.radioanimation  }};
+            animation-duration: {{ aSurveyInfo.options.radioanimationduration  }}s;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
 </style>
