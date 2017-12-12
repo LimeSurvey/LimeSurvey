@@ -110,7 +110,7 @@ class PluginEventContent
         if (!empty($cssClass)) {
             $this->_cssClass = array($cssClass => $cssClass);
         } else {
-            $cssClass = array();
+            $this->_cssClass = array();
         }
         
         return $this;        

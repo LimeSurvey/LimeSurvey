@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else: ?>
 <div class="col-sm-12 side-body <?=getSideBodyClass(false)?>" id="theme-option-sidebody">
 <?php endif; ?>
-    <div class="row h1 pagetitle"><?php echo sprintf(gT('Update survey theme options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
+    <div class="row h1 pagetitle"><?php echo sprintf(gT('Survey options for theme %s'),'<em>' . $model->template_name . '</em>'); ?></div>
         <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <div class="col-sm-12">

@@ -107,6 +107,7 @@ class PluginEvent
      */
     public function getContent($plugin)
     {
+        $pluginName='';
         if (is_string($plugin)) {
             $pluginName = $plugin;
         } elseif ($plugin instanceof PluginBase) {

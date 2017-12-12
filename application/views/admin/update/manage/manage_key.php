@@ -3,7 +3,7 @@
         <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
         <?php eT('ComfortUpdate'); ?>
         <?php if(YII_DEBUG):?>
-            <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
+            <small>Server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
         <?php endif;?>
     </h3>
 

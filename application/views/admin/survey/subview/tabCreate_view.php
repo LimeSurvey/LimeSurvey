@@ -36,7 +36,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
-                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Survey texts")?></a></li>
+                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Text elements")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="3" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="4" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>

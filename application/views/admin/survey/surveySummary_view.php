@@ -104,8 +104,8 @@ $surveyid = $oSurvey->sid;
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
-                <strong><?php eT("Survey texts");?>:</strong>
-                <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="<?=gT('Edit survey text elements')?>" href="<?=$this->createUrl('admin/survey/sa/rendersidemenulink', ['subaction'=>'surveytexts', 'surveyid'=>$surveyid])?>">
+                <strong><?php eT("Text elements");?>:</strong>
+                <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="<?=gT('Survey text elements')?>" href="<?=$this->createUrl('admin/survey/sa/rendersidemenulink', ['subaction'=>'surveytexts', 'surveyid'=>$surveyid])?>">
                     <i class="fa fa-cogs"></i>
                 </a>
             </div>
@@ -166,7 +166,7 @@ $surveyid = $oSurvey->sid;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong><?php eT("Survey general settings");?>:</strong>
-                <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="<?=gT('Edit survey general settings')?>" href="<?=$this->createUrl('admin/survey/sa/rendersidemenulink', ['subaction'=>'generalsettings', 'surveyid'=>$surveyid])?>">
+                <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="<?=gT('General survey settings')?>" href="<?=$this->createUrl('admin/survey/sa/rendersidemenulink', ['subaction'=>'generalsettings', 'surveyid'=>$surveyid])?>">
                     <i class="fa fa-cogs"></i>
                 </a>
             </div>

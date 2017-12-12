@@ -105,7 +105,7 @@ class questionIndexHelper
                 $this->indexItems = $this->getIndexItemsGroups($this->indexType);
                 return $this->indexItems;
             case 'S': //Question at a time
-                $this->indexItems = $this->getIndexItemsQuestions($this->indexType);
+                $this->indexItems = $this->getIndexItemsQuestions();
                 return $this->indexItems;
             default:
         }
@@ -164,7 +164,7 @@ class questionIndexHelper
      * @param integer $type : 0 : None , 1 : Incremental, 2: full
      * @return array[][] : array of question in array of group
      */
-    private function getIndexItemsQuestions($type)
+    private function getIndexItemsQuestions()
     {
         $sessionLem = Yii::app()->session["survey_{$this->iSurveyId}"];
         /* get field map : have more info*/

@@ -675,7 +675,7 @@ class Survey_Common_Action extends CAction
             $aData['onelanguage'] = (count($oSurvey->allLanguages) == 1);
             $aData['hasadditionallanguages'] = (count($oSurvey->additionalLanguages) > 0);
 
-            // EDIT SURVEY TEXT ELEMENTS BUTTON
+            // Survey text elements BUTTON
             $aData['surveylocale'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
             // EDIT SURVEY SETTINGS BUTTON
             $aData['surveysettings'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
@@ -688,7 +688,7 @@ class Survey_Common_Action extends CAction
             $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
             // Assessment menu item
             $aData['assessments'] = Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read');
-            // EDIT SURVEY TEXT ELEMENTS BUTTON
+            // Survey text elements BUTTON
             // End if survey properties
             // Tools menu item
             // Delete survey item
