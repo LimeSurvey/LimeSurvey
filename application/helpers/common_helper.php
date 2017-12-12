@@ -919,7 +919,7 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
     App()->setLanguage($sLanguage);
     $aDefaultTexts = array(
     'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results", $mode),
-    'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}", $mode),
+    'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}", $mode),
     'admin_detailed_notification_css'=>'<style type="text/css">
     .printouttable {
     margin:1em auto;
@@ -957,7 +957,7 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
     }
     </style>',
     'admin_notification_subject'=>gT("Response submission for survey {SURVEYNAME}", $mode),
-    'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}", $mode),
+    'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}", $mode),
     'confirmation_subject'=>gT("Confirmation of your participation in our survey"),
     'confirmation'=>gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}", $mode),
     'invitation_subject'=>gT("Invitation to participate in a survey", $mode),

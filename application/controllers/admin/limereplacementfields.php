@@ -216,7 +216,6 @@ class limereplacementfields extends Survey_Common_Action
 
             case 'email-admin_notification':
             case 'email-admin_detailed_notification':
-                $replFields['RELOADURL'] = gT("Reload URL");
                 $replFields['VIEWRESPONSEURL'] = gT("View response URL");
                 $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
                 $replFields['STATISTICSURL'] = gT("Statistics URL");
@@ -235,7 +234,6 @@ class limereplacementfields extends Survey_Common_Action
                 return array($replFields, false);
 
             case 'email-admin-resp':
-                $replFields['RELOADURL'] = gT("Reload URL");
                 $replFields['VIEWRESPONSEURL'] = gT("View response URL");
                 $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
                 $replFields['STATISTICSURL'] = gT("Statistics URL");
