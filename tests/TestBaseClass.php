@@ -79,7 +79,11 @@ class TestBaseClass extends TestCase
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
-        if(self::$testSurvey){
+
+        // Make sure we have permission to delete survey.
+        \Yii::app()->session['loginID'] = 1;
+
+        if (self::$testSurvey) {
             if (!self::$testSurvey->delete()) {
                 echo 'Fatal error: Could not clean up survey ' . self::$testSurvey->sid . '; errors: ' . json_encode(self::$testSurvey->errors);
                 exit(3);
