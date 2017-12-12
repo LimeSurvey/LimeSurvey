@@ -878,3 +878,7 @@ body .checkbox-item label::after {
 #navigator-container > div {
     padding: 0px;
 }
+
+.btn:focus, .btn:hover {
+    color: #fff;
+}
