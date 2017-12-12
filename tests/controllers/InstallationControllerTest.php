@@ -45,12 +45,12 @@ class InstallationControllerTest extends TestBaseClassWeb
         $dbuser = getenv('DBUSER');
         if (!$dbuser) {
             $dbuser = 'root';
-            echo 'Default to database user "root".' . PHP_EOL;
+            echo 'Default to database user "root". Use DBUSER=... from command-line to override this.' . PHP_EOL;
         }
         $dbpwd = getenv('DBPASSWORD');
         if (!$dbpwd) {
             $dbpwd = '';
-            echo 'Default to empty database password.' . PHP_EOL;
+            echo 'Default to empty database password. Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
         }
 
         if (file_exists($configFile)) {

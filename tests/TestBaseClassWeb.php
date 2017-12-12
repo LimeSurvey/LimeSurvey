@@ -91,6 +91,9 @@ class TestBaseClassWeb extends TestBaseClass
 
         // Implicit timout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
+
+        // Anyone can preview surveys.
+        self::$testHelper->enablePreview();
     }
 
     public static function tearDownAfterClass()
