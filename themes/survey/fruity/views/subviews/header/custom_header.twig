@@ -89,4 +89,15 @@
             animation-fill-mode: both;
         }
     {% endif %}
+
+
+    {% if (aSurveyInfo.options.animatealert == "on" ) %}
+        .question-container {
+            animation-name: {{ aSurveyInfo.options.alertanimation  }};
+            animation-duration: 1.5s;
+            animation-fill-mode: both;
+        }
+    {% endif %}
+
+
 </style>
