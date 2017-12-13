@@ -75,6 +75,7 @@
         <packages>
             <add>pjax</add>
             <add>font-noto</add>
+            <add>moment</add>
         </packages>
 
         <!--
