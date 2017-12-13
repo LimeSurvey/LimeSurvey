@@ -73,6 +73,7 @@
         <!-- Example: <packages>moment</packages> -->
         <packages>
             <add>pjax</add>
+            <add>moment</add>
         </packages>
 
         <!--

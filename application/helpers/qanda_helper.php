@@ -864,6 +864,8 @@ function do_date($ia)
     };";
 
     App()->getClientScript()->registerScript("sDateLangvarJS", $sDateLangvarJS, CClientScript::POS_BEGIN);
+    App()->getClientScript()->registerPackage('moment');
+    App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js', CClientScript::POS_END);
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
@@ -1050,7 +1052,7 @@ function do_date($ia)
             'dateformat'             => $dateformatdetails['jsdate'],
             ), true);
 
-        App()->getClientScript()->registerScript('doDropDownDate'.$ia[0], "doDropDownDate({$ia[0]});", CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('doDropDownDate'.$ia[0], "doDropDownDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     } else {
         $coreClass .= " text-item";
         // Format the date  for output
@@ -1126,7 +1128,7 @@ function do_date($ia)
                 'sideBySide' => true,
                 //~ 'debug'=>true
             );
-            App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", CClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", CClientScript::POS_END);
         }
         App()->getClientScript()->registerScript('doPopupDate'.$ia[0], "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     }

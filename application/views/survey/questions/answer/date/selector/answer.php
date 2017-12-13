@@ -55,8 +55,8 @@
         'maxDate' => $maxdate[0] == '{' ? '2037-12-31' : $maxdate,
     );
     $jsonOptions=json_encode($aJsonOption);
-    App()->getClientScript()->registerScript("doDatetimepicker{$name}","jQuery('#answer{$name}_datetimepicker').datetimepicker({$jsonOptions});",CClientScript::POS_END);
+    App()->getClientScript()->registerScript("doDatetimepicker_{$name}","jQuery('#answer{$name}_datetimepicker').datetimepicker({$jsonOptions});",LSYii_ClientScript::POS_POSTSCRIPT);
      // Min and max date sets default value, so use this to override it
-    App()->getClientScript()->registerScript("resetDate{$name}","$('#answer{$name}').val('{$dateoutput}');;",CClientScript::POS_END);
+    App()->getClientScript()->registerScript("resetDate{$name}","$('#answer{$name}').val('{$dateoutput}');;",LSYii_ClientScript::POS_POSTSCRIPT);
     ?>
 <!-- end of answer -->

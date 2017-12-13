@@ -321,6 +321,7 @@ return array(
 
     // Decimal.js calculate in js
     'decimal' => array(
+        'position' => CClientScript::POS_BEGIN,
         'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
@@ -333,6 +334,7 @@ return array(
     // Moment.js use real simple dateTime modification
     'moment' => array(
         'basePath' => 'third_party.moment',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'moment-with-locales.min.js'
         ),
