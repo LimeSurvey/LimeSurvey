@@ -400,8 +400,11 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        $debug = Yii::app()->getConfig('debug', 0);
-        $html .= "<script type='text/javascript'>window.debugState=".$debug.";</script>";
+        
+        $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
+        $debugBackend = (int) getGlobalSetting('javascriptdebugbcknd');
+        
+        $html .= "<script type='text/javascript'>window.debugState = {frontend : (".$debugFrontend." === 1), backend : (".$debugBackend." === 1)};</script>";
 
         if ($this->enableJavaScript) {
             if (isset($this->scriptFiles[self::POS_HEAD])) {
@@ -530,11 +533,11 @@ class LSYii_ClientScript extends CClientScript
             }
         }
         if (App()->getConfig('debug') > 0) {
-            $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.log('PJAX scriptsuccess', e); });";
-            $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.log('PJAX scripterror', e); });";
-            $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.log('PJAX scripttimeout', e); });";
-            $scripts[] = "jQuery(document).off('pjax:success.debugger').on('pjax:success.debugger',function(e) { console.log('PJAX success', e);});";
-            $scripts[] = "jQuery(document).off('pjax:error.debugger').on('pjax:error.debugger',function(e) { console.log('PJAX error', e);});";
+            $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.ls.log('PJAX scriptsuccess', e); });";
+            $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.ls.log('PJAX scripterror', e); });";
+            $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.ls.log('PJAX scripttimeout', e); });";
+            $scripts[] = "jQuery(document).off('pjax:success.debugger').on('pjax:success.debugger',function(e) { console.ls.log('PJAX success', e);});";
+            $scripts[] = "jQuery(document).off('pjax:error.debugger').on('pjax:error.debugger',function(e) { console.ls.log('PJAX error', e);});";
         }
         
         //All scripts are wrapped into a section to be able to reload them accordingly

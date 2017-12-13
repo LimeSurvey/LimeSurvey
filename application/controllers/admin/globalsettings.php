@@ -225,6 +225,9 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode', 'default')));
         setGlobalSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
+        setGlobalSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
+        setGlobalSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
+
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, getTemplateList())) {

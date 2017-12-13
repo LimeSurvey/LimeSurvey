@@ -134,9 +134,14 @@ return array(
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => array(
-            'pjax'.$minVersion.'.js',
-            'loadPjax'.$minVersion.'.js'
+        'js' => ($debug > 0 ?
+            array(
+                'pjax.js',
+                'loadPjax.js'
+            ) 
+            : array(
+                'min/pjax.min.js',
+            )
         ),
     ),
     'adminpanel' => array(
@@ -168,10 +173,18 @@ return array(
             'adminbasics',
         )
     ),
+    'lslog' => array(
+        'devBaseUrl' => 'assets/packages/lslog/',
+        'basePath' => 'core.lslog',
+        'js' => array(
+            // 'build/lslog'.$minVersion.'.js',
+            'build/lslog.js',
+        )
+    ),
     'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_BEGIN,
+        'position' =>CClientScript::POS_HEAD,
         'css' => array(
             'css/lime-admin-common.css',
             'css/jcarousel.responsive.css',
@@ -187,6 +200,7 @@ return array(
         'depends' => array(
             'jquery',
             'pjax',
+            'lslog',
         )
     ),
 

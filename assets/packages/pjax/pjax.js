@@ -317,8 +317,8 @@ module.exports = function(el) {
   this.log("Evaluating Script: ", el);
 
   if (code.match("document.write")) {
-    if (console && console.log) {
-      console.log("Script contains document.write. Can’t be executed correctly. Code skipped ", el)
+    if (console && console.ls.log) {
+      console.ls.log("Script contains document.write. Can’t be executed correctly. Code skipped ", el)
     }
     return false
   }
@@ -699,12 +699,12 @@ module.exports = function(el) {
 },{}],15:[function(require,module,exports){
 module.exports = function() {
   if ((this.options.debug && console)) {
-    if (typeof console.log === "function") {
-      console.log.apply(console, ['PJAX ->',arguments]);
+    if (typeof console.ls.log === "function") {
+      console.ls.log.apply(console, ['PJAX ->',arguments]);
     }
     // ie is weird
-    else if (console.log) {
-      console.log(['PJAX ->',arguments]);
+    else if (console.ls.log) {
+      console.ls.log(['PJAX ->',arguments]);
     }
   }
 }

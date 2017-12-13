@@ -18,7 +18,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
         <!-- Global sitename -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='sitename'>
                     <?php eT("Site name:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
@@ -29,7 +29,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <!-- Default Template -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for="defaulttheme">
                 <?php eT("Default theme:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
                 </label>
@@ -46,7 +46,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <!-- Administrative Template -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for="admintheme">
                 <?php eT("Administration theme:"); ?>
                 </label>
@@ -69,7 +69,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
             </div>
       </div>
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='timeadjust'>
                     <?php eT("Time difference (in hours):"); ?>
                 </label>
@@ -99,7 +99,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <?php endif; ?>
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='ipInfoDbAPIKey'>
                 <?php eT("IP Info DB API Key:"); ?>
                 </label>
@@ -109,7 +109,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
             </div>
         </div>
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='googleMapsAPIKey'>
                 <?php eT("Google Maps API key:"); ?>
                 </label>
@@ -120,7 +120,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
 
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='googleanalyticsapikey'>
                 <?php eT("Google Analytics Tracking ID:"); ?>
                 </label>
@@ -130,7 +130,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
             </div>
         </div>
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='googletranslateapikey'>
                 <?php eT("Google Translate API key:"); ?>
                 </label>
@@ -165,7 +165,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
         <!-- Default Editor mode -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='defaulthtmleditormode'>
                 <?php eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
@@ -208,7 +208,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <!-- Default question type selector mode -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='defaultquestionselectormode'>
                 <?php eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
@@ -228,7 +228,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <!-- Default theme editor mode -->
         <div class="row ls-space margin top-10">
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='defaultthemeteeditormode'>
                     <?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
@@ -243,6 +243,42 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                                 )
                             ));
                     ?>
+                </div>
+            </div>
+        </div>
+        <!-- Default theme editor mode -->
+        <div class="row ls-space margin top-10">
+            <div class="form-group col-xs-12">
+                <label class="col-sm-12 text-left control-label" for='javascriptdebugbcknd'>
+                    <?php eT("JS-Debug mode [Backend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                </label>
+                <div class="col-sm-12">
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'javascriptdebugbcknd',
+                    'id'=>'javascriptdebugbcknd',
+                    'value' => getGlobalSetting('javascriptdebugbcknd'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')
+                    ));
+                ?>
+                </div>
+            </div>
+        </div>
+        <!-- Default theme editor mode -->
+        <div class="row ls-space margin top-10">
+            <div class="form-group col-xs-12">
+                <label class="col-sm-12 text-left control-label" for='javascriptdebugfrntnd'>
+                    <?php eT("JS-Debug mode [Frontend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                </label>
+                <div class="col-sm-12">
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'javascriptdebugfrntnd',
+                    'id'=>'javascriptdebugfrntnd',
+                    'value' => getGlobalSetting('javascriptdebugfrntnd'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')
+                    ));
+                ?>
                 </div>
             </div>
         </div>
