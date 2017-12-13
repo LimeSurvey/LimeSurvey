@@ -150,9 +150,9 @@ class LSYii_Validators extends CValidator
                     if ($aParsedExpression[2] == 'DQ_STRING') {
                         $sNewValue .= "\"".(string)$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
-                                            $sNewValue .= "'".$filter->purify($aParsedExpression[0])."'";
+                        $sNewValue .= "'".(string)$filter->purify($aParsedExpression[0])."'";
                     } else {
-                                            $sNewValue .= $aParsedExpression[0];
+                        $sNewValue .= $aParsedExpression[0];
                     }
                 }
                 $sNewValue .= "}";

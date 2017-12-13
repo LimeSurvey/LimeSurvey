@@ -44,7 +44,7 @@ class LSCGettextMessageSource extends CGettextMessageSource
                             $file = new CGettextPoFile();
             }
             $messages = $file->load($messageFile, $category);
-            if (isset($cache)) {
+            if (isset($cache) && isset($key)) {
                 $dependency = new CFileCacheDependency($messageFile);
                 $cache->set($key, serialize($messages), $this->cachingDuration, $dependency);
             }

@@ -57,7 +57,7 @@ class UserIdentity extends CUserIdentity
                 $sUser = $_SERVER['LOGON_USER'];
             }            
             if (strpos($sUser, "\\") !== false) {
-                $sUser = substr($sUser, strrpos($sUser, "\\") + 1);
+                $sUser = (string)substr($sUser, strrpos($sUser, "\\") + 1);
             }
             
             $aUserMappings = Yii::app()->getConfig("auth_webserver_user_map");

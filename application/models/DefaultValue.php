@@ -86,7 +86,7 @@ class DefaultValue extends LSActiveRecord
         );
     }
     
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $oRecord = new self;
         foreach ($data as $k => $v) {

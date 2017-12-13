@@ -93,7 +93,7 @@ class LabelSet extends LSActiveRecord
         return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $lblset = new self;
         foreach ($data as $k => $v) {

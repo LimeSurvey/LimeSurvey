@@ -97,6 +97,8 @@ class FormattingOptions
      */
     public $output;
 
+    public $format;
+    
     public function toString()
     {
         return $this->format.','.$this->headingFormat.','
