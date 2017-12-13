@@ -74,7 +74,10 @@ var AjaxSubmitObject = function () {
         var globalPjax = new Pjax({
             elements: "#limesurvey", // default is "a[href], form[action]"
             selectors: ["#dynamicReloadContainer", "#beginScripts", "#bottomScripts"],
-
+            debug: window.debugState>1,
+            forceRedirectOnFail: true,
+            reRenderCSS : true,
+            scriptloadtimeout: 1500
         });
         // Always bind to document to not need to bind again
         $(document).on("click", ".ls-move-btn",function () {

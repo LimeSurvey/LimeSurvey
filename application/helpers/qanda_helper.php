@@ -3185,13 +3185,13 @@ function do_shortfreetext($ia)
 
         $currentLocation = $currentLatLong[0]." ".$currentLatLong[1];
 
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", LSYii_ClientScript::POS_END);
         if ($aQuestionAttributes['location_mapservice'] == 1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-                    Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
+                    Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
         } else if ($aQuestionAttributes['location_mapservice'] == 1) {
-                    Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
+                    Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
         } elseif ($aQuestionAttributes['location_mapservice'] == 2) {
-                            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
+                            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
             }
 
             $questionHelp = false;
@@ -3258,7 +3258,7 @@ function do_shortfreetext($ia)
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar', "LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();", CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1], "LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";", CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", CClientScript::POS_END);
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'map.css', CClientScript::POS_END);
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'map.css');
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;

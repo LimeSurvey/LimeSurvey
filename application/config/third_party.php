@@ -416,6 +416,7 @@ return array(
     /* Used by short text with map by leaflet */
     'leaflet' => array(
         'basePath' => 'third_party.leaflet',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'leaflet.js'
         ),
@@ -425,6 +426,7 @@ return array(
     ),
     'devbridge-autocomplete' => array(
         'basePath' => 'third_party.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.autocomplete'.$minVersion.'.js'
         ),

@@ -405,10 +405,11 @@ class SurveyRuntimeHelper
         /**
          *  Expression Manager Scrips and inputs
          */
+        $step = isset($_SESSION[$this->LEMsessid]['step']) ? $_SESSION[$this->LEMsessid]['step'] : '';
         LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
         $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
         $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-        Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerScript('lemscripts_'.$step, $sScripts, CClientScript::POS_BEGIN);
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = implode('', $aScriptsAndHiddenInputs['inputs']);
         Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
         Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/

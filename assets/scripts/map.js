@@ -4,6 +4,10 @@
  *
  */
 
+var gmaps = gmaps || new Object;
+var osmaps = osmaps || new Object;
+var zoom = zoom || [];
+
 $(document).on('ready pjax:scriptcomplete',function()
 {
     $(".ls-answers .location").each(function(index,element){
@@ -27,10 +31,6 @@ $(document).on('ready pjax:scriptcomplete',function()
     });
 
 });
-
-gmaps = new Object;
-osmaps = new Object;
-zoom = [];
 
 
 function isvalidCoord(val,type){
