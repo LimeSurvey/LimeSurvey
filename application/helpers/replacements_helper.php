@@ -370,6 +370,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_clearall = "";
         $_clearalllinks = '';
     }
+    if (isset($surveyid))
+    {
+        $_quexmlpdf=CHtml::link(gT("Save as PDF"),array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"),array('data-toggle'=>'tooltip','data-placement'=>'right','title'=>gT("Note: Print will not include items on this page")));
+    }
+    else
+    {
+        $_quexmlpdf = "";
+    }
 
     if (isset(Yii::app()->session['datestamp']))
     {
@@ -674,6 +682,7 @@ EOD;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript role='alert' id='checkjavascript'><p class='alert alert-danger warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</p></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
+    $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
     $coreReplacements['CLEARALL_LINKS'] = $_clearalllinks;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global

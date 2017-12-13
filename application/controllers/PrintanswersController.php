@@ -72,8 +72,8 @@
             }
 
 
-            //Survey is not finished or don't exist
-            if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
+            //Survey don't exist
+            if (!isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
                 sendCacheHeaders();
@@ -106,7 +106,7 @@
             $sAnonymized = $aSurveyInfo['anonymized'];
             //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
             //SHOW HEADER
-            if (empty($sExportType))
+            if (empty($sExportType) && isset($_SESSION['survey_'.$iSurveyID]['finished']))
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
                 ."<center><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
