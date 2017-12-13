@@ -61,7 +61,7 @@
             </p>
             <p>
                 <?php
-                    $aopen  = '<a href="https://www.limesurvey.org/limesurvey-profile" target="_blank">';
+                    $aopen  = '<a href="https://www.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
                     $aclose = '</a>';
                 ?>
                 <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
