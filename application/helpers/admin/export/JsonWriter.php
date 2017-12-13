@@ -25,13 +25,18 @@ class JsonWriter extends Writer
             echo $sStartOutput;
         } elseif ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
-            fwrite($this->file, $sStartOutput);
+            if ($this->file!==false) {
+                fwrite($this->file, $sStartOutput);
+            } else {
+                safeDie('Could not open JSON file');
+            }
         }
         
     }
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
+        $aJson = [];
         $aJson[$values[0]] = array_combine($headers, $values);
         $sJson = json_encode($aJson);
         Yii::log($this->havePrev, 'info', 'info');

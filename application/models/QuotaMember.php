@@ -103,7 +103,7 @@ class QuotaMember extends LSActiveRecord
                 case "A":
                 case "B":
                     $temp = explode('-', $this->code);
-                    $sFieldName = $this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
                     $sValue = $temp[1];
                     break;
                 default:
@@ -132,7 +132,7 @@ class QuotaMember extends LSActiveRecord
 
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $members = new self;
         foreach ($data as $k => $v) {

@@ -24,6 +24,12 @@
          * @param string $id
          */
 
+        /**
+        * 
+        *  
+        * @param PluginManager $manager
+        * @param integer $id
+        */
         public function __construct(PluginManager $manager, $id)
         {
             parent::__construct($manager, $id);
@@ -66,4 +72,3 @@
 
 
     }
-?>

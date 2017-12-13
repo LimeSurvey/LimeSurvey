@@ -1,6 +1,9 @@
 <?php
     Yii::import('application.helpers.Hash', true);
 
+    /**
+    * @property integer $id The user ID
+    */
     class LSWebUser extends CWebUser
     {
         protected $sessionVariable = 'LSWebUser';
@@ -45,7 +48,7 @@
 
         /**
          * @param string $key
-         * @param string $defaultValue
+         * @param mixed $defaultValue
          * @return mixed|null
          */
         public function getState($key, $defaultValue = null)

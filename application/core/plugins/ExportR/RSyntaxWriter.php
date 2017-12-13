@@ -7,8 +7,8 @@ class RSyntaxWriter extends Writer
     private $maxLength = 25500; // From old code, max length of string fields
 
     /**
-     * The open filehandle
-     */
+    * The open filehandle
+    */
     protected $handle = null;
     protected $customFieldmap = array();
     protected $headers = array();
@@ -42,6 +42,7 @@ class RSyntaxWriter extends Writer
         // R specific stuff
         Yii::app()->loadHelper("export");
         $tmpFieldmap = SPSSFieldMap($survey->id);
+        $fieldmap = [];
         foreach ($tmpFieldmap as $field => $values) {
             $fieldmap[$values['title']] = $values;
             if (array_key_exists('sql_name', $values)) {
@@ -84,17 +85,18 @@ class RSyntaxWriter extends Writer
     public function close()
     {
         $errors = '';
-            foreach ($this->headers as $id => $title) {
+        foreach ($this->headers as $id => $title) {
             $field = $this->customFieldmap[$title];
             $i = $id + 1;
             if ($field['SPSStype'] == 'DATETIME23.2') {
-                            $field['size'] = '';
+                $field['size'] = '';
             }
 
             if ($field['LStype'] == 'N' || $field['LStype'] == 'K') {
                 $field['size'] .= '.'.($field['size'] - 1);
             }
 
+            $type='';
             switch ($field['SPSStype']) {
                 case 'F':
                     $type = "numeric";
@@ -107,73 +109,76 @@ class RSyntaxWriter extends Writer
                     $type = "character";
                     //@TODO set $type to format for date
                     break;
+                default:
+                    safeDie('Unknown type');
+                    break;
             }
 
-                $this->out("# LimeSurvey Field type: {$field['SPSStype']}");
-                $this->out("data[, ".$i."] <- "
+            $this->out("# LimeSurvey Field type: {$field['SPSStype']}");
+            $this->out("data[, ".$i."] <- "
                 . "as.$type(data[, ".$i."])");
-                $this->out('attributes(data)$variable.labels['.$i.'] <- "'
+            $this->out('attributes(data)$variable.labels['.$i.'] <- "'
                 . addslashes(
-                        htmlspecialchars_decode(
-                                mb_substr(
-                                        stripTagsFull(
-                                                $field['VariableLabel']
-                                        ), 0, $this->maxLength
-                                )
+                    htmlspecialchars_decode(
+                        mb_substr(
+                            stripTagsFull(
+                                $field['VariableLabel']
+                            ), 0, $this->maxLength
                         )
+                    )
                 )
                 . '"');
 
-                // Create the value Labels!
-                if (isset($field['answers'])) {
-                    $answers = $field['answers'];
+            // Create the value Labels!
+            if (isset($field['answers'])) {
+                $answers = $field['answers'];
 
-                    //print out the value labels!
-                    $str = 'data[, '.$i.'] <- factor(data[, '.$i.'], levels=c(';
-                    foreach ($answers as $answer) {
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
-                            $str .= "{$answer['code']},";
-                        } else {
-                            $str .= "\"{$answer['code']}\",";
-                        }
-                    }
-
-                    $str = mb_substr($str, 0, -1);
-                    $str .= '),labels=c(';
-
-                    foreach ($answers as $answer) {
-                        $str .= '"'.addslashes($answer['value']).'", ';
-                    }
-
-                    $str = mb_substr($str, 0, -2);
-
-                    if ($field['scale'] !== '' && $field['scale'] == 2) {
-                        $scale = ", ordered=TRUE";
+                //print out the value labels!
+                $str = 'data[, '.$i.'] <- factor(data[, '.$i.'], levels=c(';
+                foreach ($answers as $answer) {
+                    if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                        $str .= "{$answer['code']},";
                     } else {
-                        $scale = "";
+                        $str .= "\"{$answer['code']}\",";
                     }
-
-                    $this->out("{$str}){$scale})");
                 }
 
-                //Rename the Variables (in case somethings goes wrong, we still have the OLD values
-                if (isset($field['sql_name'])) {
-                    $ftitle = $field['title'];
-                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
-                        $ftitle = "q_".$ftitle;
-                    }
+                $str = mb_substr($str, 0, -1);
+                $str .= '),labels=c(';
 
-                    $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
+                foreach ($answers as $answer) {
+                    $str .= '"'.addslashes($answer['value']).'", ';
+                }
 
-                    if ($ftitle != $field['title']) {
-                        $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-                    }
+                $str = mb_substr($str, 0, -2);
 
-                    $this->out("names(data)[".$i."] <- "
-                    . "\"".$ftitle."\""); // <AdV> added \n
+                if ($field['scale'] !== '' && $field['scale'] == 2) {
+                    $scale = ", ordered=TRUE";
                 } else {
-                    $this->out("#sql_name not set");
+                    $scale = "";
                 }
+
+                $this->out("{$str}){$scale})");
+            }
+
+            //Rename the Variables (in case somethings goes wrong, we still have the OLD values
+            if (isset($field['sql_name'])) {
+                $ftitle = $field['title'];
+                if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                    $ftitle = "q_".$ftitle;
+                }
+
+                $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
+
+                if ($ftitle != $field['title']) {
+                    $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+                }
+
+                $this->out("names(data)[".$i."] <- "
+                    . "\"".$ftitle."\""); // <AdV> added \n
+            } else {
+                $this->out("#sql_name not set");
+            }
         }  // end foreach
         if (!empty($errors)) {
             $this->out($errors);

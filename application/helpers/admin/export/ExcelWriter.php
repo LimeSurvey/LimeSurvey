@@ -14,9 +14,6 @@ class ExcelWriter extends Writer
     private $rowCounter;
     private $forceDownload = true;
 
-    //Indicates if the Writer is outputting to a file rather than sending via HTTP.
-    private $outputToFile = false;
-
     /**
      * The presence of a filename will cause the writer to output to
      * a file rather than send.
@@ -24,7 +21,7 @@ class ExcelWriter extends Writer
      * @param string $filename
      * @return ExcelWriter
      */
-    public function __construct($filename = null)
+    public function __construct()
     {
         require_once(APPPATH.'/third_party/xlsx_writer/xlsxwriter.class.php');
         $this->separator = '~|';

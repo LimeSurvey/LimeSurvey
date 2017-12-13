@@ -42,7 +42,7 @@
          * @param integer $sQID The question ID - optional - Default 0
          * @return array
          */
-        public function getFiles($sQID = 0)
+        public function getFiles()
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
             $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$survey->language));
@@ -120,7 +120,7 @@
          * Delete uploaded files for this response AND modify
          * response data to reflect all changes.
          * Keep comment and title of file, but remove name/filename.
-         * @return string[] Name of files that could not be removed.
+         * @return array Number of successfully moved files and names of files that could not be removed/failed
          */
         public function deleteFilesAndFilename()
         {

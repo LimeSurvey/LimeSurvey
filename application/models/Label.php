@@ -108,7 +108,7 @@ class Label extends LSActiveRecord
         return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from($this->tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $lbls = new self;
         foreach ($data as $k => $v) {

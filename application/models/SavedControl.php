@@ -53,7 +53,7 @@ class SavedControl extends LSActiveRecord
     }
 
 
-    function getAllRecords($condition = false)
+    public function getAllRecords($condition = false)
     {
         if ($condition != false) {
             $this->db->where($condition);
@@ -97,7 +97,7 @@ class SavedControl extends LSActiveRecord
         return $record->deleteAll($criteria);
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data);
     }
