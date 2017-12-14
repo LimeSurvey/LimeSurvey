@@ -33,6 +33,9 @@ class ConsoleShim {
         }
         return Array.from(arguments);
     }
+    setSilent(newValue = null){
+        this.silent = newValue || !this.silent;
+    }
     //Start grouping logs
     group() {
         if(this.silent) { return; }
@@ -145,7 +148,7 @@ class ConsoleShim {
 
 }
 
-if(window.debugState.backend){
+if(window.debugState.backend || window.debugState.frontend){
     var globalLSConsole = new ConsoleShim('LSLOG');
     window.console.ls = globalLSConsole;
 } else {

@@ -46,6 +46,13 @@ var ConsoleShim = function () {
             }
             return Array.from(arguments);
         }
+    }, {
+        key: 'setSilent',
+        value: function setSilent() {
+            var newValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this.silent = newValue || !this.silent;
+        }
         //Start grouping logs
 
     }, {
@@ -193,7 +200,7 @@ var ConsoleShim = function () {
     return ConsoleShim;
 }();
 
-if (window.debugState.backend) {
+if (window.debugState.backend || window.debugState.frontend) {
     var globalLSConsole = new ConsoleShim('LSLOG');
     window.console.ls = globalLSConsole;
 } else {
