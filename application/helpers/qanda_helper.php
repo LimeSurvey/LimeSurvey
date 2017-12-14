@@ -1128,7 +1128,7 @@ function do_date($ia)
                 'sideBySide' => true,
                 //~ 'debug'=>true
             );
-            App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", CClientScript::POS_END);
+            App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", LSYii_ClientScript::POS_POSTSCRIPT);
         }
         App()->getClientScript()->registerScript('doPopupDate'.$ia[0], "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     }

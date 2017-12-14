@@ -142,6 +142,9 @@ return array(
                 'min/pjax.min.js',
             )
         ),
+        'depends' => array(
+            'lslog',
+        )
     ),
     'pjaxbackend' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
@@ -155,6 +158,9 @@ return array(
                 'min/pjax.combined.min.js',
             )
         ),
+        'depends' => array(
+            'lslog',
+        )
     ),
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
@@ -212,7 +218,6 @@ return array(
         'depends' => array(
             'jquery',
             'pjaxbackend',
-            'lslog',
         )
     ),
 
