@@ -43,7 +43,7 @@ LS.CPDB = (function() {
                     method: 'POST',
                     success: secondSuccess,
                     error : function() {
-                        console.log(arguments);
+                        console.ls.log(arguments);
                     }
                 });
             });
@@ -55,7 +55,7 @@ LS.CPDB = (function() {
             data: data,
             method: 'POST',
             success: firstSuccess,
-            error: console.log
+            error: console.ls.log
         });
     },
 

@@ -483,7 +483,7 @@ function code_duplicates_check()
             cansubmit= false;
         }
     });
-    console.log('cansubmit: '+cansubmit);
+    console.ls.log('cansubmit: '+cansubmit);
     return cansubmit;
 }
 
@@ -795,7 +795,7 @@ function transferlabels()
  */
 function quickaddlabels(scale_id, addOrReplace, table_id)
 {
-    console.log('quickaddlabels');
+    console.ls.log('quickaddlabels');
     var sID=$('input[name=sid]').val(),
         gID=$('input[name=gid]').val(),
         qID=$('input[name=qid]').val(),
@@ -949,7 +949,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
                 bindClickIfNotExpanded();
             },
             function(){
-                 console.log(arguments);
+                 console.ls.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');

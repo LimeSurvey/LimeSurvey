@@ -57,7 +57,7 @@ function updateMaxHeightModalbody(modal)
 {
     var modalHeader=$(modal).find(".modal-header").outerHeight();
     var modalFooter=$(modal).find(".modal-footer").outerHeight();
-    console.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
+    console.ls.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
     var finalMaxHeight=Math.max(150,$(window).height()-(modalHeader+modalFooter+16));// Not less than 150px
     $(modal).find(".modal-body").css("max-height",finalMaxHeight);
 }

@@ -147,7 +147,7 @@ function submitEditToken(){
             }
             catch (e){
                 if (e) {
-                    console.log(e);
+                    console.ls.error(e);
                     $modal.modal('hide');
                 }
             }
@@ -226,7 +226,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                             } // Update the surveys list
                         });
                     } catch(e){
-                        if(e){console.log(e); $modal.modal('hide');}
+                        if(e){console.ls.error(e); $modal.modal('hide');}
                     }
                 }
             });
@@ -306,7 +306,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             error :  function(html, statut){
                 $ajaxLoader.hide();
                 $('#modal-content').empty().append(html);
-                console.log(html);
+                console.ls.error(html);
             }
         });
     });
@@ -351,7 +351,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             error :  function(html, statut){
                 $ajaxLoader.hide();
                 $modalBodyText.append(html);
-                console.log(html);
+                console.ls.error(html);
             },
 
         });

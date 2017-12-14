@@ -148,7 +148,7 @@ function quickaddfunction(){
         }
 
         $(".lslanguage").each(function(i){
-            //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
+            //console.ls.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
             if (typeof(code)!="undefined" && i > 0)
             {
@@ -235,7 +235,7 @@ function add_label(event)
         next_code='L001';
     }
 
-    //console.log('nextcode: '+next_code);
+    //console.ls.log('nextcode: '+next_code);
 
     var html = createNewLabelTR(true,true);
 

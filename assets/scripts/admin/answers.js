@@ -127,7 +127,7 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
       'assessmentvisible' : ( $elDatas.data('assessmentvisible') == 1 )
     };
 
-    console.log(datas);
+    console.ls.log(datas);
     // We get the HTML of the new row to insert
      $.ajax({
         type: "POST",
@@ -209,8 +209,8 @@ function addinput()
 
         },
         error :  function(html, statut){
-            console.log(statut);
-            console.log(html);
+            console.ls.log(statut);
+            console.ls.log(html);
         }
     });
 }
@@ -839,7 +839,7 @@ for (var x in languages)
                         }
 
                         htmlRowObject.find('td.subquestion-text').find('input').val(mapObject.text);
-                        console.log(htmlRowObject);
+                        console.ls.log(htmlRowObject);
                         $table.find('tbody').append(htmlRowObject);
                     });
                 });

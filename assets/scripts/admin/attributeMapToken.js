@@ -111,12 +111,12 @@ var onDocumentReadyAttributeMapToken = function(){
         newcurrentarray = new Array();
 
         $('#newcreated .attribute-item').each(function(i) {
-            console.log(this);
+            console.ls.log(this);
             newcurrentarray.push($(this).attr('id'));
         });
 
         $.each(newcurrentarray, function(index,value) {
-            console.log(value);
+            console.ls.log(value);
             if(value[0]=='t') {
                 anewcurrentarray[value.substring(2)] = $("#td_"+value).val();
             }
@@ -134,11 +134,11 @@ var onDocumentReadyAttributeMapToken = function(){
             }
         });
 
-        console.log('mappedarray', mappedarray);
-        console.log('anewcurrentarray', anewcurrentarray);
-        console.log(attoverwrite);
-        console.log(attoverwriteman);
-        console.log(attcreateautomap);
+        console.ls.log('mappedarray', mappedarray);
+        console.ls.log('anewcurrentarray', anewcurrentarray);
+        console.ls.log(attoverwrite);
+        console.ls.log(attoverwriteman);
+        console.ls.log(attcreateautomap);
 
         /* $("#processing").dialog({
             height: 90,

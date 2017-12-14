@@ -11,7 +11,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
     function adjustHeights() {
 
         var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
-        console.log('max', max);
+        console.ls.log('max', max);
 
         $('.droppable-new').css('min-height', max);
         $('.droppable-csv').css('min-height', max);
@@ -116,7 +116,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
                 opacity: 0.75,
                 stop: function(event, ui) {
                     // ui.helper, ui.position, .ui.offset
-                    console.log(col);
+                    console.ls.log(col);
                     col.find('.fa-arrows-h').remove();
                     col.next().remove();
                     $(that).droppable('enable');

@@ -50,7 +50,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
      */
     $('#show_survey_list').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_survey_list-url').attr('data-url');
-        console.log($url);
+        console.ls.log($url);
         $.ajax({
             url : $url,
             type : 'GET',
@@ -70,7 +70,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
      */
     $('#show_survey_list_search').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_survey_list_search-url').attr('data-url');
-        console.log($url);
+        console.ls.log($url);
         $.ajax({
             url : $url,
             type : 'GET',
@@ -90,7 +90,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
      */
     $('#boxes_in_container').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#boxes_in_container-url').attr('data-url');
-        console.log($url);
+        console.ls.log($url);
         $.ajax({
             url : $url,
             type : 'GET',

@@ -221,7 +221,7 @@ function OSGeoInitialize(question,latLng){
             }
             $(this).data('prevvalue',$(this).val());
         });
-        console.log(window.location.protocol);
+        console.ls.log(window.location.protocol);
         if(window.location.protocol=='https:'){
             // Currently api.geonames.org are unsecure (ssl for api.geonames.net)
             $("#searchbox_"+name).parent().remove();

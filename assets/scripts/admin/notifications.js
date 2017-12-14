@@ -18,10 +18,10 @@ $(document).on('ready  pjax:scriptcomplete', function() {
     function log(a, b) {
         return; // Remove to enable logging
         if (b == undefined) {
-            console.log(a);
+            console.ls.log(a);
         }
         else {
-            console.log(a, b);
+            console.ls.log(a, b);
         }
     }
 

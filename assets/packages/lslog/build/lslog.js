@@ -11,8 +11,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var ConsoleShim = function () {
     function ConsoleShim() {
+        var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var silent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
         _classCallCheck(this, ConsoleShim);
 
+        this.param = param;
+        this.silent = silent;
         this.collector = [];
         this.currentGroupDescription = '';
         this.activeGroups = 0;
@@ -29,16 +34,30 @@ var ConsoleShim = function () {
                 return err;
             }
         }
+    }, {
+        key: '_insertParamToArguments',
+        value: function _insertParamToArguments() {
+            if (this.param !== '') {
+                var args = Array.from(arguments);
+                args.unshift(this.param);
+                return args;
+            }
+            return Array.from(arguments);
+        }
         //Start grouping logs
 
     }, {
         key: 'group',
         value: function group() {
-            if (typeof console.group === 'function') {
-                console.group.apply(this, arguments);
+            if (this.silent) {
                 return;
             }
-            var description = arguments[0] || 'GROUP';
+            var args = this._insertParamToArguments(arguments);
+            if (typeof console.group === 'function') {
+                console.group.apply(console, args);
+                return;
+            }
+            var description = args[0] || 'GROUP';
             this.currentGroupDescription = description;
             this.activeGroups++;
         }
@@ -47,8 +66,12 @@ var ConsoleShim = function () {
     }, {
         key: 'groupEnd',
         value: function groupEnd() {
+            if (this.silent) {
+                return;
+            }
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.groupEnd === 'function') {
-                console.groupEnd.apply(this, arguments);
+                console.groupEnd.apply(console, args);
                 return;
             }
             this.currentGroupDescription = '';
@@ -61,39 +84,52 @@ var ConsoleShim = function () {
     }, {
         key: 'log',
         value: function log() {
-            if (typeof console.group === 'function') {
-                console.log.apply(this, arguments);
+            if (this.silent) {
                 return;
             }
-
-            console.log(' '.repeat(this.activeGroups * 2), arguments);
+            var args = this._insertParamToArguments(arguments);
+            if (typeof console.group === 'function') {
+                console.log.apply(console, args);
+                return;
+            }
+            args.shift();
+            args.unshift(' '.repeat(this.activeGroups * 2));
+            this.log.apply(this, args);
         }
         //Trace back the apply.
-        //Uses either the inbuilt function console trace or opens a shim to trace by calling arguments.callee
+        //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
 
     }, {
         key: 'trace',
         value: function trace() {
+            if (this.silent) {
+                return;
+            }
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.trace === 'function') {
-                console.trace.apply(this, arguments);
+                console.trace.apply(console, args);
                 return;
             }
             var artificialError = this._generateError();
             if (artificialError.stack) {
-                this.log.apply(this, artificialError.stack);
+                this.log.apply(console, artificialError.stack);
                 return;
             }
 
-            this.log(arguments);
+            this.log(args);
             if (arguments.callee != undefined) {
-                this.trace.apply(this, arguments.callee);
+                this.trace.apply(console, arguments.callee);
             }
         }
     }, {
         key: 'time',
         value: function time() {
+            if (this.silent) {
+                return;
+            }
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.time === 'function') {
-                console.time.apply(this, arguments);
+                console.time.apply(console, args);
                 return;
             }
 
@@ -102,8 +138,12 @@ var ConsoleShim = function () {
     }, {
         key: 'timeEnd',
         value: function timeEnd() {
+            if (this.silent) {
+                return;
+            }
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.timeEnd === 'function') {
-                console.timeEnd.apply(this, arguments);
+                console.timeEnd.apply(console, args);
                 return;
             }
             var diff = new Date() - this.timeHolder;
@@ -113,30 +153,46 @@ var ConsoleShim = function () {
     }, {
         key: 'error',
         value: function error() {
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.error === 'function') {
-                console.error.apply(arguments);
+                console.error.apply(args);
                 return;
             }
 
             this.log('--- ERROR ---');
-            this.log(arguments);
+            this.log(args);
+        }
+    }, {
+        key: 'err',
+        value: function err() {
+            this.error.apply(this, arguments);
+        }
+    }, {
+        key: 'debug',
+        value: function debug() {
+            this.trace.apply(this, arguments);
         }
     }, {
         key: 'warn',
         value: function warn() {
+            var args = this._insertParamToArguments(arguments);
             if (typeof console.warn === 'function') {
-                console.warn.apply(arguments);
+                console.warn.apply(args);
                 return;
             }
 
             this.log('--- WARN ---');
-            this.log(arguments);
+            this.log(args);
         }
     }]);
 
     return ConsoleShim;
 }();
 
-var globalLSConsole = new ConsoleShim();
-
-window.console.ls = globalLSConsole;
+if (window.debugState.backend) {
+    var globalLSConsole = new ConsoleShim('LSLOG');
+    window.console.ls = globalLSConsole;
+} else {
+    var globalLSConsole = new ConsoleShim('LSLOG', true);
+    window.console.ls = globalLSConsole;
+}

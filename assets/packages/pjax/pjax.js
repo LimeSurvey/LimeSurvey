@@ -214,8 +214,8 @@ Pjax.prototype = {
       }
       catch (e) {
         if (!this.options.debug) {
-          if (console && console.error) {
-            console.error("Pjax switch fail: ", e)
+          if (console && console.ls.error) {
+            console.ls.error("Pjax switch fail: ", e)
           }
           this.latestChance(href)
           return
@@ -700,7 +700,7 @@ module.exports = function(el) {
 module.exports = function() {
   if ((this.options.debug && console)) {
     if (typeof console.ls.log === "function") {
-      console.ls.log.apply(console, ['PJAX ->',arguments]);
+      console.ls.log.apply(this, ['PJAX ->',arguments]);
     }
     // ie is weird
     else if (console.ls.log) {

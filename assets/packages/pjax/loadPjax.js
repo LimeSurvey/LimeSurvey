@@ -11,7 +11,7 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
         window.activePjax = window.activePjax || null;
         
         if (window.activePjax === null) {
-            console.log('creating a Pjax instance on the window object');
+            console.ls.log('creating a Pjax instance on the window object');
             window.activePjax = new Pjax({
                 elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
                 selectors: [
@@ -26,7 +26,7 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#pjax-content': switchInnerHTML,
                     '#breadcrumb-container': switchInnerHTML,
                 },
-                debug: window.debugState>1,
+                debug: window.debugState.backend,
                 forceRedirectOnFail: true,
                 reRenderCSS : true,
                 scriptloadtimeout: 1500

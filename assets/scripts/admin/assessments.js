@@ -54,7 +54,7 @@ var bindAction = function(){
                 $('#assesements-edit-add').modal('show');
             },
             error: function(err){
-                try {console.error(err); } catch(e) { console.log("ERROR!", error );}
+                console.ls.error(err);
             }
         });
     });
@@ -77,7 +77,7 @@ var bindAction = function(){
                 $.fn.yiiGridView.update('assessments-grid');
             },
             error: function(err){
-                try {console.error(err); } catch(e) { console.log("ERROR!", error );}
+                console.ls.error(err);
             }
         })
     });
