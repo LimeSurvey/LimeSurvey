@@ -29,7 +29,8 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                 debug: window.debugState.backend,
                 forceRedirectOnFail: true,
                 reRenderCSS : true,
-                scriptloadtimeout: 1500
+                scriptloadtimeout: 1500,
+                logObject : console.ls
             });
         }
 

@@ -63,7 +63,7 @@ class ConsoleShim {
         if(this.silent) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.group === 'function') {
-            console.log.apply(console, args);
+            console.log.call(console, ...args);
             return;
         }
         args.shift();
