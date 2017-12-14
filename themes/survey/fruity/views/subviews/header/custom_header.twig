@@ -81,29 +81,26 @@
         }
     {% endif %}
 
-
     {% if (aSurveyInfo.options.animatequestion == "on" ) %}
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
-            animation-duration: 1.5s;
+            animation-duration: {{ aSurveyInfo.options.questionanimationduration  }}s; 
             animation-fill-mode: both;
         }
     {% endif %}
-
 
     {% if (aSurveyInfo.options.animatealert == "on" ) %}
         .question-container {
             animation-name: {{ aSurveyInfo.options.alertanimation  }};
-            animation-duration: 1.5s;
+            animation-duration: {{ aSurveyInfo.options.alertanimationduration  }}s;
             animation-fill-mode: both;
         }
     {% endif %}
 
-
     {% if (aSurveyInfo.options.animatebody == "on" ) %}
         #outerframeContainer {
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
-            animation-duration: 1.5s;
+            animation-duration: {{ aSurveyInfo.options.bodyanimationduration  }}s;
             animation-fill-mode: both;
         }
     {% endif %}

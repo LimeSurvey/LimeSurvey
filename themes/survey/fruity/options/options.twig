@@ -627,7 +627,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='col-sm-12 col-md-8'>
+                <div class='col-sm-10 col-md-6'>
                     {# Animate body -> Animation type #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_bodyanimation' class='control-label'>{{ "Body animation" | t }}</label>
@@ -635,6 +635,15 @@
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
                                 {{animationOptions}}
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate body -> Animation type duration #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_bodyanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimationduration' name='bodyanimationduration' />
                         </div>
                     </div>
                 </div>
@@ -665,7 +674,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='col-sm-12 col-md-8'>
+                <div class='col-sm-10 col-md-6'>
                     {# Animate question -> Animation type #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionanimation' class='control-label'>{{ "Question animation" | t }}</label>
@@ -673,6 +682,15 @@
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
                                 {{animationOptions}}
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate question -> Animation type #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5"  class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimationduration' name='questionanimationduration' />
                         </div>
                     </div>
                 </div>
@@ -705,7 +723,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='col-sm-12 col-md-8'>
+                <div class='col-sm-10 col-md-6'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_alertanimation' class='control-label'>{{ "Alert animation" | t }}</label>
@@ -713,6 +731,15 @@
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
                                 {{animationOptions}}
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_alertanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5"  class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimationduration' name='alertanimationduration'/>
                         </div>
                     </div>
                 </div>
@@ -745,7 +772,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='col-sm-12 col-md-8'>
+                <div class='col-sm-10 col-md-6'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ "Alert animation" | t }}</label>
@@ -756,10 +783,16 @@
                         </div>
                     </div>
                 </div>
+                <div class='col-sm-2'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_checkboxanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimationduration' name='checkboxanimationduration' />
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
-
 
             {# Animate radio #}
             <div class='row action_hide_on_inherit'>
@@ -789,18 +822,28 @@
                     </div>
                 </div>
 
-            {# Animate alert -> Animation options #}
-            <div class='col-sm-12 col-md-8'>
+                {# Animate alert -> Animation options #}
+                <div class='col-sm-10 col-md-6'>
 
-                <div class='form-group row'>
-                    <label for='simple_edit_options_radioanimation' class='control-label'>{{ "Alert animation" | t }}</label>
-                    <div class='col-sm-12'>
-                        <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
-                            {{animationOptions}}
-                        </select>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_radioanimation' class='control-label'>{{ "Radio button animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
+                {# Animate alert -> Animation options #}
+                <div class='col-sm-2'>
+
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_radioanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimationduration' name='radioanimationduration' />
+                        </div>
+                    </div>
+                </div>
             </div>            
 
             <div class='row ls-space margin top-15 bottom-15 '>
