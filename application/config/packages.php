@@ -137,10 +137,22 @@ return array(
         'js' => ($debug > 0 ?
             array(
                 'pjax.js',
-                'loadPjax.js'
             ) 
             : array(
                 'min/pjax.min.js',
+            )
+        ),
+    ),
+    'pjaxbackend' => array(
+        'devBaseUrl' => 'assets/packages/pjax/',
+        'basePath' => 'core.pjax',
+        'js' => ($debug > 0 ?
+            array(
+                'pjax.js',
+                'loadPjax.js'
+            ) 
+            : array(
+                'min/pjax.combined.min.js',
             )
         ),
     ),
@@ -199,7 +211,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'pjax',
+            'pjaxbackend',
             'lslog',
         )
     ),
@@ -222,7 +234,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'pjax',
+            'pjaxbackend',
         )
     ),
 
@@ -238,7 +250,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'pjax',
+            'pjaxbackend',
         )
     ),
 
