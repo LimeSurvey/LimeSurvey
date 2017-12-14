@@ -141,25 +141,26 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Render the option page of a template for the admin interface
      * @param Template $oTemplate    the template where the custom option page should be looked for
-     * @param array    $renderArray  ** MARKUS PLEASE DOCUMENT THIS ***
+     * @param array    $renderArray  Array that will be passed to the options.twig as variables. 
      * @return html
      */
     public function renderOptionPage($oTemplate, $renderArray = array())
     {
         $oRTemplate = $oTemplate;
-
         $sOptionFile = 'options/options.twig';
         $sOptionJS   = 'options/options.js';
-
+        $sOptionsPath = $oRTemplate->sTemplateurl.'options';
+        
         // We get the options twig file from the right template (local or mother template)
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
-
+            
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return sprintf(gT('%s not found!', $oRTemplate->path.$sOptionFile));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
+            $sOptionsPath = $oRTemplate->sTemplateurl.'options';
         }
 
         if (file_exists($oRTemplate->path.$sOptionJS)) {
@@ -168,8 +169,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         $this->_twig = $twig = parent::getTwig();
         $this->addRecursiveTemplatesPath($oRTemplate);
-
-
+        $renderArray['optionsPath'] = $sOptionsPath;
         // Twig rendering
         $line         = file_get_contents($oRTemplate->path.$sOptionFile);
         $oTwigTemplate = $twig->createTemplate($line);

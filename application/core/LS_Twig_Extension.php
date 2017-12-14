@@ -329,9 +329,20 @@ class LS_Twig_Extension extends Twig_Extension
         return Yii::app()->getClientScript()->unregisterScriptFile($name);
     }
 
+    public static function registerScriptFile($path, $position=null)
+    {
+
+        Yii::app()->getClientScript()->registerScriptFile($path, ($position===null ? CClientScript::POS_BEGIN : $position));
+    }
+
+    public static function registerCssFile($path)
+    {
+        Yii::app()->getClientScript()->registerCssFile($path);
+    }
+
     public static function registerPackage($name)
     {
-        return Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
     }
 
     /**

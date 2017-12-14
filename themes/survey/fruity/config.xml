@@ -61,14 +61,17 @@
         <backgroundimagefile>./files/pattern.png</backgroundimagefile>
         <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
+        <bodyanimationduration>1.0</bodyanimationduration>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
+        <questionanimationduration>1.0</questionanimationduration>
         <animatealert>off</animatealert>
         <alertanimation>shake</alertanimation>
+        <alertanimationduration>1.0</alertanimationduration>
         <font>noto</font>
-        <bodybackgroundcolor>white</bodybackgroundcolor>
-        <fontcolor>#444</fontcolor>
-        <questionbackgroundcolor>white</questionbackgroundcolor>
+        <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+        <fontcolor>#444444</fontcolor>
+        <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
         <questionborder>on</questionborder>
         <questioncontainershadow>on</questioncontainershadow>
         <checkicon>f00c</checkicon>

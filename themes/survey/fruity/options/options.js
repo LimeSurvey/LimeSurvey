@@ -34,6 +34,7 @@ var prepare = function(){
     //check if a form exists to parse the simple option
     if($('.action_update_options_string_form').length > 0 ){
         //Update values in the form to the template options
+        console.ls.group('update_options');
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
 
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
@@ -45,6 +46,16 @@ var prepare = function(){
 
             $(item).val(itemValue);
 
+            if($(item).hasClass('selector__colorpicker-field')){
+                if($(item).val() == 'inherit'){
+                    
+                    console.ls.log($(item));
+                    
+                    item.value = $(item).data('inheritvalue');
+                    item.value = 'inherit';
+                }
+            }
+            
             if($(item).hasClass('selector_image_selector')){
                 if($(item).val() == 'inherit'){
                     $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
@@ -54,7 +65,7 @@ var prepare = function(){
             }
 
         });
-
+        console.ls.groupEnd('update_options');
         //hotwapping the select fields to the radiobuttons
         $('.selector_radio_childfield').each(function(i, selectorItem){
             $('input[name='+$(selectorItem).data('parent')+']').on('change', function(){
@@ -144,6 +155,24 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
 
+        //hotswapping the colorpickers and adding the reset functionality
+        $('.action_update_options_string_form').find('.selector__colorpicker-field').on('click', function(){
+            $(this).attr('type', 'color');
+            $(this).val($(this).data('inheritvalue'));
+        });
+        $('.action_update_options_string_form').find('.selector__colorpicker-field').on('change', function(){
+            $(this).closest('.input-group').find('.selector__show-inherit-value').css('background-color', $(this).val());
+        });
+        $('.action_update_options_string_form').find('.selector__reset-colorfield-to-inherit').on('click', function(e){
+            e.preventDefault();
+            var colorField = $(this).closest('.input-group').find('.selector__colorpicker-field');
+            $(this).closest('.input-group').find('.selector__show-inherit-value').css('background-color', colorField.data('inheritvalue'));
+            colorField.attr('type','text').val('inherit');
+            optionObject[colorField.attr('name')] = 'inherit';
+            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
+
+        });
+
 
         // Fruity Theming
         if($('#simple_edit_add_css').length>0){
@@ -223,6 +252,13 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         }
         $('#lightbox-modal').modal('show');
     });
+
+    $('.simple_edit_options_checkicon').on('change', function(){
+        $(this).siblings('.selector__checkicon-preview').find('i').html('&#x'+$(this).val()+';');
+        if($(this).val()=='inherit'){
+            $(this).siblings('.selector__checkicon-preview').find('i').html('&#x'+$(this).siblings('.selector__checkicon-preview').find('i').data('inheritvalue')+';');
+        }
+    })
 
     var uploadImageBind = new bindUpload({
         form: '#upload_frontend',

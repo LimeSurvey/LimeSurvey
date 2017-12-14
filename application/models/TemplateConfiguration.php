@@ -548,7 +548,15 @@ class TemplateConfiguration extends TemplateConfig
     public function getOptionPage()
     {
         $this->prepareTemplateRendering();
-        return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' => $this->getOptionPageAttributes()));
+
+        $renderArray = array('templateConfiguration' => $this->getOptionPageAttributes());
+        
+        $this->setOptions();
+        $this->setOptionInheritance();
+        
+        $renderArray['oParentOptions'] = (array) $this->oOptions;
+
+        return Yii::app()->twigRenderer->renderOptionPage($this, $renderArray);
     }
 
     /**

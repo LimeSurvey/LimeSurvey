@@ -219,6 +219,8 @@ $internalConfig = array(
                 'registerScript'          => 'LS_Twig_Extension::registerScript',
                 'registerPackage'         => 'LS_Twig_Extension::registerPackage',
                 'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
+                'registerScriptFile'      => 'LS_Twig_Extension::registerScriptFile',
+                'registerCssFile'         => 'LS_Twig_Extension::registerCssFile',
                 'unregisterScriptFile'    => 'LS_Twig_Extension::unregisterScriptFile',
                 'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
@@ -264,7 +266,7 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'createUrl', 'json_decode'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'createUrl', 'json_decode'),
             ),
 
         ),

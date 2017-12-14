@@ -14,7 +14,6 @@
     This is the form for the option parameters of the basic default template.
 
 #}
-
 {% set aOptions = json_decode(templateConfiguration.options)  %}
 
 {{ registerPackage('font-roboto') }}
@@ -23,6 +22,9 @@
 {{ registerPackage('font-ubuntu') }}
 {{ registerPackage('font-lato') }}
 {{ registerPackage('font-websafe') }}
+
+{{registerScriptFile(optionsPath ~ '/spectrum.js')}}
+{{registerCssFile(optionsPath ~ '/spectrum.css')}}
 
 {# The animation options are pulled from animate.css #}
 {% set animationOptions = '' %}
@@ -221,13 +223,38 @@
 <option value="css/variations/sunset_orange.css">Sunset_Orange</option>
 {% endset %}
 
+{% set checkIconOptions = '' %}
+
+{# Selecting different check icons #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set checkIconOptions = checkIconOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+
+{% set checkIconOptions %}
+{{checkIconOptions}}
+<option value="f00c"> <i class="fa fa-check"></i> Check </option>
+<option value="f058"> <i class="fa fa-check-circle"></i> Check circle </option>
+<option value="f14a"> <i class="fa fa-check-square"></i> Check square </option>
+<option value="f111"> <i class="fa fa-circle"></i> Circle </option>
+<option value="f067"> <i class="fa fa-plus"></i> Plus </option>
+<option value="f0c8"> <i class="fa fa-square"></i> Square </option>
+<option value="f005"> <i class="fa fa-star"></i> Star </option>
+<option value="f00d"> <i class="fa fa-times"></i> Times </option>
+<option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
+<option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
+<option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
+<option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
+{% endset %}
+
 {# The default template offers the variety of styles #}
 {% set fontOptions = '' %}
+
 
 {# For surveyspecific settings add an inherit option #}
 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
     {% set fontOptions = fontOptions ~ '<option value = "inherit" > Inherit</option>' %}
 {% endif %}
+
 
 {% set fontOptions %}
     {{fontOptions}}
@@ -405,43 +432,66 @@
             <div class='row action_hide_on_inherit'>
 
                 {# Background Color #}
-                <div class='col-sm-12 col-md-2'>
+                <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ "Background color" | t }}</label>
-                        <div class='col-sm-12'>
-                            <input type="text" name="bodybackgroundcolor" value="" class="selector_option_value_field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {# Font Color #}
-                <div class='col-sm-12 col-md-2'>
+                <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_fontcolor' class='control-label'>{{ "Font color" | t }}</label>
-                        <div class='col-sm-12'>
-                            <input type="text" name="fontcolor" value="" class="selector_option_value_field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {# Question Background Color #}
-                <div class='col-sm-12 col-md-2'>
+                <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ "Question background color" | t }}</label>
-                        <div class='col-sm-12'>
-                            <input type="text" name="questionbackgroundcolor" value="" class="selector_option_value_field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {# Check icon #}
-                <div class='col-sm-12 col-md-2'>
+                <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_checkicon' class='control-label'>{{ "Check icon" | t }}</label>
-                        <div class='col-sm-12'>
-                            <input type="text" name="checkicon" value="" class="selector_option_value_field form-control simple_edit_options_checkicon" data-id="checkicon" />
-
-                            ( <i class="fa" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding-left: 3px; padding-top: 2px; font-size: 11px; ">&#x{{ aOptions.checkicon }}</i> )
+                        <div class="input-group">
+                            <select name="checkicon" value="" class="selector_option_value_field form-control simple_edit_options_checkicon" data-id="checkicon" >
+                                {{checkIconOptions}}
+                            </select>
+                            <div class="input-group-addon selector__checkicon-preview">
+                                ( <i class="fa" data-inheritvalue="{{ oParentOptions.checkicon }}" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
+                                    &#x{{ oParentOptions.checkicon }};
+                                </i> )
+                            </div>
                         </div>
                     </div>
                 </div>
