@@ -219,7 +219,7 @@ function getSurveyList($bReturnArray = false)
                 $inactivesurveys .= " class='mysurvey emphasis'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis'";

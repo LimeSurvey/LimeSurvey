@@ -744,7 +744,7 @@ class export extends Survey_Common_Action
     public function dumplabel()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            safeDie ('No permission.');
+            safeDie('No permission.');
         }
         $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR

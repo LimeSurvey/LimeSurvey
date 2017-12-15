@@ -677,14 +677,14 @@ $url .= "_view"; });
             Yii::app()->end();
         }
 
-        if ($bMoveFileResult===false) {
+        if ($bMoveFileResult === false) {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
         } else {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
-            if ($oCSVFile===false)
+            if ($oCSVFile === false)
             {
                 safeDie('File not found.');
             }
@@ -710,7 +710,7 @@ $url .= "_view"; });
                 }
                 $fieldlist[] = $value;
             }
-            $iLineCount = count(array_filter(array_filter((array)file($sFilePath), 'trim')));
+            $iLineCount = count(array_filter(array_filter((array) file($sFilePath), 'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
             $aData = array(
@@ -1692,7 +1692,7 @@ $url .= "_view"; });
     {
         $model = new ParticipantShare();
         if (Yii::app()->request->getParam('ParticipantShare')) {
-            $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'),false);
+            $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
         }
         // data to be passed to view
         $aData = array(
@@ -1930,7 +1930,7 @@ $url .= "_view"; });
             $iUserID = Yii::app()->session['loginID'];
         }
         $aData->records = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
-        $aData->total = (int)ceil($aData->records / $limit);
+        $aData->total = (int) ceil($aData->records / $limit);
         if ($page > $aData->total) {
             $page = $aData->total;
         }
