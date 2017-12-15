@@ -28,7 +28,7 @@ var prepare = function(){
 
         try{
             optionObject = JSON.parse($('#TemplateConfiguration_options').val());
-        } catch(e){ console.log('No valid option field!'); }
+        } catch(e){ console.ls ? console.ls.error('No valid option field!') : console.log('No valid option field!'); }
     }
 
     //check if a form exists to parse the simple option

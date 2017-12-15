@@ -16,6 +16,19 @@ class ConsoleShim {
         this.methods = [
             'group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'
         ];
+
+        this.silent = {
+            group : ()=>{return;},
+            groupEnd : ()=>{return;},
+            log : ()=>{return;},
+            trace : ()=>{return;},
+            time : ()=>{return;},
+            timeEnd : ()=>{return;},
+            error : ()=>{return;},
+            err : ()=>{return;},
+            debug : ()=>{return;},
+            warn : ()=>{return;}
+        }
     }
 
     _generateError() {
@@ -145,7 +158,6 @@ class ConsoleShim {
         this.log('--- WARN ---');
         this.log(args);
     }
-
 }
 
 if(window.debugState.backend || window.debugState.frontend){

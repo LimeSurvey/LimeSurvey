@@ -34,7 +34,7 @@
  * This is to capsule eventual errors inside of the template function, so the general script all run as the should
  */
 var ThemeScripts = function(){
-
+    var logObject = console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console;
     /**
      * The function focusFirst puts the Focus on the first non-hidden element in the Survey.
      * Normally this is the first input field (the first answer).
@@ -101,7 +101,7 @@ var ThemeScripts = function(){
     var initLanguageChanger = function(selectorItem, selectorGlobalForm){
         $(selectorItem).on('change',function() {
             var lang = $(this).val();
-            console.log(lang, 'changed');
+            logObject.log(lang, 'changed');
             // If there are no form : we can't use it */
             /* No form, not targeturl : just see what happen */
             var target = window.location.href;
@@ -131,6 +131,7 @@ var ThemeScripts = function(){
         /**
          * Code included inside this will only run once the page Document Object Model (DOM) is ready for JavaScript code to execute
          * @see https://learn.jquery.com/using-jquery-core/document-ready/
+         * Also it will run on a complete pageload via the internal pjax system
          */
         $(document).on('ready pjax:scriptcomplete',function()
         {
@@ -202,7 +203,6 @@ var ThemeScripts = function(){
         init();
     };
 
-
     return {
         init: init,
         initUserForms: initUserForms,
@@ -213,7 +213,8 @@ var ThemeScripts = function(){
         hideQuestionWithRelevanceSubQuestion : hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
         initLanguageChanger: initLanguageChanger,
-        initTopMenuLanguageChanger: initTopMenuLanguageChanger
+        initTopMenuLanguageChanger: initTopMenuLanguageChanger,
+        log: logObject
     }
 
 }

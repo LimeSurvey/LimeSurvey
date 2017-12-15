@@ -77,7 +77,7 @@ var AjaxSubmitObject = function () {
             debug: window.debugState.frontend,
             forceRedirectOnFail: true,
             reRenderCSS : true,
-            logObject : (console.ls || console),
+            logObject : console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console,
             scriptloadtimeout: 1500
         });
         // Always bind to document to not need to bind again
@@ -96,78 +96,6 @@ var AjaxSubmitObject = function () {
             activeSubmit = true;
             //start the loading animation
             startLoadingBar();
-
-            // We add the value of the button clicked to the post request
-            // aPost += "&move=" + move;
-
-            // $.ajax({
-            //     url: sUrl,
-            //     type: 'POST',
-            //     dataType: 'html',
-            //     data: aPost,
-
-            //     success: function (body_html, status, request) {
-
-            //         $('.toRemoveOnAjax').each(function () {
-            //             $(this).remove();
-            //         });
-
-            //         var currentUrl = window.location.href;
-            //         var cleanUrl = currentUrl.replace("&newtest=Y", "").replace(/\?newtest=Y(\&)?/, '?');
-
-            //         if (currentUrl != cleanUrl) {
-            //             window.history.pushState({
-            //                 "html": body_html,
-            //                 "pageTitle": request.getResponseHeader('title')
-            //             }, "", cleanUrl);
-            //         }
-            //         var fragment = document.createElement('html');
-            //         fragment.innerHTML = body_html;
-            //         console.log(fragment);
-            //         var newDocument =  $(fragment);
-            //         console.log(newDocument);
-            //         var $newBody = $(newDocument).find('body');
-            //         var $newHead = $(newDocument).find('head');
-            //         console.log($newHead, $newBody );
-            //         var $replaceableContainer = $newBody.find('div#dynamicReloadContainer').html();
-            //         var $bodyDataScripts = $newBody.children('script');
-            //         var $headDataScripts = $newHead.children('script');
-            //         console.log($bodyDataScripts);
-            //         console.log($headDataScripts);
-            //         var $replaceableTopScriptContainer = $newBody.find('#beginScripts');
-            //         var $replaceableBottomScriptContainer = $newBody.find('#bottomScripts');
-
-
-            //         $headDataScripts.each(function () {
-            //             appendScript($(this).html(), 'head', $(this).attr('src'));
-            //         });
-            //         $bodyDataScripts.each(function () {
-            //             appendScript($(this).html(), 'body', $(this).attr('src'));
-            //         });
-
-            //         $("#beginScripts").empty();
-            //         $replaceableTopScriptContainer.find('script').each(function(i,scriptTag){
-            //             appendScript($(this).html(), 'beginScripts', $(this).attr('src'));
-            //             //$("#beginScripts").append(scriptTag);
-            //         });
-
-            //         $("#dynamicReloadContainer").empty().html($replaceableContainer);
-
-            //         $replaceableBottomScriptContainer.find('script').each(function(i,scriptTag){
-            //             appendScript($(this).html(), 'bottomScripts', $(this).attr('src'));
-            //             // $("#bottomScripts").append(scriptTag);
-            //         });
-
-
-
-            //         //also trigger the pjax:scriptcomplete event to load all adherent scripts
-
-            //     },
-
-            //     error: function (result, status, error) {
-            //         alert("ERROR");
-            //         console.log(result);
-            //     }
 
             $(document).on('pjax:scriptcomplete.onreload', function(){
                 // We end the loading animation

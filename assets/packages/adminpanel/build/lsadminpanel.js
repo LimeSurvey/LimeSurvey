@@ -40632,10 +40632,13 @@ exports['default'] = createPersist;
 
 
 exports.install = function (Vue) {
-    console.ls.debug(`The systen is currently in debug mode.`);
-
-
-    Vue.prototype.$log = console.ls;
+    if(window.debugState.backend) {
+        console.ls.debug('The systen is currently in debug mode.');
+        Vue.prototype.$log = console.ls;
+    } else {
+        console.log('The systen is currently in production mode.');
+        Vue.prototype.$log = console.ls.silent;
+    }
 };
 
 

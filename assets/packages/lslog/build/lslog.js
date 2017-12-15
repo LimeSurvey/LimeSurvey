@@ -25,6 +25,39 @@ var ConsoleShim = function () {
         this.activeGroups = 0;
         this.timeHolder = null;
         this.methods = ['group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'];
+
+        this.silent = {
+            group: function group() {
+                return;
+            },
+            groupEnd: function groupEnd() {
+                return;
+            },
+            log: function log() {
+                return;
+            },
+            trace: function trace() {
+                return;
+            },
+            time: function time() {
+                return;
+            },
+            timeEnd: function timeEnd() {
+                return;
+            },
+            error: function error() {
+                return;
+            },
+            err: function err() {
+                return;
+            },
+            debug: function debug() {
+                return;
+            },
+            warn: function warn() {
+                return;
+            }
+        };
     }
 
     _createClass(ConsoleShim, [{
