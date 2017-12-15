@@ -20,6 +20,7 @@ const getAppState = function (userid) {
         maxHeight: 0,
         inSurveyViewHeight: 400,
         generalContainerHeight: 380,
+        sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
@@ -79,6 +80,9 @@ const getAppState = function (userid) {
             },
             changeInSurveyViewHeight(state, newHeight) {
                 state.inSurveyViewHeight = newHeight;
+            },
+            changeSideBodyHeight(state, newHeight) {
+                state.sideBodyHeight = newHeight+'px' || '100%';
             },
             changeGeneralContainerHeight(state, newHeight) {
                 state.generalContainerHeight = newHeight;

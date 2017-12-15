@@ -49,7 +49,7 @@ class translate extends Survey_Common_Action
         }
 
         // TODO need to do some validation here on surveyid
-        $survey_title = $oSurvey->defaultlanguage->name;
+        $survey_title = $oSurvey->defaultlanguage->surveyls_title;
 
         Yii::app()->loadHelper("surveytranslator");
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
@@ -81,7 +81,7 @@ class translate extends Survey_Common_Action
         }
 
             $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
@@ -808,21 +808,13 @@ class translate extends Survey_Common_Action
     private function displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type)
     {
 
-        $translateoutput = "";
-        $translateoutput .= CHtml::openTag('div', array('class'=>'container-fluid'));
-            // if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
-            // {
-            //     $translateoutput.='<colgroup width="8%" />';
-            // }
-            //$translateoutput .= '<colgroup width="37" />';
-            //$translateoutput .= '<colgroup width="55%" />';
-            $translateoutput .= CHtml::openTag('div', array('class' => 'row'));
-            if ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer') {
-                $translateoutput .= CHtml::tag('div', array('class'=>'col-md-2'), CHtml::tag('b', array(), gT('Question code / ID')));
-            }
-            $translateoutput .= CHtml::tag('div', array('class'=>'col-sm-5'), CHtml::tag('b', array(), $baselangdesc));
-            $translateoutput .= CHtml::tag('div', array('class'=>'col-sm-5'), CHtml::tag('b', array(), $tolangdesc));
-            $translateoutput .= CHtml::closeTag("div");
+        $translateoutput = "<table class='table table-striped'>";
+            $translateoutput .= '<thead>';
+            $threeRows =  ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
+            $translateoutput .= $threeRows ? '<th class="col-md-2 text-strong">'.gT('Question code / ID')."</th>" : '';
+            $translateoutput .= '<th class="'.($threeRows ? "col-sm-5 text-strong" : "col-sm-6").'" >'.$baselangdesc."</th>";
+            $translateoutput .= '<th class="'.($threeRows ? "col-sm-5 text-strong" : "col-sm-6").'" >'.$tolangdesc."</th>";
+            $translateoutput .= '</thead>';
 
         return $translateoutput;
     }
@@ -847,7 +839,7 @@ class translate extends Survey_Common_Action
     $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow)
     {
         $translateoutput = "";
-        $translateoutput .= CHtml::openTag('div', array('class'=>'row'));
+        $translateoutput .= "<tr>";
             $value1 = (!empty($amTypeOptions["id1"])) ? $rowfrom[$amTypeOptions["id1"]] : "";
             $value2 = (!empty($amTypeOptions["id2"])) ? $rowfrom[$amTypeOptions["id2"]] : "";
             $iScaleID = (!empty($amTypeOptions["scaleid"])) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
@@ -855,26 +847,21 @@ class translate extends Survey_Common_Action
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
             if ($type == 'answer') {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.")");
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.") </td>";
             }
             if ($type == 'question_help' || $type == 'question') {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
+                $translateoutput .= "<td class='col-sm-2'>". htmlspecialchars($rowfrom->title)." ({$rowfrom->qid}) </td>";
             } else if ($type == 'subquestion') {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
+                $translateoutput .= "<td class='col-sm-2'>".  htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid}) </td>";
             }
 
-            $translateoutput .= CHtml::tag(
-                                    'div',
-                                    array(
-                                        'class' => '_from_ col-sm-5',
-                                        'id' => "${type}_from_${i}"
-                                    ),
-                                    showJavaScript($textfrom)
-                                );
+            $translateoutput .= "<td class='_from_ col-sm-5' id='".$type."_from_".$i."'>"
+                                    . showJavaScript($textfrom)
+                                ." </td>";
 
-            $translateoutput .= CHtml::openTag('div', array('class'=>'col-sm-5'));
+            $translateoutput .= "<td class='col-sm-5'>";
 
             $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
             $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
@@ -901,8 +888,8 @@ class translate extends Survey_Common_Action
             );
             $translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
 
-            $translateoutput .= CHtml::closeTag("div");
-        $translateoutput .= CHtml::closeTag("div");
+            $translateoutput .= "</td>";
+        $translateoutput .= "</tr>";
 
         return $translateoutput;
     }
@@ -951,10 +938,7 @@ class translate extends Survey_Common_Action
      */
     private function displayTranslateFieldsFooter()
     {
-            $translateoutput = CHtml::closeTag("div");
-        $translateoutput = CHtml::closeTag("div");
-        $translateoutput = CHtml::closeTag("div");
-
+        $translateoutput = "</table>";
         return $translateoutput;
     }
 

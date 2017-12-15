@@ -24,8 +24,6 @@ $this->_showHeaders($aData);
     echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
         <div id="vue-app-main-container" ' 
     . 'class="ls-flex-row align-items-flex-center align-content-center" '
-    //This is part of the vuejs application to set the minimal height of the general container
-    . ':style="{\'min-height\': $store.state.generalContainerHeight+\'px\'}" '
     . '>';
 
         //Rendered through /admin/super/sidemenu

@@ -36376,11 +36376,21 @@ $(document).on('ready', function () {
                         menuOffset = $('nav.navbar').outerHeight(),
                         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
                         footerHeight = $('footer').outerHeight(),
-                        windowHeight = Math.max([screen.availHeight, screen.height]),
-                        innerMenuHeight = $('#breadcrumb-container').outerHeight(),
-                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * menuHeight) + (2 * footerHeight))),
+                        windowHeight = screen.height,
+                        innerMenuHeight = $('#breadcrumb-container').outerHeight() + menuHeight,
+                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * footerHeight))),
                         generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
-
+                    this.$log.log({
+                        menuOffset : menuOffset,
+                        menuHeight : menuHeight,
+                        footerHeight : footerHeight,
+                        windowHeight : windowHeight,
+                        windowHeightScreen : screen.availHeight,
+                        windowHeightScreenAvail : screen.height,
+                        innerMenuHeight : innerMenuHeight,
+                        inSurveyViewHeight : inSurveyViewHeight,
+                        generalContainerHeight : generalContainerHeight
+                    });
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
@@ -36448,6 +36458,7 @@ $(document).off('pjax:complete.aploading').on('pjax:complete.aploading', (e) => 
 $(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', (e) => {
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
+    $(document).trigger('vue-resize-height');
     // $(document).trigger('vue-sidemenu-update-link');
     setTimeout(function () {
         $('#pjax-file-load-container').find('div').css({
@@ -39357,6 +39368,7 @@ const getAppState = function (userid) {
         maxHeight: 0,
         inSurveyViewHeight: 400,
         generalContainerHeight: 380,
+        sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
@@ -39416,6 +39428,9 @@ const getAppState = function (userid) {
             },
             changeInSurveyViewHeight(state, newHeight) {
                 state.inSurveyViewHeight = newHeight;
+            },
+            changeSideBodyHeight(state, newHeight) {
+                state.sideBodyHeight = newHeight+'px' || '100%';
             },
             changeGeneralContainerHeight(state, newHeight) {
                 state.generalContainerHeight = newHeight;
