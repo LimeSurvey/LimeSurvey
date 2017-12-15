@@ -14,12 +14,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var ConsoleShim = function () {
     function ConsoleShim() {
         var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var silent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        var silencer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
         _classCallCheck(this, ConsoleShim);
 
         this.param = param;
-        this.silent = silent;
+        this.silencer = silencer;
         this.collector = [];
         this.currentGroupDescription = '';
         this.activeGroups = 0;
@@ -84,14 +84,14 @@ var ConsoleShim = function () {
         value: function setSilent() {
             var newValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            this.silent = newValue || !this.silent;
+            this.silencer = newValue || !this.silencer;
         }
         //Start grouping logs
 
     }, {
         key: 'group',
         value: function group() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);
@@ -108,7 +108,7 @@ var ConsoleShim = function () {
     }, {
         key: 'groupEnd',
         value: function groupEnd() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);
@@ -126,7 +126,7 @@ var ConsoleShim = function () {
     }, {
         key: 'log',
         value: function log() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);
@@ -146,7 +146,7 @@ var ConsoleShim = function () {
     }, {
         key: 'trace',
         value: function trace() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);
@@ -168,7 +168,7 @@ var ConsoleShim = function () {
     }, {
         key: 'time',
         value: function time() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);
@@ -182,7 +182,7 @@ var ConsoleShim = function () {
     }, {
         key: 'timeEnd',
         value: function timeEnd() {
-            if (this.silent) {
+            if (this.silencer) {
                 return;
             }
             var args = this._insertParamToArguments(arguments);

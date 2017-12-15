@@ -5,10 +5,10 @@
 
 
 class ConsoleShim {
-    constructor(param='', silent=false) {
+    constructor(param='', silencer=false) {
 
         this.param = param;
-        this.silent = silent;
+        this.silencer = silencer;
         this.collector = [];
         this.currentGroupDescription = '';
         this.activeGroups = 0;
@@ -47,11 +47,11 @@ class ConsoleShim {
         return Array.from(arguments);
     }
     setSilent(newValue = null){
-        this.silent = newValue || !this.silent;
+        this.silencer = newValue || !this.silencer;
     }
     //Start grouping logs
     group() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.group === 'function') {
             console.group.apply(console, args);
@@ -63,7 +63,7 @@ class ConsoleShim {
     }
     //Stop grouping logs
     groupEnd() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.groupEnd === 'function') {
             console.groupEnd.apply(console, args);
@@ -76,7 +76,7 @@ class ConsoleShim {
     //Simplest mechanism to log stuff
     // Aware of the group shim
     log() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.group === 'function') {
             console.log.call(console, ...args);
@@ -89,7 +89,7 @@ class ConsoleShim {
     //Trace back the apply.
     //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
     trace() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);        
         if (typeof console.trace === 'function') {
             console.trace.apply(console, args);
@@ -108,7 +108,7 @@ class ConsoleShim {
     }
 
     time() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);    
         if (typeof console.time === 'function') {
             console.time.apply(console, args);
@@ -119,7 +119,7 @@ class ConsoleShim {
     }
 
     timeEnd() {
-        if(this.silent) { return; }
+        if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.timeEnd === 'function') {
             console.timeEnd.apply(console, args);
