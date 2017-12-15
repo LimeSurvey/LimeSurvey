@@ -29,7 +29,7 @@
             'class'=>"form-control date-control date",
             'aria-describedby' => "ls-question-text-{$name}",
         )); ?>
-        <div class="input-group-addon btn btn-default">
+        <div class="input-group-addon btn btn-primary">
             <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"><?php echo gT("Open the date time chooser"); ?></span>
         </div>
     </div>
