@@ -928,7 +928,7 @@ class Survey_Common_Action extends CAction
 
             // Global filter
             if (isset($_GET['Question'])) {
-                $model->setAttributes($_GET['Question'],false);
+                $model->setAttributes($_GET['Question'], false);
             }
 
             // Filter group
@@ -1183,8 +1183,7 @@ class Survey_Common_Action extends CAction
         }
 
         $dh = opendir($extractdir);
-        if (!$dh)
-        {
+        if (!$dh) {
             $aErrorFilesInfo[] = array(
                 "filename" => '',
                 "status" => gT("Extracted files not found - maybe a permission problem?")
@@ -1195,7 +1194,7 @@ class Survey_Common_Action extends CAction
             if ($direntry != "." && $direntry != "..") {
                 if (is_file($extractdir."/".$direntry)) {
                     // is  a file
-                    $extfile = (string)substr(strrchr($direntry, '.'), 1);
+                    $extfile = (string) substr(strrchr($direntry, '.'), 1);
                     if (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',', ','.$extfile.',') === false)) {
                         // Extension allowed
                         if (!copy($extractdir."/".$direntry, $destdir."/".$direntry)) {

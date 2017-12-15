@@ -17,7 +17,7 @@ class Index extends Survey_Common_Action
 {
 
     public function run()
-    {                                            
+    {
         App()->loadHelper('surveytranslator');
         $aData = [];
         $aData['issuperadmin'] = false;
@@ -71,7 +71,7 @@ class Index extends Survey_Common_Action
             $aData['showLastQuestion'] = false;
         }
 
-        $aData['countSurveyList'] = count((array)getSurveyList(true));
+        $aData['countSurveyList'] = count((array) getSurveyList(true));
 
         // We get the home page display setting
         $aData['bShowSurveyList'] = (getGlobalSetting('show_survey_list') == "show");

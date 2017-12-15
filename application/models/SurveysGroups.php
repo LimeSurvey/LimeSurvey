@@ -208,9 +208,9 @@ class SurveysGroups extends LSActiveRecord
     }
 
     /**
-    * Returns true if survey group has surveys
-    * @return boolean
-    */
+     * Returns true if survey group has surveys
+     * @return boolean
+     */
     public function getHasSurveys()
     {
         $nbSurvey = Survey::model()->countByAttributes(array("gsid"=>$this->gsid));

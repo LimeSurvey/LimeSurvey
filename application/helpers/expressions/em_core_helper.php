@@ -2594,7 +2594,8 @@ function exprmgr_mktime($hour = null, $minute = null, $second = null, $month = n
     $day = isset($day) ? $day : date("j");
     $year = isset($year) ? $year : date("Y");
     $hour = isset($hour) ? $hour : date("H");
-    $iInvalidArg = count(array_filter(array($hour, $minute, $second, $month, $day, $year), function($timeValue) {
+    $iInvalidArg = count(array_filter(array($hour, $minute, $second, $month, $day, $year), function($timeValue)
+    {
         return !is_numeric($timeValue); /* This allow get by string like "01.000" , same than javascript with 2.72.6 and default PHP(5.6) function*/
     }));
     if ($iInvalidArg) {

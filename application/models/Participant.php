@@ -950,7 +950,7 @@ class Participant extends LSActiveRecord
            the participant from any tokens table they're in (using the survey_links table to find them)
            and then all the participants attributes. */
         $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs), 100);
-        $iDeletedParticipants=0;
+        $iDeletedParticipants = 0;
         foreach ($aParticipantsIDChunks as $aParticipantsIDs) {
             $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
             $aSurveyIDs = Yii::app()->db->createCommand()
@@ -985,7 +985,7 @@ class Participant extends LSActiveRecord
     {
         $aParticipantsIDs = explode(",", $sParticipantsIDs);
         $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
-        $iDeletedParticipants=0;
+        $iDeletedParticipants = 0;
 
         foreach ($aParticipantsIDs as $row) {
             /** @var SurveyLink[] $tokens */
