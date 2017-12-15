@@ -60,11 +60,13 @@ class CompileAssetsCommand extends CConsoleCommand
         }
 
         $logfile = false;
-        if($silent == true && gettype($silent) == "string"){
+
+        if($silent == true && $silent !=="1" ){
             $logfile = $silent;
-        } else if($silent == true){
-            $logfile ="> /dev/null";
+        } else if($silent == true && $silent==="1"){
+            $logfile =" /dev/null";
         }
+
         switch($method){
             case "gulp" :
                 $this->liveExecuteCommand("(cd {$packageFolder} && {$method})", $logfile );
@@ -84,7 +86,7 @@ class CompileAssetsCommand extends CConsoleCommand
         while (@ ob_end_flush()); // end all output buffers if any
     
         if($logfile!==false){
-            $proc = popen("$cmd 2>&1 > {$logfile}; echo Exit status : $?", 'r');
+            $proc = popen("$cmd >{$logfile} 2>&1; echo Exit status : $?", 'r');
         } else {
             $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
         }
