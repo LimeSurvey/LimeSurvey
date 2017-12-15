@@ -46,10 +46,12 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
         window.activePjax = null;
     },
     triggerLoadUrl = function(e){        
-        singletonPjax().loadUrl(e.url, singletonPjax().options);
+        var currentPjax = singletonPjax();
+        currentPjax.loadUrl(e.url, singletonPjax().options);
     },
     reparseDocument = function(){
-        singletonPjax().parseDom(document);
+        var currentPjax = singletonPjax();
+        currentPjax.parseDOM(document);
     };
 
 window.singletonPjax = singletonPjax;

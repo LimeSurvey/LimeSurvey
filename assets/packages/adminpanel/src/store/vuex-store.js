@@ -1,12 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist'
 import VueLocalStorage from 'vue-localstorage';
-import createPersist from 'vuex-localstorage';
 
-Vue.use(Vuex);
 Vue.use(VueLocalStorage);
+Vue.use(Vuex);
+
 
 const getAppState = function (userid) {
+
+    const vuexLocal = new VuexPersistence({
+        key: 'limesurveyadminpanel_'+userid,
+        storage: window.localStorage
+    });
+
     const statePreset = {
         surveyid: 0,
         language: '',
@@ -33,14 +40,10 @@ const getAppState = function (userid) {
     };
 
     return new Vuex.Store({
-        plugins: [
-            createPersist({
-                initialState: statePreset,
-                namespace: userid + '_adminpanel_settings',
-                expires: 365 * 24 * 60 * 60 * 1e3 //one year
-            })
-        ],
         state: statePreset,
+        plugins: [
+            vuexLocal.plugin
+        ],
         getters: {
             substractContainer: state => {
                 let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));

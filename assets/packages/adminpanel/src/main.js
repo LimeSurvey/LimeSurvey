@@ -14,7 +14,7 @@ Vue.use(LOG);
 Vue.mixin({
     methods: {
         updatePjaxLinks: function () {
-            // this.$store.commit('updatePjax');
+            this.$store.commit('updatePjax');
         }
     }
 });
