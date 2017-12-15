@@ -400,9 +400,13 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        
-        $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
-        $debugBackend = (int) getGlobalSetting('javascriptdebugbcknd');
+        if(function_exists('getGlobalSetting')) {
+            $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
+            $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
+        } else {
+            $debugFrontend = 0;
+            $debugBackend  = 0;
+        }
         
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (".$debugFrontend." === 1), backend : (".$debugBackend." === 1)};</script>";
 
