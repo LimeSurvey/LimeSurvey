@@ -16,18 +16,18 @@ class PluginHelper extends Survey_Common_Action
      * @param string $method Name of the plugin method
      * @return void
      */
-    public function sidebody($surveyId = 0, $plugin = '', $method = '')
+    public function sidebody($surveyid = 0, $plugin = '', $method = '')
     {
         $aData = array();
 
-        $surveyId = sanitize_int($surveyId);
-        $oSurvey = Survey::model()->findByPk($surveyId);
-        $aData['surveyid'] = $surveyId;
+        $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $aData['surveyid'] = $surveyid;
 
         $aData['surveybar']['buttons']['view'] = true;
-        $aData['title_bar']['title'] = viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title)." (".gT("ID").":".$surveyId.")";
+        $aData['title_bar']['title'] = viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title)." (".gT("ID").":".$surveyid.")";
 
-        $content = $this->getContent($surveyId, $plugin, $method);
+        $content = $this->getContent($surveyid, $plugin, $method);
 
         $aData['sidemenu'] = array();
         $aData['sidemenu']['state'] = false;

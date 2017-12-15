@@ -131,7 +131,8 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                $(window).trigger('pjax:refresh');
+                let event = new Event('pjax:refresh');
+                window.dispatchEvent(event);                
             }
         }
     });

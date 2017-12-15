@@ -720,6 +720,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 332) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert(
+                '{{surveymenu}}',
+                array(
+                    'parent_id' => 1,
+                    'survey_id' => null,
+                    'ordering' => 0,
+                    'level' => 1,
+                    'name' => 'pluginmenu',
+                    'title' => 'Plugin menu',
+                    'description' => 'Plugins menu',
+                    'changed_at' => date('Y-m-d H:i:s'),
+                    'changed_by' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'created_by' => 0
+                )
+            );
+            $pluginMenuId = $oDB->getLastInsertID();
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array(
+                'menu_id' => $pluginMenuId,
+                'title' => 'Simple plugins',
+                'menu_title' => 'Simple plugins',
+                'menu_description' => 'Edit simple plugin settings',
+            ), "name='plugins'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>332), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

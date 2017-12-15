@@ -37637,7 +37637,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setActiveMenuItemIndex(menuItem) {
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
-            this.$log.log('Opened Menu', menuItem);
+            this.$log.log('Opened Menuitem', menuItem);
             return true;
         },
         checkIsOpen(toCheckMenu) {
@@ -37700,7 +37700,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "id": 'sidemenu_' + _vm.menu.id + '_' + menuItem.id
       },
       on: {
-        "!click": function($event) {
+        "click": function($event) {
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -37740,9 +37740,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "list-group-item",
       class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
       on: {
-        "click": function($event) {
-          $event.stopPropagation();
-          $event.preventDefault();
+        "!click": function($event) {
           _vm.setActiveMenuIndex(submenu)
         }
       }
@@ -39470,7 +39468,8 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                $(window).trigger('pjax:refresh');
+                let event = new Event('pjax:refresh');
+                window.dispatchEvent(event);                
             }
         }
     });
