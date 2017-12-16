@@ -2110,7 +2110,7 @@ function stringSize($sColumn)
     ->order("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")  DESC")
     ->limit(1)
     ->queryScalar();
-    // PSPP didn't accept A0 then min value to 1
+    // PSPP didn't accept A0 then min value to 1, see bug #13008
     return max(1,(int)$lengthReal);
 }
 /**
