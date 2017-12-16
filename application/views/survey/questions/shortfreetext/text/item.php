@@ -36,7 +36,7 @@
                 size="<?php echo $tiwidth; ?>"
                 name="<?php echo $name; ?>"
                 id="answer<?php echo $name;?>"
-                value="<?php echo $dispVal; ?>"
+                value="<?php echo str_replace(array("{","}"),array("&#123;","&#125;"),$dispVal); ?>"
                 <?php echo $maxlength; ?>
                 onkeyup="<?php echo $checkconditionFunction; ?>"
             />
