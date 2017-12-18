@@ -2280,7 +2280,7 @@ input[type="file"].form-control {
 
   html,body {
     margin: 0;
-    max-width: 90%;
+    max-width: 0%;
   }
   body{
     text-align: left;

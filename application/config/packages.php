@@ -347,6 +347,21 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+        ),
+
+    'printable' => array(
+        'devBaseUrl' => 'assets/packages/printable/',
+        'basePath' => 'core.printable',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'printable.css'
+        ),
+        'js' => array(
+            'printable.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
     )
 
 
