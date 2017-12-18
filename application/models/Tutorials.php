@@ -238,7 +238,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'top',
                                     'title' => gT('An additional help text for your question'),
-                                    'content' => gT('You can add some additional help text to your question. This may also be empty, then it will not be shown.'),
+                                    'content' => gT('You can add some additional help text to your question.'
+                                    .' If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
                                     'redirect' => false,
                                 ),
                                 array( //21
