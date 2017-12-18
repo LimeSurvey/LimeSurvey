@@ -68,9 +68,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The survey description'),
                                     'placement' => 'top',
-                                    'content' => gT("This is the description of the survey.")."<br/>"
-                                        .gT("Your participants will see this at first on their welcome screen.").' '
-                                        .gT("Try to describe what your survey is about, but don't ask any question just yet."),
+                                    'content' => gT("You can type in this field a short description of your survey.")."<br/>"
+                                        .gT("The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey..").' '
+                                        .gT("Describe your survey, but do not ask any question yet."),
                                     'redirect' => false,
                                 ),
                                 array( //5
