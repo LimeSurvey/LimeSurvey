@@ -336,7 +336,7 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('Add some answer options to your question'),
                                     'content' => gT("Now that we've got some subquestions, we have to add answer options as well.").'<br/>'
-                                        .gT("The answer options will be shown for each of your subquestions.")
+                                        .gT("The answer options will be shown for each subquestion.")
                                         .'<p class="alert bg-warning">'.gT("Click on the 'Edit answer options' button.").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
