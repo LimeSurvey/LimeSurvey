@@ -259,8 +259,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'left',
                                     'title' => gT('Now save the created question'),
-                                    'content' => gT('Next we will create subquestions and answer options.').'<br/>'
-                                        .gT('Please be sure the question has a valid code with only letters and numbers starting with a letter.'),
+                                    'content' => gT('Next, we will create subquestions and answer options.').'<br/>'
+                                        .gT('Please remember that in order to have a valid code, it must contain only letters and numbers,'
+                                        .' also please check that it starts with a letter.'),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
