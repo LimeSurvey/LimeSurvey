@@ -40,18 +40,19 @@ class Tutorials extends LSActiveRecord
                                     'content' => gT("This tour will help you to easily get a basic understanding of LimeSurvey.")."<br/>"
                                         .gt("We would like to help you with a quick tour of the most essential functions and features."),
                                     'redirect' => false,
-                                    'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
+                                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
                                 ),
                                 array( //2
-                                    'element' => '.selector__lstour--mainfunctionboxes',
+                                    'element' => '.selector__create_survey',
                                     'path' => Yii::app()->createUrl('/admin/index'),
+                                    'backdrop' => true,
                                     'title' => gT('The basic functions'),
                                     'content' => gT("The three top boxes are the most basic functions of LimeSurvey.")."<br/>"
                                     .gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
                                     .'<p class="alert bg-warning">'.gT("Click on the 'Create survey' box - or 'Next' in this tutorial").'</p>',
-                                    'reflex' => '.selector__lstour--createsurvey',
+                                    'reflex' => '.selector__create_survey',
                                     'redirect' => true,
-                                    'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
+                                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); $('.selector__create_survey').on('click', function(){tour.next();});})"
                                 ),
                                 array( //3
                                     'element' => '#surveyls_title',

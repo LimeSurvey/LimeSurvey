@@ -4,8 +4,6 @@
  */
 $(document).on('ready pjax:scriptcomplete',function(){
     $(".panel-clickable").on('click',function(e){
-        e.preventDefault();
-        console.ls.log(e);
         $that = $(this);
         if($that.data('url')!=''){
         	if($that.data('target') === '_blank') {
