@@ -302,7 +302,7 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('Edit subquestions'),
                                     'content' => gT("You should add some subquestions for your question here.").'<br/>'
-                                        .gT("Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.").' '
+                                        .gT("Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions.").' '
                                         .gT("Your participants cannot see the subquestion code, only the subquestion text itself.")
                                         ."<p class='bg-info alert'>".gT("Pro tip: The subquestion may even contain HTML code.").'</p>',
                                     'redirect' => false,
@@ -312,7 +312,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'left',
                                     'title' => gT('Add subquestion row'),
-                                    'content' => gT('Click on the plus sign to add another subquestion to your question.')
+                                    'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="icon-add text-success"></i>')
                                         ."<p class='bg-warning alert'>".gT('Please add at least two subquestions')."</p>",
                                     'redirect' => false,
                                 ),
