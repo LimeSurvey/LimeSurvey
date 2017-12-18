@@ -130,9 +130,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('The settings tab with the survey menu'),
-                                    'content' => gT('This tab shows the survey settings.').' '
-                                    .gT('Any setting for your survey is accessible from this menu.').' '
-                                    .gT('If you want to know more about the settings, have a look at our manual.'),
+                                    'content' => gT('If you click on this tab, the survey settings menu will be displayed.').' '
+                                    .gT('The most important settings of your survey are accessible from this menu.'). '<br/>'
+                                    .gT('If you want to know more about them, check our manual.'),
                                     'redirect' => false,
                                 ),
                                 array( //11
@@ -142,7 +142,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The top bar'),
                                     'content' => gT('This is the top bar.').'<br/>'
                                         .gT('This bar will change as you move through the functionalities.').' '
-                                        .gT('This view contains the most important LimeSurvey functionalities like activating and previewing the survey.'),
+                                        .gT('The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.'),
                                     'redirect' => false,
                                 ),
                                 array( //12
