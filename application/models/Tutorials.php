@@ -286,7 +286,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'title' => gT('Add some subquestions to your question'),
                                     'content' => gT("The array question is a type that creates a matrix for the participant.").'<br/>'
-                                        .gT("To fully use it you have to add subquestions as well as answer options.").'<br/>'
+                                        .gT("To fully use it, you have to add subquestions as well as answer options.").'<br/>'
                                         .gT("Let's start with subquestions.")
                                         .'<p class="alert bg-warning">'.gT("Click on the 'Edit subquestions' button.").'</p>',
                                     'reflex' => true,
