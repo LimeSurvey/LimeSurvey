@@ -382,8 +382,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('Easy navigation with the "breadcrumbs"'),
-                                    'content' => gT('In the top bar of the admin interface you see the "breadcrumbs".').'<br/>'
-                                        .gT("These will always be an easy way to get back to any previous setting.")
+                                    'content' => gT('You can see the "breadcrumbs" In the top bar of the admin interface.').'<br/>'
+                                        .gT("They represent an easy way to get back to any previous setting, and provide a general overview of where you are.")
                                         .'<p class="alert bg-warning">'.gT("Click on the name of your survey to get back to the survey settings overview.").'</p>',
                                     'reflex' => '#breadcrumb__survey--overview',
                                     'redirect' => false,
