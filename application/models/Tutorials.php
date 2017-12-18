@@ -177,8 +177,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('Enter a title for your first question group'),
-                                    'content' => gT('The title will be visible to your participants and cannot be empty.').' '
-                                    .gT('Question groups are important to logically group your questions. In the default setting each question group (with included questions) is shown on its own page.'),
+                                    'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later) and it cannot be empty.').' '
+                                    .gT('Question groups are important because they allow the survey administrators to logically group the questions.'
+                                    .' By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
                                     'redirect' => false,
                                 ),
                                 array( //15
