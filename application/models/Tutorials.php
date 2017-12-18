@@ -77,7 +77,7 @@ class Tutorials extends LSActiveRecord
                                     'element' => '.bootstrap-switch-id-createsample',
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('Create a sample question and question group'),
-                                    'content' => gT("In this tutorial we will be creating a question group and a question, so no need to automatically create it."),
+                                    'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create it."),
                                     'redirect' => false,
                                 ),
                                 array( //6
