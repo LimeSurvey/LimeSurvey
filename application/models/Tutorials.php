@@ -317,16 +317,16 @@ class Tutorials extends LSActiveRecord
                                     'redirect' => false,
                                 ),
                                 array( //27
-                                    'element' => '#save-button',
+                                    'element' => '#save-and-close-button',
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'left',
                                     'title' => gT('Now save the subquestions'),
-                                    'content' => gT("You may save empty subquestions, but that would useless.")
-                                        ."<p class='bg-warning alert'>".gT("Save now and let's edit the answer options.").'</p>',
+                                    'content' => gT("You may save empty subquestions, but that would be pointless.")
+                                        ."<p class='bg-warning alert'>".gT("Save and close now and let's edit the answer options.").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
-                                                    $('#save-button').trigger('click');
+                                                    $('#save-and-close-button').trigger('click');
                                                     return Promise.resolve(tour);
                                                 })"
                                 ),
@@ -350,20 +350,21 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'bottom',
                                     'title' => gT('Edit answer options'),
-                                    'content' => gT("As you can see the editing of answer options and subquestions is really not much different.")
+                                    'content' => gT("As you can see the editing of answer options and subquestions is really not much different.").'<br/>'
+                                        .sprintf(gT('Rember the plus button %s ?'), '<i class="icon-add text-success"></i>').'<br/>'
                                         .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                                     'redirect' => false,
                                 ),
                                 array( //30
-                                    'element' => '#save-button',
+                                    'element' => '#save-and-close-button',
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'left',
                                     'title' => gT('Now save the answer options'),
-                                    'content' => gT("Click on 'Save' or 'Next' to proceed."),
+                                    'content' => gT("Click on 'Save and close' or 'Next' to proceed."),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
-                                                    $('#save-button').trigger('click');
+                                                    $('#save-and-close-button').trigger('click');
                                                     return Promise.resolve(tour);
                                                 })"
                                 ),
