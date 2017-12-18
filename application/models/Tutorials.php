@@ -59,7 +59,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The survey title'),
                                     'content' => gT("This is the title of your survey.")."<br/>"
-                                        .gT("Your participants will see this title as well in the browser's title bar, as also on the welcome screen.")
+                                        .gT("Your participants will see this title in the browser's title bar and on the welcome screen.")
                                         ."<p class='bg-warning alert'>".gT("You have to put in at least a title for the survey to be saved.").'</p>',
                                     'redirect' => true,
                                 ),
@@ -68,7 +68,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The survey description'),
                                     'placement' => 'top',
-                                    'content' => gT("You can type in this field a short description of your survey.")."<br/>"
+                                    'content' => gT("In this field you may type a short description of your survey.")."<br/>"
                                         .gT("The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey..").' '
                                         .gT("Describe your survey, but do not ask any question yet."),
                                     'redirect' => false,
