@@ -275,8 +275,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('The question bar'),
-                                    'content' => gT('This is the question bar. The most important option here is the edit button.').' '
-                                    .gT('Also important are the preview buttons, which we will show in one of the next steps.'),
+                                    'content' => gT('This is the question bar.').'<br/>'
+                                    .gt('The most important question-related options are displayed here.').'<br/>'
+                                    .gT('The availability of options is related to the type of question you previously chose.'),
                                     'redirect' => false,
                                 ),
                                 array( //24
