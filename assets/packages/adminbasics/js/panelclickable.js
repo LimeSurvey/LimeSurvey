@@ -2,8 +2,10 @@
  * Panel Clickable
  * Like in front page, or quick actions
  */
-$(document).on('ready, pjax:scriptcomplete',function(){
-    $(".panel-clickable").click(function(){
+$(document).on('ready pjax:scriptcomplete',function(){
+    $(".panel-clickable").on('click',function(e){
+        e.preventDefault();
+        console.ls.log(e);
         $that = $(this);
         if($that.data('url')!=''){
         	if($that.data('target') === '_blank') {

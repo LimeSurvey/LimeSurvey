@@ -1,8 +1,9 @@
 <div class="<?php echo $sizeClass; ?> ls-flex-column" style="padding:15px; height: 200px;" >
-    <div class="panel panel-primary panel-clickable" id="panel-<?php echo $position; ?>"
+    <div class="panel panel-primary panel-clickable selector__<?=str_replace(' ', '_', strtolower($title))?>" 
+        id="panel-<?php echo $position; ?>"
          data-url="<?php echo $url; ?>"<?php if ($external) {
         echo ' data-target="_blank"';
-    } ?> >
+    } ?>  >
         <div class="panel-heading">
             <div class="panel-title h4"><?php eT($title); ?></div>
         </div>
