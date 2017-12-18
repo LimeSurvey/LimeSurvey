@@ -116,9 +116,10 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The sidebar'),
                                     'content' => gT('This is the sidebar.').'<br/>'
                                         .gT('All important settings can be reached in this sidebar.').'<br/>'
-                                        .gT('You may resize it to fit your screen, so you can easier navigate your survey structure.').' '
-                                        .gT('It may be collapsed to show the quick-menu.').' '
-                                        .gT('To collapse it either click on the arrow button or drag it to the left.'),
+                                        .gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu.').' '
+                                        .gT('You may resize it to fit your screen to easily navigate through the available options.'
+                                        .' If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed.'
+                                        .' If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
                                     'redirect' => false,
                                     'onShow' => "(function(tour){
                                                     return Promise.resolve(tour);
