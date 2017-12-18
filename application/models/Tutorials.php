@@ -350,7 +350,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'bottom',
                                     'title' => gT('Edit answer options'),
-                                    'content' => gT("As you can see the editing of answer options and subquestions is really not much different.").'<br/>'
+                                    'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.").'<br/>'
                                         .sprintf(gT('Rember the plus button %s ?'), '<i class="icon-add text-success"></i>').'<br/>'
                                         .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                                     'redirect' => false,
