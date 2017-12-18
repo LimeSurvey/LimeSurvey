@@ -301,7 +301,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'bottom',
                                     'title' => gT('Edit subquestions'),
-                                    'content' => gT("Here you may add some subquestions for your question.").'<br/>'
+                                    'content' => gT("You should add some subquestions for your question here.").'<br/>'
                                         .gT("Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.").' '
                                         .gT("Your participants cannot see the subquestion code, only the subquestion text itself.")
                                         ."<p class='bg-info alert'>".gT("Pro tip: The subquestion may even contain HTML code.").'</p>',
