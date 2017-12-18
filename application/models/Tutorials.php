@@ -50,7 +50,7 @@ class Tutorials extends LSActiveRecord
                                     'content' => gT("The three top boxes are the most basic functions of LimeSurvey.")."<br/>"
                                     .gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
                                     .'<p class="alert bg-warning">'.gT("Click on the 'Create survey' box - or 'Next' in this tutorial").'</p>',
-                                    'reflex' => '.selector__create_survey',
+                                    'reflex' => true,
                                     'redirect' => true,
                                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); $('.selector__create_survey').on('click', function(){tour.next();});})"
                                 ),
@@ -161,9 +161,9 @@ class Tutorials extends LSActiveRecord
                                     'element' => '#adminpanel__sidebar--selectorCreateQuestionGroup',
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'right',
-                                    'title' => gT("Let's add another question group"),
-                                    'content' => gT("What good would your survey be without questions?").' '
-                                        .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.')
+                                    'title' => gT("Let's add a question group"),
+                                    'content' => gT("What good would your survey be without questions?").'<br/>'
+                                        .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.')
                                         .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
