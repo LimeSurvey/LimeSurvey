@@ -38,7 +38,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('Welcome to LimeSurvey!'),
                                     'placement' => 'bottom',
                                     'content' => gT("This tour will help you to easily get a basic understanding of LimeSurvey.")."<br/>"
-                                        .gt("We would like to help you with a quick tour of the most essential functions and features"),
+                                        .gt("We would like to help you with a quick tour of the most essential functions and features."),
                                     'redirect' => false,
                                     'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
                                 ),
