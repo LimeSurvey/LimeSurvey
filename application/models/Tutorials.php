@@ -187,7 +187,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'top',
                                     'title' => gT('A description for your question group'),
-                                    'content' => gT('This description is also visible to your participants. You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
+                                    'content' => gT('This description is also visible to your participants.').'<br/>'
+                                    .gT('You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
                                     'redirect' => false,
                                 ),
                                 array( //16
@@ -248,8 +249,8 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'left',
                                     'title' => gT('Set your question type.'),
                                     'content' => gT("LimeSurvey offers you a lot of different question types.").'<br/>'
-                                        .gT("The example question created for you as well as the default setting is the 'Long free text'-type.").'<br/>'
-                                        .gT("This type will create a big text input for your participants.")
+                                        .gT("As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.").'<br/>'
+                                        .gT("This type of question allows you to add multiple subquestions and a set of answers.")
                                         .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
                                     'redirect' => false,
                                 ),
@@ -263,6 +264,7 @@ class Tutorials extends LSActiveRecord
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
+                                                    $('#question_type').val('F');
                                                     $('#save-button').trigger('click');
                                                     return Promise.resolve(tour);
                                                 })",
