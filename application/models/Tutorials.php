@@ -33,7 +33,6 @@ class Tutorials extends LSActiveRecord
                                 array( //1
                                     'element' => '#lime-logo',
                                     'orphan' => true,
-                                    'backdrop' => true,
                                     'path' => Yii::app()->createUrl('/admin/index'),
                                     'title' => gT('Welcome to LimeSurvey!'),
                                     'placement' => 'bottom',
@@ -45,7 +44,6 @@ class Tutorials extends LSActiveRecord
                                 array( //2
                                     'element' => '.selector__create_survey',
                                     'path' => Yii::app()->createUrl('/admin/index'),
-                                    'backdrop' => true,
                                     'title' => gT('The basic functions'),
                                     'content' => gT("The three top boxes are the most basic functions of LimeSurvey.")."<br/>"
                                     .gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
@@ -399,7 +397,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('Finally, activate your survey'),
-                                    'content' => gT("Now activate this simple survey.").'<br/>'
+                                    'content' => gT("Now, activate your survey.").'<br/>'
                                         .gT("You can create as many surveys as you like.")
                                         .'<p class="alert bg-warning">'.gT("Click on 'Activate this survey'").'</p>',
                                     'reflex' => true,
