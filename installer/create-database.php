@@ -989,6 +989,7 @@ function createDatabase($oDB){
                     'element' => '#sidebar',
                     'placement' => 'right',
                     'redirect' => false,
+                    'prev' => '-1',
                     'onShow' => "(function(tour){
                                     return Promise.resolve(tour);
                                 })"

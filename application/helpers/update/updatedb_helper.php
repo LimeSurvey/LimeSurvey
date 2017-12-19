@@ -776,6 +776,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 335) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update( '{{tutorial_entries}}', [
+                'settings' => json_encode(array(
+                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'element' => '#sidebar',
+                    'placement' => 'right',
+                    'redirect' => false,
+                    'prev' => '-1',
+                    'onShow' => "(function(tour){
+                                    return Promise.resolve(tour);
+                                })"
+                ))
+                ], 'teid=9');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>335), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
