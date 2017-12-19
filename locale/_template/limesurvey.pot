@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-12-19 09:50:09+00:00\n"
+"POT-Creation-Date: 2017-12-19 09:52:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3102,7 +3102,7 @@ msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:1301
-msgid "There are % questions in this survey."
+msgid "There are %s questions in this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:1338
