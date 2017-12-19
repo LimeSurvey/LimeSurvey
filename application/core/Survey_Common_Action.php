@@ -276,7 +276,7 @@ class Survey_Common_Action extends CAction
                     // Message
                     case 'message' :
                         if (empty($viewUrl['class'])) {
-                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], true);
+                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], null, true);
                         } else {
                             $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class'], true);
                         }

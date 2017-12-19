@@ -359,6 +359,7 @@ class AdminController extends LSYii_Controller
      * @param string $title
      * @param string $message
      * @param string $class
+     * @param boolean $return
      * @return void
      */
     public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
@@ -366,7 +367,7 @@ class AdminController extends LSYii_Controller
         $aData['title'] = $title;
         $aData['message'] = $message;
         $aData['class'] = $class;
-        $this->renderPartial('/admin/super/messagebox', $aData, $return);
+        return $this->renderPartial('/admin/super/messagebox', $aData, $return);
     }
 
 
