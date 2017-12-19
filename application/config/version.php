@@ -12,11 +12,11 @@
  *150413
  */
 
-$config['versionnumber'] = '2.72.6';
+$config['versionnumber'] = '2.73.0';
 $config['dbversionnumber'] = 263;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '2726';
+$config['assetsversionnumber'] = '2730';
 return $config;
 
 ?>

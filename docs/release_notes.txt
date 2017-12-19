@@ -35,8 +35,20 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.72.5 (build 171121) to 2.72.6 (build 171206) Dec 6, 2017
 
+Changes from 2.72.6 (build 171206) to 2.73.0 (build 171219) Dec 19, 2017
+-Fixed issue #12997: PHP warning "mktime() expects" when calling survey logic file (Denis Chenu)
+-Fixed issue #13008: SPSS export invalid A0 for string (Denis Chenu)
+-Fixed issue : unable to use date function with question value (debug>0) (Denis Chenu)
+-New feature: @@OPTOUTURL@@ & @@OPTINURL@@ placeholders for invitation/reminder emails (Carsten Schmitz)
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by papillon326, nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Slovak by klingja
+
+Changes from 2.72.5 (build 171121) to 2.72.6 (build 171206) Dec 6, 2017
 -Fixed issue: Survey settings are not deleted when survey is deleted (Denis Chenu)
 -Fixed issue: Changing password not possible when using Postgres (jackom83)
 -Fixed issue: Wrong minimum upload size determined (Carsten Schmitz)
@@ -48,7 +60,6 @@ Changes from 2.72.5 (build 171121) to 2.72.6 (build 171206) Dec 6, 2017
 #Updated translation: Valencian by joamuran
 
 Changes from 2.72.4 (build 171020) to 2.72.5 (build 171121) Nov 21, 2017
-
 Fixed issue: Fix problem with answer option rows in admin (Olle Haerstedt)
 #Updated translation: Dutch (Informal) by Han
 #Updated translation: Dutch by Han
