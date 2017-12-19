@@ -1298,7 +1298,7 @@ class printablesurvey extends Survey_Common_Action
                     }
             }
 
-            $printarray['therearexquestions'] = sprintf(gT('There are % questions in this survey.'), $total_questions);
+            $printarray['therearexquestions'] = sprintf(gT('There are %s questions in this survey.'), $total_questions);
             
             // START recursive tag stripping.
             // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
