@@ -349,7 +349,7 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('Edit answer options'),
                                     'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.").'<br/>'
-                                        .sprintf(gT('Rember the plus button %s ?'), '<i class="icon-add text-success"></i>').'<br/>'
+                                        .sprintf(gT('Remember the plus button %s ?'), '<i class="icon-add text-success"></i>').'<br/>'
                                         .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                                     'redirect' => false,
                                 ),
