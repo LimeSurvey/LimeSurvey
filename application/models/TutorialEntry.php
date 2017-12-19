@@ -20,7 +20,7 @@ class TutorialEntry extends LSActiveRecord
      */
     public function tableName()
     {
-        return '{{tutorial_entry}}';
+        return '{{tutorial_entries}}';
     }
 
     /**
@@ -31,11 +31,11 @@ class TutorialEntry extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('tid, title, content, settings', 'required'),
-            array('tid', 'numerical', 'integerOnly'=>true),
+            array('title, content, settings', 'required'),
+            array( 'numerical', 'integerOnly'=>true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('teid, tid, title, content, settings', 'safe', 'on'=>'search'),
+            array('teid, title, content, settings', 'safe', 'on'=>'search'),
         );
     }
 
@@ -47,7 +47,7 @@ class TutorialEntry extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            't' => array(self::BELONGS_TO, 'Tutorials', 'tid'),
+            'tutorialEntryGroup' => array(self::HAS_MANY, 'TutorialEntryGroups', 'teid'),
         );
     }
 
@@ -57,8 +57,7 @@ class TutorialEntry extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'teid' => 'Teid',
-            'tid' => 'Tid',
+            'teid' => 'Tutorial Entry Id',
             'title' => 'Title',
             'content' => 'Content',
             'settings' => 'Settings',
@@ -84,7 +83,6 @@ class TutorialEntry extends LSActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('teid', $this->teid);
-        $criteria->compare('tid', $this->tid);
         $criteria->compare('title', $this->title, true);
         $criteria->compare('content', $this->content, true);
         $criteria->compare('settings', $this->settings, true);
@@ -105,5 +103,21 @@ class TutorialEntry extends LSActiveRecord
         /** @var TutorialEntry $model */
         $model = parent::model($className);
         return $model;
+    }
+
+    public function getStepFromEntry(){
+        $stepArray = json_decode($this->settings, true);
+        $stepArray['content'] = gT($this->content, 'unescaped');
+        $stepArray['title'] = gT($this->title, 'unescaped');
+        if(isset($stepArray['path'])){
+            $path = $stepArray['path'];
+            $params = array();
+            if(is_array($stepArray['path'])){
+                $path = $stepArray['path'][0];
+                $params = isset($stepArray['path'][1]) ? $stepArray['path'][1] : [];
+            }
+            $stepArray['path'] = App()->createUrl($path, $params);
+        }
+        return $stepArray;
     }
 }

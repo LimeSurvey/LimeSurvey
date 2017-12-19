@@ -364,6 +364,7 @@ class Survey_Common_Action extends CAction
     private function _notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
+            if(!is_array($aMessage)) $aMessage = array();
             unset(App()->session['arrayNotificationMessages']);
             return $this->getController()->renderPartial("notifications/notifications", array('aMessage'=>$aMessage));
     }
