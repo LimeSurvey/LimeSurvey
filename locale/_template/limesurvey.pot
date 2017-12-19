@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-12-07 10:18:35+00:00\n"
+"POT-Creation-Date: 2017-12-19 10:18:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7688,108 +7688,108 @@ msgstr ""
 msgid "Returns true if all non-empty responses are unique"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:310
+#: application/helpers/expressions/em_core_helper.php:309
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:317
-#: application/helpers/expressions/em_core_helper.php:461
+#: application/helpers/expressions/em_core_helper.php:316
+#: application/helpers/expressions/em_core_helper.php:460
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:455
+#: application/helpers/expressions/em_core_helper.php:454
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:509
+#: application/helpers/expressions/em_core_helper.php:508
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:524
+#: application/helpers/expressions/em_core_helper.php:523
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:530
+#: application/helpers/expressions/em_core_helper.php:529
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:591
-#: application/helpers/expressions/em_core_helper.php:1012
-#: application/helpers/expressions/em_core_helper.php:1093
+#: application/helpers/expressions/em_core_helper.php:590
+#: application/helpers/expressions/em_core_helper.php:1011
+#: application/helpers/expressions/em_core_helper.php:1092
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:636
-#: application/helpers/expressions/em_core_helper.php:1769
+#: application/helpers/expressions/em_core_helper.php:635
+#: application/helpers/expressions/em_core_helper.php:1768
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:730
+#: application/helpers/expressions/em_core_helper.php:729
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:736
+#: application/helpers/expressions/em_core_helper.php:735
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:792
+#: application/helpers/expressions/em_core_helper.php:791
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:800
+#: application/helpers/expressions/em_core_helper.php:799
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:816
-#: application/helpers/expressions/em_core_helper.php:1762
+#: application/helpers/expressions/em_core_helper.php:815
+#: application/helpers/expressions/em_core_helper.php:1761
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:822
+#: application/helpers/expressions/em_core_helper.php:821
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:846
+#: application/helpers/expressions/em_core_helper.php:845
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1029
+#: application/helpers/expressions/em_core_helper.php:1028
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1658
+#: application/helpers/expressions/em_core_helper.php:1657
 msgid "Assigning a new value to a variable."
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1753
+#: application/helpers/expressions/em_core_helper.php:1752
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1774
+#: application/helpers/expressions/em_core_helper.php:1773
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1782
+#: application/helpers/expressions/em_core_helper.php:1781
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2161
+#: application/helpers/expressions/em_core_helper.php:2160
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2166
+#: application/helpers/expressions/em_core_helper.php:2165
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2167
+#: application/helpers/expressions/em_core_helper.php:2166
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2412
+#: application/helpers/expressions/em_core_helper.php:2411
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3028
+#: application/helpers/expressions/em_core_helper.php:3040
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
