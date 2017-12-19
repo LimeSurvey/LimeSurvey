@@ -154,7 +154,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
                                                 <?php else: ?>
                                                     <a href="<?php echo Yii::app()->getController()->createUrl("admin/themeoptions/sa/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
-                                                        <?php eT("select");?>
+                                                        <?php eT("Select");?>
                                                     </a>
                                                 <?php endif; ?>
                                             </td>

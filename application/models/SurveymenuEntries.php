@@ -199,7 +199,7 @@ class SurveymenuEntries extends LSActiveRecord
             'permission_grade' => gT('Permission level'),
             'classes' => gT('Classes'),
             'data' => gT('Data'),
-            'getdatamethod' => gT('Get data method'),
+            'getdatamethod' => gT('GET data method'),
             'changed_at' => gT('Modified on'),
             'changed_by' => gT('Modified by'),
             'created_at' => gT('Created on'),
@@ -376,7 +376,7 @@ class SurveymenuEntries extends LSActiveRecord
             array(
                 'name' => 'data',
                 'value' => '$data->data ? "<i class=\'fa fa-info-circle bigIcons\' title=\'".$data->data."\'></i>"
-                : ( $data->getdatamethod ? gT("Get data method:")."<br/>".$data->getdatamethod : "")',
+                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".$data->getdatamethod : "")',
                 'type' => 'raw',
                 'filter' => false,
             ),
