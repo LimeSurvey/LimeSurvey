@@ -755,6 +755,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>333), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        
+        if ($iOldDBVersion < 334) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');
+            $oDB->createCommand()->addColumn('{{tutorials}}', 'icon', 'string(64)');
+            $oDB->createCommand()->update( '{{tutorials}}', [
+                    'settings' => json_encode(array(
+                    'debug' => true,
+                    'orphan' => true,
+                    'keyboard' => false,
+                    'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
+                    'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
+                    'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
+                    )),
+                    'title' => 'First start tour',
+                    'icon' => 'fa-rocket'
+            ]);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>334), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -836,7 +856,7 @@ function upgrade333($oDB){
             'orphan' => true,
             'keyboard' => false,
             'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-            'onShown' => "(function(tour){ console.log($('#notif-container').children()); $('#notif-container').children().remove(); })"
+            'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
         )),
         'permission' => 'survey',
         'permission_grade' => 'create'

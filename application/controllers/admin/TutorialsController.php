@@ -15,6 +15,7 @@ class TutorialsController extends Survey_Common_Action
         return array(
             'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
+            'postOnly + triggerfinished', // we only allow triggerfinished via POST request
         );
     }
 
@@ -69,20 +70,6 @@ class TutorialsController extends Survey_Common_Action
             ),
             false,
             false
-        );
-    }
-
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function view($id)
-    {
-        $this->render(
-            'view',
-            array(
-                'model'=>$this->loadModel($id),
-            )
         );
     }
 
@@ -154,18 +141,25 @@ class TutorialsController extends Survey_Common_Action
         }
     }
 
-    /**
-     * Lists all models.
-     */
+    public function triggerfinished($tid){
+        $oTutorial = Tutorials::model()->find($tid);
+        $oTutorial->setFinished(App()->user->id);
+        echo '{"success": true}';
+    }
+    
     public function index()
     {
-        $dataProvider = new CActiveDataProvider('Tutorials');
-        $this->render(
-            'index',
-            array(
-                'dataProvider'=>$dataProvider,
-            )
-        );
+        $this->getController()->redirect(array('admin/tutorials/sa/view'));
+    }
+
+    public function view()
+    {
+        //$this->checkPermission();
+
+        $data = array();
+        $data['model'] = Tutorials::model();
+        //App()->getClientScript()->registerPackage('surveymenufunctions');
+        $this->_renderWrappedTemplate(null, array('tutorials/index'), $data);
     }
 
     /**

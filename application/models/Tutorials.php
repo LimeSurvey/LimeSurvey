@@ -6,6 +6,8 @@
  * The followings are the available columns in table '{{tutorials}}':
  * @property integer $tid
  * @property string $name
+ * @property string $title
+ * @property string $icon
  * @property string $description
  * @property integer $active
  * @property string $permission
@@ -36,6 +38,8 @@ class Tutorials extends LSActiveRecord
             array('name, description, active, permission, permission_grade', 'required'),
             array('active', 'numerical', 'integerOnly'=>true),
             array('name, permission, permission_grade', 'length', 'max'=>128),
+            array('title', 'length', 'max'=>192),
+            array('icon', 'length', 'max'=>64),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('tid, name, description, active, permission, permission_grade', 'safe', 'on'=>'search'),
@@ -62,11 +66,42 @@ class Tutorials extends LSActiveRecord
         return array(
             'tid' => 'Tutorial ID',
             'name' => 'Name',
+            'title' => 'Title',
+            'icon' => 'Icon',
             'description' => 'Description',
             'active' => 'Active',
             'permission' => 'Permission',
             'permission_grade' => 'Permission Grade',
         );
+    }
+
+    public function getColumns(){
+        $cols = array(
+            array(
+            'name' => 'tid',
+            'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->tid.\'" />\'',
+            'type' => 'raw',
+            'filter' => false
+            ),
+            array(
+            'name' => 'name',
+            ),
+            array(
+            'name' => 'title',
+            ),
+            array(
+            'name' => 'description',
+            ),
+            array(
+            'name' => 'active',
+            ),
+            array(
+            'name' => 'settings',
+            'value' => '"<pre>".print_r(json_decode($data->settings,true),true)."</pre>"',
+            'type' => 'raw',
+            )
+        );
+        return $cols;
     }
 
     /**
@@ -89,6 +124,8 @@ class Tutorials extends LSActiveRecord
 
         $criteria->compare('tid', $this->tid);
         $criteria->compare('name', $this->name, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('icon', $this->icon, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('active', $this->active);
         $criteria->compare('permission', $this->permission, true);
@@ -99,12 +136,21 @@ class Tutorials extends LSActiveRecord
         ));
     }
 
-    public function getPrebuilt($prebuiltName)
+    public function getActiveTutorials()
     {
-        if (isset($this->preBuiltPackage[$prebuiltName])) {
-            return $this->preBuiltPackage[$prebuiltName];
+        return self::model()->findAll('active=1');
+    }
+
+    public function setFinished($iUserId){
+        $oMapTutUser = MapTutorialUsers::model()->find('uid=:uid AND tid=:tid',[':uid' => $iUserId, 'tid' => $this->tid]);
+        if($oMapTutUser == null) {
+            $oMapTutUser = new MapTutorialUsers();
+            $oMapTutUser->setAttributes([
+                'uid' => $iUserId,
+                'tid' => $this->tid
+            ]);
+            @$oMapTutUser->save();
         }
-        return [];
     }
 
     public function getTutorialDataArray($tutorialName){
@@ -119,7 +165,8 @@ class Tutorials extends LSActiveRecord
 
         $aTutorialData = json_decode($this->settings,true);
         $aTutorialData['steps'] = $aSteps;
-
+        $aTutorialData['tid'] = $this->tid;
+        
         return $aTutorialData;
     }
 

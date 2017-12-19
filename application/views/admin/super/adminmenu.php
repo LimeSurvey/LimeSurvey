@@ -57,6 +57,9 @@
     <div class="collapse navbar-collapse js-navbar-collapse pull-right">
         <ul class="nav navbar-nav navbar-right">
 
+            <!-- Tutorial menu -->
+            <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
+            
             <!-- Configuration menu -->
             <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 

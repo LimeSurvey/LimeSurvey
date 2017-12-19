@@ -800,6 +800,8 @@ function createDatabase($oDB){
             '{{tutorials}}',[
                 'tid' =>  'pk',
                 'name' =>  'string(128)',
+                'title' =>  'string(192)',
+                'icon' =>  'string(64)',
                 'description' =>  'text',
                 'active' =>  'int DEFAULT 0',
                 'settings' => 'text',
@@ -812,6 +814,8 @@ function createDatabase($oDB){
         $oDB->createCommand()->insert('{{tutorials}}', array(
             'tid' => 1,
             'name' => 'firstStartTour',
+            'title' => 'First start tour',
+            'icon' => 'fa-rocket',
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
             'active' => 1,
             'settings' => json_encode(array(
@@ -819,7 +823,9 @@ function createDatabase($oDB){
                 'orphan' => true,
                 'keyboard' => false,
                 'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-                'onShown' => "(function(tour){ console.log($('#notif-container').children()); $('#notif-container').children().remove(); })"
+                'onShown' => "(function(tour){ console.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
+                'onEnd' => "(function(){ $.post(LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/tutorial/sa/triggerfinished/tid/1' : '?r=admin/tutorial/sa/triggerfinished/tid/1'))})",
+                'onStart' => "(function(){window.location.href=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index')})"
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
