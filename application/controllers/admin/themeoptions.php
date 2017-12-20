@@ -255,6 +255,18 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    public function getPreviewTag(){
+        $templatename = Yii::app()->request->getPost('templatename');        
+        $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
+        $previewTag = $oTemplate->getPreview();
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => ['image' =>  $previewTag ]], 
+            false,
+            false
+        );
+    }
+
     /**
      * Renders the template options form.
      *

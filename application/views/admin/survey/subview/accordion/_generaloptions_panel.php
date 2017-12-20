@@ -276,23 +276,25 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>'>
-                    <?php foreach (array_keys(getTemplateList()) as $tname) {
+                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>'>
+                    <?php 
+                    $aTemplateList = Template::getTemplateListWithPreviews();
+                    foreach ($aTemplateList as $templateName => $preview) {
 
-                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
-                            <option value='<?php echo $tname; ?>'
-                                <?php if ($oSurvey->template && htmlspecialchars($tname) == $oSurvey->template) { ?>
+                        if (Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
+                            <option value='<?php echo $templateName; ?>'
+                                <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template) { ?>
                                     selected='selected'
-                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttheme')) { ?>
+                                    <?php   } elseif (!$oSurvey->template && $templateName == Yii::app()->getConfig('defaulttheme')) { ?>
                                     selected='selected'
                                     <?php } ?>
-                                ><?php echo $tname; ?></option>
+                                ><?php echo $templateName; ?></option>
                             <?php }
                     } ?>
                 </select>
             </div>
-            <div class="col-sm-6 col-md-offset-3 template-img" style="margin-top: 13px;">
-                <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($oSurvey->template); ?>/preview.png' />
+            <div class="col-sm-6 col-md-offset-3 template-img" style="margin-top: 13px;" id="preview-image-container">
+                <?php echo TemplateConfiguration::getInstanceFromTemplateName($oSurvey->template)->getPreview() ?>
             </div>
         </div>
 <?php

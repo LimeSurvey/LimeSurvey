@@ -32,7 +32,8 @@ $(document).on('click', '[data-copy] :submit', function () {
 $(document).on('ready  pjax:scriptcomplete', function () {
 
     $('#template').on('change keyup', function (event) {
-        templatechange($(this).val(), $('#template').data('standardtemplaterooturl'), $('#template').data('templaterooturl'));
+        console.ls.log('TEMPLATECHANGE', event);
+        templatechange($(this));
     });
 
     $('[data-copy]').each(function () {
@@ -159,20 +160,20 @@ function deleteParameter(event, aRowData) {
     PostParameterGrid();
 }
 
-function templatechange(template, standardtemplaterooturl, templaterooturl) {
-    /* @todo : fix it */
-    const standardtemplates = [
-        'default', 'material', 'minimal'
-    ];
-    //conditional based on global definition
-    standardtemplaterooturl = standardtemplaterooturl || '/templates/';
-    templaterooturl = templaterooturl || '/upload/templates/';
-
-    if (in_array(template, standardtemplates)) {
-        $('#preview').attr('src', standardtemplaterooturl + '/' + template + '/preview.png');
-    } else {
-        $('#preview').attr('src', templaterooturl + '/' + template + '/preview.png');
-    }
+function templatechange($element) {
+    $('#preview-image-container').html(
+        '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>'
+    );
+    $.ajax({
+        url: $element.data('updateurl'),
+        data: {templatename : $element.val()},
+        method: 'POST',
+        dataType: 'json',
+        success: function(data){
+            $('#preview-image-container').html(data.image);
+        },
+        error: console.ls.error
+    });
 }
 
 function copysurvey() {
