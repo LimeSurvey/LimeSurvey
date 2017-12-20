@@ -2,6 +2,15 @@
 
 # Use this script file if you have a Travis docker image setup on your
 # local system, as described here: https://docs.travis-ci.com/user/common-build-problems/#Troubleshooting-Locally-in-a-Docker-Image
+#
+# docker run --name travis-debug -dit travisci/ci-garnet:packer-1512502276-986baf0 /sbin/init
+# docker exec -it travis-debug bash -l
+# su - travis
+# git clone --depth=50 --branch=develop https://github.com/LimeSurvey/LimeSurvey.git LimeSurvey/LimeSurvey
+# cd LimeSurvey/LimeSurvey
+# chmod +x tests/data/travis/travis_setup.sh
+# ./tests/data/travis/travis_setup.sh
+# phpunit
 
 phpenv global 7.0 2>/dev/null
 phpenv global 7.0
