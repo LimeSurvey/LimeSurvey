@@ -22,7 +22,7 @@
 {# Register script for modal #}
 {% if(aSurveyInfo.jPopup) %}
     {{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
-    {{ registerScript('showStartPopups',"showStartPopups();", "POS_END") }}
+    {{ registerScript('showStartPopups',"window.templateCore.showStartPopups();", "POS_END") }}
 {% endif %}
 
 <!-- Bootstrap Modal Alert -->

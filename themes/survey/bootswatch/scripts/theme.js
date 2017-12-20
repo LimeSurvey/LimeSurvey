@@ -184,7 +184,7 @@ var Template = function(){
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
-        hideQuestionWithRelevanceSubQuestion();
+        window.templateCore.hideQuestionWithRelevanceSubQuestion();
         hideEmptyPart();
         init();
     };
@@ -197,7 +197,7 @@ var Template = function(){
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,
-        hideQuestionWithRelevanceSubQuestion : hideQuestionWithRelevanceSubQuestion,
+        window.templateCore.hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
         initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger

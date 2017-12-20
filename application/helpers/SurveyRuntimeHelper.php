@@ -985,7 +985,7 @@ class SurveyRuntimeHelper
             }
 
             Yii::app()->clientScript->registerScript('startPopup', "LSvar.startPopups=".json_encode($aPopup).";", CClientScript::POS_BEGIN);
-            Yii::app()->clientScript->registerScript('showStartPopups', "showStartPopups();", CClientScript::POS_END);
+            Yii::app()->clientScript->registerScript('showStartPopups', "window.templateCore.showStartPopups();", CClientScript::POS_END);
 
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {

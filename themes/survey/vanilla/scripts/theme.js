@@ -198,7 +198,7 @@ var ThemeScripts = function(){
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
-        hideQuestionWithRelevanceSubQuestion();
+        window.templateCore.hideQuestionWithRelevanceSubQuestion();
         hideEmptyPart();
     };
 
@@ -209,7 +209,7 @@ var ThemeScripts = function(){
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,
-        hideQuestionWithRelevanceSubQuestion : hideQuestionWithRelevanceSubQuestion,
+        hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
         initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger,
