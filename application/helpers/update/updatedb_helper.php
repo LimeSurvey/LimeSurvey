@@ -794,6 +794,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 336) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update( '{{tutorials}}', [
+                'settings' => json_encode(array(
+                    'keyboard' => false,
+                    'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
+                    'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
+                    'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
+                    )),
+                ], 'tid=1');
+            $oDB->createCommand()->update( '{{tutorial_entries}}', [
+                'settings' => json_encode(array (
+                    'element' => '#lime-logo',
+                    'path' => '/admin/index',
+                    'placement' => 'bottom',
+                    'redirect' => false,
+                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
+                    ))
+                ], 'teid=1');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>336), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

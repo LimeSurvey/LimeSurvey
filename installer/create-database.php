@@ -819,13 +819,10 @@ function createDatabase($oDB){
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
             'active' => 1,
             'settings' => json_encode(array(
-                'debug' => true,
-                'orphan' => true,
                 'keyboard' => false,
                 'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-                'onShown' => "(function(tour){ console.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
-                'onEnd' => "(function(){ $.post(LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/tutorial/sa/triggerfinished/tid/1' : '?r=admin/tutorial/sa/triggerfinished/tid/1'))})",
-                'onStart' => "(function(){window.location.href=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index')})"
+                'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
+                'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
@@ -873,7 +870,6 @@ function createDatabase($oDB){
                     ."We would like to help you with a quick tour of the most essential functions and features.",
                 'settings' => json_encode(array (
                     'element' => '#lime-logo',
-                    'orphan' => true,
                     'path' => '/admin/index',
                     'placement' => 'bottom',
                     'redirect' => false,
