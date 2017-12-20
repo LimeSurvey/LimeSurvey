@@ -230,3 +230,16 @@ require_once(__DIR__ . '/TestBaseClassView.php');
 require_once(__DIR__ . '/DummyController.php');
 
 define('PHP_ENV', 'test');
+
+$configFile = __DIR__ . '/application/config/config.php';
+$configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+
+@copy($configFile, $configBackupFile);
+
+register_shutdown_function(function(){
+    $configFile = __DIR__ . '/application/config/config.php';
+    $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+    
+    @unlink($configFile);
+    @rename($configBackupFile, $configFile);
+});
