@@ -25,7 +25,7 @@ class Timing extends LSActiveRecord
 
         if (!isset($iSurveyId)) {
             // FIXME this method does not exist
-            $iSurveyId = Response::getLastSurveyId();
+            $iSurveyId = Response::getSurveyId();
         }
         $survey = Survey::model()->findByPk($iSurveyId);
         if ($survey) {

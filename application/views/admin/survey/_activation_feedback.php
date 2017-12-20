@@ -48,7 +48,7 @@
                             <strong><?php eT("Open-access mode:");?></strong>
                             <?php eT("No invitation code is needed to complete the survey."); ?>
                             <br />
-                            <?php eT("You can switch to the closed-access mode by initialising a survey participant table with the button below."); ?>
+                            <?php eT("You can switch to the closed-access mode by initialising a survey participant table by using the button below."); ?>
                             <br />
                             <br />
                             <input

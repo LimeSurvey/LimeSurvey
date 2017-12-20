@@ -39,7 +39,6 @@
         /**
          * Get all files related to this response and (optionally) question ID.
          *
-         * @param integer $sQID The question ID - optional - Default 0
          * @return array
          */
         public function getFiles()
@@ -88,7 +87,7 @@
         public function someFileExists($sQID = 0)
         {
             $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
-            foreach ($this->getFiles($sQID) as $fileInfo) {
+            foreach ($this->getFiles() as $fileInfo) {
                 $basename = basename($fileInfo['filename']);
                 if (file_exists($uploaddir.$basename)) {
                     return true;

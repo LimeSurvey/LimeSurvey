@@ -110,7 +110,7 @@ class AdminTheme extends CFormModel
         $this->config = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
 
         // If developers want to test asset manager with debug mode on
-        self::$use_asset_manager = isset($this->config->engine->use_asset_manager_in_debug_mode) ? ($this->config->engine->use_asset_manager_in_debug_mode == 'true') : 'false';
+        self::$use_asset_manager = isset($this->config->engine->use_asset_manager_in_debug_mode) ? ($this->config->engine->use_asset_manager_in_debug_mode == 'true') : false;
 
         $this->defineConstants(); // Define the (still) necessary constants
         $this->registerStylesAndScripts(); // Register all CSS and JS

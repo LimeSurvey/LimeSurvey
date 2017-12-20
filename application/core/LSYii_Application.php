@@ -28,6 +28,7 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
+* @property TbApi $boostrap The bootstrap renderer
 * 
 */
 class LSYii_Application extends CWebApplication
