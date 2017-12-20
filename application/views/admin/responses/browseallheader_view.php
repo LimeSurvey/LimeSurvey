@@ -109,10 +109,10 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
 <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-<span id='imgDeleteMarkedResponses' class="glyphicon glyphicon-trash text-warning" title="<?php eT('Delete marked responses'); ?>"></span>
+<span id='imgDeleteMarkedResponses' class="fa fa-trash text-warning" title="<?php eT('Delete marked responses'); ?>"></span>
 <?php } ?>
 <?php if ($bHasFileUploadQuestion) { ?>
-<span id='imgDownloadMarkedFiles' class="glyphicon glyphicon-download-alt text-success" title="<?php eT('Download marked files'); ?>"></span>
+<span id='imgDownloadMarkedFiles' class="fa fa-download-alt text-success" title="<?php eT('Download marked files'); ?>"></span>
 <?php } ?>
 </td>
     </tr>

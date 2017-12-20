@@ -10,47 +10,20 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
+        $_POST = [];
+        $_SESSION = [];
 
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_975622.lss';
+        self::importSurvey($surveyFile);
 
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
     }
 
     /**
@@ -113,9 +86,13 @@ class DateTimeTest extends TestBaseClass
 
     /**
      * Test wrong date input and error message.
+     * @group datewronginput
      */
     public function testWrongInput()
     {
+        $contr = new DummyController('dummyid');
+        \Yii::app()->setController($contr);
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);

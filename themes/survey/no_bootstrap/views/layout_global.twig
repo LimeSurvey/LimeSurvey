@@ -1,0 +1,65 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Global Layout  ·._.·´¯)·._.·´¯)
+
+    This is the global layout that will be used to displayed most pages (less the error page)
+    Other layout extend it, and will replace/extends the block "content".
+#}
+    <!DOCTYPE html>
+    <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}">
+
+        {# Headers, metadata, etc #}
+        {{ include('./subviews/head.twig') }}
+
+        <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}}" >
+
+        {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
+        <article>
+            <div id="{{ aSurveyInfo.id.dynamicreload }}">
+            {% block body %}
+
+                {# Top Container: in this template, it contains only  #}
+                {% block progress %}
+                    {{ include('./subviews/progess_bar.twig') }}
+                {% endblock %}
+
+                <!-- Outer Frame Container -->
+                <div class="{{ aSurveyInfo.class.outerframe }}" id="{{ aSurveyInfo.id.outerframe }}"  >
+
+                    <!-- Main Row -->
+                    <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
+                        <!-- Main Col -->
+                        <div id="{{ aSurveyInfo.id.maincol }}">
+
+                            {# This is the main block that will be replaced/extended by other layouts#}
+                            {% block content %}
+                                {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                                {{ include('./subviews/warnings.twig') }}
+                            {% endblock %}
+                        </div> <!-- main col -->
+                    </div> <!-- main row -->
+                </div> <!-- outer frame container -->
+
+                <!-- some template.js function launched before ready -->
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+                        if(template === undefined){
+                            var template = new Template();
+                        }
+                        template.initGlobal();
+                    /*]]>*/
+                </script>
+            {% endblock %}
+            </div>
+        </article>
+    </body>
+</html>

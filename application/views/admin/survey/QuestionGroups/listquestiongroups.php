@@ -9,36 +9,35 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Question groups in this survey"))); ?>
     <h3><?php eT('Question groups in this survey'); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
 
             <!-- Search Box -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form">
-                        <?php $form=$this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
-                            'method' => 'get',
-                            'htmlOptions'=>array(
-                                'class'=>'form-horizontal',
-                            ),
-                        )); ?>
-                        <div class="form-group">
-                            <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                            <div class="col-sm-2 text-right">
-                                <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
-                            </div>
-                            <div class="col-sm-2">
-                                <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                                <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+            <?php $form=$this->beginWidget('TbActiveForm', array(
+                'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
+                'method' => 'get',
+                'htmlOptions'=>array(
+                    'class'=>'form',
+                ),
+            )); ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">    
+                            <div class="form-group col-sm-10">
+                                <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>' control-label text-right col-sm-6')); ?>
+                                <div class="col-sm-4 text-right">
+                                    <?php echo $form->textField($model, 'group_name', array('class'=>'form-control col-sm-12')); ?>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
+                                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                                </div>
                             </div>
                         </div>
-                        <?php $this->endWidget(); ?>
-                    </div><!-- form -->
+                    </div>
                 </div>
-            </div>
+            <?php $this->endWidget(); ?>
 
             <!-- The table grid  -->
             <div class="row">
@@ -100,6 +99,7 @@
 
                         ),
                         'ajaxUpdate' => true,
+                        'afterAjaxUpdate' => 'bindPageSizeChange'
                     ));
                     ?>
                 </div>
@@ -109,10 +109,13 @@
 </div>
 
 <!-- To update rows per page via ajax -->
-<script type="text/javascript">
-    jQuery(function($) {
-        jQuery(document).on("change", '#pageSize', function(){
-            $.fn.yiiGridView.update('question-group-grid',{ data:{ pageSize: $(this).val() }});
-        });
-    });
-</script>
+<?php App()->getClientScript()->registerScript("ListQuestionGroups-pagination", "
+        var bindPageSizeChange = function(){
+            $('#pageSize').on('change', function(){
+                $.fn.yiiGridView.update('question-group-grid',{ data:{ pageSize: $(this).val() }});
+            });
+            $(document).trigger('actions-updated');
+        };
+    ", LSYii_ClientScript::POS_BEGIN); ?>
+    
+<?php App()->getClientScript()->registerScript("ListQuestionGroups-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>

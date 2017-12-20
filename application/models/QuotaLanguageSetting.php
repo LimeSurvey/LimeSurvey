@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -14,85 +16,70 @@
 */
 
 /**
- * @property integer $quotals_id
- * @property integer $quotals_quota_id
- * @property string $quotals_language
- * @property string $quotals_name
- * @property string $quotals_message
- * @property string $quotals_url
- * @property string $quotals_urldescrip
+ * @property integer $quotals_id ID (primary key)
+ * @property integer $quotals_quota_id Quota ID
+ * @property string $quotals_language Language code eg: 'en'
+ * @property string $quotals_name Quota display name for this language
+ * @property string $quotals_message Quota message for this language
+ * @property string $quotals_url Quota end-URL for this language
+ * @property string $quotals_urldescrip Quota end-URL description for this language
  *
  * @property Quota $quota
  */
 class QuotaLanguageSetting extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    /**
+     * @inheritdoc
+     * @return QuotaLanguageSetting
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var QuotaLanguageSetting $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{quota_languagesettings}}';
-	}
+    /** @inheritdoc */
+    public function tableName()
+    {
+        return '{{quota_languagesettings}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'quotals_id';
-	}
-
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		$alias = $this->getTableAlias();
-		return array(
-			'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
-		);
-	}
+    /** @inheritdoc */
+    public function primaryKey()
+    {
+        return 'quotals_id';
+    }
 
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
+        );
+    }
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('quotals_message','required'),
-            array('quotals_name','LSYii_Validators'),// No access in quota editor, set to quota.name
-            array('quotals_message','LSYii_Validators'),
-            array('quotals_url','LSYii_Validators','isUrl'=>true),
-            array('quotals_urldescrip','LSYii_Validators'),
-            array('quotals_url','urlValidator'),
+            array('quotals_message', 'required'),
+            array('quotals_name', 'LSYii_Validators'), // No access in quota editor, set to quota.name
+            array('quotals_message', 'LSYii_Validators'),
+            array('quotals_url', 'LSYii_Validators', 'isUrl'=>true),
+            array('quotals_urldescrip', 'LSYii_Validators'),
+            array('quotals_url', 'urlValidator'),
         );
     }
-    public function urlValidator(){
-        if($this->quota->autoload_url == 1 && !$this->quotals_url ){
-            $this->addError('quotals_url',gT('URL must be set if autoload URL is turned on!'));
+    public function urlValidator()
+    {
+        if ($this->quota->autoload_url == 1 && !$this->quotals_url) {
+            $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
         }
     }
 
@@ -105,12 +92,12 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
-
-	function insertRecords($data)
+    public function insertRecords($data)
     {
         $settings = new self;
-		foreach ($data as $k => $v)
-			$settings->$k = $v;
-		return $settings->save();
+        foreach ($data as $k => $v) {
+                    $settings->$k = $v;
+        }
+        return $settings->save();
     }
 }

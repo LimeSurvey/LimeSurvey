@@ -10,7 +10,7 @@
 <!-- admin menu bar -->
 <nav class="navbar">
   <div class="navbar-header">
-      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#small-screens-menus">
+      <button class="navbar-toggle hidden-md hidden-lg" type="button" data-toggle="collapse" data-target="#small-screens-menus">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -57,6 +57,9 @@
     <div class="collapse navbar-collapse js-navbar-collapse pull-right">
         <ul class="nav navbar-nav navbar-right">
 
+            <!-- Tutorial menu -->
+            <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
+            
             <!-- Configuration menu -->
             <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
@@ -67,7 +70,8 @@
                 </a>
             </li>
             <li class="dropdown dropdown-split-right">
-                <a  style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="sr-only">Toggle Dropdown</span>
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -154,7 +158,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><span class="icon-user" ></span> <?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("Your account");?></a>
+                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("My account");?></a>
                     </li>
 
                     <li class="divider"></li>

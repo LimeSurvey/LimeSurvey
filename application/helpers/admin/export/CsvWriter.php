@@ -45,65 +45,61 @@ class CsvWriter extends Writer
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        $sRecord='';
-        if(!$this->hasOutputHeader)
-        {
-            if ($oOptions->output=='display') {
-                header("Content-Disposition: attachment; filename=" . $this->csvFilename);
+        $sRecord = '';
+        if (!$this->hasOutputHeader) {
+            if ($oOptions->output == 'display') {
+                header("Content-Disposition: attachment; filename=".$this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
             }
             
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
-            if ($this->doHeaders == true) {
+            if ($this->doHeaders === true) {
                 $index = 0;
-                foreach ($headers as $header)
-                {
+                foreach ($headers as $header) {
                     $headers[$index] = $this->csvEscape($header);
                     $index++;
                 }
                 //Output the header...once and only once.
-                $sRecord.=implode($this->separator, $headers) . PHP_EOL;
+                $sRecord .= implode($this->separator, $headers).PHP_EOL;
             }
             $this->hasOutputHeader = true;
         }
         //Output the values.
         $index = 0;
-        foreach ($values as $value)
-        {
+        foreach ($values as $value) {
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord.= implode($this->separator, $values) . PHP_EOL;
-        if ($oOptions->output=='display')
-        {
+        $sRecord .= implode($this->separator, $values).PHP_EOL;
+        if ($oOptions->output == 'display') {
             echo $sRecord; 
             $this->output = '';
         } elseif ($oOptions->output == 'file') {
             $this->output .= $sRecord;
             fwrite($this->file, $this->output);
-            $this->output='';
+            $this->output = '';
         }
     }
 
     public function close()
     {
         // Output white line at the end, better for R import
+        echo "\n";
         if (!is_null($this->file)) {
             fwrite($this->file, "\n");
             fclose($this->file);
-        } else {
-            echo "\n";
         }
     }
 
     /**
-    * Returns the value with all necessary escaping needed to place it into a CSV string.
-    *
-    * @param string $value
-    * @return string
-    */
+     * Returns the value with all necessary escaping needed to place it into a CSV string.
+     *
+     * @param string $value
+     * @return string
+     */
     protected function csvEscape($value)
     {
-        return CSVEscape($value);
+        $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $value);
+        return '"'.str_replace('"', '""', $sString).'"';
     }
 }

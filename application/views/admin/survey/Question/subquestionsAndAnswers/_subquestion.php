@@ -49,7 +49,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="glyphicon glyphicon-move"></span>
+            <span class="fa fa-bars bigIcons"></span>
         </td>
 
         <!-- Code (title) -->
@@ -66,7 +66,7 @@
 
             <input
                 type='text'
-                class="code form-control input-lg"
+                class="code form-control input"
                 id='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
                 name='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
@@ -99,7 +99,7 @@
         <input
             type='text'
             size='20'
-            class='answer form-control input-lg'
+            class='answer form-control input'
             id='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
             name='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example subquestion","js") ?>'
@@ -111,7 +111,7 @@
     <!-- Relevance equation -->
     <?php if ($first):?>
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     <?php else: ?>
         <span style="display: none" class="relevance relevance-equation">
@@ -131,7 +131,7 @@
             ?>
 
             <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-scale-id="<?php echo $scale_id; ?>" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
-            <span class="glyphicon glyphicon-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
+            <span class="fa fa-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
         <?php endif; ?>
 
     </td>

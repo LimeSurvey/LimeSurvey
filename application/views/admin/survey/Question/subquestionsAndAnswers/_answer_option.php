@@ -28,7 +28,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="glyphicon glyphicon-move"></span>
+            <span class="fa fa-bars bigIcons"></span>
         </td>
 
         <!-- Code (title) -->
@@ -46,7 +46,7 @@
 
             <input
                 type='text'
-                class="code form-control input-lg"
+                class="code form-control input"
                 id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
                 name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
@@ -76,7 +76,7 @@
         <td class="assessment-value">
             <input
                 type='text'
-                class='assessment form-control input-lg'
+                class='assessment form-control input'
                 id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $assessment_value; ?>"
@@ -98,7 +98,7 @@
         </td>
     <?php elseif ($assessmentvisible): ?>
         <td class="assessment-value">
-            <?php echo $row['assessment_value']; ?>
+            <?php echo $assessment_value; ?>
         </td>
     <?php else: ?>
         <td style='display:none;' class="assessment-value">
@@ -110,7 +110,7 @@
         <input
             type='text'
             size='20'
-            class='answer form-control input-lg'
+            class='answer form-control input'
             id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example answer option","js") ?>'
@@ -129,7 +129,7 @@
 
         <?php if ( $first):?>
             <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-            <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+            <span class="fa fa-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
         <?php endif; ?>
     </td>
 </tr>

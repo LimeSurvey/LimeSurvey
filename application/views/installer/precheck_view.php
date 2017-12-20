@@ -54,7 +54,7 @@ function dirReport($dir, $write)
         <tbody>
         <tr>
                <td><?php eT("PHP version"); ?></td>
-               <td>5.3.3+</td>
+               <td>5.5.9+</td>
                <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>
@@ -144,15 +144,15 @@ function dirReport($dir, $write)
         </table>
         <div class="row navigator">
             <div class="col-md-4" >
-                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
+                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
             <div class="col-md-4">
-                <input class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-check-again" class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="col-md-4">
 
                 <?php if (isset($next) && $next== TRUE) { ?>
-                <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                <input id="ls-next" class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php } ?>
             </div>
         </div>

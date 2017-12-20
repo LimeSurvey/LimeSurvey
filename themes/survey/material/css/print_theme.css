@@ -1,0 +1,27 @@
+body {
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12pt;
+}
+h1,h2,h3,h4 {
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+* {
+  page-break-after: auto;
+}
+.container{width:100%}
+@page{
+  margin: 1cm 1cm 2cm;
+}
+.question-wrapper  {
+  border: 0.1em solid #aaa;
+  padding: 1em;
+  margin: 1em 0.5em;
+  clear: both;
+  page-break-inside: avoid;
+  page-break-before: auto;
+}
+.dir-ltr .question-code{margin-right:1em}
+.dir-rtl .question-code{margin-left:1em}
+.question-wrapper .h3{margin-top:0}
+.table-print-answers thead th{text-align:center;vertical-align:bottom}
+.table-print-answers tbody td{text-align:center;vertical-align:middle}

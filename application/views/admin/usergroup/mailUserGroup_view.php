@@ -1,7 +1,7 @@
 <div class="col-lg-12 list-surveys">
-    <h3>
+    <div class="pagetitle h3">
         <?php eT("Mail to all Members"); ?>
-    </h3>
+    </div>
 
     <div class="row">
         <?php echo CHtml::form(array("admin/usergroups/sa/mail/ugid/{$ugid}"), 'post', array('class'=>'col-md-6 col-md-offset-3', 'id'=>'mailusergroup', 'name'=>'mailusergroup')); ?>

@@ -65,7 +65,7 @@
                     editor.setHighlightActiveLine(config.highlightActiveLine);
                     editor.clearSelection();
                     session.on('change', function(e) {
-                        textarea.val(e.target.getValue());
+                        textarea.val(editor.getValue());
                     });
 
                 }
@@ -113,6 +113,3 @@
 
 
 })(jQuery);
-
-
-

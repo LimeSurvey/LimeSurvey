@@ -3,7 +3,7 @@
         <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
         <?php eT('ComfortUpdate'); ?>
         <?php if(YII_DEBUG):?>
-            <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
+            <small>Server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
         <?php endif;?>
     </h3>
 
@@ -45,7 +45,7 @@
                         </td>
                         <td>
                             <a data-href="<?php echo App()->createUrl('/admin/update/sa/delete_key');?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
-                                <span class="text-danger glyphicon glyphicon-trash"></span>
+                                <span class="text-danger fa fa-trash"></span>
                             </a>
                         </td>
                     </tr>

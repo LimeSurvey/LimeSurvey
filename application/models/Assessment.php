@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,69 +15,190 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class Assessment
+ *
+ * @property integer $id Primary key
+ * @property integer $sid Survey id
+ * @property integer $gid Group id
+ * @property string $scope
+ * @property string $name
+ * @property string $minimum
+ * @property string $maximum
+ * @property string $message
+ * @property string $language
+ */
 class Assessment extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    /**
+     * @inheritdoc
+     * @return Assessment
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
+    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('name,message','LSYii_Validators'),
+            array('name,message', 'LSYii_Validators'),
         );
     }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{assessments}}';
-	}
+    /** @inheritdoc */
+    public function tableName()
+    {
+        return '{{assessments}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string[]
-	 */
-	public function primaryKey()
-	{
-		return array('id', 'language');
-	}
+    /** @inheritdoc */
+    public function primaryKey()
+    {
+        return array('id', 'language');
+    }
 
-	public static function insertRecords($data)
+        /**
+         * @return array customized attribute labels (name=>label)
+         */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'scope' => gT("Scope"),
+            'name' => gT("Name"),
+            'minimum' => gT("Minimum"),
+            'maximum' => gT("Maximum"),
+            'message' => gT("Message"),
+            'language' => gT("Language"),
+        );
+    }
+
+    public function getButtons()
+    {
+        $buttons = "<div style='white-space: nowrap'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>" //icon class
+            . "</button>";
+		
+        if (Permission::model()->hasGlobalPermission('assessments', 'update')) {
+            $editData = array(
+                'action_assessments_editModal',
+                'text-danger',
+                gT("Edit this assessment rule"),
+                'edit'
+            );
+            $deleteData = array(
+                'action_assessments_deleteModal',
+                'text-danger',
+                gT("Delete this assessment rule"),
+                'trash text-danger'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+            $buttons .= vsprintf($raw_button_template, $editData);
+        }
+
+        $buttons .= '</div>';
+		
+        return $buttons;
+    }
+
+    public function getColumns()
+    {
+        return array(
+            array(
+                'name' => 'id',
+                'filter' => false
+                ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                'name' => 'scope',
+                'value' => '$data->scope == "G" ? eT("Global") : eT("Total")',
+                'htmlOptions' => ['class' => 'col-sm-1'],
+                'filter' => TbHtml::dropDownList('assessment["scope"]', 'scope', ['' => gT('All'), 'T' => gT('Total'), 'G' => gT("Global")])
+            ),
+            array(
+                'name' => 'name',
+                'htmlOptions' => ['class' => 'col-sm-2']
+            ),
+            array(
+                'name' => 'minimum',
+                'htmlOptions' => ['class' => 'col-sm-1']
+            ),
+            array(
+                'name' => 'maximum',
+                'htmlOptions' => ['class' => 'col-sm-1']
+            ),
+            array(
+                'name' => 'message',
+                'htmlOptions' => ['class' => 'col-sm-5'],
+                "type" => 'raw',
+            )
+        );
+    }
+
+    public function search()
+    {
+// @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sid', $this->sid);
+        $criteria->compare('gid', $this->gid);
+        $criteria->compare('scope', $this->scope);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('minimum', $this->minimum);
+        $criteria->compare('maximum', $this->maximum);
+        $criteria->compare('message', $this->message, true);
+        
+        $criteria->group = 'id';
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
+    /**
+     * @param array $data
+     * @return Assessment
+     */
+    public static function insertRecords($data)
     {
         $assessment = new self;
 
-		foreach ($data as $k => $v)
-			$assessment->$k = $v;
-		$assessment->save();
+        foreach ($data as $k => $v) {
+                    $assessment->$k = $v;
+        }
+        $assessment->save();
 
         return $assessment;
     }
 
+    /**
+     * @param integer $id
+     * @param integer $iSurveyID
+     * @param string $language
+     * @param array $data
+     */
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
         $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
         if (!is_null($assessment)) {
-            foreach ($data as $k => $v)
-                $assessment->$k = $v;
+            foreach ($data as $k => $v) {
+                            $assessment->$k = $v;
+            }
             $assessment->save();
         }
     }
 }
-?>

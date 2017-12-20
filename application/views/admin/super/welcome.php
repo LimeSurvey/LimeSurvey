@@ -3,6 +3,9 @@
  * The welcome page is the home page
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('index');
 ?>
 
 <?php
@@ -17,8 +20,7 @@
     gT('Stay safe and up to date');
     gT('Label sets');
     gT('Edit label sets');
-    gT('Template editor');
-    gT('Edit LimeSurvey templates');
+    gT('Themes');
 ?>
 
 <!-- Welcome view -->
@@ -50,14 +52,23 @@
                       <h4 class="modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
-                        <ol>
-                            <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
-                                        "<span class='icon-add text-success'></span>"); ?></li>
-                            <li><?php eT('Create a new question group inside your survey.'); ?></li>
-                            <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                            <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<span class='icon-do text-success'></span>"); ?></li>
-                        </ol>
+                        <div class="container-fluid">
+                            <div class="row" id="selector__welcome-modal--simplesteps">
+                                <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
+                                <ol>
+                                    <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
+                                                "<span class='icon-add text-success'></span>"); ?></li>
+                                    <li><?php eT('Create a new question group inside your survey.'); ?></li>
+                                    <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
+                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<span class='icon-do text-success'></span>"); ?></li>
+                                </ol>
+                            </div>
+                            <div class="row"><hr/></div>
+                            <div class="row" id="selector__welcome-modal--tutorial">
+                                <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
+                                <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
@@ -101,12 +112,13 @@
             'display'=>'allboxesinrows',
             'boxesbyrow'=>$iBoxesByRow,
             'offset'=>$sBoxesOffSet,
+            'boxesincontainer' => $bBoxesInContainer
         ));
     ?>
 
     <?php if( $bShowSurveyList ): ?>
         <div class="col-sm-12 list-surveys">
-            <h3><?php eT('Survey list'); ?></h3>
+            <h2><?php eT('Survey list'); ?></h2>
             <?php
                 $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                             'model'            => $oSurveySearch,
@@ -121,11 +133,12 @@
     <div class="row  hidden-sm  hidden-md hidden-lg ">
         <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php eT('List surveys');?></h3>
+                <div class="panel-title"><?php eT('List surveys');?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
+            <span class="sr-only"><?php eT('List surveys');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>
@@ -133,18 +146,18 @@
 
         <div class="panel panel-primary panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php eT('Edit global settings');?></h3>
+                <div class="panel-title"><?php eT('Edit global settings');?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
-                    <span class="icon-settings" style="font-size: 4em">
-                    </span>
+                    <span class="icon-settings" style="font-size: 4em"></span>
+                    <span class="sr-only"><?php eT('Edit global settings');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
             </div>
         </div>
 
-    </div>
+    </>
 </div>
 
 <!-- Notification setting -->

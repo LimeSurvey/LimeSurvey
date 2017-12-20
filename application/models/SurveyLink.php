@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,50 +12,55 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
-  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class SurveyLink
+ *
+ * @property integer $participant_id
+ * @property integer $token_id
+ * @property integer $survey_id
+ * @property string $date_created
+ * @property string $date_invited
+ * @property string $date_completed
+ *
+ * @property Participant $participant
+ * @property Survey $survey
+ * @property string $dateFormat
+ * @property string|boolean $isSubmitted
+ * @property string $checkbox
+ * @property array $columns
+ * @property string $surveyIdLink
+ * @property string $lastInvited
+ * @property string $lastReminded
+ */
 class SurveyLink extends LSActiveRecord
 {
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return SurveyLink
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
     /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
+     * @inheritdoc
+     * @return SurveyLink
      */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
+
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{survey_links}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('participant_id', 'token_id', 'survey_id');
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -64,66 +71,65 @@ class SurveyLink extends LSActiveRecord
         );
     }
 
-    function getLinkInfo($participantid)
+    /**
+     * @param integer $participantId
+     * @return array|mixed|null
+     */
+    public function getLinkInfo($participantId)
     {
-        return self::model()->findAllByAttributes(array('participant_id' => $participantid));
+        return self::model()->findAllByAttributes(array('participant_id' => $participantId));
     }
 
-    /*
-     *
-     *
-     *
-     *
-     * */
 
     /**
      * @param integer $iSurveyId
+     * @return mixed
      */
-    function rebuildLinksFromTokenTable($iSurveyId)
+    public function rebuildLinksFromTokenTable($iSurveyId)
     {
         $this->deleteLinksBySurvey($iSurveyId);
-        $tableName="{{tokens_".$iSurveyId."}}";
-        $dateCreated=date('Y-m-d H:i:s', time());
+        $tableName = "{{tokens_".$iSurveyId."}}";
+        $dateCreated = date('Y-m-d H:i:s', time());
         $query = "INSERT INTO ".SurveyLink::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
         return Yii::app()->db->createCommand($query)
-                             ->query();
+                    ->query();
     }
-    /*
+
+    /**
      * Delete a single survey_link based on a token table entry(by token_id and survey_id)
      *
      * An entry in the survey_links table must be unique by the combination of Token_ID
      * (which is unique within a tokens table) and survey_id (which limits to one single
      * token table).
      *
-     * @param int $participant_id The UUID of the participant whose link is being deleted
-     * @param int $token_id the unique id of the entry in the token table being deleted
-     * @param int $survey_id the id of the survey for the link being deleted
+     * @param int[] $aTokenIds the unique ids of the entry in the token table being deleted
+     * @param int $surveyId the id of the survey for the link being deleted
      *
-     * @return true|false
-     * */
-    function deleteTokenLink($iTokenIds, $surveyId)
+     * @return bool|CDbDataReader
+     */
+    function deleteTokenLink($aTokenIds, $surveyId)
     {
-        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
+        $query = "DELETE FROM ".SurveyLink::tableName()
+            ." WHERE token_id IN (".implode(", ", $aTokenIds).") AND survey_id=:survey_id";
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
-                             ->query();
+                    ->bindParam(":survey_id", $surveyId)
+                    ->query();
     }
 
-    /*
+    /**
      * Delete all entries in the survey_link table that link to a particular survey_id
      * This function is used when a tokens_table is being dropped, and therefore all
      * links must be removed
      *
-     * @param int $survey_id the SID of the survey whose tokens table is being dropped
-     *
-     * @return true|false
-     * */
-    function deleteLinksBySurvey($surveyId)
+     * @param int $surveyId the SID of the survey whose tokens table is being dropped
+     * @return bool|CDbDataReader
+     */
+    public function deleteLinksBySurvey($surveyId)
     {
-        $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
+        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE survey_id = :survey_id";
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
-                             ->query();
+                    ->bindParam(":survey_id", $surveyId)
+                    ->query();
     }
 
     /**
@@ -131,19 +137,10 @@ class SurveyLink extends LSActiveRecord
      */
     public function getDateFormat()
     {
-        $dateFormat = $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
     }
 
-    /**
-     * @return array
-     */
-    public function getSurveyInfo()
-    {
-        $Survey = Survey::model()->findByPk($this->survey_id);
-        return $Survey->surveyinfo;
-
-    }
 
     /**
      * @return TokenDynamic
@@ -156,10 +153,11 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @return string
+     * // TODO this should be in survey model
      */
     public function getSurveyName()
     {
-       return $this->surveyInfo['surveyls_title'];
+        return $this->survey->currentLanguageSettings->surveyls_title;
     }
 
     /**
@@ -167,10 +165,9 @@ class SurveyLink extends LSActiveRecord
      */
     public function getLastInvited()
     {
-        $invitedate = $this->tokenDynamicModel['sent'];
-        if($invitedate != "N") 
-        {
-            $date = new DateTime($invitedate);
+        $inviteDate = $this->tokenDynamicModel['sent'];
+        if ($inviteDate != "N") {
+            $date = new DateTime($inviteDate);
             return $date->format($this->dateFormat);
         }
     }
@@ -181,8 +178,7 @@ class SurveyLink extends LSActiveRecord
     public function getLastReminded()
     {
         $reminddate = $this->tokenDynamicModel['remindersent'];
-        if($reminddate != "N") 
-        {
+        if ($reminddate != "N") {
             $date = new DateTime($reminddate);
             return $date->format($this->dateFormat);
         }
@@ -194,7 +190,6 @@ class SurveyLink extends LSActiveRecord
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->date_created;
-        
         $date = new DateTime($dateCreated);
         return $date->format($this->dateFormat);
     }
@@ -204,14 +199,11 @@ class SurveyLink extends LSActiveRecord
      */
     public function getIsSubmittedHtml()
     {
-        if($this->isSubmitted !== false)
-        {
+        if ($this->isSubmitted !== false) {
             $date = new DateTime($this->isSubmitted);
             $submittedAt = $date->format($this->dateFormat);
             return $submittedAt;
-        } 
-        else 
-        {
+        } else {
             return '&#8211;';
         }
     }
@@ -221,8 +213,8 @@ class SurveyLink extends LSActiveRecord
      */
     public function getIsSubmitted()
     {
-        $submitdate = $this->tokenDynamicModel['completed'];
-        return (($submitdate == "N") ? false : $submitdate);
+        $submitDate = $this->tokenDynamicModel['completed'];
+        return (($submitDate == "N") ? false : $submitDate);
     }
 
     /**
@@ -233,9 +225,7 @@ class SurveyLink extends LSActiveRecord
         return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[".$this->token_id.",".$this->survey_id.",\"".$this->participant_id."\"]' />";
     }
 
-    /**
-     * @return array
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(
@@ -324,7 +314,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyIdLink()
     {
-        $url = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->survey_id);
+        $url = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/'.$this->survey_id);
         $link = CHtml::link($this->survey_id, $url);
         return $link;
     }

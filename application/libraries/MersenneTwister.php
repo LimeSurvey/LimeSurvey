@@ -3,47 +3,42 @@
 namespace ls\mersenne;
 
 /**
- * Get seed for this answer
- * If there is no seed create a new one
- * @param int $surveyId
- * @param boolean $preview
- * @return int
+ * Set seed for this response
+ * If there is no seed, create a new one
+ * Also inits the twister.
+ * @param int $surveyid
+ * @return void
  */
-function getSeed($surveyId, $preview)
+function setSeed($surveyid)
 {
-    $_SESSION['survey_'.$surveyId]['startingValues']['seed'] = 'seed123';
-    //$sd = \SurveyDynamic::model($surveyId)->find
-    //traceVar($columnNames);
-    // Get columns
-    // Check if we have seed column
-    // Yes: check value
-    //   have value, use it
-    //   no value, generate new seed
-    // No: create column
-    //   generate seed
-    //   insert seed
-    // Use seed to instantiate twister
+    //traceVar(@$_SESSION['survey_' . $surveyid]['srid']);
+    if (isset($_SESSION['survey_'.$surveyid]['srid'])) {
+        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
+        $seed = $oResponse->seed;
+    } else {
+        $seed = mt_rand();
+
+        // Only set seed if corresponding database column exists.
+        // This mismatch can happen if survey is activated before update to
+        // new version that uses seed.
+        $table = \Yii::app()->db->schema->getTable('{{survey_'.$surveyid.'}}');
+        if (isset($table->columns['seed'])) {
+            $_SESSION['survey_'.$surveyid]['startingValues']['seed'] = $seed;
+        }
+    }
+    MersenneTwister::init($seed);
 }
 
 /**
- * Shuffle with seed
+ * Shuffle an array using MersenneTwister
+ * Argument NOT called by reference!
  * @param array $arr
- * @param $seed
  * @return array
  */
-function shuffle($arr, $seed=-1)
+function shuffle(array $arr)
 {
-    if ( $seed == -1 ) return $arr;
-    $mt = new MersenneTwister($seed);
-    $new = $arr;
-    for ($i = count($new) - 1; $i > 0; $i--)
-    {
-        $j = $mt->getNext(0,$i);
-        $tmp = $new[$i];
-        $new[$i] = $new[$j];
-        $new[$j] = $tmp;
-    }
-    return $new;
+    $mt = MersenneTwister::getInstance();
+    return $mt->shuffle($arr);
 }
 
 /**
@@ -53,68 +48,112 @@ function shuffle($arr, $seed=-1)
  */
 class MersenneTwister
 {
-  private $state = array ();
-  private $index = 0;
+    private $state = array();
+    private $index = 0;
 
-  /**
-   * @param integer $seed
-   */
-  public function __construct($seed = null) {
-    if ($seed === null)
-      $seed = mt_rand();
+    /**
+     * Singleton variable
+     * @var MersenneTwister
+     */
+    private static $instance = null;
 
-    $this->setSeed($seed);
-  }
-
-  /**
-   * @param integer $seed
-   */
-  public function setSeed($seed) {
-    $this->state[0] = $seed & 0xffffffff;
-
-    for ($i = 1; $i < 624; $i++) {
-      $this->state[$i] = (((0x6c078965 * ($this->state[$i - 1] ^ ($this->state[$i - 1] >> 30))) + $i)) & 0xffffffff;
+    /**
+     * @param int $seed
+     * @return void
+     */
+    public static function init($seed)
+    {
+        self::$instance = new MersenneTwister($seed);
     }
 
-    $this->index = 0;
-  }
+    /**
+     * @return MersenneTwister
+     */
+    public static function getInstance()
+    {
+        if (empty(self::$instance)) {
+            throw new \Exception('Must init MersenneTwister before use. Should be done in randomizationGroupsAndQuestions.');
+        }
 
-  private function generateTwister() {
-    for ($i = 0; $i < 624; $i++) {
-      $y = (($this->state[$i] & 0x1) + ($this->state[$i] & 0x7fffffff)) & 0xffffffff;
-      $this->state[$i] = ($this->state[($i + 397) % 624] ^ ($y >> 1)) & 0xffffffff;
-
-      if (($y % 2) == 1) {
-        $this->state[$i] = ($this->state[$i] ^ 0x9908b0df) & 0xffffffff;
-      }
-    }
-  }
-
-  /**
-   * @param integer $min
-   * @param integer $max
-   */
-  public function getNext($min = null, $max = null) {
-    if (($min === null && $max !== null) || ($min !== null && $max === null))
-      throw new Exception('Invalid arguments');
-
-    if ($this->index === 0) {
-      $this->generateTwister();
+        return self::$instance;
     }
 
-    $y = $this->state[$this->index];
-    $y = ($y ^ ($y >> 11)) & 0xffffffff;
-    $y = ($y ^ (($y << 7) & 0x9d2c5680)) & 0xffffffff;
-    $y = ($y ^ (($y << 15) & 0xefc60000)) & 0xffffffff;
-    $y = ($y ^ ($y >> 18)) & 0xffffffff;
+    /**
+     * Shuffle with seed
+     * @param array $arr
+     * @param $seed
+     * @return array
+     */
+    public function shuffle($arr)
+    {
+        $mt = self::$instance;
+        $new = $arr;
+        for ($i = count($new) - 1; $i > 0; $i--) {
+            $j = $mt->getNext(0, $i);
+            $tmp = $new[$i];
+            $new[$i] = $new[$j];
+            $new[$j] = $tmp;
+        }
+        return $new;
+    }
 
-    $this->index = ($this->index + 1) % 624;
 
-    if ($min === null && $max === null)
-      return $y;
+    public function __construct($seed = null)
+    {
+        if ($seed === null) {
+                    $seed = mt_rand();
+        }
 
-    $range = abs($max - $min);
+        $this->setSeed($seed);
+    }
 
-    return min($min, $max) + ($y % ($range + 1));
-  }
+    public function setSeed($seed)
+    {
+        $this->state[0] = $seed & 0xffffffff;
+
+        for ($i = 1; $i < 624; $i++) {
+            $this->state[$i] = (((0x6c078965 * ($this->state[$i - 1] ^ ($this->state[$i - 1] >> 30))) + $i)) & 0xffffffff;
+        }
+
+        $this->index = 0;
+    }
+
+    private function generateTwister()
+    {
+        for ($i = 0; $i < 624; $i++) {
+            $y = (($this->state[$i] & 0x1) + ($this->state[$i] & 0x7fffffff)) & 0xffffffff;
+            $this->state[$i] = ($this->state[($i + 397) % 624] ^ ($y >> 1)) & 0xffffffff;
+
+            if (($y % 2) == 1) {
+                $this->state[$i] = ($this->state[$i] ^ 0x9908b0df) & 0xffffffff;
+            }
+        }
+    }
+
+    public function getNext($min = null, $max = null)
+    {
+        if (($min === null && $max !== null) || ($min !== null && $max === null)) {
+                    throw new Exception('Invalid arguments');
+        }
+
+        if ($this->index === 0) {
+            $this->generateTwister();
+        }
+
+        $y = $this->state[$this->index];
+        $y = ($y ^ ($y >> 11)) & 0xffffffff;
+        $y = ($y ^ (($y << 7) & 0x9d2c5680)) & 0xffffffff;
+        $y = ($y ^ (($y << 15) & 0xefc60000)) & 0xffffffff;
+        $y = ($y ^ ($y >> 18)) & 0xffffffff;
+
+        $this->index = ($this->index + 1) % 624;
+
+        if ($min === null && $max === null) {
+                    return $y;
+        }
+
+        $range = abs($max - $min);
+
+        return min($min, $max) + ($y % ($range + 1));
+    }
 }

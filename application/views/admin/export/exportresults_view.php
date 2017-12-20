@@ -1,7 +1,12 @@
 <?php
 /**
  * Export result view
+ * @var AdminController $this
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('exportResults');
+
 ?>
 <script type="text/javascript">
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
@@ -19,7 +24,7 @@
         ?>
     </h3>
 
-    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>'form-horizontal'));?>
+    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>''));?>
         <div class="row">
             <div class="col-sm-12 content-right">
                 <div class="row">
@@ -28,9 +33,9 @@
                         <!-- Format -->
                         <div class="panel panel-primary" id="panel-1">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Format");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -55,9 +60,9 @@
                         <!-- Range -->
                         <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Range");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -141,9 +146,9 @@
                         <!-- General -->
                         <div class="panel panel-primary" id="panel-3">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("General"); ?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -172,9 +177,9 @@
                         <!-- Heading -->
                         <div class="panel panel-primary" id="panel-4">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Headings");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
 
@@ -282,9 +287,9 @@
 
                         <div class="panel panel-primary" id="panel-5">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Responses");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <!-- Answer codes / Full answers -->
@@ -332,9 +337,9 @@
                         <!-- Column control -->
                         <div class="panel panel-primary" id="panel-6">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Columns");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -360,9 +365,9 @@
                         <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')): ?>
                             <div class="panel panel-primary" id="panel-7">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title">
+                                    <div class="panel-title h4">
                                         <?php eT("Token control");?>
-                                    </h4>
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="alert alert-info alert-dismissible" role="alert">

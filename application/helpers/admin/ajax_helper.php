@@ -36,7 +36,7 @@ class AjaxHelper
     public static function output($msg)
     {
         $output = new JsonOutput($msg);
-        self::echoString($output);  // Encoded to json format when converted to string
+        self::echoString($output); // Encoded to json format when converted to string
     }
 
     /**
@@ -82,6 +82,7 @@ class AjaxHelper
     }
 
     /**
+     * @param string $target
      * @return void
      */
     public static function outputHtml($html, $target)
@@ -92,8 +93,7 @@ class AjaxHelper
 
     /**
      * Echo $str with json header
-     * @param string str
-     * @param JsonOutput $str
+     * @param string $str
      * @return void
      */
     private static function echoString($str)
@@ -166,7 +166,7 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
-            'ajaxHelper'       => true,  // To help JS parse in some cases.
+            'ajaxHelper'       => true, // To help JS parse in some cases.
             'success'          => $this->success,
             'result'           => $this->result,
             'error'            => $this->error,
@@ -289,8 +289,7 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
         // This should not be possible here
         if (isset($result[0]) && $result[0] == 'success') {
             throw new \CException('Internal error: login form submitted');
-        }
-        else if (isset($result[0]) && $result[0] == 'failed') {
+        } else if (isset($result[0]) && $result[0] == 'failed') {
             throw new \CException('Internal error: login form submitted');
         }
 

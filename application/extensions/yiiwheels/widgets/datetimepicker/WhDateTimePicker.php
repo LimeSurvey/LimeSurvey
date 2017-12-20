@@ -61,6 +61,10 @@ class WhDateTimePicker extends CInputWidget
 	{
 		$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
 		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getEscapedId());
+        foreach($this->pluginOptions as $key => $pluginOption){
+            if(is_array($pluginOption)) continue;
+            $this->htmlOptions['data-'.$key] = $pluginOption;
+        }
 	}
 
 	/**
@@ -92,7 +96,7 @@ class WhDateTimePicker extends CInputWidget
 				echo TbHtml::textField($name, $this->value, $this->htmlOptions);
 			}
             echo TbHtml::openTag('span', array('class' => 'input-group-addon'));
-			echo TbHtml::openTag('span', array('class' => 'glyphicon glyphicon-calendar'));
+			echo TbHtml::openTag('span', array('class' => 'fa fa-calendar'));
 			echo TbHtml::closeTag('span');
             echo TbHtml::closeTag('span');
 			echo TbHtml::closeTag('div');
@@ -109,29 +113,20 @@ class WhDateTimePicker extends CInputWidget
 		/* publish assets dir */
 		$path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets';
 		$assetsUrl = $this->getAssetsUrl($path);
-        // Not needet anymore though globally implemented
-		//$this->getYiiWheels()->registerAssetJs('moment-with-locales.js');
 
 		/* @var $cs CClientScript */
 		$cs = Yii::app()->getClientScript();
-		$cs->registerCssFile($assetsUrl . '/css/bootstrap-datetimepicker.min.css');
-		$cs->registerScriptFile($assetsUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END);
-		if (isset($this->pluginOptions['language'])) {
-			$cs->registerScriptFile(
-				$assetsUrl . '/js/locales/bootstrap-datetimepicker.' . $this->pluginOptions['language'] . '.js'
-			, CClientScript::POS_END);
-		}
-		/* initialize plugin */
+		$cs->registerPackage('bootstrap-datetimepicker');
+
 		/* initialize plugin */
 		$selector = null === $this->selector
 			? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId()) . '_datetimepicker'
 			: $this->selector;
 
-		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions);
+		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
 
 		if($this->events)
 		{
-
 			$this->getApi()->registerEvents($selector, $this->events);
 		}
 	}

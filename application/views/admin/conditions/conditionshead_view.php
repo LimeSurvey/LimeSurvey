@@ -1,5 +1,4 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT("Conditions designer") )); ?>
     <h3>
         <?php eT("Conditions designer"); ?>
 
@@ -13,7 +12,7 @@
                 class='btn btn-warning pull-right condition-header-button'
                 onclick='return false';
             >
-                <span class="glyphicon glyphicon-trash"></span>
+                <span class="fa fa-trash"></span>
                 &nbsp;
                 <?php eT('Delete all conditions'); ?>
             </button>
@@ -53,7 +52,7 @@
 
 
 <?php echo $conditionsoutput_action_error;?>
-<?php echo $javascriptpre;?>
+<?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript", $javascriptpre, LSYii_ClientScript::POS_BEGIN);?>
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">

@@ -14,6 +14,10 @@
 !/upload/surveys/readme.txt
 !/upload/templates/index.html
 !/upload/templates/readme.txt
+!/upload/themes/index.html
+!/upload/themes/readme.txt
+!/upload/themes/survey/index.html
+!/upload/themes/question/readme.txt
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
@@ -29,11 +33,13 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 
+#ignore old styles
+/styles/
+
 #ignore most of the js-build stuff
 .eslintrc
 .eslintignore
 node_modules/
-third_party/**/src/
 third_party/**/docs/
 third_party/**/scripts/
 third_party/**/tests/
@@ -42,6 +48,9 @@ third_party/**/less/
 third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
+
+# Test stuff
+chromedriver
 
 # RFC and commons directory and files
 /.well-known/
@@ -81,6 +90,11 @@ enabletests
 ## Ignore test tmp files
 /tests/data/tmp/**
 
+## Ignore files and dependencies for testing
+composer.lock
+third_party/facebook/**/*
+third_party/symfony/**/*
+third_party/composer/installed\.json
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -91,8 +105,23 @@ enabletests
 !.bowerrc
 !.gitignore
 !.gitattributes
+!.editorconfig
+!.eslintignore
+!.eslint.json
+!.eslintrc.json
 
 ## ignore Vagrantfile
 Vagrantfile
 
+## Exclude uploaded images in themes
+themes/survey/default/files/*
+themes/survey/material/files/*
+themes/survey/monochrome/files/*
+themes/survey/no_bootstrap/files/*
 
+## But still push the preshipped ones
+!themes/survey/*/files/logo.png
+!themes/survey/*/files/logo_340.png
+!themes/survey/*/files/logo_w_s.png
+!themes/survey/*/files/pattern.png
+!themes/survey/*/files/print_img_radio.png

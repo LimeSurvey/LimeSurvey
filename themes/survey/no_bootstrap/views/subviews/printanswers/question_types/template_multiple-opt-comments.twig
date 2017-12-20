@@ -1,0 +1,22 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-md-8">
+    {% for subquestionId, subquestion in question.subquestions %}
+        <div class="row">
+            <div class="col-md-4 text-right">
+                {% if subquestion.answervalue is sameas("Y") %}
+                    <i class="fa fa-check-square-o"></i>
+                {% else %}
+                    {{subquestion.answervalue}}
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-left">
+                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+            <div class="col-md-4 text-left">
+                    {{subquestion.comment.answervalue}}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

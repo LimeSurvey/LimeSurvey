@@ -2,14 +2,14 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h4>
 </div>
-<div class="modal-body form-horizontal">
+<div class="modal-body ">
 <?php
     $form = $this->beginWidget(
         'bootstrap.widgets.TbActiveForm',
         array(
             'id' => 'editAttributeNameActiveForm',
             'action' => array('admin/participants/sa/editAttributeName'),
-            'htmlOptions' => array('class' => 'form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => ''), // for inset effect
         )
     );
 ?>
@@ -21,17 +21,17 @@
     }
     echo "<legend>".gT("Basic settings")."</legend>";
         $baseControlGroupHtmlOptions = array(
-             'groupOptions'=> array('class'=>'form-horizontal'),
-             'labelOptions'=> array('class'=> 'col-sm-4'),
-             'class' => 'col-sm-8',
+             'groupOptions'=> array('class'=>''),
+             'labelOptions'=> array('class'=> ''),
+             'class' => '',
              'required' => 'required'
         );
         echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
         echo 
         "<div class='row'>
-            <label class='control-label col-sm-4'>".gT("Should this attribute be visible on the panel?")."</label>
-            <div class='col-sm-8'>
+            <label class='control-label '>".gT("Should this attribute be visible on the panel?")."</label>
+            <div class=''>
                 &nbsp;
                 <label class='radio-inline'>"
                  . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"TRUE\" "
@@ -83,9 +83,9 @@
     </div>
      <legend><?php eT("Languages") ?></legend>
         <div class="row form-group">
-            <label class="col-sm-5 col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
+            <label class=" col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
-                <div class="col-sm-6 col-xs-11">
+                <div class=" col-xs-11">
                 <?php
                     echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false));
                 ?>
@@ -102,10 +102,10 @@
                 if($editType!=='edit'){
                     $languageKey = Yii::app()->getLanguage();
                     echo 
-                    '<div class="form-horizontal form-group" data-lang="'.$languageKey .'">
-                        <label class="col-sm-4 control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                    '<div class=" form-group" data-lang="'.$languageKey .'">
+                        <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
-                            <div class="col-sm-7 col-xs-11">
+                            <div class=" col-xs-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-xs-1">
@@ -119,10 +119,10 @@
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
                 {
                     echo 
-                    '<div class="form-horizontal form-group" data-lang="'.$languageKey.'">
-                        <label class="col-sm-4 control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                    '<div class=" form-group" data-lang="'.$languageKey.'">
+                        <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
-                            <div class="col-sm-7 col-xs-11">
+                            <div class=" col-xs-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-xs-1">
@@ -135,10 +135,10 @@
                 }
             ?>
             <div class="hidden">
-                <div class="form-horizontal form-group" id="dummyLanguageInputGroup">
-                        <label class="col-sm-4 control-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
+                <div class=" form-group" id="dummyLanguageInputGroup">
+                        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>
-                            <div class="col-sm-8">
+                            <div class="">
                                 <input class="form-control selector_languageAddInput" name="dummyParticipantAttributeNameLanguages" type="text" value="">
                             </div>
                         </div>
@@ -202,7 +202,7 @@
             e.preventDefault();
             var self = this,
                 attribute_id = $('#ParticipantAttributeName_attribute_id').val(),
-                formGroup = $(this).closest('div.form-group.form-horizontal'),
+                formGroup = $(this).closest('div.form-group.'),
                 lang = formGroup.data('lang');
                 $.ajax({
                     url: deleteLanguageFromAttributeUrl,

@@ -1,5 +1,7 @@
 ![LimeSurvey Logo](https://www.limesurvey.org/images/logos/logo_main.png)
 # Sophisticated online survey software
+[![Build Status](https://travis-ci.org/LimeSurvey/LimeSurvey.svg?branch=develop)](https://travis-ci.org/LimeSurvey/LimeSurvey/)
+
 
 ## About
 Limesurvey is the number one open-source survey software.

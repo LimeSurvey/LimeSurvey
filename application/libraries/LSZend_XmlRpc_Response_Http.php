@@ -19,4 +19,3 @@
             echo '</methodResponse>';
         }
     }
-?>

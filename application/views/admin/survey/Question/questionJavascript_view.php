@@ -1,4 +1,5 @@
-<script type='text/javascript'>
+<?php
+App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_prepare" ,"
          var qtypes = new Array();
          var qnames = new Array();
          var qhelp = new Array();
@@ -77,5 +78,6 @@
                 document.getElementById('MandatorySelection').style.display='';
             }
         }
-        OtherSelection('<?php echo $type; ?>');
-</script>
+", LSYii_ClientScript::POS_END );
+
+App()->getClientScript()->registerScript("EditQuestionView_question_jsviews" ,"OtherSelection('".$type."');", LSYii_ClientScript::POS_POSTSCRIPT );

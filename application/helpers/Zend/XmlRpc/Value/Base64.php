@@ -48,9 +48,9 @@ class Zend_XmlRpc_Value_Base64 extends Zend_XmlRpc_Value_Scalar
     {
         $this->_type = self::XMLRPC_TYPE_BASE64;
 
-        $value = (string)$value;    // Make sure this value is string
+        $value = (string) $value; // Make sure this value is string
         if (!$alreadyEncoded) {
-            $value = base64_encode($value);     // We encode it in base64
+            $value = base64_encode($value); // We encode it in base64
         }
         $this->_value = $value;
     }

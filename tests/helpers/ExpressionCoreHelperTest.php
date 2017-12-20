@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Test expression evaluation in PHP vs JS.
  * @since 2017-06-16
@@ -51,7 +49,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $output = [];
         exec('which node ', $output);
         if (empty($output[0])) {
-            die('Node is not installed');
+            echo ('Node is not installed');
+            exit(7);
         }
 
         require_once(__DIR__ . '/ExpressionCoreAux.php');
@@ -94,6 +93,21 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $em->SetJsVarsUsed([]);
          */
 
+        /*
+        $pageInfo = [
+            'qid' => '5377',
+            'gseq' => 0,
+            'eqn' => '((563168X136X5376.NAOK >= \" \"))',
+            'result' => false,
+            'numJsVars' => 1,
+            'relevancejs' => '(((LEMval(\'563168X136X5376.NAOK\')  >= \" \")))',
+            'relevanceVars' => 'java563168X136X5376',
+            'jsResultVar' => 'java563168X136X5377',
+            'type' => 'N',
+            'hidden' => false,
+            'hasErrors' => false
+        ];
+         */
     }
 
     /**
@@ -125,27 +139,5 @@ class ExpressionManagerCoreTest extends TestBaseClass
             $test->jsonEncodeEmResult = true;
             $test->compareExpression();
         }
-    }
-
-    /**
-     * 
-     */
-    public function testGeneratedJavascript()
-    {
-        /*
-        $pageInfo = [
-            'qid' => '5377',
-            'gseq' => 0,
-            'eqn' => '((563168X136X5376.NAOK >= \" \"))',
-            'result' => false,
-            'numJsVars' => 1,
-            'relevancejs' => '(((LEMval(\'563168X136X5376.NAOK\')  >= \" \")))',
-            'relevanceVars' => 'java563168X136X5376',
-            'jsResultVar' => 'java563168X136X5377',
-            'type' => 'N',
-            'hidden' => false,
-            'hasErrors' => false
-        ];
-         */
     }
 }

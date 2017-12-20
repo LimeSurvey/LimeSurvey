@@ -1,11 +1,16 @@
 <?php
 /**
+ * @var $this AdminController
  * Set user permissions
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('setUserPermissions');
+
 ?>
 
 <!-- set user permissions -->
-<h3 class="pagetitle"><?php printf(gT("Edit user permissions for user %s"),"<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></h3>
+<div class="pagetitle h3"><?php printf(gT("Edit user permissions for user %s"),"<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></div>
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-10 col-lg-offset-1">
@@ -29,14 +34,6 @@
 
                 <!-- Permissions -->
                 <?php foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions): ?>
-                    <?php
-                        if ($sPermissionKey == 'auth_ldap' && !App()->getPluginManager()->isPluginActive('AuthLDAP')
-                            || $sPermissionKey == 'auth_webserver' && !App()->getPluginManager()->isPluginActive('Authwebserver'))
-                        {
-                            continue;
-                        }
-                    ?>
-
                     <tr>
                         <!-- Icon -->
                         <td>

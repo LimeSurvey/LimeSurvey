@@ -1,0 +1,90 @@
+/* General styles for advanced ranking */
+.ranking-advanced-style .icon-divider {
+    margin: 0 0.5em;
+    border-right: 1px solid grey;
+}
+
+/* Styles for button ranking */
+.ranking-advanced-style .sortable-button {
+    margin: 0.1em 0.3em;
+}
+
+/* Style for the blocks */
+.ranking-advanced-style .display_block_group {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    -moz-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.ranking-advanced-style .display_block_group .sortable-block {
+    display: block;
+    width: 23%;
+    margin: 1% 1%;
+    padding-top: 23%;
+    position: relative;
+    background: rgba(200,200,200,0.6);
+}
+.ranking-advanced-style .display_block_group .sortable-block .sortable-block-content{
+    position: absolute;
+    left:0;
+    top:0;
+    right:0;
+    bottom: 0;
+}
+
+/* Style for the bubbles */
+.ranking-advanced-style .display_bubble_group{
+    position: relative;
+    height: 240px
+}
+
+.ranking-advanced-style .display_bubble_group .display_bubble{
+    margin: auto;
+    position: relative;
+    display: inline-block; 
+    width: 60px;
+    height: 60px;
+    padding:40px;
+    margin: 15px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,200,200,0.6), rgba(240,240,240,0.2));
+}
+.ranking-advanced-style .display_bubble_group .display_bubble:nth-child(even){
+    animation-name: evens;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+.ranking-advanced-style .display_bubble_group .display_bubble:nth-child(odd){
+    animation-name: odds;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes odds {
+    0%   { transform: skew(3deg,0deg);}
+    18%  { transform: skew(2deg,1deg);}
+    36%  { transform: skew(1deg,2deg);}
+    54%  { transform: skew(0deg,3deg);}
+    72%  { transform: skew(1deg,2deg);}
+    90%  { transform: skew(2deg,1deg);}
+    100% { transform: skew(3deg,0deg);}
+}
+@keyframes evens {
+    0%   { transform: skew(-3deg,-0deg);}
+    18%  { transform: skew(-2deg,-1deg);}
+    36%  { transform: skew(-1deg,-2deg);}
+    54%  { transform: skew(-0deg,-3deg);}
+    72%  { transform: skew(-1deg,-2deg);}
+    90%  { transform: skew(-2deg,-1deg);}
+    100% { transform: skew(-3deg,-0deg);}    
+}

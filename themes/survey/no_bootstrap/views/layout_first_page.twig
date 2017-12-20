@@ -1,0 +1,51 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· First Page Layout  ·._.·´¯)·._.·´¯)
+
+    This layout is used to display the first page (title, welcome message, privacy, etc).
+    It is displayed only on "question by question" or "group by group" mode, when the welcome message is activated.
+
+#}
+
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
+
+{# Replace the content block #}
+{% block content %}
+
+    {# render the layout_global content block #}
+    {{ parent() }}
+
+    {# Include the form opening tag #}
+    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+        {# Include the alert for no JavaScript #}
+        {{ include('./subviews/no_js_alert.twig') }}
+
+        {# Include the language changer selector #}
+        {{ include('./subviews/language_changer.twig') }}
+
+        {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
+        {{ include('./subviews/welcome.twig') }}
+
+        {% if(aSurveyInfo.anonymized) == "Y" %}
+            {{ include('./subviews/privacy/privacy.twig') }}
+        {% endif %}
+
+        {# Presents the navigator #}
+        {{ include('./subviews/navigation/navigator.twig') }}
+    </form> <!-- main form -->
+
+{% endblock %}

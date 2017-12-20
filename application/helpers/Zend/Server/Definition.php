@@ -146,7 +146,7 @@ class Zend_Server_Definition implements Countable, Iterator
      * Get a given method definition
      *
      * @param  string $method
-     * @return null|Zend_Server_Method_Definition
+     * @return bool|null|Zend_Server_Method_Definition
      */
     public function getMethod($method)
     {

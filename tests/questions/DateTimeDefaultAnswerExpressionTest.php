@@ -2,54 +2,18 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-16
+ * @group datetimedefaultanswer
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
-    /**
-     * Import survey in tests/surveys/.
-     */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
-
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
+        parent::setUpBeforeClass();
+        $fileName = self::$surveysFolder . '/limesurvey_survey_454287.lss';
+        self::importSurvey($fileName);
     }
 
     /**
@@ -68,7 +32,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new \CController('dummyid'));
+        \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
@@ -106,7 +70,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             strpos(
                 $qanda[0][1],
                 sprintf(
-                    "val('%s')",
+                    "value=\"%s\"",
                     $correctDate
                 )
             ),
@@ -124,13 +88,14 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
+        $survey = \Survey::model()->findByPk(self::$surveyId);
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new \CController('dummyid'));
+        \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
@@ -169,7 +134,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             strpos(
                 $qanda[0][1],
                 sprintf(
-                    "val('%s')",
+                    "value=\"%s\"",
                     $correctDate
                 )
             ),
@@ -191,7 +156,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new \CController('dummyid'));
+        \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
@@ -226,7 +191,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         // NB: Empty value, since default answer expression is not parsed by qanda.
         $this->assertNotEquals(
             false,
-            strpos($qanda[0][1], "val('')"),
+            strpos($qanda[0][1], "value=\"\""),
             'Showing empty date due to wrong expression'
         );
 

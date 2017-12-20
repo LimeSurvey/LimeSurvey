@@ -91,22 +91,20 @@ class WhSelect2 extends CInputWidget
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
 
-        $cs->registerCssFile($assetsUrl . '/css/select2.css');
-        $cs->registerCssFile($assetsUrl . '/css/select2-bootstrap.css');
-        $cs->registerScriptFile($assetsUrl . '/js/select2.js');
+        $cs->registerPackage('bootstrap-select2');
 
 
         if ($this->language) {
             $cs->registerScriptFile(
                 $assetsUrl . '/js/i18n/' . $this->language . '.js',
-                CClientScript::POS_END
+                CClientScript::POS_POSTSCRIPT
             );
         }
 
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
         $this->pluginOptions['theme']='bootstrap';
-        $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, CClientScript::POS_READY);
-        $this->getApi()->registerEvents($selector, $this->events, CClientScript::POS_READY);
+        $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
+        $this->getApi()->registerEvents($selector, $this->events, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 }
