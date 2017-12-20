@@ -70,3 +70,6 @@
     padding: 1em 5px; }
   .lstutorial__template--mainContainer .lstutorial__typography--white {
     color: white; }
+
+.tour-backdrop {
+  display: none; }
