@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-12-20 14:57:14+00:00\n"
+"POT-Creation-Date: 2017-12-20 22:34:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2524,7 +2524,7 @@ msgid "Survey logic file"
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:148
-#: application/models/Response.php:142
+#: application/models/Response.php:141
 msgid "deleted"
 msgstr ""
 
@@ -15762,7 +15762,7 @@ msgid "No invitation code is needed to complete the survey."
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:51
-msgid "You can switch to the closed-access mode by initialising a survey participant table with the button below."
+msgid "You can switch to the closed-access mode by initialising a survey participant table by using the button below."
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:58
