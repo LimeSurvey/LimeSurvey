@@ -34,7 +34,11 @@
     </title>
 
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}files/favicon.ico" />
-
+    <script type="text/javascript">
+        if(window.basicThemeScripts === undefined){ 
+            window.basicThemeScripts = new ThemeScripts(); 
+        } 
+    </script>
     {# Ajax mode #}
     {% if(aSurveyInfo.options.ajaxmode == "on") %}
         <script type="text/javascript">

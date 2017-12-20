@@ -114,7 +114,12 @@
                 {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
 
             {# Basic ThemeScript options  #}
-            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
+            {{ registerScript("BasicThemeScripts", "
+            if(window.basicThemeScripts === undefined){ 
+                window.basicThemeScripts = new ThemeScripts(); 
+            } 
+            basicThemeScripts.initGlobal(); 
+            ", POS_END) }}
 
             {% endblock %}
             </div>
@@ -122,5 +127,8 @@
         <div id="bottomScripts">
             <###end###>
         </div>
+        <script>
+            window.basicThemeScripts.init();
+        </script>
     </body>
 </html>

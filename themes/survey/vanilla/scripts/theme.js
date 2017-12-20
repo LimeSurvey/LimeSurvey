@@ -180,6 +180,7 @@ var ThemeScripts = function(){
                 $('[data-toggle="tooltip"]').tooltip()
             })
         });
+
         /**
          * Code included inside this will run each time windows is resized
          * @see https://api.jquery.com/resize/
@@ -193,14 +194,12 @@ var ThemeScripts = function(){
         sliderSuffixClone();
         fixBodyPadding();
         hideEmptyPart();
-        init();
     };
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
         hideQuestionWithRelevanceSubQuestion();
         hideEmptyPart();
-        init();
     };
 
     return {
