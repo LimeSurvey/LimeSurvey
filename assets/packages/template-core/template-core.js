@@ -11,9 +11,10 @@ var TemplateCoreClass = function () {
          */
         /* showStartPopups : replace core function : allow HTML and use it. */
         showStartPopups: function () {
-            if (LSvar.showpopup && typeof (LSvar.startPopups) == 'array' && LSvar.startPopups.length) {
+            if (LSvar.showpopup  && LSvar.startPopups.length) {
                 startPopup = LSvar.startPopups.map(function (text) {
-                    return "<p>" + text + "</p>";
+                    return text;
+
                 });
                 alertSurveyDialog(startPopup);
             }

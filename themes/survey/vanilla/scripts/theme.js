@@ -135,6 +135,8 @@ var ThemeScripts = function(){
          */
         $(document).on('ready pjax:scriptcomplete',function()
         {
+
+
             /* Uncomment below if you want to use the focusFirst function */
             //focusFirst();
             /* Some function are launched in endpage.pstpl */
@@ -144,10 +146,13 @@ var ThemeScripts = function(){
                 $("#navbar").remove();
                 $("[data-target='#navbar']").remove();
             }
-            // Scroll to first error
-            if($(".input-error").length > 0) {
+
+            // Scroll to first error - After user close modal -
+            if($(".input-error").length > 0 ||  $(".ls-em-error").length > 0 ) {
                 $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
-                    $firstError = $(".input-error").first();
+
+                    $firstError = ($(".input-error").length > 0 ) ? $(".input-error").first() : $(".ls-em-error").first();
+
                     $pixToScroll = ( $firstError.offset().top - 100 );
                     $('html, body').animate({
                         scrollTop: $pixToScroll + 'px'
