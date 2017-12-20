@@ -30,7 +30,7 @@
             cols="<?php echo $tiwidth; ?>"
             <?php echo $maxlength; ?>
             onkeyup="<?php echo $checkconditionFunction; ?>"
-        ><?php echo $dispVal; ?></textarea>
+        ><?php echo str_replace(array("{","}"),array("&#123;","&#125;"),$dispVal); ?></textarea>
 
     </div>
 </div>
