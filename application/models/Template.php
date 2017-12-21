@@ -236,7 +236,7 @@ class Template extends LSActiveRecord
         // First we try to get a confifuration row from DB
         if (!$bForceXML) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
-            $sTemplateName = (is_null($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
+            $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
             $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
         }
 
