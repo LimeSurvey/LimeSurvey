@@ -37119,11 +37119,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
             this.questiongroupDragging = true;
+            $event.dataTransfer.setData('text/plain', 'node');
         },
         endDraggingGroup($event, questiongroupObject) {
-            this.draggedQuestionGroup = null;
-            this.questiongroupDragging = false;
-            this.$emit('questiongrouporder');
+            if (this.draggedQuestionGroup !== null) {
+                this.draggedQuestionGroup = null;
+                this.questiongroupDragging = false;
+                this.$emit('questiongrouporder');
+            }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
             if (this.questiongroupDragging) {
@@ -37164,15 +37167,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.draggedQuestionsGroup = questionGroupObject;
         },
         endDraggingQuestion($event, question) {
-            this.questionDragging = false;
-            this.draggedQuestion = null;
-            this.draggedQuestionsGroup = null;
-            this.$emit('questiongrouporder');
+            if (this.questionDragging) {
+                this.questionDragging = false;
+                this.draggedQuestion = null;
+                this.draggedQuestionsGroup = null;
+                this.$emit('questiongrouporder');
+            }
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
-            let orderSwap = questionObject.question_order;
-            questionObject.question_order = this.draggedQuestion.question_order;
-            this.draggedQuestion.question_order = orderSwap;
+            if (this.questionDragging) {
+                let orderSwap = questionObject.question_order;
+                questionObject.question_order = this.draggedQuestion.question_order;
+                this.draggedQuestion.question_order = orderSwap;
+            }
         }
     },
     mounted() {
