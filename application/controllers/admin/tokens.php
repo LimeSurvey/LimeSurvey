@@ -699,7 +699,7 @@ class tokens extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
         } else {
-            $this->handletokenform($iSurveyId, "addnew");
+            $this->_handletokenform($iSurveyId, "addnew");
         }
     }
 
