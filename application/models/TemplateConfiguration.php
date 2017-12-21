@@ -62,6 +62,9 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
     public static $aInstancesFromTemplateName;
 
+    /** @var array $aInstancesFromTemplateName cache for method prepareTemplateRendering*/
+    public static $aPreparedToRender;
+
     /** @var boolean $bTemplateCheckResult is the template valid?*/
     private $bTemplateCheckResult;
 
@@ -379,11 +382,16 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
+        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])){
+            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+        }
+
         $this->bUseMagicInherit = $bUseMagicInherit;
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
