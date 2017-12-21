@@ -25,13 +25,12 @@ window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity
 /* See function */
 fixAccordionPosition();
 
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
     doToolTip();
-    renderBootstrapSwitch();
 
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
@@ -209,6 +208,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#error-modal').on('show.bs.modal', function(e) {
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
+
+    window.setTimeout(renderBootstrapSwitch, 250);
 
 });
 
