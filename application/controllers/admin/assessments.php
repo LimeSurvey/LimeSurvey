@@ -233,6 +233,7 @@ class Assessments extends Survey_Common_Action
                 }
             }
         }
+        App()->getController()->refresh();
     }
 
     /**
