@@ -59,6 +59,9 @@ class TemplateConfiguration extends TemplateConfig
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
+    /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
+    public static $aInstancesFromTemplateName;
+
     /** @var boolean $bTemplateCheckResult is the template valid?*/
     private $bTemplateCheckResult;
 
@@ -140,6 +143,10 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromTemplateName($sTemplateName)
     {
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])){
+            return self::$aInstancesFromTemplateName[$sTemplateName];
+        }
+
         $oInstance = self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
             array(':template_name'=>$sTemplateName)
@@ -149,6 +156,8 @@ class TemplateConfiguration extends TemplateConfig
         if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
         }
+
+        self::$aInstancesFromTemplateName[$sTemplateName] = $oInstance;
 
         return $oInstance;
     }
@@ -163,7 +172,6 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null)
     {
-
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
 
@@ -185,7 +193,6 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $oTemplateConfigurationModel;
-
     }
 
     /**
