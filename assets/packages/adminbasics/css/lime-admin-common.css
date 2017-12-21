@@ -2094,6 +2094,10 @@ table#responsedetail tr td{
     right: 15px;
 }
 
+.input-group-addon {
+  padding: 5px 12px;
+}
+
 .notification-list {
   top: 100%;
   left: 0;
