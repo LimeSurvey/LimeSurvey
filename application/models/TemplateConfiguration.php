@@ -359,7 +359,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if (is_object($this->template) && ! Template::checkTemplateXML($this->template->folder)) {
+            if ( ! is_object($this->template) || ( is_object($this->template) && ! Template::checkTemplateXML($this->template->folder) )) {
                 $this->bTemplateCheckResult = false;
             }
         }
