@@ -27,7 +27,7 @@
             }
 
 
-            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
+            $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
             $this->sTemplate = $oTemplate->sTemplateName;
 
             $aData = array(
@@ -60,7 +60,7 @@
          */
         public function actionError()
         {
-            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
+            $oTemplate = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
 
             $this->sTemplate = $oTemplate->sTemplateName;
 

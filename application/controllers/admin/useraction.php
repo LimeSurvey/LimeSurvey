@@ -116,7 +116,7 @@ class UserAction extends Survey_Common_Action
                 $new_email = $event->get('newEmail');
                 $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
-                Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttheme"), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
+                Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
                 $srow = count($sresult);

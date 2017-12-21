@@ -13,9 +13,9 @@
         var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
         var sURLParameters = '';
         var sAddParam = '';
-    "; 
-    Yii::app()->getClientScript()->registerScript( 
-        "GeneralOption-variables", 
+    ";
+    Yii::app()->getClientScript()->registerScript(
+        "GeneralOption-variables",
         $scriptVarsNeccessary,
         LSYii_ClientScript::POS_BEGIN
     );
@@ -34,15 +34,15 @@
             return false;
         }
         });
-        
+
         function ConfirmLanguageChange(confirmtxt) {
-        
+
             if ($('#oldlanguages').val().trim()=='') {
                 mylangs= [];
             } else {
                 mylangs=$('#oldlanguages').val().split(' ');
             }
-        
+
             if (checkSelect2Languages(mylangs)) {
                 return true;
             } else {
@@ -272,12 +272,12 @@
             </div>
         </div>
         <!-- Template -->
-            
+
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
                 <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>'>
-                    <?php 
+                    <?php
                     $aTemplateList = Template::getTemplateListWithPreviews();
                     foreach ($aTemplateList as $templateName => $preview) {
 
@@ -285,7 +285,7 @@
                             <option value='<?php echo $templateName; ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template) { ?>
                                     selected='selected'
-                                    <?php   } elseif (!$oSurvey->template && $templateName == Yii::app()->getConfig('defaulttheme')) { ?>
+                                    <?php   } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme')) { ?>
                                     selected='selected'
                                     <?php } ?>
                                 ><?php echo $templateName; ?></option>

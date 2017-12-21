@@ -98,7 +98,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['templatedir'])) {
         $templatename = $thissurvey['templatedir'];
     } else {
-        $templatename = Yii::app()->getConfig('defaulttheme');
+        $templatename = getGlobalSetting('defaulttheme');
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";

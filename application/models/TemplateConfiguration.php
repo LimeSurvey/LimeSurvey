@@ -159,7 +159,7 @@ class TemplateConfiguration extends TemplateConfig
 
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one.
         if (!is_a($oInstance, 'TemplateConfiguration')) {
-            $oInstance = self::getInstanceFromTemplateName(Yii::app()->getConfig('defaulttheme'));
+            $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
         }
 
         return $oInstance;
@@ -490,7 +490,7 @@ class TemplateConfiguration extends TemplateConfig
         } else {
             $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
 
-            if ($this->template_name != Yii::app()->getConfig('defaulttheme')) {
+            if ($this->template_name != getGlobalSetting('defaulttheme')) {
                 $sButtons .= '<br><br>'.$sUninstallLink;
             }
         }
@@ -550,10 +550,10 @@ class TemplateConfiguration extends TemplateConfig
         $this->prepareTemplateRendering();
 
         $renderArray = array('templateConfiguration' => $this->getOptionPageAttributes());
-        
+
         $this->setOptions();
         $this->setOptionInheritance();
-        
+
         $renderArray['oParentOptions'] = (array) $this->oOptions;
 
         return Yii::app()->twigRenderer->renderOptionPage($this, $renderArray);

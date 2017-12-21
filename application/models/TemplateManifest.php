@@ -580,7 +580,7 @@ class TemplateManifest extends TemplateConfiguration
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
-            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
+            $this->sTemplateName = getGlobalSetting('defaulttheme');
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
@@ -613,7 +613,7 @@ class TemplateManifest extends TemplateConfiguration
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName = Yii::app()->getConfig('defaulttheme');
+            $sTemplateName = getGlobalSetting('defaulttheme');
         }
 
         $this->sTemplateName = $sTemplateName;

@@ -420,7 +420,7 @@ class Template extends LSActiveRecord
     {
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
-            $sTemplateName = Yii::app()->getConfig('defaulttheme');
+            $sTemplateName = getGlobalSetting('defaulttheme');
         }
 
         if ($bForceXML === null) {
@@ -449,31 +449,8 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array(Yii::app()->getConfig('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
+        $standardTemplates = array(getGlobalSetting('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
         return $standardTemplates;
-
-        /*
-        $standardTemplates=self::$standardTemplates;
-        if(empty($standardTemplates)){
-            $standardTemplates = array();
-            $sStandardTemplateRootDir=Yii::app()->getConfig("standardthemerootdir");
-            if ($sStandardTemplateRootDir && $handle = opendir($sStandardTemplateRootDir)) {
-                while (false !== ($sFileName = readdir($handle))) {
-                    // Maybe $file[0] != "." to hide Linux hidden directory
-                    if (!is_file("$sStandardTemplateRootDir/$sFileName") && $sFileName[0] != "." && file_exists("{$sStandardTemplateRootDir}/{$sFileName}/config.xml")) {
-                        $standardTemplates[$sFileName] = $sFileName;
-                    }
-                }
-                closedir($handle);
-            }
-            ksort($standardTemplates);
-            if(!in_array(Yii::app()->getConfig('defaulttheme'),$standardTemplates)){
-                throw new Exception('There are no default template in stantard template root dir.');
-            }
-            self::$standardTemplates = $standardTemplates;
-        }
-*/
-    //    return self::$standardTemplates;
     }
 
 

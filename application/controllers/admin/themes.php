@@ -367,14 +367,14 @@ class themes extends Survey_Common_Action
     public function index($editfile = '', $screenname = 'welcome', $templatename = '')
     {
         if ($templatename == '') {
-            $templatename = Yii::app()->getConfig("defaulttheme");
+            $templatename = getGlobalSetting('defaulttheme');
         }
 
         // This can happen if the global default template is deleted
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars($templatename, ENT_QUOTES)), 'error');
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=> Yii::app()->getConfig("defaulttheme")));
+            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=> getGlobalSetting('defaulttheme')));
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
@@ -384,7 +384,7 @@ class themes extends Survey_Common_Action
             $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
         } catch (Exception $ex) {
             Yii::app()->user->setFlash('error', $ex->getMessage());
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>Yii::app()->getConfig("defaulttheme")));
+            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>getGlobalSetting('defaulttheme')));
         }
 
         App()->getClientScript()->reset();
@@ -550,14 +550,14 @@ class themes extends Survey_Common_Action
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                         // The default template could be the same as the one we're trying to remove
-                        $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttheme') == $templatename;
+                        $globalDefaultIsGettingDeleted = getGlobalSetting('defaulttheme') == $templatename;
 
                         if ($globalDefaultIsGettingDeleted) {
-                            setGlobalSetting('defaulttheme', Yii::app()->getConfig("defaulttheme"));
+                            setGlobalSetting('defaulttheme', getGlobalSetting('defaulttheme'));
                         }
 
                         foreach ($surveys as $s) {
-                            $s->template = Yii::app()->getConfig('defaulttheme');
+                            $s->template = getGlobalSetting('defaulttheme');
                             $s->save();
                         }
 
@@ -861,7 +861,7 @@ class themes extends Survey_Common_Action
         }
         $aAllTemplates = getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
-            $templatename = Yii::app()->getConfig('defaulttheme');
+            $templatename = getGlobalSetting('defaulttheme');
         }
 
         $normalfiles = array("DUMMYENTRY", ".", "..", "preview.png");

@@ -183,7 +183,7 @@ class Survey extends LSActiveRecord
         }
 
 
-        $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttheme'));
+        $this->template = Template::templateNameFilter(getGlobalSetting('defaulttheme'));
         $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
         $this->attachEventHandler("onAfterFind", array($this, 'fixSurveyAttribute'));
@@ -224,7 +224,7 @@ class Survey extends LSActiveRecord
      *  - the selected language via URL (GET then Session)
      *  - the survey default language
      *
-     * @return string the correct language 
+     * @return string the correct language
      */
     public function getLanguageForSurveyTaking()
     {
@@ -420,10 +420,10 @@ class Survey extends LSActiveRecord
                 $oSurvey = self::model()->findByPk($this->sid);
                 if ($oSurvey->template != $sTemplateName) {
                     // No need to test !is_null($oSurvey)
-                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
+                    $sTemplateName = getGlobalSetting('defaulttheme');
                 }
             } else {
-                $sTemplateName = Yii::app()->getConfig('defaulttheme');
+                $sTemplateName = getGlobalSetting('defaulttheme');
             }
         }
         return Template::templateNameFilter($sTemplateName);
@@ -669,13 +669,13 @@ class Survey extends LSActiveRecord
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
                 if (
-                    (!empty($entry['permission']) && !empty($entry['permission_grade']) 
+                    (!empty($entry['permission']) && !empty($entry['permission_grade'])
                     && !Permission::model()->hasSurveyPermission($this->sid, $entry['permission'], $entry['permission_grade']))
                 ) {continue; }
                 //parse the render part of the data attribute
                 $oDataAttribute = new SurveymenuEntryData();
                 $oDataAttribute->apply($menuEntry, $this->sid);
-               
+
                 if ($oDataAttribute->isActive !== null) {
                     if (($oDataAttribute->isActive == true && $this->active == 'N') || ($oDataAttribute->isActive == false && $this->active == 'Y')) {
                         continue;
@@ -1467,8 +1467,8 @@ class Survey extends LSActiveRecord
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
-        
-        
+
+
         $criteria->compare('t.gsid', [$this->gsid], false, 'AND');
 
 
