@@ -1,10 +1,18 @@
 'use strict';
-var switchInnerHTML = function (oldEl, newEl, opt) {
+var switchOuterHTML = function (oldEl, newEl, opt) {
         opt = opt || {};
         // really remove all Events!
         var parent = $(oldEl).parent();
         $(oldEl).off().remove();
         parent.append(newEl);
+        this.onSwitch();
+    },
+    switchInnerHTML = function (oldEl, newEl, opt) {
+        opt = opt || {};
+        // really remove all Events!
+        var parent = $(oldEl).parent();
+        $(oldEl).off().html('');
+        $(oldEl).html($(newEl).html());
         this.onSwitch();
     },
     singletonPjax = function () {
@@ -21,10 +29,10 @@ var switchInnerHTML = function (oldEl, newEl, opt) {
                     '#beginScripts'
                 ],
                 switches: {
-                    '#bottomScripts': switchInnerHTML,
-                    '#beginScripts': switchInnerHTML,
+                    '#bottomScripts': switchOuterHTML,
+                    '#beginScripts': switchOuterHTML,
                     '#pjax-content': switchInnerHTML,
-                    '#breadcrumb-container': switchInnerHTML,
+                    '#breadcrumb-container': switchOuterHTML,
                 },
                 debug: window.debugState.backend,
                 forceRedirectOnFail: true,
