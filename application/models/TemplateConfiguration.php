@@ -135,18 +135,6 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Gets an instance of a templateconfiguration by name
      *
-     * @return TemplateConfiguration
-     */
-    public static function getInstanceFromConfigurationId($iTemplateConfigId)
-    {
-        $oTemplateConfiguration = self::model()->findByPk($iTemplateConfigId);
-        $oTemplateConfiguration->setThisTemplate();
-        return $oTemplateConfiguration;
-    }
-
-    /**
-     * Gets an instance of a templateconfiguration by name
-     *
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
