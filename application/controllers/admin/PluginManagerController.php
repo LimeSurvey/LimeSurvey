@@ -2,7 +2,7 @@
 
 /**
  */
-class PluginManager extends Survey_Common_Action
+class PluginManagerController extends Survey_Common_Action
 {
     public function init()
     {
