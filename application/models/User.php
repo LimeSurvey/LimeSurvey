@@ -410,7 +410,8 @@ class User extends LSActiveRecord
                         data-message='".gT("Do you want to delete this user?")."'
                         class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
-                        </button>";
+                        </button>
+                    </span>";
                     }
                 if (Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])
                     && $this->parent_id != Yii::app()->session['loginID']
