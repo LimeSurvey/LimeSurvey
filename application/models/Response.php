@@ -80,11 +80,10 @@
         }
 
         /**
-         * Returns true if any uploaded file still exists
-         * on the filesystem.
+         * Returns true if any uploaded file still exists on the filesystem.
          * @return boolean
          */
-        public function someFileExists($sQID = 0)
+        public function someFileExists()
         {
             $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
             foreach ($this->getFiles() as $fileInfo) {

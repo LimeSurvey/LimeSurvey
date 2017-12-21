@@ -25,6 +25,7 @@ function ldap_getCnx($server_id = null)
     if (is_null($server_id)) {
         return false;
     } else {
+        $ds = false;
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
             $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -47,7 +48,6 @@ function ldap_getCnx($server_id = null)
                 ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
             }
         }
-
         return $ds;
     }
 }
@@ -83,8 +83,18 @@ function ldap_readattr($attr)
 }
 
 
+/**
+* 
+* 
+* @param mixed $ds
+* @param mixed $basedn
+* @param mixed $filter
+* @param mixed $attrlist
+* @param mixed $scope
+*/
 function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope)
 {
+    $search = false;
     if ($scope == "base") {
         $search = ldap_read($ds, $basedn, $filter, $attrlist);
     } elseif ($scope == "one") {

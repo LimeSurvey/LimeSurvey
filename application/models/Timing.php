@@ -17,16 +17,12 @@ class Timing extends LSActiveRecord
     /** @var Survey $survey */
     protected $survey;
     /**
-     * @param string $scenario
      * @param int $iSurveyId
+     * @param string $scenario
      */
-    public function __construct($iSurveyId = null, $scenario = 'insert')
+    public function __construct($iSurveyId , $scenario = 'insert')
     {
 
-        if (!isset($iSurveyId)) {
-            // FIXME this method does not exist
-            $iSurveyId = Response::getSurveyId();
-        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if ($survey) {
             $this->surveyId = $iSurveyId;
