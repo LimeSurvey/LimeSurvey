@@ -12,49 +12,103 @@
 var LS = LS || {
     onDocumentReady: {}
 };
+var QuestionFunctions = function(){
+
+    var onSelectQuestionType = function () {
+        var questionVars = $(this).data('question-type');
+        $('#selector__currentQuestionTypeTitle').html(questionVars.title)
+        $('#selector__currentQuestionTypeImage').html(getQuestionTypeImage(questionVars.key));
+        $('#selector__selected_questiontype').val(questionVars.key);
+        $('.selector__select-question-type').removeClass('mark-as-selected');
+        $(this).addClass('mark-as-selected');
+    },
+    getQuestionTypeImage = function(questioncode){
+        
+        var multiple = 1;
+        if (questioncode=='S') multiple = 2;
+    
+        if (questioncode == ":") questioncode = "COLON";
+        else if(questioncode == "|") questioncode = "PIPE";
+        else if(questioncode == "*") questioncode = "EQUATION";
+    
+        var imageArray = [];
+        for(i=1;i<=multiple;i++){
+            imageArray.push( imgurl + "/screenshots/"+questioncode+(i==1 ? '' : i)+".png");
+        }
+        
+        return imageArray.reduce(function(prev, curr, idx){
+            return prev+'<img src="'+curr+'" />';
+        }, '');
+    },
+
+    init = function(){
+
+        updatequestionattributes();
+            
+        $('#question_type').on('change',updatequestionattributes);
+
+        $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
+        $('#selector__modal_select-question-type').on('show.bs.modal', function(){
+            var question_class =  questionTypeArray[$('#question_type').val()].class;
+            $('#selector__question-type-select-modal_question-type-'+question_class).addClass('mark-as-selected').trigger('click').closest('div.panel-collapse').addClass('in');
+        });
+
+        $('#selector__select-this-questiontype').on('click', function(){
+            $('#question_type').val($('#selector__selected_questiontype').val());
+            $('#selector__editView_question_type_description').html($('#selector__currentQuestionTypeTitle').html());
+            $('#selector__modal_select-question-type').modal('hide');
+        })
+        $('.selector__select-question-type').on('click', onSelectQuestionType);
+        
+        /**
+        * Validate question object on blur on title element
+        */
+        $('#frmeditquestion :not(:hidden)[name="title"]').on('blur',function(){
+            validateQuestion($(this));
+        });
+    
+        /**
+        * Validate question object before click on a submit button
+        */
+        $('#frmeditquestion :submit').on('click',{validated:false},function(event,data){
+            data = data || event.data;
+            if(data.validated){
+                return true;
+            }else{
+                validateQuestion($(this));
+                return false;
+            }
+        });
+    
+        if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden')
+        {
+            $("#question_type").change(function(event){
+                OtherSelection(this.value);
+            });
+            $("#question_type").trigger('change');
+        }
+        else
+        {
+            $("#question_type.none").change(function(event){
+                OtherSelection(this.value);
+            });
+            $("#question_type.none").trigger('change');
+        }
+    };
+    return {
+        init: init
+    };
+}
+
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    $('#questionTypeContainer').css("overflow","visible");
-    $('#collapseOne').on('shown.bs.collapse', function () {
-        $('#questionTypeContainer').css("overflow","visible");
-    });
-
-    $('#collapseOne').on('hide.bs.collapse', function () {
-        $('#questionTypeContainer').css("overflow","hidden");
-    });
-
-    if($('.loader-advancedquestionsettings').length){
-        updatequestionattributes();
-    }
-
-    $('#question_type').change(updatequestionattributes);
-
-    $('#question_type_button  li a').click(function(){
-        $(".btn:first-child .buttontext").text($(this).text());
-        $('#question_type').val($(this).data('value'));
-
-        updatequestionattributes();
-    });
-    
+    window.questionFunctions = window.questionFunctions || (new QuestionFunctions());
+    window.questionFunctions.init();
 });
-/**
-* Validate question object on blur on title element
-*/
-$(document).on('blur','#frmeditquestion :not(:hidden)[name="title"]',function(){
-    validateQuestion($(this));
-});
-/**
-* Validate question object before click on a submit button
-*/
-$(document).on('click','#frmeditquestion :submit',{validated:false},function(event,data){
-    data = data || event.data;
-    if(data.validated){
-        return true;
-    }else{
-        validateQuestion($(this));
-        return false;
-    }
-});
+
+
+
+
 /**
 * Validate question object before submit : actually only title need to be validated
 * This disallow submitting if Question code are not unique (else loose all fields)
@@ -116,6 +170,8 @@ function validateQuestion(jqObject){
         dataType="json"
     );
 }
+
+
 function updatequestionattributes()
 {
     var type = $('#question_type').val();
@@ -123,8 +179,8 @@ function updatequestionattributes()
 
     $('.loader-advancedquestionsettings').removeClass("hidden");
     $('.panel-advancedquestionsettings').remove();
-    var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-    if (selected_value==undefined) selected_value = $("#question_type").val();
+
+    var selected_value = $("#question_type").val();
 
     var postData = {
         'qid':$('#qid').val(),
@@ -158,4 +214,83 @@ function updatequestionattributes()
             renderBootstrapSwitch();
         }
     });
+}
+
+var qtypes = new Array();
+var qnames = new Array();
+var qhelp = new Array();
+var qcaption = new Array();
+
+
+function OtherSelection(QuestionType)
+{
+   if (QuestionType == undefined)
+   {
+       //console.log('Error: OtherSelection: QuestionType must not be undefined');
+       return;
+   }
+
+   if (QuestionType == '') { QuestionType=document.getElementById('question_type').value;}
+   if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')
+   {
+       document.getElementById('OtherSelection').style.display = '';
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == 'W' || QuestionType == 'Z')
+   {
+       document.getElementById('OtherSelection').style.display = '';
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == '|')
+   {
+       document.getElementById('OtherSelection').style.display = 'none';
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='none';
+   }
+   else if (QuestionType == 'F' || QuestionType == 'H')
+   {
+       document.getElementById('OtherSelection').style.display = 'none';
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == ':' || QuestionType == ';')
+   {
+       document.getElementById('OtherSelection').style.display = 'none';
+       document.getElementById('Validation').style.display = '';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == '1')
+   {
+       document.getElementById('OtherSelection').style.display = 'none';
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='' || QuestionType=='K')
+   {
+       document.getElementById('Validation').style.display = '';
+       document.getElementById('OtherSelection').style.display ='none';
+       if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else if (QuestionType == 'X')
+   {
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('OtherSelection').style.display ='none';
+       document.getElementById('MandatorySelection').style.display='none';
+   }
+   else if (QuestionType == 'Q')
+   {
+       document.getElementById('Validation').style.display = '';
+       document.getElementById('OtherSelection').style.display ='none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
+   else
+   {
+       document.getElementById('OtherSelection').style.display = 'none';
+       if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
+       document.getElementById('Validation').style.display = 'none';
+       document.getElementById('MandatorySelection').style.display='';
+   }
 }

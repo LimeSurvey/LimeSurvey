@@ -121,23 +121,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         });
     });
 
-    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden')
-    {
-        
-       qTypeDropdownInit();
-        $("#question_type_button").change(function(event){
-            OtherSelection(this.value);
-        });
-        $("#question_type_button").trigger('change');
-    }
-    else
-    {
-        $("#question_type.none").change(function(event){
-            OtherSelection(this.value);
-        });
-        $("#question_type.none").trigger('change');
-    }
-
     /**
      * Confirmation modal
      *
@@ -260,71 +243,6 @@ function surveyQuickActionTrigger(){
         }
     });
 };
-
-
-function qTypeDropdownInit()
-{
-    var onDocumentReadyAdminCoreq = function () {
-        $("#question_type_button .questionType").each(function(index,element){
-            $(element).qtip({
-                style: {
-                    classes: 'qtip-bootstrap'
-                },
-                content: getToolTip($(element).text()),
-                position: {
-                    my : 'center right',
-                    at: 'center left',
-                    target: $('label[for=question_type]'),
-                    viewport: $(window),
-                    adjust: {
-                        x: 0
-                    }
-
-                }
-            });
-
-        });
-        $('.questionType').on('mouseenter', function(e){
-            //alert($(this).attr('class'));
-            $('.questionType').qtip('hide');
-            $(this).qtip('option', 'position.target', $(this).qtip('show'));
-        });
-
-        $('.questionType').on('mouseleave', function(e){
-            $(this).qtip('hide');
-        });
-    };
-
-    $(document).on('ready  pjax:scriptcomplete', onDocumentReadyAdminCoreq);
-}
-
-
-var aToolTipData = {
-
-};
-
-var qDescToCode;
-var qCodeToInfo;
-
-function getToolTip(type){
-    var code = qDescToCode[''+type];
-    var multiple = 0;
-    if (code=='S') multiple = 2;
-
-    if (code == ":") code = "COLON";
-    else if(code == "|") code = "PIPE";
-    else if(code == "*") code = "EQUATION";
-
-    if (multiple > 0){
-        returnval = '';
-        for(i=1;i<=multiple;i++){
-            returnval = returnval + "<img src='" + imgurl + "/screenshots/"+code+i+".png' /><br /><br />";
-        }
-        return returnval;
-    }
-
-    return "<img src='" + imgurl + "/screenshots/"+code+".png' />";
-}
 
 //We have form validation and other stuff..
 

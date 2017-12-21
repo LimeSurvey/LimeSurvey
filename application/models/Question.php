@@ -467,203 +467,261 @@ class Question extends LSActiveRecord
                 'subquestions' => 1,
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
-                'answerscales' => 2),
+                'answerscales' => 2,
+                'class' => 'array-flexible-duel-scale',
+            ),
             "5" => array(
                 'description' => gT("5 Point Choice"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => "choice-5-pt-radio"
+            ),
             "A" => array(
                 'description' => gT("Array (5 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-5-pt'
+            ),
             "B" => array(
                 'description' => gT("Array (10 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-10-pt'
+            ),
             "C" => array(
                 'description' => gT("Array (Yes/No/Uncertain)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-yes-uncertain-no'
+            ),
             "D" => array(
                 'description' => gT("Date/Time"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'date'
+            ),
             "E" => array(
                 'description' => gT("Array (Increase/Same/Decrease)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-increase-same-decrease'
+            ),
             "F" => array(
                 'description' => gT("Array"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'array-flexible-row'
+            ),
             "G" => array(
                 'description' => gT("Gender"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'gender'
+            ),
             "H" => array(
                 'description' => gT("Array by column"),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'array-flexible-column'
+            ),
             "I" => array(
                 'description' => gT("Language Switch"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'language'
+            ),
             "K" => array(
                 'description' => gT("Multiple Numerical Input"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'numeric-multi'
+            ),
             "L" => array(
                 'description' => gT("List (Radio)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-radio'
+            ),
             "M" => array(
                 'description' => gT("Multiple choice"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-opt'
+            ),
             "N" => array(
                 'description' => gT("Numerical Input"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'numeric'
+            ),
             "O" => array(
                 'description' => gT("List with comment"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-with-comment'
+            ),
             "P" => array(
                 'description' => gT("Multiple choice with comments"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-opt-comments'
+            ),
             "Q" => array(
                 'description' => gT("Multiple Short Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-short-txt'
+            ),
             "R" => array(
                 'description' => gT("Ranking"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'ranking'
+            ),
             "S" => array(
                 'description' => gT("Short Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-short'
+            ),
             "T" => array(
                 'description' => gT("Long Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-long'
+            ),
             "U" => array(
                 'description' => gT("Huge Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-huge'
+            ),
             "X" => array(
                 'description' => gT("Text display"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'boilerplate'
+            ),
             "Y" => array(
                 'description' => gT("Yes/No"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'yes-no'
+            ),
             "!" => array(
                 'description' => gT("List (Dropdown)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-dropdown'
+            ),
             ":" => array(
                 'description' => gT("Array (Numbers)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi'
+            ),
             ";" => array(
                 'description' => gT("Array (Texts)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi-text'
+            ),
             "|" => array(
                 'description' => gT("File upload"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'upload-files'
+            ),
             "*" => array(
                 'description' => gT("Equation"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'equation'
+            ),
         );
         /**
          * @todo Check if this actually does anything, since the values are arrays.
@@ -673,6 +731,18 @@ class Question extends LSActiveRecord
         return $questionTypes;
     }
 
+    /**
+     * This function return the name by question type
+     * @param string question type
+     * @return string Question type name
+     *
+     * Maybe move class in typeList ?
+     */
+    public static function getQuestionTypeName($sType)
+    {
+        $typeList = self::typeList();
+        return $typeList[$sType]['description'];
+    }
     /**
      * This function return the class by question type
      * @param string question type

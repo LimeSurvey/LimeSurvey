@@ -1026,13 +1026,8 @@ class questions extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
         $qtypelist = getQuestionTypeList('', 'array');
-        $qDescToCode = 'qDescToCode = {';
-        $qCodeToInfo = 'qCodeToInfo = {';
-        foreach ($qtypelist as $qtype => $qdesc) {
-            $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-            $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
-        }
-        $aData['ajaxDatas']['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+
+        $aData['ajaxDatas']['qTypeOutput'] = json_encode($qtypelist);
 
         $eqrow = [];
         $eqrow['language'] = $baselang;
@@ -1106,7 +1101,8 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new' ,"OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT );            
+        
 
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
@@ -1243,13 +1239,7 @@ class questions extends Survey_Common_Action
             }
 
             $qtypelist = getQuestionTypeList('', 'array');
-            $qDescToCode = 'qDescToCode = {';
-            $qCodeToInfo = 'qCodeToInfo = {';
-            foreach ($qtypelist as $qtype => $qdesc) {
-                $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
-            }
-            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+            $aData['qTypeOutput'] = json_encode($qtypelist);
 
             $eqrow = [];
             if (!$adding) {
@@ -1337,7 +1327,7 @@ class questions extends Survey_Common_Action
             $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid ,"OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT );            
         } else {
                     include('accessDenied.php');
         }
