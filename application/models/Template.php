@@ -51,6 +51,9 @@ class Template extends LSActiveRecord
     /** @var array $aTemplatesFileFolder cache for the method getTemplateFilesFolder */
     public static $aTemplatesFileFolder = null;
 
+    /** @var array $aNamesFiltered cache for the method templateNameFilter */
+    public static $aNamesFiltered = null;
+
     /** @var Template - The instance of template object */
     private static $instance;
 
@@ -142,6 +145,11 @@ class Template extends LSActiveRecord
      */
     public static function templateNameFilter($sTemplateName)
     {
+        // If the names has already been filtered, we skip the process
+        if (!empty(self::$aNamesFiltered[$sTemplateName])){
+            return self::$aNamesFiltered[$sTemplateName];
+        }
+
         $sRequestedTemplate = $sTemplateName;
         $sDefaultTemplate = getGlobalSetting('defaulttheme');
 
@@ -149,7 +157,8 @@ class Template extends LSActiveRecord
         $oTemplate = self::model()->findByPk($sTemplateName);
 
         if (is_object($oTemplate) && ( is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') || is_file( Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') )) {
-            return $sTemplateName;
+            self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
+            return self::$aNamesFiltered[$sTemplateName];
         }
 
         /* Then try with the global default template */
@@ -164,6 +173,7 @@ class Template extends LSActiveRecord
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
             Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+            self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return $sTemplateName;
         }else{
             throw new Exception('No survey theme installed !!!!');
