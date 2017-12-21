@@ -245,7 +245,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
-        if ($sTemplateName != null) {
+        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null ) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         }
 
