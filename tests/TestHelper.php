@@ -3,7 +3,19 @@
 namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriver;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Chrome\ChromeDriver;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Firefox\FirefoxDriver;
+use Facebook\WebDriver\Firefox\FirefoxProfile;
+use Facebook\WebDriver\Firefox\FirefoxPreferences;
+use Facebook\WebDriver\Exception\WebDriverCurlException;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
+use Facebook\WebDriver\Exception\TimeOutException;
 
 class TestHelper extends TestCase
 {
@@ -311,7 +323,7 @@ class TestHelper extends TestCase
         $folder     = $tempFolder.'/screenshots/';
         try {
             $screenshot = $webDriver->takeScreenshot();
-            $filename   = $folder . $name . date('YmdHis') . '.png';
+            $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
             $result     = file_put_contents($filename, $screenshot);
             $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
         } catch (NoSuchDriverException $ex) {
@@ -372,5 +384,34 @@ class TestHelper extends TestCase
         }
 
         return $result;
+    }
+
+    /**
+     * @return WebDriver|null
+     */
+    public function getWebDriver()
+    {
+        // NB: Travis might be slow, better try more than once to connect.
+        $tries = 0;
+        $success = false;
+        $webDriver = null;
+        do {
+            try {
+                $host = 'http://localhost:4444/wd/hub'; // this is the default
+                $capabilities = DesiredCapabilities::firefox();
+                $profile = new FirefoxProfile();
+                $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                // Open target="_blank" in new tab.
+                $profile->setPreference('browser.link.open_newwindow', 3);
+                $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
+                $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $success = true;
+            } catch (WebDriverCurlException $ex) {
+                $tries++;
+                sleep(1);
+            }
+        } while (!$success && $tries < 5);
+
+        return $webDriver;
     }
 }
