@@ -36373,24 +36373,11 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        menuOffset = $('nav.navbar').outerHeight(),
-                        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-                        footerHeight = $('footer').outerHeight(),
-                        windowHeight = screen.height,
-                        innerMenuHeight = $('#breadcrumb-container').outerHeight() + menuHeight,
-                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * footerHeight))),
-                        generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
-                    this.$log.log({
-                        menuOffset : menuOffset,
-                        menuHeight : menuHeight,
-                        footerHeight : footerHeight,
-                        windowHeight : windowHeight,
-                        windowHeightScreen : screen.availHeight,
-                        windowHeightScreenAvail : screen.height,
-                        innerMenuHeight : innerMenuHeight,
-                        inSurveyViewHeight : inSurveyViewHeight,
-                        generalContainerHeight : generalContainerHeight
-                    });
+                        inSurveyOffset = 230,
+                        menuHeight = $('.menubar').outerHeight(),
+                        windowHeight = $('html').height(),
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
+                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
@@ -36428,6 +36415,11 @@ $(document).on('ready', function () {
                 });
                 window.singletonPjax();
 
+                $(document).trigger('vue-reload-remote');
+                
+                window.setInterval(function(){
+                    $(document).trigger('vue-reload-remote');
+                }, (60*5*1000));
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -36459,6 +36451,7 @@ $(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploadi
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
     $(document).trigger('vue-resize-height');
+    $(document).trigger('vue-reload-remote');
     // $(document).trigger('vue-sidemenu-update-link');
     setTimeout(function () {
         $('#pjax-file-load-container').find('div').css({
@@ -36821,7 +36814,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getQuestions() {
             return this.get(this.getQuestionsUrl).then(result => {
-                this.$log.log(result);
+                this.$log.log('Questions', result);
                 this.questiongroups = result.data.groups;
                 this.$store.commit('updateQuestiongroups', this.questiongroups);
                 this.$forceUpdate();
@@ -36904,18 +36897,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.controlActiveLink();
         });
 
+        $(document).on('vue-reload-remote', () => {
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
+            this.$forceUpdate();
+        });
+
         $(document).on('vue-redraw', () => {
             this.getQuestions();
             this.getSidemenus();
             this.getCollapsedmenus();
             this.getTopmenus();
             this.getBottommenus();
+            this.$forceUpdate();
         });
 
         //control the active link
         this.controlActiveLink();
 
-        self.$forceUpdate();
+        this.$forceUpdate();
         this.updatePjaxLinks();
         $('body').on('mousemove', event => {
             self.mousemove(event, self);
@@ -37175,6 +37178,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted() {
         this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
+
+        $(document).on('vue-reload-remote', () => {
+            this.$forceUpdate();
+        });
     }
 });
 
@@ -37475,12 +37482,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted() {
         const self = this;
         this.updatePjaxLinks();
-        // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     self.$log.debug('sidemenues',result);
-        //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
+
+        $(document).on('vue-reload-remote', () => {
+            this.$forceUpdate();
+        });
     }
 });
 
@@ -39382,6 +39387,7 @@ const getAppState = function (userid) {
         lastQuestionOpen: false,
         lastQuestionGroupOpen: false,
         questionGroupOpenArray: [],
+        questiongroups: [],
         collapsedmenus: null,
         sidemenus: null,
         topmenus: null,

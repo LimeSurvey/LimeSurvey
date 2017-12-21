@@ -34,6 +34,7 @@ const getAppState = function (userid) {
         lastQuestionOpen: false,
         lastQuestionGroupOpen: false,
         questionGroupOpenArray: [],
+        questiongroups: [],
         collapsedmenus: null,
         sidemenus: null,
         topmenus: null,

@@ -76,6 +76,11 @@ $(document).on('ready', function () {
                 });
                 window.singletonPjax();
 
+                $(document).trigger('vue-reload-remote');
+                
+                window.setInterval(function(){
+                    $(document).trigger('vue-reload-remote');
+                }, (60*5*1000));
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -107,6 +112,7 @@ $(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploadi
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
     $(document).trigger('vue-resize-height');
+    $(document).trigger('vue-reload-remote');
     // $(document).trigger('vue-sidemenu-update-link');
     setTimeout(function () {
         $('#pjax-file-load-container').find('div').css({

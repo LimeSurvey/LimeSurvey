@@ -154,6 +154,10 @@ export default {
     mounted(){
         this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
+        
+        $(document).on('vue-reload-remote', ()=>{
+            this.$forceUpdate();
+        });
     }
 }
 </script>
