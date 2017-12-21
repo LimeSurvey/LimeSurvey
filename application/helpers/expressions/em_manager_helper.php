@@ -8153,8 +8153,7 @@ kid3~numKids >= 3~text~How old is your third child?
 kid4~numKids >= 4~text~How old is your fourth child?
 kid5~numKids >= 5~text~How old is your fifth child?
 sumage~1~expr~{sumage=sum(kid1.NAOK,kid2.NAOK,kid3.NAOK,kid4.NAOK,kid5.NAOK)}
-report~numKids > 0~message~{name}, you said you are {age} and that you have {numKids} kids.  The sum of ages of your first {min(numKids,5)} kids is {sumage}.
-";
+report~numKids > 0~message~{name}, you said you are {age} and that you have {numKids} kids.  The sum of ages of your first {min(numKids,5)} kids is {sumage}.";
 
             $vars = array();
             $varSeq = array();
