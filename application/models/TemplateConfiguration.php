@@ -359,7 +359,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder) && !is_dir(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder)) {
+            if (is_object($this->template) && ! Template::checkTemplateXML($this->template->folder)) {
                 $this->bTemplateCheckResult = false;
             }
         }
