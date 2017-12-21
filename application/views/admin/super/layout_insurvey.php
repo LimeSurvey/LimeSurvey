@@ -23,7 +23,7 @@ $this->_showHeaders($aData);
     //The container to hold the vuejs application
     echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
         <div id="vue-app-main-container" ' 
-    . 'class="ls-flex-row align-items-flex-center align-content-center" '
+    . 'class="ls-flex-row align-items-flex-begin align-content-flex-end" '
     . '>';
 
         //Rendered through /admin/super/sidemenu
@@ -32,6 +32,7 @@ $this->_showHeaders($aData);
         
         echo '<div id="pjax-content" '
         . 'class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" '
+        . 'style="max-width:80%;"'
         . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.generalContainerHeight}"'
         . '>';
 
