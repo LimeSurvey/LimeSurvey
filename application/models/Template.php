@@ -163,7 +163,7 @@ class Template extends LSActiveRecord
         if (!empty($sTemplateName)){
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
-            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName));
+            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
             return $sTemplateName;
         }else{
             throw new Exception('No survey theme installed !!!!');
