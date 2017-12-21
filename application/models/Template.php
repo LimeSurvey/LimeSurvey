@@ -142,18 +142,13 @@ class Template extends LSActiveRecord
      */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttheme');
-        $sTemplateName    = empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
-
-        /* Standard Template return it without testing */
-        if (self::isStandardTemplate($sTemplateName)) {
-            return $sTemplateName;
-        }
+        $sRequestedTemplate = $sTemplateName;
+        $sDefaultTemplate = getGlobalSetting('defaulttheme');
 
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
+        if (is_object($oTemplate) && ( is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') || is_file( Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') )) {
             return $sTemplateName;
         }
 
@@ -162,8 +157,17 @@ class Template extends LSActiveRecord
             return self::templateNameFilter($sDefaultTemplate);
         }
 
-        /* Last solution :  hard encode the name of the default template here */
-        return 'fruity';
+        /* If we're here, then the default survey theme is not installed and must be changed */
+        $aTemplateList = self::getTemplateList();
+        $sTemplateName = key($aTemplateList);
+        if (!empty($sTemplateName)){
+            setGlobalSetting('defaulttheme', $sTemplateName);
+            $sDefaultTemplate = getGlobalSetting('defaulttheme');
+            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName));
+            return $sTemplateName;
+        }else{
+            throw new Exception('No survey theme installed !!!!');
+        }
     }
 
 
