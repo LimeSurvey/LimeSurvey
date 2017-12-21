@@ -107,16 +107,21 @@
 
     <!-- Answer (Subquestion Text) -->
     <td  class="subquestion-text" style="vertical-align: middle;">
-        <input
-            type='text'
-            size='20'
-            class='answer form-control input'
-            id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
-            name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
-            placeholder='<?php eT("Some example answer option","js") ?>'
-            value="<?php echo $answer; ?>"
-            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
-        />
+        <div class="input-group">
+            <input
+                type='text'
+                size='20'
+                class='answer form-control input'
+                id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
+                name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
+                placeholder='<?php eT("Some example answer option","js") ?>'
+                value="<?php echo $answer; ?>"
+                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+            />
+            <span class="input-group-addon">
+                <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+            </span>
+        </div>
     </td>
 
     <!-- No relevance equation for answer options -->
@@ -124,12 +129,9 @@
 
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
-
-        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
-
         <?php if ( $first):?>
-            <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-            <span class="fa fa-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success " data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></i></button>
+            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></i></button>
         <?php endif; ?>
     </td>
 </tr>

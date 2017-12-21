@@ -96,7 +96,8 @@
 
     <!-- Answer (Subquestion Text) -->
     <td  class="subquestion-text" style="vertical-align: middle;">
-        <input
+        <div class="input-group">        
+            <input
             type='text'
             size='20'
             class='answer form-control input'
@@ -106,6 +107,10 @@
             value="<?php echo $question; ?>"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
+            <span class="input-group-addon">
+                <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+            </span>
+        </div>
     </td>
 
     <!-- Relevance equation -->
@@ -123,15 +128,14 @@
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
-        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
         <?php if ( $activated != 'Y' && $first  ):?>
             <?php
                 // TODO : to merge subquestion and answer options,  implies : define in controller titles
             ?>
 
-            <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-scale-id="<?php echo $scale_id; ?>" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
-            <span class="fa fa-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
+            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-scale-id="<?php echo $scale_id; ?>" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></i></button>
+            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></i></button>
         <?php endif; ?>
 
     </td>

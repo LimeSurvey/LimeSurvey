@@ -326,14 +326,14 @@ function createNewLabelTR(alternate,first){
         + "</td><td>"
         + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
 
-    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
-    "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<span class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
+    x = x + "<td><div class='input-group'><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    "<span class='input-group-addon'><a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
+    "<span class=\"btn btn-default btn-xs fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
     "<span style=\"display: none;\" class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
-    "</a></td>";
+    "</a></span></div></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ fa fa-trash  text-warning\"></span></td>";
+        x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button></td>";
 
     x = x + "</tr>";
 
