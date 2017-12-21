@@ -51,7 +51,8 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <animatebody>off</animatebody>
-        <bodyanimation>fadeInRight</bodyanimation>        
+        <container>on</container>
+        <bodyanimation>fadeInRight</bodyanimation>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>

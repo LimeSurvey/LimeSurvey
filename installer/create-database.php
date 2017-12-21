@@ -786,7 +786,7 @@ function createDatabase($oDB){
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"on","brandlogo":"on","brandlogofile":"./files/logo.png","font":"noto"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -810,7 +810,7 @@ function createDatabase($oDB){
             ]
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
-        
+
         $oDB->createCommand()->insert('{{tutorials}}', array(
             'tid' => 1,
             'name' => 'firstStartTour',
@@ -821,12 +821,12 @@ function createDatabase($oDB){
             'settings' => json_encode(array(
                 'keyboard' => false,
                 'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-                'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
+                'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
                 'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
-    
+
         ));
 
         //tutorial user mapping
@@ -835,9 +835,9 @@ function createDatabase($oDB){
             'uid' => 'int DEFAULT NULL',
             'taken' => 'boolean DEFAULT 1',
         ));
-    
+
         $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
-    
+
         //tutorial entry groups
         $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
             'teid' => 'int NOT NULL',
@@ -1116,7 +1116,7 @@ function createDatabase($oDB){
                 'teid' => 18,
                 'ordering' => 18,
                 'title' => 'The title of your question',
-                'content' => 
+                'content' =>
                 "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.".'<br>'
                 ."This code is also the name of the variable that will be exported to SPSS or Excel."
                 .'<p class="alert bg-warning">'."Please type in a code that consists only of letters and numbers, and doesn't start with a number.".'</p>',
