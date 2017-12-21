@@ -32,7 +32,7 @@ $this->_showHeaders($aData);
         
         echo '<div id="pjax-content" '
         . 'class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" '
-        . 'v-bind:style="\'max-width:\'+$store.getters.substractContainer" '
+        . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.generalContainerHeight}"'
         . '>';
 
             //Rendered through /admin/survey/surveybar_view

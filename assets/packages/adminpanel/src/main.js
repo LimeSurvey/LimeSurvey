@@ -34,24 +34,11 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        menuOffset = $('nav.navbar').outerHeight(),
-                        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-                        footerHeight = $('footer').outerHeight(),
-                        windowHeight = screen.height,
-                        innerMenuHeight = $('#breadcrumb-container').outerHeight() + menuHeight,
-                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * footerHeight))),
-                        generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
-                    this.$log.log({
-                        menuOffset : menuOffset,
-                        menuHeight : menuHeight,
-                        footerHeight : footerHeight,
-                        windowHeight : windowHeight,
-                        windowHeightScreen : screen.availHeight,
-                        windowHeightScreenAvail : screen.height,
-                        innerMenuHeight : innerMenuHeight,
-                        inSurveyViewHeight : inSurveyViewHeight,
-                        generalContainerHeight : generalContainerHeight
-                    });
+                        inSurveyOffset = 230,
+                        menuHeight = $('.menubar').outerHeight(),
+                        windowHeight = $('html').height(),
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
+                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
