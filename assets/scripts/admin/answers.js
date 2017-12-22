@@ -44,9 +44,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $(document).on("click", '.btnlsbrowser', lsbrowser );
 });
 
-function deleteinput()
+function deleteinput(e)
 {
-
+    e.preventDefault();
     // 1.) Check if there is at least one answe
 
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
@@ -149,8 +149,9 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 /**
  * add input : the ajax way
  */
-function addinput()
+function addinput(e)
 {
+    e.preventDefault();
       var $that              = $(this),                               // The "add" button
         $currentRow            = $that.parents('.row-container'),   // The row containing the "add" button
         $currentTable          = $that.parents('.answertable'),
@@ -399,8 +400,9 @@ function areCodesUnique(sNewValue)
     }
 }
 
-function lsbrowser()
+function lsbrowser(e)
 {
+    e.preventDefault();
     scale_id=removechars($(this).attr('id'));
     surveyid=$('input[name=sid]').val();
 

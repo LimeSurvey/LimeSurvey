@@ -199,6 +199,7 @@ function sort_complete(event, ui){
 
 function sync_label(event)
 {
+    event.preventDefault();
     var sRowID = $(event.target).parent().parent().attr('id');
     aRowInfo=sRowID.split('_');// first is row, second langage and last the row number
     $(".ui-tabs-panel").each(function(divindex,divelement){
@@ -216,6 +217,7 @@ function add_label(event)
 {
     if(event!=undefined)
     {
+        event.preventDefault();
         if ($(event.target).closest('tr').find('.codeval').size()>0)
         {
             next_code=getNextCode($(event.target).closest('tr').find('.codeval').val());
@@ -285,7 +287,7 @@ function add_label(event)
 
 
 function del_label(event){
-
+    event.preventDefault();
     var $sRowID = $(event.target).parent().parent().attr('id');
 
     $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number

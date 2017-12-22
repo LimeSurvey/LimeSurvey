@@ -126,9 +126,9 @@ function getRelevanceToolTip()
     return relevanceTooltip;
 }
 
-function deleteinput()
+function deleteinput(e)
 {
-
+    e.preventDefault();
     // 1.) Check if there is at least one answe
     var position,
         countanswers=$(this).closest("tbody").children("tr").length; //Maybe use class is better
@@ -237,8 +237,9 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
  * add input : the ajax way
  */
 
-function addinput()
+function addinput(e)
 {
+    e.preventDefault();
        var $that              = $(this),                               // The "add" button
         $currentRow            = $that.parents('.row-container'),   // The row containing the "add" button
         $currentTable          = $that.parents('.answertable'),
@@ -487,8 +488,9 @@ function code_duplicates_check()
     return cansubmit;
 }
 
-function lsbrowser()
+function lsbrowser(e)
 {
+    e.preventDefault();
     scale_id=removechars($(this).attr('id'));
     surveyid=$('input[name=sid]').val();
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
