@@ -316,6 +316,10 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function changetemplate($iSurveyID, $template)
     {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+            die('No permission');
+        }
+
         $iSurveyID  = sanitize_int($iSurveyID);
         $sTemplate  = sanitize_paranoid_string($template);
 
