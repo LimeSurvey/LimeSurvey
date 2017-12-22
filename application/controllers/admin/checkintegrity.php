@@ -58,7 +58,7 @@ class CheckIntegrity extends Survey_Common_Action
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable) {
                     if (in_array($aTokenTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                        $aData['messages'][] = sprintf(gT('Deleting token table: %s'), $aTokenTable['table']);
+                        $aData['messages'][] = sprintf(gT('Deleting survey participants table: %s'), $aTokenTable['table']);
                     }
                 }
             }
@@ -71,7 +71,7 @@ class CheckIntegrity extends Survey_Common_Action
                 }
             }
             if (count($aData['messages']) == 0) {
-                $aData['messages'][] = gT('No old survey or token table selected.');
+                $aData['messages'][] = gT('No old survey or survey participants table selected.');
             }
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
@@ -150,7 +150,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = gT('Deleting orphan token table:').' '.$aTokenTable;
+            $aData['messages'][] = gT('Deleting orphan survey participants table:').' '.$aTokenTable;
         }
         return $aData;
     }
@@ -432,7 +432,7 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-        /*** Check for active token tables with missing survey entry ***/
+        /*** Check for active survey participants tables with missing survey entry ***/
         $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%'));
         foreach ($aResult->readAll() as $aRow) {
             $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
@@ -823,7 +823,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN TABLES       */
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
         //1: Get distinct list of survey_link survey ids, check if tokens
         //   table still exists for each one, and remove if not
@@ -835,7 +835,7 @@ class CheckIntegrity extends Survey_Common_Action
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
-        //   the token table and remove if it doesn't.
+        //   the survey participants table and remove if it doesn't.
 
 
         /* Show a alert message is some fix is done */

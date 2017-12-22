@@ -1440,7 +1440,7 @@ function upgrade333($oDB){
         array(
             'teid' => 35,
             'ordering' => 35,
-            'title' => ('Activate token table'),
+            'title' => ('Activate survey participants table'),
             'content' => "Here you can select to start your survey in closed access mode."."<br/>"
             ."For our simple survey it is better to start in open access mode."."<br/>"
             ."The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."."<br/>"

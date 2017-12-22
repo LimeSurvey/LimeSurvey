@@ -1425,7 +1425,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 if ($tccount < 1) {
-// token doesn't exist in token table
+// token doesn't exist in survey participants table
                     $lastanswfortoken = 'UnknownToken';
                 } elseif ($survey->isAnonymized) {
 // token exist but survey is anonymous, check completed state

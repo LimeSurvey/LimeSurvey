@@ -377,7 +377,7 @@ $url .= "_view"; });
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds);
         }
-        // Deletes from central and token table
+        // Deletes from central and survey participants table
         else if ($selectoption == 'ptt') {
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         }
@@ -2245,7 +2245,7 @@ $url .= "_view"; });
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey token table"), "<span class='badge alert-success'>".$response['success']."</span>");
+        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge alert-success'>".$response['success']."</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";

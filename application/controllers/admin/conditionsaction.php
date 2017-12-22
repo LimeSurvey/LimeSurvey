@@ -45,7 +45,7 @@ class conditionsaction extends Survey_Common_Action
     private $language;
     
     /**
-     * True if there exists a token table for this survey
+     * True if there exists a survey participants table for this survey
      * @var boolean
      */
     private $tokenTableExists;
@@ -509,9 +509,9 @@ class conditionsaction extends Survey_Common_Action
                         $rightOperandType = 'tokenAttr';
                         $aTokenAttrNames = $this->tokenFieldsAndNames;
                         if ($this->tokenTableExists) {
-                            $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
+                            $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From survey participants table")."]";
                         } else {
-                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
+                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant survey participants table")."]";
                         }
                         $data['target'] = $thisAttrName;
                     } elseif (isset($canswers)) {
@@ -2041,9 +2041,9 @@ protected function getAttributeName($extractedTokenAttr)
     }
     
     if ($this->tokenTableExists) {
-        $thisAttrName .= " [".gT("From token table")."]";
+        $thisAttrName .= " [".gT("From survey participants table")."]";
     } else {
-        $thisAttrName .= " [".gT("Inexistant token table")."]";
+        $thisAttrName .= " [".gT("Inexistant survey participants table")."]";
     }
     
     return $thisAttrName;

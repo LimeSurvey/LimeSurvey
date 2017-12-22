@@ -579,7 +579,7 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * Returns true in a token table exists for survey
+     * Returns true in a survey participants table exists for survey
      * @return boolean
      */
     public function getHasTokensTable()

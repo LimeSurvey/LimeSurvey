@@ -45,7 +45,7 @@ class SurveyObj
 
 
     /**
-     * When relevant holds the available fields from the token table
+     * When relevant holds the available fields from the survey participants table
      *
      * @var array[fieldname][localised description]
      */

@@ -17,7 +17,7 @@
 
                     <?php
                         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create')){
-                            eT("If you initialise a survey participant table for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
+                            eT("If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
                         ?><br /><br />
 
                         <?php
@@ -26,7 +26,7 @@
                             ?><br /><br />
                             <?php
                             }
-                            eT("Do you want to create a survey participant table for this survey?");
+                            eT("Do you want to create a survey participants table for this survey?");
                         ?>
                         <br /><br />
 
@@ -50,7 +50,7 @@
         </div>
 
 <?php
-// Do not offer old postgres token tables for restore since these are having an issue with missing index
+// Do not offer old postgres survey participants tables for restore since these are having an issue with missing index
 if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
 ?>
         <div class="col-sm-12 content-right">
@@ -58,7 +58,7 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
                 <h2><?php eT("Restore options"); ?></h2>
                 <p class="lead text-success">
                     <strong>
-                        <?php eT("The following old token tables could be restored:"); ?>
+                        <?php eT("The following old survey participants tables could be restored:"); ?>
                     </strong>
                 </p>
                 <p>

@@ -939,7 +939,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Deletes CPDB participants identified by their participant ID from token tables
+     * Deletes CPDB participants identified by their participant ID from survey participants tables
      *
      * @param string $sParticipantsIDs
      * @return integer Number of deleted participants
@@ -1026,7 +1026,7 @@ class Participant extends LSActiveRecord
                     if (Permission::model()->hasSurveyPermission($surveyLink->survey_id, 'tokens', 'delete')) {
 
                         Yii::app()->db->createCommand()
-                            ->delete($survey->tokensTableName, 'participant_id = :pid', array(':pid'=>$surveyLink->participant_id)); // Deletes matching token table entries
+                            ->delete($survey->tokensTableName, 'participant_id = :pid', array(':pid'=>$surveyLink->participant_id)); // Deletes matching survey participants table entries
                     }
                 }
             }
@@ -1635,7 +1635,7 @@ class Participant extends LSActiveRecord
                 continue;
             }
 
-            // Search for matching participant name/email in the survey token table
+            // Search for matching participant name/email in the survey survey participants table
             $matchingParticipant = Yii::app()->db->createCommand()->select('tid')->from($survey->tokensTableName)
                 ->where('(firstname = :firstname AND lastname = :lastname AND email = :email) OR participant_id = :participant_id')
                 ->bindParam(":firstname", $participant['firstname'], PDO::PARAM_STR)
@@ -1645,7 +1645,7 @@ class Participant extends LSActiveRecord
                 ->queryAll();
 
             if (count($matchingParticipant) > 0) {
-                //Participant already exists in token table - don't copy
+                //Participant already exists in survey participants table - don't copy
                 $duplicate++;
 
                 // Here is where we can put code for overwriting the attribute data if so required
@@ -1739,7 +1739,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Copies central attributes/participants to an individual survey token table
+     * Copies central attributes/participants to an individual survey survey participants table
      *
      * @param int $surveyId The survey id
      * @param string $participantIds Array containing the participant ids of the participants we are adding
@@ -1777,7 +1777,7 @@ class Participant extends LSActiveRecord
         // TODO: Why use two variables for this?
         list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
-        //Write each participant to the survey token table
+        //Write each participant to the survey survey participants table
         list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
@@ -1799,12 +1799,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates a field in the token table with a value from the participant attributes table
+     * Updates a field in the survey participants table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the token table
+     * @param int $tokenFieldname fieldname in the survey participants table
      *
      * @return bool true/false
      */
@@ -1836,12 +1836,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Updates or creates a field in the token table with a value from the participant attributes table
+     * Updates or creates a field in the survey participants table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
      * @param int $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldname fieldname in the token table
+     * @param int $tokenFieldname fieldname in the survey participants table
      *
      * @return boolean|null true/false
      */
@@ -1918,7 +1918,7 @@ class Participant extends LSActiveRecord
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
                 //creating new central attribute
-                /* $key is the fieldname from the token table (ie "attribute_1")
+                /* $key is the fieldname from the survey participants table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
                 $insertnames = array(
@@ -1989,7 +1989,7 @@ class Participant extends LSActiveRecord
                     $oParticipant->setAttributes($writearray, false);
                     $oParticipant->save(false);
 
-                    //Update token table and insert the new UUID
+                    //Update survey participants table and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
                     $oTokenDynamic->save(false);
 

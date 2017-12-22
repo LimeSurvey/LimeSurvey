@@ -309,7 +309,7 @@ abstract class Writer implements IWriter
                             break;
                     }
                 } else {
-//Token table value
+//Survey participants table value
                     $elementArray[] = $value;
                 }
             }

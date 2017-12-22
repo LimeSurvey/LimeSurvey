@@ -1728,12 +1728,12 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
     position: fixed;
 }
 
-/** For token table */
+/** For survey participants table */
 .scrolling-wrapper {
     overflow-x: scroll;
 }
 
-/** Search criteria pop-up for token table */
+/** Search criteria pop-up for survey participants table */
 #search {
     display: none;
     overflow-y: auto;

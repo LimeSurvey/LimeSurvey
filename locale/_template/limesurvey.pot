@@ -1159,7 +1159,7 @@ msgid "Return to admin home"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:61
-msgid "Deleting token table: %s"
+msgid "Deleting survey participants table: %s"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:69
@@ -1167,11 +1167,11 @@ msgid "Deleting survey table: %s"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:74
-msgid "No old survey or token table selected."
+msgid "No old survey or survey participants table selected."
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:153
-msgid "Deleting orphan token table:"
+msgid "Deleting orphan survey participants table:"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:162
@@ -1365,12 +1365,12 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:512
 #: application/controllers/admin/conditionsaction.php:2044
-msgid "From token table"
+msgid "From survey participants table"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:514
 #: application/controllers/admin/conditionsaction.php:2046
-msgid "Inexistant token table"
+msgid "Inexistant survey participants table"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:530
@@ -2881,7 +2881,7 @@ msgid "Attribute values for existing participants have been updated from the tok
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:2247
-msgid "%s participants have been copied to the survey token table"
+msgid "%s participants have been copied to the survey survey participants table"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:2256
@@ -4186,7 +4186,7 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:81
 #: application/controllers/admin/tokens.php:1099
-msgid "No token table."
+msgid "No survey participants table."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:93
@@ -4621,7 +4621,7 @@ msgid "Import old tokens"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2502
-msgid "A token table has been created for this survey and the old tokens were imported."
+msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
 #: application/controllers/admin/translate.php:74
@@ -6242,7 +6242,7 @@ msgid "Existing LID: %s"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:750
-msgid "Unable to create token table"
+msgid "Unable to create survey participants table"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:795
@@ -10561,7 +10561,7 @@ msgid "Survey settings"
 msgstr ""
 
 #: application/models/Permission.php:152
-msgid "Permission to view/update the survey settings including token table creation"
+msgid "Permission to view/update the survey settings including survey participants table creation"
 msgstr ""
 
 #: application/models/Permission.php:156
@@ -11628,11 +11628,11 @@ msgid "All old survey tables meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:210
-msgid "The following old token tables should be deleted because they contain no records or their parent survey no longer exists:"
+msgid "The following old survey participants tables should be deleted because they contain no records or their parent survey no longer exists:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:222
-msgid "All old token tables meet consistency standards."
+msgid "All old survey participants tables meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:227
@@ -13106,11 +13106,11 @@ msgid "Deactivated result tables"
 msgstr ""
 
 #: application/views/admin/global_settings/_overview.php:29
-msgid "Active token tables"
+msgid "Active survey participants tables"
 msgstr ""
 
 #: application/views/admin/global_settings/_overview.php:32
-msgid "Deactivated token tables"
+msgid "Deactivated survey participants tables"
 msgstr ""
 
 #: application/views/admin/global_settings/_overview.php:40
@@ -13825,7 +13825,7 @@ msgid "All the attributes are automatically mapped"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:16
-msgid "You have to pair it with one attribute of the token table"
+msgid "You have to pair it with one attribute of the survey participants table"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:17
@@ -15741,7 +15741,7 @@ msgid "The required directory for saving the uploaded files couldn't be created.
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:32
-msgid "This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A survey participants table must also be created."
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:37
@@ -15762,7 +15762,7 @@ msgid "No invitation code is needed to complete the survey."
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:51
-msgid "You can switch to the closed-access mode by initialising a survey participant table by using the button below."
+msgid "You can switch to the closed-access mode by initialising a survey participants table by using the button below."
 msgstr ""
 
 #: application/views/admin/survey/_activation_feedback.php:58
@@ -16770,7 +16770,7 @@ msgid "Set token length to:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:50
-msgid "If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."
+msgid "If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their token."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:51
@@ -16778,7 +16778,7 @@ msgid "Anonymized responses:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:79
-msgid "With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."
+msgid "With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:80
@@ -18014,7 +18014,7 @@ msgid "Add/delete survey participant attributes"
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:132
-msgid "There is {n} user attribute field in this survey participant table.|There are {n} user attribute fields in this survey participant table."
+msgid "There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table."
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:135
@@ -18172,7 +18172,7 @@ msgid "Total screened out"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:20
-msgid "If you initialise a survey participant table for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
+msgid "If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:25
@@ -18180,7 +18180,7 @@ msgid "Note: If you turn on the -Anonymized responses- option for this survey th
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:29
-msgid "Do you want to create a survey participant table for this survey?"
+msgid "Do you want to create a survey participants table for this survey?"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:41
@@ -18192,7 +18192,7 @@ msgid "Restore options"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:61
-msgid "The following old token tables could be restored:"
+msgid "The following old survey participants tables could be restored:"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:73

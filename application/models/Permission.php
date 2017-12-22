@@ -149,7 +149,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view/update the survey settings including token table creation"),
+                'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
                 'img' => 'survey_settings'
             ),
             'tokens' => array(
