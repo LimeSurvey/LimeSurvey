@@ -24,7 +24,7 @@ const globalTourObject = function(){
             
             const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : 'admin/';
             const conatainsIndex = (/\/index.php\/?/.test(window.location.href));
-            const returnUrl = window.LS.data.baseUrl+(conatainsIndex ? '/index.php/' : '/')+baseUrl+url+combineParams(params);
+            const returnUrl = window.LS.data.baseUrl+(conatainsIndex ? '/index.php' : '/')+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
