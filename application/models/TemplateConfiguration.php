@@ -239,6 +239,59 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group). Else, it will create it.
+     * @TODO: recursivity for survey group
+     * @param int $iSurveyId
+     * @return TemplateConfiguration the template configuration for the survey group
+     */
+    public static function checkAndcreateSurveyConfig($iSurveyId)
+    {
+        //if a template name is given also check against that
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $sTemplateName  = $oSurvey->template;
+        $iSurveyGroupId = $oSurvey->gsid;
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = null;
+            $oTemplateConfigurationModel->sid = $iSurveyId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('gsid=:gsid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = null;
+            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+    }
+
+    /**
      * Get an instance of a fitting TemplateConfiguration
      *
      * @param string $sTemplateName
