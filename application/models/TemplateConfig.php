@@ -263,7 +263,7 @@ class TemplateConfig extends CActiveRecord
 
         // For list, so no "setConfiguration" before
         public function getPreview()
-        {
+        {            
             if (empty($this->sPreviewImgTag)) {
                 if (is_a($this->template, 'Template')) {
                     $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
@@ -278,6 +278,7 @@ class TemplateConfig extends CActiveRecord
                 }
 
             }
+
             return $this->sPreviewImgTag;
         }
 

@@ -382,6 +382,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
+        //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
         if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])){
             return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
         }
@@ -507,8 +508,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-        $this->prepareTemplateRendering($this->template->name);
-        $oRTemplate = $this;
+        $oRTemplate = $this->prepareTemplateRendering($this->template->name);
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
 
@@ -517,8 +517,7 @@ class TemplateConfiguration extends TemplateConfig
                 return false;
                 break;
             }
-            $oMotherTemplate->prepareTemplateRendering($this->template->name);
-            $oRTemplate = $oMotherTemplate;
+            $oRTemplate = $oMotherTemplate->prepareTemplateRendering($this->template->name);
         }
         return true;
     }
@@ -550,16 +549,16 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
-        $this->prepareTemplateRendering();
+        $oTemplate = $this->prepareTemplateRendering();
 
-        $renderArray = array('templateConfiguration' => $this->getOptionPageAttributes());
+        $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
-        $this->setOptions();
-        $this->setOptionInheritance();
+        $oTemplate->setOptions();
+        $oTemplate->setOptionInheritance();
 
-        $renderArray['oParentOptions'] = (array) $this->oOptions;
+        $renderArray['oParentOptions'] = (array) $oTemplate->oOptions;
 
-        return Yii::app()->twigRenderer->renderOptionPage($this, $renderArray);
+        return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
 
     /**
@@ -677,13 +676,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName   = $this->template->extends;
-            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
-            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
-            if ($this->oMotherTemplate->checkTemplate()) {
-                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null); // Object Recursion
-            } else {
-                // Throw exception? Set to default theme?
-            }
+            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName)->prepareTemplateRendering($sMotherTemplateName, null);
         }
     }
 
