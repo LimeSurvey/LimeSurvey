@@ -63,7 +63,7 @@ const TourLibrary = function () {
                 },
                 (err) => {
                     console.ls.log('Couldn\'t be loaded!');
-                    console.ls.err(err);
+                    console.ls.error(err);
                 }
             );
         };

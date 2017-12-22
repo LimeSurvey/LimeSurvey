@@ -275,6 +275,6 @@ function OtherSelection(QuestionType) {
             document.getElementById('MandatorySelection').style.display = '';
         }
     } catch(e) {
-        if(window.debugState.backend) console.ls.err(e);
+        if(window.debugState.backend) console.ls.error(e);
     }
 }

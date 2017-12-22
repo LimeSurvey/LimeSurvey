@@ -36382,6 +36382,9 @@ $(document).on('ready', function () {
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
+            beforeCreate() {
+                this.controlWindowSize();
+            },
             created() {
                 this.controlWindowSize();
                 window.addEventListener('resize', () => {
@@ -43201,7 +43204,7 @@ process.umask = function() { return 0; };
 
 exports.install = function (Vue) {
     if(window.debugState.backend) {
-        console.ls.debug('The systen is currently in debug mode.');
+        console.ls.trace('The systen is currently in debug mode.');
         Vue.prototype.$log = console.ls;
     } else {
         console.log('The systen is currently in production mode.');
