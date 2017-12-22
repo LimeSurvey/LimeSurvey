@@ -107,7 +107,15 @@ $this->renderPartial('super/fullpagebar_view', array(
             </div>
         </div>
         <div id="questionthemes" class="tab-pane">
-            questions
+            <div class="col-lg-12 list-surveys">
+
+                <?php echo '<h3>'.gT('Question themes:').'</h3>'; ?>
+
+                Soon, here, you'll have the list of all question types, and all customed question types. <br>
+                You'll be able to manage them like the Survey Themes (inheritance, theme editor, configuration at global/survey group/survey ; show/hide by survey group, etc)
+                <br>Engine is already working, the interface will come very soon.
+            </div>
+
         </div>
     </div>
 </div>
