@@ -2097,7 +2097,9 @@ table#responsedetail tr td{
 .input-group-addon {
   padding: 5px 12px;
 }
-
+.multiselect-container>li>a>label>input[type="checkbox"]{
+  margin-left: 0;
+}
 .notification-list {
   top: 100%;
   left: 0;
