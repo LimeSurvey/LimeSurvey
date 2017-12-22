@@ -561,7 +561,14 @@ class TemplateManifest extends TemplateConfiguration
         if (file_exists(realpath($this->xmlFile))) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $this->config          = simplexml_load_string($sXMLConfigFile); // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+
+
+            foreach($oXMLConfig->config->xpath("//file") as $oFileName){
+                     $oFileName[0] = get_absolute_path( $oFileName[0]);
+            }
+
+            $this->config          = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
             libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
