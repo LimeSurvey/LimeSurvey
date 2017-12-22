@@ -332,7 +332,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oTemplateConfiguration->save();
 
         // This will force the generation of the entry for survey group
-        TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyId);
+        TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
     }
 
     public function togglequickaction()
