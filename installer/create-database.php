@@ -734,7 +734,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->insert("{{templates}}", [
             'name'          => 'vanilla',
             'folder'        => 'vanilla',
-            'title'         => 'Bootstrap Vanilla Theme',
+            'title'         => 'Vanilla Theme',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        =>'Louis Gac',
             'author_email'  => 'louis.gac@limesurvey.org',
@@ -750,6 +750,52 @@ function createDatabase($oDB){
             'owner_id'      => 1,
             'extends'       => '',
         ]);
+
+
+        $oDB->createCommand()->insert("{{templates}}", [
+            'name'          => 'fruity',
+            'folder'        => 'fruity',
+            'title'         => 'Fruity Theme',
+            'creation_date' => date('Y-m-d H:i:s'),
+            'author'        =>'Louis Gac',
+            'author_email'  => 'louis.gac@limesurvey.org',
+            'author_url'    => 'https://www.limesurvey.org/',
+            'copyright'     => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+            'version'       => '3.0',
+            'api_version'   => '3.0',
+            'view_folder'   => 'views',
+            'files_folder'  => 'files',
+            'description'   => '<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.',
+            'last_update'   => NULL,
+            'owner_id'      => 1,
+            'extends'       => 'vanilla',
+        ]);
+
+
+
+
+        $oDB->createCommand()->insert("{{templates}}", [
+            'name'          => 'bootswatch',
+            'folder'        => 'bootswatch',
+            'title'         => 'Bootswatch Theme',
+            'creation_date' => date('Y-m-d H:i:s'),
+            'author'        =>'Louis Gac',
+            'author_email'  => 'louis.gac@limesurvey.org',
+            'author_url'    => 'https://www.limesurvey.org/',
+            'copyright'     => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+            'version'       => '3.0',
+            'api_version'   => '3.0',
+            'view_folder'   => 'views',
+            'files_folder'  => 'files',
+            'description'   => '<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ',
+            'last_update'   => NULL,
+            'owner_id'      => 1,
+            'extends'       => 'vanilla',
+        ]);
+
+
 
         // template_configuration
         $oDB->createCommand()->createTable('{{template_configuration}}', array(
@@ -792,7 +838,46 @@ function createDatabase($oDB){
             'cssframework_js'   => '',
             'packages_to_load'  => '{"add":["pjax","font-noto"]}',
             'packages_ltr'      => NULL,
-            'packages_rtl'      => NULL]);
+            'packages_rtl'      => NULL]
+        );
+
+
+        $oDB->createCommand()->insert("{{template_configuration}}", [
+            'template_name'     =>  'fruity',
+            'sid'               =>  NULL,
+            'gsid'              =>  NULL,
+            'uid'               =>  NULL,
+            'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
+            'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+            'files_print_css'   => '{"add":["css/print_theme.css"]}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+            'cssframework_name' => 'bootstrap',
+            'cssframework_css'  => '{}',
+            'cssframework_js'   => '',
+            'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
+            'packages_ltr'      => NULL,
+            'packages_rtl'      => NULL]
+        );
+
+
+
+        $oDB->createCommand()->insert("{{template_configuration}}", [
+            'template_name'     =>  'bootswatch',
+            'sid'               =>  NULL,
+            'gsid'              =>  NULL,
+            'uid'               =>  NULL,
+            'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+            'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+            'files_print_css'   => '{"add":["css/print_theme.css"]}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+            'cssframework_name' => 'bootstrap',
+            'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
+            'cssframework_js'   => '',
+            'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+            'packages_ltr'      => NULL,
+            'packages_rtl'      => NULL]
+        );
+
 
 
         //tutorials
