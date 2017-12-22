@@ -223,11 +223,12 @@ $url .= "_view"; });
             $iUserID = Yii::app()->session['loginID'];
         }
 
-        $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
-
-        if ($count > 0) {
-            return ngT("Export {n} participant to CSV|Export {n} participants to CSV", $count);
-        } else {
+        $count = (int) Participant::model()->getParticipantsCount($attid, $search, $iUserID);
+        if ($count > 1) {
+            return sprintf(gT("Export %s participants to CSV"), $count);
+        } else if($count == 1) {
+            return gT("Export participant to CSV");
+        } else  {
             return $count;
         }
     }
