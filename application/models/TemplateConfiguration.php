@@ -507,7 +507,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-        $this->prepareTemplateRendering();
+        $this->prepareTemplateRendering($this->template->name);
         $oRTemplate = $this;
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
@@ -517,7 +517,7 @@ class TemplateConfiguration extends TemplateConfig
                 return false;
                 break;
             }
-            $oMotherTemplate->prepareTemplateRendering();
+            $oMotherTemplate->prepareTemplateRendering($this->template->name);
             $oRTemplate = $oMotherTemplate;
         }
         return true;
