@@ -263,7 +263,7 @@ class TemplateConfig extends CActiveRecord
 
         // For list, so no "setConfiguration" before
         public function getPreview()
-        {            
+        {
             if (empty($this->sPreviewImgTag)) {
                 if (is_a($this->template, 'Template')) {
                     $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
@@ -327,7 +327,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['html']  = ' no-js ';
 
-        $aClassAndAttributes['class']['body']  = $this->sTemplateName;
+        $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
         if (!empty($this->aCssFrameworkReplacement)) {
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
@@ -892,6 +892,27 @@ class TemplateConfig extends CActiveRecord
         } else {
             throw new Exception($oNewTemplate->getErrors());
         }
+    }
+
+    /**
+     * Get a string containing the name of the current template and all its parents
+     * Used to inject those names into body classes
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->template->extends)) {
+
+            $sTemplateNames .= ' '.$oRTemplate->template->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+        return $sTemplateNames;
     }
 
     /**
