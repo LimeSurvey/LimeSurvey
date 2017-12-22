@@ -9,7 +9,6 @@ echo viewHelper::getViewTestTag('templateOptions');
 
 ?>
 
-<?php $bFromSurveyGroup = ($oSurveyTheme->scenario == 'surveygroup')?true:false; ?>
 <div class="ls-space margin left-15 right-15 row list-themes">
     <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="active"><a href="#surveythemes"><?php eT('Survey themes'); ?></a></li>
@@ -21,7 +20,7 @@ echo viewHelper::getViewTestTag('templateOptions');
             <div class="col-lg-12 list-surveys">
 
                 <?php
-                    if (!$bFromSurveyGroup){
+
                         $this->renderPartial('super/fullpagebar_view', array(
                         'fullpagebar' => array(
                             'returnbutton'=>array(
@@ -31,70 +30,14 @@ echo viewHelper::getViewTestTag('templateOptions');
                             )
                         ));
                         echo '<h3>'.gT('Installed survey themes:').'</h3>';
-                    }
+
 
 
                 ?>
 
-                <div class="row">
-                    <div class="col-sm-12 content-right">
+                <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme )); ?>
 
-                        <?php $this->widget('bootstrap.widgets.TbGridView', array(
-                            'dataProvider' => $oSurveyTheme->search(),
-                            'columns' => array(
-                                array(
-                                    'header' => gT('Preview'),
-                                    'name' => 'preview',
-                                    'value'=> '$data->preview',
-                                    'type'=>'raw',
-                                    'htmlOptions' => array('class' => 'col-md-1'),
-                                ),
-
-                                array(
-                                    'header' => gT('Name'),
-                                    'name' => 'template_name',
-                                    'value'=>'$data->template_name',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => gT('Description'),
-                                    'name' => 'template_name',
-                                    'value'=>'$data->template->description',
-                                    'htmlOptions' => array('class' => 'col-md-3'),
-                                    'type'=>'raw',
-                                ),
-
-                                array(
-                                    'header' => gT('Type'),
-                                    'name' => 'templates_type',
-                                    'value'=>'$data->typeIcon',
-                                    'type' => 'raw',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => gT('Extends'),
-                                    'name' => 'templates_extends',
-                                    'value'=>'$data->template->extends',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => '',
-                                    'name' => 'actions',
-                                    'value'=>'$data->buttons',
-                                    'type'=>'raw',
-                                    'htmlOptions' => array('class' => 'col-md-1'),
-                                ),
-
-                            )));
-                        ?>
-
-                    </div>
-                </div>
-
-                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 && !$bFromSurveyGroup):?>
+                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div class="row">
                         <div class="col-sm-12 content-right">
