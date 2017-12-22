@@ -7,6 +7,14 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
 
+$this->renderPartial('super/fullpagebar_view', array(
+'fullpagebar' => array(
+    'returnbutton'=>array(
+        'url'=>'index',
+        'text'=>gT('Close'),
+        ),
+    )
+));
 ?>
 
 <div class="ls-space margin left-15 right-15 row list-themes">
@@ -19,21 +27,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         <div id="surveythemes" class="tab-pane active">
             <div class="col-lg-12 list-surveys">
 
-                <?php
-
-                        $this->renderPartial('super/fullpagebar_view', array(
-                        'fullpagebar' => array(
-                            'returnbutton'=>array(
-                                'url'=>'index',
-                                'text'=>gT('Close'),
-                                ),
-                            )
-                        ));
-                        echo '<h3>'.gT('Installed survey themes:').'</h3>';
-
-
-
-                ?>
+                <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
                 <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme )); ?>
 
