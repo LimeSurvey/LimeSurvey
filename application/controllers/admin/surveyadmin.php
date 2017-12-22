@@ -2010,6 +2010,9 @@ class SurveyAdmin extends Survey_Common_Action
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
+            // This will force the generation of the entry for survey group
+            TemplateConfiguration::getInstanceFromSurveyId($iNewSurveyid, App()->request->getPost('template'));
+            
             $createSample = ((int) App()->request->getPost('createsample', 0)) === 1;
 
             // Figure out destination
@@ -2041,7 +2044,8 @@ class SurveyAdmin extends Survey_Common_Action
             false
         );
 
-        TemplateConfiguration::getInstanceFromSurveyId($iNewSurveyid, App()->request->getPost('template')); // This will force the generation of the entry for survey group
+
+
         }
     }
 
