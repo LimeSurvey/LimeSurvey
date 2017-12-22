@@ -54,6 +54,9 @@ class TemplateConfiguration extends TemplateConfig
     /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
     public $bUseMagicInherit = false;
 
+    /**@var boolean Indicate if this entry in DB get created on the fly. If yes, because of Cache, it can need a page redirect  */
+    public $bJustCreated = false;
+
     // Caches
 
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
@@ -195,6 +198,8 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
+
+            $oTemplateConfigurationModel->bJustCreated = true;
         }
 
         return $oTemplateConfigurationModel;
@@ -608,8 +613,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
-        $oTemplate = $this->prepareTemplateRendering();
-
+        $oTemplate = $this->prepareTemplateRendering($this->template->name);
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
         $oTemplate->setOptions();

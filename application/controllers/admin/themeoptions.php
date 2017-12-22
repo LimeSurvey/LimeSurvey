@@ -126,11 +126,16 @@ class themeoptions  extends Survey_Common_Action
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function updatesurveygroup($id = null, $gsid)
+    public function updatesurveygroup($id = null, $gsid, $l=null)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+
             $sTemplateName = $id !== null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
+
+            if ($model->bJustCreated === true && $l === null ){
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurveygroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+            }
 
             if (isset($_POST['TemplateConfiguration'])) {
                 $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
