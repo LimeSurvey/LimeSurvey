@@ -511,7 +511,7 @@ class conditionsaction extends Survey_Common_Action
                         if ($this->tokenTableExists) {
                             $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From survey participants table")."]";
                         } else {
-                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant survey participants table")."]";
+                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Non-existing survey participants table")."]";
                         }
                         $data['target'] = $thisAttrName;
                     } elseif (isset($canswers)) {
