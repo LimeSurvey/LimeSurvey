@@ -191,6 +191,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = null;
             $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
@@ -228,6 +229,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = null;
             $oTemplateConfigurationModel->sid = $iSurveyId;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
