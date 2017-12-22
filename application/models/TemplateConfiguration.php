@@ -383,8 +383,8 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
-        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])){
-            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])){
+            return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
         }
 
         $this->bUseMagicInherit = $bUseMagicInherit;
@@ -392,7 +392,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
@@ -508,7 +508,10 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
+
+
         $oRTemplate = $this->prepareTemplateRendering($this->template->name);
+
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
 
