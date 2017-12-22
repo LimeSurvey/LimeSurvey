@@ -331,6 +331,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oTemplateConfiguration->template_name = $sTemplate;
         $oTemplateConfiguration->save();
 
+        TemplateConfiguration::getInstanceFromSurveyId($iSurveyID, $sTemplate); // This will force the generation of the entry for survey group
     }
 
     public function togglequickaction()
@@ -2040,6 +2041,7 @@ class SurveyAdmin extends Survey_Common_Action
             false
         );
 
+        TemplateConfiguration::getInstanceFromSurveyId($iNewSurveyid, App()->request->getPost('template')); // This will force the generation of the entry for survey group
         }
     }
 
