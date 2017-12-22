@@ -1902,7 +1902,7 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
-        $tokenid = json_decode($tokenid_string);
+        $tokenids = json_decode($tokenid_string,true);
         $duplicate = 0;
         $sucessfull = 0;
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
@@ -1917,78 +1917,81 @@ class Participant extends LSActiveRecord
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
-//creating new central attribute
+                //creating new central attribute
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
-                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y', 'defaultname' => $value);
-                Yii::app()->db
-                            ->createCommand()
-                            ->insert('{{participant_attribute_names}}', $insertnames);
-                $attid[$key] = $aAttributesToBeCreated[$key] = getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
+                $insertnames = array(
+                    'attribute_type' => 'TB', 
+                    'visible' => 'Y', 
+                    'defaultname' => $value
+                );
+                $oParticipantAttributeNames = new ParticipantAttributeName();
+                $oParticipantAttributeNames->setAttributes($insertnames, false);
+                $oParticipantAttributeNames->save(false);
+                $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
+                
                 $insertnameslang = array(
-                                            'attribute_id' => $attid[$key],
-                                            'attribute_name' => urldecode($value),
-                                            'lang' => Yii::app()->session['adminlang']
-                                            );
-                Yii::app()->db
-                            ->createCommand()
-                            ->insert('{{participant_attribute_names_lang}}', $insertnameslang);
+                    'attribute_id' => $attid[$key],
+                    'attribute_name' => urldecode($value),
+                    'lang' => Yii::app()->session['adminlang']
+                );
+                $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
+                $oParticipantAttributeNamesLang->setAttributes($insertnameslang, false);
+                $oParticipantAttributeNamesLang->save(false);                
+
             }
         }
 
         /* Add the participants to the CPDB = Iterate through each $tokenid and create the new CPDB id*/
-        foreach ($tokenid as $key => $tid) {
+        if(!is_array($tokenids)) { $tokenids = (array) $tokenids; } 
+        foreach ($tokenids as $tid) {
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
-                $tobeinserted = Yii::app()->db
-                    ->createCommand()
-                    ->select('participant_id,firstname,lastname,email,language')
-                    ->where('tid = :tid')
-                    ->from($survey->tokensTableName)
-                    ->bindParam(":tid", $tid, PDO::PARAM_INT)
-                    ->queryRow();
+                $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
+    
                 /* See if there are any existing CPDB entries that match on firstname,lastname and email */
-                $query = Yii::app()->db
-                    ->createCommand()
-                    ->select('*')
-                    ->from('{{participants}}')
-                    ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
-                    ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
-                    ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
-                    ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
-                    ->queryAll();
+                $participantCriteria = new CDbCriteria();
+                $participantCriteria->addCondition('firstname = :firstname');
+                $participantCriteria->addCondition('lastname = :lastname');
+                $participantCriteria->addCondition('email = :email');
+                $participantCriteria->params = [
+                    ":firstname" => $oTokenDynamic->firstname,
+                    ":lastname" => $oTokenDynamic->lastname,
+                    ":email" => $oTokenDynamic->email,
+                ];
+                $existing = Participant::model()->find($participantCriteria);
                 /* If there is already an existing entry, add to the duplicate count */
-                if (count($query) > 0) {
+                if ($existing != null) {
                     $duplicate++;
                     if ($overwriteman == "true" && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $query[0]['participant_id'], $cpdbatt, $tatt);
+                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
                 }
                 /* If there isn't an existing entry, create one! */
                 else {
                     /* Create entry in participants table */
-                    $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklisted'] : 'N';
-                    $pid = !empty($tobeinserted['participant_id']) ? $tobeinserted['participant_id'] : $this->gen_uuid();
+                    $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
+                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->gen_uuid();
+
                     $writearray = array('participant_id' => $pid,
-                        'firstname' => $tobeinserted['firstname'],
-                        'lastname' => $tobeinserted['lastname'],
-                        'email' => $tobeinserted['email'],
-                        'language' => $tobeinserted['language'],
+                        'firstname' => $oTokenDynamic->firstname,
+                        'lastname' => $oTokenDynamic->lastname,
+                        'email' => $oTokenDynamic->email,
+                        'language' => $oTokenDynamic->language,
                         'blacklisted' => $black,
                         'owner_uid' => Yii::app()->session['loginID'],
                         'created_by' => Yii::app()->session['loginID'],
                         'created' => date('Y-m-d H:i:s', time()));
-                    Yii::app()->db
-                                ->createCommand()
-                                ->insert('{{participants}}', $writearray);
+                    $oParticipant = new Participant();
+                    $oParticipant->setAttributes($writearray, false);
+                    $oParticipant->save(false);
+
                     //Update token table and insert the new UUID
-                    $data = array("participant_id"=>$pid);
-                    Yii::app()->db
-                                ->createCommand()
-                                ->update($survey->tokensTableName, $data, "tid = $tid");
+                    $oTokenDynamic->participant_id = $pid;
+                    $oTokenDynamic->save(false);
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
@@ -2005,15 +2008,15 @@ class Participant extends LSActiveRecord
                     $sucessfull++;
 
                     /* Create a survey_link */
+                    $oSurveyLink = new SurveyLink();
                     $data = array(
                             'participant_id' => $pid,
                             'token_id' => $tid,
                             'survey_id' => $surveyid,
                             'date_created' => date('Y-m-d H:i:s', time())
                         );
-                    Yii::app()->db
-                                ->createCommand()
-                                ->insert('{{survey_links}}', $data);
+                    $oSurveyLink->setAttributes($data, false);
+                    $oSurveyLink->save(false);
                 }
             }
         }

@@ -100,7 +100,6 @@ function reinstallResponsesFilterDatePicker() {
             var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
             $.fn.yiiGridView.update('responses-grid', {data: data});
         });
-    
     }
     
 function onDocumentReadyListresponse() {
@@ -119,7 +118,8 @@ function onDocumentReadyListresponse() {
     });
 
 }
-$(function(){
+
+$(document).on('ready pjax:scriptcomplete',function(){
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
-})
+});

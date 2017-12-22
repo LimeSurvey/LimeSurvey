@@ -2357,6 +2357,13 @@ class tokens extends Survey_Common_Action
         $this->_renderWrappedTemplate('token', array('bounce'), $aData);
     }
 
+    public function prepExportToCPDB(){
+        $exportedItems = Yii::app()->request->getPost('itemsid', []);
+        if(is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
+        Yii::app()->session['participantid'] = $exportedItems;
+        return;
+    }
+
     /**
      * Handle token form for addnew/edit actions
      * @param int $iSurveyId

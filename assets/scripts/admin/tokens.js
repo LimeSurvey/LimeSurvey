@@ -232,87 +232,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             });
         })
     });
-    /**
-     * Token edit
-     */
-    $(document).on( 'click', '.edit-token', function(){
-        var $that       = $(this),
-            $sid        = $that.data('sid'),
-            $tid        = $that.data('tid'),
-            $actionUrl  = $that.data('url'),
-            $modal      = $('#editTokenModal'),
-            $modalBody  = $modal.find('.modal-body'),
-            $ajaxLoader = $('#ajaxContainerLoading2'),
-            $oldModalBody   = $modalBody.html();
 
+    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
 
-        $ajaxLoader.show();
-        $modal.modal('show');
-        // Ajax request
-        $.ajax({
-            url : $actionUrl,
-            type : 'GET',
-
-            // html contains the buttons
-            success : function(html, statut){
-
-                $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
-
-                // Apply the yes/no/date jquery plugin to the elements loaded via ajax
-                /*
-                    $('#sent-yes-no-date-container').YesNoDate();
-                    $('#remind-yes-no-date-container').YesNoDate();
-                    $('#completed-yes-no-date-container').YesNoDate();
-                */
-
-                $('.yes-no-date-container').each(function(el){
-                    $(this).YesNoDate();
-                });
-
-
-                $('.yes-no-container').each(function(el){
-                    $(this).YesNo();
-                });
-
-                $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-                $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
-
-                $('.date .input-group-addon').on('click', function(){
-                    $prev = $(this).siblings();
-                    $prev.data("DateTimePicker").show();
-                });
-
-                var elGeneral  = $('#general');
-
-                // Fake hide of modal content, so we can still get width of inner elements like labels
-                var previousCss  = $("#modal-content").attr("style");
-                $("#modal-content")
-                    .css({
-                        position:   'absolute', // Optional if #myDiv is already absolute
-                        visibility: 'hidden',
-                        display:    'block'
-                    });
-
-                // Stick the labels on the left side
-                // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
-                setTimeout(function(){
-                    elGeneral.stickLabelOnLeft();
-                    $ajaxLoader.hide();
-                    // Remove fake hide
-                    $("#modal-content").attr("style", previousCss ? previousCss : "");
-                }, 200);
-
-            },
-            error :  function(html, statut){
-                $ajaxLoader.hide();
-                $('#modal-content').empty().append(html);
-                console.ls.error(html);
-            }
-        });
-    });
-
-
-    $(document).on('submit.edittoken','#edittoken',function(event){
+    $('#edittoken').off('submit.edittoken').on('submit.edittoken',function(event){
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
@@ -407,6 +330,84 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
 });
 
+/**
+ * Token edit
+ */
+var startEditToken = function(){
+    var $that       = $(this),
+        $sid        = $that.data('sid'),
+        $tid        = $that.data('tid'),
+        $actionUrl  = $that.data('url'),
+        $modal      = $('#editTokenModal'),
+        $modalBody  = $modal.find('.modal-body'),
+        $ajaxLoader = $('#ajaxContainerLoading2'),
+        $oldModalBody   = $modalBody.html();
+
+    $ajaxLoader.show();
+    $modal.modal('show');
+    // Ajax request
+    $.ajax({
+        url : $actionUrl,
+        type : 'GET',
+
+        // html contains the buttons
+        success : function(html, statut){
+
+            $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
+
+            // Apply the yes/no/date jquery plugin to the elements loaded via ajax
+            /*
+                $('#sent-yes-no-date-container').YesNoDate();
+                $('#remind-yes-no-date-container').YesNoDate();
+                $('#completed-yes-no-date-container').YesNoDate();
+            */
+
+            $('.yes-no-date-container').each(function(el){
+                $(this).YesNoDate();
+            });
+
+
+            $('.yes-no-container').each(function(el){
+                $(this).YesNo();
+            });
+
+            $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
+            $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+
+            $('.date .input-group-addon').on('click', function(){
+                $prev = $(this).siblings();
+                $prev.data("DateTimePicker").show();
+            });
+
+            var elGeneral  = $('#general');
+
+            // Fake hide of modal content, so we can still get width of inner elements like labels
+            var previousCss  = $("#modal-content").attr("style");
+            $("#modal-content")
+                .css({
+                    position:   'absolute', // Optional if #myDiv is already absolute
+                    visibility: 'hidden',
+                    display:    'block'
+                });
+
+            // Stick the labels on the left side
+            // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
+            setTimeout(function(){
+                elGeneral.stickLabelOnLeft();
+                $ajaxLoader.hide();
+                // Remove fake hide
+                $("#modal-content").attr("style", previousCss ? previousCss : "");
+            }, 200);
+
+        },
+        error :  function(html, statut){
+            $ajaxLoader.hide();
+            $('#modal-content').empty().append(html);
+            console.ls.error(html);
+        }
+    });
+};
+
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
@@ -445,6 +446,10 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
+function onUpdateTokenGrid(){
+    reinstallParticipantsFilterDatePicker();
+    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
+}
 
 /**
  * When date-picker is used in token gridview

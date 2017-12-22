@@ -45,7 +45,7 @@
                         'columns' => $model->attributesForGrid,
                         'ajaxUpdate'=>'token-grid',
                         'ajaxType'=>'POST',
-                        'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
+                        'afterAjaxUpdate' => 'onUpdateTokenGrid'
                     ));
                 ?>
             </div>
@@ -53,6 +53,9 @@
 
         <?php 
         // To update rows per page via ajax 
+        App()->getClientScript()->registerScript("Tokens:neccesaryVars", "
+        var postUrl = '".App()->createUrl('admin/tokens/sa/prepExportToCPDB/sid/'.$_GET['surveyid'])."';
+        ", LSYii_ClientScript::POS_BEGIN);         
         App()->getClientScript()->registerScript("Tokens:updateRowsPerPage", "
             if($('token-grid').length > 0){
                 reinstallParticipantsFilterDatePicker();
