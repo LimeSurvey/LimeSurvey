@@ -26,7 +26,7 @@
                             ?><br /><br />
                             <?php
                             }
-                            eT("Do you want to create a survey participants table for this survey?");
+                            eT("Do you want to create a survey participant table for this survey?");
                         ?>
                         <br /><br />
 

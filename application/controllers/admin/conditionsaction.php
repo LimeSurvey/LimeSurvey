@@ -2043,7 +2043,7 @@ protected function getAttributeName($extractedTokenAttr)
     if ($this->tokenTableExists) {
         $thisAttrName .= " [".gT("From survey participants table")."]";
     } else {
-        $thisAttrName .= " [".gT("Inexistant survey participants table")."]";
+        $thisAttrName .= " [".gT("Non-existing survey participants table")."]";
     }
     
     return $thisAttrName;
