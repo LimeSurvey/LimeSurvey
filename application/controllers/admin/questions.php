@@ -962,7 +962,7 @@ class questions extends Survey_Common_Action
                 'language'  => $language,
                 'title'     => $code,
                 'question'  => '',
-                'relevance' => '',
+                'relevance' => '1',
                 'oldCode'   => $oldCode,
             );
         } else {
@@ -982,7 +982,7 @@ class questions extends Survey_Common_Action
                 'language'          => $language,
                 'title'             => $code,
                 'question'          => '',
-                'relevance'         => '',
+                'relevance'         => '1',
                 'oldCode'           => $oldCode,
             );
         }

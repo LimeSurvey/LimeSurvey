@@ -822,7 +822,6 @@ function createDatabase($oDB){
                 'keyboard' => false,
                 'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
                 'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
-                'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
@@ -872,7 +871,7 @@ function createDatabase($oDB){
                     'element' => '#lime-logo',
                     'path' => '/admin/index',
                     'placement' => 'bottom',
-                    'redirect' => false,
+                    'redirect' => true,
                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
                     ))
                 ),
@@ -966,7 +965,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-form-button').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -987,7 +986,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){res(tour);});
                                 })"
                 ))
             ),
@@ -1031,7 +1030,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onShow' => "(function(tour){
                                     $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1050,7 +1049,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1108,7 +1107,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-new-question-button').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1184,7 +1183,7 @@ function createDatabase($oDB){
                     'onNext' => "(function(tour){
                                     $('#question_type').val('F');
                                     $('#save-button').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1218,7 +1217,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1264,7 +1263,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-close-button').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })"
                 ))
             ),
@@ -1283,7 +1282,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1314,7 +1313,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-close-button').trigger('click');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })"
                 ))
             ),
@@ -1322,7 +1321,7 @@ function createDatabase($oDB){
                 'teid' => 31,
                 'ordering' => 31,
                 'title' => 'Preview survey',
-                'content' => "Now is the time to preview your first survey.".'<br/>'
+                'content' => "Let's have a look at your first survey.".'<br/>'
                 ."Just click on this button and a new window will open, where you can test run your survey.".'<br/>'
                 ."Please be aware that your answers will not be saved, because the survey isn't active yet."
                 .'<p class="alert bg-warning">'."Click on 'Preview survey' and return to this window when you are done testing.".'</p>',
@@ -1348,7 +1347,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#breadcrumb__survey--overview').attr('href');
-                                    return Promise.resolve(tour);
+                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1367,7 +1366,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                             document.location.href = $('#ls-activate-survey').attr('href');
-                            return Promise.resolve(tour);
+                            return new Promise(function(res,rej){});
                         })",
                 ))
             ),
@@ -1387,7 +1386,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                             $('#activateSurvey__basicSettings--proceed').trigger('click');
-                            return Promise.resolve(tour);
+                            return new Promise(function(res,rej){});
                         })",
                 ))
             ),
@@ -1408,7 +1407,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                             $('#activateTokenTable__selector--no').trigger('click');
-                            return Promise.resolve(tour);
+                            return new Promise(function(res,rej){});
                         })",
                 ))
             ),

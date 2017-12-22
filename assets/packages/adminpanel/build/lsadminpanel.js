@@ -36382,9 +36382,6 @@ $(document).on('ready', function () {
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
-            beforeCreate() {
-                this.controlWindowSize();
-            },
             created() {
                 this.controlWindowSize();
                 window.addEventListener('resize', () => {

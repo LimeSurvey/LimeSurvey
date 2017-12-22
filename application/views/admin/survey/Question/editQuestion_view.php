@@ -306,7 +306,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 ?>
 
 
-<div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type">
+<div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $eqrow['type'], 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
