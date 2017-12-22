@@ -188,6 +188,7 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
             $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
@@ -224,7 +225,7 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
             $oTemplateConfigurationModel->sid = $iSurveyId;
