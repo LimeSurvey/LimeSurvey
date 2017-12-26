@@ -34,5 +34,3 @@ function scanFile($fileName)
         $events = array_merge($events, $matches[2]);
     }
 }
-
-?>

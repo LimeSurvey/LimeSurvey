@@ -452,7 +452,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        // Save
+        //Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -981,7 +981,7 @@ class TemplateConfig extends CActiveRecord
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
-
+    /*
     public static function rename($sOldName, $sNewName)
     {
     }
@@ -999,27 +999,32 @@ class TemplateConfig extends CActiveRecord
     /**
      * @param string $sType
      */
+    /*
     protected function getFilesToLoad($oTemplate, $sType)
     {
-    }
+    }  
+    */
 
     /**
      * @param string $sType
      */
+    /*
     protected function changeMotherConfiguration($sType, $aSettings)
     {
     }
-
+    */
     /**
      * @param string $sType
      */
+     /*
     protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
     {
     }
-
+    */
     /**
      * @param string $sType
      */
+     /*
     protected function getFrameworkAssetsReplacement($sType)
     {
     }
@@ -1031,5 +1036,6 @@ class TemplateConfig extends CActiveRecord
     }
     protected function setThisTemplate()
     {
-    }
+    } 
+    */
 }

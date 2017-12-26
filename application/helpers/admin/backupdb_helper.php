@@ -31,12 +31,17 @@
 
         if (!is_null($sFileName)) {
             $oFile = fopen($sFileName, 'w');
-            fwrite($oFile, $sOutput);
+            if ($oFile !== false) {
+                safeDie('Could not open output file.');
+            }
+            else {
+                fwrite($oFile, $sOutput);
+            }
         } else {
             $oFile = null;
         }
         _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile);
-        if (!is_null($sFileName)) {
+        if (!is_null($sFileName) && $oFile !== false) {
             fclose($oFile);
         }
 
