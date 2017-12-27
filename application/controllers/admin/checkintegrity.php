@@ -406,8 +406,7 @@ class CheckIntegrity extends Survey_Common_Action
 
         /*** Check for active survey tables with missing survey entry and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $sQuery = dbSelectTablesLike('{{survey}}\_%');
-        $aResult = dbQueryOrFalse($sQuery);
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
 
         foreach ($aResult->readAll() as $aRow) {
@@ -433,7 +432,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /*** Check for active survey participants tables with missing survey entry ***/
-        $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%'));
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
         foreach ($aResult->readAll() as $aRow) {
             $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
             $iSurveyID = (integer) substr($sTableName, strpos($sTableName, '_') + 1);

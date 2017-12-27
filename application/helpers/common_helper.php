@@ -2175,18 +2175,6 @@ function HTMLEscape($str)
 }
 
 /**
-* Escapes a text value for db
-*
-* @param string $value
-* @return string
-*/
-function dbQuoteAll($value)
-{
-    return Yii::app()->db->quoteValue($value);
-}
-
-
-/**
 * This function strips UTF-8 control characters from strings, except tabs, CR and LF
 * - it is intended to be used before any response data is saved to the response table
 *

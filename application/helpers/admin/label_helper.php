@@ -149,7 +149,7 @@ function modlabelsetanswers($lid)
 
 
             $actualcode = $codeObj->{'code'};
-            //$codeid = dbQuoteAll($codeid,true);
+            //$codeid = App()->db->quoteValue($codeid,true);
 
             $assessmentvalue = (int) ($codeObj->{'assessmentvalue'});
             foreach ($data->{'langs'} as $lang) {

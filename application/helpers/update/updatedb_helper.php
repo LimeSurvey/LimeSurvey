@@ -2928,7 +2928,7 @@ function createBoxes250()
 
 function fixLanguageConsistencyAllSurveys()
 {
-    $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
+    $surveyidquery = "SELECT sid,additional_languages FROM ".App()->db->quoteColumnName('{{surveys}}');
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ($surveyidresult as $sv) {
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);

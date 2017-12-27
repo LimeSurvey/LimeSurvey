@@ -1928,9 +1928,9 @@ function tokensExport($iSurveyID)
     $oRecordSet->where("1=1");
     if ($sEmailFiter != '') {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
-            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%'));
+            $oRecordSet->andWhere("CAST(email as varchar) like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         } else {
-            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%'));
+            $oRecordSet->andWhere("email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         }
     }
     if ($iTokenStatus == 1) {
@@ -1960,7 +1960,7 @@ function tokensExport($iSurveyID)
     }
 
     if ($sTokenLanguage != '') {
-        $oRecordSet->andWhere("language=".dbQuoteAll($sTokenLanguage));
+        $oRecordSet->andWhere("language=".App()->db->quoteValue($sTokenLanguage));
     }
     $oRecordSet->order("tid");
     $bresult = $oRecordSet->query();

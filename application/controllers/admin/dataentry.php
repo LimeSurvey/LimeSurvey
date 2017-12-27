@@ -1334,7 +1334,7 @@ class dataentry extends Survey_Common_Action
                     $thisvalue = 0;
                 } elseif ($irow['type'] == 'D') {
                     if ($thisvalue == "") {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     } else {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1347,22 +1347,22 @@ class dataentry extends Survey_Common_Action
                         }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = '{$dateoutput}', \n";
                     }
                 } elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "") {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 } elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "") {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 } elseif ($irow['type'] == 'submitdate') {
                     if (isset($_POST['completed']) && ($_POST['completed'] == "N")) {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     } elseif (isset($_POST['completed']) && $thisvalue == "") {
-                        $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($_POST['completed']).", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($_POST['completed']).", \n";
                     } else {
-                        $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
                     }
                 } else {
-                    $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
@@ -1416,7 +1416,7 @@ class dataentry extends Survey_Common_Action
 
             if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
                 $tokencompleted = "";
-                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
+                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".App()->db->quoteValue($_POST['token']);
                 $tcresult = dbExecuteAssoc($tcquery);
                 $tcresult = $tcresult->readAll();
                 $tccount = count($tcresult);
@@ -1435,7 +1435,7 @@ class dataentry extends Survey_Common_Action
                     }
                 } else {
 // token is valid, survey not anonymous, try to get last recorded response id
-                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
+                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".App()->db->quoteValue($_POST['token']);
                     $aresult = dbExecuteAssoc($aquery);
                     foreach ($aresult->readAll() as $arow) {
                         if ($tokencompleted != "N") { $lastanswfortoken = $arow['id']; }
@@ -1585,7 +1585,7 @@ class dataentry extends Survey_Common_Action
                     }
 
                     // check how many uses the token has left
-                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
+                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".App()->db->quoteValue($_POST['token']);
                     $usesresult = dbExecuteAssoc($usesquery);
                     $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                     if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1594,7 +1594,7 @@ class dataentry extends Survey_Common_Action
                     $utquery = "UPDATE {{tokens_$surveyid}}\n";
                     if (isTokenCompletedDatestamped($thissurvey)) {
                         if (isset($usesleft) && $usesleft <= 1) {
-                            $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
+                            $utquery .= "SET usesleft=usesleft-1, completed=".App()->db->quoteValue($submitdate);
                         } else {
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
@@ -1605,7 +1605,7 @@ class dataentry extends Survey_Common_Action
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
                     }
-                    $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
+                    $utquery .= "WHERE token=".App()->db->quoteValue($_POST['token']);
                     dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                     // save submitdate into survey table
