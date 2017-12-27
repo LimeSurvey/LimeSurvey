@@ -25,7 +25,9 @@ function CheckForDBUpgrades($subaction = null)
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update/updatedb');
             if (isset($subaction) && $subaction == "yes") {
-            echo Yii::app()->getController()->_getAdminHeader();
+            $header =  Yii::app()->getController()->_getAdminHeader(false,true);
+            $header = preg_replace('/<###begin###>/', '', $header);
+            echo $header;
             $result = db_upgrade_all(intval($currentDBVersion));
             if ($result) {
                 $data =
