@@ -34,9 +34,9 @@
             {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }} 
         {% endif %} 
  
-        {{ include('../printanswers/printanswers_head.twig') }} 
-        {{ include('../printanswers/printanswers_table.twig') }} 
-        {{ include('../printanswers/printanswers_foot.twig') }} 
+        {{ include('./subviews/printanswers/printanswers_head.twig') }} 
+        {{ include('./subviews/printanswers/printanswers_table.twig') }} 
+        {{ include('./subviews/printanswers/printanswers_foot.twig') }} 
     </section> 
  
 {% endblock %} 

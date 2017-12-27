@@ -32,7 +32,11 @@ body {
      padding-bottom: 10px;
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
-
+.script-container{
+    height:1px; 
+    width:1px; 
+    overflow:hidden;
+}
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }
