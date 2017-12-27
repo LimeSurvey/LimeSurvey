@@ -37,7 +37,7 @@
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>"
                                     data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/changetemplate/surveyid/$iSurveyId/template/$key" ); ?>"
                                     data-template="<?php echo $key;?>"
-                                    class="selectTemplate btn btn-default btn-xs">
+                                    class="selectTemplate btn btn-default">
                                     <?php eT('Select');?>&nbsp;<?php echo $key;?>
                                 </button>
                             <?php endif;?>
