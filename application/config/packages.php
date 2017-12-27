@@ -199,6 +199,13 @@ return array(
             'build/lslog.js',
         )
     ),
+    'panelboxes' => array(
+        'devBaseUrl' => 'assets/packages/panelboxes/',
+        'basePath' => 'core.panelboxes',
+        'css' => array(
+            'build/panelboxes'.$minVersion.'.css',
+        )
+    ),
     'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',

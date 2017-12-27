@@ -18,6 +18,7 @@ class PanelBoxWidget extends CWidget
 
     public function run()
     {
+        App()->getClientScript()->registerPackage('panelboxes');
         if ($this->display == 'singlebox') {
             if ($this->fromDb) {
                 $this->setValuesFromDb();
