@@ -905,8 +905,11 @@ function createDatabase($oDB){
             'active' => 1,
             'settings' => json_encode(array(
                 'keyboard' => false,
+                'orphan' => true,
                 'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
                 'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
+                'onEnd' => "(function(tour){window.location.reload();})",
+                'endOnOrphan' => true,
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
@@ -954,7 +957,7 @@ function createDatabase($oDB){
                     ."We would like to help you with a quick tour of the most essential functions and features.",
                 'settings' => json_encode(array (
                     'element' => '#lime-logo',
-                    'path' => '/admin/index',
+                    'path' => ['/admin/index'],
                     'placement' => 'bottom',
                     'redirect' => true,
                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
@@ -969,10 +972,13 @@ function createDatabase($oDB){
                     .'<p class="alert bg-warning">'."Click on the 'Create survey' box - or 'Next' in this tutorial".'</p>',
                 'settings' => json_encode(array(
                     'element' => '.selector__create_survey',
-                    'path' => '/admin/index',
+                    'path' => ['/admin/index'],
                     'reflex' => true,
-                    'redirect' => true,
-                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); $('.selector__create_survey').on('click', function(){tour.next();});})"
+                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
+                    'onNext' => "(function(tour){
+                        tour.setCurrentStep(2);
+                        return new Promise(function(res,rej){});
+                    })",
                 ))
             ),
             array(
@@ -983,9 +989,10 @@ function createDatabase($oDB){
                 ."Your participants will see this title in the browser's title bar and on the welcome screen."
                 ."<p class='bg-warning alert'>"."You have to put in at least a title for the survey to be saved.".'</p>',
                 'settings' => json_encode(array(
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'element' => '#surveyls_title',
                     'redirect' => true,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -997,7 +1004,7 @@ function createDatabase($oDB){
                 ."Describe your survey, but do not ask any question yet.",
                 'settings' => json_encode(array(
                     'element' => '#cke_description',
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1009,7 +1016,7 @@ function createDatabase($oDB){
                 'content' => "We will be creating a question group and a question in this tutorial. There is need to automatically create it.",
                 'settings' => json_encode(array(
                     'element' => '.bootstrap-switch-id-createsample',
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'redirect' => false,
                 ))
             ),
@@ -1021,7 +1028,7 @@ function createDatabase($oDB){
                 'settings' => json_encode(array(
                     'element' => '#cke_welcome',
                     'placement' => 'top',
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'redirect' => false,
                 ))
             ),
@@ -1032,7 +1039,7 @@ function createDatabase($oDB){
                 'content' => "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next.",
                 'settings' => json_encode(array(
                     'element' => '#cke_endtext',
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1044,11 +1051,12 @@ function createDatabase($oDB){
                 'content' => "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'.",
                 'settings' => json_encode(array(
                     'element' => '#save-form-button',
-                    'path' => '/admin/survey/sa/newsurvey',
+                    'path' => ['/admin/survey/sa/newsurvey'],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
+                                    tour.setCurrentStep(8);
                                     $('#save-form-button').trigger('click');
                                     return new Promise(function(res,rej){});
                                 })",
@@ -1067,12 +1075,12 @@ function createDatabase($oDB){
                 'settings' => json_encode(array(
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'element' => '#sidebar',
-                    'placement' => 'right',
+                    'placement' => 'top',
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
-                                    return new Promise(function(res,rej){res(tour);});
-                                })"
+                        $('#adminpanel__sidebar--selectorSettingsButton').trigger('click');
+                    })",
                 ))
             ),
             array(
@@ -1115,7 +1123,6 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onShow' => "(function(tour){
                                     $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
-                                    return new Promise(function(res,rej){});
                                 })",
                 ))
             ),
@@ -1134,6 +1141,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
+                                    tour.setCurrentStep(13);
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
@@ -1150,6 +1158,7 @@ function createDatabase($oDB){
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1192,6 +1201,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-new-question-button').trigger('click');
+                                    tour.setCurrentStep(17);
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
@@ -1209,6 +1219,7 @@ function createDatabase($oDB){
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'top',
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1268,6 +1279,7 @@ function createDatabase($oDB){
                     'onNext' => "(function(tour){
                                     $('#question_type').val('F');
                                     $('#save-button').trigger('click');
+                                    tour.setCurrentStep(22);
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
@@ -1283,7 +1295,9 @@ function createDatabase($oDB){
                     'element' => '#questionbarid',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
+                    'backdrop' => false,
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1302,6 +1316,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
+                                    tour.setCurrentStep(24);
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
@@ -1319,6 +1334,7 @@ function createDatabase($oDB){
                     'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1348,6 +1364,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-close-button').trigger('click');
+                                    tour.setCurrentStep(27);
                                     return new Promise(function(res,rej){});
                                 })"
                 ))
@@ -1365,8 +1382,10 @@ function createDatabase($oDB){
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
+                    'prev' => '-1',
                     'onNext' => "(function(tour){
                                     document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
+                                    tour.setCurrentStep(28);
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
@@ -1383,6 +1402,7 @@ function createDatabase($oDB){
                     'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1398,6 +1418,7 @@ function createDatabase($oDB){
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     $('#save-and-close-button').trigger('click');
+                                    tour.setCurrentStep(30);
                                     return new Promise(function(res,rej){});
                                 })"
                 ))
@@ -1415,6 +1436,7 @@ function createDatabase($oDB){
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
+                    'prev' => '-1',
                 ))
             ),
             array(
@@ -1425,12 +1447,13 @@ function createDatabase($oDB){
                 ."They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
                 .'<p class="alert bg-warning">'."Click on the name of your survey to get back to the survey settings overview.".'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#breadcrumb-container',
+                    'element' => '#breadcrumb__survey--overview',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
-                    'reflex' => '#breadcrumb__survey--overview',
+                    'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
+                                    tour.setCurrentStep(32);
                                     document.location.href = $('#breadcrumb__survey--overview').attr('href');
                                     return new Promise(function(res,rej){});
                                 })",
@@ -1449,8 +1472,10 @@ function createDatabase($oDB){
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
+                    'prev' => '-1',
                     'onNext' => "(function(tour){
                             document.location.href = $('#ls-activate-survey').attr('href');
+                            tour.setCurrentStep(33);
                             return new Promise(function(res,rej){});
                         })",
                 ))
@@ -1466,11 +1491,13 @@ function createDatabase($oDB){
                 'settings' => json_encode(array(
                     'element' => '#activateSurvey__basicSettings--proceed',
                     'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
+                    'placement' => '',
                     'reflex' => true,
                     'redirect' => false,
+                    'prev' => '-1',
                     'onNext' => "(function(tour){
                             $('#activateSurvey__basicSettings--proceed').trigger('click');
+                            tour.setCurrentStep(34);
                             return new Promise(function(res,rej){});
                         })",
                 ))
@@ -1490,8 +1517,10 @@ function createDatabase($oDB){
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
+                    'prev' => '-1',
                     'onNext' => "(function(tour){
                             $('#activateTokenTable__selector--no').trigger('click');
+                            tour.setCurrentStep(35);
                             return new Promise(function(res,rej){});
                         })",
                 ))
@@ -1506,7 +1535,9 @@ function createDatabase($oDB){
                     'element' => '#adminpanel__surveysummary--mainLanguageLink',
                     'path' => ['/'.'(index.php)?'],
                     'placement' => 'top',
-                    'redirect' => false
+                    'redirect' => false,
+                    'prev' => '-1',
+                    'onHide' => '(function(){window.location.reload()})'
                 ))
             ),
         );
