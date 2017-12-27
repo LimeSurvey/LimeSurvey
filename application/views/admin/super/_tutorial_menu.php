@@ -1,5 +1,9 @@
 <?php
+try{
     $aTutorials = @Tutorials::model()->getActiveTutorials();
+} catch(Exception $e){
+    $aTutorials = [];
+}
 ?>
 
 <li class="dropdown">
