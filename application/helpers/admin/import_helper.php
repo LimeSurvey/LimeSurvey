@@ -697,9 +697,17 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     }
 
     if ($sExtension == 'lss') {
-        return XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+        $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+        if ($aImportResults && $aImportResults['newsid']) {
+            TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+        }
+        return $aImportResults;
     } elseif ($sExtension == 'txt' || $sExtension == 'tsv') {
-        return TSVImportSurvey($sFullFilePath);
+        $aImportResults = TSVImportSurvey($sFullFilePath);
+        if ($aImportResults && $aImportResults['newsid']) {
+            TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+        }
+        return $aImportResults;
     } elseif ($sExtension == 'lsa') {
             // Import a survey archive
         Yii::import("application.libraries.admin.pclzip.pclzip", true);
@@ -716,6 +724,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                 //Import the LSS file
                 $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], null, null, null, true, false);
+                if ($aImportResults && $aImportResults['newsid']) {
+                    TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+                }
                 // Activate the survey
                 Yii::app()->loadHelper("admin/activate");
                 activateSurvey($aImportResults['newsid']);
