@@ -144,7 +144,6 @@ var QuestionFunctions = function () {
             $("#question_type").on('change', function (event) {
                 OtherSelection(this.value);
             });
-            $("#question_type").trigger('change');
 
         };
     return {
