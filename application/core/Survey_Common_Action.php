@@ -315,7 +315,7 @@ class Survey_Common_Action extends CAction
      * @param array|string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false);
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
@@ -330,7 +330,7 @@ class Survey_Common_Action extends CAction
                 $renderFile = $basePath.'/layout_main.php';
             }
         } else {
-            $renderFile = $basePath.$sRenderFile;
+            $renderFile = $basePath.'/'.$sRenderFile;
         }
 
         $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
