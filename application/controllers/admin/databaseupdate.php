@@ -46,7 +46,7 @@ class databaseupdate extends Survey_Common_Action
 
         $aData['updatedbaction'] = true;
 
-        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
+        $this->_renderWrappedTemplate('update', $aViewUrls, $aData, 'layout_minimal.php');
 
         //$aData = array_merge($aData, $aViewUrls);
         //Yii::app()->getController()->renderPartial('databaseupdate/db', $aData);
