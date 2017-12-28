@@ -34,7 +34,6 @@ before_script:
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
     - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
-
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
     - sudo apt-get update > /dev/null
