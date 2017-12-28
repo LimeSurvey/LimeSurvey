@@ -165,11 +165,11 @@ class export extends Survey_Common_Action
         $exports = $resultsService->getExports();
 
         if (!$sExportType) {
-            $aFieldMap = array();
-            //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            if ($survey->isSaveTimings) {
+            $aFieldMap = createFieldMap($survey, 'full', false, false, $survey->language);
+
+            if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full', false, false, $survey->language);
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full', false, false, $survey->language);
             }
             $iFieldCount = count($aFieldMap);
 
