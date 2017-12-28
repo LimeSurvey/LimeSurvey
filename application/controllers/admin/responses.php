@@ -1009,7 +1009,7 @@ class responses extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'browse.css');

@@ -799,7 +799,7 @@ class statistics extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         yii::app()->clientScript->registerPackage('bootstrap-switch');
         yii::app()->clientScript->registerPackage('jspdf');
@@ -818,7 +818,7 @@ class statistics extends Survey_Common_Action
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         $aData['title_bar']['subaction'] = gT('Statistics');
         $aData['subaction'] = gT('Statistics');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
     }
 
 

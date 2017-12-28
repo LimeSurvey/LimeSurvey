@@ -2546,11 +2546,11 @@ class tokens extends Survey_Common_Action
      * @param array $aData Data to be passed on. Optional.
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
     }
 
 }

@@ -404,12 +404,12 @@ class Usergroups extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
     }
 }

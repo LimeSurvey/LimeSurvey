@@ -2167,7 +2167,7 @@ class dataentry extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         if (!isset($aData['display']['menu_bars']['browse'])) {
             $iSurveyId = 0;
@@ -2184,7 +2184,7 @@ class dataentry extends Survey_Common_Action
             $aData["survey"] = $survey;
             $aData['title_bar']['title'] = gT("Data entry");
         }
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
     }
 
 }

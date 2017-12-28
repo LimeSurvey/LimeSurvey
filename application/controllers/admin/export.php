@@ -1339,9 +1339,9 @@ class export extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
     {
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
     }
 }
