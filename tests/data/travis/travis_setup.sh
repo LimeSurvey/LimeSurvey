@@ -7,7 +7,7 @@
 # docker run --name travis-debug -dit travisci/ci-garnet:packer-1512502276-986baf0 /sbin/init
 # docker exec -it travis-debug bash -l
 # su - travis
-# git clone --depth=50 --branch=master https://github.com/LimeSurvey/LimeSurvey.git LimeSurvey/LimeSurvey
+# git clone --depth=1 --branch=master https://github.com/LimeSurvey/LimeSurvey.git LimeSurvey/LimeSurvey
 # cd LimeSurvey/LimeSurvey
 # chmod +x tests/data/travis/travis_setup.sh
 # ./tests/data/travis/travis_setup.sh
