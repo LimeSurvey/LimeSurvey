@@ -519,7 +519,7 @@ class questions extends Survey_Common_Action
                     $oAnswer->language = $language;
                     $oAnswer->sortorder = $answer->sortorder;
                     $oAnswer->scale_id = $i;
-                    $oAnswer->assessment_value = $answer->assessment_value;
+                    $oAnswer->assessment_value = (isset($answer->assessment_value) ? $answer->assessment_value : 0);
                     $oAnswer->save();
                 }
             }
