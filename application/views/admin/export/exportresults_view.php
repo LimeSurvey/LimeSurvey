@@ -151,7 +151,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state:");?></label>
 
                                     <div class="col-sm-4">
@@ -163,7 +163,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label for='exportlang' class="col-sm-4 control-label" >
                                         <?php eT("Export language:"); ?>
                                     </label>
@@ -184,7 +184,7 @@ echo viewHelper::getViewTestTag('exportResults');
                             <div class="panel-body">
 
                                 <!-- Headers -->
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <div class="btn-group col-sm-12" data-toggle="buttons">
                                         <?php foreach($headexports as $type=>$headexport):?>
                                             <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
@@ -202,11 +202,11 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
 
                                 <!-- Convert spaces -->
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label class="col-sm-6 control-label" for='headspacetounderscores'>
                                         <?php eT("Convert spaces in question text to underscores:"); ?>
                                     </label>
-                                    <div class='col-sm-1'>
+                                    <div class='col-sm-6'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'headspacetounderscores',
                                             'id'=>'headspacetounderscores',
@@ -218,11 +218,11 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
 
                                 <!-- Text abbreviated-->
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label class="col-sm-6 control-label" for='abbreviatedtext'>
                                         <?php eT("Text abbreviated:"); ?>
                                     </label>
-                                    <div class='col-sm-1'>
+                                    <div class='col-sm-6'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'abbreviatedtext',
                                             'id'=>'abbreviatedtext',
@@ -232,11 +232,11 @@ echo viewHelper::getViewTestTag('exportResults');
                                         ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label for='abbreviatedtextto' class="col-sm-6 control-label">
                                         <?php eT("Number of characters:"); ?>
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-6">
                                         <input
                                             min="1"
                                             step="1"
@@ -250,11 +250,11 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
 
                                 <!-- Use Expression Manager code-->
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label class="col-sm-6 control-label" for='emcode'>
                                         <?php eT("Use Expression Manager code:"); ?>
                                     </label>
-                                    <div class='col-sm-1'>
+                                    <div class='col-sm-6'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'emcode',
                                             'id'=>'emcode',
@@ -265,11 +265,11 @@ echo viewHelper::getViewTestTag('exportResults');
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <label for='codetextseparator' class="col-sm-6 control-label">
                                         <?php eT("Code/text separator:"); ?>
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-6">
                                         <input
                                             size="4"
                                             type="text"
@@ -292,40 +292,45 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <!-- Answer codes / Full answers -->
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default">
-                                        <input
-                                            name="answers"
-                                            value="short"
-                                            type="radio"
-                                            id="answers-short"
-                                        />
-                                        <?php eT("Answer codes");?>
-                                    </label>
+                                <div class='form-group row'>
+                                    <!-- Answer codes / Full answers -->
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-default">
+                                            <input
+                                                name="answers"
+                                                value="short"
+                                                type="radio"
+                                                id="answers-short"
+                                            />
+                                            <?php eT("Answer codes");?>
+                                        </label>
 
-                                    <label class="btn btn-default active">
-                                        <input
-                                            name="answers"
-                                            value="long"
-                                            type="radio"
-                                            checked='checked'
-                                            id="answers-long"
-                                            autofocus="true"
-                                        />
-                                        <?php eT("Full answers");?>
-                                    </label>
+                                        <label class="btn btn-default active">
+                                            <input
+                                                name="answers"
+                                                value="long"
+                                                type="radio"
+                                                checked='checked'
+                                                id="answers-long"
+                                                autofocus="true"
+                                            />
+                                            <?php eT("Full answers");?>
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <!-- Responses  -->
-                                <div class="form-group">
-                                    <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
-                                    <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
-                                    <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
+                                <div class="form-group row">
+                                    <div class='col-sm-6'>
+                                        <?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                                        echo CHTML::label(gT("Convert Y to:"),'converty');?>
+                                        <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); ?>
+                                    </div>
+                                    <div class='col-sm-6'>
+                                        <?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
+                                        echo CHTML::label(gT("Convert N to:"),'convertn');?>
+                                        <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
