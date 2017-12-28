@@ -103,7 +103,7 @@ class SurveyDao
         }
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {
-                    $sField = $survey->responsesTableName.".".$sField;
+            $sField = $survey->responsesTableName.".".$sField;
         }
         $oRecordSet = Yii::app()->db->createCommand()->from($survey->responsesTableName);
         if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read')) {
@@ -158,14 +158,11 @@ class SurveyDao
             }
         }
 
-
-//var_dump($aParams); die();
-
         if (is_string($sFilter) && $sFilter) {
-                    $oRecordSet->andWhere($sFilter);
+            $oRecordSet->andWhere($sFilter);
         } elseif (is_array($sFilter) && count($sFilter)) {
             foreach ($sFilter as $filter) {
-                            $oRecordSet->andWhere($filter);
+                $oRecordSet->andWhere($filter);
             }
         }
 
