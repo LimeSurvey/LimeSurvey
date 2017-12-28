@@ -539,13 +539,13 @@ class database extends Survey_Common_Action
         $criteria->compare('qid', $this->iQuestionID);
         $validAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         // If the question has a custom template, we first check if it provides custom attributes
-        //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-        //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
-            //~ $aAttributeValues['question_template'] = $oAttributeValues->value;
-        //~ }else{
-            //~ $aAttributeValues['question_template'] = 'core';
-        //~ }
-        //~ $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
+        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
+        if (is_object($oAttributeValues) && $oAttributeValues->value ){
+            $aAttributeValues['question_template'] = $oAttributeValues->value;
+        }else{
+            $aAttributeValues['question_template'] = 'core';
+        }
+        $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
         foreach ($validAttributes as  $validAttribute) {
             $criteria->compare('attribute', '<>'.$validAttribute['name']);
         }
