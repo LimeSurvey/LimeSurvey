@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.0.0 (build 171222) to 3.0.1 (build 171228) Dec 28, 1017
+-Fixed issue #12998: Text noise <###begin###> visible after db upgrade (markusfluer)
+-Fixed issue #13087: Template carousel button has different fonts (markusfluer)
+-Fixed issue: Breaking updatedb through missing table (markusfluer)
+-Fixed issue: Create survey config after survey import (Olle Haerstedt)
+-Fixed issue: Data integrity query failed (Olle Haerstedt)
+-Fixed issue: Doubled advanced settings in question edition (markusfluer)
+-Fixed issue: Export form looks strange in small resolution (Olle Haerstedt)
+-Fixed issue: Missing columns in responses export (Olle Haerstedt)
+-Fixed issue: boxes not behaving correctly on ie (markusfluer)
+-Fixed issue: can't save assessment in array question (markusfluer)
+-Fixed issue: installation db and update db were differing in tutorials, thus breaking tests (markusfluer)
+
 
 Changes from 2.73.0 (build 171206) to 3.0.0 (build 171222) Dec 22, 2017
 -New feature: Redesigned survey toolbar (markusfluer)
