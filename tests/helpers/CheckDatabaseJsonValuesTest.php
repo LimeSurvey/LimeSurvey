@@ -98,7 +98,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     }
 
     /**
-     * @param CDbConnection $connection
+     * @param \CDbConnection $connection
      * @return void
      */
     protected function checkMenuEntriesJson(\CDbConnection $connection)
@@ -116,7 +116,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     }
 
     /**
-     * @param CDbConnection $connection
+     * @param \CDbConnection $connection
      * @return void
      */
     protected function checkTemplateConfigurationJson(\CDbConnection $connection)

@@ -83,8 +83,7 @@ class DateTimeForwardBackTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');
