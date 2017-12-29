@@ -153,7 +153,7 @@ class TestHelper extends TestCase
      *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
      *
      * @param string $databaseName
-     * @return boolean True at success.
+     * @return boolean | \CDbConnection
      */
     public function connectToNewDatabase($databaseName)
     {
@@ -227,7 +227,7 @@ class TestHelper extends TestCase
 
     /**
      * @param int $version
-     * @return CDbConnection
+     * @return \CDbConnection
      */
     public function updateDbFromVersion($version, $connection = null)
     {
