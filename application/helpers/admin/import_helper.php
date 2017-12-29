@@ -861,7 +861,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         //Make sure it is not set active
         $insertdata['active'] = 'N';
         //Set current user to be the owner
-        $insertdata['owner_id'] = Yii::app()->session['loginID'];
+        //$insertdata['owner_id'] = Yii::app()->session['loginID'];
+        $insertdata['owner_id'] = 1;
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '') {
             $insertdata['bouncetime'] = null;
