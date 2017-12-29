@@ -63,7 +63,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
      */
     public function setUp()
     {
-        if (empty(getenv('DOMAIN'))) {
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
             echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
             exit(6);
         }
