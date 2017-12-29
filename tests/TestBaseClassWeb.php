@@ -53,7 +53,8 @@ class TestBaseClassWeb extends TestBaseClass
     {
         parent::setUpBeforeClass();
 
-        if (empty(getenv('DOMAIN'))) {
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
             echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
             exit(12);
         }
