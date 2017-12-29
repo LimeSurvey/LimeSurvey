@@ -6,16 +6,11 @@ use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Chrome\ChromeDriver;
-use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
 use Facebook\WebDriver\Exception\WebDriverCurlException;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
-use Facebook\WebDriver\Exception\TimeOutException;
 
 class TestHelper extends TestCase
 {

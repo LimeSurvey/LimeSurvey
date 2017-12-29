@@ -28,7 +28,8 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     }
 
     /**
-     * 
+     *
+     * @throws \CException
      */
     public function testCreate()
     {

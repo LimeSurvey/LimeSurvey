@@ -2,7 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
