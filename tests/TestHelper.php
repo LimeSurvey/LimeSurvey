@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -321,14 +322,10 @@ class TestHelper extends TestCase
     {
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
-        try {
-            $screenshot = $webDriver->takeScreenshot();
-            $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
-            $result     = file_put_contents($filename, $screenshot);
-            $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
-        } catch (NoSuchDriverException $ex) {
-            // No driver.
-        }
+        $screenshot = $webDriver->takeScreenshot();
+        $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
+        $result     = file_put_contents($filename, $screenshot);
+        $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
     }
 
     /**
@@ -406,7 +403,7 @@ class TestHelper extends TestCase
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
                 $success = true;
-            } catch (WebDriverCurlException $ex) {
+            } catch (WebDriverException $ex) {
                 $tries++;
                 sleep(1);
             }
