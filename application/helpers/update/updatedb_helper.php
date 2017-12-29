@@ -861,10 +861,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB->schema->refresh();
     $oDB->active = false;
     $oDB->active = true;
-    Yii::app()->db->schema->refresh();
 
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
+    Yii::app()->db->schema->getTable('{{surveys}}', true);
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
