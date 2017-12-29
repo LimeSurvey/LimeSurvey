@@ -1923,7 +1923,11 @@ class quexmlpdf extends pdf
         foreach ($xml->section as $s) {
             $stmp = array();
             $sl = $this->numberToLetter($scount);
-            $stmp['title'] = gT("Section")." ".$sl;
+            if (isset($s['hidetitle']) && $s['hidetitle'] == "true") {
+                $stmp['title'] = false;
+            } else {
+                $stmp['title'] = gT("Section")." ". $sl;
+            }
             $stmp['info'] = "";
             $stmp['text'] = "";
             $bfc = 0;
@@ -1941,6 +1945,10 @@ class quexmlpdf extends pdf
 
                     $bfc++;
                 }
+            }
+
+            if (isset($s['hideinfo']) && $s['hideinfo'] == "true") {
+                $stmp['info'] = false;
             }
 
             $qcount = 1;
@@ -3710,21 +3718,28 @@ class quexmlpdf extends pdf
     {
         $this->sectionCP++;
 
+        $mtitle = $title;
+
         if ($title === false) {
-            $title = $this->sectionCP;
+            $mtitle = $this->sectionCP;
         }
 
-        $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $title);
+        $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $mtitle);
 
-        $html = "<span class=\"sectionTitle\">$title:</span>&nbsp;<span class=\"sectionDescription\">$desc</span>";
+        if ($title !== false) {
+             $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
+             $html .= "<span class=\"sectionDescription\">$desc</span>";
+        }
 
         if ($info && !empty($info)) {
             $html .= "<div class=\"sectionInfo\">$info</div>";
         }
 
-        $this->setBackground('section');
-        $this->writeHTMLCell($this->getColumnWidth(), $this->sectionHeight, $this->getColumnX(), $this->getY(), $this->style.$html, array('B' => array('width' => 1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $this->backgroundColourEmpty)), 1, true, true, '');
-        $this->setBackground('empty');
+        if (!($title === false && $info === false)) {
+            $this->setBackground('section');
+            $this->writeHTMLCell($this->getColumnWidth(), $this->sectionHeight, $this->getColumnX(), $this->getY(), $this->style.$html, array('B' => array('width' => 1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $this->backgroundColourEmpty)), 1, true, true, '');
+            $this->setBackground('empty');
+        }
     }
 
     /**
