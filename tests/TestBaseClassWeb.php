@@ -37,7 +37,7 @@ class TestBaseClassWeb extends TestBaseClass
      * @var int web server port
      * TODO this should be in configuration somewhere
      */
-    protected static $webPort = 4444;
+    public static $webPort = 4444;
 
     /**
      * @var WebDriver $webDriver
