@@ -72,9 +72,9 @@ class SettingsUser extends LSActiveRecord
      * @param string $stg_name
      * @param integer $stg_value
      * @param integer $uid | Can be omitted to just take the currently logged in users id
-     * @param type $entity | optional defaults to 'null'
-     * @param type $entity_id | optional defaults to 'null'
-     * @return boolean | Saving success/failure
+     * @param string $entity | optional defaults to 'null'
+     * @param integer $entity_id | optional defaults to 'null'
+     * @return boolean Saving success/failure
      */
 
     public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
@@ -105,7 +105,7 @@ class SettingsUser extends LSActiveRecord
      * @param integer $uid | Can be omitted to just take the currently logged in users id
      * @param string $entity | optional defaults to 'null'
      * @param integer $entity_id | optional defaults to 'null'
-     * @return SettingsUser | The current settings Object
+     * @return SettingsUser The current settings Object
      */
     public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
     {
