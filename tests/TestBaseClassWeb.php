@@ -13,18 +13,10 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Chrome\ChromeDriver;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Firefox\FirefoxDriver;
-use Facebook\WebDriver\Firefox\FirefoxProfile;
-use Facebook\WebDriver\Firefox\FirefoxPreferences;
-use Facebook\WebDriver\Exception\WebDriverCurlException;
 
 /**
  * Class TestBaseClassWeb
@@ -49,6 +41,9 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected static $domain;
 
+    /**
+     * @throws \Exception
+     */
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -112,6 +107,8 @@ class TestBaseClassWeb extends TestBaseClass
      * @param string $userName
      * @param string $password
      * @return void
+     * @throws \Exception
+     * @throws \Facebook\WebDriver\Exception\NoSuchElementException
      */
     public static function adminLogin($userName, $password)
     {
@@ -164,6 +161,7 @@ class TestBaseClassWeb extends TestBaseClass
 
     /**
      * Delete failed login attempts.
+     * @throws \CDbException
      */
     protected static function deleteLoginTimeout()
     {

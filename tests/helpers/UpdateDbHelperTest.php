@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-16
  * @group dbhelper
@@ -25,6 +23,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * Run the database PHP install script.
      * @group install
+     * @throws \CException
      */
     public function testInstallPhp()
     {
@@ -68,6 +67,7 @@ class UpdateDbHelperTest extends TestBaseClass
      * Run db_upgrade_all() from dbversion 258, to make sure
      * there are no conflicts or syntax errors.
      * @group upgradeall
+     * @throws \CException
      */
     public function testDbUpgradeFrom258()
     {
@@ -100,6 +100,7 @@ class UpdateDbHelperTest extends TestBaseClass
 
     /**
      * @group from315
+     * @throws \CException
      */
     public function testDbUpgradeFrom315()
     {
@@ -116,6 +117,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * Compare database between upgrade and fresh install.
      * @group dbcompare
+     * @throws \CException
      */
     public function testCompareUpgradeAndFreshInstall()
     {
@@ -131,6 +133,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * @param array $upgradeTables
      * @return void
+     * @throws \CException
      */
     protected function compareAux(array $upgradeTables, $upgradedFrom)
     {

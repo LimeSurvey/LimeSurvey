@@ -3,14 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverKeys;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\StaleElementReferenceException;
-use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Exception\ElementNotVisibleException;
-
 /**
  * @since 2017-11-24
  * @group inst
@@ -36,7 +29,8 @@ class InstallationControllerTest extends TestBaseClassWeb
     }
 
     /**
-     * 
+     *
+     * @throws \CException
      */
     public function testBasic()
     {
