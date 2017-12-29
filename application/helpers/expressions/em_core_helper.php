@@ -188,7 +188,7 @@ class ExpressionManager
 'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://php.net/htmlspecialchars', 1),
 'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://php.net/htmlspecialchars-decode', 1),
 'idate' => array('idate', 'idate', gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://php.net/idate', 1, 2),
-'if' => array('exprmgr_if', 'LEMif', gT('Conditional processing'), 'if(test,result_if_true[,result_if_false = \'\'])', '', 2,3),
+'if' => array('exprmgr_if', 'LEMif', gT('Conditional processing'), 'if(test,result_if_true[,result_if_false = \'\'])', '', 2, 3),
 'implode' => array('exprmgr_implode', 'LEMimplode', gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://php.net/implode', -2),
 'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://php.net/intval', 1, 2),
 'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://php.net/empty', 1),

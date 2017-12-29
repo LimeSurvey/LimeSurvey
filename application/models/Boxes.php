@@ -144,7 +144,7 @@ class Boxes extends CActiveRecord
     /**
      * List of all icons available for user
      * Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
-     * @return array
+     * @return string[]
      */
     public function getIcons()
     {

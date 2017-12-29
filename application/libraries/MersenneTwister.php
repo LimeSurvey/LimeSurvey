@@ -98,6 +98,9 @@ class MersenneTwister
     }
 
 
+    /**
+     * @param integer $seed
+     */
     public function __construct($seed = null)
     {
         if ($seed === null) {
@@ -130,6 +133,10 @@ class MersenneTwister
         }
     }
 
+    /**
+     * @param integer $min
+     * @param integer $max
+     */
     public function getNext($min = null, $max = null)
     {
         if (($min === null && $max !== null) || ($min !== null && $max === null)) {

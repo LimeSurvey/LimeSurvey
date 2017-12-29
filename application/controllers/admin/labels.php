@@ -239,7 +239,7 @@ class labels extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         // Escapes the id variable
-        $lid = (int)$lid;
+        $lid = (int) $lid;
 
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
@@ -257,7 +257,7 @@ class labels extends Survey_Common_Action
         $labelset_exists = $model !== null;
         
         
-        if ($lid>0 && $labelset_exists) {
+        if ($lid > 0 && $labelset_exists) {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
@@ -344,7 +344,7 @@ class labels extends Survey_Common_Action
         }
         $action = returnGlobal('action');
         Yii::app()->loadHelper('admin/label');
-        $lid = (int)returnGlobal('lid');
+        $lid = (int) returnGlobal('lid');
 
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             updateset($lid);
@@ -425,7 +425,7 @@ class labels extends Survey_Common_Action
 
     public function ajaxSets()
     {
-        $lid = (int)Yii::app()->getRequest()->getPost('lid');
+        $lid = (int) Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', array());
@@ -470,7 +470,7 @@ class labels extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'labels.js');
 
@@ -488,6 +488,6 @@ class labels extends Survey_Common_Action
 
         $aData['display']['menu_bars'] = false;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

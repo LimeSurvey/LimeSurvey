@@ -1305,7 +1305,7 @@ class printablesurvey extends Survey_Common_Action
             // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
             $server_is_newer = version_compare(PHP_VERSION, '5.1.0', '>');
             $rounds = 0;
-            Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray],false);
+            Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], false);
             // die(print_r(['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], true));
             // echo self::_populate_template($oTemplate, 'survey', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray]);
         }// End print
@@ -1331,6 +1331,9 @@ class printablesurvey extends Survey_Common_Action
         return Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', $input, true);
     }
 
+    /**
+     * @param string $sLanguageCode
+     */
     private function _min_max_answers_help($qidattributes, $sLanguageCode, $surveyid)
     {
         $output = "";
@@ -1457,6 +1460,9 @@ class printablesurvey extends Survey_Common_Action
                     );
     }
 
+    /**
+     * @param string $sLanguageCode
+     */
     private function _array_filter_help($qidattributes, $sLanguageCode, $surveyid)
     {
         $output = "";

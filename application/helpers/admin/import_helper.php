@@ -336,7 +336,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 * This function imports a LimeSurvey .lsq question XML file
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
-* @param mixed $iNewSID The new survey id
+* @param integer $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('autorename'=>false))

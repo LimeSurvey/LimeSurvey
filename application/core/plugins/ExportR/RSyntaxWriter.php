@@ -7,8 +7,8 @@ class RSyntaxWriter extends Writer
     private $maxLength = 25500; // From old code, max length of string fields
 
     /**
-    * The open filehandle
-    */
+     * The open filehandle
+     */
     protected $handle = null;
     protected $customFieldmap = array();
     protected $headers = array();
@@ -96,7 +96,7 @@ class RSyntaxWriter extends Writer
                 $field['size'] .= '.'.($field['size'] - 1);
             }
 
-            $type='';
+            $type = '';
             switch ($field['SPSStype']) {
                 case 'F':
                     $type = "numeric";

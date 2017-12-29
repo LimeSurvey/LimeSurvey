@@ -83,7 +83,7 @@ class QuestionTemplate extends CFormModel
     /**
      * Get the current instance of template question object.
      *
-     * @param null $oQuestion
+     * @param Question $oQuestion
      * @return QuestionTemplate
      * @internal param string $sTemplateName
      * @internal param int $iSurveyId
@@ -199,7 +199,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * @return bool
+     * @return null|boolean
      */
     public function templateLoadsCoreJs()
     {
@@ -219,7 +219,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core css should be loaded.
-     * @return bool
+     * @return null|boolean
      */
     public function templateLoadsCoreCss()
     {
@@ -239,7 +239,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core packages should be loaded.
-     * @return bool
+     * @return null|boolean
      */
     public function templateLoadsCorePackage()
     {
@@ -475,7 +475,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * @param string $type
-     * @return mixed
+     * @return string|null
      */
     static public function getFolderName($type)
     {

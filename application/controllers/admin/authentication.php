@@ -267,7 +267,7 @@ class Authentication extends Survey_Common_Action
      * Send the forgot password email
      *
      * @param string $sEmailAddr
-     * @param array $aFields
+     * @param CActiveRecord $aFields
      */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
@@ -360,11 +360,11 @@ class Authentication extends Survey_Common_Action
      * @param array $aData Data to be passed on. Optional.
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars'] = false;
         $aData['language'] = Yii::app()->getLanguage() != Yii::app()->getConfig("defaultlang") ? Yii::app()->getLanguage() : 'default';
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

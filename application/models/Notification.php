@@ -294,7 +294,7 @@ class Notification extends LSActiveRecord
     /**
      * Count how many notifications we have
      * @param int|null $surveyId
-     * @return int
+     * @return string
      */
     public static function countNotifications($surveyId)
     {
@@ -307,7 +307,7 @@ class Notification extends LSActiveRecord
     /**
      * Returns number of notifications with status 'new'
      * @param int|null $surveyId
-     * @return int
+     * @return string
      */
     public static function countNewNotifications($surveyId)
     {
@@ -324,7 +324,7 @@ class Notification extends LSActiveRecord
     /**
      * Count important notifications
      * @param int|null $surveyId
-     * @return int
+     * @return string
      */
     public static function countImportantNotifications($surveyId)
     {

@@ -1162,10 +1162,10 @@ protected function applySubaction($p_subaction, array $args)
 * @param array $aData Data to be passed on. Optional.
 * @return void
 */
-protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
 {
     ////$aData['display']['menu_bars'] = false;
-    parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+    parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
 }
 
 /**
@@ -2106,7 +2106,7 @@ protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandT
 
 /**
 * @param int $qid
-* @return array|array<mixed,object> Conditions
+* @return CActiveRecord[] Conditions
 */
 protected function getAllScenarios($qid)
 {

@@ -32,7 +32,7 @@ class TutorialEntry extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('title, content, settings', 'required'),
-            array( 'numerical', 'integerOnly'=>true),
+            array('numerical', 'integerOnly'=>true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('teid, title, content, settings', 'safe', 'on'=>'search'),
@@ -105,14 +105,14 @@ class TutorialEntry extends LSActiveRecord
         return $model;
     }
 
-    public function getStepFromEntry(){
+    public function getStepFromEntry() {
         $stepArray = json_decode($this->settings, true);
         $stepArray['content'] = gT($this->content, 'unescaped');
         $stepArray['title'] = gT($this->title, 'unescaped');
-        if(isset($stepArray['path'])){
+        if (isset($stepArray['path'])) {
             $path = $stepArray['path'];
             $params = array();
-            if(is_array($stepArray['path'])){
+            if (is_array($stepArray['path'])) {
                 $path = $stepArray['path'][0];
                 $params = isset($stepArray['path'][1]) ? $stepArray['path'][1] : [];
             }

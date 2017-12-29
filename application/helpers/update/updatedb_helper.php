@@ -760,7 +760,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');
             $oDB->createCommand()->addColumn('{{tutorials}}', 'icon', 'string(64)');
-            $oDB->createCommand()->update( '{{tutorials}}', [
+            $oDB->createCommand()->update('{{tutorials}}', [
                     'settings' => json_encode(array(
                     'debug' => true,
                     'orphan' => true,
@@ -778,7 +778,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 335) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update( '{{tutorial_entries}}', [
+            $oDB->createCommand()->update('{{tutorial_entries}}', [
                 'settings' => json_encode(array(
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'element' => '#sidebar',
@@ -796,7 +796,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 336) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update( '{{tutorials}}', [
+            $oDB->createCommand()->update('{{tutorials}}', [
                 'settings' => json_encode(array(
                     'keyboard' => false,
                     'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
@@ -804,8 +804,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
                     )),
                 ], 'tid=1');
-            $oDB->createCommand()->update( '{{tutorial_entries}}', [
-                'settings' => json_encode(array (
+            $oDB->createCommand()->update('{{tutorial_entries}}', [
+                'settings' => json_encode(array(
                     'element' => '#lime-logo',
                     'path' => '/admin/index',
                     'placement' => 'bottom',
@@ -826,9 +826,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
       
         if ($iOldDBVersion < 338) {
             $oTransaction = $oDB->beginTransaction();
-            $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where('ico=:ico',[':ico' => 'templates'])->queryRow();
+            $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where('ico=:ico', [':ico' => 'templates'])->queryRow();
             $position = 6;
-            if($rowToRemove !== false){
+            if ($rowToRemove !== false) {
                 $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
                 $position = $rowToRemove['position'];
             }
@@ -883,11 +883,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     return true;
 }
 /**
- * @param $oDB
+ * @param CDbConnection $oDB
  *
  * @return void
  */
-function resetTutorials337($oDB){
+function resetTutorials337($oDB) {
     $oDB->createCommand()->truncateTable('{{tutorials}}');
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
@@ -916,7 +916,7 @@ function resetTutorials337($oDB){
             'title' => 'Welcome to LimeSurvey!',
             'content' => "This tour will help you to easily get a basic understanding of LimeSurvey."."<br/>"
                 ."We would like to help you with a quick tour of the most essential functions and features.",
-            'settings' => json_encode(array (
+            'settings' => json_encode(array(
                 'element' => '#lime-logo',
                 'path' => ['/admin/index'],
                 'placement' => 'bottom',
@@ -1049,7 +1049,7 @@ function resetTutorials337($oDB){
             'ordering' => 10,
             'title' => 'The settings tab with the survey menu',
             'content' => 'If you click on this tab, the survey settings menu will be displayed.'.' '
-            .'The most important settings of your survey are accessible from this menu.'. '<br/>'
+            .'The most important settings of your survey are accessible from this menu.'.'<br/>'
             .'If you want to know more about them, check our manual.',
             'settings' => json_encode(array(
                 'element' => '#adminpanel__sidebar--selectorSettingsButton',
@@ -1503,7 +1503,7 @@ function resetTutorials337($oDB){
         ),
     );
 
-    foreach($contentArrays as $contentArray) {
+    foreach ($contentArrays as $contentArray) {
         $oDB->createCommand()->insert('{{tutorial_entries}}', $contentArray);
         $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $contentArray['teid']));
     }
@@ -1511,10 +1511,10 @@ function resetTutorials337($oDB){
 }
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
-function upgrade333($oDB){
+function upgrade333($oDB) {
 
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
@@ -1522,7 +1522,7 @@ function upgrade333($oDB){
         'taken' => 'boolean DEFAULT 1',
     ));
 
-    $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
+    $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid', 'tid']);
 
     $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
         'teid' => 'int NOT NULL',
@@ -1531,7 +1531,7 @@ function upgrade333($oDB){
         'sid' => 'int DEFAULT NULL',
     ));
 
-    $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
+    $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid', 'tid']);
     $oDB->createCommand()->createIndex('{{idx1_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'uid', false);
     $oDB->createCommand()->createIndex('{{idx2_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'sid', false);
 
@@ -1564,7 +1564,7 @@ function upgrade333($oDB){
             'title' => 'Welcome to LimeSurvey!',
             'content' => "This tour will help you to easily get a basic understanding of LimeSurvey."."<br/>"
                 ."We would like to help you with a quick tour of the most essential functions and features.",
-            'settings' => json_encode(array (
+            'settings' => json_encode(array(
                 'element' => '#lime-logo',
                 'orphan' => true,
                 'path' => ['/admin/index'],
@@ -1692,7 +1692,7 @@ function upgrade333($oDB){
             'ordering' => 10,
             'title' => 'The settings tab with the survey menu',
             'content' => 'If you click on this tab, the survey settings menu will be displayed.'.' '
-            .'The most important settings of your survey are accessible from this menu.'. '<br/>'
+            .'The most important settings of your survey are accessible from this menu.'.'<br/>'
             .'If you want to know more about them, check our manual.',
             'settings' => json_encode(array(
                 'element' => '#adminpanel__sidebar--selectorSettingsButton',
@@ -2123,7 +2123,7 @@ function upgrade333($oDB){
         ),
 );
 
-    foreach($contentArrays as $contentArray) {
+    foreach ($contentArrays as $contentArray) {
         $oDB->createCommand()->insert('{{tutorial_entries}}', $contentArray);
         $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $contentArray['teid']));
         $combined = array();
@@ -2132,7 +2132,7 @@ function upgrade333($oDB){
 }
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgrade331($oDB)
@@ -2176,7 +2176,7 @@ function upgrade331($oDB)
 }
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgrade330($oDB)
@@ -2207,7 +2207,7 @@ function upgrade330($oDB)
 }
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgrade328($oDB)
@@ -2218,7 +2218,7 @@ function upgrade328($oDB)
 }
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgrade327($oDB)
@@ -2265,6 +2265,9 @@ function upgrade327($oDB)
 
 }
 
+/**
+ * @param CDbConnection $oDB
+ */
 function transferPasswordFieldToText($oDB)
 {
     switch ($oDB->getDriverName()) {
@@ -2527,7 +2530,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     }
 }
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function createSurveyGroupTables306($oDB)
@@ -2573,7 +2576,7 @@ function createSurveyGroupTables306($oDB)
 
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgradeTemplateTables304($oDB)
@@ -2733,7 +2736,7 @@ function upgradeTemplateTables304($oDB)
 
 
 /**
-* @param $oDB
+* @param CDbConnection $oDB
 * @return void
 */
 function upgradeTemplateTables298($oDB)

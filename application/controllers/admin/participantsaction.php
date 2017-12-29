@@ -62,7 +62,7 @@ class participantsaction extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerPackage('bootstrap-multiselect');
         $aData['display']['menu_bars'] = false;
@@ -79,7 +79,7 @@ $url .= "_view"; });
             throw new \InvalidArgumentException("aViewUrls must be either string or array");
         }
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**
@@ -228,7 +228,7 @@ $url .= "_view"; });
             return sprintf(gT("Export %s participants to CSV"), $count);
         } else if($count == 1) {
             return gT("Export participant to CSV");
-        } else  {
+        } else {
             return $count;
         }
     }
@@ -685,8 +685,7 @@ $url .= "_view"; });
         } else {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
-            if ($oCSVFile === false)
-            {
+            if ($oCSVFile === false) {
                 safeDie('File not found.');
             }
             $aFirstLine = fgets($oCSVFile);
@@ -1903,6 +1902,10 @@ $url .= "_view"; });
      * Sends the data in JSON format extracted from the database to be displayed using the datatable
      * Echoes json
      * @return void
+     */
+
+    /**
+     * @param CDbCriteria $search
      */
     public function getParticipants_json($search = null)
     {

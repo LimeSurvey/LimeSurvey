@@ -149,7 +149,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromTemplateName($sTemplateName)
     {
-        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])){
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])) {
             return self::$aInstancesFromTemplateName[$sTemplateName];
         }
 
@@ -444,7 +444,7 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
-        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])){
+        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])) {
             return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
         }
 

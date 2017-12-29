@@ -1926,7 +1926,7 @@ class quexmlpdf extends pdf
             if (isset($s['hidetitle']) && $s['hidetitle'] == "true") {
                 $stmp['title'] = false;
             } else {
-                $stmp['title'] = gT("Section")." ". $sl;
+                $stmp['title'] = gT("Section")." ".$sl;
             }
             $stmp['info'] = "";
             $stmp['text'] = "";
@@ -3727,8 +3727,8 @@ class quexmlpdf extends pdf
         $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $mtitle);
 
         if ($title !== false) {
-             $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
-             $html .= "<span class=\"sectionDescription\">$desc</span>";
+                $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
+                $html .= "<span class=\"sectionDescription\">$desc</span>";
         }
 
         if ($info && !empty($info)) {
