@@ -543,7 +543,7 @@ class TemplateConfiguration extends TemplateConfig
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
             data-tooltip="true"
-            title="'.gT('Uninstall this theme').'"
+            data-title="'.gT('Uninstall this theme').'"
             class="btn btn-danger">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
@@ -557,6 +557,19 @@ class TemplateConfiguration extends TemplateConfig
 
             if ($this->template_name != getGlobalSetting('defaulttheme')) {
                 $sButtons .= '<br><br>'.$sUninstallLink;
+            } else {
+                $sButtons .= '
+                    <br><br>
+                    <a
+                        class="btn btn-danger"
+                        disabled
+                        data-toggle="tooltip"
+                        title="' . gT('You cannot uninstall the default template.') . '"
+                    >
+                        <span class="icon-trash"></span>
+                        '.gT('Uninstall').'
+                    </a>
+                ';
             }
         }
 
