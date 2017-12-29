@@ -104,7 +104,7 @@ class User extends LSActiveRecord
      *
      * @access public
      * @param mixed|boolean $condition
-     * @return string
+     * @return CActiveRecord[]
      */
     public function getAllRecords($condition = false)
     {

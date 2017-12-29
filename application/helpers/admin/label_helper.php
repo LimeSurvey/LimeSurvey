@@ -17,6 +17,9 @@
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnGlobal
 
+/**
+ * @param integer $lid
+ */
 function updateset($lid)
 {
 
@@ -109,6 +112,9 @@ function insertlabelset()
     }
 }
 
+/**
+ * @param null|integer $lid
+ */
 function modlabelsetanswers($lid)
 {
 

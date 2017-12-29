@@ -1464,10 +1464,10 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         $section->setAttribute("id", $gid);
 
         if ($oSurvey->showgroupinfo == 'N' || $oSurvey->showgroupinfo == 'X') {
-            $section->setAttribute('hideinfo','true');
+            $section->setAttribute('hideinfo', 'true');
         }
         if ($oSurvey->showgroupinfo == 'D' || $oSurvey->showgroupinfo == 'X') {
-            $section->setAttribute('hidetitle','true');
+            $section->setAttribute('hidetitle', 'true');
         }
 
         //boilerplate questions convert to sectionInfo elements
@@ -1917,6 +1917,9 @@ function questionGetXMLStructure($xml, $gid, $qid)
 }
 
 
+/**
+ * @param integer $iSurveyID
+ */
 function tokensExport($iSurveyID)
 {
     $sEmailFiter = trim(App()->request->getPost('filteremail'));
@@ -2083,7 +2086,7 @@ function stringSize($sColumn)
     ->limit(1)
     ->queryScalar();
     // PSPP didn't accept A0 then min value to 1, see bug #13008
-    return max(1,(int)$lengthReal);
+    return max(1, (int) $lengthReal);
 }
 /**
  * Find the numeric size according DB size for existing question for SPSS export

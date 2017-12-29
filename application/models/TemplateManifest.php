@@ -565,7 +565,7 @@ class TemplateManifest extends TemplateConfiguration
 
 
             foreach($oXMLConfig->config->xpath("//file") as $oFileName){
-                     $oFileName[0] = get_absolute_path( $oFileName[0]);
+                        $oFileName[0] = get_absolute_path( $oFileName[0]);
             }
 
             $this->config          = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
@@ -855,7 +855,7 @@ class TemplateManifest extends TemplateConfiguration
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @param boolean $bInlcudeRemove   also get the files to remove
-     * @return array
+     * @return stdClass
      */
     static public function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
     {

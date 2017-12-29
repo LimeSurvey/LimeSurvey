@@ -24,7 +24,7 @@ abstract class Writer implements IWriter
      * to any information about the survey, language, or formatting options they
      * may need for setup.
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param mixed $sLanguageCode
      * @param FormattingOptions $oOptions
      */
@@ -39,7 +39,7 @@ abstract class Writer implements IWriter
     /**
      * Return map of questions groups
      *
-     * @param Survey $survey
+     * @param SurveyObj $survey
      * @param FormattingOptions $oOptions
      * @return array
      */
@@ -65,7 +65,7 @@ abstract class Writer implements IWriter
      * Returns an abbreviated heading for the survey's question that matches
      * Force headingTextLength to be set, set to 15 if is not set (old behaviour)
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param string $fieldName
      * @return string
      */
@@ -80,7 +80,7 @@ abstract class Writer implements IWriter
      * Force headingTextLength to null (old behaviour)
      *
      * @deprecated
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @return string
@@ -94,7 +94,7 @@ abstract class Writer implements IWriter
     /**
      * Return the subquestion part, if not empty : add a space before it.
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @return string
@@ -115,7 +115,7 @@ abstract class Writer implements IWriter
     /**
      * Return the question text part without any subquestion
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @return string
@@ -132,7 +132,7 @@ abstract class Writer implements IWriter
     /**
      * Return the question code according to options
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @return string
@@ -149,7 +149,7 @@ abstract class Writer implements IWriter
     /**
      * Return the question text according to options
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @return string
@@ -172,7 +172,7 @@ abstract class Writer implements IWriter
     /**
      * Return the answer text according to options
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @param string $sValue
@@ -191,7 +191,7 @@ abstract class Writer implements IWriter
     /**
      * Return the answer text according to options
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param FormattingOptions $oOptions
      * @param string $fieldName
      * @param string $sValue
@@ -250,7 +250,7 @@ abstract class Writer implements IWriter
      * All extending classes must implement the internalWrite function which is
      * the code that is called after all initialization is completed.
      *
-     * @param Survey $oSurvey
+     * @param SurveyObj $oSurvey
      * @param string $sLanguageCode
      * @param FormattingOptions $oOptions
      * @param boolean $bOutputHeaders Set if header should be given back

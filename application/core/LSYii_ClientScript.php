@@ -400,7 +400,7 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        if(function_exists('getGlobalSetting')) {
+        if (function_exists('getGlobalSetting')) {
             $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
             $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
         } else {

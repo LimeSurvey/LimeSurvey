@@ -168,7 +168,7 @@ class Answer extends LSActiveRecord
 
     /**
      * @param array $data
-     * @return bool
+     * @return boolean|null
      */
     public function insertRecords($data)
     {

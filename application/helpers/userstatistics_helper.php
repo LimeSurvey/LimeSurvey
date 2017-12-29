@@ -21,7 +21,7 @@
  *  @param array $lbl            An array containing the labels for the chart items
  *  @param mixed $gdata          An array containing the percentages for the chart items
  *  @param mixed $grawdata       An array containing the raw count for the chart items
- *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
+ *  @param pCache $cache          An object containing [Hashkey] and [CacheFolder]
  *  @param mixed $sLanguageCode  Language Code
  *  @param string $sQuestionType The question type
  *  @return                false|string

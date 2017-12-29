@@ -80,10 +80,10 @@ class Assessments extends Survey_Common_Action
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param array|string $aViewUrls View url(s)
+     * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['sidemenu']['state'] = false;
         $iSurveyID = $aData['surveyid'];
@@ -94,7 +94,7 @@ class Assessments extends Survey_Common_Action
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid'] = null;
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     private function _prepareDataArray(&$aData, $collectEdit = false)

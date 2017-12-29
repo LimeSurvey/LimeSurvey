@@ -116,7 +116,7 @@ class AdminController extends LSYii_Controller
      *
      * @access public
      * @param string $action
-     * @return bool
+     * @return boolean|null
      */
     public function run($action)
     {
@@ -261,7 +261,7 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @param bool $meta
      * @param bool $return
-     * @return mixed
+     * @return string|null
      */
     public function _getAdminHeader($meta = false, $return = false)
     {
@@ -326,7 +326,7 @@ class AdminController extends LSYii_Controller
      * @param string $url
      * @param string $explanation
      * @param bool $return
-     * @return mixed
+     * @return string|null
      */
     public function _getAdminFooter($url, $explanation, $return = false)
     {
@@ -360,7 +360,7 @@ class AdminController extends LSYii_Controller
      * @param string $message
      * @param string $class
      * @param boolean $return
-     * @return void
+     * @return string|null
      */
     public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
     {

@@ -203,7 +203,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 /**
  * This function creates the language selector for the public survey index page
  *
- * @param mixed $sSelectedLanguage The language in which all information is shown
+ * @param string $sSelectedLanguage The language in which all information is shown
  * @return array|bool
  */
 function getLanguageChangerDatasPublicList($sSelectedLanguage)

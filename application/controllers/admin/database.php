@@ -92,7 +92,6 @@ class database extends Survey_Common_Action
     /**
      * Database::index()
      *
-     * @param mixed $sa
      * @return
      */
     public function index()
@@ -142,7 +141,6 @@ class database extends Survey_Common_Action
      * @param string $specialtype  Special type (i.e. for  'Other')
      * @param mixed $language     Language (defaults are language specific)
      * @param mixed $defaultvalue    The default value itself
-     * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
      */
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
@@ -539,13 +537,13 @@ class database extends Survey_Common_Action
         $criteria->compare('qid', $this->iQuestionID);
         $validAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         // If the question has a custom template, we first check if it provides custom attributes
-        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-        if (is_object($oAttributeValues) && $oAttributeValues->value ){
+        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
+        if (is_object($oAttributeValues) && $oAttributeValues->value) {
             $aAttributeValues['question_template'] = $oAttributeValues->value;
-        }else{
+        } else {
             $aAttributeValues['question_template'] = 'core';
         }
-        $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
+        $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
         foreach ($validAttributes as  $validAttribute) {
             $criteria->compare('attribute', '<>'.$validAttribute['name']);
         }

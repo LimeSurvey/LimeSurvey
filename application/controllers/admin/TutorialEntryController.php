@@ -9,7 +9,7 @@ class TutorialEntryController extends Controller
     public $layout = '//layouts/column2';
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
     public function filters()
     {

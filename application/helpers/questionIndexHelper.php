@@ -161,7 +161,6 @@ class questionIndexHelper
 
     /**
      * return the index item in question by question mode
-     * @param integer $type : 0 : None , 1 : Incremental, 2: full
      * @return array[][] : array of question in array of group
      */
     private function getIndexItemsQuestions()

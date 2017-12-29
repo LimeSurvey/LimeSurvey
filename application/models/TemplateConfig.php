@@ -140,7 +140,7 @@ class TemplateConfig extends CActiveRecord
          * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
          * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
          *
-         * @param $oTemplate TemplateManifest
+         * @param TemplateConfiguration $oTemplate TemplateManifest
          */
         protected function createTemplatePackage($oTemplate)
         {
@@ -221,6 +221,7 @@ class TemplateConfig extends CActiveRecord
         /**
          * Get the depends package
          * @uses self::@package
+         * @param TemplateConfiguration $oTemplate
          * @return string[]
          */
         protected function getDependsPackages($oTemplate)
@@ -1016,7 +1017,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * @param string $sType
      */
-     /*
+        /*
     protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
     {
     }
@@ -1024,7 +1025,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * @param string $sType
      */
-     /*
+        /*
     protected function getFrameworkAssetsReplacement($sType)
     {
     }

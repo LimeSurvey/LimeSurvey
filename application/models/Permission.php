@@ -693,7 +693,7 @@ class Permission extends LSActiveRecord
      * Returns true if a user has permission to read/create/update a certain template
      * @param string $sTemplateName
      * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @param integer $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
     public function hasTemplatePermission($sTemplateName, $sCRUD = 'read', $iUserID = null)

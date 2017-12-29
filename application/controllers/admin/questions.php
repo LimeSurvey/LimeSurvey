@@ -1101,7 +1101,7 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new' ,"OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT );            
+        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new', "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         
 
 
@@ -1327,7 +1327,7 @@ class questions extends Survey_Common_Action
             $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid ,"OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT );            
+            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {
                     include('accessDenied.php');
         }
@@ -1380,7 +1380,6 @@ class questions extends Survey_Common_Action
      *
      * @access public
      * @param int $surveyid
-     * @param int $gid
      * @param int $qid
      * @return array
      */
@@ -1976,9 +1975,9 @@ class questions extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

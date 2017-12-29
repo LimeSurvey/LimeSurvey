@@ -198,7 +198,7 @@ class update extends Survey_Common_Action
      * the welcome message or the subscribe message or the updater update, etc.
      * The same system is used for the static views (update key, etc.)
      *
-     * @return html the welcome message
+     * @return string|null the welcome message
      */
     public function getwelcome()
     {

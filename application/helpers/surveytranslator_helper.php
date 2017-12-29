@@ -965,7 +965,7 @@ function getLanguageDetails($codetosearch)
     /**
      * This functions translates LimeSurvey specific locale code to a matching datetimepicker locale
      *
-     * @param mixed $sLocale LimeSurvey locale code
+     * @param string $sLocale LimeSurvey locale code
      */
 function convertLStoDateTimePickerLocale($sLocale)
 {
