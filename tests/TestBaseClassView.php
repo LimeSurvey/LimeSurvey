@@ -42,15 +42,27 @@ class TestBaseClassView extends TestBaseClassWeb
     }
 
     /**
+     * @param $name
+     * @param $view
+     * @throws \Exception
+     */
+    protected function openAndFindViewTag($name, $view){
+        $this->url = $this->getUrl($view);
+        $this->openView($this->url);
+        return $this->findViewTag($name,$view);
+    }
+
+    /**
      * @param string $name
      * @param array $view
+     * @throws \Exception
      */
     protected function findViewTag($name, $view)
     {
         $url = $this->getUrl($view);
         $this->openView($url);
         $element = null;
-        $filename = null;
+        $filename = self::$screenshotsFolder. '/'.$name.'.png';
 
         try {
             $element = self::$webDriver->wait(2)->until(
@@ -61,7 +73,7 @@ class TestBaseClassView extends TestBaseClassWeb
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
+            file_put_contents($filename, $screenshot);
         }
         //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
         //var_dump($body->getText());
@@ -72,7 +84,7 @@ class TestBaseClassView extends TestBaseClassWeb
                 'FAILED viewing %s on route %s, full url %s',
                 $name,
                 $view['route'],
-                $url
+                $this->url
             )
         );
     }

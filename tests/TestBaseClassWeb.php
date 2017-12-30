@@ -17,6 +17,7 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
+use User;
 
 /**
  * Class TestBaseClassWeb
@@ -30,6 +31,18 @@ class TestBaseClassWeb extends TestBaseClass
      * TODO this should be in configuration somewhere
      */
     public static $webPort = 4444;
+
+    /** @var int $superUserId */
+    protected static $superUserId = 1;
+
+    /** @var string $noPermissionsUserPassword */
+    protected static $noPermissionsUserPassword = 'myHardPassword';
+
+    /** @var string $noPermissionsUserUsername */
+    protected static $noPermissionsUserUsername = 'noPermissionsUser';
+
+    /** @var User $noPermissionsUser */
+    protected static $noPermissionsUser;
 
     /**
      * @var WebDriver $webDriver
