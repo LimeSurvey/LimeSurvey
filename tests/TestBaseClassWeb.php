@@ -32,17 +32,23 @@ class TestBaseClassWeb extends TestBaseClass
      */
     public static $webPort = 4444;
 
+    /** @var \User $user current user */
+    protected static $user;
+
     /** @var int $superUserId */
-    protected static $superUserId = 1;
+    public static $superUserId = 1;
 
     /** @var string $noPermissionsUserPassword */
     protected static $noPermissionsUserPassword = 'myHardPassword';
 
+    /** @var string $superUserUsername */
+    public static $superUserUsername = 'admin';
+
     /** @var string $noPermissionsUserUsername */
-    protected static $noPermissionsUserUsername = 'noPermissionsUser';
+    public static $noPermissionsUserUsername = 'noPermissionsUser';
 
     /** @var User $noPermissionsUser */
-    protected static $noPermissionsUser;
+    public static $noPermissionsUser;
 
     /**
      * @var WebDriver $webDriver
@@ -75,6 +81,9 @@ class TestBaseClassWeb extends TestBaseClass
         self::deleteLoginTimeout();
     }
 
+    /**
+     * @throws \CDbException
+     */
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
@@ -170,6 +179,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('user')
                 )
             );
+            self::$user = User::findByUsername($userName);
         } catch (TimeOutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();

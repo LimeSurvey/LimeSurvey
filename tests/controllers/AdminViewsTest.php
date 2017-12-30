@@ -159,25 +159,26 @@ class AdminViewsTest extends TestBaseClassView
      * @param string $name
      * @param array $view
      * @throws \Exception
-     * @throws \Facebook\WebDriver\Exception\NoSuchElementException
-     * @throws \Facebook\WebDriver\Exception\TimeOutException
      * @dataProvider addAdminClickViews
      */
     public function testAdminClickViews($name,$view){
-        // FIXME need to crate another user
-        //$this->markTestSkipped();
-        $view['clickId'] = ReplaceFields($view['route'],['{UID}'=>self::$noPermissionsUser->primaryKey]);
+
+        $user = self::$user;
+        if(isset($view['username'])){
+            $user = \User::findByUsername($view['username']);
+        }
+
+        $view['clickId'] = ReplaceFields($view['clickId'],['{UID}'=>$user->primaryKey]);
         $url = $this->getUrl($view);
         $this->openView($url);
-        try{
 
+        try{
             self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
-                    WebDriverBy::id('set-user-permissions-'.self::$noPermissionsUser->primaryKey)
+                    WebDriverBy::id($view['clickId'])
                 )
             );
-
-            $clickable = self::$webDriver->findElement(WebDriverBy::id('set-user-permissions-'.self::$noPermissionsUser->primaryKey));
+            $clickable = self::$webDriver->findElement(WebDriverBy::id($view['clickId']));
             $clickable->click();
             return $this->findViewTag($name,$view);
 

@@ -10,11 +10,14 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
+
+use ls\tests\TestBaseClassWeb;
+
 /**
  * This contains a list of survey-related admin views that we can loop for testing
  */
 return [
     // Central participants DB ---------------------------------------
     // --------------------------------------------------
-    ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}','clickId'=>'set-user-permissions-{UID}']],
+    ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}','clickId'=>'set-user-permissions-{UID}','username'=> TestBaseClassWeb::$noPermissionsUserUsername]],
 ];
