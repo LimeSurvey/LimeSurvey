@@ -73,11 +73,8 @@ class CreateSurveyTest extends TestBaseClassWeb
     {
         try {
             // Go to main page.
-            $urlMan = \Yii::app()->urlManager;
-            $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('admin');
+            $url = self::getUrl(['route'=>'']);
             self::$webDriver->get($url);
-
 
             // Ignore welcome modal.
             self::findAndClick(WebDriverBy::cssSelector('#welcomeModal button.btn-default'));
@@ -294,6 +291,11 @@ class CreateSurveyTest extends TestBaseClassWeb
         $sids = $dbo->createCommand($query)->queryAll();
         $this->assertCount(0, $sids);
 
+    }
+
+    private function openSurveySummary(){
+        $url = self::getUrl(['route'=>'survey/sa/view&surveyid='.self::$survey->primaryKey]);
+        self::$webDriver->get($url);
     }
 
 

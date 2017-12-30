@@ -138,7 +138,7 @@ class TestBaseClassWeb extends TestBaseClass
 
 
     /**
-     * @param $url
+     * @param string $url
      * @return WebDriver
      * @throws \Exception
      * @internal param array $view
