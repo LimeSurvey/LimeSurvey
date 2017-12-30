@@ -697,7 +697,7 @@ class Participant extends LSActiveRecord
     /**
      * Get the number of participants, no restrictions
      *
-     * @return int
+     * @return string
      */
     public function getParticipantsCountWithoutLimit()
     {
@@ -727,14 +727,14 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * @param int $page
-     * @param int $limit
+     * @param integer $page
+     * @param integer $limit
      * @param array $attid
-     * @param order
-     * @param search
-     * @param userid
-     * @param string $order
+     * @param string|null $order
+     * @param CDbCriteria $search
+     * @param integer $userid
      * @return array
+     * @throws CException
      */
     public function getParticipants($page, $limit, $attid, $order = null, $search = null, $userid = null)
     {
@@ -1902,7 +1902,7 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
-        $tokenids = json_decode($tokenid_string,true);
+        $tokenids = json_decode($tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
@@ -1944,7 +1944,7 @@ class Participant extends LSActiveRecord
         }
 
         /* Add the participants to the CPDB = Iterate through each $tokenid and create the new CPDB id*/
-        if(!is_array($tokenids)) { $tokenids = (array) $tokenids; } 
+        if (!is_array($tokenids)) { $tokenids = (array) $tokenids; } 
         foreach ($tokenids as $tid) {
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */

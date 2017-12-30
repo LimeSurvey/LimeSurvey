@@ -18,7 +18,6 @@ class ExcelWriter extends Writer
      * The presence of a filename will cause the writer to output to
      * a file rather than send.
      *
-     * @param string $filename
      * @return ExcelWriter
      */
     public function __construct()

@@ -262,7 +262,7 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_".$this->sTemplateName."'
             href='".$sEditorUrl."'
-            class='btn btn-default'>
+            class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
                 ".gT('Theme editor')."
             </a>";
@@ -274,7 +274,7 @@ class TemplateManifest extends TemplateConfiguration
         $sLoadLink .= "<a
                 id='template_options_link_".$this->sTemplateName."'
                 href='".$sLoadUrl."'
-                class='btn btn-default '>
+                class='btn btn-default btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     ".gT('Install')."
                 </a>";
@@ -282,13 +282,13 @@ class TemplateManifest extends TemplateConfiguration
         $sDeleteLink = "<a
                 id='template_options_link_".$this->sTemplateName."'
                 href='".$sDeleteUrl."'
-                class='btn btn-danger '>
+                class='btn btn-danger btn-block'>
                     <span class='fa fa-trash text-warning'></span>
                     ".gT('Delete')."
                 </a>";
 
 
-        return $sEditorLink.'<br><br>'.$sLoadLink.'<br><br>'; //.$sDeleteLink;
+        return $sEditorLink.$sLoadLink; //.$sDeleteLink;
     }
 
     /**
@@ -565,7 +565,7 @@ class TemplateManifest extends TemplateConfiguration
 
 
             foreach($oXMLConfig->config->xpath("//file") as $oFileName){
-                     $oFileName[0] = get_absolute_path( $oFileName[0]);
+                        $oFileName[0] = get_absolute_path( $oFileName[0]);
             }
 
             $this->config          = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
@@ -855,7 +855,7 @@ class TemplateManifest extends TemplateConfiguration
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @param boolean $bInlcudeRemove   also get the files to remove
-     * @return array
+     * @return stdClass
      */
     static public function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
     {

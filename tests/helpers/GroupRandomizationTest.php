@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverBy;
 
@@ -63,7 +61,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
      */
     public function setUp()
     {
-        if (empty(getenv('DOMAIN'))) {
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
             echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
             exit(6);
         }

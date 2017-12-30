@@ -73,7 +73,7 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @param integer $participantId
-     * @return array|mixed|null
+     * @return CActiveRecord[]
      */
     public function getLinkInfo($participantId)
     {
@@ -83,7 +83,7 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @param integer $iSurveyId
-     * @return mixed
+     * @return CDbDataReader
      */
     public function rebuildLinksFromTokenTable($iSurveyId)
     {

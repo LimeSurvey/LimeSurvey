@@ -167,6 +167,7 @@ abstract class PluginBase implements iPlugin
 
     /**
      * Publishes plugin assets.
+     * @return string
      */
     public function publish($fileName)
     {
@@ -404,6 +405,7 @@ abstract class PluginBase implements iPlugin
     /**
      * Check if config field active is 1. If yes, activate the plugin.
      * This is the 'active-by-default' feature.
+     * @param \Plugin $pluginModel
      * @return void
      */
     protected function checkActive($pluginModel)

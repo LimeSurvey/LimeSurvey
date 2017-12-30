@@ -265,8 +265,6 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @param int $limit
      * @param int $start
-     * @param boolean $order
-     * @param boolean $searchstring
      * @return void
      */
     public function browse($iSurveyId, $limit = 50, $start = 0)
@@ -2357,7 +2355,8 @@ class tokens extends Survey_Common_Action
         $this->_renderWrappedTemplate('token', array('bounce'), $aData);
     }
 
-    public function prepExportToCPDB(){
+    public function prepExportToCPDB()
+    {
         $exportedItems = Yii::app()->request->getPost('itemsid', []);
         if(is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
         Yii::app()->session['participantid'] = $exportedItems;
@@ -2368,7 +2367,7 @@ class tokens extends Survey_Common_Action
      * Handle token form for addnew/edit actions
      * @param int $iSurveyId
      * @param string $subaction
-     * @param int|string $iTokenId
+     * @param integer $iTokenId
      * @param boolean $ajax
      * @return void
      */
@@ -2466,7 +2465,7 @@ class tokens extends Survey_Common_Action
             'message' => gT("A participant table has been created for this survey.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )),['surveyid' => $iSurveyId]);
+            )), ['surveyid' => $iSurveyId]);
         }
         /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable')) {
@@ -2509,7 +2508,7 @@ class tokens extends Survey_Common_Action
             'message' => gT("A survey participants table has been created for this survey and the old tokens were imported.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId"."\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )),['surveyid' => $iSurveyId]);
+            )), ['surveyid' => $iSurveyId]);
 
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         } else {
@@ -2546,11 +2545,11 @@ class tokens extends Survey_Common_Action
      * @param array $aData Data to be passed on. Optional.
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

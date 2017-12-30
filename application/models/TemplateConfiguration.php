@@ -149,7 +149,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromTemplateName($sTemplateName)
     {
-        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])){
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])) {
             return self::$aInstancesFromTemplateName[$sTemplateName];
         }
 
@@ -444,7 +444,7 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
-        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])){
+        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])) {
             return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
         }
 
@@ -516,7 +516,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
             href='".$sEditorUrl."'
-            class='btn btn-default'>
+            class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
                 ".gT('Theme editor')."
             </a>";
@@ -529,7 +529,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_".$this->template_name."'
                 href='".$sOptionUrl."'
-                class='btn btn-default'>
+                class='btn btn-default btn-block'>
                     <span class='fa fa-tachometer'></span>
                     ".gT('Theme options')."
                 </a>";
@@ -543,8 +543,8 @@ class TemplateConfiguration extends TemplateConfig
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
             data-tooltip="true"
-            title="'.gT('Uninstall this theme').'"
-            class="btn btn-danger">
+            data-title="'.gT('Uninstall this theme').'"
+            class="btn btn-danger btn-block">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
             </a>';
@@ -553,10 +553,22 @@ class TemplateConfiguration extends TemplateConfig
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
-            $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
+            $sButtons = $sEditorLink.$OptionLink;
 
             if ($this->template_name != getGlobalSetting('defaulttheme')) {
-                $sButtons .= '<br><br>'.$sUninstallLink;
+                $sButtons .= $sUninstallLink;
+            } else {
+                $sButtons .= '
+                    <a
+                        class="btn btn-danger btn-block"
+                        disabled
+                        data-toggle="tooltip"
+                        title="' . gT('You cannot uninstall the default template.') . '"
+                    >
+                        <span class="icon-trash"></span>
+                        '.gT('Uninstall').'
+                    </a>
+                ';
             }
         }
 

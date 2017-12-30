@@ -222,6 +222,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * @inheritdoc
+     * @param string $_viewFile_
      */
     public function renderInternal($_viewFile_, $_data_ = null, $_return_ = false)
     {
@@ -323,7 +324,7 @@ class Survey_Common_Action extends CAction
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
         
-        if($sRenderFile == false){
+        if ($sRenderFile == false) {
             if (!empty($aData['surveyid'])) {
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
                 $renderFile = $basePath.'/layout_insurvey.php';
@@ -369,7 +370,7 @@ class Survey_Common_Action extends CAction
     private function _notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
-            if(!is_array($aMessage)) $aMessage = array();
+            if (!is_array($aMessage)) $aMessage = array();
             unset(App()->session['arrayNotificationMessages']);
             return $this->getController()->renderPartial("notifications/notifications", array('aMessage'=>$aMessage));
     }

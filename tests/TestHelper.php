@@ -2,20 +2,16 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Chrome\ChromeDriver;
-use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
 use Facebook\WebDriver\Exception\WebDriverCurlException;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
-use Facebook\WebDriver\Exception\TimeOutException;
 
 class TestHelper extends TestCase
 {
@@ -96,6 +92,7 @@ class TestHelper extends TestCase
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'radix'=>$radix,
+            // FIXME !! $LEMsessid is not defined
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
@@ -153,7 +150,7 @@ class TestHelper extends TestCase
      *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
      *
      * @param string $databaseName
-     * @return boolean True at success.
+     * @return boolean | \CDbConnection
      */
     public function connectToNewDatabase($databaseName)
     {
@@ -227,7 +224,7 @@ class TestHelper extends TestCase
 
     /**
      * @param int $version
-     * @return CDbConnection
+     * @return \CDbConnection
      */
     public function updateDbFromVersion($version, $connection = null)
     {
@@ -321,14 +318,10 @@ class TestHelper extends TestCase
     {
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
-        try {
-            $screenshot = $webDriver->takeScreenshot();
-            $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
-            $result     = file_put_contents($filename, $screenshot);
-            $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
-        } catch (NoSuchDriverException $ex) {
-            // No driver.
-        }
+        $screenshot = $webDriver->takeScreenshot();
+        $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
+        $result     = file_put_contents($filename, $screenshot);
+        $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
     }
 
     /**
@@ -397,7 +390,7 @@ class TestHelper extends TestCase
         $webDriver = null;
         do {
             try {
-                $host = 'http://localhost:4444/wd/hub'; // this is the default
+                $host = 'http://localhost:'.TestBaseClassWeb::$webPort.'/wd/hub'; // this is the default
                 $capabilities = DesiredCapabilities::firefox();
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
@@ -406,7 +399,7 @@ class TestHelper extends TestCase
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
                 $success = true;
-            } catch (WebDriverCurlException $ex) {
+            } catch (WebDriverException $ex) {
                 $tries++;
                 sleep(1);
             }

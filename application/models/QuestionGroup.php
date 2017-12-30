@@ -255,7 +255,7 @@ class QuestionGroup extends LSActiveRecord
     /**
      * @param mixed|array $condition
      * @param string[] $order
-     * @return mixed
+     * @return CDbDataReader
      */
     public function getAllGroups($condition, $order = false)
     {

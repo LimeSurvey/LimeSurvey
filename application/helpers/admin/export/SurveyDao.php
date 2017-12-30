@@ -86,7 +86,7 @@ class SurveyDao
      * or both,  the $minRecord and $maxRecord variables must be provided.
      * If none are then all responses are loaded.
      *
-     * @param Survey $survey
+     * @param SurveyObj $survey
      * @param int $iMinimum
      * @param int $iMaximum
      * @param string $sFilter An optional filter for the results, i  string or arry of string
@@ -95,7 +95,7 @@ class SurveyDao
      */
     public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter = '', $completionState = 'all', $aFields = array(), $aResponsesId = array())
     {
-        $responsesTableName = '{{survey_' . $survey->id . '}}';
+        $responsesTableName = '{{survey_'.$survey->id.'}}';
         $aSelectFields = Yii::app()->db->schema->getTable('{{survey_'.$survey->id.'}}')->getColumnNames();
         // Get info about the survey
         if (!empty($aFields)) {
@@ -117,8 +117,8 @@ class SurveyDao
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings'] == "Y") {
-            $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
-            $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
+            $oRecordSet->leftJoin("{{survey_".$survey->id."_timings}} survey_timings", "{{survey_".$survey->id."}}.id = survey_timings.id");
+            $aTimingFields = Yii::app()->db->schema->getTable("{{survey_".$survey->id."_timings}}")->getColumnNames();
             foreach ($aTimingFields as &$sField) {
                             $sField = "survey_timings.".$sField;
             }

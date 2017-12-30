@@ -8,7 +8,7 @@
 class TutorialsController extends Survey_Common_Action
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
     public function filters()
     {
@@ -141,7 +141,7 @@ class TutorialsController extends Survey_Common_Action
         }
     }
 
-    public function triggerfinished($tid){
+    public function triggerfinished($tid) {
         $oTutorial = Tutorials::model()->find($tid);
         $oTutorial->setFinished(App()->user->id);
         echo '{"success": true}';

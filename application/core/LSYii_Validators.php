@@ -148,9 +148,9 @@ class LSYii_Validators extends CValidator
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression) {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
-                        $sNewValue .= "\"".(string)$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
+                        $sNewValue .= "\"".(string) $filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
-                        $sNewValue .= "'".(string)$filter->purify($aParsedExpression[0])."'";
+                        $sNewValue .= "'".(string) $filter->purify($aParsedExpression[0])."'";
                     } else {
                         $sNewValue .= $aParsedExpression[0];
                     }

@@ -11,7 +11,7 @@ class PluginHelper extends Survey_Common_Action
      * Helper function to let a plugin put content
      * into the side-body easily.
      *
-     * @param int $surveyId
+     * @param int $surveyid
      * @param string $plugin Name of the plugin class
      * @param string $method Name of the plugin method
      * @return void

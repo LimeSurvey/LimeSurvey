@@ -23,12 +23,9 @@ before_script:
     - composer install
       #- composer install
     - chmod -R 777 tmp
-    - chmod -R 777 tmp/runtime
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
-    - mkdir -p tests/tmp/runtime
     - chmod -R 777 tests/tmp
-    - chmod -R 777 tests/tmp/runtime
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.

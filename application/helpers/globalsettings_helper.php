@@ -61,6 +61,9 @@ function getGlobalSetting($settingname)
     return $dbvalue;
 }
 
+/**
+ * @param string $settingname
+ */
 function setGlobalSetting($settingname, $settingvalue)
 {
     if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml')) {

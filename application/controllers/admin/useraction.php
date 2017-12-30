@@ -252,7 +252,7 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * @param $result TODO: Used at all?
+     * @param CActiveRecord[] $result TODO: Used at all?
      * @param $transfer_surveys_to  TODO: ?
      * @return void
      * @todo Delete what final user?
@@ -809,9 +809,9 @@ class UserAction extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array(), $sRenderFile=false)
+    protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData,$sRenderFile);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

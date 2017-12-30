@@ -101,6 +101,9 @@
     }
 
 
+    /**
+     * @param CController $controller
+     */
     function PrepareEditorScript($load = false, $controller = null)
     {
         if ($controller == null) {
