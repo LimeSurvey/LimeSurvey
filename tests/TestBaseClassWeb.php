@@ -60,6 +60,9 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected static $domain;
 
+    /** @var  string $url current url */
+    protected $url;
+
     /**
      * @throws \Exception
      */

@@ -60,6 +60,7 @@ class TestBaseClassView extends TestBaseClassWeb
     protected function findViewTag($name, $view)
     {
         $filename = self::$screenshotsFolder. '/'.$name.'.png';
+        $element = null;
         try {
             $element = self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
