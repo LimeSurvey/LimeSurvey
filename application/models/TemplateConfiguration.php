@@ -14,7 +14,7 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-/*
+/**
  * This is the model class for table "{{template_configuration}}".
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
@@ -34,7 +34,6 @@ if (!defined('BASEPATH')) {
  * @property string $cssframework_js
  * @property string $packages_to_load
  * @property string $packages_ltr
- * @property string $packages_rtl
  * @property string $packages_rtl
  *
  * @package       LimeSurvey
@@ -928,6 +927,9 @@ class TemplateConfiguration extends TemplateConfig
     }
 
 
+    /**
+     * @return TemplateConfiguration
+     */
     public function getParentConfiguration()
     {
         if (empty($this->oParentTemplate)) {
