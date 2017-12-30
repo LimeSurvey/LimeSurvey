@@ -170,19 +170,22 @@ class AdminViewsTest extends TestBaseClassView
         $url = $this->getUrl($view);
         $this->openView($url);
         try{
+
             self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('set-user-permissions-'.self::$noPermissionsUser->primaryKey)
                 )
             );
+
             $clickable = self::$webDriver->findElement(WebDriverBy::id('set-user-permissions-'.self::$noPermissionsUser->primaryKey));
             $clickable->click();
+            return $this->findViewTag($name,$view);
 
         }catch (\Exception $e){
-            throw $e;
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/'.$name.'.png';
             file_put_contents($filename, $screenshot);
+            throw $e;
         }
     }
 

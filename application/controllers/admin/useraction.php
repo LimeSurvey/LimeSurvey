@@ -705,7 +705,7 @@ class UserAction extends Survey_Common_Action
             if (count($result) == 0) {
                 $post = new Template;
                 $post->folder = $tp;
-                $post->creator = Yii::app()->session['loginID'];
+                $post->owner_id = Yii::app()->session['loginID'];
 
                 try {
                     $post->save();

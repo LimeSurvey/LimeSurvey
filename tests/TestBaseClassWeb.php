@@ -69,6 +69,48 @@ class TestBaseClassWeb extends TestBaseClass
 
         self::$domain = getenv('DOMAIN');
 
+        self::setUpWebDriver();
+        self::tearDownTestUsers();
+        self::setUpNoPermissionsUser();
+        self::deleteLoginTimeout();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+        self::$webDriver->quit();
+        self::tearDownTestUsers();
+    }
+
+    /**
+     * @throws \CDbException
+     */
+    private static function tearDownTestUsers(){
+        $noPermissionsUser = User::findByUsername(self::$noPermissionsUserUsername);
+        if($noPermissionsUser){
+            $noPermissionsUser->delete();
+        }
+    }
+    /**
+     * @throws \Exception
+     */
+    private static function setUpNoPermissionsUser(){
+        $user = new User();
+        $user->users_name =self::$noPermissionsUserUsername;
+        $user->email = 'no-permissions@example.com';
+        $user->full_name = 'Iha Veno Permissioons';
+        $user->setPassword(self::$noPermissionsUserPassword);
+        if($user->save()){
+            self::$noPermissionsUser = $user;
+        }else{
+            throw new \Exception('Could not create User: '.serialize($user->errors));
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function setUpWebDriver(){
         self::$webDriver = self::$testHelper->getWebDriver();
 
         if (empty(self::$webDriver)) {
@@ -82,11 +124,6 @@ class TestBaseClassWeb extends TestBaseClass
         self::$testHelper->enablePreview();
     }
 
-    public static function tearDownAfterClass()
-    {
-        parent::tearDownAfterClass();
-        self::$webDriver->quit();
-    }
 
     /**
      * @param $url
