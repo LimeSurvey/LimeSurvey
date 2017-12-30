@@ -1,3 +1,13 @@
+<?php
+/**
+ * Create survey
+ * @var AdminController $this
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('setUserTemplates');
+
+?>
 <div class="pagetitle h3"><?php printf(gT('Edit theme permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-6 col-lg-offset-3 content-right">

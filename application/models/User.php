@@ -378,47 +378,50 @@ class User extends LSActiveRecord
                 $this->uid != Yii::app()->session['loginID']) ||
                 (Permission::model()->hasGlobalPermission('users', 'update') &&
                 $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
+
                 //'admin/user/sa/setuserpermissions'
                 $setPermissionsUser = "<button id= 'set-user-permissions-{$this->primaryKey}' data-toggle='tooltip' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
-                }
+            }
             if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
                 || Permission::model()->hasGlobalPermission('templates', 'read'))
                 && !Permission::isForcedSuperAdmin($this->uid)) {
-                //'admin/user/sa/setusertemplates')
-                    $setTemplatePermissionUser = "<button type='submit' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
-                }
-                if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
-                    || (Permission::model()->hasGlobalPermission('users', 'delete')
-                    && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
-                    $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
-                        "action"=> "deluser",
-                        "uid"=>$this->uid,
-                        "user" => htmlspecialchars(Yii::app()->user->getId())
-                    ));
 
-                        //'admin/user/sa/deluser'
-                    $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='".gT('Delete this user')."'>
-                    <button
-                        id='delete_user_".$this->uid."'
-                        data-toggle='modal'
-                        data-target='#confirmation-modal'
-                        data-url='".$deleteUrl."'
-                        data-uid='".$this->uid."'
-                        data-user='".htmlspecialchars($this->full_name)."'
-                        data-action='deluser'
-                        data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))'
-                        data-message='".gT("Do you want to delete this user?")."'
-                        class='btn btn-default btn-xs '>
-                            <span class='fa fa-trash  text-danger'></span>
-                        </button>
-                    </span>";
-                    }
-                if (Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])
-                    && $this->parent_id != Yii::app()->session['loginID']
-                ) {
-                    //'admin/user/sa/setasadminchild'
-                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                //'admin/user/sa/setusertemplates')
+                $setTemplatePermissionUser = "<button id= 'set-user-templates-{$this->primaryKey}' type='submit' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
+            }
+
+            if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
+                || (Permission::model()->hasGlobalPermission('users', 'delete')
+                && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
+                $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
+                    "action"=> "deluser",
+                    "uid"=>$this->uid,
+                    "user" => htmlspecialchars(Yii::app()->user->getId())
+                ));
+
+                    //'admin/user/sa/deluser'
+                $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                <button
+                    id='delete_user_".$this->uid."'
+                    data-toggle='modal'
+                    data-target='#confirmation-modal'
+                    data-url='".$deleteUrl."'
+                    data-uid='".$this->uid."'
+                    data-user='".htmlspecialchars($this->full_name)."'
+                    data-action='deluser'
+                    data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))'
+                    data-message='".gT("Do you want to delete this user?")."'
+                    class='btn btn-default btn-xs '>
+                        <span class='fa fa-trash  text-danger'></span>
+                    </button>
+                </span>";
                 }
+            if (Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])
+                && $this->parent_id != Yii::app()->session['loginID']
+            ) {
+                //'admin/user/sa/setasadminchild'
+                $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+            }
         }
         return "<div>"
             . $editUser

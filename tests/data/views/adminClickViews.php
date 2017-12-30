@@ -20,4 +20,5 @@ return [
     // Central participants DB ---------------------------------------
     // --------------------------------------------------
     ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}','clickId'=>'set-user-permissions-{UID}','username'=> TestBaseClassWeb::$noPermissionsUserUsername]],
+    ['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}','clickId'=>'set-user-templates-{UID}','username'=> TestBaseClassWeb::$noPermissionsUserUsername]],
 ];
