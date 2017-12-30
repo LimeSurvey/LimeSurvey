@@ -94,11 +94,13 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             // Click save.
             self::findAndClick(WebDriverBy::id('save-form-button'));
-
-            // find the survey summary page tag
-            $element = self::findViewTag('action::surveySummay');
-            $this->assertNotEmpty($element,'FAILED creating new survey');
-
+            // find & assert the survey summary page tag
+            self::findViewTag('surveySummary');
+            $sid = \Yii::app()->request->getQuery('surveyid');
+            $survey = \Survey::model()->findByPk($sid);
+            if($survey){
+                $this->survey = $survey;
+            }
 
         } catch (NoSuchElementException $ex) {
             // TODO :Duplicated code.
