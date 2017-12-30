@@ -96,7 +96,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             self::findAndClick(WebDriverBy::id('save-form-button'));
 
             // find the survey summary page tag
-            $element = self::find(WebDriverBy::id('action::surveySummay'));
+            $element = self::findViewTag('action::surveySummay');
             $this->assertNotEmpty($element,'FAILED creating new survey');
 
 

@@ -41,44 +41,4 @@ class TestBaseClassView extends TestBaseClassWeb
         self::adminLogin($username, $password);
     }
 
-    /**
-     * @param $name
-     * @param $view
-     * @throws \Exception
-     */
-    protected function openAndFindViewTag($name, $view){
-        $this->url = $this->getUrl($view);
-        $this->openView($this->url);
-        return $this->findViewTag($name,$view);
-    }
-
-    /**
-     * @param string $name
-     * @param array $view
-     * @throws \Exception
-     */
-    protected function findViewTag($name, $view)
-    {
-        $filename = self::$screenshotsFolder. '/'.$name.'.png';
-        $element = null;
-        try {
-            $element = self::find(WebDriverBy::id('action::' . $name));
-        } catch (\Exception $e) {
-            //throw new Exception($e->getMessage());
-            $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents($filename, $screenshot);
-        }
-        //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
-        //var_dump($body->getText());
-        $this->assertNotEmpty(
-            $element,
-            'Possible screenshot at ' . $filename . PHP_EOL .
-            sprintf(
-                'FAILED viewing %s on route %s, full url %s',
-                $name,
-                $view['route'],
-                $this->url
-            )
-        );
-    }
 }
