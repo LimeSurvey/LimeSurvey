@@ -185,12 +185,10 @@ class TestBaseClassWeb extends TestBaseClass
             self::$user = User::findByUsername($userName);
         } catch (TimeOutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/FailedLogin.png';
-            file_put_contents($filename, $screenshot);
+            $shotName = self::takeScreenShot('FailedLogin');
             self::assertTrue(
                 false,
-                ' Screenshot in ' . $filename . PHP_EOL .
+                'Screenshot in '.$shotName . PHP_EOL .
                 sprintf(
                     'Could not login on url %s: Could not find element with id "user".',
                     $url
@@ -211,12 +209,10 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
         } catch (TimeOutException $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/FailedLogin.png';
-            file_put_contents($filename, $screenshot);
+            $shotName = self::takeScreenShot('FailedLogin');
             self::assertTrue(
                 false,
-                ' Screenshot in ' . $filename . PHP_EOL .
+                ' Screenshot in ' . $shotName . PHP_EOL .
                 'Found no welcome jumbotron after login.'
             );
         }
@@ -247,15 +243,10 @@ class TestBaseClassWeb extends TestBaseClass
             );
             $clickable->click();
             sleep(1);
-
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/'.time().microtime().'_AfterGoodClick.png';
-            file_put_contents($filename, $screenshot);
+            self::takeScreenShot('AfterGoodClick');
             return $clickable;
         } catch (\Exception $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/'.time().microtime().'_FailedClic.png';
-            file_put_contents($filename, $screenshot);
+            self::takeScreenShot('FailedClick');
         }
 
     }
@@ -273,9 +264,7 @@ class TestBaseClassWeb extends TestBaseClass
             );
             return $element;
         } catch (\Exception $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/'.time().microtime().'_FailedFindElement.png';
-            file_put_contents($filename, $screenshot);
+            self::takeScreenShot('FailedFindElement');
             throw $ex;
         }
 
@@ -298,20 +287,18 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected function findViewTag($name, $view=[])
     {
-        $filename = self::$screenshotsFolder. '/'.$name.'.png';
         $element = null;
         try {
             $element = self::find(WebDriverBy::id('action::' . $name));
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
-            $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents($filename, $screenshot);
+            $shotName = self::takeScreenShot($name);
         }
         //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
         //var_dump($body->getText());
         $this->assertNotEmpty(
             $element,
-            'Possible screenshot at ' . $filename . PHP_EOL .
+            'Possible screenshot at ' . $shotName . PHP_EOL .
             sprintf(
                 'FAILED viewing %s on route %s, full url %s',
                 $name,
@@ -321,4 +308,10 @@ class TestBaseClassWeb extends TestBaseClass
         );
     }
 
+    public static function takeScreenShot($name){
+        $screenshot = self::$webDriver->takeScreenshot();
+        $filename = self::$screenshotsFolder .'/'.microtime(true).'_'.$name.'.png';
+        file_put_contents($filename, $screenshot);
+        return $filename;
+    }
 }
