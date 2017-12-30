@@ -999,7 +999,7 @@ class TemplateConfiguration extends TemplateConfig
             $sAttribute = parent::__get($name);
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit, then it will lead to this method again.)
-                $attribute = (isset($this->getParentConfiguration()->$name ? $this->getParentConfiguration()->$name : null))
+                $attribute = (isset($this->getParentConfiguration()->$name)         ? $this->getParentConfiguration()->$name : null);
                 $sAttribute = $attribute;
             }
         } else {
