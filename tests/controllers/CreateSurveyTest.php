@@ -19,7 +19,7 @@ use Facebook\WebDriver\Exception\ElementNotVisibleException;
 class CreateSurveyTest extends TestBaseClassWeb
 {
     /** @var \Survey $survey */
-    private $survey;
+    private static $survey;
 
     /**
      *
@@ -99,7 +99,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $sid = \Yii::app()->request->getQuery('surveyid');
             $survey = \Survey::model()->findByPk($sid);
             if($survey){
-                $this->survey = $survey;
+                self::$survey = $survey;
             }
 
         } catch (NoSuchElementException $ex) {
