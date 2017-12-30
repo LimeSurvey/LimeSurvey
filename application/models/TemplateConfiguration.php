@@ -309,7 +309,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
-        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null ) {
+        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         }
 
@@ -423,7 +423,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if ( ! is_object($this->template) || ( is_object($this->template) && ! Template::checkTemplateXML($this->template->folder) )) {
+            if (!is_object($this->template) || (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))) {
                 $this->bTemplateCheckResult = false;
             }
         }
@@ -563,7 +563,7 @@ class TemplateConfiguration extends TemplateConfig
                         class="btn btn-danger btn-block"
                         disabled
                         data-toggle="tooltip"
-                        title="' . gT('You cannot uninstall the default template.') . '"
+                        title="' . gT('You cannot uninstall the default template.').'"
                     >
                         <span class="icon-trash"></span>
                         '.gT('Uninstall').'

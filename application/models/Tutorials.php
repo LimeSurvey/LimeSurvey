@@ -75,7 +75,8 @@ class Tutorials extends LSActiveRecord
         );
     }
 
-    public function getColumns() {
+    public function getColumns()
+    {
         $cols = array(
             array(
             'name' => 'tid',
@@ -141,7 +142,8 @@ class Tutorials extends LSActiveRecord
         return self::model()->findAll('active=1');
     }
 
-    public function setFinished($iUserId) {
+    public function setFinished($iUserId)
+    {
         $oMapTutUser = MapTutorialUsers::model()->find('uid=:uid AND tid=:tid', [':uid' => $iUserId, 'tid' => $this->tid]);
         if ($oMapTutUser == null) {
             $oMapTutUser = new MapTutorialUsers();
@@ -153,7 +155,8 @@ class Tutorials extends LSActiveRecord
         }
     }
 
-    public function getTutorialDataArray($tutorialName) {
+    public function getTutorialDataArray($tutorialName)
+    {
 
         if ($this->tid === null) { return []; }
         $aTutorialEntryRelations = TutorialEntryRelation::model()->findAll('tid=:tid', [':tid'=>$this->tid]);

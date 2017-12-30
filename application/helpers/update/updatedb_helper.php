@@ -887,7 +887,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  *
  * @return void
  */
-function resetTutorials337($oDB) {
+function resetTutorials337($oDB)
+{
     $oDB->createCommand()->truncateTable('{{tutorials}}');
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
@@ -1514,7 +1515,8 @@ function resetTutorials337($oDB) {
 * @param CDbConnection $oDB
 * @return void
 */
-function upgrade333($oDB) {
+function upgrade333($oDB)
+{
 
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
