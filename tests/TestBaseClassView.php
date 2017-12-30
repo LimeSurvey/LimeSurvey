@@ -62,11 +62,7 @@ class TestBaseClassView extends TestBaseClassWeb
         $filename = self::$screenshotsFolder. '/'.$name.'.png';
         $element = null;
         try {
-            $element = self::$webDriver->wait(2)->until(
-                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
-                    WebDriverBy::id('action::' . $name)
-                )
-            );
+            $element = self::find(WebDriverBy::id('action::' . $name));
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();

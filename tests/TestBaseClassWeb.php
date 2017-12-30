@@ -233,4 +233,51 @@ class TestBaseClassWeb extends TestBaseClass
             ->createCommand('DELETE FROM {{failed_login_attempts}}')
             ->execute();
     }
+
+    /**
+     * @param WebDriverBy $selector
+     * @param int $waitSecondsUntil
+     * @return mixed
+     * @throws \Exception
+     */
+    protected static function findAndClick($selector,$waitSecondsUntil = 2){
+        try {
+            $clickable = self::$webDriver->wait($waitSecondsUntil)->until(
+                WebDriverExpectedCondition::elementToBeClickable($selector)
+            );
+            $clickable->click();
+            sleep(1);
+
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder .'/'.time().microtime().'_AfterGoodClick.png';
+            file_put_contents($filename, $screenshot);
+            return $clickable;
+        } catch (\Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder .'/'.time().microtime().'_FailedClic.png';
+            file_put_contents($filename, $screenshot);
+        }
+
+    }
+
+    /**
+     * @param WebDriverBy $selector
+     * @param int $waitSecondsUntil
+     * @return mixed
+     * @throws \Exception
+     */
+    protected static function find($selector,$waitSecondsUntil = 1){
+        try {
+            $element = self::$webDriver->wait($waitSecondsUntil)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated($selector)
+            );
+            return $element;
+        } catch (\Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder .'/'.time().microtime().'_FailedFindElement.png';
+            file_put_contents($filename, $screenshot);
+            throw $ex;
+        }
+
+    }
 }
