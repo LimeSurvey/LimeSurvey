@@ -91,9 +91,12 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             // Click save.
             self::findAndClick(WebDriverBy::id('save-form-button'));
+
             // find & assert the survey summary page tag
             self::findViewTag('surveySummary');
-            $sid = \Yii::app()->request->getQuery('surveyid');
+
+            $idTag = self::find(WebDriverBy::id('survey_id'),5);
+            $sid = intval($idTag->getAttribute('survey_id'));
             $survey = \Survey::model()->findByPk($sid);
             if($survey){
                 self::$survey = $survey;
@@ -134,18 +137,10 @@ class CreateSurveyTest extends TestBaseClassWeb
     }
 
     /**
-     * @throws NoSuchElementException
-     * @throws TimeOutException
-     * @throws \CException
      * @throws \Exception
      */
-    public function testTheRest(){
-        return;
-        // Remove notification.
-        //self::findAndClick(WebDriverBy::cssSelector('button.close.limebutton'));
-
-        // In case quick actions are hidden, show them.
-        //self::findAndClick(WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down'));
+    public function testAddGroup(){
+        self::openSurveySummary();
 
         // Click "Add group".
         self::findAndClick(WebDriverBy::cssSelector('#panel-1 .panel-body-link a'), 10);
@@ -157,6 +152,20 @@ class CreateSurveyTest extends TestBaseClassWeb
 
         // Click save.
         self::findAndClick(WebDriverBy::id('save-button'));
+
+
+    }
+
+    /**
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     * @throws \CException
+     * @throws \Exception
+     */
+    public function testTheRest(){
+
+        return;
+
 
         // Click "Overview".
         // TODO: No save-and-close for survey group yet.

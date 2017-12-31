@@ -13,8 +13,10 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
 use User;
@@ -254,14 +256,15 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @param WebDriverBy $selector
      * @param int $waitSecondsUntil
-     * @return mixed
+     * @return WebDriverElement
      * @throws \Exception
      */
     protected static function find($selector,$waitSecondsUntil = 1){
         try {
-            $element = self::$webDriver->wait($waitSecondsUntil)->until(
+            self::$webDriver->wait($waitSecondsUntil)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated($selector)
             );
+            $element = self::$webDriver->findElement($selector);
             return $element;
         } catch (\Exception $ex) {
             self::takeScreenShot('FailedFindElement');
