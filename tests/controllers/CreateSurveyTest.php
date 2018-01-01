@@ -219,6 +219,30 @@ class CreateSurveyTest extends TestBaseClassWeb
         $this->assertNotEmpty($element);
     }
 
+    public function testSurveysCount(){
+
+        // TODO is this OK?
+        $dbo = \Yii::app()->getDb();
+        $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
+        $sids = $dbo->createCommand($query)->queryAll();
+        $this->assertCount(1, $sids);
+    }
+
+    public function testInsertedSurveyGroupsCount(){
+        $this->assertCount(1, self::$survey->groups, 'We have exactly one Group');
+    }
+
+    public function testInsertedSurveyQuestionsCount(){
+        $this->assertCount(1, self::$survey->groups[0]->questions, 'We have exactly one question');
+    }
+
+    public function testAddedQuestionCode(){
+        $group = self::$survey->groups[0];
+        $question = $group->questions[0];
+        self::assertEquals('Q1',$question->title);
+    }
+
+
     /**
      * @throws NoSuchElementException
      * @throws TimeOutException
@@ -229,15 +253,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
         return;
 
-        // New tab with active survey.
-        $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-        $nextButton->click();
-
         // Get questions.
         $dbo = \Yii::app()->getDb();
-        $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
-        $sids = $dbo->createCommand($query)->queryAll();
-        $this->assertCount(1, $sids);
+
         $sid = $sids[0]['sid'];
         $survey = \Survey::model()->findByPk($sid);
         $this->assertNotEmpty($survey);
