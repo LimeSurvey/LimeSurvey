@@ -180,7 +180,16 @@ class AdminViewsTest extends TestBaseClassView
             );
             $clickable = self::$webDriver->findElement(WebDriverBy::id($view['clickId']));
             $clickable->click();
-            return $this->findViewTag($name,$view);
+            $element = $this->findViewTag($name);
+            $this->assertNotEmpty(
+                $element,
+                sprintf(
+                    'FAILED viewing %s on route %s, full url %s',
+                    $name,
+                    (isset($view['route']) ? $view['route'] : ''),
+                    $this->url
+                )
+            );
 
         }catch (\Exception $e){
             $screenshot = self::$webDriver->takeScreenshot();

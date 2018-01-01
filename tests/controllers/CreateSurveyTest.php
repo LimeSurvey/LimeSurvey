@@ -93,7 +93,8 @@ class CreateSurveyTest extends TestBaseClassWeb
             self::findAndClick(WebDriverBy::id('save-form-button'));
 
             // find & assert the survey summary page tag
-            self::findViewTag('surveySummary');
+            $element = $this->findViewTag('surveySummary');
+            $this->assertNotEmpty($element);
 
             $idTag = self::find(WebDriverBy::id('survey_id'),5);
             $sid = intval($idTag->getAttribute('survey_id'));

@@ -285,30 +285,13 @@ class TestBaseClassWeb extends TestBaseClass
 
     /**
      * @param string $name
-     * @param array $view
+     * @return WebDriverElement
      * @throws \Exception
      */
-    protected function findViewTag($name, $view=[])
+    protected function findViewTag($name)
     {
-        $element = null;
-        try {
-            $element = self::find(WebDriverBy::id('action::' . $name));
-        } catch (\Exception $e) {
-            //throw new Exception($e->getMessage());
-            $shotName = self::takeScreenShot($name);
-        }
-        //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
-        //var_dump($body->getText());
-        $this->assertNotEmpty(
-            $element,
-            'Possible screenshot at ' . $shotName . PHP_EOL .
-            sprintf(
-                'FAILED viewing %s on route %s, full url %s',
-                $name,
-                (isset($view['route'])?$view['route']:''),
-                $this->url
-            )
-        );
+        $element = self::find(WebDriverBy::id('action::' . $name));
+        return $element;
     }
 
     public static function takeScreenShot($name){
