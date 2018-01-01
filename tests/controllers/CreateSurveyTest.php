@@ -152,16 +152,10 @@ class CreateSurveyTest extends TestBaseClassWeb
 
         // Click save.
         self::findAndClick(WebDriverBy::id('save-button'));
+
+        // find tag and assert
         $element = $this->findViewTag('editGroup');
         $this->assertNotEmpty($element);
-
-        $sid = intval($element->getAttribute('model_id'));
-        $survey = \Survey::model()->findByPk($sid);
-        if($survey){
-            self::$survey = $survey;
-        }
-
-
     }
 
     /**
@@ -173,7 +167,6 @@ class CreateSurveyTest extends TestBaseClassWeb
     public function testTheRest(){
 
         return;
-
 
         // Click "Overview".
         // TODO: No save-and-close for survey group yet.
