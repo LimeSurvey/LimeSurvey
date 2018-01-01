@@ -205,15 +205,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      */
     public function testExecuteSurvey(){
 
-        self::openSurveySummary();
-
-        self::findAndClick(WebDriverBy::linkText('Execute survey'));
-        // Switch to new tab.
-        $windowHandles = self::$webDriver->getWindowHandles();
-        self::$webDriver->switchTo()->window(
-            end($windowHandles)
-        );
-
+        self::openInterview();
         // we can see the next button
         $element = self::find(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($element);
@@ -242,6 +234,29 @@ class CreateSurveyTest extends TestBaseClassWeb
         self::assertEquals('Q1',$question->title);
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function testInsertRecord(){
+        self::openInterview();
+        $survey = self::$survey;
+        $group = self::$survey->groups[0];
+        $question = $group->questions[0];
+
+        // Enter answer text.
+        $sgqa = $survey->sid . 'X' . $group->gid . 'X' . $question->qid;
+        $element= self::find(WebDriverBy::id('answer' . $sgqa));
+        $element->sendKeys('foo bar');
+
+        // Check so that we see end page.
+        $completed = self::find(WebDriverBy::cssSelector('div.completed-text'));
+        $this->assertEquals(
+            $completed->getText(),
+            "Thank you!\nYour survey responses have been recorded.",
+            'I can see completed text'
+        );
+    }
+
 
     /**
      * @throws NoSuchElementException
@@ -253,25 +268,6 @@ class CreateSurveyTest extends TestBaseClassWeb
 
         return;
 
-        // Get questions.
-        $dbo = \Yii::app()->getDb();
-
-        $sid = $sids[0]['sid'];
-        $survey = \Survey::model()->findByPk($sid);
-        $this->assertNotEmpty($survey);
-        $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
-        $questionObjects = $survey->groups[0]->questions;
-        $questions = [];
-        foreach ($questionObjects as $q) {
-            $questions[$q->title] = $q;
-        }
-        $this->assertCount(1, $questions, 'We have exactly one question');
-        $this->assertTrue(isset($questions['question1']), json_encode(array_keys($questions)));
-
-        // Enter answer text.
-        $sgqa = $sid . 'X' . $survey->groups[0]->gid . 'X' . $questions['question1']->qid;
-        $question = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
-        $question->sendKeys('foo bar');
 
         sleep(1);
 
@@ -334,6 +330,21 @@ class CreateSurveyTest extends TestBaseClassWeb
     private function openSurveySummary(){
         $url = self::getUrl(['route'=>'survey/sa/view&surveyid='.self::$survey->primaryKey]);
         self::$webDriver->get($url);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function openInterview(){
+        self::openSurveySummary();
+
+        self::findAndClick(WebDriverBy::linkText('Execute survey'));
+        // Switch to new tab.
+        $windowHandles = self::$webDriver->getWindowHandles();
+        self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
+
     }
 
 
