@@ -214,7 +214,9 @@ class CreateSurveyTest extends TestBaseClassWeb
             end($windowHandles)
         );
 
-
+        // we can see the next button
+        $element = self::find(WebDriverBy::id('ls-button-submit'));
+        $this->assertNotEmpty($element);
     }
 
     /**
@@ -226,15 +228,6 @@ class CreateSurveyTest extends TestBaseClassWeb
     public function testTheRest(){
 
         return;
-
-        // Click "Overview".
-        // TODO: No save-and-close for survey group yet.
-        //self::findAndClick(WebDriverBy::id('sidemenu_1_1'));
-
-
-        sleep(1);
-
-
 
         // New tab with active survey.
         $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
