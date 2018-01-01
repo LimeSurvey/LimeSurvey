@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var AdminController $this
+ * @var Question $oQuestion
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('questionSummary',$oQuestion->qid);
+?>
+
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></div>
     <div class="row">

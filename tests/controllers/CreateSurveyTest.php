@@ -145,7 +145,6 @@ class CreateSurveyTest extends TestBaseClassWeb
         // Click "Add group".
         self::findAndClick(WebDriverBy::cssSelector('#panel-1 .panel-body-link a'), 10);
 
-
         // Fill in group title.
         $groupname = self::findAndClick(WebDriverBy::id('group_name_en'));
         $groupname->clear()->sendKeys('group1');
@@ -156,6 +155,29 @@ class CreateSurveyTest extends TestBaseClassWeb
         // find tag and assert
         $element = $this->findViewTag('editGroup');
         $this->assertNotEmpty($element);
+
+        self::findAndClick(WebDriverBy::id('save-and-close-button'));
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testAddQuestion(){
+
+        // Click "Add question".
+        self::findAndClick(WebDriverBy::id('panel-1'));
+
+        // Add question title.
+        $questionCode = self::find(WebDriverBy::id('title'));
+        $questionCode->sendKeys('Q1');
+
+        // Click save.
+        self::findAndClick(WebDriverBy::id('save-button'));
+
+        // find tag and assert
+        $element = $this->findViewTag('questionSummary');
+        $this->assertNotEmpty($element);
+
     }
 
     /**
@@ -176,15 +198,8 @@ class CreateSurveyTest extends TestBaseClassWeb
         // In case quick actions are hidden, show them.
         self::findAndClick(WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down'));
 
-        // Click "Add question".
-        self::findAndClick(WebDriverBy::cssSelector('#panel-2 .panel-body-link a'),5);
-        return;
 
-        // Add question title.
-        self::findAndClick(WebDriverBy::id('title'));
 
-        // Click save.
-        self::findAndClick(WebDriverBy::id('save-button'));
 
         // Click "Overview".
         self::findAndClick(WebDriverBy::id('sidemenu_1_1'));
