@@ -257,6 +257,32 @@ class CreateSurveyTest extends TestBaseClassWeb
         );
     }
 
+    /**
+     * @throws \CException
+     */
+    public function testRecordedResponsesCount(){
+        $responses = self::getRecordedResponses();
+
+        $this->assertCount(1, $this->count($responses), 'Exactly one response');
+    }
+
+    /**
+     * @throws \CException
+     */
+    public function testRecorderResponsevalue(){
+        $responses = self::getRecordedResponses();
+        $response = $responses[0];
+
+        $survey = self::$survey;
+        $group = self::$survey->groups[0];
+        $question = $group->questions[0];
+
+        // Enter answer text.
+        $sgqa = $survey->sid . 'X' . $group->gid . 'X' . $question->qid;
+        $this->assertEquals('foo bar', $response[$sgqa], '"foo bar" response');
+
+    }
+
 
     /**
      * @throws NoSuchElementException
@@ -269,28 +295,7 @@ class CreateSurveyTest extends TestBaseClassWeb
         return;
 
 
-        sleep(1);
-
-        // Click submit.
-        $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-        $submitButton->click();
-
-        // Check so that we see end page.
-        $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
-        $this->assertEquals(
-            $completed->getText(),
-            "Thank you!\nYour survey responses have been recorded.",
-            'I can see completed text'
-        );
-
         // Check so that response is recorded in database.
-        $query = sprintf(
-            'SELECT * FROM {{survey_%d}}',
-            $sid
-        );
-        $result = $dbo->createCommand($query)->queryAll();
-        $this->assertCount(1, $result, 'Exactly one response');
-        $this->assertEquals('foo bar', $result[0][$sgqa], '"foo bar" response');
 
         // Switch to first window.
         $windowHandles = self::$webDriver->getWindowHandles();
@@ -344,6 +349,20 @@ class CreateSurveyTest extends TestBaseClassWeb
         self::$webDriver->switchTo()->window(
             end($windowHandles)
         );
+
+    }
+
+    /**
+     * @return array
+     * @throws \CException
+     */
+    private function getRecordedResponses(){
+        $dbo = \Yii::app()->getDb();
+        $query = sprintf(
+            'SELECT * FROM {{survey_%d}}',
+            self::$survey->sid
+        );
+        return $dbo->createCommand($query)->queryAll();
 
     }
 
