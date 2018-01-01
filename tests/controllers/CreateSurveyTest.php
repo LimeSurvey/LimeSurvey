@@ -181,6 +181,43 @@ class CreateSurveyTest extends TestBaseClassWeb
     }
 
     /**
+     * @throws \Exception
+     */
+    public function testActivateSurvey(){
+
+        self::openSurveySummary();
+
+        // Click "Activate survey".
+        self::findAndClick(WebDriverBy::id('ls-activate-survey'),5);
+
+        // Confirm.
+        self::findAndClick(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
+
+        // find tag and assert
+        self::openSurveySummary();
+        $element = self::findAndClick(WebDriverBy::linkText('Stop this survey'));
+        $this->assertNotEmpty($element);
+
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testExecuteSurvey(){
+
+        self::openSurveySummary();
+
+        self::findAndClick(WebDriverBy::linkText('Execute survey'));
+        // Switch to new tab.
+        $windowHandles = self::$webDriver->getWindowHandles();
+        self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
+
+
+    }
+
+    /**
      * @throws NoSuchElementException
      * @throws TimeOutException
      * @throws \CException
@@ -195,44 +232,9 @@ class CreateSurveyTest extends TestBaseClassWeb
         //self::findAndClick(WebDriverBy::id('sidemenu_1_1'));
 
 
-        // In case quick actions are hidden, show them.
-        self::findAndClick(WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down'));
-
-
-
-
-        // Click "Overview".
-        self::findAndClick(WebDriverBy::id('sidemenu_1_1'));
-
-        // Click "Activate survey".
-        self::findAndClick(WebDriverBy::id('ls-activate-survey'));
-
-        // Confirm.
-        self::findAndClick(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
-
-        // Click "Overview".
-        $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
-        $overview->click();
-
         sleep(1);
 
-        // Click "Execute survey".
-        $execute = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::linkText('Execute survey')
-            )
-        );
-        $execute->click();
 
-        sleep(1);
-
-        // Switch to new tab.
-        $windowHandles = self::$webDriver->getWindowHandles();
-        self::$webDriver->switchTo()->window(
-            end($windowHandles)
-        );
-
-        sleep(1);
 
         // New tab with active survey.
         $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
