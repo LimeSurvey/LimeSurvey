@@ -96,8 +96,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $element = $this->findViewTag('surveySummary');
             $this->assertNotEmpty($element);
 
-            $idTag = self::find(WebDriverBy::id('survey_id'),5);
-            $sid = intval($idTag->getAttribute('survey_id'));
+            $sid = intval($element->getAttribute('model_id'));
             $survey = \Survey::model()->findByPk($sid);
             if($survey){
                 self::$survey = $survey;
@@ -153,6 +152,14 @@ class CreateSurveyTest extends TestBaseClassWeb
 
         // Click save.
         self::findAndClick(WebDriverBy::id('save-button'));
+        $element = $this->findViewTag('editGroup');
+        $this->assertNotEmpty($element);
+
+        $sid = intval($element->getAttribute('model_id'));
+        $survey = \Survey::model()->findByPk($sid);
+        if($survey){
+            self::$survey = $survey;
+        }
 
 
     }

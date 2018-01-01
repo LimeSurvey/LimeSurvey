@@ -1,6 +1,15 @@
 <?php
-    echo PrepareEditorScript(false, $this);
-    $count = 0;
+/**
+ * Survey default view
+ * @var AdminController $this
+ * @var QuestionGroup $oQuestionGroup
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('editGroup',$oQuestionGroup->gid);
+
+echo PrepareEditorScript(false, $this);
+$count = 0;
 ?>
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">

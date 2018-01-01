@@ -7,8 +7,7 @@
  $count= 0;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('surveySummary');
-echo '<x-test id="survey_id" survey_id="'.$oSurvey->primaryKey.'"></x-test>';
+echo viewHelper::getViewTestTag('surveySummary',$oSurvey->primaryKey);
 
 //TODO : move to controller
 $templates = Template::getTemplateListWithPreviews();

@@ -302,10 +302,15 @@ class viewHelper
         /**
          * Get a tag to help automated tests identify pages
          * @param string $name unique view name
+         * @param string $model_id
          * @return string
          */
-        public static function getViewTestTag($name)
+        public static function getViewTestTag($name,$model_id = null)
         {
-            return sprintf('<x-test id="action::%s"></x-test>', $name);
+            $modelTag = null;
+            if($model_id){
+                $modelTag = sprintf('model_id="%s"', $model_id);
+            }
+            return sprintf('<x-test id="action::%s" %s></x-test>', $name, $modelTag);
         }
 }
