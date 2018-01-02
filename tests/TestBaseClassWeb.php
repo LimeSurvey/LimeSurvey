@@ -272,15 +272,17 @@ class TestBaseClassWeb extends TestBaseClass
         }
 
     }
+
     /**
      * @param $name
      * @param $view
+     * @return WebDriverElement
      * @throws \Exception
      */
     protected function openAndFindViewTag($name, $view){
         $this->url = $this->getUrl($view);
         $this->openView($this->url);
-        return $this->findViewTag($name,$view);
+        return $this->findViewTag($name);
     }
 
     /**

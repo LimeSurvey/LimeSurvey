@@ -65,7 +65,8 @@ class AdminViewsTest extends TestBaseClassView
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
+     * @throws \Exception
      * @dataProvider addBaseViews
      */
     public function testAdminViews($name, $view)
@@ -75,13 +76,16 @@ class AdminViewsTest extends TestBaseClassView
             $this->assertTrue(true);
             return;
         }
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
+
     }
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addSurveyViews
+     * @throws \Exception
      */
     public function testAdminSurveyViews($name, $view)
     {
@@ -103,23 +107,27 @@ class AdminViewsTest extends TestBaseClassView
 
         }
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
     }
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addSettingsViews
+     * @throws \Exception
      */
     public function testSettingsViews($name, $view)
     {
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
     }
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addUsersViews
+     * @throws \Exception
      */
     public function testUserViews($name,$view){
         // use Admin user
@@ -131,26 +139,31 @@ class AdminViewsTest extends TestBaseClassView
             $uid = 2;
         }
         $view['route'] = ReplaceFields($view['route'],['{UID}'=>$uid]);
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
     }
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addGeneralSettingsViews
+     * @throws \Exception
      */
     public function testGeneralSettingsViews($name, $view)
     {
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
     }
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addParticipantsViews
+     * @throws \Exception
      */
     public function testParticipantsViews($name,$view){
-        $this->openAndFindViewTag($name, $view);
+        $element = $this->openAndFindViewTag($name, $view);
+        $this->assertNotEmpty($element);
     }
 
 
