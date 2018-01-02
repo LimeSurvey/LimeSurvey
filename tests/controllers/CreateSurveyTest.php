@@ -278,7 +278,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @throws \CException
      */
     public function testRecorderResponsevalue(){
-        return;
+
         $responses = self::getRecordedResponses();
         $response = $responses[0];
 
