@@ -186,8 +186,8 @@ class AdminViewsTest extends TestBaseClassView
         $this->openView($url);
 
         try{
-            self::findAndClick(WebDriverBy::id($view['clickId']),10);
-            $element = $this->findViewTag($name);
+            $clickable = self::findAndClick(WebDriverBy::id($view['clickId']),10);
+            $element = $this->findViewTag($name,10);
             $this->assertNotEmpty(
                 $element,
                 sprintf(

@@ -287,12 +287,13 @@ class TestBaseClassWeb extends TestBaseClass
 
     /**
      * @param string $name
+     * @param integer $waitSecondsUntil
      * @return WebDriverElement
      * @throws \Exception
      */
-    protected function findViewTag($name)
+    protected function findViewTag($name,$waitSecondsUntil = 1)
     {
-        $element = self::find(WebDriverBy::id('action::' . $name));
+        $element = self::find(WebDriverBy::id('action::' . $name),$waitSecondsUntil);
         return $element;
     }
 
