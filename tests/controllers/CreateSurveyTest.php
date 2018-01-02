@@ -213,12 +213,19 @@ class CreateSurveyTest extends TestBaseClassWeb
         $this->assertNotEmpty($element);
     }
 
+    /**
+     * @throws \CException
+     */
     public function testSurveysCount(){
 
-        // TODO is this OK?
         $dbo = \Yii::app()->getDb();
-        $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
-        $sids = $dbo->createCommand($query)->queryAll();
+        $sids = $dbo->createCommand()
+            ->select('sid')
+            ->from(\Survey::model()->tableName())
+            ->order('datecreated DESC ')
+            // TODO is this OK?
+            ->limit(1)
+            ->queryAll();
         $this->assertCount(1, $sids);
     }
 
@@ -292,6 +299,21 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function testDeleteSurvey(){
+        self::openSurveySummary();
+
+        // delete survey
+        self::findAndClick(WebDriverBy::id('ls-tools-button'),10);
+        self::findAndClick(WebDriverBy::cssSelector('#ls-tools-button + ul li:first-child'),10);
+        self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),10);
+
+        // validate
+
+    }
+
 
     /**
      * @throws NoSuchElementException
@@ -304,39 +326,9 @@ class CreateSurveyTest extends TestBaseClassWeb
         return;
 
 
-        // Check so that response is recorded in database.
-
-        // Switch to first window.
-        $windowHandles = self::$webDriver->getWindowHandles();
-        self::$webDriver->switchTo()->window(
-            reset($windowHandles)
-        );
-
-        // Delete survey.
-        $execute = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id('ls-tools-button')
-            )
-        );
-        $execute->click();
-        $execute = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#ls-tools-button + ul li:first-child')
-            )
-        );
-        $execute->click();
-        $execute = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('input[type="submit"]')
-            )
-        );
-        $execute->click();
-
-        sleep(1);
-
         // Make sure the survey can't be found.
         $query = 'SELECT sid FROM {{surveys}} WHERE sid = ' . $sid;
-        $sids = $dbo->createCommand($query)->queryAll();
+        $sids = $dbo->createCommand()->queryAll();
         $this->assertCount(0, $sids);
 
     }
@@ -367,12 +359,11 @@ class CreateSurveyTest extends TestBaseClassWeb
      */
     private function getRecordedResponses(){
         $dbo = \Yii::app()->getDb();
-        $query = sprintf(
-            'SELECT * FROM {{survey_%d}} WHERE submitdate IS NOT NULL',
-            self::$survey->sid
-        );
-        return $dbo->createCommand($query)->queryAll();
-
+        return $dbo->createCommand()
+            ->select('*')
+            ->from(self::$survey->getResponsesTableName())
+            ->where(new \CDbExpression('submitdate IS NOT NULL'))
+            ->queryAll();
     }
 
 
