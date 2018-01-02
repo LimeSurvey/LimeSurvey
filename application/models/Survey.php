@@ -1748,10 +1748,7 @@ return $s->hasTokensTable; });
      */
     public function getGroupsCount()
     {
-        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language);
-        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-        return $sumresult3;
+        return QuestionGroup::model()->countByAttributes(['sid'=>$this->sid]);
     }
 
     /**

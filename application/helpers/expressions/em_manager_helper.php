@@ -8565,7 +8565,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $where = "1";
             }
             if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."' and q.language='".$lang."'";
+                $lang = " and a.language='".$lang."'" ;
             }
 
             $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
@@ -8606,7 +8606,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             {
                 $lang=Survey::model()->findByPk($surveyid)->language;
             }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
+            $oQuestionGroups=QuestionGroup::model()->language($lang)->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
             $qinfo = array();
             $_order=0;
             $gid = array();
@@ -8615,8 +8615,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->group_name,
-                    'description' =>  $oQuestionGroup->description,
+                    'group_name' => $oQuestionGroup->questionGroupLanguageSettings[0]->group_name,
+                    'description' =>  $oQuestionGroup->questionGroupLanguageSettings[0]->description,
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
@@ -8724,7 +8724,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
-                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
+                                        $value = "INVALID"; // This don't disable submitting survey Ãƒâ€šÃ‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8732,7 +8732,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
+                                            $value = "";// This don't disable submitting survey Ãƒâ€šÃ‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -10274,18 +10274,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             if ($lang == 'ar')
             {
-                $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
+                $eastern_arabic_symbols = array("Ãƒâ„¢Ã‚Â ","Ãƒâ„¢Ã‚Â¡","Ãƒâ„¢Ã‚Â¢","Ãƒâ„¢Ã‚Â£","Ãƒâ„¢Ã‚Â¤","Ãƒâ„¢Ã‚Â¥","Ãƒâ„¢Ã‚Â¦","Ãƒâ„¢Ã‚Â§","Ãƒâ„¢Ã‚Â¨","Ãƒâ„¢Ã‚Â©");
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
             }
             else if ($lang == 'fa')
             {
                 // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-                $extended_arabic_indic = array("۰","۱","۲","۳","۴","۵","۶","۷","۸","۹");
+                $extended_arabic_indic = array("Ãƒâ€ºÃ‚Â°","Ãƒâ€ºÃ‚Â±","Ãƒâ€ºÃ‚Â²","Ãƒâ€ºÃ‚Â³","Ãƒâ€ºÃ‚Â´","Ãƒâ€ºÃ‚Âµ","Ãƒâ€ºÃ‚Â¶","Ãƒâ€ºÃ‚Â·","Ãƒâ€ºÃ‚Â¸","Ãƒâ€ºÃ‚Â¹");
                 $result = str_replace($extended_arabic_indic, $standard, $str);
             }
             else if ($lang == 'hi')
             {
-                $hindi_symbols = array("०","१","२","३","४","५","६","७","८","९");
+                $hindi_symbols = array("ÃƒÂ Ã‚Â¥Ã‚Â¦","ÃƒÂ Ã‚Â¥Ã‚Â§","ÃƒÂ Ã‚Â¥Ã‚Â¨","ÃƒÂ Ã‚Â¥Ã‚Â©","ÃƒÂ Ã‚Â¥Ã‚Âª","ÃƒÂ Ã‚Â¥Ã‚Â«","ÃƒÂ Ã‚Â¥Ã‚Â¬","ÃƒÂ Ã‚Â¥Ã‚Â­","ÃƒÂ Ã‚Â¥Ã‚Â®","ÃƒÂ Ã‚Â¥Ã‚Â¯");
                 $result = str_replace($hindi_symbols, $standard, $str);
             }
 

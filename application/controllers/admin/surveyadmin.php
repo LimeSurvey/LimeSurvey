@@ -422,11 +422,11 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['showLastQuestion'] = true;
             $iQid = $lastquestion;
             $iGid = $lastquestiongroup;
-            $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID, 'language' => $baselang));
+            $qrrow = Question::model()->with(array('questionLanguageSettings'=>array('condition'=>"language='".$baselang."'")))->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if ($qrrow['question']) {
-                            $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            if (!empty($qrrow->questionLanguageSettings[0]['question'])) {
+                $aData['last_question_name'] .= ' : '.$qrrow['question'];
             }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
@@ -2061,14 +2061,14 @@ class SurveyAdmin extends Survey_Common_Action
     {
         // Now create a new dummy group
         $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        $aInsertData = array();
-        $aInsertData[$sLanguage] = array(
+        $aInsertData = array(
             'sid' => $iSurveyID,
+            'group_order' => 1,
+            'grelevance' => '1');
+        $aInsertData[$sLanguage] = array(
             'group_name' => gt('My first question group', 'html', $sLanguage),
             'description' => '',
-            'group_order' => 1,
-            'language' => $sLanguage,
-            'grelevance' => '1');
+            'language' => $sLanguage);
         return QuestionGroup::model()->insertNewGroup($aInsertData);
     }
 

@@ -59,8 +59,8 @@
                         <?php //If the questiongroup view is active right now, don't link it?>
                         <?php if(!isset($active) && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
-                                <?php echo flattenText($oQuestionGroup->group_name);?>
-                            </li>
+                                <?php echo flattenText($oQuestionGroup->questionGroupLanguageSettings[0]->group_name);?>
+                            </li>                                                                     
                         <?php else: ?>
                             <li>
                                 <div>

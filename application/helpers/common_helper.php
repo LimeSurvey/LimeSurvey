@@ -269,7 +269,7 @@ function getGidPrevious($surveyid, $gid)
 {
     $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -297,7 +297,7 @@ function getGidNext($surveyid, $gid)
     $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
-    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
     $iNext = 0;
@@ -420,7 +420,7 @@ function getMaxGroupOrder($surveyid)
 function getGroupOrder($surveyid, $gid)
 {
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid)); //Checked
     $grporder_row = $grporder_result->attributes;
     $group_order = $grporder_row['group_order'];
     if ($group_order == "") {
@@ -440,8 +440,7 @@ function getGroupOrder($surveyid, $gid)
 function getMaxQuestionOrder($gid, $surveyid)
 {
     $gid = (int) $gid;
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='{$gid}' AND language='{$s_lang}'";
+    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid={$gid}";
     $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
     $maxrow = $max_result->read();
     $current_max = $maxrow['max'];
@@ -695,13 +694,11 @@ function getGroupList($gid, $surveyid)
     $surveyid = sanitize_int($surveyid);
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
-    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
-    foreach ($gidresult->readAll() as $gv) {
+    $oGroups=QuestionGroup::model()->language($s_lang)->findAllByAttributes(['sid'=>$surveyid]);
+    foreach ($oGroups as $oGroup) {
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
+        if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
+        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupLanguageSettings[0]->group_name)."</option>\n";
     }
     if ($groupselecter) {
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
@@ -724,7 +721,7 @@ function getGroupList3($gid, $surveyid)
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $gidresult = QuestionGroup::model()->language($s_lang)->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     foreach ($gidresult as $gv) {
         $gv = $gv->attributes;
@@ -749,9 +746,9 @@ function getGroupListLang($gid, $language, $surveyid)
     $groupselecter = "";
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
 
-    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
+    $gidresult = QuestionGroup::model()->language($language)->findAll(array('condition'=>'sid=:surveyid',
     'order'=>'group_order',
-    'params'=>array(':surveyid'=>$surveyid, ':language'=>$language))); //Checked)
+    'params'=>array(':surveyid'=>$surveyid))); //Checked)
     foreach ($gidresult as $gv) {
         $gv = $gv->attributes;
         $groupselecter .= "<option";
@@ -1559,7 +1556,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
@@ -1580,7 +1576,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
@@ -1601,9 +1596,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     ." FROM {{questions}} as questions, {{groups}} as groups"
     ." WHERE questions.gid=groups.gid AND "
     ." questions.sid=$surveyid AND "
-    ." questions.language='{$sLanguage}' AND "
-    ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    ." questions.parent_qid=0";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
@@ -3810,7 +3803,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
     }
 
     $quests = array();
-    $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
+    $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' ORDER BY question_order";
     $result = Yii::app()->db->createCommand($query)->query()->readAll();
     if (count($result) > 0) {
         foreach ($result as $question) {
@@ -4030,15 +4023,17 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
     if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid = "AND tq2.gid=$targgid"; }
 
     $baselang = Survey::model()->findByPk($sid)->language;
-    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
-    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
+    $condquery = "SELECT tg.gid as depgid, ls.group_name as depgpname, "
+    . "tg2.gid as targgid, ls2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
     . "{{conditions}} AS tc, "
     . "{{questions}} AS tq, "
     . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg ,"
-    . "{{groups}} AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+    . "{{groups}} AS tg, "
+    . "{{groups}} AS tg2, "
+    . "{{group_languagesettings}} as ls,{{group_languagesettings}} as ls2 "
+    . "WHERE ls.language='{$baselang}' AND ls2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+    . "AND ls.gid=tg.gid AND ls2.gid=tg2.gid "
     . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
     $condresult = Yii::app()->db->createCommand($condquery)->query()->readAll();
 
@@ -4122,7 +4117,7 @@ function getQuestDepsForConditions($sid, $gid = "all", $depqid = "all", $targqid
 
     $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid
     FROM {{conditions}} AS tc, {{questions}} AS tq, {{questions}} AS tq2
-    WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid='$sid'
+    WHERE tc.qid = tq.qid AND tq.sid='$sid'
     AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
     $condresult = Yii::app()->db->createCommand($condquery)->query()->readAll();
     if (count($condresult) > 0) {

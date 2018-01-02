@@ -57,11 +57,11 @@ class Index extends Survey_Common_Action
             $qid = $lastquestion;
             $gid = $lastquestiongroup;
             $sid = $lastquestionsid;
-            $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid, 'language' => $baselang));
+            $qrrow = Question::model()->language($baselang)->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid));
             if ($qrrow) {
                 $aData['last_question_name'] = $qrrow['title'];
-                if ($qrrow['question']) {
-                    $aData['last_question_name'] .= ' : '.$qrrow['question'];
+                if (!empty($qrrow->questionLanguageSettings[0]['question'])) {
+                    $aData['last_question_name'] .= ' : '.$qrrow->questionLanguageSettings[0]['question'];
                 }
                 $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
             } else {

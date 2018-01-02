@@ -610,15 +610,11 @@ class Survey_Common_Action extends CAction
             $oSurvey = $aData['oSurvey'];
             $baselang = $oSurvey->language;
 
-            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
+            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
 
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
-                )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
-            // $surveyinfo = $sumresult1->attributes;
-            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            // $surveyinfo = array_map('flattenText', $surveyinfo);
-            //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+                )->findByPk($surveyid); 
             $aData['activated'] = $activated = $sumresult1->active;
 
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -664,9 +660,9 @@ class Survey_Common_Action extends CAction
 
             // ACTIVATE SURVEY BUTTON
 
-            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $oSurvey->language);
+            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
 
-            $sumcount3 = Question::model()->countByAttributes($condition); //Checked
+            $sumcount3 = Question::model()->language($oSurvey->language)->countByAttributes($condition); //Checked
 
             $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
             $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
@@ -838,19 +834,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language), array('order'=>'group_order ASC'));
-            if (count($aGroups)) {
-                foreach ($aGroups as $group) {
-                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
-
-                    foreach ($group->aQuestions as $question) {
-                        if (is_object($question)) {
-                            $question->question = viewHelper::flatEllipsizeText($question->question, true, 60, '[...]', 0.5);
-                        }
-                    }
-                }
-            }
-
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID), array('order'=>'group_order ASC'));
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
@@ -974,11 +958,9 @@ class Survey_Common_Action extends CAction
         $baselang = $aSurveyInfo['language'];
         $activated = $aSurveyInfo['active'];
 
-        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
-
+        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-        $sumcount2 = QuestionGroup::model()->countByAttributes($condition); //Checked
+        $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;

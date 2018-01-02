@@ -33,7 +33,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310);
+    $aCriticalDBVersions = array(310, 339);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -548,7 +548,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 323) {
-            $oTransaction = $oDB->beginTransaction();
+            $oTransaction = $oDB->beginTransaction();    
             dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
             $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder', 'language'], false);
@@ -839,6 +839,44 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 339) {
+            $oTransaction = $oDB->beginTransaction();
+            // question language setttings
+            /*
+            $oDB->createCommand()->createTable('{{question_languagesettings}}', array(
+                'id' =>  "pk",
+                'qid' =>  "integer NOT NULL",
+                'question' =>  "text NOT NULL",
+                'help' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ));        
+
+            $oDB->createCommand()->createIndex('{{idx1_question_ls}}', '{{question_languagesettings}}', ['qid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{question_languagesettings}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
+            $oDB->createCommand("DELETE q1 FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->execute();
+
+            $oDB->createCommand()->createTable('{{group_languagesettings}}', array(
+                'id' =>  "pk",
+                'gid' =>  "integer NOT NULL",
+                'group_name' =>  "text NOT NULL",
+                'description' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ));        
+            $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_languagesettings}}', ['gid', 'language'], true);
+            */
+
+            alterColumn('{{questions}}', 'qid', "int", true);
+            dropPrimaryKey('questions');
+            addPrimaryKey('questions', 'qid');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'question');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'help');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'language');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+              
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -868,7 +906,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
-    // Inform  superadmin about update
+    // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
 
@@ -882,6 +920,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
+
 /**
  * @param CDbConnection $oDB
  *

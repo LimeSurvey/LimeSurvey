@@ -45,10 +45,10 @@ class questions extends Survey_Common_Action
         $aData['qct'] = count($qrr);
 
         //Count sub-questions for this question
-        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid));
         $aData['sqct'] = count($sqrq);
 
-        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
         if (is_null($qrrow)) {
             return;
         }
@@ -1942,9 +1942,8 @@ class questions extends Survey_Common_Action
         if (!$iQid) {
             $oQuestion = new Question('insert');
             $oQuestion->sid = $iSurveyId;
-            $oQuestion->language = $oSurvey->language;
         } else {
-            $oQuestion = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$oSurvey->language));
+            $oQuestion = Question::model()->find('qid=:qid', array(":qid"=>$iQid));
             if (!$oQuestion) {
                     throw new Exception('Invalid question id.');
             }

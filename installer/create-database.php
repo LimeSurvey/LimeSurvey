@@ -122,19 +122,25 @@ function createDatabase($oDB){
 
 
         $oDB->createCommand()->createTable('{{groups}}', array(
-            'gid' =>  "autoincrement",
+            'gid' =>  "pk",
             'sid' =>  "integer NOT NULL default '0'",
-            'group_name' =>  "string(100) NOT NULL default ''",
             'group_order' =>  "integer NOT NULL default '0'",
-            'description' =>  "text",
-            'language' =>  "string(20) default 'en'",
             'randomization_group' =>  "string(20) NOT NULL default ''",
-            'grelevance' =>  "text NULL",
-            'composite_pk' => array('gid', 'language')
+            'grelevance' =>  "text NULL"
         ));
         $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
-        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
-        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
+        
+        
+        $oDB->createCommand()->createTable('{{group_languagesettings}}', array(
+            'id' =>  "pk",
+            'gid' =>  "integer NOT NULL",
+            'group_name' =>  "text NOT NULL",
+            'description' =>  "text",
+            'language' =>  "string(20) NOT NULL"
+        ));        
+        $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_languagesettings}}', ['gid', 'language'], true);
+
+        
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
@@ -293,31 +299,38 @@ function createDatabase($oDB){
 
         // questions
         $oDB->createCommand()->createTable('{{questions}}', array(
-            'qid' =>  "autoincrement",
+            'qid' =>  "pk",
             'parent_qid' =>  "integer NOT NULL default '0'",
             'sid' =>  "integer NOT NULL default '0'",
             'gid' =>  "integer NOT NULL default '0'",
             'type' =>  "string(1) NOT NULL default 'T'",
             'title' =>  "string(20) NOT NULL default ''",
-            'question' =>  "text NOT NULL",
             'preg' =>  "text",
-            'help' =>  "text",
             'other' =>  "string(1) NOT NULL default 'N'",
             'mandatory' =>  "string(1) NULL",
             'question_order' =>  "integer NOT NULL",
-            'language' =>  "string(20) default 'en'",
             'scale_id' =>  "integer NOT NULL default '0'",
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
-            'modulename' =>  "string(255) NULL",
-            'composite_pk' => array('qid', 'language')
+            'modulename' =>  "string(255) NULL"
         ));
-
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
         $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
         $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
         $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
+
+        
+        // question language settings
+        $oDB->createCommand()->createTable('{{question_languagesettings}}', array(
+            'id' =>  "pk",
+            'qid' =>  "integer NOT NULL",
+            'question' =>  "text NOT NULL",
+            'help' =>  "text",
+            'language' =>  "string(20) NOT NULL"
+        ));        
+
+        $oDB->createCommand()->createIndex('{{idx1_question_ls}}', '{{question_languagesettings}}', ['qid', 'language'], true);
 
 
 

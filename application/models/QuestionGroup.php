@@ -53,7 +53,7 @@ class QuestionGroup extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('gid', 'language');
+        return array('gid');
     }
 
 
@@ -61,24 +61,7 @@ class QuestionGroup extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('gid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                'condition'=>'language=:language',
-                'params'=>array(':language'=>$this->language)
-                ),
-                'message'=>'{attribute} "{value}" is already in use.'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
-            array('group_name,description', 'LSYii_Validators'),
             array('group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-        );
-    }
-
-
-    /** @inheritdoc */
-    public function attributeLabels()
-    {
-        return array(
-            'language' => gt('Language'),
-            'group_name' => gt('Group name')
         );
     }
 
@@ -87,10 +70,17 @@ class QuestionGroup extends LSActiveRecord
     {
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'questions' => array(self::HAS_MANY, 'Question', 'gid, language', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC')
+            'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
+            'questionGroupLanguageSettings' => array(self::HAS_MANY, 'QuestionGroupLanguageSetting', 'gid', 'together' => true)
         );
     }
 
+    public function language($sLanguage)
+    {
+        $this->with(array('questionGroupLanguageSettings'=>array('condition'=>"language='".$sLanguage."'")));
+        return $this;
+    }                       
+    
 
     public function getAllRecords($condition = false, $order = false, $return_query = true)
     {

@@ -654,7 +654,7 @@ class database extends Survey_Common_Action
                 array_push($aSurveyLanguages, $sBaseLanguage);
                 foreach ($aSurveyLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
-                        // &eacute; to ÃƒÂ© and &amp; to & : really needed ? Why not for answers ? (130307)
+                        // &eacute; to ÃƒÆ’Ã‚Â© and &amp; to & : really needed ? Why not for answers ? (130307)
                         $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');
                         $sQuestionHelp = Yii::app()->request->getPost('help_'.$qlang, '');
                         // Fix bug with FCKEditor saving strange BR types : in rules ?
@@ -1214,9 +1214,7 @@ class database extends Survey_Common_Action
             $oQuestion->gid = $this->iQuestionGroupID;
             $oQuestion->type = Yii::app()->request->getPost('type');
             $oQuestion->title = Yii::app()->request->getPost('title');
-            $oQuestion->question = $sQuestionText;
             $oQuestion->preg = Yii::app()->request->getPost('preg');
-            $oQuestion->help = $sQuestionHelp;
             $oQuestion->other = Yii::app()->request->getPost('other');
 
             // For Bootstrap Version usin YiiWheels switch :
@@ -1225,13 +1223,27 @@ class database extends Survey_Common_Action
 
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');
             $oQuestion->question_order = (int) $iQuestionOrder;
-            $oQuestion->language = $sBaseLanguage;
             $oQuestion->save();
             if ($oQuestion) {
                 $this->iQuestionID = $oQuestion->qid;
             }
-
             $aErrors = $oQuestion->getErrors();
+            if (count($aErrors)) {
+                foreach ($aErrors as $sAttribute=>$aStringErrors) {
+                    foreach ($aStringErrors as $sStringErrors) {
+                                            Yii::app()->setFlashMessage(sprintf(gT("Question could not be created with error on %s: %s"), $sAttribute, $sStringErrors), 'error');
+                    }
+                }
+            }
+
+            $oQuestionLS = new QuestionLanguageSetting;
+            $oQuestionLS->language = $sBaseLanguage;
+            $oQuestionLS->question = $sQuestionText;
+            $oQuestionLS->help = $sQuestionHelp;
+            $oQuestionLS->qid = $oQuestion->qid;
+            $oQuestionLS->save();
+            
+            $aErrors = $oQuestionLS->getErrors();
             if (count($aErrors)) {
                 foreach ($aErrors as $sAttribute=>$aStringErrors) {
                     foreach ($aStringErrors as $sStringErrors) {
@@ -1244,25 +1256,13 @@ class database extends Survey_Common_Action
                 $addlangs = $survey->additionalLanguages;
                 foreach ($addlangs as $alang) {
                     if ($alang != "") {
-                        $oQuestion = new Question;
-                        $oQuestion->qid = $this->iQuestionID;
-                        $oQuestion->sid = $iSurveyID;
-                        $oQuestion->gid = $this->iQuestionGroupID;
-                        $oQuestion->type = Yii::app()->request->getPost('type');
-                        $oQuestion->title = Yii::app()->request->getPost('title');
-                        $oQuestion->question = Yii::app()->request->getPost('question_'.$alang);
-                        $oQuestion->preg = Yii::app()->request->getPost('preg');
-                        $oQuestion->help = Yii::app()->request->getPost('help_'.$alang);
-                        $oQuestion->other = Yii::app()->request->getPost('other');
-                        $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
-                        $oQuestion->relevance = Yii::app()->request->getPost('relevance');
-                        $oQuestion->question_order = $iQuestionOrder;
-                        $oQuestion->language = $alang;
-                        switchMSSQLIdentityInsert('questions', true); // Not sure for this one ?
-                        $oQuestion->save();
-                        switchMSSQLIdentityInsert('questions', false);
-
-                        $aErrors = $oQuestion->getErrors();
+                        $oQuestionLS = new QuestionLanguageSetting;
+                        $oQuestionLS->qid = $this->iQuestionID;
+                        $oQuestionLS->question = Yii::app()->request->getPost('question_'.$alang);
+                        $oQuestionLS->help = Yii::app()->request->getPost('help_'.$alang);
+                        $oQuestionLS->language = $alang;
+                        $oQuestionLS->save();
+                        $aErrors = $oQuestionLS->getErrors();
                         if (count($aErrors)) {
                             foreach ($aErrors as $sAttribute=>$aStringErrors) {
                                 foreach ($aStringErrors as $sStringErrors) {
@@ -1270,10 +1270,6 @@ class database extends Survey_Common_Action
                                 }
                             }
                         }
-                        #                            if (!$langqid)
-                        #                            {
-                        #                                Yii::app()->setFlashMessage(gT("Question in language %s could not be created."),'error');
-                        #                            }
                     }
                 }
             }
