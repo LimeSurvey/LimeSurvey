@@ -150,8 +150,7 @@ class InstallationControllerTest extends TestBaseClassWeb
             $config = require($configFile);
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
-
-
+            self::$testHelper->connectToOriginalDatabase();
             // Login & assert.
             self::adminLogin($username, $password);
 
