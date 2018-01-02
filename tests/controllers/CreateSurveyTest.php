@@ -303,6 +303,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @throws \Exception
      */
     public function testDeleteSurvey(){
+
         self::openSurveySummary();
 
         // delete survey
@@ -311,27 +312,18 @@ class CreateSurveyTest extends TestBaseClassWeb
         self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),10);
 
         // validate
-
-    }
-
-
-    /**
-     * @throws NoSuchElementException
-     * @throws TimeOutException
-     * @throws \CException
-     * @throws \Exception
-     */
-    public function testTheRest(){
-
-        return;
-
-
-        // Make sure the survey can't be found.
-        $query = 'SELECT sid FROM {{surveys}} WHERE sid = ' . $sid;
-        $sids = $dbo->createCommand()->queryAll();
+        $sids = \Yii::app()->getDb()->createCommand()
+            ->select('sid')
+            ->from(\Survey::model()->tableName())
+            ->where('sid=:sid', array(':sid'=>self::$survey->sid))
+            ->queryAll();
         $this->assertCount(0, $sids);
 
     }
+
+
+
+
 
     private function openSurveySummary(){
         $url = self::getUrl(['route'=>'survey/sa/view&surveyid='.self::$survey->primaryKey]);
