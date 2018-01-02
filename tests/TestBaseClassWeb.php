@@ -124,7 +124,7 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @throws \Exception
      */
-    private static function setUpWebDriver(){
+    protected static function setUpWebDriver(){
         self::$webDriver = self::$testHelper->getWebDriver();
 
         if (empty(self::$webDriver)) {
@@ -268,7 +268,7 @@ class TestBaseClassWeb extends TestBaseClass
             return $element;
         } catch (\Exception $ex) {
             self::takeScreenShot('FailedFindElement');
-            throw $ex;
+            //throw $ex;
         }
 
     }
@@ -298,9 +298,14 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     public static function takeScreenShot($name){
-        $screenshot = self::$webDriver->takeScreenshot();
-        $filename = self::$screenshotsFolder .'/'.microtime(true).'_'.$name.'.png';
-        file_put_contents($filename, $screenshot);
-        return $filename;
+        try{
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder .'/'.microtime(true).'_'.$name.'.png';
+            file_put_contents($filename, $screenshot);
+            return $filename;
+
+        }catch (\Exception $e){
+
+        }
     }
 }

@@ -11,13 +11,17 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class InstallationControllerTest extends TestBaseClassWeb
 {
     /**
-     * 
+     *
+     * @throws \Exception
      */
     public static function setupBeforeClass()
     {
         // NB: Does not call parent, because there might not
         // be a database (happens if this test is run multiple
         // times).
+
+        TestBaseClass::setUpBeforeClass();
+
         self::$testHelper = new TestHelper();
         self::$webDriver = self::$testHelper->getWebDriver();
         self::$domain = getenv('DOMAIN');
@@ -35,7 +39,6 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
-
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         $databaseName = 'limesurvey';
 
@@ -64,7 +67,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             try {
                 $dbo = \Yii::app()->getDb();
                 $dbo->createCommand('DROP DATABASE ' . $databaseName)->execute();
-                $dbo->createCommand('CREATE DATABASE ' . $databaseName)->execute();
             } catch (\CDbException $ex) {
                 $msg = $ex->getMessage();
                 // Only this error is OK.
@@ -80,26 +82,28 @@ class InstallationControllerTest extends TestBaseClassWeb
         }
 
         // Run installer.
-
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl('');
         try {
 
             // Installer start page.
-            self::getUrl(['route'=>'']);
+            self::$webDriver->get($url);
 
             // Click "Start installation".
-            self::findAndClick(WebDriverBy::id('ls-start-installation'));
+            self::findAndClick(WebDriverBy::id('ls-start-installation'),10);
+
 
             // Accept license.
-            self::findAndClick(WebDriverBy::id('ls-accept-license'));
+            self::findAndClick(WebDriverBy::id('ls-accept-license'),10);
 
             // Click next at pre-check.
-            self::findAndClick(WebDriverBy::id('ls-next'));
+            self::findAndClick(WebDriverBy::id('ls-next'),10);
 
             // Fill in database form.
-            $dbuserInput = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
+            $dbuserInput = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'),10);
             $dbpwdInput  = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
@@ -108,24 +112,26 @@ class InstallationControllerTest extends TestBaseClassWeb
             self::findAndClick(WebDriverBy::id('ls-next'));
 
             // Click "Create database".
-            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'));
+            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),10);
 
             // Click "Populate".
-            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'));
+            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),20);
 
             // Fill in admin username/password.
-            $adminLoginName = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
-            $adminLoginPwd  = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
-            $confirmPwd     = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
+            $adminLoginName = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'),5);
+            $adminLoginPwd  = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'),5);
+            $confirmPwd     = self::find(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'),5);
             $adminLoginName->clear()->sendKeys($username);
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
 
             // Confirm optional settings (admin password etc).
-            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'));
+            self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),10);
 
             // Go to administration.
-            self::findAndClick(WebDriverBy::id('ls-administration'));
+            self::findAndClick(WebDriverBy::id('ls-administration'),10);
+            $this->assertTrue(true);
+            return;
 
             // Set debug=2
             /* TODO: Can't write to config.php after installation.
