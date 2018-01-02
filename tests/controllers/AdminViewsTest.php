@@ -131,14 +131,12 @@ class AdminViewsTest extends TestBaseClassView
      */
     public function testUserViews($name,$view){
         // use Admin user
-        $uid = 1;
+        $user = \User::findByUsername(self::$superUserUsername);
         // non-adminuser for some views
         if(in_array($name,['setUserPermissions','setUserTemplates'])){
-            // FIXME need to crate another user
-            $this->markTestSkipped();
-            $uid = 2;
+            $user = \User::findByUsername(self::$noPermissionsUserUsername);
         }
-        $view['route'] = ReplaceFields($view['route'],['{UID}'=>$uid]);
+        $view['route'] = ReplaceFields($view['route'],['{UID}'=>$user->uid]);
         $element = $this->openAndFindViewTag($name, $view);
         $this->assertNotEmpty($element);
     }
@@ -181,10 +179,7 @@ class AdminViewsTest extends TestBaseClassView
             $user = \User::findByUsername($view['username']);
         }
 
-        echo $user->users_name."-".$user->uid;
-
         $view['clickId'] = ReplaceFields($view['clickId'],['{UID}'=>$user->primaryKey]);
-        echo $view['clickId'];
 
         $url = $this->getUrl($view);
         $this->openView($url);
