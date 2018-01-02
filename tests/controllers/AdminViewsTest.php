@@ -132,10 +132,6 @@ class AdminViewsTest extends TestBaseClassView
     public function testUserViews($name,$view){
         // use Admin user
         $user = \User::findByUsername(self::$superUserUsername);
-        // non-adminuser for some views
-        if(in_array($name,['setUserPermissions','setUserTemplates'])){
-            $user = \User::findByUsername(self::$noPermissionsUserUsername);
-        }
         $view['route'] = ReplaceFields($view['route'],['{UID}'=>$user->uid]);
         $element = $this->openAndFindViewTag($name, $view);
         $this->assertNotEmpty($element);
