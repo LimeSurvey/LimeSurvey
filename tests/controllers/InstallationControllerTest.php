@@ -125,13 +125,12 @@ class InstallationControllerTest extends TestBaseClassWeb
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
 
+
             // Confirm optional settings (admin password etc).
             self::findAndClick(WebDriverBy::cssSelector('input[type="submit"]'),10);
 
             // Go to administration.
             self::findAndClick(WebDriverBy::id('ls-administration'),10);
-            $this->assertTrue(true);
-            return;
 
             // Set debug=2
             /* TODO: Can't write to config.php after installation.
@@ -152,8 +151,11 @@ class InstallationControllerTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
 
-            // Login.
+
+            // Login & assert.
             self::adminLogin($username, $password);
+
+
         } catch (NoSuchElementException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, (new \ReflectionClass($this))->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
