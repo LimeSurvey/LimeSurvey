@@ -1210,23 +1210,18 @@ protected function getPostRows(array $postquestionlist)
 {
     $postrows = array();
     foreach ($postquestionlist as $pq) {
-        $result = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => $this->language)
-        ),
-        ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+        $aoQuestions = Question::model()->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
         
-        foreach ($result as $myrows) {
+        foreach ($aoQuestions as $oQuestion) {
             $postrows[] = array(
-            "qid"        =>    $myrows['qid'],
-            "sid"        =>    $myrows['sid'],
-            "gid"        =>    $myrows['gid'],
-            "question"    =>    $myrows['question'],
-            "type"        =>    $myrows['type'],
-            "mandatory"    =>    $myrows['mandatory'],
-            "other"        =>    $myrows['other'],
-            "title"        =>    $myrows['title']
+            "qid"        =>    $oQuestion['qid'],
+            "sid"        =>    $oQuestion['sid'],
+            "gid"        =>    $oQuestion['gid'],
+            "question"    =>    $oQuestion->questionL10n[$this->language]->question,
+            "type"        =>    $oQuestion['type'],
+            "mandatory"    =>    $oQuestion['mandatory'],
+            "other"        =>    $oQuestion['other'],
+            "title"        =>    $oQuestion['title']
             );
         }
     }
@@ -1239,12 +1234,8 @@ protected function getPostRows(array $postquestionlist)
 */
 protected function getQuestionTitleAndText($qid)
 {
-    $question = Question::model()->with('groups')->findByAttributes(array(
-    'qid' => $qid,
-    'parent_qid' => 0,
-    'language' => $this->language
-    ));
-    return array($question['title'], $question['question']);
+    $oQuestion = Question::model()->findByPk($qid);
+    return array($oQuestion->title, $oQuestion->questionL10n[$this->language]->question);
 }
 
 /**
@@ -1262,19 +1253,15 @@ protected function getSurveyIsAnonymized()
 */
 protected function getQuestionRows()
 {
-    $qresult = Question::model()->with(array(
-    'groups' => array(
-    'condition' => 'groups.language = :lang',
-    'params' => array(':lang' => $this->language)
-    )))->findAllByAttributes(array(
-    'parent_qid' => 0,
-    'sid' => $this->iSurveyID,
-    'language' => $this->language)
+    $qresult = Question::model()->findAllByAttributes(array(
+        'parent_qid' => 0,
+        'sid' => $this->iSurveyID)
     );
-    
+
+   //'language' => $this->language    
     $qrows = array();
     foreach ($qresult as $k => $v) {
-        $qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
+        $qrows[$k] = array_merge($v->attributes, $v->group->attributes);
     }
     
     // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array

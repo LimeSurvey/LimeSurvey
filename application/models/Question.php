@@ -77,11 +77,12 @@ class Question extends LSActiveRecord
     {
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
-            'parents' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
+            'group' => array(self::BELONGS_TO, 'QuestionGroup', 'gid', 'together' => true),
+            'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'questionLanguageSettings' => array(self::HAS_MANY, 'QuestionLanguageSetting', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid'))
+            'questionL10n' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
+            'conditions' => array(self::HAS_MANY, 'Condition', 'qid')
         );
     }
 
@@ -92,7 +93,7 @@ class Question extends LSActiveRecord
     public function rules()
     {
         $aRules = array(
-                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('Question code may not be empty.', 'unescaped')),
+                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
                     array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
                     array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
                     array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -189,7 +190,7 @@ class Question extends LSActiveRecord
     public function updateQuestionOrder($gid, $position = 0)
     {
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'language=:language', 'parent_qid=0'))
+            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
             ->order('question_order, title ASC')
             ->from('{{questions}}')
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
@@ -779,9 +780,9 @@ class Question extends LSActiveRecord
      */
     public function getAllGroups()
     {
-        return QuestionGroup::model()->findAll("sid=:sid and language=:lang",
-            array(':sid'=>$this->sid,
-                ':lang'=>$this->survey->language));
+        return QuestionGroup::model()->findAll("sid=:sid",
+            array(':sid'=>$this->sid)
+        );
         //return QuestionGroup::model()->getGroups($this->sid);
     }
 
@@ -925,11 +926,16 @@ class Question extends LSActiveRecord
         return $sNewTitle;
     }
                            
-    public function language($sLanguage)
+    /*public function language($sLanguage)
     {
-        $this->with(array('questionLanguageSettings'=>array('condition'=>"language='".$sLanguage."'")));
+        $this->with(
+            array(
+                'questionL10n'=>array('condition'=>"language='".$sLanguage."'"),
+                'group'=>array('condition'=>"language='".$sLanguage."'")
+            )
+        );                                              
         return $this;
-    }                       
+    }*/                       
                            
     public function search()
     {
@@ -950,13 +956,13 @@ class Question extends LSActiveRecord
                 'desc'=>'t.title desc',
             ),
             'question'=>array(
-                'asc'=>'t.question asc',
-                'desc'=>'t.question desc',
+                'asc'=>'questionL10n.question asc',
+                'desc'=>'questionL10n.question desc',
             ),
 
             'group'=>array(
-                'asc'=>'groups.group_name asc',
-                'desc'=>'groups.group_name desc',
+                'asc'=>'group.group_name asc',
+                'desc'=>'group.group_name desc',
             ),
 
             'mandatory'=>array(
@@ -973,21 +979,20 @@ class Question extends LSActiveRecord
         $sort->defaultOrder = array('question_order' => CSort::SORT_ASC);
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('groups');
+        $criteria->with = array('group');
         $criteria->compare("t.sid", $this->sid, false, 'AND');
-        $criteria->compare("t.language", $this->language, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
 
         $criteria2 = new CDbCriteria;
         $criteria2->compare('t.title', $this->title, true, 'OR');
-        $criteria2->compare('t.question', $this->title, true, 'OR');
+        $criteria2->compare('questionL10n.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
 
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
         if ($this->gid != '') {
-            $criteria->compare('groups.gid', $this->gid, true, 'AND');
+            $criteria->compare('group.gid', $this->gid, true, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');

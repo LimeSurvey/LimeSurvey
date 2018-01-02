@@ -984,7 +984,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
 
     // First find all groups and their groups IDS
     $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
+    $criteria->addColumnCondition(array('sid' => $surveyid));
     $criteria->addCondition("randomization_group != ''");
 
     $oData = QuestionGroup::model()->findAll($criteria);
@@ -1636,7 +1636,7 @@ function UpdateGroupList($surveyid, $language)
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
 
     // TODO: replace by group model method
-    $query     = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
+    $query     = "SELECT * FROM {{groups}} g join {{group_l10n}} ls on ls.gid=g.gid WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result    = dbExecuteAssoc($query) or safeDie("Couldn't get group list<br />$query<br />"); //Checked
     $groupList = array();
 

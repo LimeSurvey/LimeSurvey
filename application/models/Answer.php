@@ -49,7 +49,7 @@ class Answer extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'code', 'language', 'scale_id');
+        return array('aid');
     }
 
     /** @inheritdoc */
@@ -57,13 +57,15 @@ class Answer extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
-            'questions' => array(self::HAS_ONE, 'Question', '',
+            // TODO BELONGS_TO relation should be in singular, not plural $answer->group, $answer->question
+            'question' => array(self::BELONGS_TO, 'Question', '',
                 'on' => "$alias.qid = questions.qid",
             ),
-            'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
+            'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'
             ),
+            'answerL10n' => array(self::HAS_MANY, 'QuestionL10n', 'aid', 'together' => true),
+            
         );
     }
 
@@ -73,20 +75,17 @@ class Answer extends LSActiveRecord
         return array(
             array('qid', 'numerical', 'integerOnly'=>true),
             array('code', 'length', 'min' => 1, 'max'=>5),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             // Unicity of key
             array(
                 'code', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                    'condition' => 'language=:language AND qid=:qid AND scale_id=:scale_id',
+                    'condition' => 'qid=:qid AND scale_id=:scale_id',
                     'params' => array(
-                        ':language' => $this->language,
                         ':qid' => $this->qid,
                         ':scale_id' => $this->scale_id
                     )
                 ),
                 'message' => gT('Answer codes must be unique by question.')
             ),
-            array('answer', 'LSYii_Validators'),
             array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),

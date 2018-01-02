@@ -42,7 +42,7 @@
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->group_name);?>
+                                                <?php echo flattenText($group->questionGroupL10n[$baselang]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
@@ -86,7 +86,7 @@
                             array(
                                 'header' => gT('Question'),
                                 'name' => 'question',
-                                'value'=>'viewHelper::flatEllipsizeText($data->question,true,0)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10n[$baselang]->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -99,7 +99,7 @@
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
-                                'value'=>'$data->groups->group_name',
+                                'value'=>'$data->group->groupL10n[0]->group_name',
                             ),
                             array(
                                 'header' => gT('Mandatory'),

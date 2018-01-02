@@ -200,7 +200,7 @@ class questiongroups extends Survey_Common_Action
             }
             $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
             foreach ($sSurveyLanguages as $sLanguage) {
-                $oGroupLS = new QuestionGroupLanguageSetting;
+                $oGroupLS = new QuestionGroupL10n;
                 $oGroupLS->gid = $newGroupID;
                 $oGroupLS->group_name = Yii::app()->request->getPost('group_name_'.$sLanguage, "");
                 $oGroupLS->description = Yii::app()->request->getPost('description_'.$sLanguage, "");
@@ -278,7 +278,7 @@ class questiongroups extends Survey_Common_Action
         $aData['grow'] = $grow;
 
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupLanguageSettings[0]->group_name;
+        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupL10n[$baselang]->group_name;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = true;
 
@@ -323,13 +323,13 @@ class questiongroups extends Survey_Common_Action
             $grplangs = array_flip($aLanguages);
 
             // Check out the intgrity of the language versions of this group
-            $egresult = QuestionGroupLanguageSetting::model()->findAllByAttributes(array('gid' => $gid));
+            $egresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid));
             foreach ($egresult as $esrow) {
                 $esrow = $esrow->attributes;
 
                 // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
                 if (!in_array($esrow['language'], $aLanguages)) {
-                    QuestionGroupLanguageSetting::model()->deleteAllByAttributes(array('gid' => $gid, 'language' => $esrow['language']));
+                    QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $gid, 'language' => $esrow['language']));
                 } else {
                     $grplangs[$esrow['language']] = 'exists';
                 }
@@ -343,7 +343,7 @@ class questiongroups extends Survey_Common_Action
             while (list($key, $value) = each($grplangs)) {
                 if ($value != 'exists') {
                     $basesettings['language'] = $key;
-                    $groupLS = new QuestionGroupLanguageSetting;
+                    $groupLS = new QuestionGroupL10n;
                     foreach ($basesettings as $k => $v) {
                                             $group->$k = $v;
                     }
@@ -353,7 +353,7 @@ class questiongroups extends Survey_Common_Action
             $first = true;
             $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
             foreach ($aLanguages as $sLanguage) {
-                $oResult = QuestionGroupLanguageSetting::model()->findByAttributes(array( 'gid' => $gid, 'language' => $sLanguage));
+                $oResult = QuestionGroupL10n::model()->findByAttributes(array( 'gid' => $gid, 'language' => $sLanguage));
                 $aData['aGroupData'][$sLanguage] = array_merge($oResult->attributes, $oQuestionGroup->attributes);
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first) {
@@ -490,7 +490,7 @@ class questiongroups extends Survey_Common_Action
                         'language' => $grplang,
                         'gid' => $gid,
                     );
-                    $oGroupLS = QuestionGroupLanguageSetting::model()->findByAttributes($condition);
+                    $oGroupLS = QuestionGroupL10n::model()->findByAttributes($condition);
                     foreach ($aData as $k => $v) {
                                             $oGroupLS->$k = $v;
                     }

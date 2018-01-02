@@ -1236,7 +1236,7 @@ class database extends Survey_Common_Action
                 }
             }
 
-            $oQuestionLS = new QuestionLanguageSetting;
+            $oQuestionLS = new QuestionL10n;
             $oQuestionLS->language = $sBaseLanguage;
             $oQuestionLS->question = $sQuestionText;
             $oQuestionLS->help = $sQuestionHelp;
@@ -1256,7 +1256,7 @@ class database extends Survey_Common_Action
                 $addlangs = $survey->additionalLanguages;
                 foreach ($addlangs as $alang) {
                     if ($alang != "") {
-                        $oQuestionLS = new QuestionLanguageSetting;
+                        $oQuestionLS = new QuestionL10n;
                         $oQuestionLS->qid = $this->iQuestionID;
                         $oQuestionLS->question = Yii::app()->request->getPost('question_'.$alang);
                         $oQuestionLS->help = Yii::app()->request->getPost('help_'.$alang);

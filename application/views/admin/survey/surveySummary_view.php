@@ -182,17 +182,6 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                <!-- Fax to -->
-                <li class="list-group-item">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            <?php eT("Fax to:");?>
-                        </div>
-                        <div class="col-8">
-                            <?php echo flattenText($oSurvey->faxto);?>
-                        </div>
-                    </div>
-                </li>
                 <!-- Template -->
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">

@@ -40,7 +40,7 @@ class questions extends Survey_Common_Action
 
         //Show Question Details
         //Count answer-options for this question
-        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid));
 
         $aData['qct'] = count($qrr);
 
@@ -48,8 +48,8 @@ class questions extends Survey_Common_Action
         $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid));
         $aData['sqct'] = count($sqrq);
 
-        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
-        if (is_null($qrrow)) {
+        $oQuestion = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
+        if (is_null($oQuestion)) {
             return;
         }
 
@@ -63,9 +63,8 @@ class questions extends Survey_Common_Action
 
         $aData['activated'] = $survey->active;
 
-        $oQuestion = $qrrow;
         $aData['oQuestion'] = $oQuestion;
-        $qrrow = $qrrow->attributes;
+        $qrrow = $oQuestion->attributes;
         $aData['languagelist'] = $survey->allLanguages;
         $aData['qtypes'] = getQuestionTypeList('', 'array');
 
@@ -1029,27 +1028,19 @@ class questions extends Survey_Common_Action
 
         $aData['ajaxDatas']['qTypeOutput'] = json_encode($qtypelist);
 
-        $eqrow = [];
-        $eqrow['language'] = $baselang;
-        $eqrow['title'] = '';
-        $eqrow['question'] = '';
-        $eqrow['help'] = '';
-        $eqrow['type'] = 'T';
-        $eqrow['lid'] = 0;
-        $eqrow['lid1'] = 0;
-        $eqrow['gid'] = null;
-        $eqrow['other'] = 'N';
-        $eqrow['mandatory'] = 'N';
-        $eqrow['preg'] = '';
-        $eqrow['relevance'] = 1;
-        $eqrow['group_name'] = '';
-        $eqrow['modulename'] = '';
-        $eqrow['conditions_number'] = false;
+        $oQuestion = new Question;
+        $oQuestion->type = 'T';
+        $oQuestion->other = 'N';
+        $oQuestion->mandatory = 'N';
+        $oQuestion->relevance = 1;
+        $oQuestion->group_name = '';
+        $oQuestion->modulename = '';
+        $oQuestion->questionL10n=array($baselang=>new QuestionL10n);
         if (isset($_GET['gid'])) {
-            $eqrow['gid'] = $_GET['gid'];
+            $oQuestion->gid = $_GET['gid'];
         }
-        $aData['eqrow'] = $eqrow;
-        $aData['groupid'] = $eqrow['gid'];
+        $aData['oQuestion'] = $oQuestion;
+        $aData['groupid'] = $oQuestion->gid;
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
         if (is_null($sumresult1)) {
@@ -1071,7 +1062,7 @@ class questions extends Survey_Common_Action
         $aData['selectormodeclass'] = $selectormodeclass;
 
 
-        $aData['accordionDatas']['eqrow'] = $eqrow;
+        $aData['accordionDatas']['oQuestion'] = $oQuestion;
         $aData['ajaxDatas']['sValidateUrl'] = $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid));
         $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
@@ -1101,7 +1092,7 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new', "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
+        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$oQuestion->gid.'new', "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         
 
 
@@ -1176,12 +1167,13 @@ class questions extends Survey_Common_Action
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
-                $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+                $oQuestion = Question::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
+                if (!$oQuestion) {
+                    $this->getController()->error('Invalid question id');
+                }
                 $aData['oQuestion'] = $oQuestion;
-
                 $basesettings = [];
-                $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-                foreach ($egresult as $esrow) {
+                foreach ($oQuestion->questionL10n as $esrow) {
                     if (!array_key_exists($esrow->language, $questlangs)) {
                     // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();
@@ -1190,23 +1182,20 @@ class questions extends Survey_Common_Action
                     }
 
                     if ($esrow->language == $baselang) {
-                        $esrow = $esrow->attributes;
                         $basesettings = array(
-                        'question_order' => $esrow['question_order'],
-                        'other' => $esrow['other'],
-                        'mandatory' => $esrow['mandatory'],
-                        'type' => $esrow['type'],
-                        'title' => $esrow['title'],
-                        'preg' => $esrow['preg'],
-                        'question' => $esrow['question'],
-                        'help' => $esrow['help']
+                        'question_order' => $oQuestion->question_order,
+                        'other' => $oQuestion->other,
+                        'mandatory' => $oQuestion->mandatory,
+                        'type' => $oQuestion->type,
+                        'title' => $oQuestion->title,
+                        'preg' => $oQuestion->preg,
+                        'question' => $esrow->question,
+                        'help' => $esrow->help
                         );
                     }
                 }
 
-                if (!$egresult) {
-                    $this->getController()->error('Invalid question id');
-                }
+
 
                 foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
@@ -1227,11 +1216,10 @@ class questions extends Survey_Common_Action
                     }
                 }
 
-                $eqresult = Question::model()->with('groups')->together()->findByAttributes(array(
+                $oQuestion = Question::model()->with('group')->together()->findByAttributes(array(
                 'sid' => $surveyid,
                 'gid' => $gid,
                 'qid' => $qid,
-                'language' => $baselang
                 ));
             } else {
                 // This is needed to properly color-code content if it contains replacements
@@ -1241,45 +1229,31 @@ class questions extends Survey_Common_Action
             $qtypelist = getQuestionTypeList('', 'array');
             $aData['qTypeOutput'] = json_encode($qtypelist);
 
-            $eqrow = [];
-            if (!$adding) {
-                if (is_object($eqresult->groups)) {
-                                    $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);
-                } else {
-                                    $eqrow = $eqresult->attributes;
-                }
-
-                // Todo: handler in case that record is not found
-                if ($copying) {
-                                    $eqrow['title'] = '';
-                }
-            } else {
-                $eqrow['language'] = $baselang;
-                $eqrow['title'] = '';
-                $eqrow['question'] = '';
-                $eqrow['help'] = '';
-                $eqrow['type'] = 'T';
-                $eqrow['lid'] = 0;
-                $eqrow['lid1'] = 0;
-                $eqrow['gid'] = $gid;
-                $eqrow['other'] = 'N';
-                $eqrow['mandatory'] = 'N';
-                $eqrow['preg'] = '';
-                $eqrow['relevance'] = 1;
-                $eqrow['group_name'] = '';
+            if ($adding) {
+                $oQuestion = new Question;
+//                $oQuestion->language'] = $baselang;
+ //               $oQuestion->question'] = '';
+ //               $oQuestion->help'] = '';
+                $oQuestion->type = 'T';
+                $oQuestion->lid = 0;
+                $oQuestion->lid1 = 0;
+                $oQuestion->gid = $gid;
+                $oQuestion->other = 'N';
+                $oQuestion->mandatory = 'N';
+                $oQuestion->preg = '';
+                $oQuestion->relevance = 1;
+                $oQuestion->group_name = '';                
             }
-            $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
+            $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
 
-            $aData['eqrow'] = $eqrow;
+            $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
                 $criteria->addColumnCondition(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-                $criteria->params[':lang'] = $baselang;
-                $criteria->addCondition('language != :lang');
                 $aqresult = Question::model()->findAll($criteria);
                 $aData['aqresult'] = $aqresult;
             }
@@ -1327,7 +1301,7 @@ class questions extends Survey_Common_Action
             $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
+            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {
                     include('accessDenied.php');
         }

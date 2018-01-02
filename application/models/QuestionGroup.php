@@ -71,16 +71,9 @@ class QuestionGroup extends LSActiveRecord
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
             'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
-            'questionGroupLanguageSettings' => array(self::HAS_MANY, 'QuestionGroupLanguageSetting', 'gid', 'together' => true)
+            'questionGroupL10n' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
-    }
-
-    public function language($sLanguage)
-    {
-        $this->with(array('questionGroupLanguageSettings'=>array('condition'=>"language='".$sLanguage."'")));
-        return $this;
-    }                       
-    
+    }    
 
     public function getAllRecords($condition = false, $order = false, $return_query = true)
     {

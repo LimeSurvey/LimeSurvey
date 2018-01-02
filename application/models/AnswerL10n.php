@@ -23,13 +23,13 @@
 
 
  */
-class QuestionLanguageSetting extends LSActiveRecord
+class AnswerL10n extends LSActiveRecord
 {
 
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{question_languagesettings}}';
+        return '{{answer_l10n}}';
     }
 
     /** @inheritdoc */
@@ -37,6 +37,11 @@ class QuestionLanguageSetting extends LSActiveRecord
     {
         return array('id');
     }
+
+    public function defaultScope()
+    {
+        return array('index'=>'language');
+    }    
 
     /**
      * @inheritdoc
@@ -54,7 +59,7 @@ class QuestionLanguageSetting extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::BELONGS_TO, 'question', '', 'on' => "$alias.qid = question.qid"),
+            'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
         );
     }
 
@@ -63,8 +68,7 @@ class QuestionLanguageSetting extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('question', 'LSYii_Validators'),
-            array('help', 'LSYii_Validators'),
+            array('answer', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
         );
     }

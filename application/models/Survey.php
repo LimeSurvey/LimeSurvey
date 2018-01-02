@@ -1393,7 +1393,7 @@ class Survey extends LSActiveRecord
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
-                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
+                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid)); 
                 if ($groupCount > 0) {
                     $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
@@ -1669,8 +1669,8 @@ return $s->hasTokensTable; });
         /* Delete invalid questions (don't exist in primary language) using qid like column name*/
         $validQuestion = Question::model()->findAll(array(
             'select'=>'qid',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid = 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1681,8 +1681,8 @@ return $s->hasTokensTable; });
         /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid != 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1756,7 +1756,7 @@ return $s->hasTokensTable; });
      */
     public function getCountTotalQuestions()
     {
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
+        $condn = array('sid'=>$this->sid, 'parent_qid'=>0);
         $sumresult = Question::model()->countByAttributes($condn);
         return (int) $sumresult;
     }
@@ -1769,7 +1769,6 @@ return $s->hasTokensTable; });
     {
         $condn = array(
             'sid'=>$this->sid,
-            'language'=>$this->language,
             'parent_qid'=>0,
             'type'=>['X', '*'],
         );

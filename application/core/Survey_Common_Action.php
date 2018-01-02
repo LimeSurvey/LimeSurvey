@@ -531,12 +531,12 @@ class Survey_Common_Action extends CAction
 
                 //Show Question Details
                 //Count answer-options for this question
-                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid, 'language' => $baselang));
+                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
                 //Count sub-questions for this question
-                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
-                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
                 if (is_null($qrrow)) {
                     return;
                 }
@@ -662,7 +662,7 @@ class Survey_Common_Action extends CAction
 
             $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
 
-            $sumcount3 = Question::model()->language($oSurvey->language)->countByAttributes($condition); //Checked
+            $sumcount3 = Question::model()->countByAttributes($condition); //Checked
 
             $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
             $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
@@ -936,7 +936,6 @@ class Survey_Common_Action extends CAction
 
             // We filter the current survey id
             $model->sid = $iSurveyID;
-            $model->language = $baselang;
 
             $aData['model'] = $model;
 

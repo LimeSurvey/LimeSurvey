@@ -422,11 +422,11 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['showLastQuestion'] = true;
             $iQid = $lastquestion;
             $iGid = $lastquestiongroup;
-            $qrrow = Question::model()->with(array('questionLanguageSettings'=>array('condition'=>"language='".$baselang."'")))->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
+            $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionLanguageSettings[0]['question'])) {
-                $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            if (!empty($qrrow->questionL10n[$baselang]['question'])) {
+                $aData['last_question_name'] .= ' : '.$qrrow->questionL10n[$baselang]['question'];
             }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
@@ -453,19 +453,20 @@ class SurveyAdmin extends Survey_Common_Action
         $lastquestion = getGlobalSetting($setting_entry);
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
         $lastquestiongroup = getGlobalSetting($setting_entry);
-        $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $baselang), array('order'=>'group_order ASC'));
+        $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID), array('order'=>'group_order ASC'));
         $aGroupViewable = array();
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
+                $curGroup['group_name']=$group->questionGroupL10n[$baselang]->group_name;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$baselang, 'parent_qid'=>0), array('order'=>'question_order ASC'));
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question, true, 20, '[...]', 1);
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->questionL10n[$baselang]->question, true, 20, '[...]', 1);
                         $curGroup['questions'][] = $curQuestion;
                     }
 

@@ -9,7 +9,7 @@
                 <!-- Question Group -->
                 <tr>
                     <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                    <td><em><?php echo flattenText($oQuestion->groups->group_name);?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                    <td><em><?php echo flattenText($oQuestion->group->questionGroupL10n[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
                 </tr>
 
                 <!-- Code -->
@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <?php
-                            templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                            templatereplace($oQuestion->questionL10n[$baselang]->question,array(),$aReplacementData,'Unspecified', false ,$qid);
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                         ?>
                     </td>
@@ -57,9 +57,9 @@
                     <td>
 
                         <?php
-                            if (trim($qrrow['help'])!='')
+                            if (trim($oQuestion->questionL10n[$baselang]->help)!='')
                             {
-                                templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                                templatereplace($oQuestion->questionL10n[$baselang]->help,array(),$aReplacementData,'Unspecified', false ,$qid);
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             }
                         ?>

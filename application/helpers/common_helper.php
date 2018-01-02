@@ -693,12 +693,12 @@ function getGroupList($gid, $surveyid)
     $gid = sanitize_int($gid);
     $surveyid = sanitize_int($surveyid);
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $oGroups=QuestionGroup::model()->language($s_lang)->findAllByAttributes(['sid'=>$surveyid]);
+    $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+    $oGroups=QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
     foreach ($oGroups as $oGroup) {
         $groupselecter .= "<option";
         if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupLanguageSettings[0]->group_name)."</option>\n";
+        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupL10n[$sBaseLanguage]->group_name)."</option>\n";
     }
     if ($groupselecter) {
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
@@ -716,18 +716,17 @@ function getGroupList3($gid, $surveyid)
 
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
     $groupselecter = "";
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
 
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $gidresult = QuestionGroup::model()->language($s_lang)->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
+    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     foreach ($gidresult as $gv) {
-        $gv = $gv->attributes;
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])." (ID:".$gv['gid'].")</option>\n";
+        if ($gv->gid == $gid) {$groupselecter .= " selected='selected'"; }
+        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10n[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
     }
 
 
@@ -746,20 +745,16 @@ function getGroupListLang($gid, $language, $surveyid)
     $groupselecter = "";
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
 
-    $gidresult = QuestionGroup::model()->language($language)->findAll(array('condition'=>'sid=:surveyid',
+    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid',
     'order'=>'group_order',
     'params'=>array(':surveyid'=>$surveyid))); //Checked)
-    foreach ($gidresult as $gv) {
-        $gv = $gv->attributes;
+    foreach ($gidresult as $oGroup) {
+        $aAttributes = $oGroup->attributes;
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
+        if ($aAttributes['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
+        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
-        if (strip_tags($gv['group_name'])) {
-            $groupselecter .= htmlspecialchars(strip_tags($gv['group_name']));
-        } else {
-            $groupselecter .= htmlspecialchars($gv['group_name']);
-        }
+        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questionGroupL10n[$language]->group_name));
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
@@ -1593,10 +1588,13 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
-    ." questions.sid=$surveyid AND "
-    ." questions.parent_qid=0";
+    ." FROM {{groups}} g"
+    .' JOIN {{questions}} q on q.gid=g.gid '
+    .' JOIN {{group_l10n}} gls on gls.gid=g.gid '
+    .' JOIN {{question_l10n}} qls on qls.qid=q.qid '
+    ." WHERE qls.language='{$baseLanguage}' and gls.language='{$baseLanguage}' AND"
+    ." g.sid={$surveyid} AND "
+    ." q.parent_qid=0";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
@@ -4030,7 +4028,7 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
     . "{{questions}} AS tq2, "
     . "{{groups}} AS tg, "
     . "{{groups}} AS tg2, "
-    . "{{group_languagesettings}} as ls,{{group_languagesettings}} as ls2 "
+    . "{{group_l10n}} as ls,{{group_l10n}} as ls2 "
     . "WHERE ls.language='{$baselang}' AND ls2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
     . "AND ls.gid=tg.gid AND ls2.gid=tg2.gid "

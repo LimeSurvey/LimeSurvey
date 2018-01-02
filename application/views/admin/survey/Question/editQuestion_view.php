@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('addQuestion');
             eT("Copy question");
         } else {
             eT("Edit question");
-            echo ': <em>'.$eqrow['title'].'</em> (ID:'.$qid.')';
+            echo ': <em>'.$oQuestion->title.'</em> (ID:'.$qid.')';
         }
         ?>
     </div>
@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                     './survey/Question/question_subviews/_tabs',
                     array(
                         'oSurvey'=>$oSurvey,
-                        'eqrow'=>$eqrow,
+                        'oQuestion'=>$oQuestion,
                         'surveyid'=>$surveyid,
                         'gid'=>$groupid, 'qid'=>NULL,
                         'adding'=>$adding,
@@ -54,7 +54,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                     './survey/Question/question_subviews/_tabs',
                     array(
                         'oSurvey'=>$oSurvey,
-                        'eqrow'=>$eqrow,
+                        'oQuestion'=>$oQuestion,
                         'surveyid'=>$surveyid,
                         'gid'=>$gid, 'qid'=>$qid,
                         'adding'=>$adding,
@@ -157,14 +157,14 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         </label>
                                         <div>
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-                                            <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                            <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
                                             <div class=" btn-group" id="question_type_button">
                                                 <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
                                                     <span class="buttontext" id="selector__editView_question_type_description">
-                                                        <?=Question::getQuestionTypeName($eqrow['type']); ?>
+                                                        <?=Question::getQuestionTypeName($oQuestion->type); ?>
                                                         <?php if(YII_DEBUG):?>
                                                             <em class="small">
-                                                                Type code: <?php echo $eqrow['type']; ?>
+                                                                Type code: <?php echo $oQuestion->type; ?>
                                                             </em>
                                                         <?php  endif;?>
                                                     </span>
@@ -176,10 +176,10 @@ echo viewHelper::getViewTestTag('addQuestion');
                                             <div class=" btn-group" id="question_type_button">
                                                 <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
                                                     <span class="buttontext" id="selector__editView_question_type_description">
-                                                        <?=Question::getQuestionTypeName($eqrow['type']); ?>
+                                                        <?=Question::getQuestionTypeName($oQuestion->type); ?>
                                                         <?php if(YII_DEBUG):?>
                                                             <em class="small">
-                                                                Type code: <?php echo $eqrow['type']; ?>
+                                                                Type code: <?php echo $oQuestion->type; ?>
                                                             </em>
                                                         <?php  endif;?>
                                                     </span>
@@ -195,10 +195,10 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                         <div class="">
                                             <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
-                                                <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
+                                                <?php echo getGroupList3($oQuestion->gid,$surveyid); ?>
                                             </select>
                                             <?php if ($activated == "Y"): ?>
-                                                <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
+                                                <input type='hidden' name='gid' value='<?php echo $oQuestion->gid;?>' />
                                                 <?php endif; ?>
                                         </div>
                                     </div>
@@ -207,11 +207,11 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
                                         <?php if ($activated != "Y"): ?>
                                             <div class="">
-                                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $oQuestion->other === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                             </div>
                                             <?php else:?>
                                             <?php eT("Cannot be changed (survey is active)");?>
-                                            <input type='hidden' name='other' value="<?php echo ($eqrow['other']=='Y' ? 1 : 0); ?>" />
+                                            <input type='hidden' name='other' value="<?php echo ($oQuestion->other=='Y' ? 1 : 0); ?>" />
                                             <?php endif;?>
                                     </div>
 
@@ -219,7 +219,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         <label class=" control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
                                         <div class="">
                                             <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $oQuestion->mandatory === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                         </div>
                                     </div>
 
@@ -228,10 +228,10 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         <div class="">
                                             <div class="input-group">
                                                 <div class="input-group-addon">{</div>
-                                                <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
+                                                <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if (count($oQuestion->conditions)>0) {?> readonly='readonly'<?php } ?> ><?php echo $oQuestion->relevance; ?></textarea>
                                                 <div class="input-group-addon">}</div>
                                             </div>
-                                            <?php if ($eqrow['conditions_number']) :?>
+                                            <?php if (count($oQuestion->conditions)>0) :?>
                                                 <div class='help-block text-warning'> <?php eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></div>
                                             <?php endif; ?>
                                         </div>
@@ -240,7 +240,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                                     <div id='Validation'  class="form-group">
                                         <label class=" control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
                                         <div class="">
-                                            <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
+                                            <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $oQuestion->preg; ?>" />
                                         </div>
                                     </div>
 
@@ -290,7 +290,7 @@ echo viewHelper::getViewTestTag('addQuestion');
 
 <?php
 $aQuestionTypeGroups = array();
-$aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+$aQuestionTypeList = (array) getQuestionTypeList($oQuestion->type, 'array');
 
 foreach ( $aQuestionTypeList as $key=> $questionType)
 {
@@ -309,7 +309,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-        <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $eqrow['type'], 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
+        <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $oQuestion->type, 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
     </div>
   </div>
 </div>

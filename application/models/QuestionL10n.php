@@ -23,13 +23,13 @@
 
 
  */
-class QuestionGroupLanguageSetting extends LSActiveRecord
+class QuestionL10n extends LSActiveRecord
 {
 
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{group_languagesettings}}';
+        return '{{question_l10n}}';
     }
 
     /** @inheritdoc */
@@ -54,27 +54,23 @@ class QuestionGroupLanguageSetting extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'group' => array(self::BELONGS_TO, 'group', '', 'on' => "$alias.gid = group.gid"),
+            'question' => array(self::BELONGS_TO, 'question', '', 'on' => "$alias.qid = question.qid"),
         );
     }
-
+    
+    public function defaultScope()
+    {
+        return array('index'=>'language');
+    }
 
     /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('group_name,description', 'LSYii_Validators'),
+            array('question', 'LSYii_Validators'),
+            array('help', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
         );
     }
 
-    /** @inheritdoc */
-    public function attributeLabels()
-    {
-        return array(
-            'language' => gt('Language'),
-            'group_name' => gt('Group name')
-        );
-    }
-    
 }

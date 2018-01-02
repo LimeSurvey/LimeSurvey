@@ -8549,29 +8549,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
         * Return array of language-specific answer codes
         * @param int|null $surveyid
-        * @param int|null $qid
         * @param string|null $lang
         * @return array
         */
-        public function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+        public function getAnswerSetsForEM($surveyid=NULL,$lang=NULL)
         {
-            if (!is_null($qid)) {
-                $where = "a.qid = ".$qid;
-            }
-            else if (!is_null($surveyid)) {
-                    $where = "a.qid = q.qid and q.sid = ".$surveyid;
-                }
-                else {
-                    $where = "1";
+            $where=' 1=1';
+            if (!is_null($surveyid)) {
+                $where .= " and a.qid = q.qid and q.sid = ".$surveyid;
             }
             if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."'" ;
+                $where .= " and a.language='".$lang."'" ;
             }
 
-            $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
-            ." FROM {{answers}} AS a, {{questions}} as q"
+            $query = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
+            ." FROM {{answers}} AS a"
+            ." JOIN {{questions}} q on a.qid=q.qid"
+            ." JOIN {{answer_l10n}} l on l.aid=a.aid"
             ." WHERE ".$where
-            .$lang
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
             $data = dbExecuteAssoc($query);
@@ -8593,20 +8588,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
         * Returns group info needed for indexes
         * @param int $surveyid
-        * @param string|null $lang
+        * @param string|null $sLanguage
         * @return array
         */
-        public function getGroupInfoForEM($surveyid,$lang=NULL)
+        public function getGroupInfoForEM($surveyid,$sLanguage=NULL)
         {
-            if (is_null($lang) && isset($_SESSION['LEMlang']))
+            if (is_null($sLanguage) && isset($_SESSION['LEMlang']))
             {
-                $lang = $_SESSION['LEMlang'];
+                $sLanguage = $_SESSION['LEMlang'];
             }
-            elseif(is_null($lang))
+            elseif(is_null($sLanguage))
             {
-                $lang=Survey::model()->findByPk($surveyid)->language;
+                $sLanguage=Survey::model()->findByPk($surveyid)->language;
             }
-            $oQuestionGroups=QuestionGroup::model()->language($lang)->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
+            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
             $qinfo = array();
             $_order=0;
             $gid = array();
@@ -8615,8 +8610,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->questionGroupLanguageSettings[0]->group_name,
-                    'description' =>  $oQuestionGroup->questionGroupLanguageSettings[0]->description,
+                    'group_name' => $oQuestionGroup->questionGroupL10n[$sLanguage]->group_name,
+                    'description' =>  $oQuestionGroup->questionGroupL10n[$sLanguage]->description,
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
@@ -8724,7 +8719,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
-                                        $value = "INVALID"; // This don't disable submitting survey Ãƒâ€šÃ‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ("" neither)
+                                        $value = "INVALID"; // This don't disable submitting survey ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8732,7 +8727,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey Ãƒâ€šÃ‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ("INVALID" neither)
+                                            $value = "";// This don't disable submitting survey ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -10274,18 +10269,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             if ($lang == 'ar')
             {
-                $eastern_arabic_symbols = array("Ãƒâ„¢Ã‚Â ","Ãƒâ„¢Ã‚Â¡","Ãƒâ„¢Ã‚Â¢","Ãƒâ„¢Ã‚Â£","Ãƒâ„¢Ã‚Â¤","Ãƒâ„¢Ã‚Â¥","Ãƒâ„¢Ã‚Â¦","Ãƒâ„¢Ã‚Â§","Ãƒâ„¢Ã‚Â¨","Ãƒâ„¢Ã‚Â©");
+                $eastern_arabic_symbols = array("ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â ","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¡","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¢","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â£","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¤","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¥","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â©");
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
             }
             else if ($lang == 'fa')
             {
                 // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-                $extended_arabic_indic = array("Ãƒâ€ºÃ‚Â°","Ãƒâ€ºÃ‚Â±","Ãƒâ€ºÃ‚Â²","Ãƒâ€ºÃ‚Â³","Ãƒâ€ºÃ‚Â´","Ãƒâ€ºÃ‚Âµ","Ãƒâ€ºÃ‚Â¶","Ãƒâ€ºÃ‚Â·","Ãƒâ€ºÃ‚Â¸","Ãƒâ€ºÃ‚Â¹");
+                $extended_arabic_indic = array("ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â°","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â±","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â²","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â³","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â´","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Âµ","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¶","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â·","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¸","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¹");
                 $result = str_replace($extended_arabic_indic, $standard, $str);
             }
             else if ($lang == 'hi')
             {
-                $hindi_symbols = array("ÃƒÂ Ã‚Â¥Ã‚Â¦","ÃƒÂ Ã‚Â¥Ã‚Â§","ÃƒÂ Ã‚Â¥Ã‚Â¨","ÃƒÂ Ã‚Â¥Ã‚Â©","ÃƒÂ Ã‚Â¥Ã‚Âª","ÃƒÂ Ã‚Â¥Ã‚Â«","ÃƒÂ Ã‚Â¥Ã‚Â¬","ÃƒÂ Ã‚Â¥Ã‚Â­","ÃƒÂ Ã‚Â¥Ã‚Â®","ÃƒÂ Ã‚Â¥Ã‚Â¯");
+                $hindi_symbols = array("ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â©","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Âª","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â«","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¬","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â­","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â®","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¯");
                 $result = str_replace($hindi_symbols, $standard, $str);
             }
 
