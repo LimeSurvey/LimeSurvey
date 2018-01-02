@@ -181,7 +181,11 @@ class AdminViewsTest extends TestBaseClassView
             $user = \User::findByUsername($view['username']);
         }
 
+        echo $user->users_name."-".$user->uid;
+
         $view['clickId'] = ReplaceFields($view['clickId'],['{UID}'=>$user->primaryKey]);
+        echo $view['clickId'];
+        die;
         $url = $this->getUrl($view);
         $this->openView($url);
 
