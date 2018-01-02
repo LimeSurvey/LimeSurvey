@@ -189,15 +189,15 @@ class AdminViewsTest extends TestBaseClassView
         $url = $this->getUrl($view);
         $this->openView($url);
 
-        self::find(WebDriverBy::id($view['clickId']),10);
+        self::findAndClick(WebDriverBy::id($view['clickId']),10);
         $element = $this->findViewTag($name,10);
         $this->assertNotEmpty(
             $element,
             sprintf(
-                'FAILED viewing %s on route %s, full url %s',
+                'FAILED viewing %s and clicking on %s, url %s',
                 $name,
-                (isset($view['route']) ? $view['route'] : ''),
-                $this->url
+                (isset($view['clickId']) ? $view['clickId'] : ''),
+                $url
             )
         );
 
