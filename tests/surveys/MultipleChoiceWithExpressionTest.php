@@ -62,6 +62,7 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
             // Check that equation reacts.
             $equation = self::$webDriver->findElement(WebDriverBy::id('question' . $questions['equation1']->qid));
             $equestionText = $equation->getText();
+            self::takeScreenShot('ywwww');
             $trues = substr_count($equestionText, 'true');
             $this->assertEquals(2, $trues, 'Found two "true"');
 

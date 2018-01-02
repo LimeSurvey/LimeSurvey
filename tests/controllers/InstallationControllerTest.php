@@ -154,7 +154,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             // Login & assert.
             self::adminLogin($username, $password);
 
-
         } catch (NoSuchElementException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, (new \ReflectionClass($this))->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
