@@ -175,6 +175,8 @@ class AdminViewsTest extends TestBaseClassView
      * @dataProvider addAdminClickViews
      */
     public function testAdminClickViews($name,$view){
+        $this->markTestSkipped();
+        return;
 
         $user = self::$user;
         if(isset($view['username'])){
