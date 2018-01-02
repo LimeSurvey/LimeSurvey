@@ -185,11 +185,11 @@ class AdminViewsTest extends TestBaseClassView
 
         $view['clickId'] = ReplaceFields($view['clickId'],['{UID}'=>$user->primaryKey]);
         echo $view['clickId'];
-        die;
+
         $url = $this->getUrl($view);
         $this->openView($url);
 
-        self::findAndClick(WebDriverBy::id($view['clickId']),10);
+        self::find(WebDriverBy::id($view['clickId']),10);
         $element = $this->findViewTag($name,10);
         $this->assertNotEmpty(
             $element,

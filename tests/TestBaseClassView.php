@@ -23,7 +23,8 @@ class TestBaseClassView extends TestBaseClassWeb
 {
 
     /**
-     * 
+     *
+     * @throws \Exception
      */
     public static function setupBeforeClass()
     {
