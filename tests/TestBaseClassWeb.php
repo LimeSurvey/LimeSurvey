@@ -204,6 +204,10 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
+
+        //close modal (eg password warning)
+        self::findAndClick(WebDriverBy::cssSelector('.modal-header button.close'));
+
         try {
             self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(

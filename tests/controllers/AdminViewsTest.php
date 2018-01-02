@@ -189,6 +189,9 @@ class AdminViewsTest extends TestBaseClassView
         $url = $this->getUrl($view);
         $this->openView($url);
 
+        //close modal (eg password warning)
+        self::findAndClick(WebDriverBy::cssSelector('#admin-notification-modal button.close'),2);
+
         self::findAndClick(WebDriverBy::id($view['clickId']),10);
         $element = $this->findViewTag($name,10);
         $this->assertNotEmpty(
