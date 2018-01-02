@@ -175,8 +175,6 @@ class AdminViewsTest extends TestBaseClassView
      * @dataProvider addAdminClickViews
      */
     public function testAdminClickViews($name,$view){
-        $this->markTestSkipped();
-        return;
 
         $user = self::$user;
         if(isset($view['username'])){
@@ -187,25 +185,18 @@ class AdminViewsTest extends TestBaseClassView
         $url = $this->getUrl($view);
         $this->openView($url);
 
-        try{
-            $clickable = self::findAndClick(WebDriverBy::id($view['clickId']),10);
-            $element = $this->findViewTag($name,10);
-            $this->assertNotEmpty(
-                $element,
-                sprintf(
-                    'FAILED viewing %s on route %s, full url %s',
-                    $name,
-                    (isset($view['route']) ? $view['route'] : ''),
-                    $this->url
-                )
-            );
+        self::findAndClick(WebDriverBy::id($view['clickId']),10);
+        $element = $this->findViewTag($name,10);
+        $this->assertNotEmpty(
+            $element,
+            sprintf(
+                'FAILED viewing %s on route %s, full url %s',
+                $name,
+                (isset($view['route']) ? $view['route'] : ''),
+                $this->url
+            )
+        );
 
-        }catch (\Exception $e){
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder .'/'.$name.'.png';
-            file_put_contents($filename, $screenshot);
-            throw $e;
-        }
     }
 
 }
