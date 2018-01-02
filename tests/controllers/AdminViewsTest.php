@@ -175,8 +175,6 @@ class AdminViewsTest extends TestBaseClassView
      * @dataProvider addAdminClickViews
      */
     public function testAdminClickViews($name,$view){
-        $this->markTestSkipped();
-        return;
 
         $user = self::$user;
         if(isset($view['username'])){
@@ -188,13 +186,7 @@ class AdminViewsTest extends TestBaseClassView
         $this->openView($url);
 
         try{
-            self::$webDriver->wait(2)->until(
-                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
-                    WebDriverBy::id($view['clickId'])
-                )
-            );
-            $clickable = self::$webDriver->findElement(WebDriverBy::id($view['clickId']));
-            $clickable->click();
+            self::findAndClick(WebDriverBy::id($view['clickId']),10);
             $element = $this->findViewTag($name);
             $this->assertNotEmpty(
                 $element,
