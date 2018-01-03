@@ -1176,6 +1176,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function copy()
     {
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
@@ -1271,7 +1272,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
             } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
 
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
+                $aImportResults = XMLImportSurvey('', $user, $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance'=>'1'), 'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'), 'sid='.$aImportResults['newsid']);

@@ -273,6 +273,8 @@ class remotecontrol_handle
             $aData['sErrorMessage'] = "You don't have sufficient permissions.";
             $aData['bFailed'] = true;
         } else {
+            $user = User::model()->findByPk(Yii::app()->session['loginID']);
+
             $aExcludes = array();
             $sNewSurveyName = $sNewname;
             $aExcludes['dates'] = true;
@@ -281,7 +283,7 @@ class remotecontrol_handle
             $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
             if ($copysurveydata) {
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
+                $aImportResults = XMLImportSurvey('', $user, $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance'=>'1'), 'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'), 'sid='.$aImportResults['newsid']);

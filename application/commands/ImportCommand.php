@@ -14,6 +14,7 @@
 class ImportCommand extends CConsoleCommand
 {
     /**
+     * @throws CException
      */
     public function run($args)
     {

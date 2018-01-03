@@ -689,6 +689,8 @@ function XMLImportLabelsets($sFullFilePath, $options)
  */
 function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
 {
+    $user = User::model()->findByPk(Yii::app()->session['loginID']);
+
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
         $sExtension = strtolower($aPathInfo['extension']);
@@ -697,7 +699,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     }
 
     if ($sExtension == 'lss') {
-        $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+        $aImportResults = XMLImportSurvey($sFullFilePath, $user, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
         if ($aImportResults && $aImportResults['newsid']) {
             TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
         }
@@ -723,7 +725,8 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                 //Import the LSS file
-                $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], null, null, null, true, false);
+                $filePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'];
+                $aImportResults = XMLImportSurvey($filePath, $user,null, null, null, true, false);
                 if ($aImportResults && $aImportResults['newsid']) {
                     TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
                 }
@@ -786,12 +789,14 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 }
 
 /**
-* This function imports a LimeSurvey .lss survey XML file
-*
-* @param string $sFullFilePath  The full filepath of the uploaded file
-* @param string $sXMLdata
-*/
-function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+ * This function imports a LimeSurvey .lss survey XML file
+ *
+ * @param string $sFullFilePath The full filepath of the uploaded file
+ * @param User $user
+ * @param string $sXMLdata
+ * @return array
+ */
+function XMLImportSurvey($sFullFilePath, $user, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
     Yii::app()->loadHelper('database');
     $results = [];
@@ -861,8 +866,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         //Make sure it is not set active
         $insertdata['active'] = 'N';
         //Set current user to be the owner
-        //$insertdata['owner_id'] = Yii::app()->session['loginID'];
-        $insertdata['owner_id'] = 1;
+        $insertdata['owner_id'] = Yii::app()->session['loginID'];
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '') {
             $insertdata['bouncetime'] = null;
