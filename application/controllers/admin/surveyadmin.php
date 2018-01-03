@@ -1533,7 +1533,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aRadixPointData[$index] = $radixptdata['desc'];
         }
         $aData['aRadixPointData'] = $aRadixPointData;
-
+        $aDateFormatData = [];
         foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) {
             $aDateFormatData[$index] = $dateformatdata['dateformat'];
         }
