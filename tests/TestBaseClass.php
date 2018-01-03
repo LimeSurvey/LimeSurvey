@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 use User;
+use Yii;
 
 class TestBaseClass extends TestCase
 {
