@@ -3241,16 +3241,15 @@ function getSubQuestions($sid, $qid, $sLanguage)
     }
     if (!isset($subquestions[$sid][$sLanguage])) {
 
-        $query = "SELECT sq.*, q.other FROM {{questions}} as sq, {{questions}} as q"
-        ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
-        ." AND sq.language='".$sLanguage."' "
-        ." AND q.language='".$sLanguage."' "
-        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+        $query = "SELECT sq.*, ls.question, q.other FROM {{questions}} as sq
+        JOIN {{questions}} as q on sq.parent_qid=q.qid
+        JOIN {{question_l10n}} as ls on ls.qid=sq.qid" 
+        ." WHERE sq.parent_qid=q.qid AND ls.language='{$sLanguage}' AND q.sid=".$sid
+        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id, sq.question_order";
 
         $query = Yii::app()->db->createCommand($query)->query();
 
         $resultset = array();
-        //while ($row=$result->FetchRow())
         foreach ($query->readAll() as $row) {
             $resultset[$row['parent_qid']][] = $row;
         }

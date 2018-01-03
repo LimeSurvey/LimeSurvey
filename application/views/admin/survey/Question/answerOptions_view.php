@@ -157,9 +157,9 @@
                                                     'surveyid'  => $surveyid,
                                                     'gid'       => $gid,
                                                     'qid'       => $row->qid,
-                                                    'language'  => $row->language,
+                                                    'language'  => $anslang,
                                                     'title'     => $row->title,
-                                                    'question'  => $row->question,
+                                                    'question'  => $row->questionL10n[$anslang]->question,
                                                     'relevance' => $row->relevance,
                                                     'oldCode'   => true,
                                                 ));?>
@@ -174,10 +174,10 @@
                                                     'surveyid'          => $surveyid,
                                                     'gid'               => $gid,
                                                     'qid'               => $qid,
-                                                    'language'          => $row->language,
+                                                    'language'          => $anslang,
                                                     'assessment_value'  => $row->assessment_value,
                                                     'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answer,
+                                                    'answer'            => $row->answerL10n[$anslang]->answer,
                                                     'oldCode'   => true,
                                                 ));?>
 

@@ -35,7 +35,7 @@ class QuestionL10n extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('id');
+        return 'id';
     }
 
     /**
@@ -54,7 +54,7 @@ class QuestionL10n extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::BELONGS_TO, 'question', '', 'on' => "$alias.qid = question.qid"),
+            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
         );
     }
     

@@ -49,7 +49,7 @@ class Answer extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('aid');
+        return 'aid';
     }
 
     /** @inheritdoc */
@@ -64,7 +64,7 @@ class Answer extends LSActiveRecord
             'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'
             ),
-            'answerL10n' => array(self::HAS_MANY, 'QuestionL10n', 'aid', 'together' => true),
+            'answerL10n' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             
         );
     }
@@ -187,12 +187,11 @@ class Answer extends LSActiveRecord
      * @static
      * @access public
      * @param int $qid
-     * @param string $lang
      * @return void
      */
-    public static function updateSortOrder($qid, $lang)
+    public static function updateSortOrder($qid)
     {
-        $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
+        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder asc'));
         $position = 0;
 
         foreach ($data as $row) {

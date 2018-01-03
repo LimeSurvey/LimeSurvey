@@ -53,7 +53,7 @@ class QuestionGroup extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('gid');
+        return 'gid';
     }
 
 

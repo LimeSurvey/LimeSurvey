@@ -353,10 +353,11 @@ class database extends Survey_Common_Action
         foreach ($aDeletedQIDs as $iDeletedQID) {
             $iDeletedQID = (int) $iDeletedQID;
             if ($iDeletedQID > 0) {
-// don't remove undefined
+                // don't remove undefined
                 $iInsertCount = Question::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
+                $iInsertCount += QuestionL10n::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
                 if (!$iInsertCount) {
-                    Yii::app()->setFlashMessage(gT("Failed to delete answer"), 'error');
+                    Yii::app()->setFlashMessage(gT("Failed to delete subquestion"), 'error');
                 }
             }
         }
@@ -382,88 +383,84 @@ class database extends Survey_Common_Action
             }
         }
         $aInsertQID = array();
+
+        // Give existing subquestions a temporary random title (code) to avoid title duplication on update
+        $aoSubquestions=Question::model()->findAllByAttributes(['parent_qid'=>$this->iQuestionID]);
+        foreach ($aoSubquestions as $oSubQuestion) {
+            $bAnswerSave = false;
+            while (!$bAnswerSave) {
+                $oSubQuestion->title = (string) rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                if ($oSubQuestion->save()) {
+                    $bAnswerSave = true;
+                }
+            }
+        }
+
         for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 $iPosition = 0;
-
-                // Give to subquestions to edit a temporary random title to avoid title duplication on update
-                foreach ($aRows[$iScaleID][$sLanguage] as $subquestionkey=>$subquestionvalue) {
-                    if (substr($subquestionkey, 0, 3) != 'new') {
-                        $oSubQuestion = Question::model()->find("qid=:qid AND language=:language", array(":qid"=>$subquestionkey, ':language'=>$sLanguage));
-
-                        $bAnswerSave = false;
-
-                        while (!$bAnswerSave) {
-                            $oSubQuestion->title = (string) rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
-                            if ($oSubQuestion->save()) {
-                                $bAnswerSave = true;
-                            }
-                        }
-                    }
-                }
-
-
-                foreach ($aRows[$iScaleID][$sLanguage] as $subquestionkey=>$subquestionvalue) {
-                    if (substr($subquestionkey, 0, 3) != 'new') {
-//update record
-
-                        //
-
-                        $oSubQuestion = Question::model()->find("qid=:qid AND language=:language", array(":qid"=>$subquestionkey, ':language'=>$sLanguage));
+                foreach ($aRows[$iScaleID][$sLanguage] as $iSubQuestionID=>$subquestionvalue) {
+                    if (substr($iSubQuestionID, 0, 3) != 'new') {
+                        //update record
+                        $oSubQuestion = Question::model()->findByPk($iSubQuestionID);
+                        $oSubQuestionL10n = QuestionL10n::model()->findByAttributes(array('qid'=>$iSubQuestionID,'language'=>$sLanguage));
                         if (!is_object($oSubQuestion)) {
-                            throw new CHttpException(502, "could not find subquestion $subquestionkey !");
+                            throw new CHttpException(502, "could not find subquestion $iSubQuestionID !");
                         }
-
                         $oSubQuestion->question_order = $iPosition + 1;
                         $oSubQuestion->title = $aCodes[$iScaleID][$iPosition];
-                        $oSubQuestion->question = $subquestionvalue;
+                        $oSubQuestionL10n->question = $subquestionvalue;
                         $oSubQuestion->scale_id = $iScaleID;
                         $oSubQuestion->relevance = isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
                     } else {
-// new record
+                        // new record
                         if (!isset($aInsertQID[$iScaleID][$iPosition])) {
-//new record: first (default) language
+                            //new record: first (default) language
                             $oSubQuestion = new Question;
+                            $oSubQuestionL10n = new QuestionL10n;
                             $oSubQuestion->sid = $iSurveyID;
                             $oSubQuestion->gid = $this->iQuestionGroupID;
                             $oSubQuestion->question_order = $iPosition + 1;
                             $oSubQuestion->title = $aCodes[$iScaleID][$iPosition];
-                            $oSubQuestion->question = $subquestionvalue;
+                            $oSubQuestionL10n->question = $subquestionvalue;
                             $oSubQuestion->parent_qid = $this->iQuestionID;
-                            $oSubQuestion->language = $sLanguage;
+                            $oSubQuestionL10n->language = $sLanguage;
                             $oSubQuestion->scale_id = $iScaleID;
                             $oSubQuestion->relevance = isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
                         } else {
-//new record: additional language
-                            $oSubQuestion = Question::model()->find("qid=:qid AND language=:language", array(":qid"=>$aInsertQID[$iScaleID][$iPosition], ':language'=>$sLanguage));
-                            if (!$oSubQuestion) {
-                                $oSubQuestion = new Question;
+                            //new record: additional language
+                            $oSubQuestionL10n = QuestionL10n::model()->find("qid=:qid AND language=:language", array(":qid"=>$aInsertQID[$iScaleID][$iPosition], ':language'=>$sLanguage));
+                            if (!$oSubQuestionL10n) {
+                                $oSubQuestionL10n = new Question;
                             }
-                            $oSubQuestion->sid = $iSurveyID;
-                            $oSubQuestion->gid = $this->iQuestionGroupID;
-                            $oSubQuestion->qid = $aInsertQID[$iScaleID][$iPosition];
-                            $oSubQuestion->question_order = $iPosition + 1;
-                            $oSubQuestion->title = $aCodes[$iScaleID][$iPosition];
-                            $oSubQuestion->question = $subquestionvalue;
-                            $oSubQuestion->parent_qid = $this->iQuestionID;
-                            $oSubQuestion->language = $sLanguage;
-                            $oSubQuestion->scale_id = $iScaleID;
-                            $oSubQuestion->relevance = isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
+                            $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
+                            $oSubQuestionL10n->question = $subquestionvalue;
+                            $oSubQuestionL10n->language = $sLanguage;
                         }
                     }
-                    if ($oSubQuestion->qid) {
-                        switchMSSQLIdentityInsert('questions', true);
+                    if (isset($oSubQuestion))
+                    {
                         $bSubQuestionResult = $oSubQuestion->save();
-                        switchMSSQLIdentityInsert('questions', false);
-                    } else {
-                        $bSubQuestionResult = $oSubQuestion->save();
+                        $aInsertQID[$iScaleID][$iPosition] = $oSubQuestion->qid;
+                        unset($oSubQuestion);
                     }
+                    else
+                    {
+                        $bSubQuestionResult=true;
+                    }
+                    if (isset($oSubQuestionL10n))
+                    {
+                        if (empty($oSubQuestionL10n->qid))
+                        {
+                            $oSubQuestionL10n->qid=$aInsertQID[$iScaleID][$iPosition];
+                        }
+                        $bSubQuestionResult = $oSubQuestionL10n->save();
+                        unset($oSubQuestionL10n);
+                    }
+
                     if ($bSubQuestionResult) {
-                        if (substr($subquestionkey, 0, 3) != 'new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition]) {
+                        if ($bSubQuestionResult!== true && substr($iSubQuestionID, 0, 3) != 'new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition]) {
                             Condition::model()->updateAll(array('cfieldname'=>'+'.$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID.$aCodes[$iScaleID][$iPosition], 'value'=>$aCodes[$iScaleID][$iPosition]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$this->iQuestionID, ':cfieldname'=>$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID, ':value'=>$aOldCodes[$iScaleID][$iPosition]));
-                        }
-                        if (!isset($aInsertQID[$iScaleID][$iPosition])) {
-                            $aInsertQID[$iScaleID][$iPosition] = $oSubQuestion->qid;
                         }
                     } else {
                         $aErrors = $oSubQuestion->getErrors();
@@ -652,59 +649,60 @@ class database extends Survey_Common_Action
                 $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 array_push($aSurveyLanguages, $sBaseLanguage);
+                $oQuestion = Question::model()->findByPk($this->iQuestionID);
+                $oQuestion->type = $sQuestionType; 
+                $oQuestion->title = Yii::app()->request->getPost('title');
+                $oQuestion->preg = Yii::app()->request->getPost('preg');
+                $oQuestion->gid = $this->iQuestionGroupID;
+                $oQuestion->other = Yii::app()->request->getPost('other');
+                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                $oQuestion->relevance = Yii::app()->request->getPost('relevance');  
+                // Update question module
+                if (Yii::app()->request->getPost('module_name') != '') {
+                    // The question module is not empty. So it's an external question module.
+                    $oQuestion->modulename = Yii::app()->request->getPost('module_name');
+                } else {
+                    // If it was a module before, we must
+                    $oQuestion->modulename = '';
+                }
+                if ($oldgid != $this->iQuestionGroupID) {
+                    if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
+                        // TMSW Condition->Relevance:  What is needed here?
+
+                        // Moving question to a 'upper' group
+                        // insert question at the end of the destination group
+                        // this prevent breaking conditions if the target qid is in the dest group
+                        $insertorder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID) + 1;
+                        $oQuestion->question_order = $insertorder;
+                    } else {
+                        // Moving question to a 'lower' group
+                        // insert question at the beginning of the destination group
+                        shiftOrderQuestions($iSurveyID, $this->iQuestionGroupID, 1); // makes 1 spare room for new question at top of dest group
+                        $oQuestion->question_order = 0;
+                    }
+                }
+                
+                $uqresult = $oQuestion->save();              
+                
                 foreach ($aSurveyLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
-                        // &eacute; to ÃƒÆ’Ã‚Â© and &amp; to & : really needed ? Why not for answers ? (130307)
                         $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');
                         $sQuestionHelp = Yii::app()->request->getPost('help_'.$qlang, '');
-                        // Fix bug with FCKEditor saving strange BR types : in rules ?
                         $sQuestionText = $this->oFixCKeditor->fixCKeditor($sQuestionText);
                         $sQuestionHelp = $this->oFixCKeditor->fixCKeditor($sQuestionHelp);
                         $udata = array(
-                            'type' => $sQuestionType,
-                            'title' => Yii::app()->request->getPost('title'),
                             'question' => $sQuestionText,
-                            'preg' => Yii::app()->request->getPost('preg'),
                             'help' => $sQuestionHelp,
-                            'gid' => $this->iQuestionGroupID,
-                            'other' => Yii::app()->request->getPost('other'),
-                            'mandatory' => Yii::app()->request->getPost('mandatory'),
-                            'relevance' => Yii::app()->request->getPost('relevance'),
+                            'language' => $qlang
                         );
 
-                        // Update question module
-                        if (Yii::app()->request->getPost('module_name') != '') {
-                            // The question module is not empty. So it's an external question module.
-                            $udata['modulename'] = Yii::app()->request->getPost('module_name');
-                        } else {
-                            // If it was a module before, we must
-                            $udata['modulename'] = '';
-                        }
-
-                        if ($oldgid != $this->iQuestionGroupID) {
-                            if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
-                                // TMSW Condition->Relevance:  What is needed here?
-
-                                // Moving question to a 'upper' group
-                                // insert question at the end of the destination group
-                                // this prevent breaking conditions if the target qid is in the dest group
-                                $insertorder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID) + 1;
-                                $udata = array_merge($udata, array('question_order' => $insertorder));
-                            } else {
-                                // Moving question to a 'lower' group
-                                // insert question at the beginning of the destination group
-                                shiftOrderQuestions($iSurveyID, $this->iQuestionGroupID, 1); // makes 1 spare room for new question at top of dest group
-                                $udata = array_merge($udata, array('question_order' => 0));
-                            }
-                        }
-                        //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                        $oQuestion = Question::model()->findByPk(array("qid"=>$this->iQuestionID, 'language'=>$qlang));
+                        $oQuestionL10n = QuestionL10n::model()->findByAttributes(array("qid"=>$this->iQuestionID, 'language'=>$qlang));
 
                         foreach ($udata as $k => $v) {
-                            $oQuestion->$k = $v;
+                            $oQuestionL10n->$k = $v;
                         }
 
-                        $uqresult = $oQuestion->save(); //($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                        $uqresult = $oQuestionL10n->save(); //($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                         if (!$uqresult) {
                             $bOnError = true;
                             $aErrors = $oQuestion->getErrors();

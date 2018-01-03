@@ -35,7 +35,7 @@ class AnswerL10n extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('id');
+        return 'id';
     }
 
     public function defaultScope()

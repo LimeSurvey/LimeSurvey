@@ -69,7 +69,7 @@ class Question extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid');
+        return 'qid';
     }
 
     /** @inheritdoc */
@@ -1040,22 +1040,23 @@ class Question extends LSActiveRecord
         }
         $oSurvey = $this->survey;
 
-        /* Delete sub question in all other language */
+        /* Delete subquestion l10n for unknown languages */
         $criteria = new CDbCriteria;
-        $criteria->compare('parent_qid', $this->qid);
+        $criteria->with = array("question",array('condition'=>array('sid'=>$this->qid)));
+        $criteria->together = true;
         $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
-        Question::model()->deleteAll($criteria); // Must log count of deleted ?
+        QuestionL10n::model()->deleteAll($criteria); 
 
         /* Delete invalid subquestions (not in primary language */
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'parent_qid=:parent_qid AND language=:language',
-            'params'=>array('parent_qid' => $this->qid, 'language' => $oSurvey->language)
+            'condition'=>'parent_qid=:parent_qid',
+            'params'=>array('parent_qid' => $this->qid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('parent_qid', $this->qid);
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
-        Question::model()->deleteAll($criteria); // Must log count of deleted ?
+        Question::model()->deleteAll($criteria);
     }
     /** @return string[] */
     public static function getQuotableTypes()
