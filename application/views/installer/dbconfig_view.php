@@ -5,7 +5,7 @@
  * @var string $descp
  */
 
-Yii::app()->clientScript->registerScript('orgType', "
+Yii::app()->clientScript->registerScript('dbType', "
 $( document ).ready(function() {
     checkDbType();
 });
