@@ -684,12 +684,14 @@ function XMLImportLabelsets($sFullFilePath, $options)
 /**
  * @param string $sFullFilePath
  * @param boolean $bTranslateLinksFields
+ * @param User $user
  * @param string $sNewSurveyName
  * @param integer $DestSurveyID
+ * @return array|null
+ * @throws CException
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $user, $sNewSurveyName = null, $DestSurveyID = null)
 {
-    $user = User::model()->findByPk(Yii::app()->session['loginID']);
 
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {

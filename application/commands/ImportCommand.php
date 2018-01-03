@@ -31,7 +31,7 @@ class ImportCommand extends CConsoleCommand
             echo 'Fatal error: found no survey file';
             exit(1);
         }
-
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
 
         $translateLinksFields = false;
         $newSurveyName = null;
@@ -39,6 +39,7 @@ class ImportCommand extends CConsoleCommand
             $result = importSurveyFile(
                 $fileName,
                 $translateLinksFields,
+                $user,
                 $newSurveyName,
                 null
             );

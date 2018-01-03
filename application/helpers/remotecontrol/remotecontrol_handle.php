@@ -225,6 +225,8 @@ class remotecontrol_handle
         }
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+                $user = User::model()->findByPk(Yii::app()->session['loginID']);
+
                 if (!in_array($sImportDataType, array('lsa', 'csv', 'txt', 'lss'))) {
                     return array('status' => 'Invalid extension');
                 }
@@ -232,7 +234,7 @@ class remotecontrol_handle
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
-                $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
+                $aImportResults = importSurveyFile($sFullFilePath, true, $user, $sNewSurveyName, $DestSurveyID);
                 unlink($sFullFilePath);
                 if (isset($aImportResults['error']) && $aImportResults['error']) {
                     return array('status' => 'Error: '.$aImportResults['error']);
