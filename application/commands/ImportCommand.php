@@ -56,12 +56,6 @@ class ImportCommand extends CConsoleCommand
 
         if($userId){
             $user = User::model()->findByPk($userId);
-            if(!$user){
-                echo 'Fatal error: User not found'.PHP_EOL;
-                echo 'Specify the user id by --userId=[uid] or leave blank to use a default superadmin.'.PHP_EOL;
-                exit(1);
-
-            }
         }else{
             echo 'No user is set'.PHP_EOL;
             $superAdmins = User::getSuperAdmins();
@@ -69,6 +63,11 @@ class ImportCommand extends CConsoleCommand
                 $user = $superAdmins[0];
                 echo sprintf('Using user %s (userId=%d) by default',$user->users_name, $user->primaryKey).PHP_EOL;
             }
+        }
+        if(!$user){
+            echo 'Fatal error: User not found'.PHP_EOL;
+            echo 'Specify the user id by --userId=[uid] or leave blank to use a default superadmin.'.PHP_EOL;
+            exit(1);
         }
 
 
