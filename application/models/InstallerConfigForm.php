@@ -96,7 +96,7 @@ class InstallerConfigForm extends CFormModel
             }
         }
         // FIXME this is for testing only!!! REMOVE THIS IF READY
-        $this->supported_db_types = $this->db_names;
+        //$this->supported_db_types = $this->db_names;
 
         asort($this->supported_db_types);
 
