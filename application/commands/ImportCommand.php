@@ -53,7 +53,6 @@ class ImportCommand extends CConsoleCommand
             echo sprintf('Fatal error: found no survey file at "%s"',$surveyFile).PHP_EOL;;
             exit(1);
         }
-
         if($userId){
             $user = User::model()->findByPk($userId);
         }else{
@@ -62,6 +61,8 @@ class ImportCommand extends CConsoleCommand
             if(!empty($superAdmins)){
                 $user = $superAdmins[0];
                 echo sprintf('Using user %s (userId=%d) by default',$user->users_name, $user->primaryKey).PHP_EOL;
+            }else{
+                $user = null;
             }
         }
         if(!$user){
