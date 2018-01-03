@@ -32,40 +32,40 @@ class ImportCommand extends CConsoleCommand
     /**
      * @throws Exception
      */
-    public function actionIndex($file,$userId=null)
+    public function actionIndex($file, $userId = null)
     {
 
-        if(!$file){
-            echo 'File name must be defined. Use --file= argument to define file path.'.PHP_EOL;;
+        if (!$file) {
+            echo 'File name must be defined. Use --file= argument to define file path.'.PHP_EOL; ;
             exit(1);
 
         }
 
-        if($file[0]===DIRECTORY_SEPARATOR){
+        if ($file[0] === DIRECTORY_SEPARATOR) {
             // we have root path set
             $surveyFile = $file;
-        }else{
-            $surveyFile = __DIR__ . '/../../'.$file;
+        } else {
+            $surveyFile = __DIR__.'/../../'.$file;
         }
 
 
         if (!file_exists($surveyFile)) {
-            echo sprintf('Fatal error: found no survey file at "%s"',$surveyFile).PHP_EOL;;
+            echo sprintf('Fatal error: found no survey file at "%s"', $surveyFile).PHP_EOL; ;
             exit(1);
         }
-        if($userId){
+        if ($userId) {
             $user = User::model()->findByPk($userId);
-        }else{
+        } else {
             echo 'No user is set'.PHP_EOL;
             $superAdmins = User::getSuperAdmins();
-            if(!empty($superAdmins)){
+            if (!empty($superAdmins)) {
                 $user = $superAdmins[0];
-                echo sprintf('Using user %s (userId=%d) by default',$user->users_name, $user->primaryKey).PHP_EOL;
-            }else{
+                echo sprintf('Using user %s (userId=%d) by default', $user->users_name, $user->primaryKey).PHP_EOL;
+            } else {
                 $user = null;
             }
         }
-        if(!$user){
+        if (!$user) {
             echo 'Fatal error: User not found'.PHP_EOL;
             echo 'Specify the user id by --userId=[uid] or leave blank to use a default superadmin.'.PHP_EOL;
             exit(1);
@@ -83,11 +83,11 @@ class ImportCommand extends CConsoleCommand
                 $newSurveyName,
                 null
             );
-            if($result){
+            if ($result) {
                 $newSid = $result['newsid'];
                 $newSurvey = Survey::model()->findByPk($newSid);
                 echo sprintf('Successfully imported survey').PHP_EOL;
-                echo sprintf('Imported survey ID: %d',$newSurvey->primaryKey).PHP_EOL;
+                echo sprintf('Imported survey ID: %d', $newSurvey->primaryKey).PHP_EOL;
             }
         } catch (\Exception $ex) {
             throw $ex;

@@ -728,7 +728,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $user, $sNewSu
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                 //Import the LSS file
                 $filePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'];
-                $aImportResults = XMLImportSurvey($filePath, $user,null, null, null, true, false);
+                $aImportResults = XMLImportSurvey($filePath, $user, null, null, null, true, false);
                 if ($aImportResults && $aImportResults['newsid']) {
                     TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
                 }
