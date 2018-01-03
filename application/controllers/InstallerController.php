@@ -259,6 +259,9 @@ class InstallerController extends CController
                 $bDBExists = $this->dbTest($aDbConfig, $aData);
                 if ($this->_dbConnect($aDbConfig, $aData)) {
                     $bDBConnectionWorks = true;
+                    $oModel->db =$this->connection;
+                    $oModel->setMySQLDefaultEngine();
+
                 } else {
                     $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
                     $oModel->addError('dbpwd', '');
@@ -310,7 +313,7 @@ class InstallerController extends CController
                         exit();
                     }
 
-                    if (in_array($oModel->dbtype, array('mysql', 'mysqli'))) {
+                    if ($oModel->isMysql) {
                         //for development - use mysql in the strictest mode  
                         if (Yii::app()->getConfig('debug') > 1) {
                             $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
@@ -324,7 +327,7 @@ class InstallerController extends CController
                     }
 
                     // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($oModel->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
+                    if ($oModel->isMSSql) {
                         @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
                         @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
                     }

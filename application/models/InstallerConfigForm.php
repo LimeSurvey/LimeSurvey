@@ -19,11 +19,12 @@
  * Class InstallerConfigForm
  * @property array $dbEngines the MySQL database engines as [value=>'label']
  * @property boolean $isMysql whether the db type is mysql or mysqli
+ * @property boolean $isMSSql whether the db type is one of MS Sql types
  */
 class InstallerConfigForm extends CFormModel
 {
-    const ENGINE_TYPE_MYISAM = 'MyISAM';
-    const ENGINE_TYPE_INNODB = 'InnoDB';
+    const ENGINE_TYPE_MYISAM = 'MYISAM';
+    const ENGINE_TYPE_INNODB = 'INNODB';
 
     const DB_TYPE_MYSQL = 'mysql';
     const DB_TYPE_MYSQLI = 'mysqli';
@@ -75,6 +76,9 @@ class InstallerConfigForm extends CFormModel
     /** @var string $surveylang */
     public $surveylang = 'en';
 
+    /** @var DbConnection */
+    public $db;
+
 
     /**
      * InstallerConfigForm constructor.
@@ -91,6 +95,7 @@ class InstallerConfigForm extends CFormModel
                 $this->supported_db_types[$driver] = $this->db_names[$driver];
             }
         }
+        // FIXME this is for testing only!!! REMOVE THIS IF READY
         $this->supported_db_types = $this->db_names;
 
         asort($this->supported_db_types);
@@ -110,8 +115,8 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
-            array('dbengine', 'in', 'range' => array_keys(self::getDbEngines()), 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
+            array('dbengine', 'in', 'range' => array_keys(self::getDbEngines()), 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
@@ -134,14 +139,14 @@ class InstallerConfigForm extends CFormModel
             'dbengine' => Yii::t('app','MySQL databse engine type'),
         );
     }
+
     public function validateDBEngine($attribute,$params)
     {
         if($this->isMysql
-            && ($this->dbengine === null or !in_array($this->dbengine,self::getDbEngines())) ){
+            && ($this->dbengine === null or !in_array($this->dbengine,array_keys(self::getDbEngines()))) ){
 
             $this->addError($attribute, Yii::t('app','The database engine type must be set for MySQL'));
         }
-
     }
 
     /**
@@ -154,7 +159,30 @@ class InstallerConfigForm extends CFormModel
         ];
     }
 
+    /**
+     * @return bool
+     */
     public function getIsMysql(){
         return in_array($this->dbtype,[self::DB_TYPE_MYSQL,self::DB_TYPE_MYSQLI]);
     }
+
+    /**
+     * @return bool
+     */
+    public function getIsMSSql(){
+        return in_array($this->dbtype,[self::DB_TYPE_MSSQL, self::DB_TYPE_DBLIB, self::DB_TYPE_SQLSRV]);
+    }
+
+    /**
+     * @throws CDbException
+     */
+    public function setMySQLDefaultEngine(){
+        if(!empty($this->db) && $this->db->driverName == 'mysql'){
+            $this->db
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $this->dbengine)))
+                ->execute();
+        }
+
+    }
+
 }
