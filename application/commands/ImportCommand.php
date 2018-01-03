@@ -15,15 +15,25 @@ class ImportCommand extends CConsoleCommand
 {
 
     /**
+     * ImportCommand constructor.
+     * @param $name
+     * @param CConsoleCommandRunner $runner
      * @throws CException
+     */
+    public function __construct($name, CConsoleCommandRunner $runner)
+    {
+        parent::__construct($name, $runner);
+        \Yii::import('application.helpers.admin.import_helper', true);
+        \Yii::import('application.helpers.common_helper', true);
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+    }
+
+
+    /**
      * @throws Exception
      */
     public function actionIndex($file,$userId=null)
     {
-
-        \Yii::import('application.helpers.admin.import_helper', true);
-        \Yii::import('application.helpers.common_helper', true);
-        \Yii::import('application.helpers.expressions.em_manager_helper', true);
 
         if(!$file){
             echo 'File name must be defined. Use --file= argument to define file path.'.PHP_EOL;;
