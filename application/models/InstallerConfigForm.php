@@ -15,6 +15,10 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class InstallerConfigForm
+ * @property array $dbEngines the MySQL database engines as [value=>'label']
+ */
 class InstallerConfigForm extends CFormModel
 {
     const ENGINE_TYPE_MYISAM = 'MyISAM';
@@ -33,7 +37,6 @@ class InstallerConfigForm extends CFormModel
     public $dbpwd;
     /** @var string $dbprefix */
     public $dbprefix = 'lime_';
-
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
 
@@ -120,5 +123,15 @@ class InstallerConfigForm extends CFormModel
             'dbprefix' => Yii::t('app','Table prefix'),
             'dbengine' => Yii::t('app','MySQL databse engine type'),
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getDbEngines(){
+        return [
+            self::ENGINE_TYPE_MYISAM => Yii::t('app','MyISAM'),
+            self::ENGINE_TYPE_INNODB => Yii::t('app','InnoDB'),
+        ];
     }
 }
