@@ -386,7 +386,8 @@ class InstallerController extends CController
     /**
      * Installer::stepCreateDb()
      * Create database.
-     * @return
+     * @return void
+     * @throws Exception
      */
     public function stepCreateDb()
     {
@@ -446,7 +447,7 @@ class InstallerController extends CController
 
         //$this->load->dbforge();
         if ($bCreateDB) {
-//Database has been successfully created
+            //Database has been successfully created
             $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
@@ -1275,7 +1276,7 @@ class InstallerController extends CController
                     Yii::app()->end();
                 } else {
                     // Use same exception than Yii ? unclear
-                    throw new DbConnection('CDbConnection failed to open the DB connection.', (int) $e->getCode(), $e->errorInfo);
+                    throw new Exception('CDbConnection failed to open the DB connection.', (int) $e->getCode(), $e->errorInfo);
                 }
             }
             return false;

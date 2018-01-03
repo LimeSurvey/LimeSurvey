@@ -125,6 +125,7 @@ class InstallerConfigForm extends CFormModel
         );
     }
 
+
     /**
      * @return array
      */
