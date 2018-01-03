@@ -1500,7 +1500,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_generalTabNewSurvey()
      * Load "General" tab of new survey screen.
-     * @return
+     * @return array
      */
     private function _generalTabNewSurvey()
     {
