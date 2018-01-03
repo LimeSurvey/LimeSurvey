@@ -140,7 +140,7 @@ class SurveyDao
         $selection = $oSurvey->responsesTableName.'.id >= :min AND '.$oSurvey->responsesTableName.'.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
-        if (!$sResponsesId) {
+        if (empty($sResponsesId)) {
             $aParams = array(
                 'min'=>$iMinimum,
                 'max'=>$iMaximum
