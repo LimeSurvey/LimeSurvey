@@ -305,10 +305,10 @@ class viewHelper
          * @param string $model_id
          * @return string
          */
-        public static function getViewTestTag($name,$model_id = null)
+        public static function getViewTestTag($name, $model_id = null)
         {
             $modelTag = null;
-            if($model_id !==null ){
+            if ($model_id !== null) {
                 $modelTag = sprintf('model_id="%s"', $model_id);
             }
             return sprintf('<x-test id="action::%s" %s></x-test>', $name, $modelTag);
