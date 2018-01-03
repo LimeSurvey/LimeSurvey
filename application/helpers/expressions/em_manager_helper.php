@@ -734,8 +734,7 @@
             $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
             /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
             $iSessionSurveyId=self::getLEMsurveyId();
-            if($aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"])
-            {
+            if(!(Yii::app() instanceof CConsoleApplication) && $aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"]) {
                 $aSessionSurvey['LEMtokenResume']=true;
                 Yii::app()->session["survey_{$iSessionSurveyId}"]=$aSessionSurvey;
             }

@@ -13,36 +13,66 @@
 
 class ImportCommand extends CConsoleCommand
 {
+
     /**
      * @throws CException
+     * @throws Exception
      */
-    public function run($args)
+    public function actionIndex($file,$userId=null)
     {
-        /** @global ConsoleApplication $app */
-        global $app;
 
         \Yii::import('application.helpers.admin.import_helper', true);
         \Yii::import('application.helpers.common_helper', true);
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
 
-        $fileName = __DIR__ . '/../../'.$args[0];
-        $surveyFile = $fileName;
+        if(!$file){
+            echo 'File name must be defined. Use --file= argument to define file path.'.PHP_EOL;;
+            exit(1);
+
+        }
+
+        $surveyFile = __DIR__ . '/../../'.$file;
 
         if (!file_exists($surveyFile)) {
-            echo 'Fatal error: found no survey file';
+            echo 'Fatal error: found no survey file'.PHP_EOL;;
             exit(1);
         }
-        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+
+        if($userId){
+            $user = User::model()->findByPk($userId);
+            if(!$user){
+                echo 'Fatal error: User not found'.PHP_EOL;
+                echo 'Specify the user id by --userId=[uid] or leave blank to use a default superadmin.'.PHP_EOL;
+                exit(1);
+
+            }
+        }else{
+            echo 'No user is set'.PHP_EOL;
+            $superAdmins = User::getSuperAdmins();
+            if(!empty($superAdmins)){
+                $user = $superAdmins[0];
+                echo sprintf('Using user %s (userId=%d) by default',$user->users_name, $user->primaryKey).PHP_EOL;
+            }
+        }
+
+
 
         $translateLinksFields = false;
         $newSurveyName = null;
         try {
             $result = importSurveyFile(
-                $fileName,
+                $surveyFile,
                 $translateLinksFields,
                 $user,
                 $newSurveyName,
                 null
             );
+            if($result){
+                $newSid = $result['newsid'];
+                $newSurvey = Survey::model()->findByPk($newSid);
+                echo sprintf('Successfully imported survey').PHP_EOL;
+                echo sprintf('Imported survey ID: %d',$newSurvey->primaryKey).PHP_EOL;
+            }
         } catch (\Exception $ex) {
             throw $ex;
         }

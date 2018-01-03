@@ -868,7 +868,7 @@ function XMLImportSurvey($sFullFilePath, $user, $sXMLdata = null, $sNewSurveyNam
         //Make sure it is not set active
         $insertdata['active'] = 'N';
         //Set current user to be the owner
-        $insertdata['owner_id'] = Yii::app()->session['loginID'];
+        $insertdata['owner_id'] = $user->primaryKey;
 
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '') {
             $insertdata['bouncetime'] = null;
@@ -1522,7 +1522,7 @@ function XMLImportSurvey($sFullFilePath, $user, $sXMLdata = null, $sNewSurveyNam
     }
 
     // Set survey rights
-    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
+    Permission::model()->giveAllSurveyPermissions($user->primaryKey, $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);

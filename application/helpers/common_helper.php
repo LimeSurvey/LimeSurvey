@@ -1448,7 +1448,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = $survey->sid;
     //checks to see if fieldmap has already been built for this page.
-    if (isset(Yii::app()->session['fieldmap-'.$surveyid.$sLanguage]) && !$force_refresh && $questionid === false) {
+    if (!(Yii::app() instanceof CConsoleApplication) && isset(Yii::app()->session['fieldmap-'.$surveyid.$sLanguage]) && !$force_refresh && $questionid === false) {
         return Yii::app()->session['fieldmap-'.$surveyid.$sLanguage];
     }
     /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
@@ -1981,7 +1981,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['survey_'.$surveyid]['fieldmap-'.$surveyid.'-randMaster'])) {
+        if (!(Yii::app() instanceof CConsoleApplication) && isset(Yii::app()->session['survey_'.$surveyid]['fieldmap-'.$surveyid.'-randMaster'])) {
             $masterFieldmap = Yii::app()->session['survey_'.$surveyid]['fieldmap-'.$surveyid.'-randMaster'];
             $mfieldmap = Yii::app()->session['survey_'.$surveyid][$masterFieldmap];
 
@@ -1999,7 +1999,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap = $mfieldmap;
         }
 
-        Yii::app()->session['fieldmap-'.$surveyid.$sLanguage] = $fieldmap;
+        (Yii::app() instanceof CConsoleApplication) ? null : Yii::app()->session['fieldmap-'.$surveyid.$sLanguage] = $fieldmap;
     }
     return $fieldmap;
 }
