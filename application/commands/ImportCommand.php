@@ -41,10 +41,16 @@ class ImportCommand extends CConsoleCommand
 
         }
 
-        $surveyFile = __DIR__ . '/../../'.$file;
+        if($file[0]===DIRECTORY_SEPARATOR){
+            // we have root path set
+            $surveyFile = $file;
+        }else{
+            $surveyFile = __DIR__ . '/../../'.$file;
+        }
+
 
         if (!file_exists($surveyFile)) {
-            echo 'Fatal error: found no survey file'.PHP_EOL;;
+            echo sprintf('Fatal error: found no survey file at "%s"',$surveyFile).PHP_EOL;;
             exit(1);
         }
 
