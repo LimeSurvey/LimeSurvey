@@ -169,18 +169,8 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 /* little icon near the question-help */
 .ls-questionhelp{position: relative;}
-.dir-ltr .ls-questionhelp{margin-left:1.2em;}
 .dir-rtl .ls-questionhelp{margin-right:1.2em;}
 
-.ls-questionhelp:before{content:"\f059"}
-.ls-questionhelp:before {
-    display: block;
-    position:absolute;
-    font-family: FontAwesome;
-    font-size: inherit;
-    line-height: inherit;
-    height:100%;
-}
 
 /* If you want to center the icon */
 /*

@@ -21,6 +21,7 @@
 <div class="{{ aSurveyInfo.class.helpcontainer }}  text-info col-xs-12 " {{ aSurveyInfo.attr.helpcontainer }}>
     {% if aQuestion.help.show %}
         <div class="{{ aSurveyInfo.class.lsquestionhelp }}">
+            <span class="fa fa-question-circle" aria-hidden="true"></span>
             {{ aQuestion.help.text | raw }}
         </div>
     {% endif %}
