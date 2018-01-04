@@ -249,6 +249,7 @@ class InstallerController extends CController
                 $sDatabasePrefix = $oModel->dbprefix;
                 $sDatabaseLocation = $oModel->dblocation;
                 $sDatabasePort = '';
+                Yii::app()->session['dbengine'] = $oModel->dbengine;
                 if (strpos($sDatabaseLocation, ':') !== false) {
                     list($sDatabaseLocation, $sDatabasePort) = explode(':', $sDatabaseLocation, 2);
                 } else {
@@ -258,7 +259,6 @@ class InstallerController extends CController
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
                 $bDBExists = $this->dbTest($aDbConfig, $aData);
                 if ($this->_dbConnect($aDbConfig, $aData)) {
-                    Yii::app()->session['dbengine'] = $oModel->dbengine;
                     $bDBConnectionWorks = true;
 
                 } else {
@@ -1238,7 +1238,7 @@ class InstallerController extends CController
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
-            $this->setMySQLDefaultEngine();
+            $this->setMySQLDefaultEngine($sDatabaseEngine);
 
 
             return true;
@@ -1326,10 +1326,10 @@ class InstallerController extends CController
     /**
      * @throws CDbException
      */
-    private function setMySQLDefaultEngine(){
+    private function setMySQLDefaultEngine($dbEngine){
         if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
             $this->connection
-                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', Yii::app()->session['dbengine'])))
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
         }
 
