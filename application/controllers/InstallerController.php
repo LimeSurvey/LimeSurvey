@@ -257,7 +257,7 @@ class InstallerController extends CController
                     $sDatabasePort = $this->_getDbPort($sDatabaseType, $sDatabasePort);
                 }
                 $bDBConnectionWorks = false;
-                $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort','sDatabaseEngine',);
+                $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort','sDatabaseEngine');
                 $bDBExists = $this->dbTest($aDbConfig, $aData);
                 if ($this->_dbConnect($aDbConfig, $aData)) {
                     $bDBConnectionWorks = true;
