@@ -115,7 +115,7 @@ class Answer extends LSActiveRecord
      * @param string $code
      * @param string $sLanguage
      * @param integer $iScaleID
-     * @return array
+     * @return string|null The answer text
      */
     public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID = 0)
     {
@@ -128,16 +128,11 @@ class Answer extends LSActiveRecord
             // We have a hit :)
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
-            $answerCache[$qid][$code][$sLanguage][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
-            ->select('answer')
-            ->from(self::tableName())
-            ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
-            ->bindParam(":qid", $qid, PDO::PARAM_INT)
-            ->bindParam(":code", $code, PDO::PARAM_STR)
-            ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
-                        ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-            ->query()->readAll();
-
+            $aAnswer=Answer::model()->findByAttributes(array('qid'=>$qid,'code'=>$code,'scale_id'=>$iScaleID));
+            if (is_null($aAnswer)) {
+                return null;
+            }
+            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerL10n[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }

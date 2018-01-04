@@ -1162,10 +1162,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "^":
             case "I":
             case "R":
-                $result = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
-                foreach ($result as $row) {
-                    $this_answer = $row['answer'];
-                } // while
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1213,10 +1210,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 } else {
                     $iScaleID = 0;
                 }
-                $result = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage, $iScaleID);
-                foreach ($result as $row) {
-                    $this_answer = $row['answer'];
-                } // while
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage, $iScaleID);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }

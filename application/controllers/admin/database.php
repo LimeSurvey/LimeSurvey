@@ -265,47 +265,55 @@ class database extends Survey_Common_Action
         }
 
         //First delete all answers
-        Answer::model()->deleteAllByAttributes(array('qid'=>$this->iQuestionID));
+        $oldAnswers=Answer::model()->findAllByAttributes(array('qid'=>$this->iQuestionID));
+        foreach($oldAnswers as $oAnswer)
+        {
+            AnswerL10n::model()->deleteAllByAttributes(array('aid'=>$oAnswer->aid));
+            $oAnswer->delete();
+        }
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
         for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
             $iMaxCount = (int) Yii::app()->request->getPost('answercount_'.$iScaleID);
             for ($iSortOrderID = 1; $iSortOrderID < $iMaxCount; $iSortOrderID++) {
                 $sCode = (string) sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
                 $iAssessmentValue = (int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
+
+                    // Now we insert the answer
+                $oAnswer = new Answer;
+                $oAnswer->code              = $sCode;
+                $oAnswer->qid               = $this->iQuestionID;
+                $oAnswer->sortorder         = $iSortOrderID;
+                $oAnswer->assessment_value  = $iAssessmentValue;
+                $oAnswer->scale_id          = $iScaleID;
+                if (!$oAnswer->save()) {
+                    $sErrors = '<br/>';
+                    foreach ($oAnswer->getErrors() as $sError) {
+                        $sErrors .= $sError[0].'<br/>';
+                    }
+
+                    // Let's give a new to code to the answer to save it, so user entries are not lost
+                    $bAnswerSave = false;
+
+                    while (!$bAnswerSave) {
+                        $oAnswer->code = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                        if ($oAnswer->save()) {
+                            $bAnswerSave = true;
+                        }
+                    }
+
+                    Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors, 'error');
+                }
                 foreach ($survey->allLanguages as $sLanguage) {
                     $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
-
                     // Fix bug with FCKEditor saving strange BR types
                     $sAnswerText = $this->oFixCKeditor->fixCKeditor($sAnswerText);
 
                     // Now we insert the answers
-                    $oAnswer = new Answer;
-                    $oAnswer->code              = $sCode;
-                    $oAnswer->answer            = $sAnswerText;
-                    $oAnswer->qid               = $this->iQuestionID;
-                    $oAnswer->sortorder         = $iSortOrderID;
-                    $oAnswer->language          = $sLanguage;
-                    $oAnswer->assessment_value  = $iAssessmentValue;
-                    $oAnswer->scale_id          = $iScaleID;
-
-                    if (!$oAnswer->save()) {
-                        $sErrors = '<br/>';
-                        foreach ($oAnswer->getErrors() as $sError) {
-                            $sErrors .= $sError[0].'<br/>';
-                        }
-
-                        // Let's give a new to code to the answer to save it, so user entries are not lost
-                        $bAnswerSave = false;
-
-                        while (!$bAnswerSave) {
-                            $oAnswer->code = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
-                            if ($oAnswer->save()) {
-                                $bAnswerSave = true;
-                            }
-                        }
-
-                        Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors, 'error');
-                    }
+                    $oAnswerL10n = new AnswerL10n;
+                    $oAnswerL10n->aid              = $oAnswer->aid;
+                    $oAnswerL10n->answer            = $sAnswerText;
+                    $oAnswerL10n->language          = $sLanguage;
+                    $oAnswerL10n->save();
                 }
                 // Updating code (oldcode!==null) => update condition with the new code
                 $sOldCode = Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);

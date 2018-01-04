@@ -378,7 +378,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, Ã¢â‚¬Â¦ */
+        /* Not managed (currently): url, IP, ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ */
         return;
     }
 }
@@ -754,12 +754,19 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         //Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
-        WHERE {{answers}}.language={{questions}}.language
+        WHERE {{answers}}.qid={{questions}}.qid
+        AND {{questions}}.sid=$iSurveyID";
+        buildXMLFromQuery($xmlwriter, $aquery);
+
+        //Answer L10n table
+        $aquery = "SELECT {{answer_l10n}}.*
+        FROM {{answer_l10n}}, {{answers}}, {{questions}}
+        WHERE {{answers}}.aid={{answer_l10n}}.aid
         AND {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter, $aquery);
     }
-
+    
     // Assessments
     $query = "SELECT {{assessments}}.*
     FROM {{assessments}}
@@ -777,8 +784,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
     //Default values
     $query = "SELECT {{defaultvalues}}.*
-    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID AND {{questions}}.language={{defaultvalues}}.language ";
-
+    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID";
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
@@ -788,6 +794,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     ORDER BY gid";
     buildXMLFromQuery($xmlwriter, $gquery);
 
+    // QuestionGroup L10n
+    $gquery = "SELECT *
+    FROM {{group_l10n}}
+    JOIN {{groups}} on {{groups.gid}}={{group_l10n}}.gid
+    WHERE sid=$iSurveyID
+    ORDER BY {{group_l10n}}.gid";
+    buildXMLFromQuery($xmlwriter, $gquery);  
+      
     //Questions
     $qquery = "SELECT *
     FROM {{questions}}
@@ -802,17 +816,26 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     ORDER BY qid";
     buildXMLFromQuery($xmlwriter, $qquery, 'subquestions');
 
+    //Question L10n
+    $qquery = "SELECT {{question_l10n}}.*
+    FROM {{question_l10n}}
+    JOIN {{questions}} ON {{questions}}.qid={{question_l10n}}.qid
+    WHERE sid=$iSurveyID
+    ORDER BY {{question_l10n}}.qid";
+    buildXMLFromQuery($xmlwriter, $qquery);
+
+    
     //Question attributes
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        group by qa.qid, qa.attribute, qa.value, qa.language";
     }
 
     buildXMLFromQuery($xmlwriter, $query, 'question_attributes');

@@ -8719,7 +8719,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
-                                        $value = "INVALID"; // This don't disable submitting survey ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ("" neither)
+                                        $value = "INVALID"; // This don't disable submitting survey ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8727,7 +8727,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ("INVALID" neither)
+                                            $value = "";// This don't disable submitting survey ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -10269,18 +10269,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             if ($lang == 'ar')
             {
-                $eastern_arabic_symbols = array("ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â ","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¡","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¢","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â£","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¤","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¥","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã¢â€žÂ¢Ãƒâ€šÃ‚Â©");
+                $eastern_arabic_symbols = array("ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©");
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
             }
             else if ($lang == 'fa')
             {
                 // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-                $extended_arabic_indic = array("ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â°","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â±","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â²","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â³","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â´","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Âµ","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¶","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â·","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¸","ÃƒÆ’Ã¢â‚¬ÂºÃƒâ€šÃ‚Â¹");
+                $extended_arabic_indic = array("ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â²","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸","ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹");
                 $result = str_replace($extended_arabic_indic, $standard, $str);
             }
             else if ($lang == 'hi')
             {
-                $hindi_symbols = array("ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â©","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Âª","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â«","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¬","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â­","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â®","ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚Â¯");
+                $hindi_symbols = array("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â«","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â®","ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯");
                 $result = str_replace($hindi_symbols, $standard, $str);
             }
 
@@ -10330,8 +10330,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             else
                             {
-                                if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                                {
+                                if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                                     $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                     return false;
                                 }
@@ -10341,16 +10340,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'O': // List with comment
                         if(substr($sgq,-7)!='comment')
                         {
-                            if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                            {
+                            if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                                 $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 return false;
                             }
                         }
                         break;
                     case 'F': // Array
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
@@ -10390,16 +10387,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'H': // Array by column
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
                         break;
                     case '1': // Array dual scale
                         $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
@@ -10436,8 +10431,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'R':  // Ranking
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }

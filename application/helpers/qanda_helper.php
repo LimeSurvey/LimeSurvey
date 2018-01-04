@@ -5261,23 +5261,25 @@ function do_array_dual($ia)
     * Get Question Attributes
     */
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $sLanguage=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+        $sOrder=dbRandom;
     } else {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
+        $sOrder='question_order';
     }
 
-    $ansresult      = dbExecuteAssoc($ansquery); //Checked
-    $aSubQuestions  = $ansresult->readAll();
-    $anscount       = count($aSubQuestions);
-    $lquery         = "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
-    $lresult        = dbExecuteAssoc($lquery); //Checked
-    $aAnswersScale0 = $lresult->readAll();
-    $lquery1        = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
-    $lresult1       = dbExecuteAssoc($lquery1); //Checked
-    $aAnswersScale1 = $lresult1->readAll();
+    $aSubQuestions = [];
+    $aSubQuestionsR = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
+    $anscount = count($aSubQuestionsR);
+    foreach ($aSubQuestionsR as $oQuestion) {
+      $aSubQuestions[]=array('question'=>$oQuestion);  
+    }
+    
+   
+    $aAnswersScale0 = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$ia[0])));        
+    $aAnswersScale1 = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=1', 'params'=>array(':qid'=>$ia[0])));        
 
     // Set attributes
     if ($aQuestionAttributes['use_dropdown'] == 1) {
@@ -5307,10 +5309,10 @@ function do_array_dual($ia)
     }
     // Find if we have rigth and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
-    $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
+    $sQuery         = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10n}} l  ON l.qid=q.qid WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
     $rigthCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $rightexists    = ($rigthCount > 0); // $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
-    $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%|%'";
+    $sQuery         = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10n}} l  ON l.qid=q.qid WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%|%'";
     $centerCount    = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $centerexists   = ($centerCount > 0); // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
     /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
@@ -5320,12 +5322,12 @@ function do_array_dual($ia)
     $labels0 = [];
     $labels1 = [];
     foreach ($aAnswersScale0 as $lrow) {
-        $labels0[] = Array('code' => $lrow['code'],
-            'title' => $lrow['answer']);
+        $labels0[] = Array('code' => $lrow->code,
+            'title' => $lrow->answerL10n[$sLanguage]->answer);
     }
     foreach ($aAnswersScale1 as $lrow) {
-        $labels1[] = Array('code' => $lrow['code'],
-            'title' => $lrow['answer']);
+        $labels1[] = Array('code' => $lrow->code,
+            'title' => $lrow->answerL10n[$sLanguage]->answer);
     }
     if (count($aAnswersScale0) > 0 && $anscount) {
         $answer = "";
@@ -5344,12 +5346,12 @@ function do_array_dual($ia)
             $labelcode0 = array();
             $labelcode1 = array();
             foreach ($aAnswersScale0 as $lrow) {
-                $labelans0[] = $lrow['answer'];
-                $labelcode0[] = $lrow['code'];
+                $labelans0[] = $lrow->answerL10n[$sLanguage]->answer;
+                $labelcode0[] = $lrow->code;
             }
             foreach ($aAnswersScale1 as $lrow) {
-                $labelans1[] = $lrow['answer'];
-                $labelcode1[] = $lrow['code'];
+                $labelans1[] = $lrow->answerL10n[$sLanguage]->answer;
+                $labelcode1[] = $lrow->code;
             }
             $numrows = count($labelans0) + count($labelans1);
             // Add needed row and fill some boolean: shownoanswer, rightexists, centerexists
@@ -5404,9 +5406,10 @@ function do_array_dual($ia)
             // And no each line of body
             $trbc = '';
             $aData['aSubQuestions'] = $aSubQuestions;
-            foreach ($aSubQuestions as $i => $ansrow) {
+            foreach ($aSubQuestions as $i => $aQuestionRow) {
 
                 // Build repeat headings if needed
+                
                 if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
                     if (($anscount - $fn + 1) >= $minrepeatheadings) {
                         $aData['aSubQuestions'][$i]['repeatheadings'] = true;
@@ -5416,7 +5419,7 @@ function do_array_dual($ia)
                 }
 
                 $trbc = alternation($trbc, 'row');
-                $answertext = $ansrow['question'];
+                $answertext = $aQuestionRow['question']->questionL10n[$sLanguage]->question;
 
                 // right and center answertext: not explode for ? Why not
                 if (strpos($answertext, '|') !== false) {
@@ -5432,11 +5435,11 @@ function do_array_dual($ia)
                     $answertextcenter = "";
                 }
 
-                $myfname = $ia[1].$ansrow['title'];
-                $myfname0 = $ia[1].$ansrow['title'].'#0';
-                $myfid0 = $ia[1].$ansrow['title'].'_0';
-                $myfname1 = $ia[1].$ansrow['title'].'#1'; // new multi-scale-answer
-                $myfid1 = $ia[1].$ansrow['title'].'_1';
+                $myfname = $ia[1].$aQuestionRow['question']['title'];
+                $myfname0 = $ia[1].$aQuestionRow['question']['title'].'#0';
+                $myfid0 = $ia[1].$aQuestionRow['question']['title'].'_0';
+                $myfname1 = $ia[1].$aQuestionRow['question']['title'].'#1'; // new multi-scale-answer
+                $myfid1 = $ia[1].$aQuestionRow['question']['title'].'_1';
                 $aData['aSubQuestions'][$i]['myfname'] = $myfname;
                 $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
                 $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
@@ -5478,9 +5481,9 @@ function do_array_dual($ia)
                 foreach ($labelcode0 as $j => $ld) {
                 // First label set
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
-                        $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
+                        $aData['labelcode0_checked'][$aQuestionRow['question']['title']][$ld] = CHECKED;
                     } else {
-                        $aData['labelcode0_checked'][$ansrow['title']][$ld] = "";
+                        $aData['labelcode0_checked'][$aQuestionRow['question']['title']][$ld] = "";
                     }
                 }
 
@@ -5501,9 +5504,9 @@ function do_array_dual($ia)
                     foreach ($labelcode1 as $j => $ld) {
                     // second label set
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
-                            $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;
+                            $aData['labelcode1_checked'][$aQuestionRow['question']['title']][$ld] = CHECKED;
                         } else {
-                            $aData['labelcode1_checked'][$ansrow['title']][$ld] = "";
+                            $aData['labelcode1_checked'][$aQuestionRow['question']['title']][$ld] = "";
                         }
                     }
                 }
@@ -5575,13 +5578,13 @@ function do_array_dual($ia)
             $aData['rightheader'] = $rightheader;
 
             $aData['aSubQuestions'] = $aSubQuestions;
-            foreach ($aSubQuestions as $i => $ansrow) {
+            foreach ($aSubQuestions as $i => $aQuestionRow) {
 
-                $myfname = $ia[1].$ansrow['title'];
-                $myfname0 = $ia[1].$ansrow['title']."#0";
-                $myfid0 = $ia[1].$ansrow['title']."_0";
-                $myfname1 = $ia[1].$ansrow['title']."#1";
-                $myfid1 = $ia[1].$ansrow['title']."_1";
+                $myfname = $ia[1].$aQuestionRow['question']['title'];
+                $myfname0 = $ia[1].$aQuestionRow['question']['title']."#0";
+                $myfid0 = $ia[1].$aQuestionRow['question']['title']."_0";
+                $myfname1 = $ia[1].$aQuestionRow['question']['title']."#1";
+                $myfid1 = $ia[1].$aQuestionRow['question']['title']."_1";
                 $sActualAnswer0 = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] : "";
                 $sActualAnswer1 = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] : "";
 
