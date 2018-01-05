@@ -698,7 +698,7 @@ function getGroupList($gid, $surveyid)
     foreach ($oGroups as $oGroup) {
         $groupselecter .= "<option";
         if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupL10n[$sBaseLanguage]->group_name)."</option>\n";
+        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupL10ns[$sBaseLanguage]->group_name)."</option>\n";
     }
     if ($groupselecter) {
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
@@ -726,7 +726,7 @@ function getGroupList3($gid, $surveyid)
     foreach ($gidresult as $gv) {
         $groupselecter .= "<option";
         if ($gv->gid == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10n[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
+        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10ns[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
     }
 
 
@@ -754,7 +754,7 @@ function getGroupListLang($gid, $language, $surveyid)
         if ($aAttributes['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
         $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
-        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questionGroupL10n[$language]->group_name));
+        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questionGroupL10ns[$language]->group_name));
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
@@ -1584,8 +1584,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $aquery = "SELECT * "
     ." FROM {{groups}} g"
     .' JOIN {{questions}} q on q.gid=g.gid '
-    .' JOIN {{group_l10n}} gls on gls.gid=g.gid '
-    .' JOIN {{question_l10n}} qls on qls.qid=q.qid '
+    .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
+    .' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
     ." WHERE qls.language='{$baseLanguage}' and gls.language='{$baseLanguage}' AND"
     ." g.sid={$surveyid} AND "
     ." q.parent_qid=0";
@@ -1792,7 +1792,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
         } elseif ($arow['type'] == "R") {
             // Sub question by answer number OR attribute
-            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
+            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             for ($i = 1; $i <= $columnsCount; $i++) {
@@ -3237,7 +3237,7 @@ function getSubQuestions($sid, $qid, $sLanguage)
 
         $query = "SELECT sq.*, ls.question, q.other FROM {{questions}} as sq
         JOIN {{questions}} as q on sq.parent_qid=q.qid
-        JOIN {{question_l10n}} as ls on ls.qid=sq.qid" 
+        JOIN {{question_l10ns}} as ls on ls.qid=sq.qid" 
         ." WHERE sq.parent_qid=q.qid AND ls.language='{$sLanguage}' AND q.sid=".$sid
         ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id, sq.question_order";
 
@@ -3542,7 +3542,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from {{groups}}
+    $sql = "SELECT g.gid, language, group_name, description from {{groups}} g
+    join {{group_l10ns}} l on g.gid=l.gid
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = dbExecuteAssoc($sql) or safeDie("Can't read groups table in transInsertAns"); // Checked
 
@@ -3566,7 +3567,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'gid' => $gid,
             'language' => $language
             );
-            $oGroup = QuestionGroup::model()->findByAttributes($where);
+            $oGroup = QuestionGroupL10n::model()->findByAttributes($where);
             $oGroup->description = $description;
             $oGroup->group_name = $gpname;
             $oGroup->save();
@@ -3575,7 +3576,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from {{questions}}
+    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = dbExecuteAssoc($sql) or safeDie("Can't read question table in transInsertAns "); // Checked
 
@@ -3608,7 +3610,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'language' => $language
             );
 
-            Question::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($where, $data);
 
         } // Enf if modified
     } // end while qentry
@@ -3665,12 +3667,25 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                 $sOldCode = preg_quote($sOldCode, '~');
                 $arQuestion->relevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
-                $bModified = $bModified || $iCount;
             }
         }
         if ($bModified) {
             $arQuestion->save();
+        }
+        foreach ($arQuestion->questionL10ns as $arQuestionLS) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode=>$sNewCode) {
+                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+                    $sOldCode = preg_quote($sOldCode, '~');
+                    $arQuestionLS->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+
+                }
+            }
+            if ($bModified) {
+                $arQuestionLS->save();
+            }
         }
     }
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
@@ -3680,11 +3695,19 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             $sOldCode = preg_quote($sOldCode, '~');
             $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
-            $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $arGroup->save();
+        }
+        foreach ($arGroup->questionGroupL10ns as $arQuestionGroupLS) {
+            foreach ($aCodeMap as $sOldCode=>$sNewCode) {
+                $sOldCode = preg_quote($sOldCode, '~');
+                $arQuestionGroupLS->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $bModified = $bModified || $iCount;
+            }
+            if ($bModified) {
+                $arQuestionGroupLS->save();
+            }        
         }
     }
 }
@@ -4021,7 +4044,7 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
     . "{{questions}} AS tq2, "
     . "{{groups}} AS tg, "
     . "{{groups}} AS tg2, "
-    . "{{group_l10n}} as ls,{{group_l10n}} as ls2 "
+    . "{{group_l10ns}} as ls,{{group_l10ns}} as ls2 "
     . "WHERE ls.language='{$baselang}' AND ls2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
     . "AND ls.gid=tg.gid AND ls2.gid=tg2.gid "

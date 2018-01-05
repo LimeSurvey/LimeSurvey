@@ -1007,7 +1007,7 @@ class questions extends Survey_Common_Action
         $oQuestion->relevance = 1;
         $oQuestion->group_name = '';
         $oQuestion->modulename = '';
-        $oQuestion->questionL10n=array($baselang=>new QuestionL10n);
+        $oQuestion->questionL10ns=array($baselang=>new QuestionL10n);
         if (isset($_GET['gid'])) {
             $oQuestion->gid = $_GET['gid'];
         }
@@ -1145,7 +1145,7 @@ class questions extends Survey_Common_Action
                 }
                 $aData['oQuestion'] = $oQuestion;
                 $basesettings = [];
-                foreach ($oQuestion->questionL10n as $esrow) {
+                foreach ($oQuestion->questionL10ns as $esrow) {
                     if (!array_key_exists($esrow->language, $questlangs)) {
                     // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();

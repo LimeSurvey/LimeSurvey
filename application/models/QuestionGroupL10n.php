@@ -29,7 +29,7 @@ class QuestionGroupL10n extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{group_l10n}}';
+        return '{{group_l10ns}}';
     }
 
     /** @inheritdoc */

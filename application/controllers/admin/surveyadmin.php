@@ -425,8 +425,8 @@ class SurveyAdmin extends Survey_Common_Action
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionL10n[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : '.$qrrow->questionL10n[$baselang]['question'];
+            if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
+                $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
             }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
@@ -458,7 +458,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
-                $curGroup['group_name']=$group->questionGroupL10n[$baselang]->group_name;
+                $curGroup['group_name']=$group->questionGroupL10ns[$baselang]->group_name;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
                 $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
@@ -466,7 +466,7 @@ class SurveyAdmin extends Survey_Common_Action
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->questionL10n[$baselang]->question, true, 20, '[...]', 1);
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true, 20, '[...]', 1);
                         $curGroup['questions'][] = $curQuestion;
                     }
 

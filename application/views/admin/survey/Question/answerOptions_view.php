@@ -159,7 +159,7 @@
                                                     'qid'       => $row->qid,
                                                     'language'  => $anslang,
                                                     'title'     => $row->title,
-                                                    'question'  => $row->questionL10n[$anslang]->question,
+                                                    'question'  => $row->questionL10ns[$anslang]->question,
                                                     'relevance' => $row->relevance,
                                                     'oldCode'   => true,
                                                 ));?>
@@ -177,7 +177,7 @@
                                                     'language'          => $anslang,
                                                     'assessment_value'  => $row->assessment_value,
                                                     'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answerL10n[$anslang]->answer,
+                                                    'answer'            => $row->answerL10ns[$anslang]->answer,
                                                     'oldCode'   => true,
                                                 ));?>
 

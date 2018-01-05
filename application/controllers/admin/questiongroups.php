@@ -278,7 +278,7 @@ class questiongroups extends Survey_Common_Action
         $aData['grow'] = $grow;
 
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupL10n[$baselang]->group_name;
+        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = true;
 

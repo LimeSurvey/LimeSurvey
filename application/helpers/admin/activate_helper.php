@@ -88,7 +88,7 @@ function checkGroup($postsid)
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,ls.group_name,count(q.qid) as count from {{questions}} as q 
                    RIGHT JOIN {{groups}} as g ON q.gid=g.gid 
-                   join {{group_l10n}} ls on g.gid=ls.gid
+                   join {{group_l10ns}} ls on g.gid=ls.gid
                    WHERE g.sid=$postsid AND ls.language='$baselang' group by g.gid,ls.group_name;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row) {
@@ -130,7 +130,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $survey = Survey::model()->findByPk($iSurveyID);
 
     $chkquery = "SELECT q.qid, ls.question, gid, type FROM {{questions}} q
-                join {{question_l10n}} ls on ls.qid=q.qid
+                join {{question_l10ns}} ls on ls.qid=q.qid
                 WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
@@ -158,7 +158,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} q
-    join {{question_l10n}} ls on ls.qid=q.qid
+    join {{question_l10ns}} ls on ls.qid=q.qid
     WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
@@ -170,7 +170,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     //Check that certain array question types have answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
-    join {{question_l10n}} ls on ls.qid=q.qid
+    join {{question_l10ns}} ls on ls.qid=q.qid
     WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
@@ -179,7 +179,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     //CHECK THAT DUAL Array has answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
-    join {{question_l10n}} ls on ls.qid=q.qid
+    join {{question_l10ns}} ls on ls.qid=q.qid
     WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
@@ -202,7 +202,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //1: Get each condition's question id
     $conquery = "SELECT {{conditions}}.qid, cqid, ls.question, "
     . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}},{{question_l10n}} ls "
+    . "FROM {{conditions}}, {{questions}}, {{groups}},{{question_l10ns}} ls "
     . "WHERE {{questions}}.sid={$iSurveyID} "
     . "AND {{questions}}.qid={{questions}}.qid "
     . "AND {{conditions}}.qid={{questions}}.qid "

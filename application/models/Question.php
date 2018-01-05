@@ -80,7 +80,7 @@ class Question extends LSActiveRecord
             'group' => array(self::BELONGS_TO, 'QuestionGroup', 'gid', 'together' => true),
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'questionL10n' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
+            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid')
         );
@@ -818,23 +818,15 @@ class Question extends LSActiveRecord
 
     public function getOrderedAnswers($random = 0, $alpha = 0)
     {
-        //question attribute random order set?
-        if ($random == 1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY ".dbRandom();
+        if ($random ==1) {
+            $sOrder=dbRandom();
+        } elseif ($alpha == 1) {
+            $sOrder = 'answer';
+        } else{
+            $sOrder='sortorder';
         }
-
-        //question attribute alphasort set?
-        elseif ($alpha == 1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY answer";
-        }
-
-        //no question attributes -> order by sortorder
-        else {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY sortorder, answer";
-        }
-
-        $ansresult = dbExecuteAssoc($ansquery)->readAll();
-        return $ansresult;
+        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));        
+        return $aAnswers;
 
     }
 
@@ -849,8 +841,7 @@ class Question extends LSActiveRecord
         $criteria = (new CDbCriteria());
         $criteria->addCondition('t.parent_qid=:qid');
         $criteria->addCondition('t.scale_id=0');
-        $criteria->addCondition('t.language=:language');
-        $criteria->params = [':qid'=>$this->qid, ':language'=>$this->language];
+        $criteria->params = [':qid'=>$this->qid];
         $criteria->order = ($random == 1 ? (new CDbExpression(dbRandom())) : 'question_order ASC');
         $ansresult = Question::model()->findAll($criteria);
 
@@ -930,7 +921,7 @@ class Question extends LSActiveRecord
     {
         $this->with(
             array(
-                'questionL10n'=>array('condition'=>"language='".$sLanguage."'"),
+                'questionL10ns'=>array('condition'=>"language='".$sLanguage."'"),
                 'group'=>array('condition'=>"language='".$sLanguage."'")
             )
         );                                              
@@ -956,8 +947,8 @@ class Question extends LSActiveRecord
                 'desc'=>'t.title desc',
             ),
             'question'=>array(
-                'asc'=>'questionL10n.question asc',
-                'desc'=>'questionL10n.question desc',
+                'asc'=>'questionL10ns.question asc',
+                'desc'=>'questionL10ns.question desc',
             ),
 
             'group'=>array(
@@ -985,7 +976,7 @@ class Question extends LSActiveRecord
 
         $criteria2 = new CDbCriteria;
         $criteria2->compare('t.title', $this->title, true, 'OR');
-        $criteria2->compare('questionL10n.question', $this->title, true, 'OR');
+        $criteria2->compare('questionL10ns.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
 
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.qid::varchar' : 't.qid');

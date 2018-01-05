@@ -1217,7 +1217,7 @@ protected function getPostRows(array $postquestionlist)
             "qid"        =>    $oQuestion['qid'],
             "sid"        =>    $oQuestion['sid'],
             "gid"        =>    $oQuestion['gid'],
-            "question"    =>    $oQuestion->questionL10n[$this->language]->question,
+            "question"    =>    $oQuestion->questionL10ns[$this->language]->question,
             "type"        =>    $oQuestion['type'],
             "mandatory"    =>    $oQuestion['mandatory'],
             "other"        =>    $oQuestion['other'],
@@ -1235,7 +1235,7 @@ protected function getPostRows(array $postquestionlist)
 protected function getQuestionTitleAndText($qid)
 {
     $oQuestion = Question::model()->findByPk($qid);
-    return array($oQuestion->title, $oQuestion->questionL10n[$this->language]->question);
+    return array($oQuestion->title, $oQuestion->questionL10ns[$this->language]->question);
 }
 
 /**

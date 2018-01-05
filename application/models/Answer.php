@@ -59,12 +59,12 @@ class Answer extends LSActiveRecord
         return array(
             // TODO BELONGS_TO relation should be in singular, not plural $answer->group, $answer->question
             'question' => array(self::BELONGS_TO, 'Question', '',
-                'on' => "$alias.qid = questions.qid",
+                'on' => "$alias.qid = question.qid",
             ),
             'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'questions',
-                'on' => 'questions.gid = groups.gid'
+                'on' => 'questions.gid = group.gid'
             ),
-            'answerL10n' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
+            'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             
         );
     }
@@ -132,7 +132,7 @@ class Answer extends LSActiveRecord
             if (is_null($aAnswer)) {
                 return null;
             }
-            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerL10n[$sLanguage]->answer;
+            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerL10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }
@@ -145,9 +145,9 @@ class Answer extends LSActiveRecord
     public function oldNewInsertansTags($newsid, $oldsid)
     {
         $criteria = new CDbCriteria;
-        $criteria->compare('questions.sid', $newsid);
-        $criteria->compare('answer', '{INSERTANS::'.$oldsid.'X');
-        return $this->with('questions')->findAll($criteria);
+        $criteria->compare('question.sid', $newsid);
+        $criteria->with=['answerL10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"),'question'];
+        return $this->findAll($criteria);
     }
 
     /**

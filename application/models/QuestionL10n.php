@@ -29,7 +29,7 @@ class QuestionL10n extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{question_l10n}}';
+        return '{{question_l10ns}}';
     }
 
     /** @inheritdoc */

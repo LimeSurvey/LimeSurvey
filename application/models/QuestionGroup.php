@@ -71,7 +71,7 @@ class QuestionGroup extends LSActiveRecord
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
             'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
-            'questionGroupL10n' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
+            'questionGroupL10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }    
 

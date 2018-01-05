@@ -8565,7 +8565,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $query = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
             ." FROM {{answers}} AS a"
             ." JOIN {{questions}} q on a.qid=q.qid"
-            ." JOIN {{answer_l10n}} l on l.aid=a.aid"
+            ." JOIN {{answer_l10ns}} l on l.aid=a.aid"
             ." WHERE ".$where
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
@@ -8610,8 +8610,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->questionGroupL10n[$sLanguage]->group_name,
-                    'description' =>  $oQuestionGroup->questionGroupL10n[$sLanguage]->description,
+                    'group_name' => $oQuestionGroup->questionGroupL10ns[$sLanguage]->group_name,
+                    'description' =>  $oQuestionGroup->questionGroupL10ns[$sLanguage]->description,
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );

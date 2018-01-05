@@ -843,7 +843,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             // question language setttings
             
-            $oDB->createCommand()->createTable('{{question_l10n}}', array(
+            $oDB->createCommand()->createTable('{{question_l10ns}}', array(
                 'id' =>  "pk",
                 'qid' =>  "integer NOT NULL",
                 'question' =>  "text NOT NULL",
@@ -851,26 +851,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL"
             ));        
 
-            $oDB->createCommand()->createIndex('{{idx1_question_l10n}}', '{{question_l10n}}', ['qid', 'language'], true);
-            $oDB->createCommand("INSERT INTO {{question_l10n}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
+            $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
             $oDB->createCommand("DELETE q1 FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->execute();
 
-            $oDB->createCommand()->createTable('{{group_l10n}}', array(
+            $oDB->createCommand()->createTable('{{group_l10ns}}', array(
                 'id' =>  "pk",
                 'gid' =>  "integer NOT NULL",
                 'group_name' =>  "text NOT NULL",
                 'description' =>  "text",
                 'language' =>  "string(20) NOT NULL"
             ));        
-            $oDB->createCommand()->createIndex('{{idx1_group_l10n}}', '{{group_l10n}}', ['gid', 'language'], true);
+            $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
 
-            $oDB->createCommand()->createTable('{{answer_l10n}}', array(
+            $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
                 'id' =>  "pk",
                 'aid' =>  "integer NOT NULL",
                 'answer' =>  "text NOT NULL",
                 'language' =>  "string(20) NOT NULL"
             ));        
-            $oDB->createCommand()->createIndex('{{idx1_answer_l10n}}', '{{group_l10n}}', ['aid', 'language'], true);
+            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{group_l10ns}}', ['aid', 'language'], true);
             
             
 

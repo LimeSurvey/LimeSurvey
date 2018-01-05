@@ -378,7 +378,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ */
+        /* Not managed (currently): url, IP, ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ */
         return;
     }
 }
@@ -759,9 +759,9 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         buildXMLFromQuery($xmlwriter, $aquery);
 
         //Answer L10n table
-        $aquery = "SELECT {{answer_l10n}}.*
-        FROM {{answer_l10n}}, {{answers}}, {{questions}}
-        WHERE {{answers}}.aid={{answer_l10n}}.aid
+        $aquery = "SELECT {{answer_l10ns}}.*
+        FROM {{answer_l10ns}}, {{answers}}, {{questions}}
+        WHERE {{answers}}.aid={{answer_l10ns}}.aid
         AND {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter, $aquery);
@@ -796,10 +796,10 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
     // QuestionGroup L10n
     $gquery = "SELECT *
-    FROM {{group_l10n}}
-    JOIN {{groups}} on {{groups.gid}}={{group_l10n}}.gid
+    FROM {{group_l10ns}}
+    JOIN {{groups}} on {{groups.gid}}={{group_l10ns}}.gid
     WHERE sid=$iSurveyID
-    ORDER BY {{group_l10n}}.gid";
+    ORDER BY {{group_l10ns}}.gid";
     buildXMLFromQuery($xmlwriter, $gquery);  
       
     //Questions
@@ -817,11 +817,11 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $qquery, 'subquestions');
 
     //Question L10n
-    $qquery = "SELECT {{question_l10n}}.*
-    FROM {{question_l10n}}
-    JOIN {{questions}} ON {{questions}}.qid={{question_l10n}}.qid
+    $qquery = "SELECT {{question_l10ns}}.*
+    FROM {{question_l10ns}}
+    JOIN {{questions}} ON {{questions}}.qid={{question_l10ns}}.qid
     WHERE sid=$iSurveyID
-    ORDER BY {{question_l10n}}.qid";
+    ORDER BY {{question_l10ns}}.qid";
     buildXMLFromQuery($xmlwriter, $qquery);
 
     
