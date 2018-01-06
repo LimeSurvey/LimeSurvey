@@ -317,7 +317,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function selectEmptyTokens($iSurveyID)
     {
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $survey = Survey::findOne($iSurveyID);
         return Yii::app()->db->createCommand("SELECT tid FROM ".$survey->tokensTableName." WHERE token IS NULL OR token=''")->queryAll();
     }
 

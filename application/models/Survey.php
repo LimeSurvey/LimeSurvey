@@ -1822,4 +1822,13 @@ return $s->hasTokensTable; });
             ->queryRow();
         return $result !== false;
     }
+
+    /**
+     * @param mixed $condition
+     * @return Survey
+     */
+    public static function findOne($condition)
+    {
+        return parent::findOne($condition);
+    }
 }

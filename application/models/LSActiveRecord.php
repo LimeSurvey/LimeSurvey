@@ -197,4 +197,13 @@ class LSActiveRecord extends CActiveRecord
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 
+    /**
+     * A yii2-like findOne method. using that instead of static::model()->findByPk will simplify migrating to yii2 in the future
+     * @param mixed $condition
+     * @return LSActiveRecord
+     */
+    public static function findOne($condition){
+        return static::model()->findByPk($condition);
+    }
+
 }

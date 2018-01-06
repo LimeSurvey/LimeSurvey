@@ -620,7 +620,7 @@ class TemplateManifest extends TemplateConfiguration
         $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName == '') {
-            $oSurvey = Survey::model()->findByPk($iSurveyId);
+            $oSurvey = Survey::findOne($iSurveyId);
 
             if ($oSurvey) {
                 $this->sTemplateName = $oSurvey->template;

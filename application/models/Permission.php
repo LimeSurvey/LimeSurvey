@@ -676,7 +676,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        $oSurvey = Survey::findOne($iSurveyID);
         if (!$oSurvey) {
             return false;
         }

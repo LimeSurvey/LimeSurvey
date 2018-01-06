@@ -212,7 +212,7 @@ class TemplateConfiguration extends TemplateConfig
     {
 
         //if a template name is given also check against that
-        $sTemplateName = $sTemplateName != null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+        $sTemplateName = $sTemplateName != null ? $sTemplateName : Survey::findOne($iSurveyId)->template;
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
@@ -863,7 +863,7 @@ class TemplateConfiguration extends TemplateConfig
 
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
-                $oSurvey = Survey::model()->findByPk($this->sid);
+                $oSurvey = Survey::findOne($this->sid);
                 $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;

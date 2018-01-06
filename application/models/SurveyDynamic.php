@@ -43,7 +43,7 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Survey::findOne($sid);
         if ($survey) {
             self::sid($survey->sid);
             self::$survey = $survey;
@@ -489,7 +489,7 @@ class SurveyDynamic extends LSActiveRecord
     {
 
         $sid = self::$sid;
-        $oSurvey = Survey::model()->findByPk($sid);
+        $oSurvey = Survey::findOne($sid);
         if ($oSurvey['datestamp'] != 'Y') {
             return false;
         } else {
