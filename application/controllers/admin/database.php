@@ -92,7 +92,6 @@ class database extends Survey_Common_Action
     /**
      * Database::index()
      *
-     * @param mixed $sa
      * @return
      */
     public function index()
@@ -140,9 +139,8 @@ class database extends Survey_Common_Action
      * @param integer $qid   Question ID
      * @param integer $scale_id  Scale ID
      * @param string $specialtype  Special type (i.e. for  'Other')
-     * @param mixed $language     Language (defaults are language specific)
+     * @param string $language     Language (defaults are language specific)
      * @param mixed $defaultvalue    The default value itself
-     * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
      */
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
