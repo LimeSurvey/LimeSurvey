@@ -35,7 +35,7 @@ class OptinController extends LSYii_Controller
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
-        $oSurvey =  Survey::model()->findByPk($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sToken = $token;
         $sToken = Token::sanitizeToken($sToken);
 

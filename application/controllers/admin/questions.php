@@ -467,7 +467,7 @@ class questions extends Survey_Common_Action
         $gid = (int) $gid;
 
         // Get languages select on survey.
-        $oSurvey =  Survey::model()->findByPk($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $anslangs = $oSurvey->additionalLanguages;
         $baselang = $oSurvey->language;
 
@@ -1390,7 +1390,6 @@ class questions extends Survey_Common_Action
      *
      * @access public
      * @param int $surveyid
-     * @param int $gid
      * @param int $qid
      * @return array
      */

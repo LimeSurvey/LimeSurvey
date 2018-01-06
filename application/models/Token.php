@@ -101,7 +101,7 @@ abstract class Token extends Dynamic
     /**
      * @param integer $surveyId
      * @param array $extraFields
-     * @return mixed
+     * @return CDbTableSchema
      */
     public static function createTable($surveyId, array $extraFields = array())
     {
@@ -166,7 +166,7 @@ abstract class Token extends Dynamic
 
     /**
      * @param string $token
-     * @return array|mixed|null
+     * @return Token
      */
     public function findByToken($token)
     {
@@ -198,7 +198,7 @@ abstract class Token extends Dynamic
      * Creates a random token string without special characters
      *
      * @param integer $iTokenLength
-     * @return mixed
+     * @return string
      */
     public static function generateRandomToken($iTokenLength)
     {

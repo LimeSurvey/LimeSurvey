@@ -429,7 +429,6 @@ class dataentry extends Survey_Common_Action
      * @param mixed $subaction
      * @param mixed $id
      * @param mixed $surveyid
-     * @param mixed $language
      * @return
      */
     public function editdata($subaction, $id, $surveyid)
@@ -1716,7 +1715,6 @@ class dataentry extends Survey_Common_Action
      * dataentry::view()
      * view a dataentry
      * @param mixed $surveyid
-     * @param mixed $lang
      */
     public function view($surveyid)
     {

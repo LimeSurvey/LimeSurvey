@@ -156,7 +156,7 @@ class questiongroups extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['grplangs'] = $survey->allLanguages;
-            $aData['baselang'] = $survey->language;;
+            $aData['baselang'] = $survey->language; ;
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
