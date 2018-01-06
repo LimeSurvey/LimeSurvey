@@ -59,10 +59,10 @@
             // Set the language for dispay
             if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
                 $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
-            } elseif (Survey::model()->findByPk($iSurveyID)) {
+            } elseif ($survey) {
                 // survey exist
             {
-                $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                $sLanguage = $survey->language;
             }
             } else {
                 $iSurveyID = 0;

@@ -467,8 +467,9 @@ class questions extends Survey_Common_Action
         $gid = (int) $gid;
 
         // Get languages select on survey.
-        $anslangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $oSurvey =  Survey::model()->findByPk($iSurveyID);
+        $anslangs = $oSurvey->additionalLanguages;
+        $baselang = $oSurvey->language;
 
         $oQuestion = $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
@@ -540,7 +541,7 @@ class questions extends Survey_Common_Action
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
             $cacount = Answer::model()->count($ans);
             if (!empty($cacount)) {
-                            Answer::model()->updateSortOrder($qid, Survey::model()->findByPk($iSurveyID)->language);
+                Answer::model()->updateSortOrder($qid, $oSurvey->language);
             }
         }
 
@@ -548,7 +549,7 @@ class questions extends Survey_Common_Action
 
         $row = Answer::model()->findByAttributes(array(
         'qid' => $qid,
-        'language' => Survey::model()->findByPk($iSurveyID)->language
+        'language' => $oSurvey->language
         ), array('order' => 'sortorder desc'));
 
         if (!is_null($row)) {
@@ -774,7 +775,7 @@ class questions extends Survey_Common_Action
             ));
 
             if ($cacount) {
-                            Answer::model()->updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
+                Answer::model()->updateSortOrder($qid, $oSurvey->language);
             }
         }
 
@@ -783,7 +784,7 @@ class questions extends Survey_Common_Action
         // Print Key Control JavaScript
         $result = Question::model()->findAllBYAttributes(array(
         'parent_qid' => $qid,
-        'language' => Survey::model()->findByPk($surveyid)->language
+        'language' => $oSurvey->language
         ), array('order' => 'question_order desc'));
 
         $aData['anscount'] = count($result);
@@ -1023,7 +1024,7 @@ class questions extends Survey_Common_Action
 
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
-        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $baselang = $survey->language;
 
         $qtypelist = getQuestionTypeList('', 'array');
         $qDescToCode = 'qDescToCode = {';
@@ -1056,7 +1057,7 @@ class questions extends Survey_Common_Action
         $aData['eqrow'] = $eqrow;
         $aData['groupid'] = $eqrow['gid'];
 
-        $sumresult1 = Survey::model()->findByPk($surveyid);
+        $sumresult1 = $survey;
         if (is_null($sumresult1)) {
             $this->getController()->error('Invalid Survey ID');
         }
@@ -1078,7 +1079,7 @@ class questions extends Survey_Common_Action
 
         $aData['accordionDatas']['eqrow'] = $eqrow;
         $aData['ajaxDatas']['sValidateUrl'] = $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid));
-        $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $aData['addlanguages'] = $survey->additionalLanguages;
 
         // Get the questions for this group, for position
         // NB: gid won't be set if user clicks quick-button Add question
@@ -1131,7 +1132,7 @@ class questions extends Survey_Common_Action
 
         $gid = sanitize_int($gid);
         if (isset($qid)) {
-                    $qid = sanitize_int($qid);
+            $qid = sanitize_int($qid);
         }
 
 
@@ -1296,16 +1297,15 @@ class questions extends Survey_Common_Action
 
             $aData['action'] = $action;
 
-            $sumresult1 = Survey::model()->findByPk($surveyid);
-            if (is_null($sumresult1)) {
+            if (is_null($oSurvey)) {
                 $this->getController()->error('Invalid Survey ID');
             }
 
             // $surveyinfo = $sumresult1->attributes;
             // $surveyinfo = array_map('flattenText', $surveyinfo);
-            $aData['activated'] = $activated = $sumresult1->active;
+            $aData['activated'] = $activated = $oSurvey->active;
 
-            if ($activated != "Y") {
+            if ($oSurvey->isActive) {
                 // Prepare selector Class for javascript function
                 if (Yii::app()->session['questionselectormode'] !== 'default') {
                     $selectormodeclass = Yii::app()->session['questionselectormode'];
@@ -1326,7 +1326,7 @@ class questions extends Survey_Common_Action
 
             if ($adding) {
                 // Get the questions for this group
-                $baselang = Survey::model()->findByPk($surveyid)->language;
+                $baselang = $oSurvey->language;
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
@@ -1334,7 +1334,7 @@ class questions extends Survey_Common_Action
 
             $aData['sValidateUrl'] = ($adding || $copying) ? $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid)) : $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid, 'qid'=>$qid));
 
-            $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $aData['addlanguages'] = $oSurvey->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
             $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
@@ -1652,10 +1652,7 @@ class questions extends Survey_Common_Action
             App()->end();
         }
 
-        $aLanguages = array_merge(
-            array(Survey::model()->findByPk($surveyid)->language),
-            Survey::model()->findByPk($surveyid)->additionalLanguages
-            );
+        $aLanguages = $oSurvey->allLanguages;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
         uasort($aAttributesWithValues, 'categorySort');
@@ -1807,16 +1804,16 @@ class questions extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
 
         if (empty($surveyid)) {
-                    $this->getController()->error('No Survey ID provided');
+            $this->getController()->error('No Survey ID provided');
         }
         if (empty($qid)) {
-                    $this->getController()->error('No Question ID provided');
+            $this->getController()->error('No Question ID provided');
         }
 
         if (empty($lang)) {
-                    $language = Survey::model()->findByPk($surveyid)->language;
+            $language = $survey->language;
         } else {
-                    $language = $lang;
+            $language = $lang;
         }
 
         if (!isset(Yii::app()->session['step'])) { Yii::app()->session['step'] = 0; }

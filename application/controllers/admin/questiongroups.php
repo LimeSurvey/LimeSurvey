@@ -150,17 +150,13 @@ class questiongroups extends Survey_Common_Action
 
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            $grplangs[] = $baselang;
-            $grplangs = array_reverse($grplangs);
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questiongroup.js');
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
-            $aData['grplangs'] = $grplangs;
-            $aData['baselang'] = $baselang;
+            $aData['grplangs'] = $survey->allLanguages;
+            $aData['baselang'] = $survey->language;;
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -184,11 +180,11 @@ class questiongroups extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
+        $oSurvey = Survey::model()->findByPk($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
             Yii::app()->loadHelper('surveytranslator');
 
-            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
-            foreach ($sSurveyLanguages as $sLanguage) {
+            foreach ($oSurvey->allLanguages as $sLanguage) {
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $surveyid;
                 if (isset($newGroupID)) {
@@ -326,11 +322,10 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
-            $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
             // TODO: This is not an array, but a string "en"
-            $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+            $aBaseLanguage = $survey->language;
 
-            $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
+            $aLanguages = $survey->allLanguages;
 
             $grplangs = array_flip($aLanguages);
 
@@ -347,7 +342,7 @@ class questiongroups extends Survey_Common_Action
                 }
 
                 if ($esrow['language'] == $aBaseLanguage) {
-                                    $basesettings = $esrow;
+                    $basesettings = $esrow;
                 }
             }
 

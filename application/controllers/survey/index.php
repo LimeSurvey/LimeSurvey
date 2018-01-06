@@ -81,8 +81,8 @@ class index extends CAction
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif (Survey::model()->findByPk($surveyid)) {
-            $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
+        } elseif ($oSurvey) {
+            $sDisplayLanguage = $oSurvey->language;
         } else {
             $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         }
@@ -413,7 +413,7 @@ class index extends CAction
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
 
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
+            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }
@@ -426,7 +426,7 @@ class index extends CAction
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load.twig';
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>$oSurvey, 'aSurveyInfo'=>$thissurvey), false);
         }
 
 
@@ -637,8 +637,9 @@ class index extends CAction
 
     private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
+        $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
+        if ($oSurvey) {
+            $baselang = $oSurvey->language;
         } elseif (!empty($mvSurveyIdOrBaseLang)) {
             $baselang = $mvSurveyIdOrBaseLang;
         } else {

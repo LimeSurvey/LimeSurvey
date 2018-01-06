@@ -35,36 +35,36 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
-            $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $languages = $oSurvey->allLanguages;
+            $surveyLanguage = $oSurvey->language;
 
             Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}";
 
-            array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
 
             if ($sAction == "assessmentadd") {
-                            $this->_add($iSurveyID);
+                $this->_add($iSurveyID);
             }
 
             if ($sAction == "assessmentupdate") {
-                            $this->_update($iSurveyID);
+                $this->_update($iSurveyID);
             }
 
             if ($sAction == "assessmentopenedit") {
-                            $this->_edit($iSurveyID);
+                $this->_edit($iSurveyID);
             }
 
             if ($sAction == "assessmentdelete") {
-                            $this->_delete($iSurveyID, $_POST['id']);
+                $this->_delete($iSurveyID, $_POST['id']);
             }
 
             if ($sAction == "asessementactivate") {
-                            $this->_activateAsessement($iSurveyID);
+                $this->_activateAsessement($iSurveyID);
             }
 
 

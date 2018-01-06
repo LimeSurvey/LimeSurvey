@@ -436,6 +436,7 @@ class dataentry extends Survey_Common_Action
     {
 
         $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
         $survey = Survey::model()->findByPk($surveyid);
@@ -865,9 +866,8 @@ class dataentry extends Survey_Common_Action
                             dbExecuteAssoc($lquery);
 
 
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $baselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs, $baselang);
+                            $slangs = $oSurvey->allLanguages;
+                            $baselang = $oSurvey->language;
 
                             $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
                             $aDataentryoutput .= "<option value=''";
@@ -1729,7 +1729,7 @@ class dataentry extends Survey_Common_Action
         $aViewUrls = array();
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
-            $baselang = Survey::model()->findByPk($surveyid)->language;
+            $baselang = $survey->language;
             $slangs = $survey->allLanguages;
 
             if (is_null($lang) || !in_array($lang, $slangs)) {
@@ -1966,10 +1966,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "I": //Language Switch
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs, $sbaselang);
-                            $cdata['slangs'] = $slangs;
+                            $cdata['slangs'] = $survey->allLanguages;
 
                             break;
                         case "P": //Multiple choice with comments checkbox + text
@@ -2172,11 +2169,11 @@ class dataentry extends Survey_Common_Action
         if (!isset($aData['display']['menu_bars']['browse'])) {
             $iSurveyId = 0;
             if (isset($aData['surveyid'])) {
-                            $iSurveyId = $aData['surveyid'];
+                $iSurveyId = $aData['surveyid'];
             }
 
             if (isset($_POST['sid'])) {
-                            $iSurveyId = $_POST['sid'];
+                $iSurveyId = $_POST['sid'];
             }
 
             $aData['display']['menu_bars']['browse'] = gT("Data entry");

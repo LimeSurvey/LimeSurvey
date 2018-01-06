@@ -45,15 +45,15 @@ class quotas extends Survey_Common_Action
 
     private function _getData($iSurveyId)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         // Set the variables in an array
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
-        $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        array_unshift($aData['aLangs'], $aData['sBaseLang']);
+        $aData['sBaseLang'] = $oSurvey->language;
+        $aData['aLangs'] = $oSurvey->allLanguages;
 
         $aData['action'] = $action = Yii::app()->request->getParam('action');
         if (!isset($action)) {
-                    $aData['action'] = 'quotas';
+            $aData['action'] = 'quotas';
         }
 
         return $aData;
@@ -508,6 +508,7 @@ class quotas extends Survey_Common_Action
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
 
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
@@ -562,8 +563,7 @@ class quotas extends Survey_Common_Action
                 'Y' => array('Title' => $aQuestion['title'], 'Display' => gT("Yes"), 'code' => 'Y'),
                 'N' => array('Title' => $aQuestion['title'], 'Display' => gT("No"), 'code' => 'N'));
         } elseif ($aQuestionType == 'I') {
-            $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            array_unshift($slangs, $sBaseLang);
+            $slangs = $oSurvey->allLanguages;
 
             while (list($key, $value) = each($slangs)) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
