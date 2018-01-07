@@ -102,14 +102,14 @@ abstract class LSYii_Controller extends CController
         }
 
         if (ini_get("max_execution_time") < 1200) {
-            try{
+            try {
                 set_time_limit(1200); // Maximum execution time - works only if safe_mode is off 
-            } catch (Exception $e){};
+            } catch (Exception $e) {};
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M')) {
-            try{
+            try {
                 ini_set("memory_limit", Yii::app()->getConfig('memory_limit').'M'); // Set Memory Limit for big surveys
-            } catch (Exception $e){};
+            } catch (Exception $e) {};
         }
 
         // The following function (when called) includes FireBug Lite if true

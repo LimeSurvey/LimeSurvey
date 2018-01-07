@@ -341,7 +341,7 @@ class Surveymenu extends LSActiveRecord
             $headerArray = ['parent_id', 'survey_id', 'user_id', 'ordering', 'level', 'name', 'title', 'position', 'description', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
             $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', 'Survey menu', 'side', 'Main survey menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
             $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', 'Quick menu', 'collapsed', 'Quick menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [1,NULL,NULL,0,1,'pluginmenu','Plugin menu','side','Plugin menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [1, NULL, NULL, 0, 1, 'pluginmenu', 'Plugin menu', 'side', 'Plugin menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
             
             $oTransaction->commit();
         } catch (Exception $e) {

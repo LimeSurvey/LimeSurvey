@@ -20,7 +20,7 @@ class Timing extends LSActiveRecord
      * @param int $iSurveyId
      * @param string $scenario
      */
-    public function __construct($iSurveyId , $scenario = 'insert')
+    public function __construct($iSurveyId, $scenario = 'insert')
     {
 
         $survey = Survey::model()->findByPk($iSurveyId);

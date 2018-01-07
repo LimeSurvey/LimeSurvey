@@ -327,7 +327,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
 
             // NB: Session is flushed at submit, so sid is not defined here.
-            if ( isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]) && isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions']) ) {
+            if (isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]) && isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'])) {
                 $aDatas["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
             }
         }
