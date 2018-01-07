@@ -21,7 +21,6 @@ class SurveyActivator
     private $createSurveyDir = false;
 
 
-
     /** @var boolean */
     public $isSimulation;
 
@@ -42,7 +41,6 @@ class SurveyActivator
         if(!empty($this->error)){
             return ['error'=>$this->error];
         }
-
 
         $this->prepareResponsesTable();
 
@@ -70,6 +68,10 @@ class SurveyActivator
             'status' => 'OK',
             'pluginFeedback' => $this->event->get('pluginFeedback')
         );
+        if(!$this->createSurveyDirectory()){
+            $aResult['warning'] = 'nouploadsurveydir';
+        }
+
         return $aResult;
     }
 
@@ -337,12 +339,13 @@ class SurveyActivator
         if ($this->createSurveyDir) {
             if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
                 if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
-                    $aResult['warning'] = 'nouploadsurveydir';
+                    return false;
                 } else {
                     file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
                 }
             }
         }
+        return true;
 
     }
 
