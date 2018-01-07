@@ -8,11 +8,19 @@ class SurveyActivator
     /** @var array  */
     private $tableDefinition=[];
     /** @var array  */
+    private $timingsTableDefinition=[];
+    /** @var array  */
     private $fieldMap;
     /** @var string */
     private $collation;
     /** @var PluginEvent */
     private $event;
+    /** @var string */
+    private $error;
+    /** @var bool */
+    private $createSurveyDir = false;
+
+
 
     /** @var boolean */
     public $isSimulation;
@@ -23,72 +31,49 @@ class SurveyActivator
         $this->survey = $survey;
     }
 
-
-
     public function activate(){
-
-
-        $oSurvey = $this->survey;
-        $iSurveyID = $this->survey->primaryKey;
-        $simulate = $this->isSimulation;
-
 
         $this->event = new PluginEvent('beforeSurveyActivate');
         $this->event->set('surveyId', $this->survey->primaryKey);
-        $this->event->set('simulate', $simulate);
+        $this->event->set('simulate', $this->isSimulation);
         App()->getPluginManager()->dispatchEvent($this->event);
 
         $this->showEventMessages();
+        if(!empty($this->error)){
+            return ['error'=>$this->error];
+        }
 
-        $aTableDefinition = array();
-        $bCreateSurveyDir = false;
 
         $this->prepareResponsesTable();
 
-        if ($simulate) {
+        if ($this->isSimulation) {
             return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$this->tableDefinition);
         }
 
         // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
         $this->createParticipantsTable();
 
-
-        if ($oSurvey->isSaveTimings) {
-            $timingsfieldmap = createTimingsFieldMap($iSurveyID, "full", false, false, $oSurvey->language);
-
-            $aTimingTableDefinition = array();
-            $aTimingTableDefinition['id'] = $aTableDefinition['id'];
-            foreach ($timingsfieldmap as $field=>$fielddata) {
-                $aTimingTableDefinition[$field] = 'FLOAT';
-            }
-
-            $sTableName = $this->survey->timingsTableName;
-            try {
-                Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
-                Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-            } catch (CDbException $e) {
-                return array('error'=>'timingstablecreation');
-            }
-
+        if ($this->survey->isSaveTimings) {
+            $this->createTimingsTable();
         }
+
+        if(!empty($this->error)){
+            return ['error'=>$this->error];
+        }
+
+
+
+        $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$this->survey->primaryKey;
+        Yii::app()->db->createCommand($sQuery)->query();
+
         $aResult = array(
             'status' => 'OK',
             'pluginFeedback' => $this->event->get('pluginFeedback')
         );
-        // create the survey directory where the uploaded files can be saved
-        if ($bCreateSurveyDir) {
-            if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
-                if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
-                    $aResult['warning'] = 'nouploadsurveydir';
-                } else {
-                    file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
-                }
-            }
-        }
-        $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
-        Yii::app()->db->createCommand($sQuery)->query();
         return $aResult;
     }
+
+
 
     /**
      * For each question, create the appropriate field(s)
@@ -155,7 +140,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = "string(20)";
                     break;
                 case "|":
-                    $bCreateSurveyDir = true;
+                    $this->createSurveyDir = true;
                     if (strpos($aRow['fieldname'], "_")) {
                         $aTableDefinition[$aRow['fieldname']] = "integer";
                     } else {
@@ -215,6 +200,18 @@ class SurveyActivator
 
     }
 
+    private function prepareTimingsTable(){
+        $timingsfieldmap = createTimingsFieldMap($this->survey->primaryKey, "full", false, false, $this->survey->language);
+        $aTimingTableDefinition = array();
+        $aTimingTableDefinition['id'] = $this->tableDefinition;
+        foreach ($timingsfieldmap as $field=>$fielddata) {
+            $aTimingTableDefinition[$field] = 'FLOAT';
+        }
+        $this->timingsTableDefinition = $aTimingTableDefinition;
+    }
+
+
+
     private function prepareCollation(){
         // Specify case sensitive collations for the token
         $this->collation = '';
@@ -264,18 +261,18 @@ class SurveyActivator
         try {
             Yii::app()->db->createCommand()->createTable($sTableName, $this->tableDefinition);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        } catch (CDbException $e) {
+        } catch (Exception $e) {
             if (App()->getConfig('debug')) {
-                return array('error'=>$e->getMessage());
+                $this->error = $e->getMessage();
             } else {
-                return array('error'=>'surveytablecreation');
+                $this->error = 'surveytablecreation';
             }
         }
         try {
             if (isset($aTableDefinition['token'])) {
                 Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000), $sTableName, 'token');
             }
-        } catch (CDbException $e) {
+        } catch (\Exception $e) {
         }
 
         $this->createParticipantsTableKeys();
@@ -289,7 +286,7 @@ class SurveyActivator
 
         if ($success === false) {
             Yii::app()->user->setFlash('error', $message);
-            return array('error' => 'plugin');
+            $this->error = 'plugin';
         } else if (!empty($message)) {
             Yii::app()->user->setFlash('info', $message);
         }
@@ -317,6 +314,33 @@ class SurveyActivator
             } else {
                 $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} AUTO_INCREMENT = {$iAutoNumberStart}";
                 @Yii::app()->db->createCommand($sQuery)->execute();
+            }
+        }
+
+    }
+
+    private function createTimingsTable(){
+        $this->prepareTimingsTable();
+        $sTableName = $this->survey->timingsTableName;
+        try {
+            Yii::app()->db->createCommand()->createTable($sTableName, $this->timingsTableDefinition);
+            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+        } catch (\Exception $e) {
+            $this->error = 'timingstablecreation';
+        }
+    }
+
+
+    private function createSurveyDirectory(){
+        $iSurveyID = $this->survey->primaryKey;
+        // create the survey directory where the uploaded files can be saved
+        if ($this->createSurveyDir) {
+            if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
+                if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
+                    $aResult['warning'] = 'nouploadsurveydir';
+                } else {
+                    file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
+                }
             }
         }
 
