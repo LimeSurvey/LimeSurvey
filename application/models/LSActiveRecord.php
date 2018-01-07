@@ -202,7 +202,8 @@ class LSActiveRecord extends CActiveRecord
      * @param mixed $condition
      * @return LSActiveRecord
      */
-    public static function findOne($condition) {
+    public static function findOne($condition)
+    {
         return static::model()->findByPk($condition);
     }
 
