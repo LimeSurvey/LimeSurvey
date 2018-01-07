@@ -864,7 +864,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 * @param $oDB
 * @return void
 */
-function upgrade333($oDB){
+function upgrade333($oDB)
+{
 
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
