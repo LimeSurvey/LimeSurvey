@@ -9,7 +9,7 @@
         &:after{
             position: absolute;
             left: 43%;
-            bottom: -10px;
+            bottom: -12px;
             font: normal normal normal 14px/1 FontAwesome;
             font-size: 28px;
             text-rendering: auto;
@@ -266,5 +266,24 @@ ol.breadcrumb.title-bar-breadcrumb {
         display: none;
         height: 8px;
         border-radius: 1px;
+    }
+}
+
+#pjaxClickInhibitor{
+    position: fixed;
+    left: 0;
+    top:0;
+    z-index: 9999999;
+    width:100%;
+    width:100vw;
+    height:100%;
+    height:100vh;
+    background: rgba(250,250,250,0.4);
+    cursor: progress;
+}
+
+.makeDisabledInputsTransparent {
+    input:disabled {
+        color: transparent;
     }
 }

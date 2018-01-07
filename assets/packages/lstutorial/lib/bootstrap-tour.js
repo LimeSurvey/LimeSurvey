@@ -470,7 +470,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
     Tour.prototype._debug = function(text) {
       if (this._options.debug) {
-        return window.console.log("Bootstrap Tour '" + this._options.name + "' | " + text);
+        return window.console.ls.log("Bootstrap Tour '" + this._options.name + "' | " + text);
       }
     };
 

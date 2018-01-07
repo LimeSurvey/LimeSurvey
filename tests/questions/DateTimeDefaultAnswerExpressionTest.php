@@ -16,9 +16,6 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         self::importSurvey($fileName);
     }
 
-
-
-
     /**
      * Test the question with lacking default answer expression,
      * date('Y-m-d'), will be filled with ' 00:00' to work with

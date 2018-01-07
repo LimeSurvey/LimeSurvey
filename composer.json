@@ -17,7 +17,6 @@
 		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
 		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
 	},
-	"minimum-stability" : "dev",
 	"autoload": {
 		"psr-4": {
 			"LimeSurvey\\PluginManager\\": [
@@ -36,5 +35,6 @@
         "bin-dir": "third_party/bin"
     },
 	"require-dev": {
+		"squizlabs/php_codesniffer": "2.*"
 	}
 }

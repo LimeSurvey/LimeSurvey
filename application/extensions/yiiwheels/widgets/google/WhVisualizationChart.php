@@ -81,8 +81,8 @@ class WhVisualizationChart extends CWidget
         $cs->registerScript(
             __CLASS__ . '#' . $id,
             'google.load("visualization", "1", {packages:["corechart"]});',
-            CClientScript::POS_HEAD
+            CClientScript::POS_BEGIN
         );
-        $cs->registerScript($id, $script, CClientScript::POS_HEAD);
+        $cs->registerScript($id, $script, CClientScript::POS_BEGIN);
     }
 }

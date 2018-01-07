@@ -1,5 +1,7 @@
 <?php
-if ( !defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,26 +23,22 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
  * @return bool|CDbDataReader
  * @throws Exception
  */
-function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
+function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
 {
     $error = '';
     try {
-        if($inputarr)
-        {
-            $dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
-        }
-        else
-        {
-            $dataset=Yii::app()->db->createCommand($sql)->query();
+        if ($inputarr) {
+            $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
+        } else {
+            $dataset = Yii::app()->db->createCommand($sql)->query();
 
         }
-    } catch(CDbException $e) {
+    } catch (CDbException $e) {
         $error = $e->getMessage();
-        $dataset=false;
+        $dataset = false;
     }
 
-    if (!$dataset && (Yii::app()->getConfig('debug') >0 || !$silent))
-    {
+    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
         // Exception is better than safeDie, because you can see the backtrace.
         throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
     }
@@ -54,9 +52,9 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 function dbQueryOrFalse($sql)
 {
     try {
-        $dataset=Yii::app()->db->createCommand($sql)->query();
-    } catch(CDbException $e) {
-        $dataset=false;
+        $dataset = Yii::app()->db->createCommand($sql)->query();
+    } catch (CDbException $e) {
+        $dataset = false;
     }
     return $dataset;
 }
@@ -66,7 +64,7 @@ function dbQueryOrFalse($sql)
  * @param string $sql
  * @return bool|CDbDataReader
  */
-function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
+function dbSelectLimitAssoc($sql, $numrows = 0, $offset = 0, $inputarr = false, $dieonerror = true)
 {
     $query = Yii::app()->db->createCommand($sql);
     if ($numrows) {
@@ -76,14 +74,13 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
             $query->limit($numrows, 0);
         }
     }
-    if($inputarr) {
-        $query->bindValues($inputarr);    //Checked
+    if ($inputarr) {
+        $query->bindValues($inputarr); //Checked
     }
     try {
-        $dataset=$query->query();
-    }
-    catch (CDbException $e) {
-        $dataset=false;
+        $dataset = $query->query();
+    } catch (CDbException $e) {
+        $dataset = false;
     }
     if (!$dataset && $dieonerror) {
         safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);
@@ -100,20 +97,16 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
  */
 function dbQuoteID($id)
 {
-    switch (Yii::app()->db->getDriverName())
-    {
+    switch (Yii::app()->db->getDriverName()) {
         case "mysqli" :
         case "mysql" :
             return "`".$id."`";
-            break;
         case "dblib":
         case "mssql" :
         case "sqlsrv" :
             return "[".$id."]";
-            break;
         case "pgsql":
             return "\"".$id."\"";
-            break;
         default:
             return $id;
     }
@@ -133,26 +126,25 @@ function dbRandom()
     //$configForm = new InstallerConfigForm();
     //$dbTypes    = $configForm->db_names; //Supported types are in this array
 
-    switch ($driver)
-    {
+    switch ($driver) {
         case 'dblib':
         case 'mssql':
         case 'sqlsrv':
-            $srandom='NEWID()';
+            $srandom = 'NEWID()';
             break;
 
         case 'pgsql':
-            $srandom='RANDOM()';
+            $srandom = 'RANDOM()';
             break;
 
         case 'mysql':
         case 'mysqli':
-            $srandom='RAND()';
+            $srandom = 'RAND()';
             break;
 
         default:
             //Some db type that is not mentioned above, could fail and if so should get an entry above.
-            $srandom= 0 + lcg_value()*(abs(1));
+            $srandom = 0 + lcg_value() * (abs(1));
             break;
     }
 
@@ -180,7 +172,7 @@ function dbSelectTablesLike($table)
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
         case 'pgsql' :
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-        default: safeDie ("Couldn't create 'select tables like' query for connection type '".Yii::app()->db->getDriverName()."'");
+        default: safeDie("Couldn't create 'select tables like' query for connection type '".Yii::app()->db->getDriverName()."'");
     }
 }
 

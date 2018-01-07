@@ -33,7 +33,7 @@
                 var saveChanges = false;
                 var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
                 var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
-                $(document).on('ready pjax:complete', function(){
+                $(document).on('ready pjax:scriptcomplete', function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely
             /*
@@ -43,7 +43,6 @@
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
-                        customConfig : "<?php echo Yii::app()->getConfig('adminscripts') . 'ckeditor-config.js'; ?>",
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',

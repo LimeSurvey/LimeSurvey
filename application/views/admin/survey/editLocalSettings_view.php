@@ -12,16 +12,17 @@ echo viewHelper::getViewTestTag('surveyTexts');
 
 ?>
 
-<script type="text/javascript">
+<?php App()->getClientScript()->registerScript("editLocalSettings-view-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN); ?>
+
 <div id="edittxtele-<?php echo $i;?>" class="tab-pane fade in <?php if($i==0){echo "active";}?> center-box">
     <div class="container-fluid">
         <div class="row">
@@ -36,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     </div>
                 </div>
             </div>
-            <hr class="col-sm-12"></hr>
+            <hr class="col-sm-12" />
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">

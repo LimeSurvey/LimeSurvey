@@ -43,7 +43,7 @@ LS.CPDB = (function() {
                     method: 'POST',
                     success: secondSuccess,
                     error : function() {
-                        console.log(arguments);
+                        console.ls.log(arguments);
                     }
                 });
             });
@@ -55,7 +55,7 @@ LS.CPDB = (function() {
             data: data,
             method: 'POST',
             success: firstSuccess,
-            error: console.log
+            error: console.ls.log
         });
     },
 
@@ -506,4 +506,4 @@ function insertSearchCondition(id, options){
     options.data.searchcondition=$('#searchcondition').val();
     return options;
 }
-$(document).on('ready  pjax:complete', (LS.CPDB.bindButtons));
+$(document).on('ready  pjax:scriptcomplete', (LS.CPDB.bindButtons));

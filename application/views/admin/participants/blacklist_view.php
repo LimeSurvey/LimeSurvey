@@ -1,3 +1,10 @@
+<?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('participantsBlacklistControl');
+
+?>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 
 <div class="col-lg-12 list-surveys">

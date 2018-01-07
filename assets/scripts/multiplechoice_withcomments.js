@@ -1,4 +1,4 @@
-function doMultipleChoiceWithComments(qID,when)
+var  doMultipleChoiceWithComments = function(qID,when)
 {
   var question=$("#question"+qID+" .questions-list");
   if (jQuery.inArray(when, ['checked','unchecked'])<0){when='checked'}
@@ -36,7 +36,7 @@ function doMultipleChoiceWithComments(qID,when)
     });
     question.on('focusout','.other-item .other-text-item input:text',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
-      //console.log($(this)[0].value);
+      //console.ls.log($(this)[0].value);
       if($(this)[0].value==""){
         commentinput.val("");
         commentinput.triggerHandler("keyup");
@@ -79,7 +79,7 @@ function doMultipleChoiceWithComments(qID,when)
     });
     question.on('focusout','.other-item .other-text-item input:text',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
-      //console.log($(this)[0].value);
+      //console.ls.log($(this)[0].value);
       if(!$(this)[0].value==""){
         commentinput.val("");
         commentinput.triggerHandler("keyup");

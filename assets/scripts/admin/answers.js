@@ -3,7 +3,7 @@
 var LS = LS || {  onDocumentReady: {} };
 
 var labelcache=[];
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
@@ -118,9 +118,6 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 
     //We build the datas for the request
     datas  = {
-      'surveyid' : $elDatas.data('surveyid'),
-      'gid': $elDatas.data('gid'),
-      'qid': $elDatas.data('qid'),
       'codes': $codes,
       'scale_id': scale_id,
       'type' : 'answer',
@@ -130,10 +127,10 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
       'assessmentvisible' : ( $elDatas.data('assessmentvisible') == 1 )
     };
 
-    console.log(datas);
+    console.ls.log(datas);
     // We get the HTML of the new row to insert
      $.ajax({
-        type: "GET",
+        type: "POST",
         url: $url,
         data: datas,
         success: function(htmlrow) {
@@ -212,8 +209,8 @@ function addinput()
 
         },
         error :  function(html, statut){
-            console.log(statut);
-            console.log(html);
+            console.ls.log(statut);
+            console.ls.log(html);
         }
     });
 }
@@ -842,7 +839,7 @@ for (var x in languages)
                         }
 
                         htmlRowObject.find('td.subquestion-text').find('input').val(mapObject.text);
-                        console.log(htmlRowObject);
+                        console.ls.log(htmlRowObject);
                         $table.find('tbody').append(htmlRowObject);
                     });
                 });

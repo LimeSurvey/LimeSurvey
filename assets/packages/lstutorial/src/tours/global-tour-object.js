@@ -42,11 +42,13 @@ const globalTourObject = function(){
                 step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
                 step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
                 step.onShown = step.onShown ? eval(step.onShown) : undefined;
-                console.log(step);
+                if(window.debugState.backend) { console.ls.log(step); }
                 return step;
             });
             
             tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
+            tutorialObject.onEnd = tutorialObject.onEnd ? eval(tutorialObject.onEnd) : null;
+            tutorialObject.onStart = tutorialObject.onStart ? eval(tutorialObject.onStart) : null;
 
             return tutorialObject;
         };
@@ -55,7 +57,7 @@ const globalTourObject = function(){
         get : function(tourName){
             return new Promise((resolve, reject)=>{
                 $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt'),
+                    url: filterUrl('/tutorial/sa/servertutorial'),
                     data: {tutorialname: tourName, ajax: true},
                     method: 'POST',
                     success: (tutorialData)=>{

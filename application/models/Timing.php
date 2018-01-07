@@ -17,18 +17,14 @@ class Timing extends LSActiveRecord
     /** @var Survey $survey */
     protected $survey;
     /**
-     * @param string $scenario
      * @param int $iSurveyId
+     * @param string $scenario
      */
-    public function __construct($iSurveyId = null, $scenario = 'insert')
+    public function __construct($iSurveyId , $scenario = 'insert')
     {
 
-        if (!isset($iSurveyId)) {
-            // FIXME this method does not exist
-            $iSurveyId = Response::getLastSurveyId();
-        }
         $survey = Survey::model()->findByPk($iSurveyId);
-        if($survey){
+        if ($survey) {
             $this->surveyId = $iSurveyId;
             $this->survey = $survey;
             parent::__construct($scenario);
@@ -39,8 +35,8 @@ class Timing extends LSActiveRecord
     /** @inheritdoc */
     protected function instantiate($attributes)
     {
-        $class=get_class($this);
-        $model=new $class($this->surveyId, null);
+        $class = get_class($this);
+        $model = new $class($this->surveyId, null);
         return $model;
     }
 
@@ -66,14 +62,16 @@ class Timing extends LSActiveRecord
 
 
     /** @inheritdoc */
-    public function relations() {
+    public function relations()
+    {
         return array(
             'response' => array(self::BELONGS_TO, 'Response', 'id')
         );
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return $this->survey->timingsTableName;
     }
 
@@ -83,12 +81,12 @@ class Timing extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if(isset($this->_md)){
+        if (isset($this->_md)) {
             return $this->_md;
-        } else{
+        } else {
             /** @var CActiveRecordMetaData $md */
             $md = self::model($this->surveyId)->_md;
-            return $this->_md=$md;
+            return $this->_md = $md;
         }
     }
 

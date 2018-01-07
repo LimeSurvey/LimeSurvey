@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -40,11 +42,11 @@ class AdminTheme extends CFormModel
      */
     static public function getAdminThemeList()
     {
-        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir");                                       // The directory containing the default admin themes
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme';     // The directory containing the user themes
+        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir"); // The directory containing the default admin themes
+        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme'; // The directory containing the user themes
 
-        $aStandardThemeObjects     = self::getThemeList( $sStandardTemplateRootDir );                          // array containing the configuration files of standard admin themes (styles/...)
-        $aUserThemeObjects         = self::getThemeList( $sUserTemplateDir  );                                // array containing the configuration files of user admin themes (upload/admintheme/...)
+        $aStandardThemeObjects     = self::getThemeList($sStandardTemplateRootDir); // array containing the configuration files of standard admin themes (styles/...)
+        $aUserThemeObjects         = self::getThemeList($sUserTemplateDir); // array containing the configuration files of user admin themes (upload/admintheme/...)
         $aListOfThemeObjects       = array_merge($aStandardThemeObjects, $aUserThemeObjects);
 
         ksort($aListOfThemeObjects);
@@ -61,14 +63,14 @@ class AdminTheme extends CFormModel
      */
     public function setAdminTheme()
     {
-        $sAdminThemeName           = getGlobalSetting('admintheme');                                        // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
-        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir");                                     // Path for the standard Admin Themes
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme';   // Path for the user Admin Themes
+        $sAdminThemeName           = getGlobalSetting('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
+        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir"); // Path for the standard Admin Themes
+        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme'; // Path for the user Admin Themes
 
         // Check if the required theme is a standard one
-        if($this->isStandardAdminTheme($sAdminThemeName)) {
-            $sTemplateDir = $sStandardTemplateRootDir;                              // It's standard, so it will be in standard path
-            $sTemplateUrl = Yii::app()->getConfig('styleurl').$sAdminThemeName ;    // Available via a standard URL
+        if ($this->isStandardAdminTheme($sAdminThemeName)) {
+            $sTemplateDir = $sStandardTemplateRootDir; // It's standard, so it will be in standard path
+            $sTemplateUrl = Yii::app()->getConfig('styleurl').$sAdminThemeName; // Available via a standard URL
         } else {
             // If it's not a standard theme, we bet it's a user one.
             // In fact, it could also be a old 2.06 admin theme just aftet an update (it will then be caught as "non existent" in the next if statement")
@@ -80,40 +82,40 @@ class AdminTheme extends CFormModel
         // - user updated from 2.06 and still have old theme configurated in database
         // - user deleted a custom theme
         // In any case, we just set Sea Green as the template to use
-        if(!is_dir($sTemplateDir.DIRECTORY_SEPARATOR.$sAdminThemeName)) {
+        if (!is_dir($sTemplateDir.DIRECTORY_SEPARATOR.$sAdminThemeName)) {
             $sAdminThemeName   = 'Sea_Green';
             $sTemplateDir      = $sStandardTemplateRootDir;
-            $sTemplateUrl      = Yii::app()->getConfig('styleurl').DIRECTORY_SEPARATOR.$sAdminThemeName ;
+            $sTemplateUrl      = Yii::app()->getConfig('styleurl').DIRECTORY_SEPARATOR.$sAdminThemeName;
             setGlobalSetting('admintheme', 'Sea_Green');
         }
 
         // Now that we are sure we have an existing template, we can set the variables of the AdminTheme
         $this->sTemplateUrl = $sTemplateUrl;
         $this->name         = $sAdminThemeName;
-        $this->path         = $sTemplateDir . DIRECTORY_SEPARATOR . $this->name;
+        $this->path         = $sTemplateDir.DIRECTORY_SEPARATOR.$this->name;
 
         // This is necessary because a lot of files still use "adminstyleurl".
         // TODO: replace everywhere the call to Yii::app()->getConfig('adminstyleurl) by $oAdminTheme->sTemplateUrl;
-        Yii::app()->setConfig('adminstyleurl', $this->sTemplateUrl );
+        Yii::app()->setConfig('adminstyleurl', $this->sTemplateUrl);
 
 
         //////////////////////
         // Config file loading
 
         $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->path.'/config.xml'));  // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $sXMLConfigFile        = file_get_contents(realpath($this->path.'/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
         // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+        $this->config = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
 
         // If developers want to test asset manager with debug mode on
-        self::$use_asset_manager = isset($this->config->engine->use_asset_manager_in_debug_mode)?( $this->config->engine->use_asset_manager_in_debug_mode == 'true'):'false';
+        self::$use_asset_manager = isset($this->config->engine->use_asset_manager_in_debug_mode) ? ($this->config->engine->use_asset_manager_in_debug_mode == 'true') : false;
 
-        $this->defineConstants();           // Define the (still) necessary constants
-        $this->registerStylesAndScripts();  // Register all CSS and JS
+        $this->defineConstants(); // Define the (still) necessary constants
+        $this->registerStylesAndScripts(); // Register all CSS and JS
 
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
 
         return $this;
     }
@@ -137,25 +139,28 @@ class AdminTheme extends CFormModel
 
         if (!Yii::app()->request->getQuery('isAjax', false)) {
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
-            App()->bootstrap->registerTooltipAndPopover();                                                               // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
+            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
             App()->getClientScript()->registerScript('coreuser', '
            LS.globalUserId = "'.Yii::app()->user->id.'";', CClientScript::POS_HEAD);
-            App()->getClientScript()->registerPackage('jquery');      // jqueryui
-            App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
-            App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
-            App()->getClientScript()->registerPackage('fontawesome');   // fontawesome
+            App()->getClientScript()->registerPackage('jquery'); // jquery
+            App()->getClientScript()->registerPackage('jqueryui'); // jqueryui
+            App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
+            App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
             App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('bootstrap-select2');
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
-            App()->getClientScript()->registerPackage('adminbasics');    // Combined scripts and style 
-            App()->getClientScript()->registerPackage('adminpanel');    // The new admin panel
-            App()->getClientScript()->registerPackage('lstutorial');    // Tutorial scripts
-            App()->getClientScript()->registerPackage('ckeditor');           //
-            App()->getClientScript()->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
+            App()->getClientScript()->registerPackage('font-roboto');
+            App()->getClientScript()->registerPackage('font-icomoon');
+            App()->getClientScript()->registerPackage('adminbasicjs');
+            App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
+            App()->getClientScript()->registerPackage('adminpanel'); // The new admin panel
+            App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
+            App()->getClientScript()->registerPackage('ckeditor'); //
+            App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
         }
 
         $aCssFiles = array();
-        $aJsFiles= array();
+        $aJsFiles = array();
 
         // Then we add the different CSS/JS files to load in arrays
         // It will check if it needs or not the RTL files
@@ -170,20 +175,26 @@ class AdminTheme extends CFormModel
             }
 
             foreach ($this->config->files->rtl->css->filename as $cssfile) {
-                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the RTL css files
+                $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
             }
+            App()->getClientScript()->registerPackage('font-roboto');
+            App()->getClientScript()->registerPackage('adminbasicjs');
+            App()->getClientScript()->unregisterPackage('adminbasics');
+            App()->getClientScript()->registerPackage('adminbasicsrtl');
 
-            $aCssFiles[] =  'css/adminstyle-rtl.css';                           // This file is needed for rtl
         } else {
             // Non-RTL style
-            foreach($this->config->files->css->filename as $cssfile) {
-                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the css files
+            foreach ($this->config->files->css->filename as $cssfile) {
+                $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the css files
             }
         }
 
-        foreach($this->config->files->js->filename as $jsfile) {
-            $aJsFiles[] = 'scripts/'.$jsfile;                                   // add the 'js/' prefix to the RTL css files
+        if (!empty($this->config->files->js->filename)) {
+            foreach ($this->config->files->js->filename as $jsfile) {
+                $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+            }
         }
+
 
         $package = array();
 
@@ -191,20 +202,20 @@ class AdminTheme extends CFormModel
         // When defining the package with a base path (a directory on the file system), the asset manager is used
         // When defining the package with a base url, the file is directly registerd without the asset manager
         // See : http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
-        if( !YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
+        if (!YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
             Yii::setPathOfAlias('admin.theme.path', $this->path);
-            $package['basePath'] = 'admin.theme.path';                          // add the base path to the package, so it will use the asset manager
+            $package['basePath'] = 'admin.theme.path'; // add the base path to the package, so it will use the asset manager
         } else {
-            $package['baseUrl'] = $this->sTemplateUrl;                          // add the base url to the package, so it will not use the asset manager
+            $package['baseUrl'] = $this->sTemplateUrl; // add the base url to the package, so it will not use the asset manager
         }
 
-        $package['css']     = $aCssFiles;                                           // add the css files to the package
-        $package['js']      = $aJsFiles;                                             // add the js files to the package
+        $package['css']     = $aCssFiles; // add the css files to the package
+        $package['js']      = $aJsFiles; // add the js files to the package
         $package['depends'] = array('bootstrap');
 
-        Yii::app()->clientScript->addPackage( 'admin-theme', $package);         // add the package
-        Yii::app()->clientScript->registerPackage('admin-theme');               // register the package
-        Yii::app()->clientScript->registerPackage('moment');                    // register moment for correct dateTime calculation
+        Yii::app()->clientScript->addPackage('admin-theme', $package); // add the package
+        Yii::app()->clientScript->registerPackage('admin-theme'); // register the package
+        Yii::app()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
 
     }
 
@@ -221,59 +232,6 @@ class AdminTheme extends CFormModel
             self::$instance->setAdminTheme();
         }
         return self::$instance;
-    }
-
-    /**
-     * Touch each directory in standard admin theme directory to force assset manager to republish them
-     * NB: This function still makes problem, because it's touching direcories inside application, which could be unwritable.
-     * But: if people used comfortUpdate, the probably made it writable
-     * TODO: check if 'force' parameter could be used to publish new assets here
-     * see: http://www.yiiframework.com/doc/api/1.1/CAssetManager#forceCopy-detail
-     */
-    public static function forceAssets()
-    {
-        // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) return;
-
-        // Touch all the admin themes
-        $standardTemplatesPath = Yii::app()->getConfig("styledir");
-        self::touchSubDirectories($standardTemplatesPath);
-
-        //Touch all the assets folders of extensions and third party
-        $otherAssets = self::getOtherAssets();
-
-        $sRootDir = App()->getConfig("rootdir");
-        foreach($otherAssets as $otherAsset ) {
-            $sDirToTouch = $sRootDir . DIRECTORY_SEPARATOR . $otherAsset;
-            if ( is_dir($sDirToTouch)) {
-                if (is_writable($sDirToTouch)){
-                    touch($sDirToTouch);
-                }
-            }
-        }
-
-
-        // Touch all the root folders of third party
-        $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'third_party';
-        self::touchSubDirectories($sPath);
-
-        //Touch all the root folders of extensions
-        $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'application'. DIRECTORY_SEPARATOR .'extensions';
-        self::touchSubDirectories($sPath);
-    }
-
-    /**
-     * @param string $sPath
-     */
-    public static function touchSubDirectories( $sPath )
-    {
-        $Resource = opendir($sPath);
-        while ($Item = readdir($Resource)) {
-            if (is_dir($sPath . DIRECTORY_SEPARATOR . $Item) && $Item != "." && $Item != "..") {
-                if (is_writable($sPath . DIRECTORY_SEPARATOR . $Item))
-                    touch($sPath . DIRECTORY_SEPARATOR . $Item);
-            }
-        }
     }
 
     /**
@@ -336,12 +294,14 @@ class AdminTheme extends CFormModel
         if ($sDir && $pHandle = opendir($sDir)) {
             while (false !== ($file = readdir($pHandle))) {
                 if (is_dir($sDir.DIRECTORY_SEPARATOR.$file) && is_file($sDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml')) {
-                    $sXMLConfigFile        = file_get_contents( realpath ($sDir.DIRECTORY_SEPARATOR.$file.'/config.xml'));  // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                    $sXMLConfigFile = file_get_contents(realpath($sDir.DIRECTORY_SEPARATOR.$file.'/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
                     // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
                     // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-                    $oTemplateConfig = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
-
+                    $oTemplateConfig = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
+                    $previewUrl = Yii::app()->getConfig('styleurl').$file; // NOTE: will not work with uploaded themes for now
+                    $oTemplateConfig->path    = $file;
+                    $oTemplateConfig->preview = '<img src="'.$previewUrl.'/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }
             }
@@ -351,23 +311,24 @@ class AdminTheme extends CFormModel
         return $aListOfFiles;
     }
 
+
     /**
      * Few constants depending on Template
      */
     private function defineConstants()
     {
         // Define images url
-        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
-            define('LOGO_URL', App()->getAssetManager()->publish( $this->path . '/images/logo.png'));
-            define('LOGO_ICON_URL', App()->getAssetManager()->publish( $this->path . '/images/logo_icon.png'));
+        if (!YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
+            define('LOGO_URL', App()->getAssetManager()->publish($this->path.'/images/logo.png'));
+            define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path.'/images/logo_icon.png'));
         } else {
             define('LOGO_URL', $this->sTemplateUrl.'/images/logo.png');
             define('LOGO_ICON_URL', $this->sTemplateUrl.'/images/logo_icon.png');
         }
 
         // Define presentation text on welcome page
-        if (isset($this->config->metadatas->presentation) && $this->config->metadatas->presentation) {
-            define('PRESENTATION', $this->config->metadatas->presentation);
+        if (isset($this->config->metadata->presentation) && $this->config->metadata->presentation) {
+            define('PRESENTATION', $this->config->metadata->presentation);
         } else {
             define('PRESENTATION', gT('This is the LimeSurvey admin interface. Start to build your survey from here.'));
         }

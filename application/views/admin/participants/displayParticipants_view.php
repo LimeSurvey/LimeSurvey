@@ -1,3 +1,11 @@
+<?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('displayParticipants');
+
+?>
+
 <div class="col-xs-12">
     <div class="pagetitle h3 row">
         <div class="col-xs-8 ">
@@ -80,7 +88,7 @@
                 'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                 'ajaxType' => 'POST',
                 'beforeAjaxUpdate' => 'insertSearchCondition',
-                'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'pageSizeParticipantView',

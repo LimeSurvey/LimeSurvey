@@ -42,7 +42,7 @@ $.fn.displayComfortStep = function(options)
 
     // Those datas are defined in _ajaxVariables view
     datas = 'destinationBuild=' + $destinationBuild + '&access_token=' + $access_token + '&'+csrf_token_name+'='+csrf_token;
-    console.log($url);
+    console.ls.log($url);
     $.ajax({
         type: "POST",
         data: datas,

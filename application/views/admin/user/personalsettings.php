@@ -58,25 +58,42 @@
                             <hr/>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Old password:"), 'lang', array('class'=>"control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('oldpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
-                                    </div>
-                                </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-default btn-warning" id="selector__showChangePassword" style="color: white; outline: none;">
+                                    <i class="fa fa-lock"></i>
+                                    <?=gT("Change password")?>
+                                </button>
+                                <br/>
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                            <div class="col-md-9">
+                                <div class="container-fluid">
+                                    <div class="row selector__password-row hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("Old password:"), 'lang', array('class'=>"control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('oldpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                    <div class="row selector__password-row hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("New password:"), 'lang', array('class'=>" control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('password', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("Repeat new password:"), 'lang', array('class'=>" control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('repeatpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -209,3 +226,15 @@
     <?php echo CHtml::endForm(); ?>
 
 </div>
+
+<?php App()->getClientScript()->registerScript("personalSettings", "
+$('#selector__showChangePassword').on('click', function(e){
+    e.preventDefault();
+    $('.selector__password-row').toggleClass('hidden').find('input').each(
+        function(i,item){
+            $(item).prop('disabled', !$(item).prop('disabled'));
+        }
+    );
+    $(this).find('i').toggleClass('fa-unlock').toggleClass('fa-lock');
+});
+", LSYii_ClientScript::POS_POSTSCRIPT);

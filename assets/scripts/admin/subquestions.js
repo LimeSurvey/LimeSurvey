@@ -27,7 +27,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
@@ -36,9 +36,9 @@ $(document).on('ready  pjax:complete', function(){
         update:aftermove,
         distance:3});
 
-    $(document).on("click", '.btnaddanswer', addinput);
-    $(document).on("click", '.btndelanswer', deleteinput);
-    $(document).on("click", '.btnlsbrowser', lsbrowser );
+    $('.btnaddanswer').on("click", addinput);
+    $('.btndelanswer').on("click", deleteinput);
+    $('.btnlsbrowser').on("click", lsbrowser );
 
     //$('.btnaddanswer').click(addinput);
     //$('.btndelanswer').click(deleteinput);
@@ -207,9 +207,6 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
     $codes = JSON.stringify(codes);
     //We build the datas for the request
     datas = {
-        'surveyid' : $elDatas.data('surveyid'),
-        'gid' : $elDatas.data('gid'),
-        'qid' : $elDatas.data('qid'),
         'codes' : $codes,
         'scale_id' : scale_id, // In $elDatas.data('scale-id') ?
         'type' : 'subquestion',
@@ -220,7 +217,7 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 
     // We get the HTML of the new row to insert
      $.ajax({
-        type: "GET", // We don't update DB, no need post
+        type: "POST", // We don't update DB, no need post
         url: $url,
         data: datas,
         success: function(htmlrow) {
@@ -486,7 +483,7 @@ function code_duplicates_check()
             cansubmit= false;
         }
     });
-    console.log('cansubmit: '+cansubmit);
+    console.ls.log('cansubmit: '+cansubmit);
     return cansubmit;
 }
 
@@ -798,7 +795,7 @@ function transferlabels()
  */
 function quickaddlabels(scale_id, addOrReplace, table_id)
 {
-    console.log('quickaddlabels');
+    console.ls.log('quickaddlabels');
     var sID=$('input[name=sid]').val(),
         gID=$('input[name=gid]').val(),
         qID=$('input[name=qid]').val(),
@@ -952,7 +949,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
                 bindClickIfNotExpanded();
             },
             function(){
-                 console.log(arguments);
+                 console.ls.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');

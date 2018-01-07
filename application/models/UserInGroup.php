@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,7 +21,8 @@
  *
  *
  */
-class UserInGroup extends LSActiveRecord {
+class UserInGroup extends LSActiveRecord
+{
 
     /**
      * @inheritdoc
@@ -57,11 +60,11 @@ class UserInGroup extends LSActiveRecord {
      * @param mixed $condition
      * @return static[]
      */
-    public function getAllRecords($condition=false)
+    public function getAllRecords($condition = false)
     {
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             foreach ($condition as $item => $value) {
                 $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
             }
@@ -80,7 +83,7 @@ class UserInGroup extends LSActiveRecord {
         return (bool) $changedRows;
     }
 
-    public function join($fields, $from, $condition=false, $join=false, $order=false)
+    public function join($fields, $from, $condition = false, $join = false, $order = false)
     {
         $user = Yii::app()->db->createCommand();
         foreach ($fields as $field) {
@@ -89,11 +92,11 @@ class UserInGroup extends LSActiveRecord {
 
         $user->from($from);
 
-        if ($condition != FALSE) {
+        if ($condition != false) {
             $user->where($condition);
         }
 
-        if ($order != FALSE) {
+        if ($order != false) {
             $user->order($order);
         }
 

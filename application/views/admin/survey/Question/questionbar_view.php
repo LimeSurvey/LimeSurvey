@@ -124,7 +124,7 @@ $aReplacementData=array();
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
                 <a class="btn btn-default"
                    data-toggle="modal"
-                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
+                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/qid/$qid"); ?>"
                    data-target="#confirmation-modal"
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
@@ -204,17 +204,17 @@ $aReplacementData=array();
 
     <?php if(isset($questionbar['buttons']['conditions'])):?>
         <div class="col-sm-12 form form-inline">
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="fa fa-info-sign"></span>
                 <?php eT("Show conditions for this question");?>
             </a>
 
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-conditions_add"></span>
                 <?php eT("Add and edit conditions");?>
             </a>
 
-            <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-copy"></span>
                 <?php eT("Copy conditions");?>
             </a>
@@ -227,14 +227,11 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <?php /*
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
-                        <span class="fa fa-saved"></span>
-                        <?php eT("Save and close");?>
-                    </a>
-                */ ?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
+                    <span class="fa fa-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
 
-                <?php /*
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
                     <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
@@ -242,7 +239,6 @@ $aReplacementData=array();
                         <?php eT("Close");?>
                     </a>
                 <?php endif;?>
-                */ ?>
 
                 <!-- Condition designer navigator -->
                 <?php if(isset($questionbar['buttons']['conditions'])):?>
@@ -271,16 +267,18 @@ $aReplacementData=array();
                     <?php eT("Save");?>
 
                 </a>
-                <?php/*
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
+                <?php
+                /*
                 <a class="btn btn-danger" href="<?php echo $organizebar['closebuttonright']['url']; ?>" role="button">
-                    <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
+                <span class="fa fa-close"></span>
+                <?php eT("Close");?>
                 </a>
-                */?>
+                */
+                ?>
             </div>
         <?php endif;?>
 

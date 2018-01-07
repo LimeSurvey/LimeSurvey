@@ -20,11 +20,12 @@
 *
 * @package        LimeSurvey
 * @subpackage    Backend
-* @author        Shitiz Garg
+* @author        LimeSurvey Team
+* @method        void index()
 */
 class Survey_Common_Action extends CAction
 {
-    public function __construct($controller=null, $id=null)
+    public function __construct($controller = null, $id = null)
     {
         parent::__construct($controller, $id);
         Yii::app()->request->updateNavigationStack();
@@ -45,18 +46,14 @@ class Survey_Common_Action extends CAction
         $sDefault = 'index';
 
         // Check for a subaction
-        if (empty($params['sa']))
-        {
+        if (empty($params['sa'])) {
             $sSubAction = $sDefault; // default
-        }
-        else
-        {
+        } else {
             $sSubAction = $params['sa'];
         }
         // Check if the class has the method
         $oClass = new ReflectionClass($this);
-        if (!$oClass->hasMethod($sSubAction))
-        {
+        if (!$oClass->hasMethod($sSubAction)) {
             // If it doesn't, revert to default Yii method, that is run() which should reroute us somewhere else
             $sSubAction = 'run';
         }
@@ -75,8 +72,7 @@ class Survey_Common_Action extends CAction
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         $aActions = Yii::app()->getController()->getActionClasses();
 
-        if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic())
-        {
+        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index
             $oMethod = new ReflectionMethod($this, $sDefault);
@@ -112,9 +108,9 @@ class Survey_Common_Action extends CAction
             'qid' => 'iQuestionId',
             /* Unsure we set 'iSurveyId', 'iSurveyID','surveyid' to same final survey id */
             /* priority is surveyid,surveyId,sid : surveyId=1&sid=2 set sid surveyid to 1 */
-            'sid' => array('iSurveyId', 'iSurveyID','surveyid'), // Old link use sid
-            'surveyId' => array('iSurveyId', 'iSurveyID','surveyid'),// PluginHelper->sidebody : if disable surveyId usage : broke API
-            'surveyid' => array('iSurveyId', 'iSurveyID','surveyid'),
+            'sid' => array('iSurveyId', 'iSurveyID', 'surveyid'), // Old link use sid
+            'surveyId' => array('iSurveyId', 'iSurveyID', 'surveyid'), // PluginHelper->sidebody : if disable surveyId usage : broke API
+            'surveyid' => array('iSurveyId', 'iSurveyID', 'surveyid'),
             'srid' => 'iSurveyResponseId',
             'scid' => 'iSavedControlId',
             'uid' => 'iUserId',
@@ -147,40 +143,43 @@ class Survey_Common_Action extends CAction
         /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(!empty($params['iQuestionId'])) {
-            if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
-                throw new CHttpException(403,gT("Invalid question id"));
+        if (!empty($params['iQuestionId'])) {
+            if ((string) (int) $params['iQuestionId'] !== (string) $params['iQuestionId']) {
+                // pgsql need filtering before find
+                throw new CHttpException(403, gT("Invalid question id"));
             }
-            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-            if(!$oQuestion) {
-                throw new CHttpException(404,gT("Question not found"));
+            $oQuestion = Question::model()->find("qid=:qid", array(":qid"=>$params['iQuestionId'])); //Move this in model to use cache
+            if (!$oQuestion) {
+                throw new CHttpException(404, gT("Question not found"));
             }
-            if(!isset($params['iGroupId'])) {
-                $params['iGroupId']=$params['gid']=$oQuestion->gid;
+            if (!isset($params['iGroupId'])) {
+                $params['iGroupId'] = $params['gid'] = $oQuestion->gid;
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(!empty($params['iGroupId'])) {
-            if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
-                throw new CHttpException(403,gT("Invalid group id"));
+        if (!empty($params['iGroupId'])) {
+            if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
+                // pgsql need filtering before find
+                throw new CHttpException(403, gT("Invalid group id"));
             }
-            $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
-            if(!$oGroup) {
-                throw new CHttpException(404,gT("Group not found"));
+            $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid"=>$params['iGroupId'])); //Move this in model to use cache
+            if (!$oGroup) {
+                throw new CHttpException(404, gT("Group not found"));
             }
-            if(!isset($params['iSurveyId'])) {
-                $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
+            if (!isset($params['iSurveyId'])) {
+                $params['iSurveyId'] = $params['iSurveyID'] = $params['surveyid'] = $params['sid'] = $oGroup->sid;
             }
         }
         // Finally control validity of sid
-        if(!empty($params['iSurveyId'])) {
-            if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
+        if (!empty($params['iSurveyId'])) {
+            if ((string) (int) $params['iSurveyId'] !== (string) $params['iSurveyId']) {
+                // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
-                throw new CHttpException(403,gT("Invalid survey id"));
+                throw new CHttpException(403, gT("Invalid survey id"));
             }
-            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
-            if(!$oSurvey) {
-                throw new CHttpException(404,gT("Survey not found"));
+            $oSurvey = Survey::model()->findByPk($params['iSurveyId']);
+            if (!$oSurvey) {
+                throw new CHttpException(404, gT("Survey not found"));
             }
             // Minimal permission needed, extra permission must be tested in each controller
             if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
@@ -188,16 +187,16 @@ class Survey_Common_Action extends CAction
                 // 401 semantically means "unauthenticated"
                 throw new CHttpException(403);
             }
-            $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
+            $params['iSurveyId'] = $params['iSurveyID'] = $params['surveyid'] = $params['sid'] = $oSurvey->sid;
         }
         // Finally return the populated array
         return $params;
     }
 
     /**
-    * Action classes require them to have a run method. We reroute it to index
-    * if called.
-    */
+     * Action classes require them to have a run method. We reroute it to index
+     * if called.
+     */
     public function run()
     {
         $this->index();
@@ -214,134 +213,72 @@ class Survey_Common_Action extends CAction
     protected function route($sa, array $get_vars)
     {
         $func_args = array();
-        foreach ($get_vars as $k => $var)
-            $func_args[$k] = Yii::app()->request->getQuery($var);
+        foreach ($get_vars as $k => $var) {
+                    $func_args[$k] = Yii::app()->request->getQuery($var);
+        }
 
         return call_user_func_array(array($this, $sa), $func_args);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function renderInternal($_viewFile_, $_data_ = null, $_return_ = false)
+    {
+        // we use special variable names here to avoid conflict when extracting data
+        if (is_array($_data_)) {
+            extract($_data_, EXTR_PREFIX_SAME, 'data');
+        } else {
+            $data = $_data_;
+        }
+
+        if ($_return_) {
+            ob_start();
+            ob_implicit_flush(0);
+            require($_viewFile_);
+            return ob_get_clean();
+        } else {
+            require($_viewFile_);
+        }
+    }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * Addition of parameters should be avoided if they can be added to $aData
-    *
-    * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
-    * The work it's doing should be handle by layout files, and subviews inside views.
-    * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-    *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
-    *
-    * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.) to subfunctions, then it will be easier to remove.
-    * Comments starting with //// indicate how it should work in the future
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+     * Rendering the subviews and views of _renderWrappedTemplate
+     *
+     * @param string $sAction
+     * @param array|string $aViewUrls
+     * @param array $aData
+     * @return string
+     */
+    private function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
-        // Gather the data
-        $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
-
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
-        if (!empty($sAction))
-            $sViewPath .= $sAction . '/';
-
-        ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
-
-        $this->_showHeaders($aData); //// THe headers will be called from the layout
-        $this->_showadminmenu($aData); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
-        $this->_userGroupBar($aData);
-
-        //// Here will start the rendering from the controller of the main view.
-        //// For example, the Group controller will use the main.php layout, and then render the view list_group.php
-        //// This view will call as a subview the questiongroupbar, and then _listquestiongroup subview.
-
-        //// This check will be useless when it will be handle directly by each specific controller.
-        if (!empty($aData['surveyid']))
-        {
-            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
-
-            // Needed to evaluate EM expressions in question summary
-            // See bug #11845
-            LimeExpressionManager::StartProcessingPage(false,true);
-            $aData['debug'] = $aData;
-            $this->_titlebar($aData);
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
-            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center" :style="{\'min-height\': $store.state.generalContainerHeight+\'px\'}">';
-            //// Each view will call the correct bar as a subview.
-            $this->_surveysidemenu($aData);
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" v-bind:style="\'max-width:\'+$store.getters.substractContainer" id="pjax-content">';
-            $this->_surveybar($aData);
-            $this->_nquestiongroupbar($aData);
-            $this->_questionbar($aData);
-            $this->_browsemenubar($aData);
-            $this->_tokenbar($aData);
-            $this->_organizequestionbar($aData);
-
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid ls-flex-column fill col-12 overflow-enabled" id="in_survey_common">';
-
-            $this->_updatenotification();
-            $this->_notifications();
-
-            //// Here the main content views.
-            $this->_listquestiongroups($aData);
-            $this->_listquestions($aData);
-            $this->_nsurveysummary($aData);
-
+        if (!empty($sAction)) {
+                    $sViewPath .= $sAction.'/';
         }
-        else
-        {
-            ///
-            $this->_fullpagebar($aData);
-            $this->_updatenotification();
-            $this->_notifications();
-            //// TODO : Move this div inside each correct view ASAP !
-            echo '
-                    <!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
-                        <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
-                            ';
-        }
-
-        //// Here the rendering of all the subviews process. Will not be use anymore, because each subview will be directly called from her parent view.
-
         ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
         // Load views
-        foreach ($aViewUrls as $sViewKey => $viewUrl)
-        {
-            if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output')))
-            {
-                if (is_numeric($sViewKey))
-                {
-                    Yii::app()->getController()->renderPartial($sViewPath . $viewUrl, $aData);
-                }
-                elseif (is_array($viewUrl))
-                {
-                    foreach ($viewUrl as $aSubData)
-                    {
+        $content = "";
+        foreach ($aViewUrls as $sViewKey => $viewUrl) {
+            if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output'))) {
+                if (is_numeric($sViewKey)) {
+                    $content .= Yii::app()->getController()->renderPartial($sViewPath.$viewUrl, $aData, true);
+                } elseif (is_array($viewUrl)) {
+                    foreach ($viewUrl as $aSubData) {
                         $aSubData = array_merge($aData, $aSubData);
-                        Yii::app()->getController()->renderPartial($sViewPath . $sViewKey, $aSubData);
+                        $content .= Yii::app()->getController()->renderPartial($sViewPath.$sViewKey, $aSubData, true);
                     }
                 }
-            }
-            else
-            {
-                switch ($sViewKey)
-                {
+            } else {
+                switch ($sViewKey) {
                     //// We'll use some Bootstrap alerts, and call them inside each correct view.
                     // Message
                     case 'message' :
-                        if (empty($viewUrl['class']))
-                        {
-                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
-                        }
-                        else
-                        {
-                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
+                        if (empty($viewUrl['class'])) {
+                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], null, true);
+                        } else {
+                            $content .= Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class'], true);
                         }
                         break;
 
@@ -349,44 +286,52 @@ class Survey_Common_Action extends CAction
                     case 'output' :
                         //// TODO : http://goo.gl/ABl5t5
 
-                        echo $viewUrl;
+                        $content .= $viewUrl;
 
-                        if(isset($aViewUrls['afteroutput']))
-                            echo $aViewUrls['afteroutput'];
-
+                        if (isset($aViewUrls['afteroutput'])) {
+                            $content .= $aViewUrls['afteroutput'];
+                        }
                         break;
                 }
             }
         }
+        return $content;
+    }
 
-        //// TODO : Move this divs inside each correct view ASAP !
-        echo '</div>' ;
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * Addition of parameters should be avoided if they can be added to $aData
+     *
+     * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
+     * The work it's doing should be handle by layout files, and subviews inside views.
+     * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
+     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
+     *
+     * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.) to subfunctions, then it will be easier to remove.
+     * Comments starting with //// indicate how it should work in the future
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param array|string $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    {
+        // Gather the data
+        $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
-        if (!empty($aData['surveyid']))
-        {
-            echo '</div>' ;
-            echo '</div>' ;
-            echo '</div>' ;
-            echo '</div>' ;
+        $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
+
+        if (!empty($aData['surveyid'])) {
+            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+            $renderFile = $basePath.'/layout_insurvey.php';
+        } else {
+            $renderFile = $basePath.'/layout_main.php';
         }
 
+        $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
+        $out = $this->renderInternal($renderFile, ['content' => $content, 'aData' => $aData], true);
 
-        //// THe footer will be called directly from the layout.
-        // Footer
-        if(!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false)
-            Yii::app()->getController()->_loadEndScripts();
-
-        if( !Yii::app()->user->isGuest )
-        {
-            if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
-                Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
-        }
-        else{
-            echo '</body></html>';
-        }
-
-        $out = ob_get_contents();
-        ob_clean();
         App()->getClientScript()->render($out);
         echo $out;
     }
@@ -406,46 +351,9 @@ class Survey_Common_Action extends CAction
         if (!Yii::app()->user->isGuest && Yii::app()->getConfig('updatable')) {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $urlUpdate = Yii::app()->createUrl("admin/update");
-            $currentVersion = Yii::app()->getConfig("buildnumber");
-            $superadmins = User::model()->getSuperAdmins();
 
             if ($updateNotification->result) {
-                if ($updateNotification->security_update) {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('Security update!')." (".gT("Current version: ")
-                                . $currentVersion.")",
-                            'message' => gT('A security update is available.')." <a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                } elseif (Yii::app()->session['unstable_update']) {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('New UNSTABLE update available')." ("
-                                . gT("Current version: ").$currentVersion.")",
-                            'markAsNew' => false,
-                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                } else {
-                    UniqueNotification::broadcast(
-                        array(
-                            'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
-                            'markAsNew' => false,
-                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
-                                . gT('Click here to use ComfortUpdate.')."</a>",
-                            'importance' => Notification::HIGH_IMPORTANCE
-                        ),
-                        $superadmins
-                    );
-                }
+                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available'=>$updateNotification->security_update));
             }
         }
     }
@@ -453,9 +361,10 @@ class Survey_Common_Action extends CAction
     /**
      * Display notifications
      */
-    function _notifications()
+    private function _notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
+            if(!is_array($aMessage)) $aMessage = array();
             unset(App()->session['arrayNotificationMessages']);
             return $this->getController()->renderPartial("notifications/notifications", array('aMessage'=>$aMessage));
     }
@@ -464,12 +373,10 @@ class Survey_Common_Action extends CAction
      * Survey summary
      * @param array $aData
      */
-    function _nsurveysummary($aData)
+    private function _nsurveysummary($aData)
     {
-        if (isset($aData['display']['surveysummary']))
-        {
-            if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid']))
-            {
+        if (isset($aData['display']['surveysummary'])) {
+            if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
                 $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
             }
             $this->_surveysummary($aData);
@@ -480,16 +387,14 @@ class Survey_Common_Action extends CAction
      * Header
      * @param array $aData
      */
-    function _showHeaders($aData)
+    private function _showHeaders($aData)
     {
-        if(!isset($aData['display']['header']) || $aData['display']['header'] !== false)
-        {
+        if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
             header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             Yii::app()->getController()->_getAdminHeader();
         }
     }
-
 
     /**
      * _showadminmenu() function returns html text for the administration button bar
@@ -507,16 +412,14 @@ class Survey_Common_Action extends CAction
     public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
-        if( !Yii::app()->user->isGuest )
-        {
+        if (!Yii::app()->user->isGuest) {
             // Default password notification
-            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2)
-            {
+            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => 'Password warning',
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
                 $not->save();
@@ -532,12 +435,9 @@ class Survey_Common_Action extends CAction
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if(getGlobalSetting('emailsmtpdebug')!=null)
-            {
+            if (getGlobalSetting('emailsmtpdebug') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
-            }
-            else
-            {
+            } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
             }
 
@@ -545,7 +445,7 @@ class Survey_Common_Action extends CAction
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && ! $updateNotification->unstable_update ;
+            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
@@ -560,21 +460,20 @@ class Survey_Common_Action extends CAction
         return null;
     }
 
-    function _titlebar($aData)
+    private function _titlebar($aData)
     {
-        if( isset($aData['title_bar']) ) {
+        if (isset($aData['title_bar'])) {
             $this->getController()->renderPartial("/admin/super/title_bar", $aData);
         }
     }
 
-    function _tokenbar($aData)
+    private function _tokenbar($aData)
     {
-        if( isset($aData['token_bar']) ) {
+        if (isset($aData['token_bar'])) {
 
-            if(isset($aData['token_bar']['closebutton']['url']))
-            {
+            if (isset($aData['token_bar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['token_bar']['closebutton']['url'];
-                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
             $this->getController()->renderPartial("/admin/token/token_bar", $aData);
@@ -589,14 +488,12 @@ class Survey_Common_Action extends CAction
      * @since 2014-09-30
      * @author Olle Haerstedt
      */
-    function _organizequestionbar($aData)
+    private function _organizequestionbar($aData)
     {
-        if (isset($aData['organizebar']))
-        {
-            if(isset($aData['questionbar']['closebutton']['url']))
-            {
+        if (isset($aData['organizebar'])) {
+            if (isset($aData['questionbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
-                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
             $aData['questionbar'] = $aData['organizebar'];
@@ -605,13 +502,13 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Shows admin menu for question
-    *
-    * @param array $aData
-    */
+     * Shows admin menu for question
+     *
+     * @param array $aData
+     */
     public function _questionbar($aData)
     {
-        if(isset($aData['questionbar'])) {
+        if (isset($aData['questionbar'])) {
             if (is_object($aData['oSurvey'])) {
 
                 $iSurveyID = $aData['surveyid'];
@@ -632,7 +529,9 @@ class Survey_Common_Action extends CAction
                 $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
-                if (is_null($qrrow)) return;
+                if (is_null($qrrow)) {
+                    return;
+                }
                 $questionsummary = "";
 
                 // Check if other questions in the Survey are dependent upon this question
@@ -640,11 +539,11 @@ class Survey_Common_Action extends CAction
 
                 // $surveyinfo = $oSurvey->attributes;
                 // $surveyinfo = array_map('flattenText', $surveyinfo);
-                $aData['activated'] =  $oSurvey->active;
+                $aData['activated'] = $oSurvey->active;
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
-                $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+                $aData['qtypes'] = getQuestionTypeList('', 'array');
                 $aData['action'] = $action;
                 $aData['surveyid'] = $iSurveyID;
                 $aData['qid'] = $qid;
@@ -655,15 +554,13 @@ class Survey_Common_Action extends CAction
                 $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
 
                 $DisplayArray = array();
-                foreach ($aAttributesWithValues as $aAttribute)
-                {
+                foreach ($aAttributesWithValues as $aAttribute) {
                     if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) ||
-                        ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
-                    {
-                        if ($aAttribute['inputtype'] == 'singleselect')
-                        {
-                            if(isset($aAttribute['options'][$aAttribute['value']]))
-                                $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                        ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
+                        if ($aAttribute['inputtype'] == 'singleselect') {
+                            if (isset($aAttribute['options'][$aAttribute['value']])) {
+                                                            $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                            }
                         }
                         $DisplayArray[] = $aAttribute;
                     }
@@ -671,17 +568,13 @@ class Survey_Common_Action extends CAction
 
                 $aData['advancedsettings'] = $DisplayArray;
                 $aData['condarray'] = $condarray;
-                if(isset($aData['questionbar']['closebutton']['url']))
-                {
+                if (isset($aData['questionbar']['closebutton']['url'])) {
                     $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
-                    $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                    $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
                 }
                 $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
-                $finaldata['display'] = $questionsummary;
-                $this->getController()->renderPartial('/survey_view', $finaldata);
-            }
-            else
-            {
+                $this->getController()->renderPartial('/survey_view', ['display'=>$questionsummary]);
+            } else {
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
                 $this->getController()->redirect(array("admin/index"));
             }
@@ -695,13 +588,10 @@ class Survey_Common_Action extends CAction
      */
     function _nquestiongroupbar($aData)
     {
-        if(isset($aData['questiongroupbar']))
-        {
-            if(!isset($aData['gid']))
-            {
-                if(isset($_GET['gid']))
-                {
-                   $aData['gid'] = $_GET['gid'];
+        if (isset($aData['questiongroupbar'])) {
+            if (!isset($aData['gid'])) {
+                if (isset($_GET['gid'])) {
+                    $aData['gid'] = $_GET['gid'];
                 }
             }
 
@@ -710,7 +600,7 @@ class Survey_Common_Action extends CAction
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
-            $baselang =$oSurvey->language;
+            $baselang = $oSurvey->language;
 
             $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
 
@@ -728,8 +618,7 @@ class Survey_Common_Action extends CAction
 
             $aData['languagelist'] = $oSurvey->getAllLanguages();
 
-            if(isset($aData['questiongroupbar']['closebutton']['url']))
-            {
+            if (isset($aData['questiongroupbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
                 $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
@@ -740,12 +629,10 @@ class Survey_Common_Action extends CAction
 
     function _fullpagebar($aData)
     {
-        if((isset($aData['fullpagebar'])))
-        {
-            if(isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep']))
-            {
-                $sAlternativeUrl        = '/admin/index';
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
+        if ((isset($aData['fullpagebar']))) {
+            if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
+                $sAlternativeUrl = '/admin/index';
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
             $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
         }
@@ -757,12 +644,11 @@ class Survey_Common_Action extends CAction
      */
     function _surveybar($aData)
     {
-        if((isset($aData['surveybar'])))
-        {
+        if ((isset($aData['surveybar']))) {
             $iSurveyID = $aData['surveyid'];
             /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
-            $gid = isset($aData['gid'])?$aData['gid']:null;
+            $gid = isset($aData['gid']) ? $aData['gid'] : null;
             $aData['baselang'] = $oSurvey->language;
             App()->getClientScript()->registerPackage('js-cookie');
 
@@ -787,10 +673,10 @@ class Survey_Common_Action extends CAction
                 $aData['icontext'] = gT("Execute survey");
             }
 
-            $aData['onelanguage']=(count($oSurvey->allLanguages)==1);
+            $aData['onelanguage'] = (count($oSurvey->allLanguages) == 1);
             $aData['hasadditionallanguages'] = (count($oSurvey->additionalLanguages) > 0);
 
-            // EDIT SURVEY TEXT ELEMENTS BUTTON
+            // Survey text elements BUTTON
             $aData['surveylocale'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
             // EDIT SURVEY SETTINGS BUTTON
             $aData['surveysettings'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
@@ -803,7 +689,7 @@ class Survey_Common_Action extends CAction
             $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
             // Assessment menu item
             $aData['assessments'] = Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read');
-            // EDIT SURVEY TEXT ELEMENTS BUTTON
+            // Survey text elements BUTTON
             // End if survey properties
             // Tools menu item
             // Delete survey item
@@ -817,7 +703,7 @@ class Survey_Common_Action extends CAction
 
             // Only show survey properties menu if at least one item is permitted
             $aData['showSurveyPropertiesMenu'] =
-                   $aData['surveylocale']
+                    $aData['surveylocale']
                 || $aData['surveysettings']
                 || $aData['surveysecurity']
                 || $aData['surveycontentread']
@@ -840,12 +726,12 @@ class Survey_Common_Action extends CAction
 
             // Only show tools menu if at least one item is permitted
             $aData['showToolsMenu'] =
-                   $aData['surveydelete']
+                    $aData['surveydelete']
                 || $aData['surveytranslate']
                 || Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')
                 || !is_null($extraToolsMenuItems);
 
-            $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
+            $iConditionCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
             $aData['conditionscount'] = ($iConditionCount > 0);
@@ -864,8 +750,7 @@ class Survey_Common_Action extends CAction
             if (!$oSurvey->hasTokensTable) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
-            }
-            else {
+            } else {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')
@@ -879,54 +764,49 @@ class Survey_Common_Action extends CAction
                 $aData['permission'] = true;
             } else {
                 $aData['gid'] = $gid = null;
-                $qid = null;
                 $aData['permission'] = false;
             }
 
             if (getGroupListLang($gid, $oSurvey->language, $iSurveyID)) {
                 $aData['groups'] = getGroupListLang($gid, $oSurvey->language, $iSurveyID);
             } else {
-                $aData['groups'] = "<option>" . gT("None") . "</option>";
+                $aData['groups'] = "<option>".gT("None")."</option>";
             }
 
-            $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyID, $gid);
+            $aData['GidPrev'] = getGidPrevious($iSurveyID, $gid);
 
-            $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
+            $aData['GidNext'] = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['surveybar']['closebutton']['url'])) {
+            if (isset($aData['surveybar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
-                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
-            if($aData['gid']==null)
-                $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
+            if ($aData['gid'] == null) {
+                            $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
+            }
         }
     }
-
 
     /**
      * Show side menu for survey view
      * @param array $aData all the needed data
      */
-    function _surveysidemenu($aData)
+    private function _surveysidemenu($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
-        $survey=Survey::model()->findByPk($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
             'languagesettings' => array('condition'=>'surveyls_language=language'))
         )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
-        {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $aData['permission'] = true;
-        }
-        else
-        {
-            $aData['gid'] = $gid = null;
-            $qid = null;
+        } else {
+            $aData['gid'] = null;
             $aData['permission'] = false;
         }
 
@@ -941,8 +821,7 @@ class Survey_Common_Action extends CAction
             if (!$bTokenExists) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
-            }
-            else {
+            } else {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')
@@ -951,18 +830,14 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language),array('order'=>'group_order ASC'));
-            if(count($aGroups))
-            {
-                foreach($aGroups as $group)
-                {
-                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language), array('order'=>'group_order ASC'));
+            if (count($aGroups)) {
+                foreach ($aGroups as $group) {
+                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
 
-                    foreach($group->aQuestions as $question)
-                    {
-                        if(is_object($question))
-                        {
-                            $question->question = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                    foreach ($group->aQuestions as $question) {
+                        if (is_object($question)) {
+                            $question->question = viewHelper::flatEllipsizeText($question->question, true, 60, '[...]', 0.5);
                         }
                     }
                 }
@@ -975,9 +850,7 @@ class Survey_Common_Action extends CAction
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
             $this->getController()->renderPartial("/admin/super/sidemenu", $aData);
-        }
-        else
-        {
+        } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         }
@@ -1003,17 +876,16 @@ class Survey_Common_Action extends CAction
         $result = App()->getPluginManager()->dispatchEvent($event);
 
         $quickMenuItems = $result->get('quickMenuItems');
-        if (!empty($quickMenuItems))
-        {
-            usort($quickMenuItems, function($b1, $b2) {
+        if (!empty($quickMenuItems)) {
+            usort($quickMenuItems, function($b1, $b2)
+            {
                 return (int) $b1['order'] > (int) $b2['order'];
             });
         }
 
         $aData['quickMenuItems'] = $quickMenuItems;
 
-        if ($aData['quickMenuItems'] === null)
-        {
+        if ($aData['quickMenuItems'] === null) {
             $aData['quickMenuItems'] = array();
         }
 
@@ -1040,16 +912,14 @@ class Survey_Common_Action extends CAction
      */
     private function _listquestiongroups(array $aData)
     {
-        if ( isset($aData['display']['menu_bars']['listquestiongroups']) )
-        {
+        if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
             $this->getController()->renderPartial("/admin/survey/QuestionGroups/listquestiongroups", $aData);
         }
     }
 
     private function _listquestions($aData)
     {
-        if ( isset($aData['display']['menu_bars']['listquestions']) )
-        {
+        if (isset($aData['display']['menu_bars']['listquestions'])) {
             $iSurveyID = $aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
             $baselang = $oSurvey->language;
@@ -1058,36 +928,39 @@ class Survey_Common_Action extends CAction
             $model = new Question('search');
 
             // Global filter
-            if (isset($_GET['Question']))
-                $model->attributes = $_GET['Question'];
+            if (isset($_GET['Question'])) {
+                $model->setAttributes($_GET['Question'], false);
+            }
 
             // Filter group
-            if (isset($_GET['gid']))
+            if (isset($_GET['gid'])) {
                 $model->gid = $_GET['gid'];
+            }
 
             // Set number of page
-            if (isset($_GET['pageSize']))
-                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            if (isset($_GET['pageSize'])) {
+                Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+            }
 
             // We filter the current survey id
             $model->sid = $iSurveyID;
             $model->language = $baselang;
 
-            $aData['model']=$model;
+            $aData['model'] = $model;
 
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
         }
     }
 
     /**
-    * Show survey summary
+     * Show survey summary
      * @param array $aData
-    */
+     */
     public function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
-        $aSurveyInfo=getSurveyInfo($iSurveyID);
+        $aSurveyInfo = getSurveyInfo($iSurveyID);
         /** @var Survey $oSurvey */
         $oSurvey = $aData['oSurvey'];
         $baselang = $aSurveyInfo['language'];
@@ -1102,74 +975,58 @@ class Survey_Common_Action extends CAction
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
         $surveysummary2 = "";
-        if ($aSurveyInfo['anonymized'] != "N")
-        {
-            $surveysummary2 .= gT("Responses to this survey are anonymized.") . "<br />";
+        if ($aSurveyInfo['anonymized'] != "N") {
+            $surveysummary2 .= gT("Responses to this survey are anonymized.")."<br />";
+        } else {
+            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.")."<br />";
         }
-        else
-        {
-            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.") . "<br />";
+        if ($aSurveyInfo['format'] == "S") {
+            $surveysummary2 .= gT("It is presented question by question.")."<br />";
+        } elseif ($aSurveyInfo['format'] == "G") {
+            $surveysummary2 .= gT("It is presented group by group.")."<br />";
+        } else {
+            $surveysummary2 .= gT("It is presented on one single page.")."<br />";
         }
-        if ($aSurveyInfo['format'] == "S")
-        {
-            $surveysummary2 .= gT("It is presented question by question.") . "<br />";
-        }
-        elseif ($aSurveyInfo['format'] == "G")
-        {
-            $surveysummary2 .= gT("It is presented group by group.") . "<br />";
-        }
-        else
-        {
-            $surveysummary2 .= gT("It is presented on one single page.") . "<br />";
-        }
-        if ($aSurveyInfo['questionindex'] > 0)
-        {
-            if ($aSurveyInfo['format'] == 'A')
-            {
-                $surveysummary2 .= gT("No question index will be shown with this format.") . "<br />";
-            }
-            elseif ($aSurveyInfo['questionindex'] == 1)
-            {
-                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.") . "<br />";
-            }
-            elseif ($aSurveyInfo['questionindex'] == 2)
-            {
-                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
+        if ($aSurveyInfo['questionindex'] > 0) {
+            if ($aSurveyInfo['format'] == 'A') {
+                $surveysummary2 .= gT("No question index will be shown with this format.")."<br />";
+            } elseif ($aSurveyInfo['questionindex'] == 1) {
+                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.")."<br />";
+            } elseif ($aSurveyInfo['questionindex'] == 2) {
+                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.")."<br />";
             }
         }
         if ($oSurvey->isDateStamp) {
-            $surveysummary2 .= gT("Responses will be date stamped.") . "<br />";
+            $surveysummary2 .= gT("Responses will be date stamped.")."<br />";
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2 .= gT("IP Addresses will be logged") . "<br />";
+            $surveysummary2 .= gT("IP Addresses will be logged")."<br />";
         }
         if ($oSurvey->isRefUrl) {
-            $surveysummary2 .= gT("Referrer URL will be saved.") . "<br />";
+            $surveysummary2 .= gT("Referrer URL will be saved.")."<br />";
         }
         if ($oSurvey->isUseCookie) {
-            $surveysummary2 .= gT("It uses cookies for access control.") . "<br />";
+            $surveysummary2 .= gT("It uses cookies for access control.")."<br />";
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2 .= gT("If tokens are used, the public may register for this survey") . "<br />";
+            $surveysummary2 .= gT("If tokens are used, the public may register for this survey")."<br />";
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
-            $surveysummary2 .= gT("Participants can save partially finished surveys") . "<br />\n";
+            $surveysummary2 .= gT("Participants can save partially finished surveys")."<br />\n";
         }
         if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2 .= gT("Basic email notification is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
+            $surveysummary2 .= gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
         }
         if ($oSurvey->emailresponseto != '') {
-            $surveysummary2 .= gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
+            $surveysummary2 .= gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
-            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
-        }
-        else
-        {
+            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+        } else {
             $aData['startdate'] = "-";
         }
 
@@ -1178,10 +1035,8 @@ class Survey_Common_Action extends CAction
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
-        }
-        else
-        {
+            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+        } else {
             $aData['expdate'] = "-";
         }
 
@@ -1192,7 +1047,7 @@ class Survey_Common_Action extends CAction
         }
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
-            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($oSurvey->currentLanguageSettings->surveyls_url)."</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"".htmlspecialchars($aSurveyInfo['surveyls_url'])."\" title=\"".htmlspecialchars($aSurveyInfo['surveyls_url'])."\">".flattenText($oSurvey->currentLanguageSettings->surveyls_url)."</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -1208,17 +1063,17 @@ class Survey_Common_Action extends CAction
 
         $aData['activated'] = $activated;
         if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
+            $aData['surveydb'] = Yii::app()->db->tablePrefix."survey_".$iSurveyID;
         }
 
         $aData['warnings'] = "";
         if ($activated == "N" && $sumcount3 == 0) {
-            $aData['warnings'] = gT("Survey cannot be activated yet.") . "<br />\n";
+            $aData['warnings'] = gT("Survey cannot be activated yet.")."<br />\n";
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span><br />";
+                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span><br />";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add questions") . "]</span><br />";
+                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add questions")."]</span><br />";
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -1235,9 +1090,13 @@ class Survey_Common_Action extends CAction
 
         // We get the state of the quickaction
         // If the survey is new (ie: it has no group), it is opened by default
-        $setting_entry = 'quickaction_'.Yii::app()->user->getId();
-        $aData['quickactionstate'] = ($sumcount2<1)?1:getGlobalSetting($setting_entry);
-
+        $quickactionState = SettingsUser::getUserSettingValue('quickaction_state');
+        if ($quickactionState === null || $quickactionState === 0) {
+            $quickactionState = 1;
+            SettingsUser::setUserSetting('quickaction_state', 1);
+        }
+        $aData['quickactionstate'] = $quickactionState !== null ? intval($quickactionState) : 1;
+        $aData['subviewData'] = $aData;
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
@@ -1251,10 +1110,9 @@ class Survey_Common_Action extends CAction
      */
     public function _browsemenubar(array $aData)
     {
-        if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
-        {
+        if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid'])) {
             //BROWSE MENU BAR
-            $iSurveyID=$aData['surveyid'];
+            $iSurveyID = $aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
             $aData['thissurvey'] = getSurveyInfo($iSurveyID);
@@ -1266,9 +1124,8 @@ class Survey_Common_Action extends CAction
             rsort($tmp_survlangs);
             $aData['tmp_survlangs'] = $tmp_survlangs;
 
-            if(!isset($aData['menu']['closeurl']))
-            {
-                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$aData['surveyid']) );
+            if (!isset($aData['menu']['closeurl'])) {
+                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$aData['surveyid']));
             }
 
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
@@ -1282,7 +1139,7 @@ class Survey_Common_Action extends CAction
      */
     public function _userGroupBar(array $aData)
     {
-        $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
+        $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
         if (!empty($aData['display']['menu_bars']['user_group'])) {
             $data = $aData;
             Yii::app()->loadHelper('database');
@@ -1290,18 +1147,18 @@ class Survey_Common_Action extends CAction
             if (!empty($ugid)) {
                 $userGroup = UserGroup::model()->findByPk($ugid);
                 $uid = Yii::app()->session['loginID'];
-                if($userGroup && $userGroup->hasUser($uid)){
+                if ($userGroup && $userGroup->hasUser($uid)) {
                     $data['userGroup'] = $userGroup;
-                }else{
+                } else {
                     $data['userGroup'] = null;
                 }
             }
 
             $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
 
-            if(isset($aData['usergroupbar']['closebutton']['url'])) {
+            if (isset($aData['usergroupbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
@@ -1318,49 +1175,48 @@ class Survey_Common_Action extends CAction
         $aErrorFilesInfo = array();
         $aImportedFilesInfo = array();
 
-        if (!is_dir($extractdir))
-            return array(array(), array());
+        if (!is_dir($extractdir)) {
+                    return array(array(), array());
+        }
 
-        if (!is_dir($destdir))
-            mkdir($destdir);
+        if (!is_dir($destdir)) {
+                    mkdir($destdir);
+        }
 
         $dh = opendir($extractdir);
-
-        while ($direntry = readdir($dh))
-        {
-            if ($direntry != "." && $direntry != "..")
-            {
-                if (is_file($extractdir . "/" . $direntry))
-                {
+        if (!$dh) {
+            $aErrorFilesInfo[] = array(
+                "filename" => '',
+                "status" => gT("Extracted files not found - maybe a permission problem?")
+            );    
+            return array($aImportedFilesInfo, $aErrorFilesInfo);                        
+        }
+        while ($direntry = readdir($dh)) {
+            if ($direntry != "." && $direntry != "..") {
+                if (is_file($extractdir."/".$direntry)) {
                     // is  a file
-                    $extfile = substr(strrchr($direntry, '.'), 1);
-                    if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false))
-                    {
+                    $extfile = (string) substr(strrchr($direntry, '.'), 1);
+                    if (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',', ','.$extfile.',') === false)) {
                         // Extension allowed
-                        if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry))
-                        {
-                            $aErrorFilesInfo[] = Array(
+                        if (!copy($extractdir."/".$direntry, $destdir."/".$direntry)) {
+                            $aErrorFilesInfo[] = array(
                             "filename" => $direntry,
                             "status" => gT("Copy failed")
                             );
-                        }
-                        else
-                        {
-                            $aImportedFilesInfo[] = Array(
+                        } else {
+                            $aImportedFilesInfo[] = array(
                             "filename" => $direntry,
                             "status" => gT("OK")
                             );
                         }
-                    }
-                    else
-                    {
+                    } else {
                         // Extension forbidden
-                        $aErrorFilesInfo[] = Array(
+                        $aErrorFilesInfo[] = array(
                         "filename" => $direntry,
                         "status" => gT("Forbidden Extension")
                         );
                     }
-                    unlink($extractdir . "/" . $direntry);
+                    unlink($extractdir."/".$direntry);
                 }
             }
         }
@@ -1368,24 +1224,23 @@ class Survey_Common_Action extends CAction
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
 
-
     /**
-    * Creates a temporary directory
-    *
-    * @access protected
-    * @param string $dir
-    * @param string $prefix
-    * @param int $mode
-    * @return string
-    */
-    protected function _tempdir($dir, $prefix='', $mode=0700)
+     * Creates a temporary directory
+     *
+     * @access protected
+     * @param string $dir
+     * @param string $prefix
+     * @param int $mode
+     * @return string
+     */
+    protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
-        if (substr($dir, -1) != DIRECTORY_SEPARATOR)
-            $dir .= DIRECTORY_SEPARATOR;
+        if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
+                    $dir .= DIRECTORY_SEPARATOR;
+        }
 
-        do
-        {
-            $path = $dir . $prefix . mt_rand(0, 9999999);
+        do {
+            $path = $dir.$prefix.mt_rand(0, 9999999);
         }
         while (!mkdir($path, $mode));
 
@@ -1406,8 +1261,7 @@ class Survey_Common_Action extends CAction
 
         $extraMenus = $result->get('extraMenus');
 
-        if ($extraMenus === null)
-        {
+        if ($extraMenus === null) {
             $extraMenus = array();
         }
 

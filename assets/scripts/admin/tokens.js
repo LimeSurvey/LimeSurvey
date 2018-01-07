@@ -43,8 +43,8 @@ $.fn.YesNoDate = function(options)
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     };
-    $(document).on('ready  pjax:complete', that.onReadyMethod);
-    $(document).on(' pjax:complete',that.onReadyMethod);
+    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
+    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
 }
 
 $.fn.YesNo = function(options)
@@ -72,8 +72,8 @@ $.fn.YesNo = function(options)
         })
 
     };
-    $(document).on('ready  pjax:complete', that.onReadyMethod);
-    $(document).on(' pjax:complete',that.onReadyMethod);
+    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
+    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
 }
 
 /**
@@ -147,7 +147,7 @@ function submitEditToken(){
             }
             catch (e){
                 if (e) {
-                    console.log(e);
+                    console.ls.error(e);
                     $modal.modal('hide');
                 }
             }
@@ -161,7 +161,7 @@ function submitEditToken(){
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -226,7 +226,7 @@ $(document).on('ready  pjax:complete', function(){
                             } // Update the surveys list
                         });
                     } catch(e){
-                        if(e){console.log(e); $modal.modal('hide');}
+                        if(e){console.ls.error(e); $modal.modal('hide');}
                     }
                 }
             });
@@ -306,7 +306,7 @@ $(document).on('ready  pjax:complete', function(){
             error :  function(html, statut){
                 $ajaxLoader.hide();
                 $('#modal-content').empty().append(html);
-                console.log(html);
+                console.ls.error(html);
             }
         });
     });
@@ -351,7 +351,7 @@ $(document).on('ready  pjax:complete', function(){
             error :  function(html, statut){
                 $ajaxLoader.hide();
                 $modalBodyText.append(html);
-                console.log(html);
+                console.ls.error(html);
             },
 
         });
@@ -471,5 +471,6 @@ function reinstallParticipantsFilterDatePicker() {
         var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
         $.fn.yiiGridView.update('token-grid', {data: data});
     });
+    $(document).trigger('actions-updated');
 
 }

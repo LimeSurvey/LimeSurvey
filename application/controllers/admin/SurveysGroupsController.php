@@ -13,8 +13,9 @@
 * Surveys Groups Controller
 */
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 
 class SurveysGroupsController extends Survey_Common_Action
@@ -26,7 +27,7 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function view($id)
     {
-        $this->render('view',array(
+        $this->render('view', array(
             'model'=>$this->loadModel($id),
         ));
     }
@@ -37,22 +38,26 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function create()
     {
-        $model=new SurveysGroups;
+        $model = new SurveysGroups;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['SurveysGroups']))
-        {
-            $model->attributes=$_POST['SurveysGroups'];
+        if (isset($_POST['SurveysGroups'])) {
+            $model->attributes = $_POST['SurveysGroups'];
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
-            if($model->save())
-                $this->getController()->redirect( $this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            if ($model->save()) {
+                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            }
         }
 
         $aData['model'] = $model;
         $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
+        $aData['fullpagebar']['returnbutton'] = array(
+            'url'=>'admin/survey/sa/listsurveys#surveygroups',
+            'text'=>gT('Close'),
+        );
 
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
@@ -66,10 +71,11 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $model = $this->loadModel($id);
 
-        if(isset($_POST['SurveysGroups'])){
-            $model->attributes=$_POST['SurveysGroups'];
-            if($model->save())
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        if (isset($_POST['SurveysGroups'])) {
+            $model->attributes = $_POST['SurveysGroups'];
+            if ($model->save()) {
+                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            }
         }
 
         $aData['model'] = $model;
@@ -95,17 +101,17 @@ class SurveysGroupsController extends Survey_Common_Action
         $oGroupToDelete = $this->loadModel($id);
         $sGroupTitle    = $oGroupToDelete->title;
 
-        if (! $oGroupToDelete->hasSurveys){
+        if (!$oGroupToDelete->hasSurveys) {
             $oGroupToDelete->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if(!isset($_GET['ajax'])){
-                Yii::app()->setFlashMessage( sprintf(gT("The survey group '%s' was deleted."),$sGroupTitle),'success');
+            if (!isset($_GET['ajax'])) {
+                Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), $sGroupTitle), 'success');
                 $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
             }
 
-        }else{
-            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"),'error');
+        } else {
+            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
             $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
         }
 
@@ -126,12 +132,13 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function admin()
     {
-        $model=new SurveysGroups('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['SurveysGroups']))
-            $model->attributes=$_GET['SurveysGroups'];
+        $model = new SurveysGroups('search');
+        $model->unsetAttributes(); // clear any default values
+        if (isset($_GET['SurveysGroups'])) {
+                    $model->attributes = $_GET['SurveysGroups'];
+        }
 
-        $this->render('admin',array(
+        $this->render('admin', array(
             'model'=>$model,
         ));
     }
@@ -145,9 +152,10 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model=SurveysGroups::model()->findByPk($id);
-        if($model===null)
-            throw new CHttpException(404,'The requested page does not exist.');
+        $model = SurveysGroups::model()->findByPk($id);
+        if ($model === null) {
+                    throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 
@@ -157,8 +165,7 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='surveys-groups-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveys-groups-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

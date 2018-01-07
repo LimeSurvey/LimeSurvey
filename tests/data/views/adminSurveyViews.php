@@ -16,7 +16,7 @@ return [
     // Survey main menu
     ['surveyGeneralSettings', ['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}']],
     ['surveyTexts', ['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}']],
-    ['surveyTemplateOptionsUpdate', ['route'=>'templateoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
+    //['surveyThemeOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],  // TODO
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
     // FIXME these FAIL !!

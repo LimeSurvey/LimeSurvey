@@ -20,8 +20,7 @@ echo viewHelper::getViewTestTag('index');
     gT('Stay safe and up to date');
     gT('Label sets');
     gT('Edit label sets');
-    gT('Templates');
-    gT('View templates list');
+    gT('Themes');
 ?>
 
 <!-- Welcome view -->

@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,35 +23,34 @@ function injectglobalsettings()
     $settings = SettingGlobal::model()->findAll();
 
     //if ($dbvaluearray!==false)
-    if (count($settings) > 0)
-    {
-        foreach ($settings as $setting)
-        {
+    if (count($settings) > 0) {
+        foreach ($settings as $setting) {
             Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
         }
     }
 }
 
+/**
+ * Returns a global setting
+ *
+ * @param string $settingname
+ * @return string
+ */
 function getGlobalSetting($settingname)
 {
     $dbvalue = Yii::app()->getConfig($settingname);
 
-    if ($dbvalue === false)
-    {
+    if ($dbvalue === false) {
         $dbvalue = SettingGlobal::model()->findByPk($settingname);
 
-        if ($dbvalue === null)
-        {
+        if ($dbvalue === null) {
             Yii::app()->setConfig($settingname, null);
             $dbvalue = '';
-        }
-        else
-        {
+        } else {
             $dbvalue = $dbvalue->getAttribute('stg_value');
         }
 
-        if (Yii::app()->getConfig($settingname) !== false)
-        {
+        if (Yii::app()->getConfig($settingname) !== false) {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
             setGlobalSetting($settingname, Yii::app()->getConfig($settingname));
@@ -62,18 +63,14 @@ function getGlobalSetting($settingname)
 
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
-    {
+    if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml')) {
         return; //don't save
     }
 
-    if ($record = SettingGlobal::model()->findByPk($settingname))
-    {
+    if ($record = SettingGlobal::model()->findByPk($settingname)) {
         $record->stg_value = $settingvalue;
         $record->save();
-    }
-    else
-    {
+    } else {
         $record = new SettingGlobal;
         $record->stg_name = $settingname;
         $record->stg_value = $settingvalue;

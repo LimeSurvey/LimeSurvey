@@ -40,7 +40,7 @@ $(document).on("change",".select-item select:not([onchange]),.dropdown-item sele
 });
 /* radio/button item */
 $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
-    console.log(event);
+    console.ls.log(event);
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */

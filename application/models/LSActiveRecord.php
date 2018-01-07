@@ -25,15 +25,14 @@ class LSActiveRecord extends CActiveRecord
      */
     public function behaviors()
     {
-        $aBehaviors=array();
-        $sCreateFieldName=($this->hasAttribute('created')?'created':null);
-        $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
+        $aBehaviors = array();
+        $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
+        $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib') {
-            $sTimestampExpression=new CDbExpression('GETDATE()');
-        }
-        else {
-            $sTimestampExpression=new CDbExpression('NOW()');
+        if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
+            $sTimestampExpression = new CDbExpression('GETDATE()');
+        } else {
+            $sTimestampExpression = new CDbExpression('NOW()');
         }
         $aBehaviors['CTimestampBehavior'] = array(
             'class' => 'zii.behaviors.CTimestampBehavior',
@@ -43,7 +42,7 @@ class LSActiveRecord extends CActiveRecord
         );
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
         if (!Yii::app()->getConfig('Updating')) {
-            $aBehaviors['PluginEventBehavior']= array(
+            $aBehaviors['PluginEventBehavior'] = array(
                 'class' => 'application.models.behaviors.PluginEventBehavior'
             );
         }
@@ -92,9 +91,9 @@ class LSActiveRecord extends CActiveRecord
      */
     public function findAllAsArray($condition = '', $params = array())
     {
-        Yii::trace(get_class($this) . '.findAll()', 'system.db.ar.CActiveRecord');
+        Yii::trace(get_class($this).'.findAll()', 'system.db.ar.CActiveRecord');
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
-        return $this->query($criteria, true, false);  //Notice the third parameter 'false'
+        return $this->query($criteria, true, false); //Notice the third parameter 'false'
     }
 
 
@@ -125,7 +124,7 @@ class LSActiveRecord extends CActiveRecord
 
         if ($forceRefresh || !array_key_exists($field, $maxIds)) {
             $maxId = $this->dbConnection->createCommand()
-                    ->select('MAX(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->select('MAX('.$this->dbConnection->quoteColumnName($field).')')
                     ->from($this->tableName())
                     ->queryScalar();
 
@@ -157,12 +156,12 @@ class LSActiveRecord extends CActiveRecord
                 $field = $primaryKey;
             } else {
                 // Composite key, throw a warning to the programmer
-                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the min value for.', $this->tableName()));           }
+                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the min value for.', $this->tableName())); }
         }
 
         if ($forceRefresh || !array_key_exists($field, $minIds)) {
             $minId = $this->dbConnection->createCommand()
-                    ->select('MIN(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->select('MIN('.$this->dbConnection->quoteColumnName($field).')')
                     ->from($this->tableName())
                     ->queryScalar();
 
@@ -188,13 +187,13 @@ class LSActiveRecord extends CActiveRecord
      * @param array $params parameters to be bound to an SQL statement.
      * @return integer number of rows affected by the execution.
      */
-    public function deleteAllByAttributes($attributes,$condition='',$params=array())
+    public function deleteAllByAttributes($attributes, $condition = '', $params = array())
     {
-        $builder=$this->getCommandBuilder();
-        $table=$this->getTableSchema();
-        $criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
+        $builder = $this->getCommandBuilder();
+        $table = $this->getTableSchema();
+        $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params);
         $this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
-        $this->dispatchPluginModelEvent('beforeModelDeleteMany',                $criteria);
+        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria);
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 

@@ -8,7 +8,8 @@
  */
 
 if (!file_exists(__DIR__ . '/../enabletests')) {
-    die('phpunit disabled. NEVER run tests on a production system - the tests will modify the database. To enable phpunit, run $touch enabletests');
+    echo ('phpunit disabled. NEVER run tests on a production system - the tests will modify the database. To enable phpunit, run $touch enabletests');
+    exit(9);
 }
 
 /*
@@ -184,8 +185,10 @@ else
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
 }
 
-if (version_compare(PHP_VERSION, '5.3.3', '<'))
-    die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
+if (version_compare(PHP_VERSION, '5.3.3', '<')) {
+    echo ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
+    exit(11);
+}
 
 
 require_once __DIR__ . '/../third_party/autoload.php';
@@ -208,7 +211,8 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
     $sDefaultRuntimePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime';
     if (!is_dir($sDefaultRuntimePath) || !is_writable($sDefaultRuntimePath)) {
         // @@TODO: present html page styled like the installer
-        die (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
+        echo (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
+        exit(10);
     }
 }
 
@@ -225,6 +229,17 @@ require_once(__DIR__ . '/TestBaseClassWeb.php');
 require_once(__DIR__ . '/TestBaseClassView.php');
 require_once(__DIR__ . '/DummyController.php');
 
-
-
 define('PHP_ENV', 'test');
+
+$configFile = __DIR__ . '/application/config/config.php';
+$configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+
+@copy($configFile, $configBackupFile);
+
+register_shutdown_function(function(){
+    $configFile = __DIR__ . '/application/config/config.php';
+    $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+    
+    @unlink($configFile);
+    @rename($configBackupFile, $configFile);
+});

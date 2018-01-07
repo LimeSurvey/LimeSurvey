@@ -20,17 +20,19 @@ var LS = LS || {  onDocumentReady: {} };
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
  */
-hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
 
 /* See function */
 fixAccordionPosition();
 
-$(document).on('ready pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
     doToolTip();
+    renderBootstrapSwitch();
+
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -55,7 +57,6 @@ $(document).on('ready pjax:complete', function(){
         $(document).on('click', '.has-link', function () {
             $linkUrl = $(this).find('a').attr('href');
             window.location.href=$linkUrl;
-            console.log($linkUrl);
         });
     }
 
@@ -66,9 +67,6 @@ $(document).on('ready pjax:complete', function(){
             $(this).addClass('active');
             $value = $(this).data('value');
             $url = $('#switch-url').attr('data-url')+'/format/'+$value;
-
-            console.log('required format: '+$value);
-            console.log('format url: '+$url);
 
             $.ajax({
                 url : $url,
@@ -86,28 +84,6 @@ $(document).on('ready pjax:complete', function(){
         });
     };
 
-
-    $('#survey-action-chevron').click(function(){
-        $url = $(this).data('url');
-        $.ajax({
-            url : $url,
-            type : 'GET',
-            dataType : 'html',
-
-            // html contains the buttons
-            success : function(html, statut){
-                $('#survey-action-container').animate({
-                    "height": "toggle", "opacity": "toggle"
-                });
-                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
-            },
-            error :  function(html, statut){
-                alert('error');
-            }
-        });
-    });
-
-
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
         $('#hideadvancedattributes').show();
@@ -120,9 +96,11 @@ $(document).on('ready pjax:complete', function(){
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
     });
+
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
+
     $('#tabs').tabs({
         activate: function(event, ui) {
             if(history.pushState) {
@@ -133,27 +111,31 @@ $(document).on('ready pjax:complete', function(){
             }
         }
     });
+
     $('.tab-nav').tabs();
+
     $(".flashmessage").each(function() {
         $(this).notify().notify('create','themeroller',{},{custom:true,
         speed: 500,
         expires: 5000
         });
     });
-    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden'){
 
+    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden')
+    {
+        
        qTypeDropdownInit();
         $("#question_type_button").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type_button").change();
+        $("#question_type_button").trigger('change');
     }
     else
     {
         $("#question_type.none").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type.none").change();
+        $("#question_type.none").trigger('change');
     }
 
     /**
@@ -245,10 +227,39 @@ $(document).on('ready pjax:complete', function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
-    $('[data-is-bootstrap-switch]').bootstrapSwitch();
-
 });
 
+function renderBootstrapSwitch(){
+    $('[data-is-bootstrap-switch]').bootstrapSwitch();
+}
+
+function surveyQuickActionTrigger(){
+
+    var $self = $(this);
+    $.ajax({
+        url : $self.data('url'),
+        type : 'GET',
+        dataType : 'json',
+        data: {currentState: $self.data('active')},
+        // html contains the buttons
+        success : function(data, statut){
+            var newState = parseInt(data.newState);
+            console.ls.log('quickaction resolve', data);
+            console.ls.log('quickaction new state', newState);
+            $self.data('active', newState);
+            if(newState === 1){
+                $('#survey-action-container').slideDown(500);
+            } else {
+                $('#survey-action-container').slideUp(500);
+            }
+            $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+            
+        },
+        error :  function(html, statut){
+            alert('error');
+        }
+    });
+};
 
 
 function qTypeDropdownInit()
@@ -284,7 +295,7 @@ function qTypeDropdownInit()
         });
     };
 
-    $(document).on('ready  pjax:complete', onDocumentReadyAdminCoreq);
+    $(document).on('ready  pjax:scriptcomplete', onDocumentReadyAdminCoreq);
 }
 
 
@@ -330,17 +341,22 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
-    $('.btntooltip').tooltip('destroy');
+    try{ $('.btntooltip').tooltip('destroy'); } catch(e){}
+
     $('.btntooltip').tooltip();
 
     // Since you can only have one option per data-toggle,
     // we need this to enable both modal and toggle on one
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
-    $('[data-tooltip="true"]').tooltip('destroy');
-    $('[data-tooltip="true"]').tooltip();
 
-    $('[data-toggle="tooltip"]').tooltip('destroy')
-    $('[data-toggle="tooltip"]').tooltip()
+    
+    try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
+
+    $('[data-tooltip="true"]').tooltip();
+    
+    try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
+    
+    $('[data-toggle="tooltip"]').tooltip();
 
     // ToolTip on menu
     $(".sf-menu li").each(function() {
@@ -705,7 +721,7 @@ function linksInDialog()
 {
     $(function () {
         var iframe = $('<iframe id="dialog" title='+$(this).attr("title")+' allowfullscreen></iframe>');
-        var dialog = $("<div></div>").append(iframe).appendTo("#pjax-content").dialog({
+        var dialog = $("<div class='hidden'></div>").append(iframe).appendTo("#pjax-content").dialog({
             autoOpen: false,
             modal: false,
             resizable: true,
@@ -745,11 +761,11 @@ function initializeAjaxProgress()
             'minHeight': 0,
             'resizable': false
         });
-    $('#ajaxprogress').bind('ajaxStart', function()
+    $('#ajaxprogress').on('ajaxStart', function()
     {
         $(this).dialog('open');
     });
-    $('#ajaxprogress').bind('ajaxStop', function()
+    $('#ajaxprogress').on('ajaxStop', function()
     {
 
         $(this).dialog('close');
@@ -758,14 +774,14 @@ function initializeAjaxProgress()
 
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
- * Using delegate the can be outside document.ready
+ * Using node delegation they can be outside document.ready
  */
 function tableCellAdapters()
 {
-    $('table.activecell').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
+    $('table.activecell').on("click", 'tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label', function(e) {
         e.stopPropagation();
     });
-    $('table.activecell').delegate('tbody td,tbody th',"click", function() {
+    $('table.activecell').on("click", 'tbody td,tbody th', function() {
         if($(this).find("input:radio,input:checkbox").length==1)
         {
           $(this).find("input:radio").click();
@@ -923,6 +939,11 @@ LS.ajaxHelperOnSuccess = function(response) {
     // Error popup
     else if (response.error) {
         notifyFader(response.error.message, 'well-lg bg-danger text-center');
+    }
+    // Put HTML into element.
+    else if (response.outputType == 'jsonoutputhtml') {
+        $('#' + response.target).html(response.html);
+        doToolTip();
     }
     // Success popup
     else if (response.success) {

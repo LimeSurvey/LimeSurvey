@@ -22,20 +22,23 @@
  * @property string $version
  *
  */
-class Plugin extends CActiveRecord {
+class Plugin extends CActiveRecord
+{
 
     /**
      * @inheritdoc
      * @return Plugin
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return '{{plugins}}';
     }
 

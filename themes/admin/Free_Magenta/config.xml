@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Free Magenta configuration for the admin styles.
+    In future versions of LimeSurvey, it will be used to fill a admin_style table,
+    and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
+-->
+<config>
+    <metadata>
+        <name>Free Magenta</name>
+        <creationDate>08/12/2015</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>3.0</version>
+        <description>LimeSurvey admin interface template, magenta variation.</description>
+        <basecolor>#C63678</basecolor>
+        <last_update>2017-27-11 17:00:00</last_update>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager
+    -->
+    <files>
+        <css>
+            <filename>lime-admin-colors.css</filename>
+            <filename>statistics.css</filename>
+        </css>
+
+        <js></js>
+
+        <!--
+            Those files will be loaded for right to left languages only
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            We'll be always pleased to make better the right to left display
+
+            NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
+        -->
+        <rtl>
+            <css>
+                <!-- Still need these files -->
+                <filename>lime-admin-colors.css</filename>
+                <filename>statistics-rtl.css</filename>
+            </css>
+            <js>
+            </js>
+        </rtl>
+    </files>
+
+    <engine>
+        <!-- If you want to use asset manager, even in debug mode, set this field to true. -->
+        <use_asset_manager_in_debug_mode>false</use_asset_manager_in_debug_mode>
+    </engine>
+</config>

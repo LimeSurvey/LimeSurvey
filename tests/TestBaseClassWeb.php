@@ -21,6 +21,10 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Chrome\ChromeDriver;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Firefox\FirefoxDriver;
+use Facebook\WebDriver\Firefox\FirefoxProfile;
+use Facebook\WebDriver\Firefox\FirefoxPreferences;
+use Facebook\WebDriver\Exception\WebDriverCurlException;
 
 /**
  * Class TestBaseClassWeb
@@ -40,31 +44,56 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected static $webDriver;
 
+    /**
+     * @var string
+     */
+    protected static $domain;
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
         if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
+            echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
+            exit(12);
         }
 
-        //$capabilities = DesiredCapabilities::phantomjs();
-        //$port = self::$webPort;
+        self::$domain = getenv('DOMAIN');
 
-        $base = \Yii::app()->getBasePath();
+        // NB: Travis might be slow, better try more than once to connect.
+        $tries = 0;
+        $success = false;
+        do {
+            try {
+                $host = 'http://localhost:4444/wd/hub'; // this is the default
+                $capabilities = DesiredCapabilities::firefox();
+                $profile = new FirefoxProfile();
+                $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                // Open target="_blank" in new tab.
+                $profile->setPreference('browser.link.open_newwindow', 3);
+                $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
+                self::$webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $success = true;
+            } catch (WebDriverCurlException $ex) {
+                $tries++;
+                sleep(1);
+            }
+        } while (!$success && $tries < 5);
 
-        $caps = new DesiredCapabilities();
-        $chromeOptions = new ChromeOptions();
-        $chromeOptions->addArguments(['--headless', 'window-size=1024,768']);
-        $caps->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+        if (empty(self::$webDriver)) {
+            throw new \Exception(
+                sprintf(
+                    'Could not connect to remote web driver, tried %d times.',
+                    $tries
+                )
+            );
+        }
 
-        putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
-        self::$webDriver = ChromeDriver::start($caps);
+        // Implicit timout so we don't have to wait manually.
+        self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
-        self::deleteLoginTimeout();
-
-        //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
-        //self::$webDriver->manage()->window()->maximize();
+        // Anyone can preview surveys.
+        self::$testHelper->enablePreview();
     }
 
     public static function tearDownAfterClass()
@@ -91,16 +120,12 @@ class TestBaseClassWeb extends TestBaseClass
      * Get URL to admin view.
      * @param array $view
      * @return string
+     * @todo Rename to getAdminUrl.
      */
     public static function getUrl(array $view)
     {
-        $domain = getenv('DOMAIN');
-        if (empty($domain)) {
-            $domain = '';
-        }
-
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('admin/' . $view['route']);
         return $url;
     }

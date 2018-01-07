@@ -1,6 +1,6 @@
 <?php
 
- /*
+    /*
  * @author Denis Chenu <denis@sondages.pro>
  * @license GPL v3
  * @version 0.1
@@ -25,10 +25,10 @@ class UpdateDBCommand extends CConsoleCommand
      * @return void
      * @throws CException
      */
-    public function run($args=null)
+    public function run($args = null)
     {
-        $newDbVersion = (float) Yii::app()->getConfig('dbversionnumber');
-        $currentDbVersion = (float) Yii::app()->getConfig('DBVersion');
+        $newDbVersion = (int) Yii::app()->getConfig('dbversionnumber');
+        $currentDbVersion = intval(Yii::app()->getConfig('DBVersion'));
 
         if (!$currentDbVersion) {
             throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");

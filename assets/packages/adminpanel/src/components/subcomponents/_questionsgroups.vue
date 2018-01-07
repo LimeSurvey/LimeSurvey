@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js'
 
@@ -27,6 +26,9 @@ export default {
         },
         orderedQuestionGroups(){
             return _.orderBy(this.$store.state.questiongroups,(a)=>{return parseInt((a.group_order || 999999)) }, ['asc']);
+        },
+        createQuestionAllowed(){
+            return (this.$store.state.questiongroups.length > 0);
         }
     },
     methods: {
@@ -85,7 +87,10 @@ export default {
             this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
-            this.updatePjaxLinks();
+            let event = new Event('pjax:load');
+            event.url = question.link;
+            window.dispatchEvent(event);
+
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject){
@@ -129,6 +134,7 @@ export default {
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject){
             this.$log.log("Dragging started", questionObject);
+            $event.dataTransfer.setData('text/plain', 'node');
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -154,9 +160,9 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba">
         <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar">
-            <a id="adminpanel__sidebar--selectorCreateQuestionGroup" v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary">
+            <a id="adminpanel__sidebar--selectorCreateQuestionGroup" v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax">
                 <i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
-            <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="( createQuestionLink!=undefined && createQuestionLink.length>1 )" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10">
+            <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="createQuestionAllowed" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10 pjax">
                 <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
         </div>
         <ul class="list-group"  @drop="dropQuestionGroup($event, questiongroup)">
@@ -173,7 +179,7 @@ export default {
                     <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
                         <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
                             <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
-                            <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
+                            <a :href="question.link" class="col-12 pjax" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
                         </li>
                     </ul>
                 </transition>

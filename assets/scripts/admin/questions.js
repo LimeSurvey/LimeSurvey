@@ -13,7 +13,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     $('#questionTypeContainer').css("overflow","visible");
     $('#collapseOne').on('shown.bs.collapse', function () {
         $('#questionTypeContainer').css("overflow","visible");
@@ -26,6 +26,7 @@ $(document).on('ready  pjax:complete', function(){
     if($('.loader-advancedquestionsettings').length){
         updatequestionattributes();
     }
+
     $('#question_type').change(updatequestionattributes);
 
     $('#question_type_button  li a').click(function(){
@@ -33,7 +34,8 @@ $(document).on('ready  pjax:complete', function(){
         $('#question_type').val($(this).data('value'));
 
         updatequestionattributes();
-   });
+    });
+    
 });
 /**
 * Validate question object on blur on title element
@@ -153,6 +155,7 @@ function updatequestionattributes()
                 },
                 show: {effect: {length:50}}
             });
+            renderBootstrapSwitch();
         }
     });
 }

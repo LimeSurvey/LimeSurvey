@@ -11,21 +11,22 @@
 extract($data);
 Yii::app()->loadHelper('admin/htmleditor');
 PrepareEditorScript(false, $this);
-?>
-<script type="text/javascript">
+
+App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-    var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    var standardthemerooturl='".Yii::app()->getConfig('standardthemerooturl')."';
+    var templaterooturl='".Yii::app()->getConfig('userthemerooturl')."';
     var formId = 'addnewsurvey';
-
-</script>
+    
+", LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- Form submited by save button menu bar -->
 <?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <div class="ls-flex-row align-items-center align-content-center">
@@ -35,7 +36,7 @@ PrepareEditorScript(false, $this);
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
-                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Survey texts")?></a></li>
+                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Text elements")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="3" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="4" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
@@ -83,10 +84,12 @@ PrepareEditorScript(false, $this);
     var updateCKfields = function(){
         $('textarea').each(function () {
             var $textarea = $(this);
-            $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+            if(CKEDITOR.instances[$textarea.attr('name')] != undefined || CKEDITOR.instances[$textarea.attr('name')] != null) {
+                $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+            }
         });
     }
-    $(document).on('ready pjax:complete', function(){
+    $(document).on('ready pjax:scriptcomplete', function(){
         sessionStorage.setItem('maxtabs', 1);
 
         $('#navigation_back').on('click', function(e){

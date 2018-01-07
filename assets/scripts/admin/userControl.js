@@ -1,3 +1,3 @@
-$(document).on('ready  pjax:complete', function() {
+$(document).on('ready  pjax:scriptcomplete', function() {
     $( "#tabs" ).tabs();
 });

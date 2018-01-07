@@ -15,6 +15,7 @@ class TutorialsController extends Survey_Common_Action
         return array(
             'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
+            'postOnly + triggerfinished', // we only allow triggerfinished via POST request
         );
     }
 
@@ -27,22 +28,22 @@ class TutorialsController extends Survey_Common_Action
     {
         return array(
             array(
-                'allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('index','view'),
+                'allow', // allow all users to perform 'index' and 'view' actions
+                'actions'=>array('index', 'view'),
                 'users'=>array('*'),
             ),
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create','update'),
+                'actions'=>array('create', 'update'),
                 'users'=>array('@'),
             ),
             array(
                 'allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions'=>array('admin','delete'),
+                'actions'=>array('admin', 'delete'),
                 'users'=>array('admin'),
             ),
             array(
-                'deny',  // deny all users
+                'deny', // deny all users
                 'users'=>array('*'),
             ),
         );
@@ -51,38 +52,24 @@ class TutorialsController extends Survey_Common_Action
     /**
      * 
      */
-    public function serveprebuilt()
+    public function servertutorial()
     {
         $ajax = Yii::app()->request->getParam('ajax', false);
         if ($ajax == false) {
             $this->getController()->redirect(['/admin']);
         }
         $tutorialname = Yii::app()->request->getParam('tutorialname', '');
-        $model = Tutorials::model();
-        $prebuiltObject = $model->getPrebuilt($tutorialname);
+        $model = Tutorials::model()->find('name=:name', [':name' => $tutorialname]);
+        $aTutorialArray = $model->getTutorialDataArray($tutorialname);
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [
-                    'tutorial'=> $prebuiltObject,
+                    'tutorial'=> $aTutorialArray,
                 ]
             ),
             false,
             false
-        );
-    }
-
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function view($id)
-    {
-        $this->render(
-            'view',
-            array(
-                'model'=>$this->loadModel($id),
-            )
         );
     }
 
@@ -92,15 +79,15 @@ class TutorialsController extends Survey_Common_Action
      */
     public function create()
     {
-        $model=new Tutorials;
+        $model = new Tutorials;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Tutorials'])) {
-            $model->attributes=$_POST['Tutorials'];
+            $model->attributes = $_POST['Tutorials'];
             if ($model->save()) {
-                $this->redirect(array('view','id'=>$model->tid));
+                $this->redirect(array('view', 'id'=>$model->tid));
             }
         }
 
@@ -119,15 +106,15 @@ class TutorialsController extends Survey_Common_Action
      */
     public function update($id)
     {
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Tutorials'])) {
-            $model->attributes=$_POST['Tutorials'];
+            $model->attributes = $_POST['Tutorials'];
             if ($model->save()) {
-                $this->redirect(array('view','id'=>$model->tid));
+                $this->redirect(array('view', 'id'=>$model->tid));
             }
         }
 
@@ -154,18 +141,25 @@ class TutorialsController extends Survey_Common_Action
         }
     }
 
-    /**
-     * Lists all models.
-     */
+    public function triggerfinished($tid){
+        $oTutorial = Tutorials::model()->find($tid);
+        $oTutorial->setFinished(App()->user->id);
+        echo '{"success": true}';
+    }
+    
     public function index()
     {
-        $dataProvider=new CActiveDataProvider('Tutorials');
-        $this->render(
-            'index',
-            array(
-                'dataProvider'=>$dataProvider,
-            )
-        );
+        $this->getController()->redirect(array('admin/tutorials/sa/view'));
+    }
+
+    public function view()
+    {
+        //$this->checkPermission();
+
+        $data = array();
+        $data['model'] = Tutorials::model();
+        //App()->getClientScript()->registerPackage('surveymenufunctions');
+        $this->_renderWrappedTemplate(null, array('tutorials/index'), $data);
     }
 
     /**
@@ -173,10 +167,10 @@ class TutorialsController extends Survey_Common_Action
      */
     public function admin()
     {
-        $model=new Tutorials('search');
-        $model->unsetAttributes();  // clear any default values
+        $model = new Tutorials('search');
+        $model->unsetAttributes(); // clear any default values
         if (isset($_GET['Tutorials'])) {
-            $model->attributes=$_GET['Tutorials'];
+            $model->attributes = $_GET['Tutorials'];
         }
 
         $this->render(
@@ -196,8 +190,8 @@ class TutorialsController extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model=Tutorials::model()->findByPk($id);
-        if ($model===null) {
+        $model = Tutorials::model()->findByPk($id);
+        if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $model;
@@ -209,7 +203,7 @@ class TutorialsController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax']==='tutorials-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'tutorials-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

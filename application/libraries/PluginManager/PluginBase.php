@@ -5,7 +5,8 @@ namespace LimeSurvey\PluginManager;
 /**
  * Base class for plugins.
  */
-abstract class PluginBase implements iPlugin {
+abstract class PluginBase implements iPlugin
+{
     /**
      *
      * @var LimesurveyApi
@@ -62,16 +63,15 @@ abstract class PluginBase implements iPlugin {
      */
     protected function setLocaleComponent()
     {
-        $basePath = $this->getDir() . DIRECTORY_SEPARATOR . 'locale';
+        $basePath = $this->getDir().DIRECTORY_SEPARATOR.'locale';
 
         // No need to load a component if there is no locale files
-        if (!file_exists($basePath))
-        {
+        if (!file_exists($basePath)) {
             return;
         }
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages' . $this->id, array(
+        \Yii::app()->setComponent('pluginMessages'.$this->id, array(
             'class' => 'LSCGettextMessageSource',
             'cachingDuration' => 3600,
             'forceTranslation' => true,
@@ -135,14 +135,11 @@ abstract class PluginBase implements iPlugin {
     {
 
         $settings = $this->settings;
-        foreach ($settings as $name => &$setting)
-        {
-            if ($getValues)
-            {
-                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null );
+        foreach ($settings as $name => &$setting) {
+            if ($getValues) {
+                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
             }
-            if ($setting['type'] == 'logo')
-            {
+            if ($setting['type'] == 'logo') {
                 $setting['path'] = $this->publish($setting['path']);
             }
         }
@@ -174,26 +171,21 @@ abstract class PluginBase implements iPlugin {
     public function publish($fileName)
     {
         // Check if filename is relative.
-        if (strpos('//', $fileName) === false)
-        {
+        if (strpos('//', $fileName) === false) {
             // This is a limesurvey relative path.
-            if (strpos('/', $fileName) === 0)
-            {
-                $url = \Yii::getPathOfAlias('webroot') . $fileName;
+            if (strpos('/', $fileName) === 0) {
+                $url = \Yii::getPathOfAlias('webroot').$fileName;
 
-            }
-            else // This is a plugin relative path.
-            {
-                $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
+            } else {
+// This is a plugin relative path. 
+                $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
                  * This approach allows a locked down plugin directory that is not publicly accessible.
                  */
                 $url = App()->assetManager->publish($path);
             }
-        }
-        else
-        {
+        } else {
             $url = $fileName;
         }
         return $url;
@@ -225,8 +217,7 @@ abstract class PluginBase implements iPlugin {
      */
     public function saveSettings($settings)
     {
-        foreach ($settings as $name => $setting)
-        {
+        foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
     }
@@ -308,9 +299,9 @@ abstract class PluginBase implements iPlugin {
      */
     public function renderPartial($viewfile, $data, $return = false, $processOutput = false)
     {
-        $alias = 'plugin_views_folder' . $this->id;
+        $alias = 'plugin_views_folder'.$this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
-        $fullAlias = $alias . '.views.' . $viewfile;
+        $fullAlias = $alias.'.views.'.$viewfile;
 
         if (isset($data['plugin'])) {
             throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
@@ -330,22 +321,21 @@ abstract class PluginBase implements iPlugin {
      * @param string $sLanguage
      * @return string
      */
-    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
     {
         $translation = \quoteText(
             \Yii::t(
                 '',
                 $sToTranslate,
                 array(),
-                'pluginMessages' . $this->id,
+                'pluginMessages'.$this->id,
                 $sLanguage
             ),
             $sEscapeMode
         );
 
         // If we don't have a translation from the plugin, check core translations
-        if ($translation == $sToTranslate)
-        {
+        if ($translation == $sToTranslate) {
             $translationFromCore = \quoteText(
                 \Yii::t(
                     '',
@@ -375,7 +365,7 @@ abstract class PluginBase implements iPlugin {
     public function log($message, $level = \CLogger::LEVEL_TRACE)
     {
         $category = $this->getName();
-        \Yii::log($message, $level, 'plugin.' . $category);
+        \Yii::log($message, $level, 'plugin.'.$category);
     }
 
     /**
@@ -385,35 +375,28 @@ abstract class PluginBase implements iPlugin {
      */
     public function readConfigFile()
     {
-        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.json';
-        if (file_exists($file))
-        {
+        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.json';
+        if (file_exists($file)) {
             $json = file_get_contents($file);
             $this->config = json_decode($json);
 
-            if ($this->config === null)
-            {
+            if ($this->config === null) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
-            }
-            else if ($this->configIsNewVersion())
-            {
+            } else if ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
                 $pluginModel = \Plugin::model()->findByPk($this->id);
 
                 // "Impossible"
-                if (empty($pluginModel))
-                {
-                    throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+                if (empty($pluginModel)) {
+                    throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
                 }
 
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
-        }
-        else
-        {
+        } else {
             $this->log('Found no config file');
         }
     }
@@ -425,29 +408,25 @@ abstract class PluginBase implements iPlugin {
      */
     protected function checkActive($pluginModel)
     {
-        if ($this->config->active == 1)
-        {
+        if ($this->config->active == 1) {
             // Activate plugin
             $result = App()->getPluginManager()->dispatchEvent(
                 new PluginEvent('beforeActivate', App()->getController()),
                 $this->getName()
             );
 
-            if ($result->get('success') !== false)
-            {
+            if ($result->get('success') !== false) {
                 $pluginModel->active = 1;
                 $pluginModel->update();
-            }
-            else
-            {
+            } else {
                 // Failed. Popup error message.
                 $not = new \Notification(array(
                     'user_id' => App()->user->id,
                     'title' => gT('Plugin error'),
                     'message' =>
-                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                        gT('Could not activate plugin ' . $this->getName()) . '. ' .
-                        gT('Reason:') . ' ' . $result->get('message'),
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                        gT('Could not activate plugin '.$this->getName()).'. '.
+                        gT('Reason:').' '.$result->get('message'),
                     'importance' => \Notification::HIGH_IMPORTANCE
                 ));
                 $not->save();
@@ -465,8 +444,8 @@ abstract class PluginBase implements iPlugin {
             'user_id' => App()->user->id,
             'title' => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
+                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                gT('Could not read config file for plugin '.$this->getName()).'. '.
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
         ));
@@ -480,8 +459,7 @@ abstract class PluginBase implements iPlugin {
      */
     protected function configIsNewVersion()
     {
-        if (empty($this->config))
-        {
+        if (empty($this->config)) {
             throw new \InvalidArgumentException('config is not set');
         }
 

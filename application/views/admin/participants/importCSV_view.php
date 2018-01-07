@@ -1,3 +1,10 @@
+<?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('importParticipants');
+
+?>
 <div class="col-lg-12 list-surveys">
     <h3><?php eT("Import CSV"); ?></h3>
 

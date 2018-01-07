@@ -49,7 +49,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $output = [];
         exec('which node ', $output);
         if (empty($output[0])) {
-            die('Node is not installed');
+            echo ('Node is not installed');
+            exit(7);
         }
 
         require_once(__DIR__ . '/ExpressionCoreAux.php');

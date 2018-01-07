@@ -75,15 +75,15 @@ class Boxes extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('position',$this->position);
-        $criteria->compare('url',$this->url,true);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('ico',$this->ico,true);
-        $criteria->compare('desc',$this->desc,true);
-        $criteria->compare('page',$this->page,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('position', $this->position);
+        $criteria->compare('url', $this->url, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('ico', $this->ico, true);
+        $criteria->compare('desc', $this->desc, true);
+        $criteria->compare('page', $this->page, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -107,18 +107,19 @@ class Boxes extends CActiveRecord
         $usergroupid = $this->usergroup;
 
         // Can't use switch because of empty case
-        if ( empty($usergroupid) || $usergroupid=='-2'  ) {
+        if (empty($usergroupid) || $usergroupid == '-2') {
             return gT('Only Superadmin');
-        } elseif ( $usergroupid=='-1' ) {
+        } elseif ($usergroupid == '-1') {
             return gT('Everybody');
-        } elseif ( $usergroupid=='-3' ) {
+        } elseif ($usergroupid == '-3') {
             return gT('Nobody');
         } else {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
-                return gT("Can't find user group!");
+            if (!is_object($oUsergroup)) {
+                            return gT("Can't find user group!");
+            }
 
             return $oUsergroup->name;
         }
@@ -219,10 +220,10 @@ class Boxes extends CActiveRecord
      * @inheritdoc
      * @return Boxes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 }

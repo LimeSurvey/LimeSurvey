@@ -82,10 +82,8 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
 </div>
 </div>
 
-
-<script type="text/javascript">
-    <!--
-
+<?php 
+App()->getClientScript()->registerScript("Tokens:warningPage", "
     function addHiddenElement(theform,thename,thevalue)
     {
         var myel = document.createElement('input');
@@ -108,6 +106,5 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
         }
         myform.submit();
     }
-
-    //-->
-</script>
+", LSYii_ClientScript::POS_BEGIN ); 
+?>

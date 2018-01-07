@@ -6,7 +6,7 @@ var LS = LS || {
 var formSubmitting = false;
 var changed = false;
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
         doNotClear: true,

@@ -53,7 +53,7 @@
             value="<?php echo $sValueHidden; ?>"
         />
 <script type='text/javascript'>
-    $('#answer<?php echo $myfname; ?>').bind('keyup focusout',function(event)
+    $('#answer<?php echo $myfname; ?>').on('keyup focusout',function(event)
     {
         if ($.trim($(this).val()).length>0)
         {

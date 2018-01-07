@@ -35,8 +35,9 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $db = \Yii::app()->getDb();
 
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_check_database_json');
-        $this->assertTrue($result, 'Could connect to new database');
+        $version = require(\Yii::app()->getBasePath() . '/config/version.php');
+        $connection = self::$testHelper->connectToNewDatabase('__test_check_database_json');
+        $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
@@ -47,11 +48,15 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
             print_r($result);
         }
 
+        // Run upgrade.
+        $result = \db_upgrade_all($version['dbversionnumber']);
+
         // Check JSON.
         $this->checkMenuEntriesJson($inst->connection);
         $this->checkTemplateConfigurationJson($inst->connection);
 
         // Connect to old database.
+        $db->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
@@ -68,6 +73,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($connection);
 
         $db = \Yii::app()->getDb();
+        $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
@@ -77,9 +83,6 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
      */
     public function testUpdateFrom315()
     {
-        // TODO: Need to fix updatedb_helper to fix broken JSON.
-        $this->markTestSkipped();
-
         $connection = self::$testHelper->updateDbFromVersion(315);
 
         // Check JSON.
@@ -87,6 +90,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($connection);
 
         $db = \Yii::app()->getDb();
+        $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
@@ -98,12 +102,12 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
      */
     protected function checkMenuEntriesJson(\CDbConnection $connection)
     {
-        $data = $connection->createCommand('SELECT data from {{surveymenu_entries}}')->query();
-        foreach ($data as $row) {
+        $data = $connection->createCommand('SELECT menu_title, data FROM {{surveymenu_entries}}')->query();
+        foreach ($data as $field => $row) {
             $jsonString = $row['data'];
             if (!empty($jsonString)) {
                 $json = json_decode($jsonString);
-                $this->assertNotNull($json, print_r($row, true));
+                $this->assertNotNull($json, $row['menu_title'] . ' ' . print_r($jsonString, true));
             } else {
                 // Nothing to check.
             }
@@ -128,11 +132,14 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
             FROM
             {{template_configuration}}'
         )->query();
-        foreach ($data as $row) {
-            foreach ($row as $field => $jsonString) {
+        foreach ($data as $field => $row) {
+            foreach ($row as $field2 => $jsonString) {
                 if (!empty($jsonString)) {
                     $json = json_decode($jsonString);
-                    $this->assertNotNull($json, $field . ': ' . print_r($row, true));
+                    $this->assertNotNull(
+                        $json,
+                        'The following is not valid JSON: ' . $field2 . ': ' . print_r($jsonString, true)
+                    );
                 } else {
                     // Nothing to check.
                 }

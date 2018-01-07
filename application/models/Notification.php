@@ -19,9 +19,9 @@
 class Notification extends LSActiveRecord
 {
 
-    const NORMAL_IMPORTANCE = 1;  // Just notification in admin menu
-    const BELL_IMPORTANCE = 2;  // TODO: Bell animation
-    const HIGH_IMPORTANCE = 3;  // Popup on page load
+    const NORMAL_IMPORTANCE = 1; // Just notification in admin menu
+    const BELL_IMPORTANCE = 2; // TODO: Bell animation
+    const HIGH_IMPORTANCE = 3; // Popup on page load
 
     /**
      * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
@@ -31,10 +31,9 @@ class Notification extends LSActiveRecord
     {
         // Don't do anything if this is called from self::model()
         if (is_string($options) || is_null($options)) {
-            parent::__construct($options);  // $options = scenario in this case
+            parent::__construct($options); // $options = scenario in this case
             return;
-        }
-        else {
+        } else {
             // Why not Zoidberg? (\/) (°,,,°) (\/)
             parent::__construct();
         }
@@ -50,7 +49,7 @@ class Notification extends LSActiveRecord
 
         // Only allow 'survey' or 'user' as entity
         if ($options['entity'] != 'survey' && $options['entity'] != 'user') {
-            throw new InvalidArgumentException('Invalid entity: ' . $options['entity']);
+            throw new InvalidArgumentException('Invalid entity: '.$options['entity']);
         }
 
         // Default to 'default' display class
@@ -65,7 +64,7 @@ class Notification extends LSActiveRecord
 
         // importance must be between 1 and 3
         if ($options['importance'] < 1 && $options['importance'] > 3) {
-            throw new InvalidArgumentException('Invalid importance: ' . $options['importance']);
+            throw new InvalidArgumentException('Invalid importance: '.$options['importance']);
         }
 
         // Set everything up
@@ -90,8 +89,7 @@ class Notification extends LSActiveRecord
         if (isset($options['survey_id'])) {
             $options['entity'] = 'survey';
             $options['entity_id'] = $options['survey_id'];
-        }
-        elseif (isset($options['user_id'])) {
+        } elseif (isset($options['user_id'])) {
             $options['entity'] = 'user';
             $options['entity_id'] = $options['user_id'];
         }
@@ -111,84 +109,85 @@ class Notification extends LSActiveRecord
     {
         foreach ($mandatory as $mand) {
             if (!isset($options[$mand]) || $options[$mand] == '') {
-                throw new InvalidArgumentException('Field ' . $mand . ' is mandatory for notification');
+                throw new InvalidArgumentException('Field '.$mand.' is mandatory for notification');
             }
         }
     }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{notifications}}';
-	}
+    public function tableName()
+    {
+        return '{{notifications}}';
+    }
 
     /** @inheritdoc */
-    public function primaryKey() {
+    public function primaryKey()
+    {
         return 'id';
     }
 
     /** @inheritdoc */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('entity_id', 'numerical', 'integerOnly'=>true),
-			array('entity', 'length', 'max'=>64),
-			array('title', 'length', 'max'=>255),
-			array('message, created, first_read', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, entity, entity_id, message, importance, created, first_read, status, title', 'safe', 'on'=>'search'),
-		);
-	}
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('entity_id', 'numerical', 'integerOnly'=>true),
+            array('entity', 'length', 'max'=>64),
+            array('title', 'length', 'max'=>255),
+            array('message, created, first_read', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, entity, entity_id, message, importance, created, first_read, status, title', 'safe', 'on'=>'search'),
+        );
+    }
 
     /** @inheritdoc */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
-	}
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        );
+    }
 
     /** @inheritdoc */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => gT('ID'),
-			'entity' => gT('Entity'),
-			'entity_id' => gT('Entity'),
-			'message' => gT('Message'),
-			'importance' => gT('Importance'),
-			'created' => gT('Created'),
-			'first_read' => gT('Read'),
-			'status' => gT('Status'),
-			'title' => gT('Title'),
-		);
-	}
+    public function attributeLabels()
+    {
+        return array(
+            'id' => gT('ID'),
+            'entity' => gT('Entity'),
+            'entity_id' => gT('Entity'),
+            'message' => gT('Message'),
+            'importance' => gT('Importance'),
+            'created' => gT('Created'),
+            'first_read' => gT('Read'),
+            'status' => gT('Status'),
+            'title' => gT('Title'),
+        );
+    }
 
     /** @inheritdoc */
-	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('entity',$this->entity,true);
-		$criteria->compare('entity_id',$this->entity_id);
-		$criteria->compare('message',$this->message,true);
-		$criteria->compare('importance',$this->importance);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('first_read',$this->first_read);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('title',$this->title,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('entity', $this->entity, true);
+        $criteria->compare('entity_id', $this->entity_id);
+        $criteria->compare('message', $this->message, true);
+        $criteria->compare('importance', $this->importance);
+        $criteria->compare('created', $this->created, true);
+        $criteria->compare('first_read', $this->first_read);
+        $criteria->compare('status', $this->status, true);
+        $criteria->compare('title', $this->title, true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
     /**
      * Returns a URL to the Ajax action in notification controller
@@ -238,11 +237,12 @@ class Notification extends LSActiveRecord
      * @param int|null $surveyId
      * @return string
      */
-    public static function getUpdateUrl($surveyId = null) {
-        $params=array(
+    public static function getUpdateUrl($surveyId = null)
+    {
+        $params = array(
             'sa' => 'actionGetMenuWidget',
         );
-        if($surveyId) {
+        if ($surveyId) {
             $params['surveyId'] = $surveyId;
         }
         return Yii::app()->createUrl(
@@ -251,16 +251,16 @@ class Notification extends LSActiveRecord
         );
     }
 
-	/**
-	 * @inheritdoc
-	 * @return Notification the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
+    /**
+     * @inheritdoc
+     * @return Notification the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
-	}
+    }
 
     /**
      * Get latest notifications to show in the menu
@@ -285,7 +285,7 @@ class Notification extends LSActiveRecord
         // TODO this should be in Survey model (relations?)
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
+        $criteria2->addCondition('importance = '.self::HIGH_IMPORTANCE);
         $criteria->mergeWith($criteria2, 'AND');
 
         return self::model()->findAll($criteria);
@@ -314,7 +314,7 @@ class Notification extends LSActiveRecord
         $criteria = self::getCriteria($surveyId);
 
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('status = \'new\'');  // TODO: Check first_read = null instead?
+        $criteria2->addCondition('status = \'new\''); // TODO: Check first_read = null instead?
         $criteria->mergeWith($criteria2, 'AND');
 
         $nr = self::model()->count($criteria);
@@ -330,7 +330,7 @@ class Notification extends LSActiveRecord
     {
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
+        $criteria2->addCondition('importance = '.self::HIGH_IMPORTANCE);
         $criteria->mergeWith($criteria2, 'AND');
 
         return self::model()->count($criteria);
@@ -346,14 +346,13 @@ class Notification extends LSActiveRecord
         $criteria = new CDbCriteria();
         $params = array();
         // Only fetch survey specific notifications if user is viewing a survey
-        if (!empty($surveyId))
-        {
+        if (!empty($surveyId)) {
             $criteria->addCondition('entity =:sentity AND entity_id=:sentity_id');
             $params[':sentity'] = 'survey';
             $params[':sentity_id'] = $surveyId;
         }
         // User notifications
-        $criteria->addCondition('entity =:uentity AND entity_id=:uentity_id','OR');
+        $criteria->addCondition('entity =:uentity AND entity_id=:uentity_id', 'OR');
         $params[':uentity'] = 'user';
         $params[':uentity_id'] = Yii::app()->user->id;
 
@@ -362,7 +361,7 @@ class Notification extends LSActiveRecord
         //$criteria3->addCondition('status = \'new\'');  // TODO: read = null?
         //$criteria->mergeWith($criteria3, 'AND');
 
-        $criteria->params=$params;
+        $criteria->params = $params;
         $criteria->order = 'id DESC';
         $criteria->limit = 50;
         

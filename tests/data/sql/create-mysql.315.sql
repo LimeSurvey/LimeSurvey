@@ -232,7 +232,7 @@ CREATE TABLE `prefix_permissions` (
 CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
-  `active` int(1) NOT NULL default '0',
+  `active` tinyint(1) NOT NULL default '0',
   `version` varchar(32) default null,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
@@ -283,7 +283,7 @@ CREATE TABLE `prefix_questions` (
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   `scale_id` int(11) NOT NULL default '0',
-  `same_default` int(11) NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
+  `same_default` int(11) NOT NULL default '0',
   `relevance` text,
   `modulename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`qid`,`language`)
@@ -343,7 +343,7 @@ CREATE TABLE `prefix_saved_control` (
   `srid` int(11) NOT NULL default '0',
   `identifier` text NOT NULL,
   `access_code` text NOT NULL,
-  `email` varchar(254),
+  `email` varchar(192),
   `ip` text NOT NULL,
   `saved_thisstep` text NOT NULL,
   `status` varchar(1) NOT NULL default '',
@@ -359,7 +359,7 @@ CREATE TABLE `prefix_saved_control` (
 CREATE TABLE `prefix_sessions`(
   `id` varchar(32) NOT NULL,
   `expire` int(11) DEFAULT NULL,
-  `data` longblob,
+  `data` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
 
@@ -530,7 +530,7 @@ CREATE TABLE `prefix_users` (
   `full_name` varchar(50) NOT NULL,
   `parent_id` int(11) NOT NULL,
   `lang` varchar(20),
-  `email` varchar(254),
+  `email` varchar(192),
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) NOT NULL default 'default',
   `questionselectormode` varchar(7) NOT NULL default 'default',
@@ -548,13 +548,13 @@ CREATE TABLE `prefix_users` (
 --
 CREATE TABLE IF NOT EXISTS `prefix_boxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `position` int(11) DEFAULT NULL COMMENT 'position of the box',
-  `url` text NOT NULL COMMENT 'URL the box points',
-  `title` text NOT NULL COMMENT 'Box title',
-  `ico` varchar(255) DEFAULT NULL COMMENT 'the ico name in font',
-  `desc` text NOT NULL COMMENT 'Box description',
-  `page` text NOT NULL COMMENT 'Page name where the box should be shown ',
-  `usergroup` INT(11) NOT NULL COMMENT  'Those boxes will be shown for that user group',
+  `position` int(11) DEFAULT NULL,
+  `url` text NOT NULL,
+  `title` text NOT NULL,
+  `ico` varchar(255) DEFAULT NULL,
+  `desc` text NOT NULL,
+  `page` text NOT NULL,
+  `usergroup` INT(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
 
@@ -589,16 +589,16 @@ CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 --
 CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `entity` VARCHAR(15) NOT NULL COMMENT 'Should be either survey or user',
+    `entity` VARCHAR(15) NOT NULL,
     `entity_id` INT(11) NOT NULL,
     `title` VARCHAR(255) NOT NULL,
     `message` TEXT NOT NULL,
-    `status` VARCHAR(15) NOT NULL DEFAULT 'new' COMMENT 'new or read',
+    `status` VARCHAR(15) NOT NULL DEFAULT 'new',
     `importance` INT(11) NOT NULL DEFAULT 1,
-    `display_class` VARCHAR(31) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
-    `hash` VARCHAR(64) DEFAULT NULL COMMENT 'Hash of title, message and entity to avoid duplication',
-    `created` DATETIME NOT NULL,
-    `first_read` DATETIME DEFAULT NULL,
+    `display_class` VARCHAR(31) DEFAULT 'default',
+    `hash` VARCHAR(64) DEFAULT NULL,
+    `created` DATETIME,
+    `first_read` DATETIME,
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`),
     INDEX(`hash`)
@@ -628,17 +628,17 @@ CREATE TABLE `prefix_surveymenu` (
   `user_id` int(11) DEFAULT NULL,
   `ordering` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
-  `title` varchar(255)  NOT NULL DEFAULT '',
-  `position` varchar(255)  NOT NULL DEFAULT 'side',
+  `title` varchar(192)  NOT NULL DEFAULT '',
+  `position` varchar(192)  NOT NULL DEFAULT 'side',
   `description` text ,
-  `active` int(1) NOT NULL DEFAULT '0',
-  `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `changed_at` datetime,
   `changed_by` int(11) NOT NULL DEFAULT '0',
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `ordering` (`ordering`),
-  KEY `title` (`title`(250))
+  KEY `title` (`title`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, NOW(),0,NOW(),0);
@@ -649,33 +649,33 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `menu_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `ordering` int(11) DEFAULT '0',
-  `name` varchar(255)  NOT NULL DEFAULT '',
-  `title` varchar(255)  NOT NULL DEFAULT '',
-  `menu_title` varchar(255)  NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `title` varchar(168) NOT NULL DEFAULT '',
+  `menu_title` varchar(168)  NOT NULL DEFAULT '',
   `menu_description` text ,
-  `menu_icon` varchar(255)  NOT NULL DEFAULT '',
-  `menu_icon_type` varchar(255)  NOT NULL DEFAULT '',
-  `menu_class` varchar(255)  NOT NULL DEFAULT '',
-  `menu_link` varchar(255)  NOT NULL DEFAULT '',
-  `action` varchar(255)  NOT NULL DEFAULT '',
-  `template` varchar(255)  NOT NULL DEFAULT '',
-  `partial` varchar(255)  NOT NULL DEFAULT '',
-  `classes` varchar(255)  NOT NULL DEFAULT '',
-  `permission` varchar(255)  NOT NULL DEFAULT '',
-  `permission_grade` varchar(255)  DEFAULT NULL,
+  `menu_icon` varchar(192)  NOT NULL DEFAULT '',
+  `menu_icon_type` varchar(192)  NOT NULL DEFAULT '',
+  `menu_class` varchar(192)  NOT NULL DEFAULT '',
+  `menu_link` varchar(192)  NOT NULL DEFAULT '',
+  `action` varchar(192)  NOT NULL DEFAULT '',
+  `template` varchar(192)  NOT NULL DEFAULT '',
+  `partial` varchar(192)  NOT NULL DEFAULT '',
+  `classes` varchar(192)  NOT NULL DEFAULT '',
+  `permission` varchar(192)  NOT NULL DEFAULT '',
+  `permission_grade` varchar(192)  DEFAULT NULL,
   `data` text ,
-  `getdatamethod` varchar(255)  NOT NULL DEFAULT '',
-  `language` varchar(255)  NOT NULL DEFAULT 'en-GB',
-  `active` int(1) NOT NULL DEFAULT '0',
-  `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `getdatamethod` varchar(192)  NOT NULL DEFAULT '',
+  `language` varchar(32)  NOT NULL DEFAULT 'en-GB',
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `changed_at` datetime,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `menu_id` (`menu_id`),
   KEY `ordering` (`ordering`),
-  KEY `title` (`title`(191)),
-  KEY `menu_title` (`menu_title`(191))
+  KEY `title` (`title`),
+  KEY `menu_title` (`menu_title`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -707,7 +707,7 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 (25,2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
 (26,2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
 (27,2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',1, NOW(),0,NOW(),0),
-(28,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',1, NOW(),0,NOW(),0),
+(28,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{"render": {"link": {}}}','','en-GB',1, NOW(),0,NOW(),0),
 (29,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, NOW(),0,NOW(),0),
 (30,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, NOW(),0,NOW(),0),
 (31,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0);

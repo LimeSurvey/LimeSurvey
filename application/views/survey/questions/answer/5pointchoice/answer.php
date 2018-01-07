@@ -32,7 +32,7 @@ echo \CHtml::hiddenField("java{$name}",$sessionValue,array(
 <?php 
 if($slider_rating==1){
     Yii::app()->clientScript->registerScript('doRatingStar_'.$sliderId, "
-    $(document).on('ready pjax:complete', function(){doRatingStar(".$sliderId.");});
+    $(document).on('ready pjax:scriptcomplete', function(){doRatingStar(".$sliderId.");});
     ",CClientScript::POS_END);
 } else if($slider_rating==2) {
     Yii::app()->clientScript->registerScript("doRatingSlider_".$sliderId, "

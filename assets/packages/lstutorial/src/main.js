@@ -12,8 +12,12 @@ const TourLibrary = function () {
             window.localStorage.setItem('lstutorial-is-tour-active', tourName);
         },
 
-        _setNoTourActive = () => {
+        _setNoTourActive = (tid) => {
             window.localStorage.removeItem('lstutorial-is-tour-active');
+            
+            if(tid !== undefined) {
+                $.post(LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/tutorial/sa/triggerfinished/tid/' : '?r=admin/tutorial/sa/triggerfinished/tid/')+tid);
+            }
         },
         
         clearActiveTour = () => {
@@ -33,9 +37,11 @@ const TourLibrary = function () {
                     _setTourActive(tourName);
 
                     tourObject.onEnd = () => {
-                        _setNoTourActive();
+                        _setNoTourActive(tourObject.tid);
                     };
                     
+                    tourObject.debug = window.debugState.backend;
+
                     _actionActiveTour = new Tour(tourObject);
                     _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
@@ -43,8 +49,23 @@ const TourLibrary = function () {
                     });
                     
                     resolve(_actionActiveTour);
-                }, console.log);
+                }, console.ls.err);
             });
+        },
+        triggerTourStart = (tutorialName) => {
+            clearActiveTour();
+            initTour(tutorialName).then(
+                (startedTutorial) => {
+                    if(startedTutorial.ended())
+                        startedTutorial.restart();
+                    else
+                        startedTutorial.start(true);
+                },
+                (err) => {
+                    console.ls.log('Couldn\'t be loaded!');
+                    console.ls.err(err);
+                }
+            );
         };
 
     let _activeTour = _getIsTourActive();
@@ -55,6 +76,7 @@ const TourLibrary = function () {
     }
 
     return {
+        triggerTourStart: triggerTourStart,
         clearActiveTour: clearActiveTour,
         initTour: initTour,
         _actionActiveTour: _actionActiveTour
@@ -62,25 +84,13 @@ const TourLibrary = function () {
 };
 
 
-$(document).on('ready pjax:complete', function () {
+$(document).on('ready pjax:scriptcomplete', function () {
     if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
     }
 
     $('#selector__welcome-modal--starttour').on('click', function (e) {
         $(e.currentTarget).closest('.modal').modal('hide');
-        window.tourLibrary.clearActiveTour();
-        window.tourLibrary.initTour('firstStartTour').then(
-            (firstStartTour) => {
-                if(firstStartTour.ended())
-                    firstStartTour.restart();
-                else
-                    firstStartTour.start(true);
-            },
-            (err) => {
-                console.log('Couldn\'t be loaded!');
-                console.log(err);
-            }
-        );
+        window.tourLibrary.triggerTourStart('firstStartTour');
     });
 });

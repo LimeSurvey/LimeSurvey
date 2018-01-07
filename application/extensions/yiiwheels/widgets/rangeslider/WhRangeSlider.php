@@ -294,7 +294,7 @@ class WhRangeSlider extends CInputWidget
 
         $cs->registerCoreScript('jquery');
         $cs->registerCoreScript('jquery.ui');
-        $this->getYiiWheels()->registerAssetJs('jquery.mousewheel.min.js', CClientScript::POS_HEAD);
+        $this->getYiiWheels()->registerAssetJs('jquery.mousewheel.min.js', CClientScript::POS_BEGIN);
 
         $cs->registerCssFile($assetsUrl . '/css/' . $this->theme . '.css');
         $cs->registerScriptFile($assetsUrl . '/js/' . $jsFile);

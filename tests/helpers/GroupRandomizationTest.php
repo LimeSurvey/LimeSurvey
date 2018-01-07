@@ -30,7 +30,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
+            echo 'Fatal error: found no survey file';
+            exit(4);
         }
 
         $translateLinksFields = false;
@@ -52,7 +53,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
         if ($result) {
             self::$surveyId = $result['newsid'];
         } else {
-            die('Fatal error: Could not import survey');
+            echo 'Fatal error: Could not import survey';
+            exit(5);
         }
     }
 
@@ -62,7 +64,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
     public function setUp()
     {
         if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
+            echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
+            exit(6);
         }
 
         //$capabilities = DesiredCapabilities::phantomjs();
@@ -76,7 +79,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
     {
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
+            echo ('Fatal error: Could not clean up survey ' . self::$surveyId);
+            exit(8);
         }
     }
 
