@@ -718,7 +718,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], null, null, null, true, false);
                 // Activate the survey
                 Yii::app()->loadHelper("admin/activate");
-                activateSurvey($aImportResults['newsid']);
+                $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                $surveyActivator = new SurveyActivator($survey);
+                $surveyActivator->activate();
                 unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                 break;
             }

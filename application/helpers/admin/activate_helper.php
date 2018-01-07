@@ -236,6 +236,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 * Function to activate a survey
 * @param int $iSurveyID The Survey ID
 * @param bool $simulate
+ * @deprecated use SurveyActivator Class
 * @return array
 */
 function activateSurvey($iSurveyID, $simulate = false)

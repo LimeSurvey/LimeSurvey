@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
+use SurveyActivator;
 
 class TestHelper extends TestCase
 {
@@ -111,7 +112,9 @@ class TestHelper extends TestCase
         $survey->save();
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
-        $result = \activateSurvey($surveyId);
+        $surveyActivator = new SurveyActivator($survey);
+        $result = $surveyActivator->activate();
+
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 
