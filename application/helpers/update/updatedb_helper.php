@@ -842,7 +842,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 339) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
-            /*
             // Question table 
             $oDB->createCommand()->createTable('{{question_l10ns}}', array(
                 'id' =>  "pk",
@@ -894,8 +893,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             dropPrimaryKey('answers');
-            */
-            debugbreak();
             
             addColumn('{{answers}}', 'aid', 'int');
             $dataReader=$oDB->createCommand("select qid,code,scale_id from {{answers}} group by qid,code,scale_id")->query();
