@@ -6,9 +6,9 @@ class SurveyActivator
     /** @var Survey */
     private $survey;
     /** @var array  */
-    private $tableDefinition=[];
+    private $tableDefinition = [];
     /** @var array  */
-    private $timingsTableDefinition=[];
+    private $timingsTableDefinition = [];
     /** @var array  */
     private $fieldMap;
     /** @var string */
@@ -61,7 +61,7 @@ class SurveyActivator
             }
         }
 
-        if(!empty($this->error)){
+        if (!empty($this->error)) {
             return ['error'=>$this->error];
         }
 
@@ -74,7 +74,7 @@ class SurveyActivator
             'status' => 'OK',
             'pluginFeedback' => $this->event->get('pluginFeedback')
         );
-        if(!$this->createSurveyDirectory()){
+        if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
         }
 
@@ -87,7 +87,7 @@ class SurveyActivator
      * For each question, create the appropriate field(s)
      * @return void
      */
-    private function prepareTableDefinition(){
+    private function prepareTableDefinition() {
         $sFieldMap = $this->fieldMap;
 
         foreach ($sFieldMap as $j=>$aRow) {
@@ -276,7 +276,7 @@ class SurveyActivator
     /**
      * @return boolean
      */
-    private function createParticipantsTable(){
+    private function createParticipantsTable() {
         $sTableName = $this->survey->responsesTableName;
         Yii::app()->loadHelper("database");
         try {
