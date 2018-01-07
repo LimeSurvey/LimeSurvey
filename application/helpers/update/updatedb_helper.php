@@ -453,7 +453,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 316) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
+            //$oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>316), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -840,9 +840,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 339) {
+            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
-            // question language setttings
-            
+            /*
+            // Question table 
             $oDB->createCommand()->createTable('{{question_l10ns}}', array(
                 'id' =>  "pk",
                 'qid' =>  "integer NOT NULL",
@@ -850,11 +851,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'help' =>  "text",
                 'language' =>  "string(20) NOT NULL"
             ));        
-
             $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
-            $oDB->createCommand("DELETE q1 FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->execute();
-
+            $dataReader=$oDB->createCommand("select q1.language,q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->query();
+            while(($row=$dataReader->read())!==false) {
+                $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{questions}}', 'qid', "int", true);
+            dropPrimaryKey('questions');
+            alterColumn('{{questions}}', 'qid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{questions}}', 'question');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'help');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'language');    
+            // Groups table
             $oDB->createCommand()->createTable('{{group_l10ns}}', array(
                 'id' =>  "pk",
                 'gid' =>  "integer NOT NULL",
@@ -863,24 +872,48 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL"
             ));        
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
-
+            $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
+            $dataReader=$oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 WHERE g1.gid = g2.gid and g1.language<g2.language")->query();
+            while(($row=$dataReader->read())!==false) {
+                $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{groups}}', 'gid', "int", true);
+            dropPrimaryKey('groups');
+            alterColumn('{{groups}}', 'gid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{groups}}', 'group_name');
+            $oDB->createCommand()->dropColumn('{{groups}}', 'description');
+            $oDB->createCommand()->dropColumn('{{groups}}', 'language');    
+            
+            // Answers table
+            // Answers now have a proper answer ID - wohoo!
             $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
                 'id' =>  "pk",
                 'aid' =>  "integer NOT NULL",
                 'answer' =>  "text NOT NULL",
                 'language' =>  "string(20) NOT NULL"
             ));        
-            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{group_l10ns}}', ['aid', 'language'], true);
+            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+            dropPrimaryKey('answers');
+            */
+            debugbreak();
             
+            addColumn('{{answers}}', 'aid', 'int');
+            $dataReader=$oDB->createCommand("select qid,code,scale_id from {{answers}} group by qid,code,scale_id")->query();
+            $iCounter=1;
+            while(($row=$dataReader->read())!==false) {
+                $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id='{$row['scale_id']}'")->execute();
+                $iCounter++;
+            }
+            $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
+            $dataReader=$oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 WHERE a1.aid = a2.aid and a1.language<a2.language")->query();
+            while(($row=$dataReader->read())!==false) {
+                $oDB->createCommand("delete from  {{answers}} where aid={$row['aid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{answers}}', 'aid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
+            $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
+
             
-
-            alterColumn('{{questions}}', 'qid', "int", true);
-            dropPrimaryKey('questions');
-            addPrimaryKey('questions', 'qid');
-            $oDB->createCommand()->dropColumn('{{questions}}', 'question');
-            $oDB->createCommand()->dropColumn('{{questions}}', 'help');
-            $oDB->createCommand()->dropColumn('{{questions}}', 'language');
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
             $oTransaction->commit();
         }

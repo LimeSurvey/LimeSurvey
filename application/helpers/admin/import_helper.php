@@ -1184,13 +1184,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                 XSSFilterArray($insertdata);
             }
-            // now translate any links
+            if (!isset($insertdata['help'])) {
+                $insertdata['help']='';
+            }            // now translate any links
             if ($iDBVersion < 339) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                    if (isset($insertdata['help'])) {
-                        $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
-                    }
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
                 }
                 $oQuestionL10n = new QuestionL10n();
                 $oQuestionL10n->question = $insertdata['question'];

@@ -58,6 +58,12 @@ class QuestionL10n extends LSActiveRecord
         );
     }
     
+    /**
+    * This defaultScope indexes the ActiveRecords given back by language
+    * Important: This does not work if you want to retrieve records for more than one question at a time.
+    * in that case reset disable the defaultScope by using MyModel::model()->resetScope()->findAll();
+    * @return array Scope that indexes the records by their language
+    */
     public function defaultScope()
     {
         return array('index'=>'language');
