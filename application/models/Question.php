@@ -818,12 +818,12 @@ class Question extends LSActiveRecord
 
     public function getOrderedAnswers($random = 0, $alpha = 0)
     {
-        if ($random ==1) {
-            $sOrder=dbRandom();
+        if ($random == 1) {
+            $sOrder = dbRandom();
         } elseif ($alpha == 1) {
             $sOrder = 'answer';
-        } else{
-            $sOrder='sortorder';
+        } else {
+            $sOrder = 'sortorder';
         }
         $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));        
         return $aAnswers;
@@ -1033,7 +1033,7 @@ class Question extends LSActiveRecord
 
         /* Delete subquestion l10n for unknown languages */
         $criteria = new CDbCriteria;
-        $criteria->with = array("question",array('condition'=>array('sid'=>$this->qid)));
+        $criteria->with = array("question", array('condition'=>array('sid'=>$this->qid)));
         $criteria->together = true;
         $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
         QuestionL10n::model()->deleteAll($criteria); 

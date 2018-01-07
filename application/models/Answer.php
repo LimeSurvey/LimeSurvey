@@ -128,7 +128,7 @@ class Answer extends LSActiveRecord
             // We have a hit :)
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
-            $aAnswer=Answer::model()->findByAttributes(array('qid'=>$qid,'code'=>$code,'scale_id'=>$iScaleID));
+            $aAnswer = Answer::model()->findByAttributes(array('qid'=>$qid, 'code'=>$code, 'scale_id'=>$iScaleID));
             if (is_null($aAnswer)) {
                 return null;
             }
@@ -146,7 +146,7 @@ class Answer extends LSActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->compare('question.sid', $newsid);
-        $criteria->with=['answerL10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"),'question'];
+        $criteria->with = ['answerL10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
         return $this->findAll($criteria);
     }
 
