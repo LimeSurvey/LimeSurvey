@@ -5,8 +5,16 @@ class SurveyActivator
 {
     /** @var Survey */
     private $survey;
+    /** @var array  */
+    private $tableDefinition=[];
+    /** @var array  */
+    private $fieldMap;
+    /** @var string */
+    private $collation;
+
     /** @var boolean */
     public $isSimulation;
+
 
     public function __construct($survey)
     {
@@ -33,147 +41,17 @@ class SurveyActivator
 
         $aTableDefinition = array();
         $bCreateSurveyDir = false;
-        // Specify case sensitive collations for the token
-        $sCollation = '';
-        if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
-            $sCollation = " COLLATE 'utf8mb4_bin'";
-        }
-        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
-            $sCollation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
-        }
+
+        $this->prepareCollation();
         //Check for any additional fields for this survey and create necessary fields (token and datestamp)
         $oSurvey->fixInvalidQuestions();
         //Get list of questions for the base language
-        $sFieldMap = createFieldMap($oSurvey, 'full', true, false, $oSurvey->language);
-        //For each question, create the appropriate field(s)
-        foreach ($sFieldMap as $j=>$aRow) {
-            switch ($aRow['type']) {
-                case 'seed':
-                    $aTableDefinition[$aRow['fieldname']] = "string(31)";
-                    break;
-                case 'startlanguage':
-                    $aTableDefinition[$aRow['fieldname']] = "string(20) NOT NULL";
-                    break;
-                case 'id':
-                    $aTableDefinition[$aRow['fieldname']] = "pk";
-                    break;
-                case "startdate":
-                case "datestamp":
-                    $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
-                    break;
-                case "submitdate":
-                    $aTableDefinition[$aRow['fieldname']] = "datetime";
-                    break;
-                case "lastpage":
-                    $aTableDefinition[$aRow['fieldname']] = "integer";
-                    break;
-                case "N":  //Numerical
-                case "K":  //Multiple Numerical
-                    $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
-                    break;
-                case "S":  //SHORT TEXT
-                    $aTableDefinition[$aRow['fieldname']] = "text";
-                    break;
-                case "L":  //LIST (RADIO)
-                case "!":  //LIST (DROPDOWN)
-                case "M":  //Multiple choice
-                case "P":  //Multiple choice with comment
-                case "O":  //DROPDOWN LIST WITH COMMENT
-                    if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
-                        $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                    } else {
-                        $aTableDefinition[$aRow['fieldname']] = "text";
-                    }
-                    break;
-                case "U":  //Huge text
-                case "Q":  //Multiple short text
-                case "T":  //LONG TEXT
-                case ";":  //Multi Flexi
-                case ":":  //Multi Flexi
-                    $aTableDefinition[$aRow['fieldname']] = "text";
-                    break;
-                case "D":  //DATE
-                    $aTableDefinition[$aRow['fieldname']] = "datetime";
-                    break;
-                case "5":  //5 Point Choice
-                case "G":  //Gender
-                case "Y":  //YesNo
-                case "X":  //Boilerplate
-                    $aTableDefinition[$aRow['fieldname']] = "string(1)";
-                    break;
-                case "I":  //Language switch
-                    $aTableDefinition[$aRow['fieldname']] = "string(20)";
-                    break;
-                case "|":
-                    $bCreateSurveyDir = true;
-                    if (strpos($aRow['fieldname'], "_")) {
-                        $aTableDefinition[$aRow['fieldname']] = "integer";
-                    } else {
-                        $aTableDefinition[$aRow['fieldname']] = "text";
-                    }
-                    break;
-                case "ipaddress":
-                    if ($oSurvey->ipaddr == "Y") {
-                        $aTableDefinition[$aRow['fieldname']] = "text";
-                    }
-                    break;
-                case "url":
-                    if ($oSurvey->refurl == "Y") {
-                        $aTableDefinition[$aRow['fieldname']] = "text";
-                    }
-                    break;
-                case "token":
-                    $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
-                    break;
-                case '*': // Equation
-                    $aTableDefinition[$aRow['fieldname']] = "text";
-                    break;
-                case 'R':
-                    /**
-                     * See bug #09828: Ranking question : update allowed can broke Survey DB
-                     * If max_subquestions is not set or is invalid : set it to actual answers numbers
-                     */
+        $this->fieldMap = createFieldMap($oSurvey, 'full', true, false, $oSurvey->language);
 
-                    $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'], 'language'=>Survey::model()->findByPk($iSurveyID)->language)
-                    );
-                    $oQuestionAttribute = QuestionAttribute::model()->find(
-                        "qid = :qid AND attribute = 'max_subquestions'",
-                        array(':qid' => $aRow['qid'])
-                    );
-                    if (empty($oQuestionAttribute)) {
-                        $oQuestionAttribute = new QuestionAttribute();
-                        $oQuestionAttribute->qid = $aRow['qid'];
-                        $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    } elseif (intval($oQuestionAttribute->value) < 1) {
-// Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    }
-                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                    break;
-                default:
-                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
-            }
-            if ($oSurvey->anonymized == 'N' && !array_key_exists('token', $aTableDefinition)) {
-                $aTableDefinition['token'] = 'string(35)'.$sCollation;
-            }
-            if ($simulate) {
-                $tempTrim = trim($aTableDefinition);
-                $brackets = strpos($tempTrim, "(");
-                if ($brackets === false) {
-                    $type = substr($tempTrim, 0, 2);
-                } else {
-                    $type = substr($tempTrim, 0, 2);
-                }
-                $arrSim[] = array($type);
-            }
-        }
-
+        $this->prepareTableDefinition();
+        $this->prepareSimulateQuery();
         if ($simulate) {
-            return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
+            return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$this->tableDefinition);
         }
 
         // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
@@ -255,6 +133,158 @@ class SurveyActivator
         $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
         Yii::app()->db->createCommand($sQuery)->query();
         return $aResult;
+
+    }
+
+    /**
+     * For each question, create the appropriate field(s)
+     */
+    private function prepareTableDefinition(){
+        $sFieldMap = $this->fieldMap;
+
+        foreach ($sFieldMap as $j=>$aRow) {
+            switch ($aRow['type']) {
+                case 'seed':
+                    $aTableDefinition[$aRow['fieldname']] = "string(31)";
+                    break;
+                case 'startlanguage':
+                    $aTableDefinition[$aRow['fieldname']] = "string(20) NOT NULL";
+                    break;
+                case 'id':
+                    $aTableDefinition[$aRow['fieldname']] = "pk";
+                    break;
+                case "startdate":
+                case "datestamp":
+                    $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
+                    break;
+                case "submitdate":
+                    $aTableDefinition[$aRow['fieldname']] = "datetime";
+                    break;
+                case "lastpage":
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                    break;
+                case "N":  //Numerical
+                case "K":  //Multiple Numerical
+                    $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
+                    break;
+                case "S":  //SHORT TEXT
+                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    break;
+                case "L":  //LIST (RADIO)
+                case "!":  //LIST (DROPDOWN)
+                case "M":  //Multiple choice
+                case "P":  //Multiple choice with comment
+                case "O":  //DROPDOWN LIST WITH COMMENT
+                    if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
+                        $aTableDefinition[$aRow['fieldname']] = "string(5)";
+                    } else {
+                        $aTableDefinition[$aRow['fieldname']] = "text";
+                    }
+                    break;
+                case "U":  //Huge text
+                case "Q":  //Multiple short text
+                case "T":  //LONG TEXT
+                case ";":  //Multi Flexi
+                case ":":  //Multi Flexi
+                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    break;
+                case "D":  //DATE
+                    $aTableDefinition[$aRow['fieldname']] = "datetime";
+                    break;
+                case "5":  //5 Point Choice
+                case "G":  //Gender
+                case "Y":  //YesNo
+                case "X":  //Boilerplate
+                    $aTableDefinition[$aRow['fieldname']] = "string(1)";
+                    break;
+                case "I":  //Language switch
+                    $aTableDefinition[$aRow['fieldname']] = "string(20)";
+                    break;
+                case "|":
+                    $bCreateSurveyDir = true;
+                    if (strpos($aRow['fieldname'], "_")) {
+                        $aTableDefinition[$aRow['fieldname']] = "integer";
+                    } else {
+                        $aTableDefinition[$aRow['fieldname']] = "text";
+                    }
+                    break;
+                case "ipaddress":
+                    if ($this->survey->isIpAddr) {
+                        $aTableDefinition[$aRow['fieldname']] = "text";
+                    }
+                    break;
+                case "url":
+                    if ($this->survey->isRefUrl) {
+                        $aTableDefinition[$aRow['fieldname']] = "text";
+                    }
+                    break;
+                case "token":
+                    $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$this->collation;
+                    break;
+                case '*': // Equation
+                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    break;
+                case 'R':
+                    /**
+                     * See bug #09828: Ranking question : update allowed can broke Survey DB
+                     * If max_subquestions is not set or is invalid : set it to actual answers numbers
+                     */
+
+                    $nrOfAnswers = Answer::model()->countByAttributes(
+                        array('qid' => $aRow['qid'], 'language'=>$this->survey->language)
+                    );
+                    $oQuestionAttribute = QuestionAttribute::model()->find(
+                        "qid = :qid AND attribute = 'max_subquestions'",
+                        array(':qid' => $aRow['qid'])
+                    );
+                    if (empty($oQuestionAttribute)) {
+                        $oQuestionAttribute = new QuestionAttribute();
+                        $oQuestionAttribute->qid = $aRow['qid'];
+                        $oQuestionAttribute->attribute = 'max_subquestions';
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    } elseif (intval($oQuestionAttribute->value) < 1) {
+// Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    }
+                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
+                    break;
+                default:
+                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
+            }
+            if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
+                $aTableDefinition['token'] = 'string(35)'.$this->collation;
+            }
+        }
+        $this->tableDefinition = $aTableDefinition;
+
+    }
+
+    private function prepareCollation(){
+        // Specify case sensitive collations for the token
+        $this->collation = '';
+        if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
+            $this->collation = " COLLATE 'utf8mb4_bin'";
+        }
+        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
+            $this->collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
+        }
+    }
+
+
+    private function prepareSimulateQuery(){
+        if ($this->isSimulation) {
+            $tempTrim = trim($this->tableDefinition);
+            $brackets = strpos($tempTrim, "(");
+            if ($brackets === false) {
+                $type = substr($tempTrim, 0, 2);
+            } else {
+                $type = substr($tempTrim, 0, 2);
+            }
+            $arrSim[] = array($type);
+            $this->tableDefinition = $arrSim;
+        }
 
     }
 
