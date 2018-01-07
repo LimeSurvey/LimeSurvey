@@ -11,6 +11,8 @@ class SurveyActivator
     private $fieldMap;
     /** @var string */
     private $collation;
+    /** @var PluginEvent */
+    private $event;
 
     /** @var boolean */
     public $isSimulation;
@@ -21,84 +23,37 @@ class SurveyActivator
         $this->survey = $survey;
     }
 
+
+
     public function activate(){
-        $event = new PluginEvent('beforeSurveyActivate');
+
+
+        $oSurvey = $this->survey;
         $iSurveyID = $this->survey->primaryKey;
         $simulate = $this->isSimulation;
-        $oSurvey = $this->survey;
 
-        $event->set('surveyId', $iSurveyID);
-        $event->set('simulate', $simulate);
-        App()->getPluginManager()->dispatchEvent($event);
-        $success = $event->get('success');
-        $message = $event->get('message');
-        if ($success === false) {
-            Yii::app()->user->setFlash('error', $message);
-            return array('error' => 'plugin');
-        } else if (!empty($message)) {
-            Yii::app()->user->setFlash('info', $message);
-        }
+
+        $this->event = new PluginEvent('beforeSurveyActivate');
+        $this->event->set('surveyId', $this->survey->primaryKey);
+        $this->event->set('simulate', $simulate);
+        App()->getPluginManager()->dispatchEvent($this->event);
+
+        $this->showEventMessages();
 
         $aTableDefinition = array();
         $bCreateSurveyDir = false;
 
-        $this->prepareCollation();
-        //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-        $oSurvey->fixInvalidQuestions();
-        //Get list of questions for the base language
-        $this->fieldMap = createFieldMap($oSurvey, 'full', true, false, $oSurvey->language);
+        $this->prepareResponsesTable();
 
-        $this->prepareTableDefinition();
-        $this->prepareSimulateQuery();
         if ($simulate) {
             return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$this->tableDefinition);
         }
 
         // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
+        $this->createParticipantsTable();
 
-        $sTableName = "{{survey_{$iSurveyID}}}";
-        Yii::app()->loadHelper("database");
-        try {
-            Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        } catch (CDbException $e) {
-            if (App()->getConfig('debug')) {
-                return array('error'=>$e->getMessage());
-            } else {
-                return array('error'=>'surveytablecreation');
-            }
-        }
-        try {
-            if (isset($aTableDefinition['token'])) {
-                Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1, 50000), $sTableName, 'token');
-            }
-        } catch (CDbException $e) {
-        }
 
-        $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
-        $iAutoNumberStart = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        //if there is an autonumber_start field, start auto numbering here
-        if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
-            if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                mssql_drop_primary_index('survey_'.$iSurveyID);
-                mssql_drop_constraint('id', 'survey_'.$iSurveyID);
-                $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} drop column id ";
-                Yii::app()->db->createCommand($sQuery)->execute();
-                $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} ADD [id] int identity({$iAutoNumberStart},1)";
-                Yii::app()->db->createCommand($sQuery)->execute();
-                // Add back the primaryKey
-
-                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $oSurvey->responsesTableName, 'id');
-            } elseif (Yii::app()->db->driverName == 'pgsql') {
-                $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
-                @Yii::app()->db->createCommand($sQuery)->execute();
-            } else {
-                $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
-                @Yii::app()->db->createCommand($sQuery)->execute();
-            }
-        }
-
-        if ($oSurvey->savetimings == "Y") {
+        if ($oSurvey->isSaveTimings) {
             $timingsfieldmap = createTimingsFieldMap($iSurveyID, "full", false, false, $oSurvey->language);
 
             $aTimingTableDefinition = array();
@@ -107,7 +62,7 @@ class SurveyActivator
                 $aTimingTableDefinition[$field] = 'FLOAT';
             }
 
-            $sTableName = "{{survey_{$iSurveyID}_timings}}";
+            $sTableName = $this->survey->timingsTableName;
             try {
                 Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
                 Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
@@ -118,7 +73,7 @@ class SurveyActivator
         }
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $event->get('pluginFeedback')
+            'pluginFeedback' => $this->event->get('pluginFeedback')
         );
         // create the survey directory where the uploaded files can be saved
         if ($bCreateSurveyDir) {
@@ -133,7 +88,6 @@ class SurveyActivator
         $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
         Yii::app()->db->createCommand($sQuery)->query();
         return $aResult;
-
     }
 
     /**
@@ -284,6 +238,86 @@ class SurveyActivator
             }
             $arrSim[] = array($type);
             $this->tableDefinition = $arrSim;
+        }
+
+    }
+
+
+    private function prepareResponsesTable(){
+        $this->prepareCollation();
+        //Check for any additional fields for this survey and create necessary fields (token and datestamp)
+        $this->survey->fixInvalidQuestions();
+        //Get list of questions for the base language
+        $this->fieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
+        $this->prepareTableDefinition();
+        $this->prepareSimulateQuery();
+    }
+
+
+
+    /**
+     * @return array
+     */
+    private function createParticipantsTable(){
+        $sTableName = $this->survey->responsesTableName;
+        Yii::app()->loadHelper("database");
+        try {
+            Yii::app()->db->createCommand()->createTable($sTableName, $this->tableDefinition);
+            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+        } catch (CDbException $e) {
+            if (App()->getConfig('debug')) {
+                return array('error'=>$e->getMessage());
+            } else {
+                return array('error'=>'surveytablecreation');
+            }
+        }
+        try {
+            if (isset($aTableDefinition['token'])) {
+                Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000), $sTableName, 'token');
+            }
+        } catch (CDbException $e) {
+        }
+
+        $this->createParticipantsTableKeys();
+
+    }
+
+
+    private function showEventMessages(){
+        $success = $this->event->get('success');
+        $message = $this->event->get('message');
+
+        if ($success === false) {
+            Yii::app()->user->setFlash('error', $message);
+            return array('error' => 'plugin');
+        } else if (!empty($message)) {
+            Yii::app()->user->setFlash('info', $message);
+        }
+
+    }
+
+    private function createParticipantsTableKeys(){
+        $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$this->survey->primaryKey}";
+        $iAutoNumberStart = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        //if there is an autonumber_start field, start auto numbering here
+        if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
+            if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
+                mssql_drop_primary_index($this->survey->responsesTableName);
+                mssql_drop_constraint('id', $this->survey->responsesTableName);
+                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} drop column id ";
+                Yii::app()->db->createCommand($sQuery)->execute();
+                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} ADD [id] int identity({$iAutoNumberStart},1)";
+                Yii::app()->db->createCommand($sQuery)->execute();
+                // Add back the primaryKey
+
+                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $this->survey->responsesTableName, 'id');
+            } elseif (Yii::app()->db->driverName == 'pgsql') {
+                $sQuery = "SELECT setval(pg_get_serial_sequence('{{{$this->survey->responsesTableName}}}', 'id'),{$iAutoNumberStart},false);";
+                @Yii::app()->db->createCommand($sQuery)->execute();
+            } else {
+                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} AUTO_INCREMENT = {$iAutoNumberStart}";
+                @Yii::app()->db->createCommand($sQuery)->execute();
+            }
         }
 
     }
