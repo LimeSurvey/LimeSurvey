@@ -105,14 +105,15 @@ class TutorialEntry extends LSActiveRecord
         return $model;
     }
 
-    public function getStepFromEntry(){
+    public function getStepFromEntry()
+    {
         $stepArray = json_decode($this->settings, true);
         $stepArray['content'] = gT($this->content, 'unescaped');
         $stepArray['title'] = gT($this->title, 'unescaped');
-        if(isset($stepArray['path'])){
+        if(isset($stepArray['path'])) {
             $path = $stepArray['path'];
             $params = array();
-            if(is_array($stepArray['path'])){
+            if(is_array($stepArray['path'])) {
                 $path = $stepArray['path'][0];
                 $params = isset($stepArray['path'][1]) ? $stepArray['path'][1] : [];
             }

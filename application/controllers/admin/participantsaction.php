@@ -684,8 +684,7 @@ $url .= "_view"; });
         } else {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
-            if ($oCSVFile === false)
-            {
+            if ($oCSVFile === false) {
                 safeDie('File not found.');
             }
             $aFirstLine = fgets($oCSVFile);

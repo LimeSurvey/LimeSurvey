@@ -20,7 +20,7 @@ class CompileAssetsCommand extends CConsoleCommand
      */
     public function run($aArguments)
     {
-        if(isset($aArguments) && count($aArguments) < 2){
+        if(isset($aArguments) && count($aArguments) < 2) {
             echo "=========================================================================\n";
             echo "=== Please provide method and path to compile package assets          ===\n";
             echo "=== usage example:                                                    ===\n";
@@ -33,7 +33,7 @@ class CompileAssetsCommand extends CConsoleCommand
         $package = $aArguments[1];
         $silent  = isset($aArguments[2]) ? $aArguments[2] : false;
 
-        if(!in_array($method, ['gulp', 'bash', 'npm', 'uglify'])){
+        if(!in_array($method, ['gulp', 'bash', 'npm', 'uglify'])) {
             echo "=========================================================================\n";
             echo "=== ERROR! Please provide a registered method for compiling           ===\n";
             echo "=== Possible methods are:                                             ===\n";
@@ -49,8 +49,7 @@ class CompileAssetsCommand extends CConsoleCommand
         $assetsFolder = realpath($sCurrentDir.'/../../assets/');
         $packageFolder = $assetsFolder.'/packages/'.$package;
 
-        if (!file_exists($packageFolder))
-        {
+        if (!file_exists($packageFolder)) {
             echo "=========================================================================\n";
             echo "=== ERROR! Package does not exist! Exiting.                           ===\n";
             echo "=== Checked path:                                                     ===\n";
@@ -61,13 +60,13 @@ class CompileAssetsCommand extends CConsoleCommand
 
         $logfile = false;
 
-        if($silent == true && $silent !=="1" ){
+        if($silent == true && $silent !=="1" ) {
             $logfile = $silent;
-        } else if($silent == true && $silent==="1"){
+        } else if($silent == true && $silent==="1") {
             $logfile =" /dev/null";
         }
 
-        switch($method){
+        switch($method) {
             case "gulp" :
                 $this->liveExecuteCommand("(cd {$packageFolder} && {$method})", $logfile );
                 break;
@@ -85,7 +84,7 @@ class CompileAssetsCommand extends CConsoleCommand
     
         while (@ ob_end_flush()); // end all output buffers if any
     
-        if($logfile!==false){
+        if($logfile!==false) {
             $proc = popen("$cmd >{$logfile} 2>&1; echo Exit status : $?", 'r');
         } else {
             $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
@@ -94,8 +93,7 @@ class CompileAssetsCommand extends CConsoleCommand
         $live_output     = "";
         $complete_output = "";
     
-        while (!feof($proc))
-        {
+        while (!feof($proc)) {
             $live_output     = fread($proc, 4096);
             $complete_output = $complete_output . $live_output;
 
@@ -112,6 +110,6 @@ class CompileAssetsCommand extends CConsoleCommand
         return array (
                         'exit_status'  => intval($matches[0]),
                         'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
-                     );
+                        );
     }
 }

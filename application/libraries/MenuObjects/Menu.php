@@ -11,9 +11,9 @@ class Menu implements MenuInterface
     protected $iconClass = "";
 
     /**
-    * @param array $options - Options for either dropdown menu or plain link
-    * @return void
-    */
+     * @param array $options - Options for either dropdown menu or plain link
+     * @return void
+     */
     public function __construct($options)
     {
         if (isset($options['isDropDown'])) {
