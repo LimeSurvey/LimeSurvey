@@ -63,10 +63,11 @@ class SurveyActivator
             return ['error'=>$this->error];
         }
 
-
-
-        $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$this->survey->primaryKey;
-        Yii::app()->db->createCommand($sQuery)->query();
+        Yii::app()->db->createCommand()->update(
+                Survey::model()->tableName(),
+                ['active'=>'Y'],'sid=:sid',
+                [':sid'=>$this->survey->primaryKey]
+            );
 
         $aResult = array(
             'status' => 'OK',
@@ -270,9 +271,10 @@ class SurveyActivator
     }
 
 
-
     /**
      * @return boolean
+     * @throws CDbException
+     * @throws CException
      */
     private function createParticipantsTable() {
         $sTableName = $this->survey->responsesTableName;
@@ -324,8 +326,12 @@ class SurveyActivator
      * @throws CException
      */
     private function createParticipantsTableKeys(){
-        $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$this->survey->primaryKey}";
-        $iAutoNumberStart = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        $iAutoNumberStart = Yii::app()->db->createCommand()
+            ->select('autonumber_start')
+            ->from(Survey::model()->tableName())
+            ->where('sid=:sid',[':sid'=>$this->survey->primaryKey])
+            ->queryScalar();
+
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
@@ -340,9 +346,11 @@ class SurveyActivator
                 Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $this->survey->responsesTableName, 'id');
             } elseif (Yii::app()->db->driverName == 'pgsql') {
                 $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
+                // FIXME @ not good
                 @Yii::app()->db->createCommand($sQuery)->execute();
             } else {
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
+                // FIXME @ not good
                 @Yii::app()->db->createCommand($sQuery)->execute();
             }
         }
