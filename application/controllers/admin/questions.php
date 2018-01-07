@@ -493,7 +493,7 @@ class questions extends Survey_Common_Action
                 $oAnserL10n = new AnswerL10n();
                 $oAnserL10n->answer = "";
                 $oAnserL10n->language = $baselang;
-                $oAnserL10n->aid=$oAnswer->aid;
+                $oAnserL10n->aid = $oAnswer->aid;
                 $oAnserL10n->save();
             }
             
@@ -706,9 +706,9 @@ class questions extends Survey_Common_Action
                 $subQuestion->attributes = $data;
                 $subQuestion->save();
                 $oQuestionL10n = new QuestionL10n();
-                $oQuestionL10n->qid=$subQuestion->qid;
-                $oQuestionL10n->question='';
-                $oQuestionL10n->language=$oSurvey->language;
+                $oQuestionL10n->qid = $subQuestion->qid;
+                $oQuestionL10n->question = '';
+                $oQuestionL10n->language = $oSurvey->language;
                 $oQuestionL10n->save();
                 $subquestiondata = Question::model()->findAllByAttributes(array(
                     'parent_qid' => $qid,
@@ -1007,7 +1007,7 @@ class questions extends Survey_Common_Action
         $oQuestion->relevance = 1;
         $oQuestion->group_name = '';
         $oQuestion->modulename = '';
-        $oQuestion->questionL10ns=array($baselang=>new QuestionL10n);
+        $oQuestion->questionL10ns = array($baselang=>new QuestionL10n);
         if (isset($_GET['gid'])) {
             $oQuestion->gid = $_GET['gid'];
         }

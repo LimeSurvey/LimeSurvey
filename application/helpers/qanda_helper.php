@@ -1791,9 +1791,9 @@ function do_ranking($ia)
 
     // Get answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='sortorder';
+        $sOrder = 'sortorder';
     }
     $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount  = count($aAnswers);
@@ -1891,7 +1891,7 @@ function do_ranking($ia)
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
-       $aDisplayAnswers[]=array_merge($aAnswer->attributes, $aAnswer->answerL10ns[$sSurveyLanguage]->attributes);
+        $aDisplayAnswers[]=array_merge($aAnswer->attributes, $aAnswer->answerL10ns[$sSurveyLanguage]->attributes);
     }
     
     $answer = doRender('/survey/questions/answer/ranking/answer', array(
@@ -2154,9 +2154,9 @@ function do_multiplechoice_withcomments($ia)
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount  = count($aSubquestions) * 2;
@@ -2527,9 +2527,9 @@ function do_multipleshorttext($ia)
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount      = count($aSubquestions) * 2;
@@ -2737,9 +2737,9 @@ function do_multiplenumeric($ia)
 
 
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -3603,9 +3603,9 @@ function do_array_5point($ia)
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
 
@@ -3790,9 +3790,9 @@ function do_array_10point($ia)
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
 
@@ -3922,9 +3922,9 @@ function do_array_yesnouncertain($ia)
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount       = count($aSubquestions);
@@ -4021,9 +4021,9 @@ function do_array_increasesamedecrease($ia)
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount       = count($aSubquestions);
@@ -4138,7 +4138,7 @@ function do_array($ia)
             $defaultWidth = true;
         }
         $columnswidth = 100 - $answerwidth;
-        $iCount = (int)Question::model()->with(array('questionL10ns'=>array('condition'=>"question like :separator")))->count('parent_qid=:parent_qid AND scale_id=0',array(':parent_qid'=>$ia[0],":separator"=>'%|%'));
+        $iCount = (int) Question::model()->with(array('questionL10ns'=>array('condition'=>"question like :separator")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0], ":separator"=>'%|%'));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
@@ -4154,9 +4154,9 @@ function do_array($ia)
 
         // Get questions and answers by defined order
         if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder=dbRandom();
+            $sOrder = dbRandom();
         } else {
-            $sOrder='question_order';
+            $sOrder = 'question_order';
         }
         $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
         $iQuestionCount = count($aQuestions);
@@ -4581,7 +4581,7 @@ function do_array_texts($ia)
 
         $cellwidth = $columnswidth / $numrows;
 
-        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->count('parent_qid=:parent_qid AND scale_id=0',array(':parent_qid'=>$ia[0]));
+        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         if ($iCount > 0) {
             $right_exists = true;
             if (!$defaultWidth) {
@@ -4595,9 +4595,9 @@ function do_array_texts($ia)
         $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
         // Get questions and answers by defined order
         if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder=dbRandom();
+            $sOrder = dbRandom();
         } else {
-            $sOrder='question_order';
+            $sOrder = 'question_order';
         }
         $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
         $anscount   = count($aQuestions);
@@ -4896,9 +4896,9 @@ function do_array_multiflexi($ia)
 
     if ($numrows = count($labelans)) {
         //~ if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
-        $cellwidth  = $columnswidth / $numrows;
+        $cellwidth = $columnswidth / $numrows;
 
-        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([],'parent_qid=:parent_qid AND scale_id=0',array(':parent_qid'=>$ia[0]));
+        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
@@ -4909,12 +4909,12 @@ function do_array_multiflexi($ia)
             $right_exists = false;
         }
 
-        $sSurveyLanguage=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+        $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
         // Get questions and answers by defined order
         if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder=dbRandom();
+            $sOrder = dbRandom();
         } else {
-            $sOrder='question_order';
+            $sOrder = 'question_order';
         }
         $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
         
@@ -5122,7 +5122,7 @@ function do_arraycolumns($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
-    $aAnswers    = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$ia[0])));
+    $aAnswers = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$ia[0])));
     $labelans = [];
     $labelcode = [];
     $labels = [];
