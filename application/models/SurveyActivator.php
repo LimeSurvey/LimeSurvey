@@ -301,18 +301,18 @@ class SurveyActivator
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
                 mssql_drop_primary_index($this->survey->responsesTableName);
                 mssql_drop_constraint('id', $this->survey->responsesTableName);
-                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} drop column id ";
+                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} drop column id ";
                 Yii::app()->db->createCommand($sQuery)->execute();
-                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} ADD [id] int identity({$iAutoNumberStart},1)";
+                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey
 
                 Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $this->survey->responsesTableName, 'id');
             } elseif (Yii::app()->db->driverName == 'pgsql') {
-                $sQuery = "SELECT setval(pg_get_serial_sequence('{{{$this->survey->responsesTableName}}}', 'id'),{$iAutoNumberStart},false);";
+                $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
                 @Yii::app()->db->createCommand($sQuery)->execute();
             } else {
-                $sQuery = "ALTER TABLE {{{$this->survey->responsesTableName}}} AUTO_INCREMENT = {$iAutoNumberStart}";
+                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
                 @Yii::app()->db->createCommand($sQuery)->execute();
             }
         }
