@@ -772,7 +772,6 @@ class SurveyAdmin extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         } else {
-            $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             if (!is_null($survey)) {
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
                 $survey->datestamp = Yii::app()->request->getPost('datestamp');

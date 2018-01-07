@@ -42,7 +42,7 @@ class SurveyActivator
         App()->getPluginManager()->dispatchEvent($this->event);
 
         if(!$this->showEventMessages()){
-            return ['error'=>$this->error];
+            return ['error'=>'plugin'];
         }
 
         $this->prepareResponsesTable();
@@ -55,15 +55,10 @@ class SurveyActivator
             return ['error'=>$this->error];
         }
 
-        if ($this->survey->isSaveTimings) {
-            if(!$this->createTimingsTable()){
-                return ['error'=>$this->error];
-            }
+        if(!$this->createTimingsTable()){
+            return ['error'=>'timingstablecreation'];
         }
 
-        if(!empty($this->error)){
-            return ['error'=>$this->error];
-        }
 
 
 
@@ -285,10 +280,10 @@ class SurveyActivator
         } catch (Exception $e) {
             if (App()->getConfig('debug')) {
                 $this->error = $e->getMessage();
-            } else {
+            } else{
                 $this->error = 'surveytablecreation';
-                return false;
             }
+            return false;
         }
         try {
             if (isset($aTableDefinition['token'])) {
@@ -312,7 +307,6 @@ class SurveyActivator
 
         if ($success === false) {
             Yii::app()->user->setFlash('error', $message);
-            $this->error = 'plugin';
             return false;
         } else if (!empty($message)) {
             Yii::app()->user->setFlash('info', $message);
@@ -356,16 +350,18 @@ class SurveyActivator
      * @return boolean
      */
     private function createTimingsTable(){
-        $this->prepareTimingsTable();
-        $sTableName = $this->survey->timingsTableName;
-        try {
-            Yii::app()->db->createCommand()->createTable($sTableName, $this->timingsTableDefinition);
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-            return true;
-        } catch (\Exception $e) {
-            $this->error = 'timingstablecreation';
-            return false;
+        if ($this->survey->isSaveTimings) {
+            $this->prepareTimingsTable();
+            $sTableName = $this->survey->timingsTableName;
+            try {
+                Yii::app()->db->createCommand()->createTable($sTableName, $this->timingsTableDefinition);
+                Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+            } catch (\Exception $e) {
+                return false;
+            }
+
         }
+        return true;
     }
 
 
