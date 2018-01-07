@@ -1178,7 +1178,7 @@ function do_list_dropdown($ia)
     // Question attribute variables
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
-    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
+    $sSurveyLang = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim($aQuestionAttributes['category_separator']) != '') ? $aQuestionAttributes['category_separator'] : '';
     $coreClass              = "ls-answers answer-item dropdown-item";
@@ -1256,7 +1256,7 @@ function do_list_dropdown($ia)
                 'name'=> $ia[1],
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
-                'answer'=>$_prefix.$ansrow['answer'],
+                'answer'=>$_prefix.$ansrow->answerL10ns[$sSurveyLang]->answer,
                 ), true);
         }
     } else {
@@ -1264,7 +1264,7 @@ function do_list_dropdown($ia)
         $optgroups = [];
         foreach ($ansresult as $ansrow) {
             // Let's sort answers in an array indexed by subcategories
-            @list ($categorytext, $answertext) = explode($optCategorySeparator, $ansrow['answer']);
+            @list ($categorytext, $answertext) = explode($optCategorySeparator, $ansrow->answerL10ns[$sSurveyLang]->answer);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '') {
                 $defaultopts[] = array('code' => $ansrow['code'], 'answer' => $answertext);
@@ -1663,7 +1663,7 @@ function do_listwithcomment($ia)
                 'value'                  => $ansrow['code'],
                 'check_ans'              => $check_ans,
                 'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type);',
-                'labeltext'              => $ansrow['answer'],
+                'labeltext'              => $ansrow->answerL10ns[$sSurveyLang]->answer,
             );
             $sRows .= doRender('/survey/questions/answer/list_with_comment/list/rows/answer_row', $itemData, true);
         }
@@ -4217,8 +4217,8 @@ function do_array($ia)
             $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($right_exists && strpos($ansrow['question'], '|') !== false) {
-                $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
+            if ($right_exists && strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') !== false) {
+                $answertextright = substr($ansrow->questionL10ns[$sSurveyLanguage]->question, strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }
@@ -5128,9 +5128,9 @@ function do_arraycolumns($ia)
     $labels = [];
 
     foreach ($aAnswers as $lrow) {
-        $labelans[] = $lrow->AnswerL10ns[$sSurveyLanguage]->answer;
+        $labelans[] = $lrow->answerL10ns[$sSurveyLanguage]->answer;
         $labelcode[] = $lrow['code'];
-        $labels[] = array("answer"=>$lrow['answer'], "code"=>$lrow['code']);
+        $labels[] = array("answer"=>$lrow->answerL10ns[$sSurveyLanguage]->answer, "code"=>$lrow['code']);
     }
 
     $inputnames = [];
@@ -5140,13 +5140,13 @@ function do_arraycolumns($ia)
             $labelans[] = gT('No answer');
             $labels[] = array('answer'=>gT('No answer'), 'code'=>'');
         }
+ 
         if ($aQuestionAttributes['random_order'] == 1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $sOrder=dbRandom();
         } else {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $sOrder='question_order';
         }
-        $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $aQuestions = $ansresult->readAll();
+        $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
         $anscount = count($aQuestions);
 
         $aData = [];
@@ -5164,13 +5164,15 @@ function do_arraycolumns($ia)
             $aData['anscount'] = $anscount;
             $aData['cellwidth'] = $cellwidth;
             $aData['answerwidth'] = $answerwidth;
-            $aData['aQuestions'] = $aQuestions;
-
+            $aData['aQuestions'] = [];
+            foreach ($aQuestions as $aQuestion){
+                $aData['aQuestions'][]=array_merge($aQuestion->attributes,$aQuestion->questionL10ns[$sSurveyLanguage]->attributes);    
+            }
             $anscode = [];
             $answers = [];
             foreach ($aQuestions as $ansrow) {
                 $anscode[] = $ansrow['title'];
-                $answers[] = $ansrow['question'];
+                $answers[] = $ansrow->questionL10ns[$sSurveyLanguage]->question;
             }
 
             $aData['anscode'] = $anscode;
@@ -5261,11 +5263,11 @@ function do_array_dual($ia)
         $sOrder='question_order';
     }
 
-    $aSubQuestions = [];
     $aSubQuestionsR = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount = count($aSubQuestionsR);
+    $aSubQuestions = [];
     foreach ($aSubQuestionsR as $oQuestion) {
-      $aSubQuestions[]=array('question'=>$oQuestion);  
+      $aSubQuestions[]=array_merge($oQuestion->attributes,$oQuestion->questionL10ns[$sLanguage]->attributes);
     }
     
    
@@ -5410,7 +5412,7 @@ function do_array_dual($ia)
                 }
 
                 $trbc = alternation($trbc, 'row');
-                $answertext = $aQuestionRow['question']->questionL10ns[$sLanguage]->question;
+                $answertext = $aQuestionRow{'question'};
 
                 // right and center answertext: not explode for ? Why not
                 if (strpos($answertext, '|') !== false) {
@@ -5426,11 +5428,11 @@ function do_array_dual($ia)
                     $answertextcenter = "";
                 }
 
-                $myfname = $ia[1].$aQuestionRow['question']['title'];
-                $myfname0 = $ia[1].$aQuestionRow['question']['title'].'#0';
-                $myfid0 = $ia[1].$aQuestionRow['question']['title'].'_0';
-                $myfname1 = $ia[1].$aQuestionRow['question']['title'].'#1'; // new multi-scale-answer
-                $myfid1 = $ia[1].$aQuestionRow['question']['title'].'_1';
+                $myfname = $ia[1].$aQuestionRow['title'];
+                $myfname0 = $ia[1].$aQuestionRow['title'].'#0';
+                $myfid0 = $ia[1].$aQuestionRow['title'].'_0';
+                $myfname1 = $ia[1].$aQuestionRow['title'].'#1'; // new multi-scale-answer
+                $myfid1 = $ia[1].$aQuestionRow['title'].'_1';
                 $aData['aSubQuestions'][$i]['myfname'] = $myfname;
                 $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
                 $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
@@ -5472,9 +5474,9 @@ function do_array_dual($ia)
                 foreach ($labelcode0 as $j => $ld) {
                 // First label set
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld) {
-                        $aData['labelcode0_checked'][$aQuestionRow['question']['title']][$ld] = CHECKED;
+                        $aData['labelcode0_checked'][$aQuestionRow['title']][$ld] = CHECKED;
                     } else {
-                        $aData['labelcode0_checked'][$aQuestionRow['question']['title']][$ld] = "";
+                        $aData['labelcode0_checked'][$aQuestionRow['title']][$ld] = "";
                     }
                 }
 
@@ -5495,9 +5497,9 @@ function do_array_dual($ia)
                     foreach ($labelcode1 as $j => $ld) {
                     // second label set
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld) {
-                            $aData['labelcode1_checked'][$aQuestionRow['question']['title']][$ld] = CHECKED;
+                            $aData['labelcode1_checked'][$aQuestionRow['title']][$ld] = CHECKED;
                         } else {
-                            $aData['labelcode1_checked'][$aQuestionRow['question']['title']][$ld] = "";
+                            $aData['labelcode1_checked'][$aQuestionRow['title']][$ld] = "";
                         }
                     }
                 }
@@ -5571,11 +5573,11 @@ function do_array_dual($ia)
             $aData['aSubQuestions'] = $aSubQuestions;
             foreach ($aSubQuestions as $i => $aQuestionRow) {
 
-                $myfname = $ia[1].$aQuestionRow['question']['title'];
-                $myfname0 = $ia[1].$aQuestionRow['question']['title']."#0";
-                $myfid0 = $ia[1].$aQuestionRow['question']['title']."_0";
-                $myfname1 = $ia[1].$aQuestionRow['question']['title']."#1";
-                $myfid1 = $ia[1].$aQuestionRow['question']['title']."_1";
+                $myfname = $ia[1].$aQuestionRow['title'];
+                $myfname0 = $ia[1].$aQuestionRow['title']."#0";
+                $myfid0 = $ia[1].$aQuestionRow['title']."_0";
+                $myfname1 = $ia[1].$aQuestionRow['title']."#1";
+                $myfid1 = $ia[1].$aQuestionRow['title']."_1";
                 $sActualAnswer0 = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] : "";
                 $sActualAnswer1 = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] : "";
 

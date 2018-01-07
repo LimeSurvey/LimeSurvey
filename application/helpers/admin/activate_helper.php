@@ -146,7 +146,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         }
         if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
-                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
+                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i}";
                 $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount = count($charesult);
                 if ($chacount == 0) {
@@ -372,7 +372,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $aRow['qid'], 'language'=>Survey::model()->findByPk($iSurveyID)->language)
+                    array('qid' => $aRow['qid'])
                 );
                 $oQuestionAttribute = QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",

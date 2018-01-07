@@ -137,7 +137,7 @@
                         name="<?php echo $ansrow['myfname0']; ?>"
                         value="<?php echo $ld; ?>"
                         id="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>"
-                        <?php echo $labelcode0_checked[$ansrow['question']['title']][$ld]; ?>
+                        <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                     />
                     <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>" class="ls-label-xs-visibility">
                         <?php echo $labelans0[$j];?>
@@ -175,7 +175,7 @@
                             name="<?php echo $ansrow['myfname1']; ?>"
                             value="<?php echo $ld; ?>"
                             id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
-                            <?php echo $labelcode1_checked[$ansrow['question']['title']][$ld]; ?>
+                            <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                         />
                         <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>" class="ls-label-xs-visibility">
                             <?php echo $labelans1[$k];?>
