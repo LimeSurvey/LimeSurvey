@@ -72,6 +72,7 @@ class database extends Survey_Common_Action
                 'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsapikeysetting' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsapikey' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -948,12 +949,14 @@ class database extends Survey_Common_Action
             $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
             $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey, 'emailresponseto');
             $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey, 'emailnotificationto');
-            $oSurvey->googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
-            if ($oSurvey->googleanalyticsapikeysetting == "Y") {
+            $googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
+            $oSurvey->googleanalyticsapikeysetting = $googleanalyticsapikeysetting;
+
+            if ($googleanalyticsapikeysetting == "Y") {
                 $oSurvey->googleanalyticsapikey = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikey');
-            } elseif ($oSurvey->googleanalyticsapikeysetting == "G") {
+            } elseif ($googleanalyticsapikeysetting == "G") {
                 $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-            } elseif ($oSurvey->googleanalyticsapikeysetting == "N") {
+            } elseif ($googleanalyticsapikeysetting == "N") {
                 $oSurvey->googleanalyticsapikey = "";
             }
 
@@ -1152,6 +1155,7 @@ class database extends Survey_Common_Action
         $newValue = trim($newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
+
         switch ($options['type']) {
             case 'yesno':
             if ($newValue != 'Y' && $newValue != 'N') {
@@ -1161,7 +1165,7 @@ class database extends Survey_Common_Action
             break;
             case 'Int':
                 $newValue = (int) $newValue;
-                break;
+            break;
         }
 
         return $newValue;
