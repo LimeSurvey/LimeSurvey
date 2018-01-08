@@ -3,7 +3,7 @@ namespace ls\tests\acceptance\question;
 
 use ls\tests\TestBaseClass;
 use ls\tests\DummyController;
-use Survey;
+use LimeExpressionManager;
 
 /**
  *  LimeSurvey
@@ -195,7 +195,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
-        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $moveResult = LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
