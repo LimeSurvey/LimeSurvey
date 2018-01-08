@@ -76,10 +76,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $insertdata['group_order'] = $iNewGroupOrder;
         $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
-        // now translate any links
-        $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-        $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
-        // Insert the new question
         if (isset($aGIDReplacements[$oldgid])) {
             $insertdata['gid'] = $aGIDReplacements[$oldgid];
         }
@@ -100,6 +96,23 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         }
     }
 
+    foreach ($xml->group_l10ns->rows->row as $row) {
+        $insertdata = array();
+        foreach ($row as $key=>$value) {
+            $insertdata[(string) $key] = (string) $value;
+        }
+        unset($insertdata[id]);
+        // now translate any links
+        $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+        $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+        if (isset($aGIDReplacements[$insertdata['gid']])) {
+            $insertdata['gid'] = $aGIDReplacements[$oldgid];
+        }
+        else{
+            continue; //Skip invalid group ID
+        }
+        Yii::app()->db->createCommand()->insert('{{group_l10ns}}', $insertdata);
+    }
 
     // Import questions table ===================================================================================
 
@@ -970,16 +983,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-
-            if (!in_array($insertdata['language'], $aLanguagesSupported)) {
-                continue;
-            }
-
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
             $aDataL10n = array();
             if ($iDBVersion < 339) {
+                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                    continue;
+                }
                 // now translate any links
                 if ($bTranslateInsertansTags) {
                     $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
@@ -998,7 +1009,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $results['groups']++;
             }
             if (!empty($aDataL10n))
-            {
+            {                                      
                 $aDataL10n['gid']=$aGIDReplacements[$oldgid];
                 $oQuestionGroupL10n=new QuestionGroupL10n(); 
                 $oQuestionGroupL10n->setAttributes($aDataL10n,false);
@@ -1007,47 +1018,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         }
     }
-
-    
-    if (isset($xml->group_l10ns->rows->row)) {
-
-        foreach ($xml->groups->rows->row as $row) {
+    if ($iDBVersion >= 339 && isset($xml->group_l10ns->rows->row)) {
+        foreach ($xml->group_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-
+            unset($insertdata['id']);
             if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                 continue;
             }
-
-            $iOldSID = $insertdata['sid'];
-            $insertdata['sid'] = $iNewSID;
-            $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
-
             // now translate any links
-            if ($bTranslateInsertansTags) {
-                $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
-            }
-
-            // Insert the new group
-            if (isset($aGIDReplacements[$oldgid])) {
-                switchMSSQLIdentityInsert('groups', true);
+            $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+            $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$oldgid];
             }
-
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
-            if (!isset($aGIDReplacements[$oldgid])) {
-                $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
-                $results['groups']++;
-            } else {
-                switchMSSQLIdentityInsert('groups', false);
+            else{
+                continue; //Skip invalid group ID
             }
-        }
+            $oQuestionGroupL10n=new QuestionGroupL10n(); 
+            $oQuestionGroupL10n->setAttributes($insertdata,false);
+            $oQuestionGroupL10n->save();
+        }    
     }
-    
-    
     
     // Import questions table ===================================================================================
 
@@ -1262,6 +1256,29 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
     }
+    
+    //  Import question_l10ns
+    if ($iDBVersion >= 339 && isset($xml->question_l10ns->rows->row)) {
+        foreach ($xml->question_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            unset($insertdata[id]);
+            // now translate any links
+            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            if (isset($aQIDReplacements[$insertdata['qid']])) {
+                $insertdata['qid'] = $aQIDReplacements[$oldgid];
+            }
+            else{
+                continue; //Skip invalid group ID
+            }
+            $oQuestionL10n=new QuestionL10n(); 
+            $oQuestionL10n->setAttributes($insertdata,false);
+            $oQuestionL10n->save();
+        }    
+    }
 
     // Import answers ------------------------------------------------------------
     if (isset($xml->answers)) {
@@ -1310,6 +1327,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    //  Import answer_l10ns
+    if ($iDBVersion >= 339 && isset($xml->answer_l10ns->rows->row)) {
+        foreach ($xml->answer_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            unset($insertdata[id]);
+            // now translate any links
+            if ($bTranslateInsertansTags) {
+                $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
+            }
+            if (isset($aQIDReplacements[$insertdata['aid']])) {
+                $insertdata['aid'] = $aAIDReplacements[$oldgid];
+            }
+            else{
+                continue; //Skip invalid answer ID
+            }
+            $oAnswerL10n=new AnswerL10n(); 
+            $oAnswerL10n->setAttributes($insertdata,false);
+            $oAnswerL10n->save();
+        }    
+    }    
+    
     // Import questionattributes -------------------------------------------------
     if (isset($xml->question_attributes)) {
 

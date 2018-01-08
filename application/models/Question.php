@@ -82,7 +82,8 @@ class Question extends LSActiveRecord
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
-            'conditions' => array(self::HAS_MANY, 'Condition', 'qid')
+            'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
+            'answers' => array(self::HAS_MANY, 'Answer', 'qid')
         );
     }
 

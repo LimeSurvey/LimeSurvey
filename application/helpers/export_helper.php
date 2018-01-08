@@ -378,7 +378,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ */
+        /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
         return;
     }
 }
@@ -1147,22 +1147,18 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     global $iSurveyID;
     App()->setLanguage($quexmllang);
 
-
-    $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
+    $aCondition=array('parent_qid'=>$qid);
     if ($scale_id != false) {
-        $Query .= " AND scale_id = $scale_id ";
+        $aCondition['scale_id'] = $scale_id;
     }
-    $Query .= " ORDER BY question_order ASC";
-    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-    foreach ($QueryResult->readAll() as $Row) {
+    $QueryResult = Question::model()->findAllByAttributes($aCondition);
+    foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label", QueXMLCleanup($Row['question'], ''));
+            $label = $dom->createElement("label", QueXMLCleanup($Row->questionL10ns[quexmllang]->question, ''));
 
             $value = $dom->createElement("value", $yesvalue);
             $nextcode = $Row['title'];
@@ -1181,7 +1177,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 
             $response->appendChild($fixed);
         } else {
-                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
+                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1896,23 +1892,33 @@ function questionGetXMLStructure($xml, $gid, $qid)
     // Questions table
     $qquery = "SELECT *
     FROM {{questions}}
-    WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
+    WHERE qid=$qid and parent_qid=0 order by scale_id, question_order";
     buildXMLFromQuery($xml, $qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
-    WHERE parent_qid=$qid order by language, scale_id, question_order";
+    WHERE parent_qid=$qid order by scale_id, question_order";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
-
+    // Questions localizations
+    $qquery = "SELECT *
+    FROM {{question_l10ns}}
+    WHERE qid=$qid";
+    buildXMLFromQuery($xml, $qquery);
+    
     // Answer table
     $aquery = "SELECT *
     FROM {{answers}}
     WHERE qid = $qid order by language, scale_id, sortorder";
     buildXMLFromQuery($xml, $aquery);
 
-
+      // Answer localizations
+    $qquery = "SELECT ls.*
+    FROM {{answer_l10ns}} ls
+    join {{answers}} a on ls.aid=a.aid
+    WHERE a.qid=$qid";
+    buildXMLFromQuery($xml, $qquery);
 
     // Question attributes
     $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
@@ -1923,11 +1929,11 @@ function questionGetXMLStructure($xml, $gid, $qid)
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml, $query);
 
