@@ -10,6 +10,9 @@
         <testsuite name="Integration">
             <directory>tests/integration</directory>
         </testsuite>
+        <testsuite name="Acceptance">
+            <directory>tests/acceptance</directory>
+        </testsuite>
 
 
         <testsuite name="Questions">
