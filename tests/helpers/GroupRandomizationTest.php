@@ -26,7 +26,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
 
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
+        $surveyFile = self::getSurveysFolder() . '/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
             echo 'Fatal error: found no survey file';
             exit(4);
