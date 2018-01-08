@@ -177,65 +177,6 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * This function prepares the view for editing a survey
-     *
-     */
-    public function editsurveysettings($iSurveyID)
-    {
-        $iSurveyID = (int) $iSurveyID;
-        $survey = Survey::model()->findByPk($iSurveyID);
-
-
-        if (is_null($iSurveyID) || !$iSurveyID) {
-                    $this->getController()->error('Invalid survey ID');
-        }
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
-
-        if (Yii::app()->request->isPostRequest) {
-                    $this->update($iSurveyID);
-        }
-        $this->_registerScriptFiles();
-
-        //Yii::app()->loadHelper('text');
-        Yii::app()->loadHelper('surveytranslator');
-
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-
-        Yii::app()->loadHelper('/admin/htmleditor');
-        initKcfinder();
-
-        $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
-
-        $aData          = array();
-        $aData['esrow'] = $esrow;
-        $aData          = array_merge($aData, $this->_generalTabEditSurvey($survey));
-        $aData          = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
-        $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData          = array_merge($aData, $this->_tabTokens($esrow));
-        $aData          = array_merge($aData, $this->_tabPanelIntegration($survey));
-        $aData          = array_merge($aData, $this->_tabResourceManagement($survey));
-
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-
-        $aData['questions']                             = $oResult;
-        $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
-        $tempData                                       = $aData;
-        $aData['data']                                  = $tempData;
-
-
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['sidemenu']['state'] = false;
-        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
-
-    }
-
-    /**
      * Function responsible to import survey resources from a '.zip' file.
      *
      * @access public
@@ -987,189 +928,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
     /**
-     * Edit surveytexts and general settings
-     */
-
-        public function surveygeneralsettings($iSurveyID)
-        {
-            $aViewUrls = $aData = array();
-            $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
-            $survey = Survey::model()->findByPk($iSurveyID);
-            $aData['oSurvey'] = $survey;
-
-
-
-        if (!(Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))) {
-            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
-            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
-            Yii::app()->end();
-        }
-
-        $this->_registerScriptFiles();
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
-            Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-        }
-
-        //This method creates the text edition and the general settings
-        $aData['panels'] = [];
-
-        ###
-        Yii::app()->loadHelper("admin/htmleditor");
-
-        $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-
-        $aTabTitles = $aTabContents = array();
-        foreach ($survey->allLanguages as $i => $sLang) {
-            // this one is created to get the right default texts fo each language
-            Yii::app()->loadHelper('database');
-            Yii::app()->loadHelper('surveytranslator');
-
-            $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
-            $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
-
-            if ($esrow['surveyls_language'] == $survey->language) {
-                $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
-            }
-
-            $aData['esrow'] = $esrow;
-            $aData['action'] = "surveygeneralsettings";
-            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-            $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
-        }
-
-        $aData['aTabContents'] = $aTabContents;
-        $aData['aTabTitles'] = $aTabTitles;
-
-        $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
-        $aData['esrow'] = $esrow;
-        $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-
-        //$aData['questions'] = $oResult;
-        $aData['display']['menu_bars']['surveysummary'] = "surveygeneralsettings";
-        $tempData = $aData;
-
-        $aData['settings_data'] = $tempData;
-
-
-        $aData['sidemenu']['state'] = false;
-
-
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-        $aData['surveybar']['savebutton']['useformid'] = 'true';
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
-            $aData['surveybar']['saveandclosebutton']['form'] = true;
-        } else {
-            unset($aData['surveybar']['savebutton']['form']);
-        }
-
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
-
-        $aViewUrls[] = 'editLocalSettings_main_view';
-        $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
-
-        }
-
-    /**
-     * Load editing of local settings of a survey screen.
-     *
-     * @access public
-     * @param int $iSurveyID
-     * @return void
-     */
-    public function editlocalsettings($iSurveyID)
-    {
-        $aData = array();
-        $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $aData['oSurvey'] = $survey;
-        $this->getController()->redirect(
-                    Yii::app()->createUrl('admin/survey/sa/rendersidemenulink', ['surveyid' => $iSurveyID, 'subaction' => 'generalsettings'])
-                );
-        return;
-
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
-            $this->_registerScriptFiles();
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
-                Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-            }
-            $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
-            array_unshift($grplangs, $baselang);
-
-            Yii::app()->loadHelper("admin/htmleditor");
-
-            $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-            $aTabTitles = $aTabContents = array();
-
-            foreach ($grplangs as $i => $sLang) {
-                // this one is created to get the right default texts fo each language
-                Yii::app()->loadHelper('database');
-                Yii::app()->loadHelper('surveytranslator');
-
-                $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
-                $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
-
-                if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language) {
-                    $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
-                }
-
-                $aData['i'] = $i;
-                $aData['esrow'] = $esrow;
-                $aData['action'] = "editsurveylocalesettings";
-                $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-                $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
-            }
-
-
-            $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
-            $aData['surveyls_language'] = $esrow["surveyls_language"];
-            $aData['aTabContents'] = $aTabContents;
-            $aData['aTabTitles'] = $aTabTitles;
-
-            $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
-            $aData['esrow'] = $esrow;
-
-            $aData = array_merge($aData, $this->_generalTabEditSurvey($survey));
-            $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-            $aData = array_merge($aData, $this->_tabPublicationAccess($survey));
-            $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-            $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($survey));
-            $aData = array_merge($aData, $this->_tabResourceManagement($survey));
-
-            $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-
-            $aData['questions'] = $oResult;
-            $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
-            $tempData = $aData;
-            $aData['settings_data'] = $tempData;
-
-            $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-
-            $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-            $aData['surveybar']['savebutton']['useformid'] = 'true';
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
-                $aData['surveybar']['saveandclosebutton']['form'] = true;
-            } else {
-                unset($aData['surveybar']['savebutton']['form']);
-            }
-
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
-
-            $aViewUrls[] = 'editLocalSettings_main_view';
-        } else {
-            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
-            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
-        }
-
-        $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
-    }
-
-    /**
      * Function responsible to import/copy a survey based on $action.
      *
      * @access public
@@ -1717,11 +1475,14 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _tabPanelIntegration($survey)
     {
-
         App()->getClientScript()->registerPackage('jquery-datatable');
         $aData = [];
-        $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-        $aData['questions'] = $oResult;
+        $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
+        $aQuestions = [];
+        foreach($oResult as $aRecord) {
+            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
+        }
+        $aData['questions'] = $aQuestions;
         return $aData;
     }
 
@@ -1814,11 +1575,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = (int) $iSurveyID;
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        $sQuery = "select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
-        left join {{questions}} q on q.qid=up.targetqid
-        left join {{questions}} sq on sq.qid=up.targetsqid
-        where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
-        $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []
@@ -1837,7 +1593,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['page'] = 1;
-        $aData['records'] = count($oResult);
+        $aData['records'] = count($aSurveyParameters);
         $aData['total'] = 1;
 
         echo ls_json_encode($aData);

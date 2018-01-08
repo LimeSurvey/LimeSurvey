@@ -617,8 +617,7 @@
                 //check all the answers
                 foreach($result[$key1] as $key=>$row)
                 {
-                    $row=array_values($row);
-                    $myfield2 = $myfield . "$row[0]";
+                    $myfield2 = $myfield . $row->title;
                     echo "<!-- $myfield2 -->\n";
 
                     if ($counter2 == 4)
@@ -632,7 +631,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;<strong>"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row->questionL10ns[$language]->question)." - # ".$flt[3])
                     ."</strong>
                     </div>\n";
 
@@ -653,7 +652,7 @@
                     //for debugging only:
 
                     //creating form
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
+                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row->title}[]' multiple='multiple' class='form-control'>\n";
 
                     //loop through all possible answers
                     foreach($fresult as $frow)
@@ -663,7 +662,7 @@
                         //pre-select
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
 
-                        echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
+                        echo ">({$frow['code']}) ".flattenText($frow->answerL10ns[$language]->answer,true)."</option>\n";
                     }
 
                     echo "\t</select>";
@@ -684,7 +683,7 @@
                 //lets put the answer code and text into the answers array
                 foreach($result[$key1] as $row)
                 {
-                    $answers[]=array($row['code'], $row['answer']);
+                    $answers[]=array($row->code, $row->answerL10ns[$language]->answer);
                 }
 
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
@@ -706,10 +705,8 @@
                     //pre-check
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
-                    $trow = array_values($row);
-
                     echo " />&nbsp;<strong>"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $trow[1])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row->answerL10ns[$language]->answer)." - # ".$flt[3])
                     ."</strong>
                     </div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-control'>\n";
@@ -891,13 +888,12 @@
                 //loop through answers
                 foreach($result[$key1] as $row)
                 {
-                    $row=array_values($row);
-                    echo "\t<option value='{$row[0]}'";
+                    echo "\t<option value='{$row->title}'";
 
                     //pre-check
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected='selected' ";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row->title, $_POST[$myfield])) {echo " selected='selected' ";}
 
-                    echo '>'.flattenText($row[1],true)."</option>\n";
+                    echo '>'.flattenText($row->questionL10ns[$language]->question,true)."</option>\n";
                 }
 
                 echo "\t</select>";
@@ -922,13 +918,12 @@
                 //loop through answers
                 foreach($result[$key1] as $row)
                 {
-                    $row=array_values($row);
-                    echo "\t<option value='{$row[0]}'";
+                    echo "\t<option value='{$row->code}'";
 
                     //pre-check
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected='selected' ";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row->code, $_POST[$myfield])) {echo " selected='selected' ";}
 
-                    echo '>'.flattenText($row[1],true)."</option>\n";
+                    echo '>'.flattenText($row->answerL10ns[$language]->answer,true)."</option>\n";
                 }
 
                 echo "\t</select>\n\t";

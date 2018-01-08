@@ -1720,16 +1720,11 @@ return $s->hasTokensTable; });
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();
-
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
-            't.language' => $this->language,
             'parent_qid' => 0,
-
         ));
-
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
-
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;
@@ -1750,8 +1745,8 @@ return $s->hasTokensTable; });
             .Yii::app()->db->quoteColumnName('t.question_order');
         $criteria->addCondition('`groups`.`gid` =`t`.`gid`', 'AND');
         return $criteria;
-
     }
+
     /**
      * Gets number of groups inside a particular survey
      */

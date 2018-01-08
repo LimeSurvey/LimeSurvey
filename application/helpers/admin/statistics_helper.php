@@ -2214,7 +2214,6 @@ class statistics_helper
         }
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
-        //echo '<pre>'; var_dump($outputs['alist']); echo '</pre>';die;
         $statisticsoutput_footer = "<script>";
 
         $lbl = array();
@@ -2549,7 +2548,6 @@ class statistics_helper
             if (!(in_array('is_comment', $al) || in_array('is_no_answer', $al))) {
                 $grawdata_percents[] = $row;
             }
-            //var_dump($grawdata); die();
             //put question title and code into array
             $label[] = $fname;
 

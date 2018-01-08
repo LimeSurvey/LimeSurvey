@@ -185,14 +185,13 @@ class Assessments extends Survey_Common_Action
 
     private function _collectGroupData($iSurveyID, &$aData = array())
     {
-        //$aData = array();
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
-            $groupId = $group->attributes['gid'];
-            $groupName = $group->attributes['group_name'];
+            $groupId = $group->gid;                        
+            $groupName = $group->questionGroupL10ns[$oSurvey->language]->group_name;
             $aData['groups'][$groupId] = $groupName;
         }
-        return $aData;
     }
 
     private function _collectEditData(array $aData)

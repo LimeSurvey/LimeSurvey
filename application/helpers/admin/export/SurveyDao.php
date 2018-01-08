@@ -41,29 +41,11 @@ class SurveyDao
             safeDie("An invalid survey ID was encountered");
         }
 
-        //Load groups
-        $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
-        'WHERE g.sid = '.$intId.' AND g.language = \''.$lang.'\' '.
-        'ORDER BY g.group_order;';
-        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-        $survey->groups = $recordSet;
-
-        //Load questions
-        $sQuery = 'SELECT q.* FROM {{questions}} AS q '.
-        'JOIN {{groups}} AS g ON (q.gid = g.gid and q.language = g.language) '.
-        'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
-        'ORDER BY g.group_order, q.question_order;';
-        $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();
-
-        //Load answers
-        $sQuery = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
-        'JOIN {{questions}} AS q ON a.qid = q.qid '.
-        'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
-        'ORDER BY a.qid, a.sortorder;';
-        //$survey->answers = Yii::app()->db->createCommand($sQuery)->queryAll();
-        $aAnswers = Yii::app()->db->createCommand($sQuery)->queryAll();
+        $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'group_order'));
+        $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
+        $aAnswers = Answer::model()->with('question', array('condition'=>'sid='.$intId))->findAll( array('order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
-                $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
+            $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
         }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \''.$lang.'\';';

@@ -75,6 +75,11 @@ class QuestionGroup extends LSActiveRecord
         );
     }    
 
+    public function defaultScope()
+    {
+        return array('order'=>'group_order');
+    }    
+        
     public function getAllRecords($condition = false, $order = false, $return_query = true)
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');

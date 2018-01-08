@@ -159,6 +159,12 @@ class Question extends LSActiveRecord
         }
         return $aRules;
     }
+    
+    public function defaultScope()
+    {
+        return array('order'=>'question_order');
+    }    
+    
 
     /**
      * Rewrites sort order for questions in a group
@@ -313,35 +319,6 @@ class Question extends LSActiveRecord
             ->query();
     }
 
-
-    /**
-     * This function is only called from surveyadmin.php
-     * @param integer $iSurveyID
-     * @param string $sLanguage
-     * @param string|boolean $sCondition
-     * @return array
-     */
-    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = false)
-    {
-        $command = Yii::app()->db->createCommand()
-            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, '.'{{groups}}.*')
-            ->from($this->tableName())
-            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
-        $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
-
-        if ($sCondition != false) {
-            $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
-            ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-            ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
-        }
-        $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
-
-        return $command->query()->readAll();
-    }
-
-
-
     /**
      * Delete a bunch of questions in one go
      *
@@ -387,14 +364,7 @@ class Question extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        $command = Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition);
-        if ($orderby != false) {
-            $command->order($orderby);
-        }
-        return $command->queryAll();
+        return Question::model()->findAll($condition);
     }
 
     /**

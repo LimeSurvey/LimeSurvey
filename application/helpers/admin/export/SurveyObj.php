@@ -91,7 +91,7 @@ class SurveyObj
         if ($questionId) {
             $answers = $this->getAnswers($questionId);
             if (isset($answers[$answerCode])) {
-                $answer = $answers[$answerCode]['answer'];
+                $answer = $answers[$answerCode]->answerL10ns[$sLanguageCode]->answer;
             }
         }
 
@@ -233,7 +233,7 @@ class SurveyObj
             case 'F':
             case 'H':
                 $answers = $this->getAnswers($questionId, 0);
-                $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]['answer'] : "";
+                $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]->answerL10ns[$sLanguageCode]->answer : "";
                 break;
 
             default:

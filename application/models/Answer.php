@@ -52,6 +52,12 @@ class Answer extends LSActiveRecord
         return 'aid';
     }
 
+
+    public function defaultScope()
+    {
+        return array('order'=>'sortorder');
+    }    
+
     /** @inheritdoc */
     public function relations()
     {
@@ -228,13 +234,10 @@ class Answer extends LSActiveRecord
      * @param mixed $condition
      * @return array
      */
-    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Yii::app()->db->createCommand()
-            ->select($fields)
-            ->from(self::tableName())
-            ->where($condition)
-            ->order($orderby)
-            ->queryAll();
+        return Answer::model()->findAll($condition);
     }
+    
+    
 }
