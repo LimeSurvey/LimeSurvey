@@ -517,7 +517,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['pap-AW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
 
     // Papiamento (Curacao and Bonaire)
-    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao and Bonaire)');
+    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (CuraÃ§ao and Bonaire)');
     $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
     $supportedLanguages['pap-CW']['rtl'] = false;
     $supportedLanguages['pap-CW']['dateformat'] = 2;
@@ -683,8 +683,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     //Ukrainian
     $supportedLanguages['uk']['description'] = gT('Ukrainian');
-    $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
-        $supportedLanguages['uk']['rtl'] = false;
+    $supportedLanguages['uk']['nativedescription'] = '&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430;';
+    $supportedLanguages['uk']['rtl'] = false;
     $supportedLanguages['uk']['dateformat'] = 1;
     $supportedLanguages['uk']['radixpoint'] = 1;
 
