@@ -27,31 +27,31 @@ class AdminViewsTest extends TestBaseClassView
 
     public function addBaseViews()
     {
-        return require __DIR__."/../data/views/adminBaseViews.php";
+        return require self::getViewsFolder()."/adminBaseViews.php";
     }
 
     public function addSurveyViews()
     {
-        return require __DIR__."/../data/views/adminSurveyViews.php";
+        return require self::getViewsFolder()."/adminSurveyViews.php";
     }
 
     public function addSettingsViews()
     {
-        return require __DIR__."/../data/views/adminSettingsViews.php";
+        return require self::getViewsFolder()."/adminSettingsViews.php";
     }
 
     public function addUsersViews()
     {
-        return require __DIR__."/../data/views/adminUsersViews.php";
+        return require self::getViewsFolder()."/adminUsersViews.php";
     }
     public function addParticipantsViews()
     {
-        return require __DIR__."/../data/views/adminParticipantsViews.php";
+        return require self::getViewsFolder()."/adminParticipantsViews.php";
     }
 
     public function addGeneralSettingsViews()
     {
-        return require __DIR__."/../data/views/adminGeneralSettingsViews.php";
+        return require self::getViewsFolder()."/adminGeneralSettingsViews.php";
     }
 
     /**
@@ -89,7 +89,7 @@ class AdminViewsTest extends TestBaseClassView
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).
-            $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
+            $surveyFile = self::$surveysFolder . '/limesurvey_survey_454287.lss';
             self::importSurvey($surveyFile);
 
         }

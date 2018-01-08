@@ -34,15 +34,51 @@ class TestBaseClass extends TestCase
 
     public static function setUpBeforeClass()
     {
-        parent::setUpBeforeClass();
         self::$testHelper = new TestHelper();
-
-        self::$dataFolder = __DIR__.'/resources/data';
-        self::$viewsFolder = self::$dataFolder."/resources/views";
-        self::$surveysFolder = self::$dataFolder.'/resources/surveys';
-        self::$tempFolder = __DIR__.'/tmp';
-        self::$screenshotsFolder = self::$tempFolder.'/screenshots';
+        self::$dataFolder = self::getDataFolder();
+        self::$viewsFolder = self::getViewsFolder();
+        self::$surveysFolder = self::getSurveysFolder();
+        self::$tempFolder = self::getTempFolder();
+        self::$screenshotsFolder = self::getScreenShotsFolder();
         self::$testHelper->importAll();
+        parent::setUpBeforeClass();
+    }
+
+    // the folder getter can be used in @dataProvider methods since the setUpBeforeClass will run after them
+
+    /**
+     * @return string
+     */
+    public static function getDataFolder(){
+        return __DIR__."/resources/data";
+    }
+
+    /**
+     * @return string
+     */
+    public static function getViewsFolder(){
+        return self::getDataFolder().DIRECTORY_SEPARATOR.'views';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getSurveysFolder(){
+        return self::getDataFolder().DIRECTORY_SEPARATOR.'surveys';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getTempFolder(){
+        return __DIR__."/tmp";
+    }
+
+    /**
+     * @return string
+     */
+    public static function getScreenShotsFolder(){
+        return self::getTempFolder().DIRECTORY_SEPARATOR.'screenshots';
     }
 
     /**
