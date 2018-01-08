@@ -1,7 +1,19 @@
 <phpunit bootstrap="tests/bootstrap.php" stderr="true" >
     <testsuites>
+
+        <testsuite name="Unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/functional</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+
+
         <testsuite name="Questions">
-            <directory>tests/questions</directory>
+            <directory>tests/unit/admin/questions</directory>
         </testsuite>
         <testsuite name="Helpers">
             <directory>tests/helpers</directory>
