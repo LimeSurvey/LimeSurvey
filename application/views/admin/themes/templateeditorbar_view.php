@@ -1,3 +1,9 @@
+<?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('themeEditor');
+?>
 <script type="text/javascript">
     var adminlanguage='<?php echo $codelanguage; ?>';
     var highlighter='<?php echo $highlighter; ?>';
