@@ -2,8 +2,8 @@
 
 namespace ls\tests\controllers;
 
-use ls\tests\TestBaseClass;
 use ls\tests\DummyController;
+use ls\tests\TestBaseClass;
 
 /**
  * @since 2017-10-15
@@ -43,7 +43,7 @@ class TemplateControllerTest extends TestBaseClass
         $_POST['copydir'] = $config['defaulttheme'];
         $_SERVER['SERVER_NAME'] = 'localhost';
 
-        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $contr = new \themes(new DummyController('dummyid'));
         $contr->templatecopy();
 
         $flashes = \Yii::app()->user->getFlashes();
@@ -58,7 +58,9 @@ class TemplateControllerTest extends TestBaseClass
         $this->assertNotEmpty($template);
         $this->assertEquals($templateName, $template->name);
 
-        // Clean up.
+
+
+        // Clean up. //TODO tearDown
         \Template::model()->deleteAll('name = \'foobartest\'');
     }
 

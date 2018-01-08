@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\controllers;
+namespace ls\tests\funtional\admin;
 
 use ls\tests\TestBaseClassView;
 
