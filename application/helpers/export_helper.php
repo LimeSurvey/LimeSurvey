@@ -378,7 +378,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
+        /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
         return;
     }
 }
@@ -1047,21 +1047,24 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     App()->setLanguage($quexmllang);
 
     if ($labels) {
-            $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
+            $QueryResult=Label::model()->findAllByAttributes(['lid'=>$labels, 'language'=>$quexmllang]);
     } else {
-            $Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+            //$Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+            $QueryResult=Answer::model()->findAllByAttributes(['qid'=>$qid, 'scale_id'=>$scale]);
     }
-
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
     $fixed = $dom->createElement("fixed");
 
     $nextcode = "";
 
-    foreach ($QueryResult->readAll() as $Row) {
+    foreach ($QueryResult as $Row) {
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
+        if ($labels){
+            $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
+            
+        } else {
+            $label = $dom->createElement("label", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
+        }
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
@@ -1158,7 +1161,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label", QueXMLCleanup($Row->questionL10ns[quexmllang]->question, ''));
+            $label = $dom->createElement("label", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
 
             $value = $dom->createElement("value", $yesvalue);
             $nextcode = $Row['title'];
@@ -1177,7 +1180,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 
             $response->appendChild($fixed);
         } else {
-                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[quexmllang]->question));
+                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[$quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1252,21 +1255,30 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     global $iSurveyID;
 
     if ($use_answers) {
-        $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+        // $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+        $QueryResult=Answer::model()->findAllByAttributes(['qid'=>$qid]);
     } else {
-        $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+        // $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+        $QueryResult=Question::model()->findAllByAttributes(['parent_qid'=>$qid,'scale_id'=>0]);
     }
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-    foreach ($QueryResult->readAll() as $Row) {
+    foreach ($QueryResult as $Row) {
         if ($use_answers) {
-            $aid = $Row["aid"];
+            $aid = $Row->sortorder;
         }
         $subQuestion = $dom->createElement("subQuestion");
-        $text = $dom->createElement("text", QueXMLCleanup($Row['question'], ''));
+        if ($use_answers) {
+            $text = $dom->createElement("text", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
+        } else {
+            $text = $dom->createElement("text", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
+        }
         $subQuestion->appendChild($text);
-        $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
+        if ($use_answers) {
+            $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['code']));
+        } else{
+            $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
+        }
         if ($use_answers == false && $aid != false) {
-//dual scale array questions
+            //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
@@ -1331,11 +1343,12 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
 function quexml_create_question($RowQ, $additional = false)
 {
     global $dom;
+    global $quexmllang;
 
     $question = $dom->createElement("question");
 
     //create a new text element for each new line
-    $questiontext = explode('<br />', $RowQ['question']);
+    $questiontext = explode('<br />', $RowQ->questionL10ns[$quexmllang]->question);
     foreach ($questiontext as $qt) {
         $txt = QueXMLCleanup($qt);
         if (!empty($txt)) {
@@ -1448,11 +1461,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     //section == group
 
 
-    $Query = "SELECT * FROM {{groups}} WHERE sid=$iSurveyID AND language='$quexmllang' order by group_order ASC";
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
+    //$Query = "SELECT * FROM {{groups}} WHERE sid=$iSurveyID AND language='$quexmllang' order by group_order ASC";
+    $QueryResult = QuestionGroup::model()->findAllByAttributes(['sid'=>$iSurveyID]); 
 
     //for each section
-    foreach ($QueryResult->readAll() as $Row) {
+    foreach ($QueryResult as $Row) {
         $gid = $Row['gid'];
 
         $section = $dom->createElement("section");
@@ -1490,27 +1503,22 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //boilerplate questions convert to sectionInfo elements
-        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-        $QR = Yii::app()->db->createCommand($Query)->query();
-        foreach ($QR->readAll() as $RowQ) {
+        //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
+        $QR=Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND type LIKE 'X'");
+        foreach ($QR as $RowQ) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
-            $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
+            $text = $dom->createElement("text", QueXMLCleanup($RowQ->questionL10ns[$quexmllang]->question));
             $administration = $dom->createElement("administration", "self");
-
             $sectionInfo->appendChild($position);
             $sectionInfo->appendChild($text);
             $sectionInfo->appendChild($administration);
-
             $section->appendChild($sectionInfo);
         }
 
-
-
-        //foreach question
-        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-        $QR = Yii::app()->db->createCommand($Query)->query();
-        foreach ($QR->readAll() as $RowQ) {
+        //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
+        $QR=Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE 'X'");
+        foreach ($QR as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
@@ -1524,11 +1532,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             //if this is a multi-flexi style question, create multiple questions
             if ($type == ':' || $type == ';') {
 
-                $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-                $SQueryResult = Yii::app()->db->createCommand($Query)->query();
-
-                foreach ($SQueryResult->readAll() as $SRow) {
-                    $question = quexml_create_question($RowQ, $SRow['question']);
+                $SQueryResult = Question::model()->findAllByAttributes(['parent_qid'=>$qid,'scale_id'=>0]); 
+                foreach ($SQueryResult as $SRow) {
+                    $question = quexml_create_question($RowQ, $SRow->questionL10ns[$quexmllang]->question);
 
                     if ($type == ":") {
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
@@ -1583,7 +1589,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
                 $response = $dom->createElement("response");
                 $response->setAttribute("varName", $sgq);
-
 
                 switch ($type) {
                     case "X": //BOILERPLATE QUESTION - none should appear
