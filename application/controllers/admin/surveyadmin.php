@@ -1536,6 +1536,9 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @param integer $iSurveyID
+     */
     private function _getGeneralTemplateData($iSurveyID)
     {
         $aData = [];
