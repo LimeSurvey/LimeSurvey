@@ -2,6 +2,8 @@
 namespace ls\tests\acceptance\question;
 
 use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
+use Survey;
 
 /**
  *  LimeSurvey
@@ -70,7 +72,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
-        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $moveResult = LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
@@ -102,7 +104,6 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
-        $survey = \Survey::model()->findByPk(self::$surveyId);
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
