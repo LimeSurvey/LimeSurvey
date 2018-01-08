@@ -1566,7 +1566,7 @@ function upgrade333($oDB) {
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
         'uid' => 'int DEFAULT NULL',
-        'taken' => 'boolean DEFAULT 1',
+        'taken' => 'int DEFAULT 1',
     ));
 
     $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid', 'tid']);
