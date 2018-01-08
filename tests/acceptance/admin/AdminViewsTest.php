@@ -1,4 +1,8 @@
 <?php
+namespace ls\tests\acceptance\admin;
+
+use ls\tests\TestBaseClassView;
+
 /**
  *  LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,10 +14,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
-namespace ls\tests\funtional\admin;
-
-use ls\tests\TestBaseClassView;
 
 /**
  * Class AdminViewsTest

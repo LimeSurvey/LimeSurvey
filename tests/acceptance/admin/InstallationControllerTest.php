@@ -1,4 +1,9 @@
 <?php
+namespace ls\tests\acceptance\admin;
+
+use Facebook\WebDriver\WebDriverBy;
+use ls\tests\TestBaseClassWeb;
+
 /**
  *  LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,11 +15,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
-namespace ls\tests\funtional\admin;
-
-use Facebook\WebDriver\WebDriverBy;
-use ls\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-24

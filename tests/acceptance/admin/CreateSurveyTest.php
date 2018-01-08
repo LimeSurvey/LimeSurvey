@@ -1,4 +1,15 @@
 <?php
+namespace ls\tests\acceptance\admin;
+
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\StaleElementReferenceException;
+use Facebook\WebDriver\Exception\UnknownServerException;
+use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\ElementNotVisibleException;
+use ls\tests\TestBaseClassWeb;
+
 /**
  *  LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,17 +21,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
-namespace ls\tests\funtional\admin;
-
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\StaleElementReferenceException;
-use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Exception\ElementNotVisibleException;
-use ls\tests\TestBaseClassWeb;
 
 /**
  * Login and create a survey, add a group
