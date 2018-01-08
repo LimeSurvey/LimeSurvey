@@ -14,6 +14,7 @@
 namespace ls\tests\acceptance\question;
 
 use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
 
 /**
  * @since 2017-06-13

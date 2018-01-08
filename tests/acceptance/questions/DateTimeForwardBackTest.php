@@ -2,6 +2,7 @@
 namespace ls\tests\acceptance\question;
 
 use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
 
 /**
  *  LimeSurvey
