@@ -886,8 +886,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
-        //echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
-        Yii::app()->user->setFlash('error', gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />');
+        $trace = $e->getTrace();
+        $fileInfo = explode('/', $trace[1]['file']);
+        $file = end($fileInfo);
+        Yii::app()->user->setFlash(
+            'error',
+            gT('An non-recoverable error happened during the update. Error details:')
+            .'<p>'
+            .htmlspecialchars($e->getMessage())
+            .'</p><br />'
+            . gT('File') . ' ' . $file .', ' . gT('line') . ' ' . $trace[1]['line'] . '.'
+        );
         return false;
     }
 
