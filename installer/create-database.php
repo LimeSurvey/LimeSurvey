@@ -127,7 +127,7 @@ function createDatabase($oDB){
             'group_name' =>  "string(100) NOT NULL default ''",
             'group_order' =>  "integer NOT NULL default '0'",
             'description' =>  "text",
-            'language' =>  "string(20) default 'en'",
+            'language' =>  "string(20) default 'en' NOT NULL",
             'randomization_group' =>  "string(20) NOT NULL default ''",
             'grelevance' =>  "text NULL",
             'composite_pk' => array('gid', 'language')
@@ -305,7 +305,7 @@ function createDatabase($oDB){
             'other' =>  "string(1) NOT NULL default 'N'",
             'mandatory' =>  "string(1) NULL",
             'question_order' =>  "integer NOT NULL",
-            'language' =>  "string(20) default 'en'",
+            'language' =>  "string(20) default 'en' NOT NULL",
             'scale_id' =>  "integer NOT NULL default '0'",
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
@@ -897,7 +897,6 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
         $oDB->createCommand()->insert('{{tutorials}}', array(
-            'tid' => 1,
             'name' => 'firstStartTour',
             'title' => 'First start tour',
             'icon' => 'fa-rocket',
@@ -947,8 +946,8 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
             'teid' => 'int NOT NULL',
             'tid' => 'int NOT NULL',
-            'uid' => 'int DEFAULT NULL',
-            'sid' => 'int DEFAULT NULL',
+            'uid' => 'int NULL',
+            'sid' => 'int NULL',
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
@@ -1561,8 +1560,10 @@ function createDatabase($oDB){
         );
 
         foreach($contentArrays as $contentArray) {
+            $teid =  $contentArray['teid'];
+            unset($contentArray['teid']);
             $oDB->createCommand()->insert('{{tutorial_entries}}', $contentArray);
-            $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $contentArray['teid']));
+            $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
         }
 
         //user_in_groups
