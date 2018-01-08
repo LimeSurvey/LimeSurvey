@@ -124,6 +124,10 @@ body {
   margin-bottom: 2em ;
   padding-bottom: 2em ;
 }
+.question-container.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 
 .question-title-container {
   padding-top: 1em;
