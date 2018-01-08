@@ -906,7 +906,25 @@ function createDatabase($oDB){
             'settings' => json_encode(array(
                 'keyboard' => false,
                 'orphan' => true,
-                'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
+                'template' => ""
+                ."<div class='popover tour lstutorial__template--mainContainer'>" 
+                    ."<div class='arrow'></div>"
+                    ."<h3 class='popover-title lstutorial__template--title'></h3>"
+                    ."<div class='popover-content lstutorial__template--content'></div>"
+                    ."<div class='popover-navigation lstutorial__template--navigation'>"
+                        ."<div class='row'>"
+                            ."<div class='btn-group col-xs-12' role='group' aria-label='...'>"
+                                ."<button class='btn btn-default col-md-6' data-role='prev'>".gT('Previous')."</button>"
+                                ."<button class='btn btn-primary col-md-6' data-role='next'>".gT('Next')."</button>"
+                            ."</div>"
+                        ."</div>"
+                        ."<div class='row ls-space margin top-5'>"
+                            ."<div class='text-left col-sm-12'>"
+                                ."<button class='pull-left btn btn-warning col-sm-6' data-role='end'>".gT('End tour')."</button>"
+                            ."</div>"
+                        ."</div>"
+                    ."</div>"
+                ."</div>",
                 'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
                 'onEnd' => "(function(tour){window.location.reload();})",
                 'endOnOrphan' => true,

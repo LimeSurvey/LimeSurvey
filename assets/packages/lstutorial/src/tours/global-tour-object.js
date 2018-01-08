@@ -51,7 +51,6 @@ const globalTourObject = function(){
             tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
             tutorialObject.onEnd = tutorialObject.onEnd ? eval(tutorialObject.onEnd) : null;
             tutorialObject.onStart = tutorialObject.onStart ? eval(tutorialObject.onStart) : null;
-
             return tutorialObject;
         };
 
