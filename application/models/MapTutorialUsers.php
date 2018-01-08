@@ -73,11 +73,11 @@ class MapTutorialUsers extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('tid',$this->tid);
-		$criteria->compare('uid',$this->uid);
-		$criteria->compare('taken',$this->taken);
+		$criteria->compare('tid', $this->tid);
+		$criteria->compare('uid', $this->uid);
+		$criteria->compare('taken', $this->taken);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -90,7 +90,7 @@ class MapTutorialUsers extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return MapTutorialUsers the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}

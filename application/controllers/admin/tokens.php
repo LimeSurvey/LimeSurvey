@@ -2459,7 +2459,7 @@ class tokens extends Survey_Common_Action
             'message' => gT("A participant table has been created for this survey.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )),['surveyid' => $iSurveyId]);
+            )), ['surveyid' => $iSurveyId]);
         }
         /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable')) {
@@ -2502,7 +2502,7 @@ class tokens extends Survey_Common_Action
             'message' => gT("A token table has been created for this survey and the old tokens were imported.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId"."\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )),['surveyid' => $iSurveyId]);
+            )), ['surveyid' => $iSurveyId]);
 
             LimeExpressionManager::SetDirtyFlag(); // so that knows that token tables have changed
         } else {

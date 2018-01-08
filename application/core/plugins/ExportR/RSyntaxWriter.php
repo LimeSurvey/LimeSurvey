@@ -96,7 +96,7 @@ class RSyntaxWriter extends Writer
                 $field['size'] .= '.'.($field['size'] - 1);
             }
 
-            $type='';
+            $type = '';
             switch ($field['SPSStype']) {
                 case 'F':
                     $type = "numeric";
