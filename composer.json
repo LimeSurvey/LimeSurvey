@@ -28,13 +28,13 @@
 		}
 	},
 	"require": {
+		"facebook/webdriver": "^1.4"
 	},
     "config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
 	"require-dev": {
-		"facebook/webdriver": "^1.4",
 		"squizlabs/php_codesniffer": "2.*",
 		"phpunit/phpunit": "^6.4"
 	}
