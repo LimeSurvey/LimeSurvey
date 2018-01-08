@@ -37,9 +37,9 @@ class TestBaseClass extends TestCase
         parent::setUpBeforeClass();
         self::$testHelper = new TestHelper();
 
-        self::$dataFolder = __DIR__.'/data';
-        self::$viewsFolder = self::$dataFolder."/views";
-        self::$surveysFolder = self::$dataFolder.'/surveys';
+        self::$dataFolder = __DIR__.'/resources/data';
+        self::$viewsFolder = self::$dataFolder."/resources/views";
+        self::$surveysFolder = self::$dataFolder.'/resources/surveys';
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
