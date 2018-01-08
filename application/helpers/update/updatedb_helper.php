@@ -833,7 +833,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $position = $rowToRemove['position'];
             }
 
-            $oDB->createCommand()->insert("{{boxes}}", ['position' => $position, 'url' => 'admin/themeoptions', 'title' => 'Themes', 'ico' => 'templates', 'desc' => 'Themes', 'page' => 'welcome', 'usergroup' => '-2']);
+            $oDB->createCommand()->insert(
+                "{{boxes}}",
+                [
+                    'position' => $position,
+                    'url' => 'admin/themeoptions',
+                    'title' => 'Themes',
+                    'ico' => 'templates',
+                    'desc' => 'Themes',
+                    'page' => 'welcome',
+                    'usergroup' => '-2'
+                ]
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>338), "stg_name='DBVersion'");
             $oTransaction->commit();
