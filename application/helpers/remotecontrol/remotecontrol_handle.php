@@ -455,7 +455,7 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
                 Yii::app()->loadHelper('admin/activate');
                 $surveyActivator = new SurveyActivator($oSurvey);
-                $aActivateResults =$surveyActivator->activate();
+                $aActivateResults = $surveyActivator->activate();
                 if (isset($aActivateResults['error'])) {
                     return array('status' => 'Error: '.$aActivateResults['error']);
                 } else {
@@ -2608,7 +2608,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return mixed TRUE(bool) on success. errormessage on error
+     * @return string|boolean TRUE(bool) on success. errormessage on error
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
