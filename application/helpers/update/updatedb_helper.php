@@ -686,7 +686,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168) NOT NULL');
+            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168)');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
@@ -699,7 +699,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'mainmenu'), 'id = 1');
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
-            $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128) NOT NULL');
+            $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128)');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -738,7 +738,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'created_by' => 0
                     )
                 );
-            $pluginMenuId = $oDB->getLastInsertID();
+            $pluginMenuId = getLastInsertID('{{surveymenu}}');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array(
                 'menu_id' => $pluginMenuId,
                 'title' => 'Simple plugins',
