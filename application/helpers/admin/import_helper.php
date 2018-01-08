@@ -1032,7 +1032,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
             $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             if (isset($aGIDReplacements[$insertdata['gid']])) {
-                $insertdata['gid'] = $aGIDReplacements[$oldgid];
+                $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             }
             else{
                 continue; //Skip invalid group ID
@@ -1099,32 +1099,31 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
 
+            if (!isset($aQIDReplacements[$iOldQID])) { 
             // Try to fix question title for valid question code enforcement
-            if (!$oQuestion->validate(array('title'))) {
-                $sOldTitle = $oQuestion->title;
-                $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-                if (is_numeric(substr($sNewTitle, 0, 1))) {
-                    $sNewTitle = 'q'.$sNewTitle;
+                if (!$oQuestion->validate(array('title'))) {
+                    $sOldTitle = $oQuestion->title;
+                    $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                    if (is_numeric(substr($sNewTitle, 0, 1))) {
+                        $sNewTitle = 'q'.$sNewTitle;
+                    }
+
+                    $oQuestion->title = $sNewTitle;
                 }
 
-                $oQuestion->title = $sNewTitle;
-            }
-
-            $attempts = 0;
-            // Try to fix question title for unique question code enforcement
-            $index = 0;
-            $rand = mt_rand(0, 1024);
-            while (!$oQuestion->validate(array('title'))) {
-                $sNewTitle = 'r'.$rand.'q'.$index;
-                $index++;
-                $oQuestion->title = $sNewTitle;
-                $attempts++;
-                if ($attempts > 10) {
-                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                $attempts = 0;
+                // Try to fix question title for unique question code enforcement
+                $index = 0;
+                $rand = mt_rand(0, 1024);
+                while (!$oQuestion->validate(array('title'))) {
+                    $sNewTitle = 'r'.$rand.'q'.$index;
+                    $index++;
+                    $oQuestion->title = $sNewTitle;
+                    $attempts++;
+                    if ($attempts > 10) {
+                        safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    }
                 }
-            }
-
-            if (!isset($aQIDReplacements[$iOldQID])) {
                 if (!$oQuestion->save()) {
                     safeDie(gT("Error while saving: ").print_r($oQuestion->errors, true));
                 }
@@ -1202,38 +1201,38 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
-            // Try to fix question title for valid question code enforcement
-            if (!$oQuestion->validate(array('title'))) {
-                $sOldTitle = $oQuestion->title;
-                $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-                if (is_numeric(substr($sNewTitle, 0, 1))) {
-                    $sNewTitle = 'sq'.$sNewTitle;
-                }
-
-                $oQuestion->title = $sNewTitle;
-            }
-
-            $attempts = 0;
-            // Try to fix question title for unique question code enforcement
-            while (!$oQuestion->validate(array('title'))) {
-
-                if (!isset($index)) {
-                    $index = 0;
-                    $rand = mt_rand(0, 1024);
-                } else {
-                    $index++;
-                }
-
-                $sNewTitle = 'r'.$rand.'sq'.$index;
-                $oQuestion->title = $sNewTitle;
-                $attempts++;
-
-                if ($attempts > 10) {
-                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
-                }
-            }
 
             if (!isset($aQIDReplacements[$iOldQID])) {
+                // Try to fix question title for valid question code enforcement
+                if (!$oQuestion->validate(array('title'))) {
+                    $sOldTitle = $oQuestion->title;
+                    $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                    if (is_numeric(substr($sNewTitle, 0, 1))) {
+                        $sNewTitle = 'sq'.$sNewTitle;
+                    }
+
+                    $oQuestion->title = $sNewTitle;
+                }
+
+                $attempts = 0;
+                // Try to fix question title for unique question code enforcement
+                while (!$oQuestion->validate(array('title'))) {
+
+                    if (!isset($index)) {
+                        $index = 0;
+                        $rand = mt_rand(0, 1024);
+                    } else {
+                        $index++;
+                    }
+
+                    $sNewTitle = 'r'.$rand.'sq'.$index;
+                    $oQuestion->title = $sNewTitle;
+                    $attempts++;
+
+                    if ($attempts > 10) {
+                        safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    }
+                }
                 if (!$oQuestion->save()) {
                     safeDie(gT("Error while saving: ").print_r($oQuestion->errors, true));
                 }
@@ -1264,12 +1263,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            unset($insertdata[id]);
+            unset($insertdata['id']);
             // now translate any links
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
-                $insertdata['qid'] = $aQIDReplacements[$oldgid];
+                $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             }
             else{
                 continue; //Skip invalid group ID
@@ -1291,8 +1290,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if ($iDBVersion >= 339) {
                 $iOldAID = $insertdata['aid'];
+                unset($insertdata['aid']);
             }
-            if (!in_array($insertdata['language'], $aLanguagesSupported) || !isset($aQIDReplacements[(int) $insertdata['qid']])) {
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
                 continue;
             }
 
@@ -1303,6 +1303,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if ($iDBVersion < 339) {
                 // now translate any links
+                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                    continue;
+                }                 
                 if ($bTranslateInsertansTags) {
                     $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
                 }
@@ -1312,6 +1315,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
             }
+            
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
             if ($oAnswer->save() && $iDBVersion >= 339) {
@@ -1334,13 +1338,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            unset($insertdata[id]);
+            unset($insertdata['id']);
             // now translate any links
             if ($bTranslateInsertansTags) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
-            if (isset($aQIDReplacements[$insertdata['aid']])) {
-                $insertdata['aid'] = $aAIDReplacements[$oldgid];
+            if (isset($aAIDReplacements[$insertdata['aid']])) {
+                $insertdata['aid'] = $aAIDReplacements[$insertdata['aid']];
             }
             else{
                 continue; //Skip invalid answer ID
