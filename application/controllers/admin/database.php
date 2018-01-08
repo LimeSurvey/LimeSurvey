@@ -92,7 +92,6 @@ class database extends Survey_Common_Action
     /**
      * Database::index()
      *
-     * @param mixed $sa
      * @return
      */
     public function index()
@@ -140,9 +139,8 @@ class database extends Survey_Common_Action
      * @param integer $qid   Question ID
      * @param integer $scale_id  Scale ID
      * @param string $specialtype  Special type (i.e. for  'Other')
-     * @param mixed $language     Language (defaults are language specific)
+     * @param string $language     Language (defaults are language specific)
      * @param mixed $defaultvalue    The default value itself
-     * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
      */
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
@@ -168,9 +166,9 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateDefaultValues($iSurveyID)
     {
-        $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        array_unshift($aSurveyLanguages, $sBaseLanguage);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aSurveyLanguages = $oSurvey->allLanguages;
+        $sBaseLanguage = $oSurvey->language;
 
         Question::model()->updateAll(array('same_default'=> Yii::app()->request->getPost('samedefault') ? 1 : 0), 'sid=:sid ANd qid=:qid', array(':sid'=>$iSurveyID, ':qid'=>$this->iQuestionID));
 
@@ -340,9 +338,11 @@ class database extends Survey_Common_Action
     private function actionSubQuestions($iSurveyID)
     {
         Yii::app()->loadHelper('database');
-        $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        array_unshift($aSurveyLanguages, $sBaseLanguage);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
+        $aSurveyLanguages = $oSurvey->allLanguages;
+        $sBaseLanguage = $oSurvey->language;
+
         $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
         $sQuestionType = $arQuestion['type']; // Checked
         $aQuestionTypeList = getQuestionTypeList('', 'array');
@@ -519,6 +519,8 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateQuestion($iSurveyID)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
 
         $cqr = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
@@ -527,7 +529,7 @@ class database extends Survey_Common_Action
 
         $survey = Survey::model()->findByPk($iSurveyID);
         // If the survey is activate the question type may not be changed
-        if ($survey->active !== 'N') {
+        if ($survey->isActive) {
             $sQuestionType = $oldtype;
         } else {
             $sQuestionType = Yii::app()->request->getPost('type');
@@ -551,7 +553,7 @@ class database extends Survey_Common_Action
         }
         QuestionAttribute::model()->deleteAll($criteria);
 
-        $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+        $aLanguages = $oSurvey->allLanguages;
         foreach ($validAttributes as $validAttribute) {
             if ($validAttribute['i18n']) {
                 /* Delete invalid language : not needed but cleaner */
@@ -651,10 +653,7 @@ class database extends Survey_Common_Action
                 //
                 //                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
                 //                    {
-                $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                array_push($aSurveyLanguages, $sBaseLanguage);
-                foreach ($aSurveyLanguages as $qlang) {
+                foreach ($oSurvey->allLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
                         // &eacute; to ÃƒÂ© and &amp; to & : really needed ? Why not for answers ? (130307)
                         $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');
@@ -976,9 +975,7 @@ class database extends Survey_Common_Action
                 tracevar($oSurvey->getErrors());
             }
         }
-
-        /* Reload $oSurvey (language are fixed : need it ?) */
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey->refresh();
 
         // Url params in json
         $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);

@@ -172,11 +172,12 @@ class QuestionAttribute extends LSActiveRecord
         }
         $aQuestionAttributes = array();
         $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+
         if ($oQuestion) {
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
             } else {
-                $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+                $aLanguages = $oQuestion->survey->allLanguages;
             }
             // Get all atribute set for this question
             $sType = $oQuestion->type;

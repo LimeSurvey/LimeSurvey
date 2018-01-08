@@ -124,8 +124,8 @@ class Statistics_userController extends SurveyController
             }
         }
         // Set language for questions and labels to base language of this survey
-        if ($sLanguage == null || !in_array($sLanguage, Survey::model()->findByPk($iSurveyID)->getAllLanguages())) {
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        if ($sLanguage == null || !in_array($sLanguage, $survey->allLanguages)) {
+            $sLanguage = $survey->language;
         } else {
             $sLanguage = sanitize_languagecode($sLanguage);
         }

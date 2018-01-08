@@ -40,6 +40,7 @@ class statistics extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         /*
          * We need this later:
@@ -109,7 +110,7 @@ class statistics extends Survey_Common_Action
 
 
         // Set language for questions and answers to base language of this survey
-        $language = Survey::model()->findByPk($surveyid)->language;
+        $language = $oSurvey->language;
         $aData['language'] = $language;
 
 
@@ -229,8 +230,7 @@ class statistics extends Survey_Common_Action
         $aData['selectinc'] = $selectinc;
         $aData['error'] = $error;
 
-        $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $survlangs[] = Survey::model()->findByPk($surveyid)->language;
+        $survlangs = $oSurvey->allLanguages;
         $aData['survlangs'] = $survlangs;
         $aData['datestamp'] = $datestamp;
 
@@ -653,9 +653,10 @@ class statistics extends Survey_Common_Action
             $maxchars = 50;
             $statisticsoutput = '';
             $cr_statisticsoutput = '';
+            $survey = Survey::model()->findByPk($surveyid);
 
             // Set language for questions and answers to base language of this survey
-            $language = Survey::model()->findByPk($surveyid)->language;
+            $language = $survey->language;
             $summary = array();
             $summary[0] = "datestampE";
             $summary[1] = "datestampG";
