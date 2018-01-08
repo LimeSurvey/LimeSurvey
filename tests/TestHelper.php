@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use CDbConnection;
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
 
@@ -229,7 +230,7 @@ class TestHelper extends TestCase
         $inst->connection = $connection;
 
         // Check SQL file.
-        $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
+        $file = TestBaseClass::getDataFolder() . '/sql/create-mysql.' . $version . '.sql';
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
