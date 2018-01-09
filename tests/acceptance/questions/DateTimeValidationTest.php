@@ -1,11 +1,11 @@
 <?php
-namespace ls\tests\acceptance\question;
+namespace LimeSurvey\tests\acceptance\question;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
-use ls\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  *  LimeSurvey

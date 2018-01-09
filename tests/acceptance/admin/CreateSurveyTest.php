@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\acceptance\admin;
+namespace LimeSurvey\tests\acceptance\admin;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
@@ -20,7 +20,7 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
-use ls\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * Login and create a survey, add a group

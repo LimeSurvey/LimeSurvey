@@ -1,8 +1,8 @@
 <?php
 
-namespace ls\tests\functional\helpers;
+namespace LimeSurvey\tests\functional\helpers;
 
-use ls\tests\TestBaseClass;
+use LimeSurvey\tests\TestBaseClass;
 
 /**
  * Check the JSON saved in database.

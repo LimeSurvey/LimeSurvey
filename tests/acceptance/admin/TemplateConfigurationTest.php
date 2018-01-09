@@ -1,7 +1,7 @@
 <?php
-namespace ls\tests\acceptance\admin;
+namespace LimeSurvey\tests\acceptance\admin;
 
-use ls\tests\TestBaseClass;
+use LimeSurvey\tests\TestBaseClass;
 
 /**
  * @since 2017-06-13

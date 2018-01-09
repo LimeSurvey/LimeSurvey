@@ -1,8 +1,8 @@
 <?php
-namespace ls\tests\acceptance\question;
+namespace LimeSurvey\tests\acceptance\question;
 
-use ls\tests\TestBaseClass;
-use ls\tests\DummyController;
+use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\DummyController;
 use LimeExpressionManager;
 
 /**

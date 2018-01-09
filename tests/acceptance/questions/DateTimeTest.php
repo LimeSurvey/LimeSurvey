@@ -11,10 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\acceptance\question;
+namespace LimeSurvey\tests\acceptance\question;
 
-use ls\tests\TestBaseClass;
-use ls\tests\DummyController;
+use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\DummyController;
 
 /**
  * @since 2017-06-13

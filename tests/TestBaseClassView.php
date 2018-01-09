@@ -11,13 +11,13 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests;
+namespace LimeSurvey\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
- * @package ls\tests
+ * @package LimeSurvey\tests
  */
 class TestBaseClassView extends TestBaseClassWeb
 {

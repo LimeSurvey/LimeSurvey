@@ -11,15 +11,15 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\acceptance\admin;
+namespace LimeSurvey\tests\acceptance\admin;
 
-use ls\tests\TestBaseClassView;
+use LimeSurvey\tests\TestBaseClassView;
 
 /**
  * Class AdminViewsTest
  * This test loops through all basic admin view pages and cheks if they open withour errors
  *
- * @package ls\tests
+ * @package LimeSurvey\tests
  * @group adminviews
  */
 class AdminViewsTest extends TestBaseClassView

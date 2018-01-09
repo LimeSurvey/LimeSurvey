@@ -11,10 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\acceptance\admin;
+namespace LimeSurvey\tests\acceptance\admin;
 
 use Facebook\WebDriver\WebDriverBy;
-use ls\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-24

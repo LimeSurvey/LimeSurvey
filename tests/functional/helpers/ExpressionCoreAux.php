@@ -1,5 +1,5 @@
 <?php
-namespace ls\tests\functional\helpers;
+namespace LimeSurvey\tests\functional\helpers;
 
 use PHPUnit\Framework\TestCase;
 
