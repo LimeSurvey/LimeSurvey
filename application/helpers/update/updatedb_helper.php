@@ -33,7 +33,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310, 339);
+    $aCriticalDBVersions = array(310, 350);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -997,7 +997,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
 
             
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
             $oTransaction->commit();
         }        
 

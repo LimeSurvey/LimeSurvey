@@ -987,7 +987,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
             $aDataL10n = array();
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1018,7 +1018,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         }
     }
-    if ($iDBVersion >= 339 && isset($xml->group_l10ns->rows->row)) {
+    if ($iDBVersion >= 350 && isset($xml->group_l10ns->rows->row)) {
         foreach ($xml->group_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1056,7 +1056,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1077,7 +1077,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 XSSFilterArray($insertdata);
             }
             // now translate any links
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -1158,7 +1158,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1180,7 +1180,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['help'])) {
                 $insertdata['help']='';
             }            // now translate any links
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -1257,7 +1257,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
     
     //  Import question_l10ns
-    if ($iDBVersion >= 339 && isset($xml->question_l10ns->rows->row)) {
+    if ($iDBVersion >= 350 && isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1288,7 +1288,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if ($iDBVersion >= 339) {
+            if ($iDBVersion >= 350) {
                 $iOldAID = $insertdata['aid'];
                 unset($insertdata['aid']);
             }
@@ -1301,7 +1301,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                 XSSFilterArray($insertdata);
             }
-            if ($iDBVersion < 339) {
+            if ($iDBVersion < 350) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
@@ -1318,7 +1318,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
-            if ($oAnswer->save() && $iDBVersion >= 339) {
+            if ($oAnswer->save() && $iDBVersion >= 350) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
             $results['answers']++;
@@ -1332,7 +1332,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     //  Import answer_l10ns
-    if ($iDBVersion >= 339 && isset($xml->answer_l10ns->rows->row)) {
+    if ($iDBVersion >= 350 && isset($xml->answer_l10ns->rows->row)) {
         foreach ($xml->answer_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
