@@ -14,21 +14,5 @@
             <directory>tests/acceptance</directory>
         </testsuite>
 
-
-        <testsuite name="Questions">
-            <directory>tests/unit/admin/questions</directory>
-        </testsuite>
-        <testsuite name="Helpers">
-            <directory>tests/helpers</directory>
-        </testsuite>
-        <testsuite name="Models">
-            <directory>tests/models</directory>
-        </testsuite>
-        <testsuite name="Controllers">
-            <directory>tests/controllers</directory>
-        </testsuite>
-        <testsuite name="Surveys">
-            <directory>tests/surveys</directory>
-        </testsuite>
     </testsuites>
 </phpunit>
