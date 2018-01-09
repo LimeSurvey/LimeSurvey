@@ -275,7 +275,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'active' =>  "boolean NOT NULL default 0",
+            'active' =>  "int NOT NULL default 0",
             'version' =>  "string(32) NULL",
         ));
 
