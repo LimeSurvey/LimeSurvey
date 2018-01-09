@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests\funtional\admin;
+namespace ls\tests\acceptance\admin\questions;
 
 use Facebook\WebDriver\WebDriverBy;
 use ls\tests\TestBaseClassWeb;
