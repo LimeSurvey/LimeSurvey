@@ -734,7 +734,6 @@ function createDatabase($oDB){
         foreach($tutorialsData=LsDefaultDataSet::getTutorialData() as $tutorials){
             $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
         }
-            'title' => 'Take beginner tour',
 
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
