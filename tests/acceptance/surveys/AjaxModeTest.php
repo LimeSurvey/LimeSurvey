@@ -4,6 +4,7 @@ namespace ls\tests\acceptance\surveys;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use ls\tests\TestBaseClassWeb;
+
 /**
  * @since 2017-11-13
  * @group ajaxmode
