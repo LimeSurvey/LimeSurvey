@@ -232,7 +232,7 @@ CREATE TABLE `prefix_permissions` (
 CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
-  `active` tinyint(1) NOT NULL default '0',
+  `active` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
