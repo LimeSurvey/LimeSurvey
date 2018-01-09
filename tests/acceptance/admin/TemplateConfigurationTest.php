@@ -1,8 +1,7 @@
 <?php
+namespace ls\tests\acceptance\admin;
 
-namespace ls\tests;
-
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestBaseClass;
 
 /**
  * @since 2017-06-13
@@ -18,6 +17,8 @@ class TemplateConfigurationTest extends TestBaseClass
     {
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
+
+        // FIXME
 
         // No PHP notices.
         $this->assertTrue(true);

@@ -1,11 +1,21 @@
 <?php
+/**
+ *  LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
-namespace ls\tests;
+namespace ls\tests\acceptance\surveys;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverBy;
+use ls\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-02
@@ -28,7 +38,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
 
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
+        $surveyFile = self::getSurveysFolder() . '/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
             echo 'Fatal error: found no survey file';
             exit(4);
