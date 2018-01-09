@@ -440,7 +440,7 @@ function createDatabase($oDB){
             'parent_id' => "integer NULL",
             'survey_id' => "integer NULL",
             'user_id' => "integer NULL",
-            'name' => "string(128)  NOT NULL",
+            'name' => "string(128)",
             'ordering' => "integer NULL DEFAULT '0'",
             'level' => "integer NULL DEFAULT '0'",
             'title' => "string(192)  NOT NULL DEFAULT ''",
@@ -469,7 +469,7 @@ function createDatabase($oDB){
             'menu_id' =>  "integer NULL",
             'user_id' =>  "integer NULL",
             'ordering' =>  "integer DEFAULT '0'",
-            'name' =>  "string(168)  NOT NULL DEFAULT ''",
+            'name' =>  "string(168)  DEFAULT ''",
             'title' =>  "string(168)  NOT NULL DEFAULT ''",
             'menu_title' =>  "string(168)  NOT NULL DEFAULT ''",
             'menu_description' =>  "text ",
@@ -937,7 +937,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
             'tid' => 'int NOT NULL',
             'uid' => 'int DEFAULT NULL',
-            'taken' => 'boolean DEFAULT 1',
+            'taken' => 'int DEFAULT 1',
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
