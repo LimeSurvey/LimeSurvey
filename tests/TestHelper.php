@@ -12,6 +12,8 @@ use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
 use Facebook\WebDriver\Exception\WebDriverCurlException;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
+use Facebook\WebDriver\WebDriver;
+
 
 class TestHelper extends TestCase
 {

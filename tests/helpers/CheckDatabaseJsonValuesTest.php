@@ -9,13 +9,6 @@ namespace ls\tests;
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
-    /**
-     * 
-     */
-    public static function setupBeforeClass()
-    {
-        parent::setupBeforeClass();
-    }
 
     /**
      * Tear down fixtures.
