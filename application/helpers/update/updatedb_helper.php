@@ -953,7 +953,7 @@ function resetTutorials337($oDB)
     $oDB->createCommand()->truncateTable('{{tutorials}}');
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
-        'name' => 'beginnerTour',
+        'name' => 'firstStartTour',
         'title' => 'Take beginner tour',
         'icon' => 'fa-rocket',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
@@ -1602,7 +1602,7 @@ function upgrade333($oDB)
 
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
-        'name' => 'beginnerTour',
+        'name' => 'firstStartTour',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
         'active' => 1,
         'settings' => json_encode(array(

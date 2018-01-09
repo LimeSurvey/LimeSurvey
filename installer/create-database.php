@@ -897,7 +897,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
         $oDB->createCommand()->insert('{{tutorials}}', array(
-            'name' => 'beginnerTour',
+            'name' => 'firstStartTour',
             'title' => 'Take beginner tour',
             'icon' => 'fa-rocket',
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
