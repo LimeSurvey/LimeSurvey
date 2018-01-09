@@ -769,7 +769,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
                     'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
                     )),
-                    'title' => 'First start tour',
+                    'title' => 'Take beginner tour',
                     'icon' => 'fa-rocket'
             ]);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>334), "stg_name='DBVersion'");
@@ -953,8 +953,8 @@ function resetTutorials337($oDB)
     $oDB->createCommand()->truncateTable('{{tutorials}}');
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
-        'name' => 'firstStartTour',
-        'title' => 'First start tour',
+        'name' => 'beginnerTour',
+        'title' => 'Take beginner tour',
         'icon' => 'fa-rocket',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
         'active' => 1,
@@ -1602,7 +1602,7 @@ function upgrade333($oDB)
 
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
-        'name' => 'firstStartTour',
+        'name' => 'beginnerTour',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
         'active' => 1,
         'settings' => json_encode(array(
