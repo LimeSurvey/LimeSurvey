@@ -59,23 +59,6 @@ echo viewHelper::getViewTestTag('themeEditor');
         <!-- Left Menu -->
         <div class="col-md-5">
 
-            <!-- Create -->
-            <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                <?php if(is_writable($userthemerootdir) ):?>
-                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Create"); ?>
-                    </a>
-                    <?php else: ?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <span class="icon-addt text-success"></span>
-                            <?php eT("Create"); ?>
-                        </button>
-                    </span>
-                    <?php endif;?>
-                <?php endif;?>
-
             <!-- Import -->
             <?php $importModal=false;?>
             <?php if(is_writable($tempdir)):?>

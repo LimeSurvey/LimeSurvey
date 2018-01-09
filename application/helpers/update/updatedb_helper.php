@@ -769,7 +769,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
                     'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
                     )),
-                    'title' => 'First start tour',
+                    'title' => 'Take beginner tour',
                     'icon' => 'fa-rocket'
             ]);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>334), "stg_name='DBVersion'");
@@ -832,8 +832,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
                 $position = $rowToRemove['position'];
             }
+            // NB: Needed since Postgres id seq might not work.
+            $maxId = $oDB->createCommand()->select('max(id)')->from("{{boxes}}")->queryScalar();
 
-            $oDB->createCommand()->insert("{{boxes}}", ['position' => $position, 'url' => 'admin/themeoptions', 'title' => 'Themes', 'ico' => 'templates', 'desc' => 'Themes', 'page' => 'welcome', 'usergroup' => '-2']);
+            $oDB->createCommand()->insert(
+                "{{boxes}}",
+                [
+                    'id' => $maxId + 1,
+                    'position' => $position,
+                    'url' => 'admin/themeoptions',
+                    'title' => 'Themes',
+                    'ico' => 'templates',
+                    'desc' => 'Themes',
+                    'page' => 'welcome',
+                    'usergroup' => '-2'
+                ]
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>338), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -877,7 +891,41 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 339) {
+        /**
+         * Rename 'First start tour' to 'Take beginner tour'.
+         */
+        If ($iOldDBVersion < 340) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{tutorials}}', array('title'=>'Beginner tour'), "name='firstStartTour'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>340), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Recreate basic tour again from DefaultDataSet
+         */
+        If ($iOldDBVersion < 341) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->truncateTable('{{tutorials}}');
+            foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
+                $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
+            }
+            
+            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
+            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+
+            foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
+                $teid =  $tutorialEntry['teid'];
+                unset($tutorialEntry['teid']);
+                $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
+                $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+		if ($iOldDBVersion < 350) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             // Question table 
@@ -951,8 +999,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
             $oTransaction->commit();
-        }
-              
+        }        
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -1019,7 +1066,7 @@ function resetTutorials337($oDB)
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
         'name' => 'firstStartTour',
-        'title' => 'First start tour',
+        'title' => 'Take beginner tour',
         'icon' => 'fa-rocket',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
         'active' => 1,
@@ -1647,7 +1694,7 @@ function upgrade333($oDB)
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
         'uid' => 'int DEFAULT NULL',
-        'taken' => 'boolean DEFAULT 1',
+        'taken' => 'int DEFAULT 1',
     ));
 
     $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid', 'tid']);

@@ -156,8 +156,8 @@ echo viewHelper::getViewTestTag('addQuestion');
                                             ?>
                                         </label>
                                         <div>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion['type']; ?>" />
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-                                            <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
                                             <div class=" btn-group" id="question_type_button">
                                                 <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
                                                     <span class="buttontext" id="selector__editView_question_type_description">

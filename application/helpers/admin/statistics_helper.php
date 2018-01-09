@@ -354,7 +354,6 @@ function buildSelects($allfields, $surveyid, $language)
             )
             ) {
                 $firstletter = substr($pv, 0, 1);
-}
                 /*
                 * these question types WON'T be handled here:
                 * M = Multiple choice
@@ -502,6 +501,7 @@ function buildSelects($allfields, $surveyid, $language)
                     }
                 }
             }
+        }
 
     return $selects;
 }

@@ -262,7 +262,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $iSurveyID  = sanitize_int($iSurveyID);
-        $sTemplate  = sanitize_paranoid_string($template);
+        $sTemplate  = sanitize_dirname($template);
 
         $survey           = Survey::model()->findByPk($iSurveyID);
         $survey->template = $sTemplate;
