@@ -1047,10 +1047,10 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     App()->setLanguage($quexmllang);
 
     if ($labels) {
-            $QueryResult=Label::model()->findAllByAttributes(['lid'=>$labels, 'language'=>$quexmllang]);
+            $QueryResult = Label::model()->findAllByAttributes(['lid'=>$labels, 'language'=>$quexmllang]);
     } else {
             //$Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
-            $QueryResult=Answer::model()->findAllByAttributes(['qid'=>$qid, 'scale_id'=>$scale]);
+            $QueryResult = Answer::model()->findAllByAttributes(['qid'=>$qid, 'scale_id'=>$scale]);
     }
     $fixed = $dom->createElement("fixed");
 
@@ -1059,7 +1059,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     foreach ($QueryResult as $Row) {
         $category = $dom->createElement("category");
 
-        if ($labels){
+        if ($labels) {
             $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
             
         } else {
@@ -1150,7 +1150,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     global $iSurveyID;
     App()->setLanguage($quexmllang);
 
-    $aCondition=array('parent_qid'=>$qid);
+    $aCondition = array('parent_qid'=>$qid);
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
@@ -1256,10 +1256,10 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
 
     if ($use_answers) {
         // $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
-        $QueryResult=Answer::model()->findAllByAttributes(['qid'=>$qid]);
+        $QueryResult = Answer::model()->findAllByAttributes(['qid'=>$qid]);
     } else {
         // $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-        $QueryResult=Question::model()->findAllByAttributes(['parent_qid'=>$qid,'scale_id'=>0]);
+        $QueryResult = Question::model()->findAllByAttributes(['parent_qid'=>$qid, 'scale_id'=>0]);
     }
     foreach ($QueryResult as $Row) {
         if ($use_answers) {
@@ -1274,7 +1274,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $subQuestion->appendChild($text);
         if ($use_answers) {
             $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['code']));
-        } else{
+        } else {
             $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
         }
         if ($use_answers == false && $aid != false) {
@@ -1337,7 +1337,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
 /**
  * Create a queXML question element
  *
- * @param array $RowQ Question details in array
+ * @param CActiveRecord $RowQ Question details in array
  * @param bool|string $additional Any additional question text to append
  */
 function quexml_create_question($RowQ, $additional = false)
@@ -1504,7 +1504,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
         //boilerplate questions convert to sectionInfo elements
         //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-        $QR=Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND type LIKE 'X'");
+        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND type LIKE 'X'");
         foreach ($QR as $RowQ) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1517,7 +1517,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-        $QR=Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE 'X'");
+        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE 'X'");
         foreach ($QR as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
@@ -1532,7 +1532,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             //if this is a multi-flexi style question, create multiple questions
             if ($type == ':' || $type == ';') {
 
-                $SQueryResult = Question::model()->findAllByAttributes(['parent_qid'=>$qid,'scale_id'=>0]); 
+                $SQueryResult = Question::model()->findAllByAttributes(['parent_qid'=>$qid, 'scale_id'=>0]); 
                 foreach ($SQueryResult as $SRow) {
                     $question = quexml_create_question($RowQ, $SRow->questionL10ns[$quexmllang]->question);
 

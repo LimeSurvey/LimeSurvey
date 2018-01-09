@@ -3716,7 +3716,7 @@ class quexmlpdf extends pdf
      */
     protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
-        $html='';
+        $html = '';
         $this->sectionCP++;
 
         $mtitle = $title;
