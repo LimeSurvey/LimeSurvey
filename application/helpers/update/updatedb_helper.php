@@ -901,6 +901,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Recreate basic tour again from DefaultDataSet
+         */
+        If ($iOldDBVersion < 341) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->truncateTable('{{tutorials}}');
+            foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
+                $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
+            }
+            
+            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
+            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+
+            foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
+                $teid =  $tutorialEntry['teid'];
+                unset($tutorialEntry['teid']);
+                $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
+                $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

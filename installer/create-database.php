@@ -67,7 +67,7 @@ function createDatabase($oDB){
             'usergroup' => "integer NOT NULL "
         ));
         
-        foreach( $boxesData=LsDefaultDataSet::getBoxesData() as $box){
+        foreach( $boxesData=LsDefaultDataSets::getBoxesData() as $box){
             $oDB->createCommand()->insert("{{boxes}}", $box);
         }
        
@@ -455,7 +455,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
-        foreach($surveyMenuRowData=LsDefaultDataSet::getSurveyMenuData() as $surveyMenuRow) {
+        foreach($surveyMenuRowData=LsDefaultDataSets::getSurveyMenuData() as $surveyMenuRow) {
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
 
@@ -496,7 +496,7 @@ function createDatabase($oDB){
 
         
 
-        foreach($surveyMenuEntryRowData=LsDefaultDataSet::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+        foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
             $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
         }
 
@@ -589,7 +589,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_surveys_groups}}', '{{surveys_groups}}', 'name', false);
         $oDB->createCommand()->createIndex('{{idx2_surveys_groups}}', '{{surveys_groups}}', 'title', false);
 
-        foreach($surveyGroupData=LsDefaultDataSet::getSurveygroupData() as $surveyGroup){
+        foreach($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup){
             $oDB->createCommand()->insert("{{surveys_groups}}", $surveyGroup);
         }
 
@@ -683,7 +683,7 @@ function createDatabase($oDB){
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder',
         'description','last_update','owner_id','extends'];
 
-        foreach($templateData=LsDefaultDataSet::getTemplatesData() as $template){
+        foreach($templateData=LsDefaultDataSets::getTemplatesData() as $template){
             $oDB->createCommand()->insert("{{templates}}", $template );
         }
 
@@ -711,7 +711,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
         $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
-        foreach($templateConfigurationData=LsDefaultDataSet::getTemplateConfigurationData() as $templateConfiguration){
+        foreach($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
             $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
         }
 
@@ -731,7 +731,7 @@ function createDatabase($oDB){
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
-        foreach($tutorialsData=LsDefaultDataSet::getTutorialData() as $tutorials){
+        foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
             $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
         }
 
@@ -768,7 +768,7 @@ function createDatabase($oDB){
         );
        
 
-        foreach($tutorialEntryData=LsDefaultDataSet::getTutorialEntryData() as $tutorialEntry) {
+        foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
             $teid =  $tutorialEntry['teid'];
             unset($tutorialEntry['teid']);
             $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);

@@ -2,7 +2,7 @@
 /**
  * A collection of default data sets, like surveymenus, surveymenuentries, and tutorials
  */
-class LsDefaultDataSet extends CModel {
+class LsDefaultDataSets {
 
     public static function getSurveyMenuEntryData(){
         $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
@@ -233,7 +233,7 @@ class LsDefaultDataSet extends CModel {
         $returnArray = [];
         
         $returnArray[] = [
-            'name' => 'beginnerTour',
+            'name' => 'firstStartTour',
             'title' => 'Beginner tour',
             'icon' => 'fa-rocket',
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
@@ -243,19 +243,15 @@ class LsDefaultDataSet extends CModel {
                 'orphan' => true,
                 'template' => ""
                 ."<div class='popover tour lstutorial__template--mainContainer'>" 
-                    ."<div class='arrow'></div>"
-                    ."<h3 class='popover-title lstutorial__template--title'></h3>"
+                ."<div class='arrow'></div>"
+                ."<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' data-role='end' data-toggle='tooltip' title='".gT('End tour')."'><i class='fa fa-close'></i></button>"
+                ."<h3 class='popover-title lstutorial__template--title'></h3>"
                     ."<div class='popover-content lstutorial__template--content'></div>"
                     ."<div class='popover-navigation lstutorial__template--navigation'>"
                         ."<div class='row'>"
                             ."<div class='btn-group col-xs-12' role='group' aria-label='...'>"
                                 ."<button class='btn btn-default col-md-6' data-role='prev'>".gT('Previous')."</button>"
                                 ."<button class='btn btn-primary col-md-6' data-role='next'>".gT('Next')."</button>"
-                            ."</div>"
-                        ."</div>"
-                        ."<div class='row ls-space margin top-5'>"
-                            ."<div class='text-left col-sm-12'>"
-                                ."<button class='pull-left btn btn-warning col-sm-6' data-role='end'>".gT('End tour')."</button>"
                             ."</div>"
                         ."</div>"
                     ."</div>"
@@ -300,8 +296,6 @@ class LsDefaultDataSet extends CModel {
                     'reflex' => true,
                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
                     'onNext' => "(function(tour){
-                        tour.setCurrentStep(2);
-                        return new Promise(function(res,rej){});
                     })",
                 ))
             ),

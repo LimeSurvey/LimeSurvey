@@ -18394,9 +18394,9 @@ const globalTourObject = function(){
             if(url.charAt(0) == '/')
                 url = url.substring(1);
             
-            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : 'admin/';
-            const conatainsIndex = (/\/index.php\/?/.test(window.location.href));
-            const returnUrl = window.LS.data.baseUrl+(conatainsIndex ? '/index.php' : '/')+baseUrl+url+combineParams(params);
+            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : '/admin/';
+            const containsIndex = (/\/index.php\/?/.test(window.location.href));
+            const returnUrl = window.LS.data.baseUrl+(containsIndex ? '/index.php' : '/')+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
@@ -18423,7 +18423,6 @@ const globalTourObject = function(){
             tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
             tutorialObject.onEnd = tutorialObject.onEnd ? eval(tutorialObject.onEnd) : null;
             tutorialObject.onStart = tutorialObject.onStart ? eval(tutorialObject.onStart) : null;
-
             return tutorialObject;
         };
 
