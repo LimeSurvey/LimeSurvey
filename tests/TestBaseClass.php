@@ -50,7 +50,7 @@ class TestBaseClass extends TestCase
      * @return string
      */
     public static function getDataFolder(){
-        return __DIR__."/resources/data";
+        return __DIR__."/data";
     }
 
     /**
