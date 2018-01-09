@@ -234,7 +234,7 @@ class LsDefaultDataSet extends CModel {
         
         $returnArray[] = [
             'name' => 'beginnerTour',
-            'title' => 'Take beginner tour',
+            'title' => 'Beginner tour',
             'icon' => 'fa-rocket',
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
             'active' => 1,
