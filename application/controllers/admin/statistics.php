@@ -301,7 +301,7 @@ class statistics extends Survey_Common_Action
             switch ($flt[2]) {
                 case "K": // Multiple Numerical
                     //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] ", 'question_order');
+                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1]['key1'] = $result;
                     break;
 
