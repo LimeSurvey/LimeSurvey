@@ -602,20 +602,21 @@ class statistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
-            $qtitle = $nresult->title;
-            $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
-            $qother = $nresult->other;
+            $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$qqid));
+            $qother = 'N';
+            if (!empty($nresult)) {
+                $qother = $nresult->other;
+            }
+            
 
             //1. Get list of answers
             $result = Question::model()->findAll(array('order'=>'question_order',
-                'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0',
-                'params'=>array(':language'=>$language, ':qid'=>$qqid)
+                'condition'=>'parent_qid=:qid AND scale_id=0',
+                'params'=>array(':qid'=>$qqid)
             ));
             foreach ($result as $row) {
                 $mfield = substr($rt, 1, strlen($rt)).$row['title'];
-                $alist[] = array($row['title'], flattenText($row['question']), $mfield);
+                $alist[] = array($row['title'], flattenText($row->questionL10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
@@ -633,10 +634,10 @@ class statistics_helper
             $fielddata = $fieldmap[$fld];
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+            $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$fielddata['qid']));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
 
             $mfield = substr($rt, 1, strlen($rt));
 
@@ -1152,18 +1153,12 @@ class statistics_helper
             $rqid = $qqid;
 
             //get question data
-            $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
-            $nresult = Yii::app()->db->createCommand($nquery)->query();
-
-            //loop though question data
-            foreach ($nresult->readAll() as $nrow) {
-                $nrow = array_values($nrow);
-                $qtitle = flattenText($nrow[0]);
-                $qtype = $nrow[1];
-                $qquestion = flattenText($nrow[2]);
-                $qiqid = $nrow[3];
-                $qother = $nrow[5];
-            }
+            $nrow=Question::model()->findByPk($rqid);
+            $qtitle = flattenText($nrow['title']);
+            $qtype = $nrow['type'];
+            $qquestion = flattenText($nrow->questionL10ns[$language]->question);
+            $qiqid = $nrow['qid'];
+            $qother = $nrow['other'];
 
             //check question types
             switch ($qtype) {
@@ -1171,11 +1166,9 @@ class statistics_helper
                 case "A":
 
                     //get data
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
                     //loop through results
-                    foreach ($qresult->readAll() as $qrow) {
+                    foreach ($qresult as $qrow) {
                         $qrow = array_values($qrow);
                         //5-point array
                         for ($i = 1; $i <= 5; $i++) {
@@ -1183,7 +1176,7 @@ class statistics_helper
                             $alist[] = array("$i", "$i");
                         }
                         //add counter
-                        $atext = flattenText($qrow[1]);
+                        $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
 
                     //list IDs and answer codes in brackets
@@ -1196,39 +1189,34 @@ class statistics_helper
                     //Array of 10 point choices
                     //same as above just with 10 items
                 case "B":
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    foreach ($qresult as $qrow) {
                         for ($i = 1; $i <= 10; $i++) {
                             $alist[] = array("$i", "$i");
                         }
-                        $atext = flattenText($qrow[1]);
+                        $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
 
                     $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qtitle .= "({$qanswer})";
                     break;
 
 
 
                     //Array of Yes/No/gT("Uncertain")
                 case "C":
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
                     //loop thorugh results
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
+                    foreach ($qresult as $qrow) {
                         //add results
                         $alist[] = array("Y", gT("Yes"));
                         $alist[] = array("N", gT("No"));
                         $alist[] = array("U", gT("Uncertain"));
-                        $atext = flattenText($qrow[1]);
+                        $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
                     //output
                     $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qtitle .= "({$qanswer})";
                     break;
 
 
@@ -1236,33 +1224,27 @@ class statistics_helper
                     //Array of Yes/No/gT("Uncertain")
                     //same as above
                 case "E":
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    foreach ($qresult as $qrow) {
                         $alist[] = array("I", gT("Increase"));
                         $alist[] = array("S", gT("Same"));
                         $alist[] = array("D", gT("Decrease"));
-                        $atext = flattenText($qrow[1]);
+                        $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
                     $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qtitle .= "({$qanswer})";
                     break;
 
 
                 case ";": //Array (Multi Flexi) (Text)
                     list($qacode, $licode) = explode("_", $qanswer);
 
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
-                        $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                        $fresult = Yii::app()->db->createCommand($fquery)->query();
-                        foreach ($fresult->readAll() as $frow) {
-                            $alist[] = array($frow['code'], $frow['answer']);
-                            $ltext = $frow['answer'];
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    foreach ($qresult as $qrow) {
+                        $fresult = Answer::model()->findAll(array('condition'=>'qid=:qid AND code=:code ND scale_id=0', 'params'=>array(":qid"=>$qiqid,':code'=>$licode)));
+                        foreach ($fresult as $frow) {
+                            $alist[] = array($frow['code'], $frow->answerL10ns[$language]->answer);
+                            $ltext = $frow->answerL10ns[$language]->answer;
                         }
                         $atext = flattenText($qrow[1]);
                     }
@@ -1308,24 +1290,18 @@ class statistics_helper
 
                 case "F": //Array of Flexible
                 case "H": //Array of Flexible by Column
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-
+                    $qresult = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
                     //loop through answers
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
-
+                    foreach ($qresult as $qrow) {
+                        $fresult = Answer::model()->findAllByAttributes(['qid'=>$qiqid,'scale_id'=>0]);
                         //this question type uses its own labels
-                        $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
-                        $fresult = Yii::app()->db->createCommand($fquery)->query();
-
                         //add code and title to results for outputting them later
-                        foreach ($fresult->readAll() as $frow) {
-                            $alist[] = array($frow['code'], flattenText($frow['answer']));
+                        foreach ($fresult as $frow) {
+                            $alist[] = array($frow['code'], flattenText($frow->answerL10ns[$language]->answer));
                         }
 
                         //counter
-                        $atext = flattenText($qrow[1]);
+                        $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
 
                     //output
@@ -1433,13 +1409,10 @@ class statistics_helper
                 default:    //default handling
 
                     //get answer code and title
-                    $qquery = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-                    $qresult = Yii::app()->db->createCommand($qquery)->query();
-
+                    $qresult = Answer::model()->findAllByAttributes(['qid'=>$qqid,'scale_id'=>0]);
                     //put answer code and title into array
-                    foreach ($qresult->readAll() as $qrow) {
-                        $qrow = array_values($qrow);
-                        $alist[] = array("$qrow[0]", flattenText($qrow[1]));
+                    foreach ($qresult as $qrow) {
+                        $alist[] = array($qrow->code, flattenText($qrow->answerL10ns[$language]->answer));
                     }
 
                     //handling for "other" field for list radio or list drowpdown
@@ -1450,7 +1423,6 @@ class statistics_helper
                     if ($qtype == "O") {
                         //add "comment"
                         $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'].'comment', 'is_comment');
-                        //
                     }
 
             }    //end switch question type

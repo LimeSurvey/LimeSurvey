@@ -504,7 +504,6 @@ class statistics extends Survey_Common_Action
         }
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
-
     }
 
 
