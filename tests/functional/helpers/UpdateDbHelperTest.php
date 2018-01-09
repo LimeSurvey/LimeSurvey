@@ -1,6 +1,7 @@
 <?php
+namespace ls\tests\functional\helpers;
 
-namespace ls\tests;
+use ls\tests\TestBaseClass;
 
 /**
  * @since 2017-06-16
