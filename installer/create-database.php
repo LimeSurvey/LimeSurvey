@@ -20,7 +20,6 @@ function createDatabase($oDB){
     Yii::app()->loadHelper('update.updatedb');
 
     ///// Load DefaultData Helper
-    require_once(\Yii::app()->getBasePath(). '/core/LsDefaultDataSets.php');
     // $oDB                        = Yii::app()->getDb();
 
     $oTransaction = $oDB->beginTransaction();
