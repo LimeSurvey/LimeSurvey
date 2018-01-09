@@ -12,7 +12,7 @@
         <?php foreach($aTutorials as $oTutorial) { ?>
         <li>
             <a href="#" onclick="window.tourLibrary.triggerTourStart('<?=$oTutorial->name?>')">
-                <i class="fa <?=gT($oTutorial->icon)?>"></i>&nbsp;<?=gT($oTutorial->title)?>
+                <i class="fa <?=$oTutorial->icon?>"></i>&nbsp;<?=gT('Take')?> <?=gT($oTutorial->title)?>
             </a>
         </li>
         <?php } ?>
