@@ -1,6 +1,5 @@
 <?php
-
-namespace ls\tests;
+namespace ls\tests\functional\helpers;
 
 use PHPUnit\Framework\TestCase;
 
@@ -118,10 +117,6 @@ class ExpressionCoreAux extends TestCase
 
     /**
      * JS code to setup environment so LEMval() can run.
-     * @param string $sgqa
-     * @param mixed $value
-     * @param string $alias
-     * @param int $onlynum
      * @return string
      */
     public function getDummyNodeSetup()
