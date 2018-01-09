@@ -5,6 +5,9 @@ build:
 
     nodes:
         tests: true
+        analysis:
+            tests:
+                override: [php-scrutinizer-run]
 filter:
     paths: [application/*]
     excluded_paths: 
