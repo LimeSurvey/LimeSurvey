@@ -1,10 +1,10 @@
 <?php
+namespace ls\tests\acceptance\surveys;
 
-namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use ls\tests\TestBaseClassWeb;
 
 /**
  * Test survey when all other questions relevance is 0, due to first 

@@ -1,10 +1,8 @@
 <?php
-
-namespace ls\tests;
+namespace ls\tests\acceptance\surveys;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\NoSuchElementException;
+use ls\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-12-01

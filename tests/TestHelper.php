@@ -5,6 +5,8 @@ namespace ls\tests;
 use CDbConnection;
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
+use Facebook\WebDriver\WebDriver;
+
 
 class TestHelper extends TestCase
 {
