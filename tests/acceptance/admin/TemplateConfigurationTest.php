@@ -1,11 +1,7 @@
 <?php
 namespace ls\tests\acceptance\admin;
 
-<<<<<<< HEAD:tests/models/TemplateConfigurationTest.php
-namespace ls\tests;
-=======
 use ls\tests\TestBaseClass;
->>>>>>> 10b0e2b... DEV: restructure tests: move Models tests:tests/acceptance/admin/TemplateConfigurationTest.php
 
 /**
  * @since 2017-06-13
