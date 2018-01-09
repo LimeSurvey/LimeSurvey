@@ -2358,7 +2358,7 @@ class tokens extends Survey_Common_Action
     public function prepExportToCPDB()
     {
         $exportedItems = Yii::app()->request->getPost('itemsid', []);
-        if(is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
+        if (is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
         Yii::app()->session['participantid'] = $exportedItems;
         return;
     }

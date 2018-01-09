@@ -260,7 +260,8 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
-    public function getPreviewTag() {
+    public function getPreviewTag()
+    {
         $templatename = Yii::app()->request->getPost('templatename');        
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
         $previewTag = $oTemplate->getPreview();

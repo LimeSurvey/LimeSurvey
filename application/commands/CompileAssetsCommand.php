@@ -107,9 +107,9 @@ class CompileAssetsCommand extends CConsoleCommand
         preg_match('/[0-9]+$/', $complete_output, $matches);
     
         // return exit status and intended output
-        return array (
+        return array(
                         'exit_status'  => intval($matches[0]),
-                        'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
+                        'output'       => str_replace("Exit status : ".$matches[0], '', $complete_output)
                         );
     }
 }
