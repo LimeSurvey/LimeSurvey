@@ -129,6 +129,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     if ($('#advancedquestionsettingswrapper').length > 0) {
-        updatequestionattributes();
+        window.questionFunctions = window.questionFunctions || (new QuestionFunctions()) || null;
+        window.questionFunctions.updatequestionattributes();
+        
     }
 });

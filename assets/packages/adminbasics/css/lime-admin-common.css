@@ -1728,12 +1728,12 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
     position: fixed;
 }
 
-/** For token table */
+/** For survey participants table */
 .scrolling-wrapper {
     overflow-x: scroll;
 }
 
-/** Search criteria pop-up for token table */
+/** Search criteria pop-up for survey participants table */
 #search {
     display: none;
     overflow-y: auto;
@@ -2094,6 +2094,12 @@ table#responsedetail tr td{
     right: 15px;
 }
 
+.input-group-addon {
+  padding: 5px 12px;
+}
+.multiselect-container>li>a>label>input[type="checkbox"]{
+  margin-left: 0;
+}
 .notification-list {
   top: 100%;
   left: 0;

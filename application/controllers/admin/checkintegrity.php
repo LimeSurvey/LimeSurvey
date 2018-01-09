@@ -58,7 +58,7 @@ class CheckIntegrity extends Survey_Common_Action
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable) {
                     if (in_array($aTokenTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aTokenTable['table']);
-                        $aData['messages'][] = sprintf(gT('Deleting token table: %s'), $aTokenTable['table']);
+                        $aData['messages'][] = sprintf(gT('Deleting survey participants table: %s'), $aTokenTable['table']);
                     }
                 }
             }
@@ -71,7 +71,7 @@ class CheckIntegrity extends Survey_Common_Action
                 }
             }
             if (count($aData['messages']) == 0) {
-                $aData['messages'][] = gT('No old survey or token table selected.');
+                $aData['messages'][] = gT('No old survey or survey participants table selected.');
             }
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
@@ -150,7 +150,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = gT('Deleting orphan token table:').' '.$aTokenTable;
+            $aData['messages'][] = gT('Deleting orphan survey participants table:').' '.$aTokenTable;
         }
         return $aData;
     }
@@ -406,12 +406,11 @@ class CheckIntegrity extends Survey_Common_Action
 
         /*** Check for active survey tables with missing survey entry and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $sQuery = dbSelectTablesLike('{{survey}}\_%');
-        $aResult = dbQueryOrFalse($sQuery);
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
 
-        foreach ($aResult->readAll() as $aRow) {
-            $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
+        foreach ($aResult as $aRow) {
+            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
                 continue;
             }
@@ -432,10 +431,10 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-        /*** Check for active token tables with missing survey entry ***/
-        $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%'));
-        foreach ($aResult->readAll() as $aRow) {
-            $sTableName = (string) substr(reset($aRow), strlen($sDBPrefix));
+        /*** Check for active survey participants tables with missing survey entry ***/
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
+        foreach ($aResult as $aRow) {
+            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
             $iSurveyID = (integer) substr($sTableName, strpos($sTableName, '_') + 1);
             if (!in_array($iSurveyID, $sSurveyIDs)) {
                 $sDate = (string) date('YmdHis').rand(1, 1000);
@@ -823,7 +822,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN TABLES       */
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
         //1: Get distinct list of survey_link survey ids, check if tokens
         //   table still exists for each one, and remove if not
@@ -835,7 +834,7 @@ class CheckIntegrity extends Survey_Common_Action
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
-        //   the token table and remove if it doesn't.
+        //   the survey participants table and remove if it doesn't.
 
 
         /* Show a alert message is some fix is done */
@@ -853,8 +852,8 @@ class CheckIntegrity extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

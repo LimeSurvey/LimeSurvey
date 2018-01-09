@@ -2051,6 +2051,15 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   padding-right: 0; }
   .ls-ba .list-group > .list-group-item {
     padding-right: 0; }
+    .ls-ba .list-group > .list-group-item.mark-as-selected {
+      color: #ffffff;
+      background-color: #071630; }
+      .ls-ba .list-group > .list-group-item.mark-as-selected:after {
+        position: absolute;
+        right: 2px;
+        content: "\f054";
+        font: normal normal normal 18px/1 FontAwesome;
+        color: #ffffff; }
     .ls-ba .list-group > .list-group-item .list-group {
       margin-bottom: 0; }
       .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {

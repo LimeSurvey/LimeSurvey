@@ -129,7 +129,7 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <p><?php neT('There is {n} user attribute field in this survey participant table.|There are {n} user attribute fields in this survey participant table.', $nrofattributes); ?></p>
+            <p><?php neT('There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>

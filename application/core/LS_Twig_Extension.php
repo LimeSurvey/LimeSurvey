@@ -198,7 +198,7 @@ class LS_Twig_Extension extends Twig_Extension
             /* Got to use static expression */
             $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
-                $aQuestionClass .= Chtml::encode($emCssClass);
+                $aQuestionClass .= " ".Chtml::encode($emCssClass);
             }
         }
 

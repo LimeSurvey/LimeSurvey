@@ -220,8 +220,9 @@ Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
 
 set_error_handler(function($no, $msg, $file, $line, $context) {
-    error_log($file . ':' . $line . ': ' . $msg);
-}, E_ERROR & E_WARNING & E_PARSE);
+    //error_log($file . ':' . $line . ': ' . $msg);
+    throw new ErrorException($msg, 0, $no, $file, $line);
+}, E_ERROR & E_WARNING & E_PARSE & E_NOTICE);
 
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
@@ -231,6 +232,7 @@ require_once(__DIR__ . '/DummyController.php');
 
 define('PHP_ENV', 'test');
 
+// TODO: Move this logic to installater test.
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 

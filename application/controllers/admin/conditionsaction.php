@@ -45,7 +45,7 @@ class conditionsaction extends Survey_Common_Action
     private $language;
     
     /**
-     * True if there exists a token table for this survey
+     * True if there exists a survey participants table for this survey
      * @var boolean
      */
     private $tokenTableExists;
@@ -509,9 +509,9 @@ class conditionsaction extends Survey_Common_Action
                         $rightOperandType = 'tokenAttr';
                         $aTokenAttrNames = $this->tokenFieldsAndNames;
                         if ($this->tokenTableExists) {
-                            $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
+                            $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From survey participants table")."]";
                         } else {
-                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
+                            $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Non-existing survey participants table")."]";
                         }
                         $data['target'] = $thisAttrName;
                     } elseif (isset($canswers)) {
@@ -1162,10 +1162,10 @@ protected function applySubaction($p_subaction, array $args)
 * @param array $aData Data to be passed on. Optional.
 * @return void
 */
-protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array())
+protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
 {
     ////$aData['display']['menu_bars'] = false;
-    parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
 }
 
 /**
@@ -1210,23 +1210,18 @@ protected function getPostRows(array $postquestionlist)
 {
     $postrows = array();
     foreach ($postquestionlist as $pq) {
-        $result = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => $this->language)
-        ),
-        ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+        $aoQuestions = Question::model()->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
         
-        foreach ($result as $myrows) {
+        foreach ($aoQuestions as $oQuestion) {
             $postrows[] = array(
-            "qid"        =>    $myrows['qid'],
-            "sid"        =>    $myrows['sid'],
-            "gid"        =>    $myrows['gid'],
-            "question"    =>    $myrows['question'],
-            "type"        =>    $myrows['type'],
-            "mandatory"    =>    $myrows['mandatory'],
-            "other"        =>    $myrows['other'],
-            "title"        =>    $myrows['title']
+            "qid"        =>    $oQuestion['qid'],
+            "sid"        =>    $oQuestion['sid'],
+            "gid"        =>    $oQuestion['gid'],
+            "question"    =>    $oQuestion->questionL10ns[$this->language]->question,
+            "type"        =>    $oQuestion['type'],
+            "mandatory"    =>    $oQuestion['mandatory'],
+            "other"        =>    $oQuestion['other'],
+            "title"        =>    $oQuestion['title']
             );
         }
     }
@@ -1239,12 +1234,8 @@ protected function getPostRows(array $postquestionlist)
 */
 protected function getQuestionTitleAndText($qid)
 {
-    $question = Question::model()->with('groups')->findByAttributes(array(
-    'qid' => $qid,
-    'parent_qid' => 0,
-    'language' => $this->language
-    ));
-    return array($question['title'], $question['question']);
+    $oQuestion = Question::model()->findByPk($qid);
+    return array($oQuestion->title, $oQuestion->questionL10ns[$this->language]->question);
 }
 
 /**
@@ -1262,19 +1253,15 @@ protected function getSurveyIsAnonymized()
 */
 protected function getQuestionRows()
 {
-    $qresult = Question::model()->with(array(
-    'groups' => array(
-    'condition' => 'groups.language = :lang',
-    'params' => array(':lang' => $this->language)
-    )))->findAllByAttributes(array(
-    'parent_qid' => 0,
-    'sid' => $this->iSurveyID,
-    'language' => $this->language)
+    $qresult = Question::model()->findAllByAttributes(array(
+        'parent_qid' => 0,
+        'sid' => $this->iSurveyID)
     );
-    
+
+   //'language' => $this->language    
     $qrows = array();
     foreach ($qresult as $k => $v) {
-        $qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
+        $qrows[$k] = array_merge($v->attributes, $v->group->attributes);
     }
     
     // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
@@ -2041,9 +2028,9 @@ protected function getAttributeName($extractedTokenAttr)
     }
     
     if ($this->tokenTableExists) {
-        $thisAttrName .= " [".gT("From token table")."]";
+        $thisAttrName .= " [".gT("From survey participants table")."]";
     } else {
-        $thisAttrName .= " [".gT("Inexistant token table")."]";
+        $thisAttrName .= " [".gT("Non-existing survey participants table")."]";
     }
     
     return $thisAttrName;
@@ -2106,7 +2093,7 @@ protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandT
 
 /**
 * @param int $qid
-* @return array|array<mixed,object> Conditions
+* @return CActiveRecord[] Conditions
 */
 protected function getAllScenarios($qid)
 {

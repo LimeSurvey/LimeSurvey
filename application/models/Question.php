@@ -24,22 +24,19 @@ if (!defined('BASEPATH')) {
  * @property integer $gid QuestionGroup ID where question is diepolayed
  * @property string $type
  * @property string $title Question Code
- * @property string $question Question dieplay text. The actual question.
  * @property string $preg
- * @property string $help Question help-text for display
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whther question is mandatory (Y/N)
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
- * @property string $language Question language code. Note: Primary key is qid & language columns combined
  * @property integer $scale_id  The scale ID
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
  * @property string $relevance Questions relevane equation
  * @property string $modulename
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //TODO should be singular
- * @property Question $parents      //TODO should be singular
+ * @property QuestionGroup $groups  //@TODO should be singular
+ * @property Question $parents      //@TODO should be singular
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property string[] $quotableTypes Question types that can be used for quotas
@@ -50,7 +47,7 @@ class Question extends LSActiveRecord
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
-    public $gid;
+    public $gid;         
 
     /**
      * @inheritdoc
@@ -72,7 +69,7 @@ class Question extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'language');
+        return 'qid';
     }
 
     /** @inheritdoc */
@@ -80,10 +77,13 @@ class Question extends LSActiveRecord
     {
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
-            'parents' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
+            'group' => array(self::BELONGS_TO, 'QuestionGroup', 'gid', 'together' => true),
+            'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language"))
+            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
+            'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
+            'answers' => array(self::HAS_MANY, 'Answer', 'qid')
         );
     }
 
@@ -94,16 +94,9 @@ class Question extends LSActiveRecord
     public function rules()
     {
         $aRules = array(
-                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('Question code may not be empty.', 'unescaped')),
+                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
                     array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
                     array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
-                    array('qid', 'unique', 'criteria'=>array(
-                                    'condition'=>'language=:language',
-                                    'params'=>array(':language'=>$this->language)
-                            ),
-                            'message'=>'{attribute} "{value}" is already in use.'),
-                    array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
-                    array('title,question,help', 'LSYii_Validators'),
                     array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
                     array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
                     array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -116,9 +109,8 @@ class Question extends LSActiveRecord
         // Always enforce unicity on Sub question code (DB issue).
         if ($this->parent_qid) {
             $aRules[] = array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                                'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
+                                'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
                                 'params' => array(
-                                    ':language' => $this->language,
                                     ':sid' => $this->sid,
                                     ':parent_qid' => $this->parent_qid,
                                     ':scale_id' => $this->scale_id
@@ -126,7 +118,7 @@ class Question extends LSActiveRecord
                                 ),
                             'message' => gT('Subquestion codes must be unique.'));
             // Disallow other title if question allow other
-            $oParentQuestion = Question::model()->findByPk(array("qid"=>$this->parent_qid, 'language'=>$this->language));
+            $oParentQuestion = Question::model()->findByPk(array("qid"=>$this->parent_qid));
             if ($oParentQuestion->other == "Y") {
                 $aRules[] = array('title', 'LSYii_CompareInsensitiveValidator', 'compareValue'=>'other', 'operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), "other"), 'except' => 'archiveimport');
             }
@@ -138,7 +130,7 @@ class Question extends LSActiveRecord
             }
         }
         if (!$this->isNewRecord) {
-            $oActualValue = Question::model()->findByPk(array("qid"=>$this->qid, 'language'=>$this->language));
+            $oActualValue = Question::model()->findByPk(array("qid"=>$this->qid));
             if ($oActualValue && $oActualValue->title == $this->title) {
                 return $aRules; // We don't change title, then don't put rules on title
             }
@@ -147,9 +139,8 @@ class Question extends LSActiveRecord
         if (!$this->parent_qid) {
             $aRules[] = array('title', 'unique', 'caseSensitive'=>true,
                 'criteria'=>array(
-                    'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
+                    'condition' => 'sid=:sid AND parent_qid=0',
                     'params' => array(
-                        ':language' => $this->language,
                         ':sid' => $this->sid
                         )
                     ),
@@ -169,6 +160,12 @@ class Question extends LSActiveRecord
         }
         return $aRules;
     }
+    
+    public function defaultScope()
+    {
+        return array('order'=>'question_order');
+    }    
+    
 
     /**
      * Rewrites sort order for questions in a group
@@ -181,7 +178,7 @@ class Question extends LSActiveRecord
      */
     public static function updateSortOrder($gid, $surveyid)
     {
-        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order'=>'question_order'));
+        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, array('order'=>'question_order')));
         $p = 0;
         foreach ($questions as $question) {
             $question->question_order = $p;
@@ -197,14 +194,13 @@ class Question extends LSActiveRecord
      * @param string $language
      * @param int $position
      */
-    public function updateQuestionOrder($gid, $language, $position = 0)
+    public function updateQuestionOrder($gid, $position = 0)
     {
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'language=:language', 'parent_qid=0'))
+            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
             ->order('question_order, title ASC')
             ->from('{{questions}}')
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
-            ->bindParam(':language', $language, PDO::PARAM_STR)
             ->query();
 
         $position = intval($position);
@@ -239,11 +235,7 @@ class Question extends LSActiveRecord
 
         // If the question has a custom template, we first check if it provides custom attributes
 
-        if (!is_null($sLanguage)) {
-            $oQuestion = Question::model()->findByPk(array('qid'=>$iQuestionID, 'language'=>$sLanguage));
-        } else {
-            $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
-        }
+        $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
 
         uasort($aAttributeNames, 'categorySort');
@@ -328,35 +320,6 @@ class Question extends LSActiveRecord
             ->query();
     }
 
-
-    /**
-     * This function is only called from surveyadmin.php
-     * @param integer $iSurveyID
-     * @param string $sLanguage
-     * @param string|boolean $sCondition
-     * @return array
-     */
-    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = false)
-    {
-        $command = Yii::app()->db->createCommand()
-            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, '.'{{groups}}.*')
-            ->from($this->tableName())
-            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
-        $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
-
-        if ($sCondition != false) {
-            $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
-            ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-            ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
-        }
-        $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
-
-        return $command->query()->readAll();
-    }
-
-
-
     /**
      * Delete a bunch of questions in one go
      *
@@ -402,14 +365,7 @@ class Question extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        $command = Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition);
-        if ($orderby != false) {
-            $command->order($orderby);
-        }
-        return $command->queryAll();
+        return Question::model()->findAll($condition);
     }
 
     /**
@@ -417,19 +373,9 @@ class Question extends LSActiveRecord
      * @param string $language
      * @return array
      */
-    public function getQuestionList($surveyid, $language)
-    {
-        $query = "SELECT questions.*, groups.group_name, groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as groups"
-            ." WHERE groups.gid=questions.gid"
-            ." AND groups.language=:language1"
-            ." AND questions.language=:language2"
-            ." AND questions.parent_qid=0"
-            ." AND questions.sid=:sid";
-        return Yii::app()->db->createCommand($query)
-            ->bindParam(":language1", $language, PDO::PARAM_STR)
-            ->bindParam(":language2", $language, PDO::PARAM_STR)
-            ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
+    public function getQuestionList($surveyid)
+    {                                        
+        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid,'order'=>'group_order DESC, question_order'));
     }
 
     /**
@@ -467,203 +413,261 @@ class Question extends LSActiveRecord
                 'subquestions' => 1,
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
-                'answerscales' => 2),
+                'answerscales' => 2,
+                'class' => 'array-flexible-duel-scale',
+            ),
             "5" => array(
                 'description' => gT("5 Point Choice"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => "choice-5-pt-radio"
+            ),
             "A" => array(
                 'description' => gT("Array (5 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-5-pt'
+            ),
             "B" => array(
                 'description' => gT("Array (10 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-10-pt'
+            ),
             "C" => array(
                 'description' => gT("Array (Yes/No/Uncertain)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-yes-uncertain-no'
+            ),
             "D" => array(
                 'description' => gT("Date/Time"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'date'
+            ),
             "E" => array(
                 'description' => gT("Array (Increase/Same/Decrease)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-increase-same-decrease'
+            ),
             "F" => array(
                 'description' => gT("Array"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'array-flexible-row'
+            ),
             "G" => array(
                 'description' => gT("Gender"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'gender'
+            ),
             "H" => array(
                 'description' => gT("Array by column"),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'array-flexible-column'
+            ),
             "I" => array(
                 'description' => gT("Language Switch"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'language'
+            ),
             "K" => array(
                 'description' => gT("Multiple Numerical Input"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'numeric-multi'
+            ),
             "L" => array(
                 'description' => gT("List (Radio)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-radio'
+            ),
             "M" => array(
                 'description' => gT("Multiple choice"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-opt'
+            ),
             "N" => array(
                 'description' => gT("Numerical Input"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'numeric'
+            ),
             "O" => array(
                 'description' => gT("List with comment"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-with-comment'
+            ),
             "P" => array(
                 'description' => gT("Multiple choice with comments"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-opt-comments'
+            ),
             "Q" => array(
                 'description' => gT("Multiple Short Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'multiple-short-txt'
+            ),
             "R" => array(
                 'description' => gT("Ranking"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'ranking'
+            ),
             "S" => array(
                 'description' => gT("Short Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-short'
+            ),
             "T" => array(
                 'description' => gT("Long Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-long'
+            ),
             "U" => array(
                 'description' => gT("Huge Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'text-huge'
+            ),
             "X" => array(
                 'description' => gT("Text display"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'boilerplate'
+            ),
             "Y" => array(
                 'description' => gT("Yes/No"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'yes-no'
+            ),
             "!" => array(
                 'description' => gT("List (Dropdown)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
-                'answerscales' => 1),
+                'answerscales' => 1,
+                'class' => 'list-dropdown'
+            ),
             ":" => array(
                 'description' => gT("Array (Numbers)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi'
+            ),
             ";" => array(
                 'description' => gT("Array (Texts)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi-text'
+            ),
             "|" => array(
                 'description' => gT("File upload"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'upload-files'
+            ),
             "*" => array(
                 'description' => gT("Equation"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
-                'answerscales' => 0),
+                'answerscales' => 0,
+                'class' => 'equation'
+            ),
         );
         /**
          * @todo Check if this actually does anything, since the values are arrays.
@@ -673,6 +677,18 @@ class Question extends LSActiveRecord
         return $questionTypes;
     }
 
+    /**
+     * This function return the name by question type
+     * @param string question type
+     * @return string Question type name
+     *
+     * Maybe move class in typeList ?
+     */
+    public static function getQuestionTypeName($sType)
+    {
+        $typeList = self::typeList();
+        return $typeList[$sType]['description'];
+    }
     /**
      * This function return the class by question type
      * @param string question type
@@ -725,9 +741,9 @@ class Question extends LSActiveRecord
      */
     public function getAllGroups()
     {
-        return QuestionGroup::model()->findAll("sid=:sid and language=:lang",
-            array(':sid'=>$this->sid,
-                ':lang'=>$this->survey->language));
+        return QuestionGroup::model()->findAll("sid=:sid",
+            array(':sid'=>$this->sid)
+        );
         //return QuestionGroup::model()->getGroups($this->sid);
     }
 
@@ -763,23 +779,15 @@ class Question extends LSActiveRecord
 
     public function getOrderedAnswers($random = 0, $alpha = 0)
     {
-        //question attribute random order set?
         if ($random == 1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY ".dbRandom();
+            $sOrder = dbRandom();
+        } elseif ($alpha == 1) {
+            $sOrder = 'answer';
+        } else {
+            $sOrder = 'sortorder';
         }
-
-        //question attribute alphasort set?
-        elseif ($alpha == 1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY answer";
-        }
-
-        //no question attributes -> order by sortorder
-        else {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY sortorder, answer";
-        }
-
-        $ansresult = dbExecuteAssoc($ansquery)->readAll();
-        return $ansresult;
+        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));        
+        return $aAnswers;
 
     }
 
@@ -794,8 +802,7 @@ class Question extends LSActiveRecord
         $criteria = (new CDbCriteria());
         $criteria->addCondition('t.parent_qid=:qid');
         $criteria->addCondition('t.scale_id=0');
-        $criteria->addCondition('t.language=:language');
-        $criteria->params = [':qid'=>$this->qid, ':language'=>$this->language];
+        $criteria->params = [':qid'=>$this->qid];
         $criteria->order = ($random == 1 ? (new CDbExpression(dbRandom())) : 'question_order ASC');
         $ansresult = Question::model()->findAll($criteria);
 
@@ -870,7 +877,18 @@ class Question extends LSActiveRecord
         }
         return $sNewTitle;
     }
-
+                           
+    /*public function language($sLanguage)
+    {
+        $this->with(
+            array(
+                'questionL10ns'=>array('condition'=>"language='".$sLanguage."'"),
+                'group'=>array('condition'=>"language='".$sLanguage."'")
+            )
+        );                                              
+        return $this;
+    }*/                       
+                           
     public function search()
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -890,13 +908,13 @@ class Question extends LSActiveRecord
                 'desc'=>'t.title desc',
             ),
             'question'=>array(
-                'asc'=>'t.question asc',
-                'desc'=>'t.question desc',
+                'asc'=>'questionL10ns.question asc',
+                'desc'=>'questionL10ns.question desc',
             ),
 
             'group'=>array(
-                'asc'=>'groups.group_name asc',
-                'desc'=>'groups.group_name desc',
+                'asc'=>'group.group_name asc',
+                'desc'=>'group.group_name desc',
             ),
 
             'mandatory'=>array(
@@ -913,21 +931,20 @@ class Question extends LSActiveRecord
         $sort->defaultOrder = array('question_order' => CSort::SORT_ASC);
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('groups');
+        $criteria->with = array('group');
         $criteria->compare("t.sid", $this->sid, false, 'AND');
-        $criteria->compare("t.language", $this->language, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
 
         $criteria2 = new CDbCriteria;
         $criteria2->compare('t.title', $this->title, true, 'OR');
-        $criteria2->compare('t.question', $this->title, true, 'OR');
+        $criteria2->compare('questionL10ns.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
 
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
         if ($this->gid != '') {
-            $criteria->compare('groups.gid', $this->gid, true, 'AND');
+            $criteria->compare('group.gid', $this->gid, true, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');
@@ -975,22 +992,23 @@ class Question extends LSActiveRecord
         }
         $oSurvey = $this->survey;
 
-        /* Delete sub question in all other language */
+        /* Delete subquestion l10n for unknown languages */
         $criteria = new CDbCriteria;
-        $criteria->compare('parent_qid', $this->qid);
+        $criteria->with = array("question", array('condition'=>array('sid'=>$this->qid)));
+        $criteria->together = true;
         $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
-        Question::model()->deleteAll($criteria); // Must log count of deleted ?
+        QuestionL10n::model()->deleteAll($criteria); 
 
         /* Delete invalid subquestions (not in primary language */
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'parent_qid=:parent_qid AND language=:language',
-            'params'=>array('parent_qid' => $this->qid, 'language' => $oSurvey->language)
+            'condition'=>'parent_qid=:parent_qid',
+            'params'=>array('parent_qid' => $this->qid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('parent_qid', $this->qid);
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
-        Question::model()->deleteAll($criteria); // Must log count of deleted ?
+        Question::model()->deleteAll($criteria);
     }
     /** @return string[] */
     public static function getQuotableTypes()

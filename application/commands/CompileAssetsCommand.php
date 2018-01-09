@@ -49,8 +49,7 @@ class CompileAssetsCommand extends CConsoleCommand
         $assetsFolder = realpath($sCurrentDir.'/../../assets/');
         $packageFolder = $assetsFolder.'/packages/'.$package;
 
-        if (!file_exists($packageFolder))
-        {
+        if (!file_exists($packageFolder)) {
             echo "=========================================================================\n";
             echo "=== ERROR! Package does not exist! Exiting.                           ===\n";
             echo "=== Checked path:                                                     ===\n";
@@ -94,8 +93,7 @@ class CompileAssetsCommand extends CConsoleCommand
         $live_output     = "";
         $complete_output = "";
     
-        while (!feof($proc))
-        {
+        while (!feof($proc)) {
             $live_output     = fread($proc, 4096);
             $complete_output = $complete_output.$live_output;
 
@@ -112,6 +110,6 @@ class CompileAssetsCommand extends CConsoleCommand
         return array(
                         'exit_status'  => intval($matches[0]),
                         'output'       => str_replace("Exit status : ".$matches[0], '', $complete_output)
-                     );
+                        );
     }
 }

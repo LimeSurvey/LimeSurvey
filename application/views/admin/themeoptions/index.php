@@ -7,9 +7,16 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
 
+$this->renderPartial('super/fullpagebar_view', array(
+'fullpagebar' => array(
+    'returnbutton'=>array(
+        'url'=>'index',
+        'text'=>gT('Close'),
+        ),
+    )
+));
 ?>
 
-<?php $bFromSurveyGroup = ($oSurveyTheme->scenario == 'surveygroup')?true:false; ?>
 <div class="ls-space margin left-15 right-15 row list-themes">
     <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="active"><a href="#surveythemes"><?php eT('Survey themes'); ?></a></li>
@@ -20,81 +27,11 @@ echo viewHelper::getViewTestTag('templateOptions');
         <div id="surveythemes" class="tab-pane active">
             <div class="col-lg-12 list-surveys">
 
-                <?php
-                    if (!$bFromSurveyGroup){
-                        $this->renderPartial('super/fullpagebar_view', array(
-                        'fullpagebar' => array(
-                            'returnbutton'=>array(
-                                'url'=>'index',
-                                'text'=>gT('Close'),
-                                ),
-                            )
-                        ));
-                        echo '<h3>'.gT('Installed survey themes:').'</h3>';
-                    }
+                <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
+                <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme )); ?>
 
-                ?>
-
-                <div class="row">
-                    <div class="col-sm-12 content-right">
-
-                        <?php $this->widget('bootstrap.widgets.TbGridView', array(
-                            'dataProvider' => $oSurveyTheme->search(),
-                            'columns' => array(
-                                array(
-                                    'header' => gT('Preview'),
-                                    'name' => 'preview',
-                                    'value'=> '$data->preview',
-                                    'type'=>'raw',
-                                    'htmlOptions' => array('class' => 'col-md-1'),
-                                ),
-
-                                array(
-                                    'header' => gT('Name'),
-                                    'name' => 'template_name',
-                                    'value'=>'$data->template_name',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => gT('Description'),
-                                    'name' => 'template_name',
-                                    'value'=>'$data->template->description',
-                                    'htmlOptions' => array('class' => 'col-md-3'),
-                                    'type'=>'raw',
-                                ),
-
-                                array(
-                                    'header' => gT('Type'),
-                                    'name' => 'templates_type',
-                                    'value'=>'$data->typeIcon',
-                                    'type' => 'raw',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => gT('Extends'),
-                                    'name' => 'templates_extends',
-                                    'value'=>'$data->template->extends',
-                                    'htmlOptions' => array('class' => 'col-md-2'),
-                                ),
-
-                                array(
-                                    'header' => '',
-                                    'name' => 'actions',
-                                    'value'=>'$data->buttons',
-                                    'type'=>'raw',
-                                    'htmlOptions' => array('class' => 'col-md-1'),
-                                ),
-
-                            )));
-                        ?>
-
-                    </div>
-                </div>
-
-                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 && !$bFromSurveyGroup):?>
+                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div class="row">
                         <div class="col-sm-12 content-right">
@@ -170,7 +107,15 @@ echo viewHelper::getViewTestTag('templateOptions');
             </div>
         </div>
         <div id="questionthemes" class="tab-pane">
-            questions
+            <div class="col-lg-12 list-surveys">
+
+                <?php echo '<h3>'.gT('Question themes:').'</h3>'; ?>
+
+                Soon, here, you'll have the list of all question types, and all customed question types. <br>
+                You'll be able to manage them like the Survey Themes (inheritance, theme editor, configuration at global/survey group/survey ; show/hide by survey group, etc)
+                <br>Engine is already working, the interface will come very soon.
+            </div>
+
         </div>
     </div>
 </div>

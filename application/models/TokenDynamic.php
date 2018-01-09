@@ -126,7 +126,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per token table / backup token table
+     * once per survey participants table / backup survey participants table
      */
     public function checkColumns()
     {
@@ -173,7 +173,7 @@ class TokenDynamic extends LSActiveRecord
      * @param string $SQLemailstatuscondition
      * @param string $SQLremindercountcondition
      * @param string $SQLreminderdelaycondition
-     * @return array|mixed|null
+     * @return CActiveRecord[]
      */
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
@@ -287,7 +287,7 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @param integer $iSurveyID
      * @param array $data
-     * @return mixed
+     * @return integer
      */
     public function insertToken($iSurveyID, $data)
     {
@@ -299,7 +299,7 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @param integer $tid
      * @param string $newToken
-     * @return mixed
+     * @return integer
      */
     public function updateToken($tid, $newToken)
     {
@@ -442,7 +442,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer $tokenid
-     * @return mixed
+     * @return CDbDataReader
      */
     public function deleteToken($tokenid)
     {
@@ -453,7 +453,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer[] $iTokenIds
-     * @return mixed
+     * @return CDbDataReader
      */
     public function deleteRecords($iTokenIds)
     {
@@ -482,7 +482,7 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @param string $token
      * @param string $status
-     * @return mixed
+     * @return integer
      */
     public function updateEmailStatus($token, $status)
     {

@@ -29,7 +29,7 @@
 
                 <?php if($allowregister && !tableExists('tokens_'.$iSurveyID)):?>
                     <p>
-                        <?php eT("This survey allows public registration. A token table must also be created."); ?>
+                        <?php eT("This survey allows public registration. A survey participants table must also be created."); ?>
                         <br />
                         <br />
                         <input
@@ -48,7 +48,7 @@
                             <strong><?php eT("Open-access mode:");?></strong>
                             <?php eT("No invitation code is needed to complete the survey."); ?>
                             <br />
-                            <?php eT("You can switch to the closed-access mode by initialising a survey participant table by using the button below."); ?>
+                            <?php eT("You can switch to the closed-access mode by initialising a survey participants table by using the button below."); ?>
                             <br />
                             <br />
                             <input

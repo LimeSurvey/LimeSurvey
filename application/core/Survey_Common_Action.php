@@ -222,6 +222,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * @inheritdoc
+     * @param string $_viewFile_
      */
     public function renderInternal($_viewFile_, $_data_ = null, $_return_ = false)
     {
@@ -314,19 +315,24 @@ class Survey_Common_Action extends CAction
      * @param string $sAction Current action, the folder to fetch views from
      * @param array|string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
+     * @param string|boolean $sRenderFile File to be rendered as a layout. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-
-        if (!empty($aData['surveyid'])) {
-            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
-            $renderFile = $basePath.'/layout_insurvey.php';
+        
+        if ($sRenderFile == false) {
+            if (!empty($aData['surveyid'])) {
+                $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+                $renderFile = $basePath.'/layout_insurvey.php';
+            } else {
+                $renderFile = $basePath.'/layout_main.php';
+            }
         } else {
-            $renderFile = $basePath.'/layout_main.php';
+            $renderFile = $basePath.'/'.$sRenderFile;
         }
 
         $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
@@ -364,7 +370,9 @@ class Survey_Common_Action extends CAction
     private function _notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
-            if (!is_array($aMessage)) $aMessage = array();
+            if (!is_array($aMessage)) {
+                $aMessage = array();
+            }
             unset(App()->session['arrayNotificationMessages']);
             return $this->getController()->renderPartial("notifications/notifications", array('aMessage'=>$aMessage));
     }
@@ -523,12 +531,12 @@ class Survey_Common_Action extends CAction
 
                 //Show Question Details
                 //Count answer-options for this question
-                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid, 'language' => $baselang));
+                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
                 //Count sub-questions for this question
-                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
-                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
                 if (is_null($qrrow)) {
                     return;
                 }
@@ -602,15 +610,11 @@ class Survey_Common_Action extends CAction
             $oSurvey = $aData['oSurvey'];
             $baselang = $oSurvey->language;
 
-            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
+            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
 
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
-                )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
-            // $surveyinfo = $sumresult1->attributes;
-            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            // $surveyinfo = array_map('flattenText', $surveyinfo);
-            //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+                )->findByPk($surveyid); 
             $aData['activated'] = $activated = $sumresult1->active;
 
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -656,7 +660,7 @@ class Survey_Common_Action extends CAction
 
             // ACTIVATE SURVEY BUTTON
 
-            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $oSurvey->language);
+            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
 
             $sumcount3 = Question::model()->countByAttributes($condition); //Checked
 
@@ -830,19 +834,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language), array('order'=>'group_order ASC'));
-            if (count($aGroups)) {
-                foreach ($aGroups as $group) {
-                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
-
-                    foreach ($group->aQuestions as $question) {
-                        if (is_object($question)) {
-                            $question->question = viewHelper::flatEllipsizeText($question->question, true, 60, '[...]', 0.5);
-                        }
-                    }
-                }
-            }
-
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID), array('order'=>'group_order ASC'));
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
@@ -944,7 +936,6 @@ class Survey_Common_Action extends CAction
 
             // We filter the current survey id
             $model->sid = $iSurveyID;
-            $model->language = $baselang;
 
             $aData['model'] = $model;
 
@@ -966,11 +957,9 @@ class Survey_Common_Action extends CAction
         $baselang = $aSurveyInfo['language'];
         $activated = $aSurveyInfo['active'];
 
-        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
-
+        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-        $sumcount2 = QuestionGroup::model()->countByAttributes($condition); //Checked
+        $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;

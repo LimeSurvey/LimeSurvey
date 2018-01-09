@@ -146,7 +146,7 @@ class labels extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
                 $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
             }
-
+            $options = $aImportResults = []; 
             $options['checkforduplicates'] = 'off';
             if ($_POST['checkforduplicates'] == 1) {
                 $options['checkforduplicates'] = 'on';
@@ -177,17 +177,14 @@ class labels extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         $lid = sanitize_int($lid);
-        $aViewUrls = array();
+        $aViewUrls = $aData = [];
 
         if (Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
-                foreach ($result as $row) {
-                    $row = $row->attributes;
-                    $lbname = $row['label_name'];
-                    $lblid = $row['lid'];
-                    $langids = $row['languages'];
-                }
+                $arLabelSet = LabelSet::model()->findByAttributes(array('lid' => $lid));
+                $lbname = $arLabelSet->label_name;
+                $lblid = $arLabelSet->lid;
+                $langids = $arLabelSet->languages;
                 $aData['lbname'] = $lbname;
                 $aData['lblid'] = $lblid;
             }
@@ -242,9 +239,7 @@ class labels extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         // Escapes the id variable
-        if ($lid != false) {
-                    $lid = sanitize_int($lid);
-        }
+        $lid = (int) $lid;
 
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
@@ -262,12 +257,10 @@ class labels extends Survey_Common_Action
         $labelset_exists = $model !== null;
         
         
-        if ($lid && $labelset_exists) {
+        if ($lid > 0 && $labelset_exists) {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
-
-            $rwlabelset = $model->labels;
 
             // Make languages array from the current row
             $lslanguages = explode(" ", trim($model->languages));
@@ -351,7 +344,7 @@ class labels extends Survey_Common_Action
         }
         $action = returnGlobal('action');
         Yii::app()->loadHelper('admin/label');
-        $lid = returnGlobal('lid');
+        $lid = (int) returnGlobal('lid');
 
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             updateset($lid);
@@ -408,6 +401,7 @@ class labels extends Survey_Common_Action
     public function exportmulti()
     {
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+            $aData = [];
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
@@ -431,7 +425,7 @@ class labels extends Survey_Common_Action
 
     public function ajaxSets()
     {
-        $lid = Yii::app()->getRequest()->getPost('lid');
+        $lid = (int) Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', array());
@@ -476,7 +470,7 @@ class labels extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'labels.js');
 
@@ -494,6 +488,6 @@ class labels extends Survey_Common_Action
 
         $aData['display']['menu_bars'] = false;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

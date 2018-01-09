@@ -54,10 +54,19 @@ class TemplateConfiguration extends TemplateConfig
     /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
     public $bUseMagicInherit = false;
 
+    /**@var boolean Indicate if this entry in DB get created on the fly. If yes, because of Cache, it can need a page redirect  */
+    public $bJustCreated = false;
+
     // Caches
 
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
+
+    /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
+    public static $aInstancesFromTemplateName;
+
+    /** @var array $aInstancesFromTemplateName cache for method prepareTemplateRendering*/
+    public static $aPreparedToRender;
 
     /** @var boolean $bTemplateCheckResult is the template valid?*/
     private $bTemplateCheckResult;
@@ -135,23 +144,15 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Gets an instance of a templateconfiguration by name
      *
-     * @return TemplateConfiguration
-     */
-    public static function getInstanceFromConfigurationId($iTemplateConfigId)
-    {
-        $oTemplateConfiguration = self::model()->findByPk($iTemplateConfigId);
-        $oTemplateConfiguration->setThisTemplate();
-        return $oTemplateConfiguration;
-    }
-
-    /**
-     * Gets an instance of a templateconfiguration by name
-     *
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromTemplateName($sTemplateName)
     {
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])) {
+            return self::$aInstancesFromTemplateName[$sTemplateName];
+        }
+
         $oInstance = self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
             array(':template_name'=>$sTemplateName)
@@ -161,6 +162,8 @@ class TemplateConfiguration extends TemplateConfig
         if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
         }
+
+        self::$aInstancesFromTemplateName[$sTemplateName] = $oInstance;
 
         return $oInstance;
     }
@@ -175,7 +178,6 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null)
     {
-
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
 
@@ -189,15 +191,18 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = null;
             $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
+
+            $oTemplateConfigurationModel->bJustCreated = true;
         }
 
         return $oTemplateConfigurationModel;
-
     }
 
     /**
@@ -226,10 +231,64 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = null;
             $oTemplateConfigurationModel->sid = $iSurveyId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+    }
+
+    /**
+     * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group). Else, it will create it.
+     * @TODO: recursivity for survey group
+     * @param int $iSurveyId
+     * @return TemplateConfiguration the template configuration for the survey group
+     */
+    public static function checkAndcreateSurveyConfig($iSurveyId)
+    {
+        //if a template name is given also check against that
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $sTemplateName  = $oSurvey->template;
+        $iSurveyGroupId = $oSurvey->gsid;
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = null;
+            $oTemplateConfigurationModel->sid = $iSurveyId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('gsid=:gsid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->bUseMagicInherit = false;
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = null;
+            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
         }
@@ -250,7 +309,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
-        if ($sTemplateName != null) {
+        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         }
 
@@ -364,7 +423,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder) && !is_dir(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder)) {
+            if (!is_object($this->template) || (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))) {
                 $this->bTemplateCheckResult = false;
             }
         }
@@ -384,11 +443,17 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
+        //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
+        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])) {
+            return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
+        }
+
         $this->bUseMagicInherit = $bUseMagicInherit;
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
@@ -451,7 +516,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
             href='".$sEditorUrl."'
-            class='btn btn-default'>
+            class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
                 ".gT('Theme editor')."
             </a>";
@@ -464,7 +529,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_".$this->template_name."'
                 href='".$sOptionUrl."'
-                class='btn btn-default'>
+                class='btn btn-default btn-block'>
                     <span class='fa fa-tachometer'></span>
                     ".gT('Theme options')."
                 </a>";
@@ -478,8 +543,8 @@ class TemplateConfiguration extends TemplateConfig
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
             data-tooltip="true"
-            title="'.gT('Uninstall this theme').'"
-            class="btn btn-danger">
+            data-title="'.gT('Uninstall this theme').'"
+            class="btn btn-danger btn-block">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
             </a>';
@@ -488,10 +553,22 @@ class TemplateConfiguration extends TemplateConfig
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
-            $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
+            $sButtons = $sEditorLink.$OptionLink;
 
             if ($this->template_name != getGlobalSetting('defaulttheme')) {
-                $sButtons .= '<br><br>'.$sUninstallLink;
+                $sButtons .= $sUninstallLink;
+            } else {
+                $sButtons .= '
+                    <a
+                        class="btn btn-danger btn-block"
+                        disabled
+                        data-toggle="tooltip"
+                        title="' . gT('You cannot uninstall the default template.').'"
+                    >
+                        <span class="icon-trash"></span>
+                        '.gT('Uninstall').'
+                    </a>
+                ';
             }
         }
 
@@ -504,8 +581,10 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-        $this->prepareTemplateRendering();
-        $oRTemplate = $this;
+
+
+        $oRTemplate = $this->prepareTemplateRendering($this->template->name);
+
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
 
@@ -514,8 +593,7 @@ class TemplateConfiguration extends TemplateConfig
                 return false;
                 break;
             }
-            $oMotherTemplate->prepareTemplateRendering();
-            $oRTemplate = $oMotherTemplate;
+            $oRTemplate = $oMotherTemplate->prepareTemplateRendering($this->template->name);
         }
         return true;
     }
@@ -547,16 +625,15 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
-        $this->prepareTemplateRendering();
+        $oTemplate = $this->prepareTemplateRendering($this->template->name);
+        $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
-        $renderArray = array('templateConfiguration' => $this->getOptionPageAttributes());
+        $oTemplate->setOptions();
+        $oTemplate->setOptionInheritance();
 
-        $this->setOptions();
-        $this->setOptionInheritance();
+        $renderArray['oParentOptions'] = (array) $oTemplate->oOptions;
 
-        $renderArray['oParentOptions'] = (array) $this->oOptions;
-
-        return Yii::app()->twigRenderer->renderOptionPage($this, $renderArray);
+        return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
 
     /**
@@ -674,13 +751,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName   = $this->template->extends;
-            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
-            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
-            if ($this->oMotherTemplate->checkTemplate()) {
-                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null); // Object Recursion
-            } else {
-                // Throw exception? Set to default theme?
-            }
+            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName)->prepareTemplateRendering($sMotherTemplateName, null);
         }
     }
 

@@ -40,16 +40,16 @@ class questions extends Survey_Common_Action
 
         //Show Question Details
         //Count answer-options for this question
-        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid));
 
         $aData['qct'] = count($qrr);
 
         //Count sub-questions for this question
-        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid));
         $aData['sqct'] = count($sqrq);
 
-        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
-        if (is_null($qrrow)) {
+        $oQuestion = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
+        if (is_null($oQuestion)) {
             return;
         }
 
@@ -63,9 +63,8 @@ class questions extends Survey_Common_Action
 
         $aData['activated'] = $survey->active;
 
-        $oQuestion = $qrrow;
         $aData['oQuestion'] = $oQuestion;
-        $qrrow = $qrrow->attributes;
+        $qrrow = $oQuestion->attributes;
         $aData['languagelist'] = $survey->allLanguages;
         $aData['qtypes'] = getQuestionTypeList('', 'array');
 
@@ -471,7 +470,7 @@ class questions extends Survey_Common_Action
         $anslangs = $oSurvey->additionalLanguages;
         $baselang = $oSurvey->language;
 
-        $oQuestion = $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $oQuestion = $qrow = Question::model()->findByPk($qid);
         $qtype = $qrow['type'];
 
         $qtypes = getQuestionTypeList('', 'array');
@@ -481,19 +480,24 @@ class questions extends Survey_Common_Action
         // Check if there is at least one answer
         for ($i = 0; $i < $scalecount; $i++) {
             $ans = new CDbCriteria;
-            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
+            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i");
             $qresult = Answer::model()->count($ans);
 
             if ((int) $qresult == 0) {
                 $oAnswer = new Answer;
                 $oAnswer->qid = $qid;
                 $oAnswer->code = 'A1';
-                $oAnswer->answer = "";
-                $oAnswer->language = $baselang;
                 $oAnswer->sortorder = 0;
                 $oAnswer->scale_id = $i;
                 $oAnswer->save();
+                
+                $oAnserL10n = new AnswerL10n();
+                $oAnserL10n->answer = "";
+                $oAnserL10n->language = $baselang;
+                $oAnserL10n->aid = $oAnswer->aid;
+                $oAnserL10n->save();
             }
+            
         }
 
 
@@ -520,7 +524,7 @@ class questions extends Survey_Common_Action
                     $oAnswer->language = $language;
                     $oAnswer->sortorder = $answer->sortorder;
                     $oAnswer->scale_id = $i;
-                    $oAnswer->assessment_value = $answer->assessment_value;
+                    $oAnswer->assessment_value = (isset($answer->assessment_value) ? $answer->assessment_value : 0);
                     $oAnswer->save();
                 }
             }
@@ -538,19 +542,16 @@ class questions extends Survey_Common_Action
         if (!isset($_POST['ansaction'])) {
             // Check if any nulls exist. If they do, redo the sortorders
             $ans = new CDbCriteria;
-            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
+            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i");
             $cacount = Answer::model()->count($ans);
             if (!empty($cacount)) {
-                Answer::model()->updateSortOrder($qid, $oSurvey->language);
+                Answer::model()->updateSortOrder($qid);
             }
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $row = Answer::model()->findByAttributes(array(
-        'qid' => $qid,
-        'language' => $oSurvey->language
-        ), array('order' => 'sortorder desc'));
+        $row = Answer::model()->findByAttributes(array('qid' => $qid), array('order' => 'sortorder desc'));
 
         if (!is_null($row)) {
                     $maxsortorder = $row->sortorder + 1;
@@ -583,15 +584,10 @@ class questions extends Survey_Common_Action
         foreach ($anslangs as $anslang) {
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++) {
                 $criteria = new CDbCriteria;
-                $criteria->condition = 'qid = :qid AND language = :language AND scale_id = :scale_id';
+                $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
                 $criteria->order = 'sortorder, code ASC';
-                $criteria->params = array(':qid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
+                $criteria->params = array(':qid' => $qid, ':scale_id' => $scale_id);
                 $results[$anslang][$scale_id] = Answer::model()->findAll($criteria);
-                //$aData['results'][$anslang][$scale_id] = Answer::model()->findAll($criteria);
-                foreach ($results[$anslang][$scale_id] as $row) {
-                    $row->code      = htmlspecialchars($row->code);
-                    $row->answer    = htmlspecialchars($row->answer);
-                }
                 $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
             }
 
@@ -682,7 +678,7 @@ class questions extends Survey_Common_Action
         $gid = sanitize_int($gid);
 
         // Get languages select on survey.
-        $anslangs = $oSurvey->additionalLanguages;
+        $aSurveyLanguages = $oSurvey->additionalLanguages;
 
         $oQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $oSurvey->language));
         $aParentQuestion = $oQuestion->attributes;
@@ -694,7 +690,6 @@ class questions extends Survey_Common_Action
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++) {
             $subquestiondata = Question::model()->findAllByAttributes(array(
             'parent_qid' => $qid,
-            'language' => $oSurvey->language,
             'scale_id' => $iScale
             ));
 
@@ -704,64 +699,52 @@ class questions extends Survey_Common_Action
                     'gid' => $gid,
                     'parent_qid' => $qid,
                     'title' => 'SQ001',
-                    'question' => '',
                     'question_order' => 1,
-                    'language' => $oSurvey->language,
                     'relevance' => '1',
                     'scale_id' => $iScale,
                 );
                 $subQuestion = new Question();
                 $subQuestion->attributes = $data;
                 $subQuestion->save();
-
+                $oQuestionL10n = new QuestionL10n();
+                $oQuestionL10n->qid = $subQuestion->qid;
+                $oQuestionL10n->question = '';
+                $oQuestionL10n->language = $oSurvey->language;
+                $oQuestionL10n->save();
                 $subquestiondata = Question::model()->findAllByAttributes(array(
                     'parent_qid' => $qid,
-                    'language' => $oSurvey->language,
                     'scale_id' => $iScale
                 ));
             }
 
-            // Check that there are subquestions for every language supported by the survey
-            foreach ($anslangs as $language) {
-                foreach ($subquestiondata as $row) {
-                    $qrow = Question::model()->count('
-                    parent_qid = :qid AND
-                    language = :language AND
-                    qid = '.$row->qid.' AND
-                    scale_id = :iScale',
-                    array(
-                    ':qid' => $qid,
-                    ':language' => $language,
-                    ':iScale' => $iScale
+            // Check that there are subquestions translations for every language supported by the survey
+            foreach ($subquestiondata as $row) {
+                foreach ($aSurveyLanguages as $language) {
+                    $qrow = QuestionL10n::model()->count('
+                        qid = :qid AND
+                        language = :$language',
+                        array(
+                            ':qid' => $qid,
+                            ':language' => $language
                     ));
-
                     // Means that no record for the language exists in the questions table
                     if (empty($qrow)) {
-                        switchMSSQLIdentityInsert('questions', true);
-                        $question = new Question;
-                        $question->qid = $row->qid;
-                        $question->sid = $surveyid;
-                        $question->gid = $row->gid;
-                        $question->parent_qid = $qid;
-                        $question->title = $row->title;
-                        $question->question = $row->question;
-                        $question->question_order = $row->question_order;
-                        $question->language = $language;
-                        $question->scale_id = $iScale;
-                        $question->relevance = $row->relevance;
-                        $question->save();
-                        switchMSSQLIdentityInsert('questions', false);
+                        $oQuestionL10n = new QuestionL10n;
+                        $oQuestionL10n->qid = $row->qid;
+                        $oQuestionL10n->question = $row->question;
+                        $oQuestionL10n->language = $language;
+                        $oQuestionL10n->save();
                     }
                 }
             }
         }
 
-        array_unshift($anslangs, $oSurvey->language);
+        array_unshift($aSurveyLanguages, $oSurvey->language);
         /* Fix subquestions */
         $oQuestion->fixSubQuestions();
 
         // Check sort order for subquestions
-        $qresult = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $oSurvey->language));
+        $qresult = Question::model()->findByAttributes(array('qid' => $qid));
         if (!is_null($qresult)) {
                     $qtype = $qresult->type;
         }
@@ -770,8 +753,7 @@ class questions extends Survey_Common_Action
             // Check if any nulls exist. If they do, redo the sortorders
             $cacount = Question::model()->count(array(
             'parent_qid' => $qid,
-            'question_order' => null,
-            'language' => $oSurvey->language
+            'question_order' => null
             ));
 
             if ($cacount) {
@@ -783,8 +765,7 @@ class questions extends Survey_Common_Action
 
         // Print Key Control JavaScript
         $result = Question::model()->findAllBYAttributes(array(
-        'parent_qid' => $qid,
-        'language' => $oSurvey->language
+        'parent_qid' => $qid
         ), array('order' => 'question_order desc'));
 
         $aData['anscount'] = count($result);
@@ -806,32 +787,22 @@ class questions extends Survey_Common_Action
                     $this->getController()->error('Invalid survey ID');
         }
 
-        // $surveyinfo = $sumresult1->attributes;
-        // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-        // $surveyinfo = array_map('flattenText', $surveyinfo);
-
         $aData['activated']       = $sumresult1->active;
         $aData['surveyid']        = $surveyid;
         $aData['gid']             = $gid;
         $aData['qid']             = $qid;
         $aData['aParentQuestion'] = $aParentQuestion;
-        $aData['anslangs']        = $anslangs;
+        $aData['anslangs']        = $aSurveyLanguages;
         $aData['maxsortorder']    = $maxsortorder;
         $aData['oQuestion']       = $oQuestion;
 
-        foreach ($anslangs as $anslang) {
+        foreach ($aSurveyLanguages as $anslang) {
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++) {
                 $criteria = new CDbCriteria;
-                $criteria->condition = 'parent_qid = :pqid AND language = :language AND scale_id = :scale_id';
+                $criteria->condition = 'parent_qid = :pqid  AND scale_id = :scale_id';
                 $criteria->order = 'question_order, title ASC';
-                $criteria->params = array(':pqid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
+                $criteria->params = array(':pqid' => $qid, ':scale_id' => $scale_id);
                 $results[$anslang][$scale_id] = Question::model()->findAll($criteria);
-
-                foreach ($results[$anslang][$scale_id] as $row) {
-                    $row->title     = htmlspecialchars($row->title);
-                    $row->question  = htmlspecialchars($row->question);
-                    $row->relevance = htmlspecialchars($row->relevance);
-                }
                 $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
             }
         }
@@ -963,7 +934,7 @@ class questions extends Survey_Common_Action
                 'language'  => $language,
                 'title'     => $code,
                 'question'  => '',
-                'relevance' => '',
+                'relevance' => '1',
                 'oldCode'   => $oldCode,
             );
         } else {
@@ -983,7 +954,7 @@ class questions extends Survey_Common_Action
                 'language'          => $language,
                 'title'             => $code,
                 'question'          => '',
-                'relevance'         => '',
+                'relevance'         => '1',
                 'oldCode'           => $oldCode,
             );
         }
@@ -1027,35 +998,22 @@ class questions extends Survey_Common_Action
         $baselang = $survey->language;
 
         $qtypelist = getQuestionTypeList('', 'array');
-        $qDescToCode = 'qDescToCode = {';
-        $qCodeToInfo = 'qCodeToInfo = {';
-        foreach ($qtypelist as $qtype => $qdesc) {
-            $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-            $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
-        }
-        $aData['ajaxDatas']['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
-        $eqrow = [];
-        $eqrow['language'] = $baselang;
-        $eqrow['title'] = '';
-        $eqrow['question'] = '';
-        $eqrow['help'] = '';
-        $eqrow['type'] = 'T';
-        $eqrow['lid'] = 0;
-        $eqrow['lid1'] = 0;
-        $eqrow['gid'] = null;
-        $eqrow['other'] = 'N';
-        $eqrow['mandatory'] = 'N';
-        $eqrow['preg'] = '';
-        $eqrow['relevance'] = 1;
-        $eqrow['group_name'] = '';
-        $eqrow['modulename'] = '';
-        $eqrow['conditions_number'] = false;
+        $aData['ajaxDatas']['qTypeOutput'] = json_encode($qtypelist);
+
+        $oQuestion = new Question;
+        $oQuestion->type = 'T';
+        $oQuestion->other = 'N';
+        $oQuestion->mandatory = 'N';
+        $oQuestion->relevance = 1;
+        $oQuestion->group_name = '';
+        $oQuestion->modulename = '';
+        $oQuestion->questionL10ns = array($baselang=>new QuestionL10n);
         if (isset($_GET['gid'])) {
-            $eqrow['gid'] = $_GET['gid'];
+            $oQuestion->gid = $_GET['gid'];
         }
-        $aData['eqrow'] = $eqrow;
-        $aData['groupid'] = $eqrow['gid'];
+        $aData['oQuestion'] = $oQuestion;
+        $aData['groupid'] = $oQuestion->gid;
 
         $sumresult1 = $survey;
         if (is_null($sumresult1)) {
@@ -1077,7 +1035,7 @@ class questions extends Survey_Common_Action
         $aData['selectormodeclass'] = $selectormodeclass;
 
 
-        $aData['accordionDatas']['eqrow'] = $eqrow;
+        $aData['accordionDatas']['oQuestion'] = $oQuestion;
         $aData['ajaxDatas']['sValidateUrl'] = $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid));
         $aData['addlanguages'] = $survey->additionalLanguages;
 
@@ -1107,7 +1065,8 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$oQuestion->gid.'new', "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
+        
 
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
@@ -1181,12 +1140,13 @@ class questions extends Survey_Common_Action
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
-                $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+                $oQuestion = Question::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
+                if (!$oQuestion) {
+                    $this->getController()->error('Invalid question id');
+                }
                 $aData['oQuestion'] = $oQuestion;
-
                 $basesettings = [];
-                $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-                foreach ($egresult as $esrow) {
+                foreach ($oQuestion->questionL10ns as $esrow) {
                     if (!array_key_exists($esrow->language, $questlangs)) {
                     // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                         $esrow->delete();
@@ -1195,23 +1155,20 @@ class questions extends Survey_Common_Action
                     }
 
                     if ($esrow->language == $baselang) {
-                        $esrow = $esrow->attributes;
                         $basesettings = array(
-                        'question_order' => $esrow['question_order'],
-                        'other' => $esrow['other'],
-                        'mandatory' => $esrow['mandatory'],
-                        'type' => $esrow['type'],
-                        'title' => $esrow['title'],
-                        'preg' => $esrow['preg'],
-                        'question' => $esrow['question'],
-                        'help' => $esrow['help']
+                        'question_order' => $oQuestion->question_order,
+                        'other' => $oQuestion->other,
+                        'mandatory' => $oQuestion->mandatory,
+                        'type' => $oQuestion->type,
+                        'title' => $oQuestion->title,
+                        'preg' => $oQuestion->preg,
+                        'question' => $esrow->question,
+                        'help' => $esrow->help
                         );
                     }
                 }
 
-                if (!$egresult) {
-                    $this->getController()->error('Invalid question id');
-                }
+
 
                 foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
@@ -1232,11 +1189,10 @@ class questions extends Survey_Common_Action
                     }
                 }
 
-                $eqresult = Question::model()->with('groups')->together()->findByAttributes(array(
+                $oQuestion = Question::model()->with('group')->together()->findByAttributes(array(
                 'sid' => $surveyid,
                 'gid' => $gid,
                 'qid' => $qid,
-                'language' => $baselang
                 ));
             } else {
                 // This is needed to properly color-code content if it contains replacements
@@ -1244,53 +1200,33 @@ class questions extends Survey_Common_Action
             }
 
             $qtypelist = getQuestionTypeList('', 'array');
-            $qDescToCode = 'qDescToCode = {';
-            $qCodeToInfo = 'qCodeToInfo = {';
-            foreach ($qtypelist as $qtype => $qdesc) {
-                $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
+            $aData['qTypeOutput'] = json_encode($qtypelist);
+
+            if ($adding) {
+                $oQuestion = new Question;
+//                $oQuestion->language'] = $baselang;
+ //               $oQuestion->question'] = '';
+ //               $oQuestion->help'] = '';
+                $oQuestion->type = 'T';
+                $oQuestion->lid = 0;
+                $oQuestion->lid1 = 0;
+                $oQuestion->gid = $gid;
+                $oQuestion->other = 'N';
+                $oQuestion->mandatory = 'N';
+                $oQuestion->preg = '';
+                $oQuestion->relevance = 1;
+                $oQuestion->group_name = '';                
             }
-            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
-
-            $eqrow = [];
-            if (!$adding) {
-                if (is_object($eqresult->groups)) {
-                                    $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);
-                } else {
-                                    $eqrow = $eqresult->attributes;
-                }
-
-                // Todo: handler in case that record is not found
-                if ($copying) {
-                                    $eqrow['title'] = '';
-                }
-            } else {
-                $eqrow['language'] = $baselang;
-                $eqrow['title'] = '';
-                $eqrow['question'] = '';
-                $eqrow['help'] = '';
-                $eqrow['type'] = 'T';
-                $eqrow['lid'] = 0;
-                $eqrow['lid1'] = 0;
-                $eqrow['gid'] = $gid;
-                $eqrow['other'] = 'N';
-                $eqrow['mandatory'] = 'N';
-                $eqrow['preg'] = '';
-                $eqrow['relevance'] = 1;
-                $eqrow['group_name'] = '';
-            }
-            $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
+            $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
 
-            $aData['eqrow'] = $eqrow;
+            $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
                 $criteria->addColumnCondition(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-                $criteria->params[':lang'] = $baselang;
-                $criteria->addCondition('language != :lang');
                 $aqresult = Question::model()->findAll($criteria);
                 $aData['aqresult'] = $aqresult;
             }
@@ -1337,7 +1273,7 @@ class questions extends Survey_Common_Action
             $aData['addlanguages'] = $oSurvey->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {
                     include('accessDenied.php');
         }
@@ -1949,9 +1885,8 @@ class questions extends Survey_Common_Action
         if (!$iQid) {
             $oQuestion = new Question('insert');
             $oQuestion->sid = $iSurveyId;
-            $oQuestion->language = $oSurvey->language;
         } else {
-            $oQuestion = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$oSurvey->language));
+            $oQuestion = Question::model()->find('qid=:qid', array(":qid"=>$iQid));
             if (!$oQuestion) {
                     throw new Exception('Invalid question id.');
             }
@@ -1982,9 +1917,9 @@ class questions extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

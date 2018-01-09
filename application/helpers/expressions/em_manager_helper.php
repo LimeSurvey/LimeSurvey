@@ -2167,7 +2167,7 @@
                 {
                     $max_subquestions=intval($qattr['max_subquestions']);
                     // We don't have another answer count in EM ?
-                    $answerCount=Answer::model()->count("qid=:qid and language=:language",array(":qid"=>$questionNum,'language'=>$_SESSION['LEMlang']));
+                    $answerCount=Answer::model()->count("qid=:qid",array(":qid"=>$questionNum));
                     if($max_subquestions < $answerCount)
                     {
                         if($max_answers!='')
@@ -5447,14 +5447,14 @@
                         $thisstep = 0;
                         break;
                 }
-                $setter[] = dbQuoteID('lastpage') . "=" . dbQuoteAll($thisstep);
+                $setter[] = App()->db->quoteColumnName('lastpage') . "=" . App()->db->quoteValue($thisstep);
 
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                    $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                    $setter[] = App()->db->quoteColumnName('datestamp') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
                 }
                 if ($this->surveyOptions['ipaddr']) {
-                    $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
+                    $setter[] = App()->db->quoteColumnName('ipaddr') . "=" . App()->db->quoteValue(getIPAddress());
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -5489,11 +5489,11 @@
                     }
                     if (is_null($val))
                     {
-                        $setter[] = dbQuoteID($key) . "=NULL";
+                        $setter[] = App()->db->quoteColumnName($key) . "=NULL";
                     }
                     else
                     {
-                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll(stripCtrlChars($val));
+                        $setter[] = App()->db->quoteColumnName($key) . "=" . App()->db->quoteValue(stripCtrlChars($val));
                     }
                 }
                 $query .= implode(', ', $setter);
@@ -5556,11 +5556,11 @@
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
-                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
                             }
                             else
                             {
-                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
+                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
                             }
                             $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
                             dbExecuteAssoc($sQuery);   // Checked
@@ -8549,29 +8549,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
         * Return array of language-specific answer codes
         * @param int|null $surveyid
-        * @param int|null $qid
         * @param string|null $lang
         * @return array
         */
-        public function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+        public function getAnswerSetsForEM($surveyid=NULL,$lang=NULL)
         {
-            if (!is_null($qid)) {
-                $where = "a.qid = ".$qid;
-            }
-            else if (!is_null($surveyid)) {
-                    $where = "a.qid = q.qid and q.sid = ".$surveyid;
-                }
-                else {
-                    $where = "1";
+            $where=' 1=1';
+            if (!is_null($surveyid)) {
+                $where .= " and a.qid = q.qid and q.sid = ".$surveyid;
             }
             if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."' and q.language='".$lang."'";
+                $where .= " and a.language='".$lang."'" ;
             }
 
-            $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
-            ." FROM {{answers}} AS a, {{questions}} as q"
+            $query = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
+            ." FROM {{answers}} AS a"
+            ." JOIN {{questions}} q on a.qid=q.qid"
+            ." JOIN {{answer_l10ns}} l on l.aid=a.aid"
             ." WHERE ".$where
-            .$lang
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
             $data = dbExecuteAssoc($query);
@@ -8593,20 +8588,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
         * Returns group info needed for indexes
         * @param int $surveyid
-        * @param string|null $lang
+        * @param string|null $sLanguage
         * @return array
         */
-        public function getGroupInfoForEM($surveyid,$lang=NULL)
+        public function getGroupInfoForEM($surveyid,$sLanguage=NULL)
         {
-            if (is_null($lang) && isset($_SESSION['LEMlang']))
+            if (is_null($sLanguage) && isset($_SESSION['LEMlang']))
             {
-                $lang = $_SESSION['LEMlang'];
+                $sLanguage = $_SESSION['LEMlang'];
             }
-            elseif(is_null($lang))
+            elseif(is_null($sLanguage))
             {
-                $lang=Survey::model()->findByPk($surveyid)->language;
+                $sLanguage=Survey::model()->findByPk($surveyid)->language;
             }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
+            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
             $qinfo = array();
             $_order=0;
             $gid = array();
@@ -8615,8 +8610,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->group_name,
-                    'description' =>  $oQuestionGroup->description,
+                    'group_name' => $oQuestionGroup->questionGroupL10ns[$sLanguage]->group_name,
+                    'description' =>  $oQuestionGroup->questionGroupL10ns[$sLanguage]->description,
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
@@ -8724,7 +8719,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
-                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
+                                        $value = "INVALID"; // This don't disable submitting survey ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8732,7 +8727,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
+                                            $value = "";// This don't disable submitting survey ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -10274,18 +10269,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             if ($lang == 'ar')
             {
-                $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
+                $eastern_arabic_symbols = array("ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©");
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
             }
             else if ($lang == 'fa')
             {
                 // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-                $extended_arabic_indic = array("۰","۱","۲","۳","۴","۵","۶","۷","۸","۹");
+                $extended_arabic_indic = array("ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â²","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹");
                 $result = str_replace($extended_arabic_indic, $standard, $str);
             }
             else if ($lang == 'hi')
             {
-                $hindi_symbols = array("०","१","२","३","४","५","६","७","८","९");
+                $hindi_symbols = array("ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â«","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â®","ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯");
                 $result = str_replace($hindi_symbols, $standard, $str);
             }
 
@@ -10335,8 +10330,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             else
                             {
-                                if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                                {
+                                if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                                     $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                     return false;
                                 }
@@ -10346,16 +10340,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'O': // List with comment
                         if(substr($sgq,-7)!='comment')
                         {
-                            if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                            {
+                            if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                                 $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 return false;
                             }
                         }
                         break;
                     case 'F': // Array
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
@@ -10395,16 +10387,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'H': // Array by column
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
                         break;
                     case '1': // Array dual scale
                         $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
@@ -10441,8 +10431,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'R':  // Ranking
-                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
-                        {
+                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }

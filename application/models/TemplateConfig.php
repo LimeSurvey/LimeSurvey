@@ -140,7 +140,7 @@ class TemplateConfig extends CActiveRecord
          * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
          * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
          *
-         * @param $oTemplate TemplateManifest
+         * @param TemplateConfiguration $oTemplate TemplateManifest
          */
         protected function createTemplatePackage($oTemplate)
         {
@@ -221,6 +221,7 @@ class TemplateConfig extends CActiveRecord
         /**
          * Get the depends package
          * @uses self::@package
+         * @param TemplateConfiguration $oTemplate
          * @return string[]
          */
         protected function getDependsPackages($oTemplate)
@@ -278,6 +279,7 @@ class TemplateConfig extends CActiveRecord
                 }
 
             }
+
             return $this->sPreviewImgTag;
         }
 
@@ -326,7 +328,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['html']  = ' no-js ';
 
-        $aClassAndAttributes['class']['body']  = $this->sTemplateName;
+        $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
         if (!empty($this->aCssFrameworkReplacement)) {
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
@@ -451,7 +453,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        // Save
+        //Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -894,6 +896,27 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
+     * Get a string containing the name of the current template and all its parents
+     * Used to inject those names into body classes
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->template->extends)) {
+
+            $sTemplateNames .= ' '.$oRTemplate->template->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+        return $sTemplateNames;
+    }
+
+    /**
      * Convert the values to a json.
      * It checks that the correct values is inserted.
      * @param array|object $oFiled the filed to convert
@@ -959,7 +982,7 @@ class TemplateConfig extends CActiveRecord
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
-
+    /*
     public static function rename($sOldName, $sNewName)
     {
     }
@@ -977,27 +1000,32 @@ class TemplateConfig extends CActiveRecord
     /**
      * @param string $sType
      */
+    /*
     protected function getFilesToLoad($oTemplate, $sType)
     {
-    }
+    }  
+    */
 
     /**
      * @param string $sType
      */
+    /*
     protected function changeMotherConfiguration($sType, $aSettings)
     {
     }
-
+    */
     /**
      * @param string $sType
      */
+        /*
     protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
     {
     }
-
+    */
     /**
      * @param string $sType
      */
+        /*
     protected function getFrameworkAssetsReplacement($sType)
     {
     }
@@ -1009,5 +1037,6 @@ class TemplateConfig extends CActiveRecord
     }
     protected function setThisTemplate()
     {
-    }
+    } 
+    */
 }

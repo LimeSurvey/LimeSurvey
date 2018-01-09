@@ -62,7 +62,7 @@ class participantsaction extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerPackage('bootstrap-multiselect');
         $aData['display']['menu_bars'] = false;
@@ -79,7 +79,7 @@ $url .= "_view"; });
             throw new \InvalidArgumentException("aViewUrls must be either string or array");
         }
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**
@@ -223,10 +223,11 @@ $url .= "_view"; });
             $iUserID = Yii::app()->session['loginID'];
         }
 
-        $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
-
-        if ($count > 0) {
-            return ngT("Export {n} participant to CSV|Export {n} participants to CSV", $count);
+        $count = (int) Participant::model()->getParticipantsCount($attid, $search, $iUserID);
+        if ($count > 1) {
+            return sprintf(gT("Export %s participants to CSV"), $count);
+        } else if ($count == 1) {
+            return gT("Export participant to CSV");
         } else {
             return $count;
         }
@@ -376,7 +377,7 @@ $url .= "_view"; });
         if ($selectoption == 'po') {
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds);
         }
-        // Deletes from central and token table
+        // Deletes from central and survey participants table
         else if ($selectoption == 'ptt') {
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         }
@@ -684,8 +685,7 @@ $url .= "_view"; });
         } else {
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
-            if ($oCSVFile === false)
-            {
+            if ($oCSVFile === false) {
                 safeDie('File not found.');
             }
             $aFirstLine = fgets($oCSVFile);
@@ -1903,6 +1903,10 @@ $url .= "_view"; });
      * Echoes json
      * @return void
      */
+
+    /**
+     * @param CDbCriteria $search
+     */
     public function getParticipants_json($search = null)
     {
         $page = (int) Yii::app()->request->getPost('page');
@@ -2244,7 +2248,7 @@ $url .= "_view"; });
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey token table"), "<span class='badge alert-success'>".$response['success']."</span>");
+        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge alert-success'>".$response['success']."</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";

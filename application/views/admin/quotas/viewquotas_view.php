@@ -121,7 +121,7 @@ Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change',
 
                         ),
                         'itemsCssClass' =>'table-quotas table-striped table-condensed',
-                        'ajaxUpdate' => true,
+                        'ajaxUpdate' => 'quota-grid',
                     ));
                     ?>
                 </div>

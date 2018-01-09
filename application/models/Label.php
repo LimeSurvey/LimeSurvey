@@ -82,6 +82,11 @@ class Label extends LSActiveRecord
             'labelset' => array(self::HAS_ONE, 'LabelSet', 'lid')
         );
     }
+    
+    public function defaultScope()
+    {
+        return array('order'=>'sortorder');
+    }    
 
     /**
      * @param mixed|bool $condition

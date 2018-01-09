@@ -32,7 +32,11 @@ body {
      padding-bottom: 10px;
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
-
+.script-container{
+    height:1px; 
+    width:1px; 
+    overflow:hidden;
+}
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }
@@ -119,6 +123,10 @@ body {
   margin-top: 2em ;
   margin-bottom: 2em ;
   padding-bottom: 2em ;
+}
+.question-container.row {
+    margin-right: 0;
+    margin-left: 0;
 }
 
 .question-title-container {

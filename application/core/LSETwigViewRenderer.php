@@ -142,7 +142,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Render the option page of a template for the admin interface
      * @param Template $oTemplate    the template where the custom option page should be looked for
      * @param array    $renderArray  Array that will be passed to the options.twig as variables. 
-     * @return html
+     * @return string
      */
     public function renderOptionPage($oTemplate, $renderArray = array())
     {

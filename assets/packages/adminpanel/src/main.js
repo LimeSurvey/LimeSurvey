@@ -34,24 +34,11 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        menuOffset = $('nav.navbar').outerHeight(),
-                        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-                        footerHeight = $('footer').outerHeight(),
-                        windowHeight = screen.height,
-                        innerMenuHeight = $('#breadcrumb-container').outerHeight() + menuHeight,
-                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * footerHeight))),
-                        generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
-                    this.$log.log({
-                        menuOffset : menuOffset,
-                        menuHeight : menuHeight,
-                        footerHeight : footerHeight,
-                        windowHeight : windowHeight,
-                        windowHeightScreen : screen.availHeight,
-                        windowHeightScreenAvail : screen.height,
-                        innerMenuHeight : innerMenuHeight,
-                        inSurveyViewHeight : inSurveyViewHeight,
-                        generalContainerHeight : generalContainerHeight
-                    });
+                        inSurveyOffset = 230,
+                        menuHeight = $('.menubar').outerHeight(),
+                        windowHeight = $('html').height(),
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
+                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
                     this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
@@ -89,6 +76,11 @@ $(document).on('ready', function () {
                 });
                 window.singletonPjax();
 
+                $(document).trigger('vue-reload-remote');
+                
+                window.setInterval(function(){
+                    $(document).trigger('vue-reload-remote');
+                }, (60*5*1000));
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -120,6 +112,7 @@ $(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploadi
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
     $(document).trigger('vue-resize-height');
+    $(document).trigger('vue-reload-remote');
     // $(document).trigger('vue-sidemenu-update-link');
     setTimeout(function () {
         $('#pjax-file-load-container').find('div').css({

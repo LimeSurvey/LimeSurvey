@@ -3,14 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverKeys;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\StaleElementReferenceException;
-use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Exception\ElementNotVisibleException;
-
 /**
  * @since 2017-11-24
  * @group inst
@@ -22,11 +15,22 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public static function setupBeforeClass()
     {
-        parent::setUpBeforeClass();
+        // NB: Does not call parent, because there might not
+        // be a database (happens if this test is run multiple
+        // times).
+        self::$testHelper = new TestHelper();
+        self::$webDriver = self::$testHelper->getWebDriver();
+        self::$domain = getenv('DOMAIN');
+    }
+
+    public static function teardownAfterClass()
+    {
+        self::$testHelper->connectToOriginalDatabase();
     }
 
     /**
-     * 
+     *
+     * @throws \CException
      */
     public function testBasic()
     {
@@ -77,66 +81,86 @@ class InstallationControllerTest extends TestBaseClassWeb
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
 
-        // Installer start page.
-        self::$webDriver->get($url);
+        try {
 
-        // Click "Start installation".
-        $start = self::$webDriver->findElement(WebDriverBy::id('ls-start-installation'));
-        $start->click();
+            // Installer start page.
+            self::$webDriver->get($url);
 
-        // Accept license.
-        $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
-        $accept->click();
+            // Click "Start installation".
+            $start = self::$webDriver->findElement(WebDriverBy::id('ls-start-installation'));
+            $start->click();
 
-        // Click next at pre-check.
-        $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
-        $next->click();
+            // Accept license.
+            $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
+            $accept->click();
 
-        // Fill in database form.
-        $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
-        $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
-        $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-        $dbuserInput->clear()->sendKeys($dbuser);
-        $dbpwdInput->clear()->sendKeys($dbpwd);
-        $dbnameInput->sendKeys($databaseName);
+            // Click next at pre-check.
+            $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
+            $next->click();
 
-        // Click next.
-        $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
-        $next->click();
+            // Fill in database form.
+            $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
+            $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
+            $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
+            $dbuserInput->clear()->sendKeys($dbuser);
+            $dbpwdInput->clear()->sendKeys($dbpwd);
+            $dbnameInput->sendKeys($databaseName);
 
-        // Click "Create database".
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
+            // Click next.
+            $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
+            $next->click();
 
-        // Click "Populate".
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
+            // Click "Create database".
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
-        // Fill in admin username/password.
-        $adminLoginName = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
-        $adminLoginPwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
-        $confirmPwd     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
-        $adminLoginName->clear()->sendKeys($username);
-        $adminLoginPwd->clear()->sendKeys($password);
-        $confirmPwd->clear()->sendKeys($password);
+            // Click "Populate".
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
-        // Confirm optional settings (admin password etc).
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
+            // Fill in admin username/password.
+            $adminLoginName = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
+            $adminLoginPwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
+            $confirmPwd     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
+            $adminLoginName->clear()->sendKeys($username);
+            $adminLoginPwd->clear()->sendKeys($password);
+            $confirmPwd->clear()->sendKeys($password);
 
-        // Go to administration.
-        $button = self::$webDriver->findElement(WebDriverBy::id('ls-administration'));
-        $button->click();
+            // Confirm optional settings (admin password etc).
+            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button->click();
 
-        // Reset urlManager to adapt to latest config.
-        $configFile = \Yii::app()->getBasePath() . '/config/config.php';
-        $config = require($configFile);
-        $urlMan = \Yii::app()->urlManager;
-        $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
+            // Go to administration.
+            $button = self::$webDriver->findElement(WebDriverBy::id('ls-administration'));
+            $button->click();
 
-        // Login.
-        self::adminLogin($username, $password);
+            // Set debug=2
+            /* TODO: Can't write to config.php after installation.
+            $configFile = \Yii::app()->getBasePath() . '/config/config.php';
+            $data = file($configFile);
+            $data = array_map(function($data) {
+                  return stristr($data, "'debug'=>0") ? "'debug'=>2," : $data;
+            }, $data);
+            $output = [];
+            exec('chmod 777 ' . $configFile, $output);
+            var_dump($output);
+            $result = file_put_contents($configFile, implode('', $data));
+            $this->assertTrue($result > 0, 'Wrote config');
+             */
 
-        self::$testHelper->connectToOriginalDatabase();
+            // Reset urlManager to adapt to latest config.
+            $config = require($configFile);
+            $urlMan = \Yii::app()->urlManager;
+            $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
+
+            // Login.
+            self::adminLogin($username, $password);
+        } catch (NoSuchElementException $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, (new \ReflectionClass($this))->getShortName() . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
     }
 }

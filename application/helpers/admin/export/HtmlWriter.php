@@ -90,6 +90,9 @@
 
 
 
+        /**
+         * @param string $content
+         */
         protected function out($content)
         {
             fwrite($this->handle, str_pad('', count($this->stack) * 4).$content."\n");
@@ -108,6 +111,7 @@
         /**
          * Renders a question and recurses into sub-questions.
          * @param Question $question
+         * @param string $value
          */
         protected function renderQuestion($question, $value, $header)
         {

@@ -720,7 +720,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey for which a token table will be created
+     * @param integer $iSurveyID ID of the Survey for which a survey participants table will be created
      * @param string $sLanguage  A valid language shortcut to add to the current Survey. If the language already exists no error will be given.
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -780,7 +780,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey for which a token table will be created
+     * @param integer $iSurveyID ID of the Survey for which a survey participants table will be created
      * @param string $sLanguage A valid language shortcut to delete from the current Survey. If the language does not exist in that Survey no error will be given.
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -1716,7 +1716,7 @@ class remotecontrol_handle
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->tokensTableName)) {
-                            return array('status' => 'No token table');
+                            return array('status' => 'No survey participants table');
             }
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
             foreach ($aParticipantData as &$aParticipant) {
@@ -1738,7 +1738,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete multiple participants from the token table of a survey.
+     * Delete multiple participants from the survey participants table of a survey.
      * Returns the id of the deleted token
      *
      * @access public
@@ -1758,7 +1758,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No token table');
+                                    return array('status' => 'Error: No survey participants table');
                 }
 
                 $aResult = array();
@@ -1806,7 +1806,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No token table');
+                                    return array('status' => 'Error: No survey participants table');
                 }
 
                 if (is_array($aTokenQueryProperties)) {
@@ -1867,7 +1867,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No token table');
+                                    return array('status' => 'Error: No survey participants table');
                 }
 
                 if (is_array($aTokenQueryProperties)) {
@@ -1980,7 +1980,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No token table');
+                                    return array('status' => 'Error: No survey participants table');
                 }
 
                 $aAttributeValues = array();
@@ -2244,7 +2244,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iSurveyID ID of the Survey where a token table will be created for
+     * @param integer $iSurveyID ID of the Survey where a survey participants table will be created for
      * @param array $aAttributeFields  An array of integer describing any additional attribute fields
      * @return array Status=>OK when successful, otherwise the error description
      */
@@ -2270,7 +2270,7 @@ class remotecontrol_handle
             if (Token::createTable($iSurveyID, $aAttributeFields)) {
                 return array('status' => 'OK');
             } else {
-                return array('status' => 'Token table could not be created');
+                return array('status' => 'Survey participants table could not be created');
             }
         } else {
                     return array('status' => 'No permission');
@@ -2312,7 +2312,7 @@ class remotecontrol_handle
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No token table');
+                            return array('status' => 'Error: No survey participants table');
             }
 
             $command = new CDbCriteria();
@@ -2397,7 +2397,7 @@ class remotecontrol_handle
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No token table');
+                            return array('status' => 'Error: No survey participants table');
             }
 
             $iMaxEmails = (int) Yii::app()->getConfig("maxemails");
@@ -2464,7 +2464,7 @@ class remotecontrol_handle
             $timeadjust = Yii::app()->getConfig("timeadjust");
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No token table');
+                            return array('status' => 'Error: No survey participants table');
             }
 
             $SQLemailstatuscondition = "emailstatus = 'OK'";
@@ -2607,7 +2607,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return mixed TRUE(bool) on success. errormessage on error
+     * @return string|boolean TRUE(bool) on success. errormessage on error
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -2906,7 +2906,7 @@ class remotecontrol_handle
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".dbQuoteAll('$sToken'));
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue('$sToken'));
         return new BigFile($sTempFile, true, 'base64');
 
     }

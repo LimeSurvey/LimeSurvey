@@ -183,6 +183,12 @@
                     <file type="js">./scripts/custom.js</file>
                 </load>
 
+                <printanswers>
+                    <file type="view" role="layout">./subviews/content/printanswers.twig</file>
+                    <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
+                </printanswers>
+                
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>

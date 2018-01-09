@@ -52,6 +52,7 @@
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
+        <container>on</container>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->

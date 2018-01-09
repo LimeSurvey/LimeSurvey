@@ -394,7 +394,7 @@ class surveypermission extends Survey_Common_Action
                 $this->getController()->error('Access denied');
             }
 
-            $addsummary .= "</div></div></div>\n";
+            $addsummary .= "</div></div>\n";
 
             $aViewUrls['output'] = $addsummary;
         }
@@ -510,7 +510,7 @@ class surveypermission extends Survey_Common_Action
             } else {
                 $usersummary .= "<input type='hidden' name='ugid' value='{$postusergroupid}' />";
             }
-            $usersummary .= "</form></div></div>\n";
+            $usersummary .= "</form>\n";
 
             $aViewUrls['output'] = $usersummary;
         } else {
@@ -574,7 +574,7 @@ class surveypermission extends Survey_Common_Action
             } else {
                 $this->getController()->error('Access denied');
             }
-            $addsummary .= "</div></div></div>\n";
+            $addsummary .= "</div></div>\n";
 
             $aViewUrls['output'] = $addsummary;
         }
@@ -689,9 +689,9 @@ class surveypermission extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

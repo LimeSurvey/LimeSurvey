@@ -615,8 +615,8 @@ class themes extends Survey_Common_Action
             $relativePathEditfile = returnGlobal('relativePathEditfile');
             $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
             $screenname           = returnGlobal('screenname');
-            $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true);
-            $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+            $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
+
             $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
             $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
             $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
@@ -732,9 +732,7 @@ class themes extends Survey_Common_Action
         @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
         /* Load this template config, else 'survey-template' package can be outdated */
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, null, null, true);
-        $oEditedTemplate->prepareTemplateRendering($templatename);
-
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, null, null, true)->prepareTemplateRendering($templatename);
 
         if (!$fnew) {
             $aData['filenotwritten'] = true;
@@ -1139,8 +1137,8 @@ class themes extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

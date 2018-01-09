@@ -165,11 +165,11 @@ class export extends Survey_Common_Action
         $exports = $resultsService->getExports();
 
         if (!$sExportType) {
-            $aFieldMap = array();
-            //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            if ($survey->isSaveTimings) {
+            $aFieldMap = createFieldMap($survey, 'full', false, false, $survey->language);
+
+            if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full', false, false, $survey->language);
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full', false, false, $survey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -635,7 +635,7 @@ class export extends Survey_Common_Action
                 $firstline .= $s;
                 if ($vvVersion == 2) {
                     $fieldcode = viewHelper::getFieldCode($fielddata, array("LEMcompat"=>true));
-                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no token table
+                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participants table
                 } else {
                     $fieldcode = $field;
                 }
@@ -1339,9 +1339,9 @@ class export extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

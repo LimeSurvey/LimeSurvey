@@ -73,7 +73,7 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @param integer $participantId
-     * @return array|mixed|null
+     * @return CActiveRecord[]
      */
     public function getLinkInfo($participantId)
     {
@@ -83,7 +83,7 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @param integer $iSurveyId
-     * @return mixed
+     * @return CDbDataReader
      */
     public function rebuildLinksFromTokenTable($iSurveyId)
     {
@@ -96,13 +96,13 @@ class SurveyLink extends LSActiveRecord
     }
 
     /**
-     * Delete a single survey_link based on a token table entry(by token_id and survey_id)
+     * Delete a single survey_link based on a survey participants table entry(by token_id and survey_id)
      *
      * An entry in the survey_links table must be unique by the combination of Token_ID
      * (which is unique within a tokens table) and survey_id (which limits to one single
-     * token table).
+     * survey participants table).
      *
-     * @param int[] $aTokenIds the unique ids of the entry in the token table being deleted
+     * @param int[] $aTokenIds the unique ids of the entry in the survey participants table being deleted
      * @param int $surveyId the id of the survey for the link being deleted
      *
      * @return bool|CDbDataReader

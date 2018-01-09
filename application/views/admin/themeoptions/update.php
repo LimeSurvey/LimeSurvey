@@ -5,6 +5,8 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
+$gsid = Yii::app()->request->getQuery('gsid', null);
+$sid = Yii::app()->request->getQuery('surveyid', null);
 ?>
 
 <?php if (empty($model->sid)): ?>
@@ -13,6 +15,20 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <div class='menubar' id='theme-options-bar'>
         <div class='row'>
             <div class='text-right'>
+
+                <?php
+                  $sThemeOptionUrl = App()->createUrl("admin/themeoptions");
+                  $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid));
+
+                    $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
+                ?>
+                <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
+                    <span class="fa fa-backward"></span>
+                    &nbsp;&nbsp;
+                    <?php eT('Close'); ?>
+                </a>
+
+
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT('Save'); ?>
@@ -23,7 +39,25 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else: ?>
 <div class="col-sm-12 side-body <?=getSideBodyClass(false)?>" id="theme-option-sidebody">
 <?php endif; ?>
-    <div class="row h1 pagetitle"><?php echo sprintf(gT('Survey options for theme %s'),'<em>' . $model->template_name . '</em>'); ?></div>
+    <div class="row h1 pagetitle">
+        <?php echo sprintf(gT('Survey options for theme %s'),'<em>' . $model->template_name . '</em>'); ?>
+        (
+            <?php
+
+                // This is a quick and dirty solution.
+                // Todo: a clean system to show the level and indicate where the inherited values are taken
+
+                if (!is_null($sid)){
+                    eT(" for survey id: $sid ");
+                }elseif(!is_null($gsid)){
+                    eT(" for survey group id: $gsid ");
+                }else{
+                    eT(" global level");
+                }
+
+            ?>
+        )
+    </div>
         <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <div class="col-sm-12">
@@ -223,7 +257,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 <?php
 Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
-        
+
         var bindUpload = function(options){
             var $activeForm = $(options.form);
             var $activeInput = $(options.input);

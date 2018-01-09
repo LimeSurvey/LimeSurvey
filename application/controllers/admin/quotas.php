@@ -592,10 +592,10 @@ class quotas extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'quotas.js');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

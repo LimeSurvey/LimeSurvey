@@ -42,7 +42,7 @@
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                        $this->renderPartial('./themeoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
+                         $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel )); 
                     }
                 ?>
             </div>

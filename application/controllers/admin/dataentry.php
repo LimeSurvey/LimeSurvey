@@ -1333,7 +1333,7 @@ class dataentry extends Survey_Common_Action
                     $thisvalue = 0;
                 } elseif ($irow['type'] == 'D') {
                     if ($thisvalue == "") {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     } else {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1346,22 +1346,22 @@ class dataentry extends Survey_Common_Action
                         }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = '{$dateoutput}', \n";
                     }
                 } elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "") {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 } elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "") {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 } elseif ($irow['type'] == 'submitdate') {
                     if (isset($_POST['completed']) && ($_POST['completed'] == "N")) {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     } elseif (isset($_POST['completed']) && $thisvalue == "") {
-                        $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($_POST['completed']).", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($_POST['completed']).", \n";
                     } else {
-                        $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
                     }
                 } else {
-                    $updateqr .= dbQuoteID($fieldname)." = ".dbQuoteAll($thisvalue).", \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
@@ -1415,7 +1415,7 @@ class dataentry extends Survey_Common_Action
 
             if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
                 $tokencompleted = "";
-                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
+                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".App()->db->quoteValue($_POST['token']);
                 $tcresult = dbExecuteAssoc($tcquery);
                 $tcresult = $tcresult->readAll();
                 $tccount = count($tcresult);
@@ -1424,7 +1424,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 if ($tccount < 1) {
-// token doesn't exist in token table
+// token doesn't exist in survey participants table
                     $lastanswfortoken = 'UnknownToken';
                 } elseif ($survey->isAnonymized) {
 // token exist but survey is anonymous, check completed state
@@ -1434,7 +1434,7 @@ class dataentry extends Survey_Common_Action
                     }
                 } else {
 // token is valid, survey not anonymous, try to get last recorded response id
-                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
+                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".App()->db->quoteValue($_POST['token']);
                     $aresult = dbExecuteAssoc($aquery);
                     foreach ($aresult->readAll() as $arow) {
                         if ($tokencompleted != "N") { $lastanswfortoken = $arow['id']; }
@@ -1584,7 +1584,7 @@ class dataentry extends Survey_Common_Action
                     }
 
                     // check how many uses the token has left
-                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
+                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".App()->db->quoteValue($_POST['token']);
                     $usesresult = dbExecuteAssoc($usesquery);
                     $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                     if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1593,7 +1593,7 @@ class dataentry extends Survey_Common_Action
                     $utquery = "UPDATE {{tokens_$surveyid}}\n";
                     if (isTokenCompletedDatestamped($thissurvey)) {
                         if (isset($usesleft) && $usesleft <= 1) {
-                            $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
+                            $utquery .= "SET usesleft=usesleft-1, completed=".App()->db->quoteValue($submitdate);
                         } else {
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
@@ -1604,7 +1604,7 @@ class dataentry extends Survey_Common_Action
                             $utquery .= "SET usesleft=usesleft-1\n";
                         }
                     }
-                    $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
+                    $utquery .= "WHERE token=".App()->db->quoteValue($_POST['token']);
                     dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                     // save submitdate into survey table
@@ -1758,38 +1758,31 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups}}.group_order";
-            $degresult = dbExecuteAssoc($degquery);
-            // GROUP NAME
+            $aGroups = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
             $aDataentryoutput = '';
+            foreach ($aGroups as $arGroup) {
+                LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
 
-            foreach ($degresult->readAll() as $degrow) {
-                LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized'] != "N"), $surveyid);
-
-                $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
-                $deqrows = (array) dbExecuteAssoc($deqquery)->readAll();
+                $aQuestions = Question::model()->findAllByAttributes(['sid'=>$surveyid,'parent_qid'=>0,'gid'=>$arGroup['gid']]);
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 ."<!-- Inside controller dataentry.php -->"
-                ."<td colspan='3'><h4>".flattenText($degrow['group_name'], true)."</h4></td>\n"
+                ."<td colspan='3'><h4>".flattenText($arGroup->questionGroupL10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
                 ."\t</tr>\n";
 
-                $gid = $degrow['gid'];
+                $gid = $arGroup['gid'];
 
                 $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-
-                // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-                usort($deqrows, 'groupOrderThenQuestionOrder');
                 $bgc = 'odd';
-                foreach ($deqrows as $deqrow) {
+                foreach ($aQuestions as $arQuestion) {
                     $cdata = array();
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $cdata['qidattributes'] = $qidattributes;
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != '')) {
@@ -1817,35 +1810,35 @@ class dataentry extends Survey_Common_Action
                     if (!isset($bgc)) {$bgc = "even"; }
                     if ($bgc == "even") {$bgc = "odd"; } else {$bgc = "even"; }
 
-                    $qid = $deqrow['qid'];
+                    $qid = $arQuestion['qid'];
                     $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
-                    $cdata['deqrow'] = $deqrow;
+                    $cdata['deqrow'] = $arQuestion;
 
                     $cdata['thissurvey'] = $thissurvey;
-                    if ($deqrow['help']) {
-                        $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
+                    if (!empty($arQuestion->questionL10ns[$sDataEntryLanguage]->help)) {
+                        $hh = addcslashes($arQuestion->questionL10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
                     }
-                    switch ($deqrow['type']) {
+                    switch ($arQuestion['type']) {
                         case "Q": //MULTIPLE SHORT TEXT
                         case "K":
-                            $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $dearesult = dbExecuteAssoc($deaquery);
-                            $cdata['dearesult'] = $dearesult->readAll();
+                            $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$arQuestion['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $arAnswers = dbExecuteAssoc($deaquery);
+                            $cdata['dearesult'] = $arAnswers->readAll();
 
                             break;
 
                         case "1": // multi scale^
-                            $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
-                            $dearesult = dbExecuteAssoc($deaquery);
+                            $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$arQuestion['qid']} AND language='{$baselang}' ORDER BY question_order";
+                            $arAnswers = dbExecuteAssoc($deaquery);
 
-                            $cdata['dearesult'] = $dearesult->readAll();
+                            $cdata['dearesult'] = $arAnswers->readAll();
 
-                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$arQuestion['qid']} AND language='{$baselang}'";
                             $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
                             foreach ($oresult->readAll() as $orow) {
                                 $cdata['fother'] = $orow['other'];
@@ -1856,32 +1849,31 @@ class dataentry extends Survey_Common_Action
                         case "L": //LIST drop-down/radio-button list
                         case "!":
                             //                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
-                            if ($deqrow['type'] == '!' && trim($qidattributes['category_separator']) != '') {
+                            if ($arQuestion['type'] == '!' && trim($qidattributes['category_separator']) != '') {
                                 $optCategorySeparator = $qidattributes['category_separator'];
                             } else {
                                 unset($optCategorySeparator);
                             }
                             $defexists = "";
-                            $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $dearesult = dbExecuteAssoc($deaquery);
+                            $arAnswers = Answer::model()->findAllByAttributes(['qid'=>$arQuestion['qid']]);
                             //$aDataentryoutput .= "\t<select name='$fieldname' class='form-control' >\n";
                             $aDatatemp = '';
                             if (!isset($optCategorySeparator)) {
-                                foreach ($dearesult->readAll() as $dearow) {
-                                    $aDatatemp .= "<option value='{$dearow['code']}'";
+                                foreach ($arAnswers as $aAnswer) {
+                                    $aDatatemp .= "<option value='{$aAnswer['code']}'";
                                     //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
-                                    $aDatatemp .= ">{$dearow['answer']}</option>\n";
+                                    $aDatatemp .= ">{$aAnswer->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
                                 }
                             } else {
                                 $defaultopts = array();
                                 $optgroups = array();
 
-                                foreach ($dearesult->readAll() as $dearow) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $dearow['answer']);
+                                foreach ($arAnswers as $aAnswer) {
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer['answer']);
                                     if ($categorytext == '') {
-                                        $defaultopts[] = array('code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
+                                        $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
-                                        $optgroups[$categorytext][] = array('code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
+                                        $optgroups[$categorytext][] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     }
                                 }
                                 foreach ($optgroups as $categoryname => $optionlistarray) {
@@ -1900,7 +1892,7 @@ class dataentry extends Survey_Common_Action
                                 }
                             }
 
-                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
+                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$arQuestion['qid']}";
                             $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
                             $fother = '';
                             foreach ($oresult->readAll() as $orow) {
@@ -1914,14 +1906,13 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $defexists = "";
-                            $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $dearesult = dbExecuteAssoc($deaquery);
+                            $arAnswers = $arQuestion->answers;
                             //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
                             $aDatatemp = '';
-                            foreach ($dearesult->readAll() as $dearow) {
-                                $aDatatemp .= "<option value='{$dearow['code']}'";
+                            foreach ($arAnswers as $aAnswer) {
+                                $aDatatemp .= "<option value='{$aAnswer['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
-                                $aDatatemp .= ">{$dearow['answer']}</option>\n";
+                                $aDatatemp .= ">{$aAnswer['answer']}</option>\n";
 
                             }
                             $cdata['datatemp'] = $aDatatemp;
@@ -1929,20 +1920,13 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "R": //RANKING TYPE QUESTION
-                            $thisqid = $deqrow['qid'];
-                            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = dbExecuteAssoc($ansquery);
-                            $ansresult = $ansresult->readAll();
-                            $anscount = count($ansresult);
+                            $thisqid = $arQuestion['qid'];
+                            $arAnswers = $arQuestion->answers;
+                            $anscount = count($arAnswers);
 
                             $cdata['thisqid'] = $thisqid;
                             $cdata['anscount'] = $anscount;
-                            $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll(); //Checked
-                            $answers = array();
-                                foreach ($ansresult as $ansrow) {
-                                    $answers[] = $ansrow;
-                                }
-                            $cdata['answers'] = $answers;
+                            $cdata['answers'] = $arAnswers;
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'ranking.css');
@@ -1954,59 +1938,25 @@ class dataentry extends Survey_Common_Action
                             } else {
                                 $dcols = 0;
                             }
-                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery);
-
-                            $cdata['mearesult'] = $mearesult->readAll();
+                            $cdata['mearesult'] = $arQuestion->subquestions; 
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
                             $cdata['dcols'] = $dcols;
-
                             break;
                         case "I": //Language Switch
                             $cdata['slangs'] = $survey->allLanguages;
-
-                            break;
-                        case "P": //Multiple choice with comments checkbox + text
-                            //$aDataentryoutput .= "<table border='0'>\n";
-                            $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
-                            $mearesult = dbExecuteAssoc($meaquery);
-
-                            $cdata['mearesult'] = $mearesult->readAll();
-
-                            break;
-                        case "|":
-                            //                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
-                            $cdata['qidattributes'] = $qidattributes;
-
-                            $maxfiles = $qidattributes['max_num_of_files'];
-                            $cdata['maxfiles'] = $maxfiles;
-
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery);
-
-                            $cdata['mearesult'] = $mearesult->readAll();
-
-                            break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery);
-                            $cdata['mearesult'] = $mearesult->readAll();
-                            break;
-
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery);
-                            $cdata['mearesult'] = $mearesult->readAll();
-
-                            break;
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery) or safeDie("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
-                            $cdata['mearesult'] = $mearesult->readAll();
-
+                        case "P": //Multiple choice with comments checkbox + text
+                            $cdata['mearesult'] = $arQuestion->subquestions; 
+                            break;
+                        case "|":
+                            $cdata['qidattributes'] = $qidattributes;
+                            $maxfiles = $qidattributes['max_num_of_files'];
+                            $cdata['maxfiles'] = $maxfiles;
                             break;
                         case ":": //ARRAY (Multi Flexi)
                             //                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
@@ -2041,57 +1991,33 @@ class dataentry extends Survey_Common_Action
                             $cdata['maxvalue'] = $maxvalue;
                             $cdata['stepvalue'] = $stepvalue;
 
-                            $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $lresult = dbExecuteAssoc($lquery);
-                            if (!$lresult) {
+                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>1]); 
+                            if (empty($cdata['lresult'])) {
                                 $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
-
-
-                            $cdata['lresult'] = $lresult->readAll();
-
-                            $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery);
-
-                            if (!$mearesult) {
+                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>0]); 
+                            if (empty($cdata['mearesult'])) {
                                 $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
-
-                            $cdata['mearesult'] = $mearesult->readAll();
-
                             break;
                         case ";": //ARRAY (Multi Flexi)
-
-                            $lquery = "SELECT * FROM {{questions}} WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $lresult = dbExecuteAssoc($lquery) or safeDie("Couldn't get labels, Type \":\"<br />$lquery<br />");
-                            $cdata['lresult'] = $lresult->readAll();
-
-                            $meaquery = "SELECT * FROM {{questions}} WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery) or safeDie("Couldn't get answers, Type \":\"<br />$meaquery<br />");
-
-                            $cdata['mearesult'] = $mearesult->readAll();
-
+                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>1]); 
+                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>0]); 
                             break;
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
-                            $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = dbExecuteAssoc($meaquery) or safeDie("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
-
-                            $cdata['mearesult'] = $mearesult->readAll();
-
-                            $fquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
-                            $fresult = dbExecuteAssoc($fquery);
-                            $cdata['fresult'] = $fresult->readAll();
+                            $cdata['mearesult'] = $arQuestion->subquestions;
+                            $cdata['fresult'] = Answer::model()->findAllByAttributes(['qid'=>$arQuestion['qid']]);
                             break;
                     }
 
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
                     $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view", $cdata, true);
-                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, 1, 1);
+                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $arQuestion['qid'], null, 1, 1);
                     $aDataentryoutput .= $viewdata_em;
                 }
                 LimeExpressionManager::FinishProcessingGroup();
@@ -2162,7 +2088,7 @@ class dataentry extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         if (!isset($aData['display']['menu_bars']['browse'])) {
             $iSurveyId = 0;
@@ -2179,7 +2105,7 @@ class dataentry extends Survey_Common_Action
             $aData["survey"] = $survey;
             $aData['title_bar']['title'] = gT("Data entry");
         }
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

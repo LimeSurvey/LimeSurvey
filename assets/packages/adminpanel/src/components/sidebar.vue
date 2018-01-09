@@ -209,7 +209,7 @@ export default {
         },
         getQuestions(){
             return this.get(this.getQuestionsUrl).then( (result) =>{
-                this.$log.log(result);
+                this.$log.log('Questions', result);
                 this.questiongroups = result.data.groups;
                 this.$store.commit('updateQuestiongroups', this.questiongroups);
                 this.$forceUpdate();
@@ -284,18 +284,28 @@ export default {
             this.controlActiveLink();
         });
 
+        $(document).on('vue-reload-remote', ()=>{
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
+            this.$forceUpdate();
+        });
+
         $(document).on('vue-redraw', ()=>{
             this.getQuestions();
             this.getSidemenus();
             this.getCollapsedmenus();
             this.getTopmenus();
             this.getBottommenus();
+            this.$forceUpdate();
         });
 
         //control the active link
         this.controlActiveLink();
 
-        self.$forceUpdate();
+        this.$forceUpdate();
         this.updatePjaxLinks();
         $('body').on('mousemove', (event) => {self.mousemove(event,self)});
     }

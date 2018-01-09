@@ -277,16 +277,24 @@ class Usergroups extends Survey_Common_Action
                 $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
                 $aUserInGroupsResult = $eguresult->readAll();
-                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = ".$ugid;
+                $sCondition2 = "ugid = :ugid";
+                $sParams2 = [':ugid'=>$ugid];
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $query2 .= " AND owner_id = ".Yii::app()->session['loginID'];
+                    $sCondition2 .= " AND owner_id = :owner_id";
+                    $sParams2[':owner_id'] = Yii::app()->session['loginID'];
                 }
-                $result2 = dbSelectLimitAssoc($query2, 1);
-                $row2 = $result2->readAll();
+                
+                $row2 = Yii::app()->db->createCommand()
+                ->select('ugid')
+                ->from('{{user_groups}}')
+                ->where($sCondition2, $sParams2)
+                ->limit(1)
+                ->queryRow();
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
                 foreach ($aUserInGroupsResult as $egurow) {
+                    // @todo: Move the zebra striping to view
                     if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";
                     } else {
@@ -308,7 +316,7 @@ class Usergroups extends Survey_Common_Action
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
-                if (isset($row2[0]['ugid'])) {
+                if ($row2 !== false) {
                     $aData["useradddialog"] = true;
                     $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
                     $aData["useraddurl"] = "";
@@ -396,12 +404,12 @@ class Usergroups extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

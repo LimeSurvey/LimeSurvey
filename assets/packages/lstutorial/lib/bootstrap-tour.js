@@ -56,6 +56,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
         backdropPadding: 0,
         redirect: true,
         orphan: false,
+        endOnOrphan: false,
         duration: false,
         delay: false,
         basePath: '',
@@ -117,6 +118,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
           reflexElement: this._options.steps[i].element,
           backdropElement: this._options.steps[i].element,
           orphan: this._options.orphan,
+          endOnOrphan: this._options.endOnOrphan,
           duration: this._options.duration,
           delay: this._options.delay,
           template: this._options.template,
@@ -339,6 +341,11 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
       showStepHelper = (function(_this) {
         return function(e) {
           if (_this._isOrphan(step)) {
+            if (step.endOnOrphan === true) {
+              _this._debug("Ended on orphan step " + (_this._current + 1) + ".\nEnd on orphan option is true.");
+              _this.end();
+              return;
+            }
             if (step.orphan === false) {
               _this._debug("Skip the orphan step " + (_this._current + 1) + ".\nOrphan option is false and the element does not exist or is hidden.");
               if (skipToPrevious) {
@@ -470,7 +477,9 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
     Tour.prototype._debug = function(text) {
       if (this._options.debug) {
-        return window.console.ls.log("Bootstrap Tour '" + this._options.name + "' | " + text);
+        window.console.ls.group("Bootstrap-Tour");
+        window.console.ls.log("Bootstrap Tour '" + this._options.name + "' | " + text);
+        window.console.ls.groupEnd("Bootstrap-Tour");
       }
     };
 
@@ -563,6 +572,9 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
       isOrphan = this._isOrphan(step);
       step.template = this._template(step, i);
       if (isOrphan) {
+          if(options.endOnOrphan){
+              this.end();
+          }
         step.element = 'body';
         step.placement = 'top';
       }

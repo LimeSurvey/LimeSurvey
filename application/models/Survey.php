@@ -246,7 +246,7 @@ class Survey extends LSActiveRecord
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
-     * @return bool
+     * @return boolean|null
      */
     public function expire($surveyId = null)
     {
@@ -579,7 +579,7 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * Returns true in a token table exists for survey
+     * Returns true in a survey participants table exists for survey
      * @return boolean
      */
     public function getHasTokensTable()
@@ -854,14 +854,23 @@ class Survey extends LSActiveRecord
 
                     $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
                     foreach ($oResult as $aRow) {
+                        $aoAnswers = Answer::model()->findAllByAttributes(array('qid' => $aRow->qid));
+                        foreach ($aoAnswers as $aAnswerRow) {
+                            AnswerL10n::model()->deleteAllByAttributes(array('aid' => $aAnswerRow['aid']));
+                        }                        
                         Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                         Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
                         QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                         DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                        QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                     }
 
                     Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
                     Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+                    $oResult = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
+                    foreach ($oResult as $aRow) {
+                        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $aRow['gid']));
+                    }
                     QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
                     SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
                     Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
@@ -1393,7 +1402,7 @@ class Survey extends LSActiveRecord
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
-                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
+                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid)); 
                 if ($groupCount > 0) {
                     $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
@@ -1669,8 +1678,8 @@ return $s->hasTokensTable; });
         /* Delete invalid questions (don't exist in primary language) using qid like column name*/
         $validQuestion = Question::model()->findAll(array(
             'select'=>'qid',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid = 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1681,8 +1690,8 @@ return $s->hasTokensTable; });
         /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid != 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1711,16 +1720,11 @@ return $s->hasTokensTable; });
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();
-
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
-            't.language' => $this->language,
             'parent_qid' => 0,
-
         ));
-
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
-
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;
@@ -1741,17 +1745,14 @@ return $s->hasTokensTable; });
             .Yii::app()->db->quoteColumnName('t.question_order');
         $criteria->addCondition('`groups`.`gid` =`t`.`gid`', 'AND');
         return $criteria;
-
     }
+
     /**
      * Gets number of groups inside a particular survey
      */
     public function getGroupsCount()
     {
-        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language);
-        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-        return $sumresult3;
+        return QuestionGroup::model()->countByAttributes(['sid'=>$this->sid]);
     }
 
     /**
@@ -1759,7 +1760,7 @@ return $s->hasTokensTable; });
      */
     public function getCountTotalQuestions()
     {
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
+        $condn = array('sid'=>$this->sid, 'parent_qid'=>0);
         $sumresult = Question::model()->countByAttributes($condn);
         return (int) $sumresult;
     }
@@ -1772,7 +1773,6 @@ return $s->hasTokensTable; });
     {
         $condn = array(
             'sid'=>$this->sid,
-            'language'=>$this->language,
             'parent_qid'=>0,
             'type'=>['X', '*'],
         );
@@ -1792,9 +1792,10 @@ return $s->hasTokensTable; });
 
     /**
      * Returns true if this survey has any question of type $type.
-     * @param char $type Question type, like 'L', 'T', etc.
+     * @param string $type Question type, like 'L', 'T', etc.
      * @param boolean $includeSubquestions If true, will also check the types of subquestions.
      * @return boolean
+     * @throws CException
      */
     public function hasQuestionType($type, $includeSubquestions = false)
     {

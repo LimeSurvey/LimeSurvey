@@ -81,7 +81,7 @@ $config['deleteblacklisted']         = 'N'; // Delete globally blacklisted parti
 $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
-$config['defaulttheme']              = 'vanilla'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2'; // File types allowed to be uploaded in the themes section.
 

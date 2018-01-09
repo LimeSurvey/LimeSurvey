@@ -63,7 +63,7 @@ const TourLibrary = function () {
                 },
                 (err) => {
                     console.ls.log('Couldn\'t be loaded!');
-                    console.ls.err(err);
+                    console.ls.error(err);
                 }
             );
         };
@@ -72,7 +72,18 @@ const TourLibrary = function () {
     let _actionActiveTour = null;
 
     if (_activeTour !== false && (typeof _actionActiveTour !== 'function')) {
-        initTour(_activeTour);
+        initTour(_activeTour).then(
+            (startedTutorial) => {
+                if(startedTutorial.ended())
+                    startedTutorial.restart();
+                else
+                    startedTutorial.start(true);
+            },
+            (err) => {
+                console.ls.log('Couldn\'t be loaded!');
+                console.ls.error(err);
+            }
+        );
     }
 
     return {

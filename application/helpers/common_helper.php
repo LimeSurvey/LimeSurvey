@@ -46,7 +46,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
  */
 function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('', $sTextToTranslate), $sEscapeMode);
+    return quoteText(Yii::t('', $sTextToTranslate, $iCount), $sEscapeMode);
 }
 
 /**
@@ -269,7 +269,7 @@ function getGidPrevious($surveyid, $gid)
 {
     $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
     $iPrev = -1;
@@ -297,7 +297,7 @@ function getGidNext($surveyid, $gid)
     $surveyid = (int) $surveyid;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
-    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
     $iNext = 0;
@@ -420,7 +420,7 @@ function getMaxGroupOrder($surveyid)
 function getGroupOrder($surveyid, $gid)
 {
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid)); //Checked
     $grporder_row = $grporder_result->attributes;
     $group_order = $grporder_row['group_order'];
     if ($group_order == "") {
@@ -433,15 +433,14 @@ function getGroupOrder($surveyid, $gid)
 /**
 * Queries the database for the maximum sort order of a question.
 * 
-* @param mixed $gid
-* @param mixed $surveyid
+* @param integer $gid
+* @param integer|null $surveyid
 * @return integer
 */
 function getMaxQuestionOrder($gid, $surveyid)
 {
     $gid = (int) $gid;
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='{$gid}' AND language='{$s_lang}'";
+    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid={$gid}";
     $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
     $maxrow = $max_result->read();
     $current_max = $maxrow['max'];
@@ -683,6 +682,7 @@ function longestString($new_string, $longest_length)
 *
 *
 * @param string $gid - the currently selected gid/group
+* @param integer $surveyid
 *
 * @return string string is returned containing <option></option> formatted list of groups to current survey
 */
@@ -693,14 +693,12 @@ function getGroupList($gid, $surveyid)
     $gid = sanitize_int($gid);
     $surveyid = sanitize_int($surveyid);
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
-    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
-    foreach ($gidresult->readAll() as $gv) {
+    $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+    $oGroups=QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
+    foreach ($oGroups as $oGroup) {
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
+        if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
+        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupL10ns[$sBaseLanguage]->group_name)."</option>\n";
     }
     if ($groupselecter) {
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
@@ -718,18 +716,17 @@ function getGroupList3($gid, $surveyid)
 
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
     $groupselecter = "";
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
 
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
-    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
+    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     foreach ($gidresult as $gv) {
-        $gv = $gv->attributes;
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])." (ID:".$gv['gid'].")</option>\n";
+        if ($gv->gid == $gid) {$groupselecter .= " selected='selected'"; }
+        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10ns[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
     }
 
 
@@ -748,20 +745,16 @@ function getGroupListLang($gid, $language, $surveyid)
     $groupselecter = "";
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
 
-    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
+    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid',
     'order'=>'group_order',
-    'params'=>array(':surveyid'=>$surveyid, ':language'=>$language))); //Checked)
-    foreach ($gidresult as $gv) {
-        $gv = $gv->attributes;
+    'params'=>array(':surveyid'=>$surveyid))); //Checked)
+    foreach ($gidresult as $oGroup) {
+        $aAttributes = $oGroup->attributes;
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
+        if ($aAttributes['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
+        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
-        if (strip_tags($gv['group_name'])) {
-            $groupselecter .= htmlspecialchars(strip_tags($gv['group_name']));
-        } else {
-            $groupselecter .= htmlspecialchars($gv['group_name']);
-        }
+        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questionGroupL10ns[$language]->group_name));
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
@@ -1169,10 +1162,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "^":
             case "I":
             case "R":
-                $result = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
-                foreach ($result as $row) {
-                    $this_answer = $row['answer'];
-                } // while
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1220,10 +1210,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 } else {
                     $iScaleID = 0;
                 }
-                $result = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage, $iScaleID);
-                foreach ($result as $row) {
-                    $this_answer = $row['answer'];
-                } // while
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage, $iScaleID);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1295,7 +1282,7 @@ function validateEmailAddress($sEmailAddress)
 * Validate an list of email addresses - either as array or as semicolon-limited text
 * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
-* @param mixed $aEmailAddressList  Email address to check
+* @param string $aEmailAddressList  Email address to check
 * @returns array
 */
 function validateEmailAddresses($aEmailAddressList)
@@ -1558,7 +1545,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
@@ -1579,7 +1565,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
@@ -1597,12 +1582,13 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
-    ." questions.sid=$surveyid AND "
-    ." questions.language='{$sLanguage}' AND "
-    ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    ." FROM {{groups}} g"
+    .' JOIN {{questions}} q on q.gid=g.gid '
+    .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
+    .' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
+    ." WHERE qls.language='{$baseLanguage}' and gls.language='{$baseLanguage}' AND"
+    ." g.sid={$surveyid} AND "
+    ." q.parent_qid=0";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
@@ -1806,7 +1792,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
         } elseif ($arow['type'] == "R") {
             // Sub question by answer number OR attribute
-            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
+            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
             for ($i = 1; $i <= $columnsCount; $i++) {
@@ -2173,18 +2159,6 @@ function HTMLEscape($str)
     return str_replace(array("\x0A", "\x0D"), array("&#10;", "&#13;"),
     htmlspecialchars($str, ENT_QUOTES));
 }
-
-/**
-* Escapes a text value for db
-*
-* @param string $value
-* @return string
-*/
-function dbQuoteAll($value)
-{
-    return Yii::app()->db->quoteValue($value);
-}
-
 
 /**
 * This function strips UTF-8 control characters from strings, except tabs, CR and LF
@@ -2703,7 +2677,7 @@ function tableExists($sTableName)
 }
 
 // Returns false if the survey is anonymous,
-// and a token table exists: in this case the completed field of a token
+// and a survey participants table exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
 function isTokenCompletedDatestamped($thesurvey)
@@ -2783,6 +2757,9 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
+    if ($sString=='') {
+        return $sString;
+    }
     $iOldSurveyID = (int) $iOldSurveyID;
     $iNewSurveyID = (int) $iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey') {
@@ -2875,7 +2852,7 @@ function hasResources($id, $type = 'survey')
 /**
  * Creates a random sequence of characters
  *
- * @param mixed $length Length of resulting string
+ * @param integer $length Length of resulting string
  * @param string $pattern To define which characters should be in the resulting string
  * @return string
  */
@@ -2971,7 +2948,7 @@ function filterForAttributes($fieldname)
     }
 
 /**
-* Retrieves the attribute field names from the related token table
+* Retrieves the attribute field names from the related survey participants table
 *
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
@@ -3008,7 +2985,7 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the attribute names from the related token table
+* Retrieves the attribute names from the related survey participants table
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
@@ -3261,16 +3238,15 @@ function getSubQuestions($sid, $qid, $sLanguage)
     }
     if (!isset($subquestions[$sid][$sLanguage])) {
 
-        $query = "SELECT sq.*, q.other FROM {{questions}} as sq, {{questions}} as q"
-        ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
-        ." AND sq.language='".$sLanguage."' "
-        ." AND q.language='".$sLanguage."' "
-        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+        $query = "SELECT sq.*, ls.question, q.other FROM {{questions}} as sq
+        JOIN {{questions}} as q on sq.parent_qid=q.qid
+        JOIN {{question_l10ns}} as ls on ls.qid=sq.qid" 
+        ." WHERE sq.parent_qid=q.qid AND ls.language='{$sLanguage}' AND q.sid=".$sid
+        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id, sq.question_order";
 
         $query = Yii::app()->db->createCommand($query)->query();
 
         $resultset = array();
-        //while ($row=$result->FetchRow())
         foreach ($query->readAll() as $row) {
             $resultset[$row['parent_qid']][] = $row;
         }
@@ -3569,7 +3545,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from {{groups}}
+    $sql = "SELECT g.gid, language, group_name, description from {{groups}} g
+    join {{group_l10ns}} l on g.gid=l.gid
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = dbExecuteAssoc($sql) or safeDie("Can't read groups table in transInsertAns"); // Checked
 
@@ -3593,7 +3570,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'gid' => $gid,
             'language' => $language
             );
-            $oGroup = QuestionGroup::model()->findByAttributes($where);
+            $oGroup = QuestionGroupL10n::model()->findByAttributes($where);
             $oGroup->description = $description;
             $oGroup->group_name = $gpname;
             $oGroup->save();
@@ -3602,7 +3579,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from {{questions}}
+    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = dbExecuteAssoc($sql) or safeDie("Can't read question table in transInsertAns "); // Checked
 
@@ -3635,7 +3613,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'language' => $language
             );
 
-            Question::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($where, $data);
 
         } // Enf if modified
     } // end while qentry
@@ -3692,12 +3670,25 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                 $sOldCode = preg_quote($sOldCode, '~');
                 $arQuestion->relevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
-                $bModified = $bModified || $iCount;
             }
         }
         if ($bModified) {
             $arQuestion->save();
+        }
+        foreach ($arQuestion->questionL10ns as $arQuestionLS) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode=>$sNewCode) {
+                // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+                if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+                    $sOldCode = preg_quote($sOldCode, '~');
+                    $arQuestionLS->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+
+                }
+            }
+            if ($bModified) {
+                $arQuestionLS->save();
+            }
         }
     }
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
@@ -3707,11 +3698,19 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             $sOldCode = preg_quote($sOldCode, '~');
             $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
-            $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $arGroup->save();
+        }
+        foreach ($arGroup->questionGroupL10ns as $arQuestionGroupLS) {
+            foreach ($aCodeMap as $sOldCode=>$sNewCode) {
+                $sOldCode = preg_quote($sOldCode, '~');
+                $arQuestionGroupLS->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $bModified = $bModified || $iCount;
+            }
+            if ($bModified) {
+                $arQuestionGroupLS->save();
+            }        
         }
     }
 }
@@ -3721,15 +3720,13 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey
-* @return bool - always returns true
+* @return void
 */
-function cleanLanguagesFromSurvey($sid, $availlangs)
+function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 {
-
     Yii::app()->loadHelper('database');
-    //
-    $sid = sanitize_int($sid);
-    $baselang = Survey::model()->findByPk($sid)->language;
+    $iSurveyID = (int) $iSurveyID;
+    $baselang = Survey::model()->findByPk($iSurveyID)->language;
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
@@ -3748,25 +3745,31 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
     }
 
     // Remove From Answer Table
-    $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    $qidresult = dbExecuteAssoc($query);
-
-    foreach ($qidresult->readAll() as $qrow) {
-
-        $myqid = $qrow['qid'];
-        $query = "DELETE FROM {{answers}} WHERE qid='$myqid' AND $sqllang";
-        dbExecuteAssoc($query);
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
+            JOIN {{answers}} a on ls.aid=a.aid 
+            JOIN {{questions}} q on a.qid=q.qid
+            WHERE sid={$iSurveyID} AND {$sqllang}";
+    $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+    foreach ($result as $row) {
+        Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id ='.$row['id'] )->execute();
+    }
+    // Remove From Questions Table
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+            JOIN {{questions}} q on ls.qid=q.qid
+            WHERE sid={$iSurveyID} AND {$sqllang}";
+    $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+    foreach ($result as $row) {
+        Yii::app()->db->createCommand('delete from {{question_l10ns}} where id ='.$row['id'] )->execute();
     }
 
     // Remove From Questions Table
-    $query = "DELETE FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    dbExecuteAssoc($query);
-
-    // Remove From QuestionGroup Table
-    $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
-    dbExecuteAssoc($query);
-
-    return true;
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+            JOIN {{groups}} g on ls.gid=g.gid
+            WHERE sid={$iSurveyID} AND {$sqllang}";
+    $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+    foreach ($result as $row) {
+        Yii::app()->db->createCommand('delete from {{group_l10ns}} where id ='.$row['id'] )->execute();
+    }
 }
 
 /**
@@ -3777,9 +3780,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 */
 function fixLanguageConsistency($sid, $availlangs = '')
 {
-    $sid = sanitize_int($sid);
-
-
+    $sid = (int)$sid;
     if (trim($availlangs) != '') {
         $availlangs = sanitize_languagecodeS($availlangs);
         $langs = explode(" ", $availlangs);
@@ -3793,93 +3794,68 @@ function fixLanguageConsistency($sid, $availlangs = '')
         return true; // Survey only has one language
     }
     $baselang = Survey::model()->findByPk($sid)->language;
-    $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
+    $query = "SELECT * FROM {{groups}} g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $group) {
         foreach ($langs as $lang) {
 
-            $query = "SELECT count(gid) FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
+            $query = "SELECT count(gid) FROM {{group_l10ns}} WHERE gid='{$group['gid']}' AND language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryScalar();
             if ($gresult < 1) {
                 $data = array(
                 'gid' => $group['gid'],
-                'sid' => $group['sid'],
                 'group_name' => $group['group_name'],
-                'group_order' => $group['group_order'],
                 'description' => $group['description'],
-                'randomization_group' => $group['randomization_group'],
-                'grelevance' => $group['grelevance'],
                 'language' => $lang
-
                 );
-                switchMSSQLIdentityInsert('groups', true);
-                Yii::app()->db->createCommand()->insert('{{groups}}', $data);
-                switchMSSQLIdentityInsert('groups', false);
+                Yii::app()->db->createCommand()->insert('{{group_l10ns}}', $data);
             }
         }
         reset($langs);
     }
 
-    $quests = array();
-    $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
+    $query = "SELECT * FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid='{$sid}'";
     $result = Yii::app()->db->createCommand($query)->query()->readAll();
     if (count($result) > 0) {
         foreach ($result as $question) {
-            array_push($quests, $question['qid']);
             foreach ($langs as $lang) {
-                $query = "SELECT count(qid) FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}' AND scale_id={$question['scale_id']}";
+                $query = "SELECT count(qid) FROM {{question_l10ns}} WHERE qid='{$question['qid']}' AND language='{$lang}'";
                 $gresult = Yii::app()->db->createCommand($query)->queryScalar();
                 if ($gresult < 1) {
-                    switchMSSQLIdentityInsert('questions', true);
                     $data = array(
                     'qid' => $question['qid'],
-                    'sid' => $question['sid'],
-                    'gid' => $question['gid'],
-                    'type' => $question['type'],
-                    'title' => $question['title'],
                     'question' => $question['question'],
-                    'preg' => $question['preg'],
                     'help' => $question['help'],
-                    'other' => $question['other'],
-                    'mandatory' => $question['mandatory'],
-                    'question_order' => $question['question_order'],
                     'language' => $lang,
-                    'scale_id' => $question['scale_id'],
-                    'parent_qid' => $question['parent_qid'],
-                    'relevance' => $question['relevance']
                     );
-                    Yii::app()->db->createCommand()->insert('{{questions}}', $data);
-                }
-            }
-            reset($langs);
-        }
-
-        $sqlans = "";
-        foreach ($quests as $quest) {
-            $sqlans .= " OR qid = '".$quest."' ";
-        }
-        $query = "SELECT * FROM {{answers}} WHERE language='{$baselang}' and (".trim($sqlans, ' OR').") ORDER BY qid, code";
-        $result = Yii::app()->db->createCommand($query)->query();
-        foreach ($result->readAll() as $answer) {
-            foreach ($langs as $lang) {
-                $query = "SELECT count(qid) FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}' AND scale_id={$answer['scale_id']}";
-                $gresult = Yii::app()->db->createCommand($query)->queryScalar();
-                if ($gresult < 1) {
-                    $data = array(
-                    'qid' => $answer['qid'],
-                    'code' => $answer['code'],
-                    'answer' => $answer['answer'],
-                    'scale_id' => $answer['scale_id'],
-                    'sortorder' => $answer['sortorder'],
-                    'language' => $lang,
-                    'assessment_value' =>  $answer['assessment_value']
-                    );
-                    Yii::app()->db->createCommand()->insert('{{answers}}', $data);
+                    Yii::app()->db->createCommand()->insert('{{question_l10ns}}', $data);
                 }
             }
             reset($langs);
         }
     }
+
+    $query = "SELECT * FROM {{answers}} a 
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
+    JOIN  {{questions}} q on a.qid=q.qid 
+    WHERE language='{$baselang}' and q.sid={$sid}";
+    $result = Yii::app()->db->createCommand($query)->query();
+    foreach ($result->readAll() as $answer) {
+        foreach ($langs as $lang) {
+            $query = "SELECT count(aid) FROM {{answer_l10ns}} WHERE aid={$answer['aid']} AND language='{$lang}'";
+            $gresult = Yii::app()->db->createCommand($query)->queryScalar();
+            if ($gresult < 1) {
+                $data = array(
+                'aid' => $answer['aid'],
+                'answer' => $answer['answer'],
+                'language' => $lang
+                );
+                Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
+            }
+        }
+        reset($langs);
+    }
+    
     /* Remove invalid question : can break survey */
     Survey::model()->findByPk($sid)->fixInvalidQuestions();
 
@@ -4041,15 +4017,17 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
     if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid = "AND tq2.gid=$targgid"; }
 
     $baselang = Survey::model()->findByPk($sid)->language;
-    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
-    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
+    $condquery = "SELECT tg.gid as depgid, ls.group_name as depgpname, "
+    . "tg2.gid as targgid, ls2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
     . "{{conditions}} AS tc, "
     . "{{questions}} AS tq, "
     . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg ,"
-    . "{{groups}} AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+    . "{{groups}} AS tg, "
+    . "{{groups}} AS tg2, "
+    . "{{group_l10ns}} as ls,{{group_l10ns}} as ls2 "
+    . "WHERE ls.language='{$baselang}' AND ls2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+    . "AND ls.gid=tg.gid AND ls2.gid=tg2.gid "
     . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
     $condresult = Yii::app()->db->createCommand($condquery)->query()->readAll();
 
@@ -4133,7 +4111,7 @@ function getQuestDepsForConditions($sid, $gid = "all", $depqid = "all", $targqid
 
     $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid
     FROM {{conditions}} AS tc, {{questions}} AS tq, {{questions}} AS tq2
-    WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid='$sid'
+    WHERE tc.qid = tq.qid AND tq.sid='$sid'
     AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
     $condresult = Yii::app()->db->createCommand($condquery)->query()->readAll();
     if (count($condresult) > 0) {
@@ -4960,4 +4938,27 @@ function regenerateCSRFToken()
     $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
     $cookie->expire = time() - 3600;
     Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
+}
+
+/**
+* A function to remove ../ or ./ from paths to prevent directory traversal
+*
+* @param mixed $path
+*/
+function get_absolute_path($path)
+{
+    $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+    $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+    $absolutes = array();
+    foreach ($parts as $part) {
+        if ('.' == $part) {
+            continue;
+        }
+        if ('..' == $part) {
+            array_pop($absolutes);
+        } else {
+            $absolutes[] = $part;
+        }
+    }
+    return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
