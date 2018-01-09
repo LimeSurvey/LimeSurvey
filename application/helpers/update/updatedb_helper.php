@@ -891,6 +891,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Rename 'First start tour' to 'Take beginner tour'.
+         */
+        If ($iOldDBVersion < 340) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{tutorials}}', array('title'=>'Take beginner tour'), "name='firstStartTour'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>340), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
