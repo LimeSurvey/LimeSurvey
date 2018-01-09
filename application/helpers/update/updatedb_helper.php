@@ -832,10 +832,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
                 $position = $rowToRemove['position'];
             }
+            // NB: Needed since Postgres id seq might not work.
+            $maxId = $oDB->createCommand()->select('max(id)')->from("{{boxes}}")->queryScalar();
 
             $oDB->createCommand()->insert(
                 "{{boxes}}",
                 [
+                    'id' => $maxId + 1,
                     'position' => $position,
                     'url' => 'admin/themeoptions',
                     'title' => 'Themes',
