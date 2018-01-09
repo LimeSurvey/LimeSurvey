@@ -7,9 +7,6 @@
         <testsuite name="Functional">
             <directory>tests/functional</directory>
         </testsuite>
-        <testsuite name="Integration">
-            <directory>tests/integration</directory>
-        </testsuite>
         <testsuite name="Acceptance">
             <directory>tests/acceptance</directory>
         </testsuite>
