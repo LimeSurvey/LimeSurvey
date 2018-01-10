@@ -217,7 +217,7 @@ Yii::app()->getClientScript()->registerScript( "GeneralOption-confirm-language",
                 <div class="form-group">
                     <label class=" control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
                     <div class="">
-                        <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $oSurvey->admin ; ?>' />
+                        <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $oSurvey->adminemail ; ?>' />
                     </div>
                 </div>
 
