@@ -1,5 +1,8 @@
 <?php
-    class ExpressionManagerTest extends CTestCase
+
+use PHPUnit\Framework\TestCase;
+
+    class ExpressionManagerTest extends TestCase
     {
         /**
          *
