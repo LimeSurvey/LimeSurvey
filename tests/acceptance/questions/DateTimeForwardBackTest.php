@@ -1,6 +1,21 @@
 <?php
+namespace LimeSurvey\tests\acceptance\question;
 
-namespace ls\tests;
+use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\DummyController;
+
+/**
+ *  LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 
 
 /**
@@ -83,7 +98,8 @@ class DateTimeForwardBackTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
+            self::$surveyId
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');
