@@ -99,9 +99,12 @@ class InstallationControllerTest extends TestBaseClassWeb
             $next->click();
 
             // Fill in database form.
+            $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="mysql"]'));
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
+            
+            $dbuserDbType->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
