@@ -460,7 +460,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array(getGlobalSetting('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
+        $standardTemplates = array('vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
         return $standardTemplates;
     }
 
