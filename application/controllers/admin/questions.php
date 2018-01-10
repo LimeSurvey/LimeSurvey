@@ -1631,34 +1631,30 @@ class questions extends Survey_Common_Action
      */
     public function ajaxlabelsetdetails()
     {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
+        }
         $lid = returnglobal('lid');
-        Yii::app()->loadHelper('surveytranslator');
-
-        $labelsetdata = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
-
-        $labelsetlanguages = explode(' ', $labelsetdata->languages);
         $resultdata = [];
-        foreach ($labelsetlanguages as $language) {
-
-            $criteria = new CDbCriteria;
-            $criteria->condition = 'lid=:lid and language=:language';
-            $criteria->params = array(':lid'=>$lid, ':language'=>$language);
-            $criteria->order = 'sortorder';
-            $labelsdata = Label::model()->findAll($criteria);
-            $i = 0;
-            $data = array();
-            foreach ($labelsdata as $labeldata) {
-                $data[$i]['lid'] = $labeldata->lid;
-                $data[$i]['code'] = $labeldata->code;
-                $data[$i]['title'] = $labeldata->title;
-                $data[$i]['sortorder'] = $labeldata->sortorder;
-                $data[$i]['assessment_value'] = $labeldata->assessment_value;
-                $data[$i]['language'] = $labeldata->language;
-                $i++;
+        $labelsetdata = LabelSet::model()->find('lid=:lid', array(':lid' => $lid));
+        if (!empty($labelsetdata)) {
+            $labelsetlanguages = explode(' ', $labelsetdata->languages);
+            foreach ($labelsetlanguages as $language) {
+                $i = 0;
+                $data = array();
+                foreach ($labelsetdata->labels as $aLabel) {
+                    $data[$i]['lid'] = $aLabel->lid;
+                    $data[$i]['code'] = $aLabel->code;
+                    $data[$i]['title'] = $aLabel->labelL10ns[$language]->title;
+                    $data[$i]['sortorder'] = $aLabel->sortorder;
+                    $data[$i]['assessment_value'] = $aLabel->assessment_value;
+                    $data[$i]['language'] = $language;
+                    $i++;
+                }
+                $labels = $data;
+                $resultdata[] = array($language=>array($labels, getLanguageNameFromCode($language, false)));
             }
-            $labels = $data;
-            //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
-            $resultdata[] = array($language=>array($labels, getLanguageNameFromCode($language, false)));
         }
         header('Content-type: application/json');
         echo json_encode($resultdata);
