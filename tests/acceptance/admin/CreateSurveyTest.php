@@ -143,23 +143,15 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
-            // In case quick actions are hidden, show them.
-            try {
-                $showquickactions = self::$webDriver->wait(1)->until(
-                    WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down')
-                    )
-                );
-                $showquickactions->click();
-                sleep(1);
-            } catch (NoSuchElementException $ex) {
-                // Ignore
-            }
+            // Go to structure sidebar
+            $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorStructureButton'));
+            $selectStructureSidebar->click();
+            
 
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#panel-1 .panel-body-link a')
+                    WebDriverBy::id('adminpanel__sidebar--selectorCreateQuestionGroup')
                 )
             );
             $addgroup->click();
@@ -168,37 +160,12 @@ class CreateSurveyTest extends TestBaseClassWeb
             $groupname = self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
             $groupname->clear()->sendKeys('group1');
 
-            // Click save.
-            $save = self::$webDriver->findElement(WebDriverBy::id('save-button'));
-            $save->click();
-
-            // Click "Overview".
-            // TODO: No save-and-close for survey group yet.
-            $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
-            $overview->click();
-
             sleep(1);
 
-            // In case quick actions are hidden, show them.
-            try {
-                $showquickactions = self::$webDriver->wait(1)->until(
-                    WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down')
-                    )
-                );
-                $showquickactions->click();
-                sleep(1);
-            } catch (NoSuchElementException $ex) {
-                // Ignore
-            }
-
-            // Click "Add question".
-            $addgroup = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#panel-2 .panel-body-link a')
-                )
-            );
-            $addgroup->click();
+            // Click save and add question.
+            $save = self::$webDriver->findElement(WebDriverBy::id('save-and-new-question-button'));
+            $save->click();
+            sleep(3);
 
             // Add question title.
             $groupname = self::$webDriver->findElement(WebDriverBy::id('title'));
@@ -209,6 +176,9 @@ class CreateSurveyTest extends TestBaseClassWeb
             $save->click();
 
             sleep(1);
+            
+            $selectSettingsSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorSettingsButton'));
+            $selectSettingsSidebar->click();
 
             // Click "Overview".
             $overview = self::$webDriver->wait(10)->until(

@@ -27,16 +27,21 @@ $surveyid = $oSurvey->sid;
 ?>
 <!-- START surveySummary -->
 <div class="row">
-    <div class="col-sm-12 h3 pagetitle"><?php eT('Survey summary'); ?></div>
+    <div class="col-sm-12 h3 pagetitle">
+        <?php eT('Survey summary'); ?> :
+        <?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title)." (".gT("ID")." ".$oSurvey->sid.")";?>
+    </div>
 </div>
+<?php /*
+/// Survey quick actions have been removed -> deprecated
 <div class="row">
     <div class="col-sm-12">
         <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>    
     </div>
 </div>
-<div class="row">
+*/ ?>
+<div class="row ls-space margin top-10">
         <!-- Survey summary -->
-    <div class="col-sm-12 h4"><?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title)." (".gT("ID")." ".$oSurvey->sid.")";?></div>
     <div class="col-md-12 col-lg-6">
         <div class="panel panel-default">
             <!-- Default panel contents -->
