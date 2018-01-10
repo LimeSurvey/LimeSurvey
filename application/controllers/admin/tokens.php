@@ -769,7 +769,7 @@ class tokens extends Survey_Common_Action
             $aTokenData['validuntil'] = $request->getPost('validuntil');
             $aTokenData['remindersent'] = flattenText($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval(flattenText($request->getPost('remindercount')));
-            $udresult = Token::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$sSanitizedToken'");
+            $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken] );
             $sOutput = '';
             if (count($udresult) == 0) {
                 $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
@@ -2358,7 +2358,7 @@ class tokens extends Survey_Common_Action
     public function prepExportToCPDB()
     {
         $exportedItems = Yii::app()->request->getPost('itemsid', []);
-        if(is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
+        if (is_array($exportedItems)) { $_FILESexportedItems = json_encode($exportedItems); } 
         Yii::app()->session['participantid'] = $exportedItems;
         return;
     }

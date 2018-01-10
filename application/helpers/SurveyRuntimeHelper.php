@@ -772,13 +772,13 @@ class SurveyRuntimeHelper
     {
         if (isset($this->sMove)) {
             if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
-                            $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
+                $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             } else {
                 // Accepted $move without error
                 $_SESSION[$this->LEMsessid]['prevstep'] = $this->sMove;
             }
         } else {
-        //    $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
+            // $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
         }
         if (!isset($_SESSION[$this->LEMsessid]['prevstep'])) {
             $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['prevstep'] - 1; // this only happens on re-load
@@ -1475,7 +1475,7 @@ class SurveyRuntimeHelper
             $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->iSurveyid", $restartparam);
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
-            $thissurvey['include_content'] = 'clearall.twig';
+            $this->aSurveyInfo['include_content'] = 'clearall.twig';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }

@@ -156,7 +156,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && ( self::checkTemplateXML($oTemplate->folder) )) {
+        if (is_object($oTemplate) && (self::checkTemplateXML($oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -189,7 +189,7 @@ class Template extends LSActiveRecord
      */
     public static function checkTemplateXML($sTemplateFolder)
     {
-        return ( is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml') || is_file( Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml'));
+        return (is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml') || is_file(Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml'));
     }
 
     /**
