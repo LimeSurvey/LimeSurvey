@@ -18,7 +18,7 @@ Yii::import('application.helpers.sanitize_helper', true);
 /**
  * Translation helper function
  * @param string $sToTranslate
- * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
  * @param string $sLanguage
  * @return mixed|string
  */
