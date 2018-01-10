@@ -36777,7 +36777,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.isMouseDown) {
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if (parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
+                if (parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
                     this.$store.commit('changeSidebarwidth', '340px');
                 } else {
@@ -37052,6 +37052,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         createQuestionAllowed() {
             return this.$store.state.questiongroups.length > 0;
+        },
+        itemWidth() {
+            return parseInt(this.$store.state.sidebarwidth) - 135 + 'px';
         }
     },
     methods: {
@@ -37263,7 +37266,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.openQuestionGroup(questiongroup)
         }
       }
-    }, [_vm._v(" \n                    " + _vm._s(questiongroup.group_name) + " \n                    "), _c('span', {
+    }, [_c('span', {
+      staticClass: "question_text_ellipsize",
+      style: ({
+        width: _vm.itemWidth
+      })
+    }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
     }, [_vm._v(_vm._s(questiongroup.questions.length))])]), _vm._v(" "), _c('i', {
       staticClass: "fa bigIcons",
@@ -37279,7 +37287,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "slide-fade-down"
       }
     }, [(_vm.isActive(questiongroup.gid)) ? _c('ul', {
-      staticClass: "list-group background-muted padding-left",
+      staticClass: "list-group background-muted padding-left question-question-list",
       on: {
         "drop": function($event) {
           _vm.dropQuestion($event, _vm.question)
@@ -37288,7 +37296,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
       return _c('li', {
         key: question.qid,
-        staticClass: "list-group-item ls-flex-row align-itmes-flex-between",
+        staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
         class: _vm.questionItemClasses(question),
         on: {
           "dragenter": function($event) {
@@ -37309,7 +37317,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-        staticClass: "col-12 pjax",
+        staticClass: "col-12 pjax question-question-list-item-link",
         attrs: {
           "href": question.link,
           "data-toggle": "tootltip",
@@ -37321,7 +37329,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.openQuestion(question)
           }
         }
-      }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" " + _vm._s((_vm.$store.state.maximalSidebar ? question.question : question.name_short)) + " ")])])
+      }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" "), _c('span', {
+        staticClass: "question_text_ellipsize",
+        style: ({
+          width: _vm.itemWidth
+        })
+      }, [_vm._v(" " + _vm._s(question.question) + " ")])])])
     })) : _vm._e()])], 1)
   }))])
 },staticRenderFns: []}

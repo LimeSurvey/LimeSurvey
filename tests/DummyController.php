@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace LimeSurvey\tests;
 
 class DummyController extends \CController
 {

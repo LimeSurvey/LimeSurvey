@@ -29,6 +29,9 @@ export default {
         },
         createQuestionAllowed(){
             return (this.$store.state.questiongroups.length > 0);
+        },
+        itemWidth(){
+            return (parseInt(this.$store.state.sidebarwidth)-135)+'px';
         }
     },
     methods: {
@@ -181,16 +184,19 @@ export default {
                 <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons dragPointer" draggable="true" @dragend="endDraggingGroup($event, questiongroup)" @dragstart="startDraggingGroup($event, questiongroup)">&nbsp;</i>
                     <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
-                        {{questiongroup.group_name}} 
+                        <span class="question_text_ellipsize" :style="{ width: itemWidth }"> {{questiongroup.group_name}} </span>
                         <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                     </a>
                     <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                 </div>
                 <transition name="slide-fade-down">
-                    <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
-                        <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
+                    <ul class="list-group background-muted padding-left question-question-list" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
+                        <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
                             <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
-                            <a :href="question.link" class="col-12 pjax" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
+                            <a :href="question.link" class="col-12 pjax question-question-list-item-link" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question"> 
+                                <i>[{{question.title}}]</i> 
+                                <span class="question_text_ellipsize" :style="{ width: itemWidth }"> {{ question.question }} </span> 
+                            </a>
                         </li>
                     </ul>
                 </transition>

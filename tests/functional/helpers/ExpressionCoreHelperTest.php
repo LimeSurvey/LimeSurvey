@@ -1,6 +1,7 @@
 <?php
+namespace LimeSurvey\tests\functional\helpers;
 
-namespace ls\tests;
+use LimeSurvey\tests\TestBaseClass;
 
 /**
  * Test expression evaluation in PHP vs JS.

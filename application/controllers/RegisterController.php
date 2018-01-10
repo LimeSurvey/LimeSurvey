@@ -516,27 +516,4 @@ class RegisterController extends LSYii_Controller
 
     }
 
-    /**
-     * Display public page after successful registration
-     * @param $iSurveyId
-     * @param $iTokenId
-     */
-    private function displaySuccess($iSurveyId, $iTokenId)
-    {
-        $sLanguage = Yii::app()->language;
-        $this->aGlobalData['surveyid'] = $surveyid = $iSurveyId;
-        $this->aGlobalData['thissurvey'] = getSurveyInfo($iSurveyId, $sLanguage);
-        Yii::app()->setConfig('surveyID', $iSurveyId); //Needed for languagechanger
-        $this->aReplacementData['sitename'] = Yii::app()->getConfig('sitename');
-        $this->aReplacementData['aRegisterErrors'] = $this->aRegisterErrors;
-        $this->aReplacementData['sMessage'] = $this->sMessage;
-
-        $oTemplate = Template::model()->getInstance('', $iSurveyId);
-
-        $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId);
-
-        $aData['aSurveyInfo']['include_content'] = 'registerSuccess.twig';
-        Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
-
-    }
 }

@@ -50,7 +50,7 @@
                 {% elseif aSurveyInfo.iTotalquestions == 1  %}
                     {{ "There is 1 question in this survey" | t }}
                 {% else %}
-                    {{ "There are" | t}} {{aSurveyInfo.iTotalquestions}} {{"questions in this survey." | t}}
+                    {{ "There are %s questions in this survey." | gT | format(aSurveyInfo.iTotalquestions) }}
               {% endif %}
             {% endif %}
         </div>
