@@ -609,9 +609,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     $results['labels'] = 0;
     $results['warnings'] = array();
 
-    // Import labels table ===================================================================================
-
-
+    // Import label sets table ===================================================================================
     foreach ($xml->labelsets->rows->row as $row) {
         $insertdata = array();
         foreach ($row as $key=>$value) {
@@ -633,9 +631,8 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
 
     // Import labels table ===================================================================================
-
-
     if (isset($xml->labels->rows->row)) {
+        foreach ($xml->labels->rows->row as $row) {
             $insertdata = [];
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
@@ -647,6 +644,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
             Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
             $results['labels']++;
+        }
     }
 
     //CHECK FOR DUPLICATE LABELSETS
