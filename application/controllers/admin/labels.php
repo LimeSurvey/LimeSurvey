@@ -366,7 +366,7 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        $lid = returnGlobal('lid');
+        $lid = (int)App()->request->getPost('lid');
 
         if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             Yii::app()->loadHelper('admin/label');

@@ -47,7 +47,7 @@ class LabelL10n extends LSActiveRecord
     }
     /**
      * @inheritdoc
-     * @return Label
+     * @return LabelL10n
      */
     public static function model($class = __CLASS__)
     {

@@ -128,7 +128,6 @@ function modlabelsetanswers($lid)
     $aErrors = array();
     if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
 
-        debugbreak();
         // First delete all labels without corresponding code
         $aLabels=Label::model()->findAllByAttributes(['lid'=>$lid]);
         foreach($aLabels as $aLabel)

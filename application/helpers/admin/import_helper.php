@@ -982,7 +982,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
     //CHECK FOR DUPLICATE LABELSETS
 
-    if (isset($_POST['checkforduplicates'])) {
+    if ($options['checkforduplicates']=='on') {
 
         $aLabelSetCheckSums = buildLabelSetCheckSumArray();
         $aCounts=array_count_values($aLabelSetCheckSums);
