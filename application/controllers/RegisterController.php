@@ -136,13 +136,14 @@ class RegisterController extends LSYii_Controller
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-
+            
             self::sendRegistrationEmail($iSurveyId, $iTokenId);
-
+            self::display($iSurveyId, $iTokenId, 'register_success');
+            Yii::app()->end();
         }
 
         // Display the page
-        self::display($iSurveyId);
+        self::display($iSurveyId, null, 'register_form');
     }
 
     /**
@@ -182,6 +183,38 @@ class RegisterController extends LSYii_Controller
         }
     }
 
+    /**
+     * Creates the array for the registration success page
+     *
+     * @param Integer $iSurveyId The survey id
+     * @param Integer $iTokenId The token id
+     * 
+     * @return Array The rendereable array
+     */
+    public function getRegisterSuccess($iSurveyId, $iTokenId){
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+        
+        $aData['active'] = $oSurvey->active;        
+        $aData['iSurveyId'] = $iSurveyId;
+        $aData['sLanguage'] = App()->language;
+        $aData['sFirstName'] = $oToken->firstname;
+        $aData['sLastName'] = $oToken->lastname;
+        $aData['sEmail'] = $oToken->email;
+        $aData['thissurvey'] = $oSurvey->attributes;
+
+        return $aData;
+    }
+
+    /**
+     * Create the array to render the registration form
+     * Takes eventual changes through plugins into account
+     *
+     * @param Integer $iSurveyId The surey id
+     * 
+     * @return Array The rendereable array
+     */
     public function getRegisterForm($iSurveyId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -205,6 +238,7 @@ class RegisterController extends LSYii_Controller
         $aRegisterAttributes = $this->getExtraAttributeInfo($iSurveyId);
 
         $aData['iSurveyId'] = $iSurveyId;
+        $aData['active'] = $oSurvey->active;
         $aData['sLanguage'] = App()->language;
         $aData['sFirstName'] = $aFieldValue['sFirstName'];
         $aData['sLastName'] = $aFieldValue['sLastName'];
@@ -455,7 +489,7 @@ class RegisterController extends LSYii_Controller
      * Display needed public page
      * @param $iSurveyId
      */
-    private function display($iSurveyId)
+    private function display($iSurveyId, $iTokenId=null, $registerContent)
     {
         $sLanguage = Yii::app()->language;
         $this->aGlobalData['surveyid'] = $surveyid = $iSurveyId;
@@ -466,28 +500,42 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        // $this->sTemplate=$oTemplate->sTemplateName;
-        // if(!$this->sMessage){
-        //     // $this->aGlobalData['languagechanger']=frontend_helper::makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
-        // }else{
-        //     // Must use message.pstpl
-        //     $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->pstplPath . "/message.pstpl"),
-        //         array(
-        //             'MESSAGEID'=>'register-message',
-        //             'ERROR'=>'',
-        //             'MESSAGE'=>$this->sMessage,
-        //         )
-        //         ,$this->aGlobalData
-        //     );
+        if($iTokenId!==null){
+            $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
+            $aData['registerSuccess'] = true;
+        } else {
+            $aData['aSurveyInfo'] = self::getRegisterForm($iSurveyId);
+        }
 
-        // }
-
-        $aData['aSurveyInfo'] = self::getRegisterForm($iSurveyId);
+        $aData['aSurveyInfo']['registration_view'] = $registerContent;
 
         $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
         $aData['aSurveyInfo']['include_content'] = 'register.twig';
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
+
+    }
+
+    /**
+     * Display public page after successful registration
+     * @param $iSurveyId
+     * @param $iTokenId
+     */
+    private function displaySuccess($iSurveyId, $iTokenId)
+    {
+        $sLanguage = Yii::app()->language;
+        $this->aGlobalData['surveyid'] = $surveyid = $iSurveyId;
+        $this->aGlobalData['thissurvey'] = getSurveyInfo($iSurveyId, $sLanguage);
+        Yii::app()->setConfig('surveyID', $iSurveyId); //Needed for languagechanger
+        $this->aReplacementData['sitename'] = Yii::app()->getConfig('sitename');
+        $this->aReplacementData['aRegisterErrors'] = $this->aRegisterErrors;
+        $this->aReplacementData['sMessage'] = $this->sMessage;
+
+        $oTemplate = Template::model()->getInstance('', $iSurveyId);
+
+        $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId);
+
+        $aData['aSurveyInfo']['include_content'] = 'registerSuccess.twig';
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }
