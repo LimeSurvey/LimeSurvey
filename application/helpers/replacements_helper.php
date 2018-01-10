@@ -361,39 +361,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 function getStandardsReplacementFields($thissurvey)
 {
-    $allowedvars = array(
-        'assessments',
-        'captchapath',
-        'clienttoken',
-        'completed',
-        'errormsg',
-        'groupdescription',
-        'groupname',
-        'imageurl',
-        'languagechanger',
-        'loadname',
-        'move',
-        'navigator',
-        'moveprevbutton',
-        'movenextbutton',
-        'percentcomplete',
-        's_lang',
-        'showgroupinfo',
-        'showqnumcode',
-        'showxquestions',
-        'sitelogo',
-        'templatedir',
-        'thissurvey',
-        'token',
-        'totalBoilerplatequestions',
-        'questionindex',
-        'questionindexmenu',
-        'totalquestions',
-        'flashmessage'
-    );
-
     $_surveyid = Yii::app()->getConfig('surveyID');
-
 
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
 
@@ -495,9 +463,6 @@ function getStandardsReplacementFields($thissurvey)
     /* indexItems is static but not rendering, seem better to call it here ? */
     $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
     $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
-    $coreReplacements['RESTART'] = $_restart;
-    $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
-    $coreReplacements['SAVE'] = isset($_saveall) ? $_saveall : '';
     $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
@@ -510,8 +475,8 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
-
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
+    
     return $coreReplacements;
 }
 
