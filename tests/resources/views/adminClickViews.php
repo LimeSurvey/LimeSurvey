@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-use ls\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * This contains a list of survey-related admin views that we can loop for testing

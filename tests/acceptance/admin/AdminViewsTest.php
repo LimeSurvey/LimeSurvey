@@ -15,8 +15,6 @@ namespace LimeSurvey\tests\acceptance\admin;
 
 use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\WebDriverKeys;
 use LimeSurvey\tests\TestBaseClassView;
 
 /**
@@ -60,7 +58,7 @@ class AdminViewsTest extends TestBaseClassView
 
     public function addAdminClickViews()
     {
-        return require __DIR__."/../data/views/adminClickViews.php";
+        return require self::getViewsFolder()."/adminClickViews.php";
     }
 
     /**
