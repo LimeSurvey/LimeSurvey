@@ -267,8 +267,7 @@ class database extends Survey_Common_Action
 
         //First delete all answers
         $oldAnswers = Answer::model()->findAllByAttributes(array('qid'=>$this->iQuestionID));
-        foreach ($oldAnswers as $oAnswer)
-        {
+        foreach ($oldAnswers as $oAnswer) {
             AnswerL10n::model()->deleteAllByAttributes(array('aid'=>$oAnswer->aid));
             $oAnswer->delete();
         }
@@ -449,20 +448,15 @@ class database extends Survey_Common_Action
                             $oSubQuestionL10n->language = $sLanguage;
                         }
                     }
-                    if (isset($oSubQuestion))
-                    {
+                    if (isset($oSubQuestion)) {
                         $bSubQuestionResult = $oSubQuestion->save();
                         $aInsertQID[$iScaleID][$iPosition] = $oSubQuestion->qid;
                         unset($oSubQuestion);
-                    }
-                    else
-                    {
+                    } else {
                         $bSubQuestionResult = true;
                     }
-                    if (isset($oSubQuestionL10n))
-                    {
-                        if (empty($oSubQuestionL10n->qid))
-                        {
+                    if (isset($oSubQuestionL10n)) {
+                        if (empty($oSubQuestionL10n->qid)) {
                             $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
                         }
                         $bSubQuestionResult = $oSubQuestionL10n->save();

@@ -374,7 +374,7 @@ class Question extends LSActiveRecord
      * @return array
      */
     public function getQuestionList($surveyid)
-    {                                        
+    {
         return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group_order DESC, question_order'));
     }
 

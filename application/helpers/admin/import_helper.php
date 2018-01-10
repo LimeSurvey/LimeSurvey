@@ -1008,9 +1008,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $results['groups']++;
             }
             if (!empty($aDataL10n)) {
-                $aDataL10n['gid']=$aGIDReplacements[$oldgid];
-                $oQuestionGroupL10n=new QuestionGroupL10n(); 
-                $oQuestionGroupL10n->setAttributes($aDataL10n,false);
+                $aDataL10n['gid'] = $aGIDReplacements[$oldgid];
+                $oQuestionGroupL10n = new QuestionGroupL10n(); 
+                $oQuestionGroupL10n->setAttributes($aDataL10n, false);
                 $oQuestionGroupL10n->save();
             }
 
@@ -1034,8 +1034,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 continue; //Skip invalid group ID
             }
-            $oQuestionGroupL10n=new QuestionGroupL10n(); 
-            $oQuestionGroupL10n->setAttributes($insertdata,false);
+            $oQuestionGroupL10n = new QuestionGroupL10n(); 
+            $oQuestionGroupL10n->setAttributes($insertdata, false);
             $oQuestionGroupL10n->save();
         }    
     }
@@ -1269,8 +1269,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 continue; //Skip invalid group ID
             }
-            $oQuestionL10n=new QuestionL10n(); 
-            $oQuestionL10n->setAttributes($insertdata,false);
+            $oQuestionL10n = new QuestionL10n(); 
+            $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
         }    
     }
@@ -1344,8 +1344,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 continue; //Skip invalid answer ID
             }
-            $oAnswerL10n=new AnswerL10n(); 
-            $oAnswerL10n->setAttributes($insertdata,false);
+            $oAnswerL10n = new AnswerL10n(); 
+            $oAnswerL10n->setAttributes($insertdata, false);
             $oAnswerL10n->save();
         }    
     }    
