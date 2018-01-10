@@ -12,16 +12,25 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class AjaxModeTest extends TestBaseClassWeb
 {
     /**
-     * 
+     * Setup before class.
      */
-    public function testAjaxModeRecordsAnswer()
+    public static function setupBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_366446.lss';
         self::importSurvey($surveyFile);
 
         // Activate survey.
         self::$testHelper->activateSurvey(self::$surveyId);
+    }
+
+    /**
+     * Test that Ajax mode records answer.
+     */
+    public function testAjaxModeRecordsAnswer()
+    {
 
         // Get questions.
         $survey = \Survey::model()->findByPk(self::$surveyId);
