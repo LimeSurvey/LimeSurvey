@@ -1,7 +1,6 @@
 <?php
-namespace LimeSurvey\tests\acceptance\admin;
 
-use LimeSurvey\tests\TestBaseClass;
+namespace ls\tests;
 
 /**
  * @since 2017-06-13
@@ -19,8 +18,6 @@ class TemplateConfigurationTest extends TestBaseClass
         \Yii::import('application.helpers.globalsettings_helper', true);
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
-
-        // FIXME
 
         // No PHP notices.
         $this->assertTrue(true);

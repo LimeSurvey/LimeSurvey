@@ -1,8 +1,6 @@
 <?php
 
-namespace LimeSurvey\tests\functional\helpers;
-
-use LimeSurvey\tests\TestBaseClass;
+namespace ls\tests;
 
 /**
  * Check the JSON saved in database.
@@ -11,6 +9,13 @@ use LimeSurvey\tests\TestBaseClass;
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
+    /**
+     * 
+     */
+    public static function setupBeforeClass()
+    {
+        parent::setupBeforeClass();
+    }
 
     /**
      * Tear down fixtures.

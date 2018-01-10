@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\tests;
+namespace ls\tests;
 
 use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +10,8 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
-
+use Facebook\WebDriver\Exception\WebDriverCurlException;
+use Facebook\WebDriver\Exception\NoSuchDriverException;
 
 class TestHelper extends TestCase
 {
@@ -237,7 +238,7 @@ class TestHelper extends TestCase
         $inst->connection = $connection;
 
         // Check SQL file.
-        $file = TestBaseClass::getDataFolder() . '/sql/create-mysql.' . $version . '.sql';
+        $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.

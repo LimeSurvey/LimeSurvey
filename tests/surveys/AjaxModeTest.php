@@ -1,9 +1,9 @@
 <?php
-namespace LimeSurvey\tests\acceptance\surveys;
+
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-13

@@ -35,7 +35,6 @@
         "bin-dir": "third_party/bin"
     },
 	"require-dev": {
-		"squizlabs/php_codesniffer": "2.*",
-		"phpunit/phpunit": "^5.7"
+		"squizlabs/php_codesniffer": "2.*"
 	}
 }

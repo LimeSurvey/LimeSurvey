@@ -1,10 +1,9 @@
 <?php
-namespace LimeSurvey\tests\acceptance\surveys;
 
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * Test survey when all other questions relevance is 0, due to first 

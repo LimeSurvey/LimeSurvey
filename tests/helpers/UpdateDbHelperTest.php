@@ -1,7 +1,6 @@
 <?php
-namespace LimeSurvey\tests\functional\helpers;
 
-use LimeSurvey\tests\TestBaseClass;
+namespace ls\tests;
 
 /**
  * @since 2017-06-16

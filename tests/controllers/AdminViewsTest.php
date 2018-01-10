@@ -11,15 +11,15 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace LimeSurvey\tests\acceptance\admin;
+namespace ls\tests\controllers;
 
-use LimeSurvey\tests\TestBaseClassView;
+use ls\tests\TestBaseClassView;
 
 /**
  * Class AdminViewsTest
  * This test loops through all basic admin view pages and cheks if they open withour errors
  *
- * @package LimeSurvey\tests
+ * @package ls\tests
  * @group adminviews
  */
 class AdminViewsTest extends TestBaseClassView
@@ -27,31 +27,31 @@ class AdminViewsTest extends TestBaseClassView
 
     public function addBaseViews()
     {
-        return require self::getViewsFolder()."/adminBaseViews.php";
+        return require __DIR__."/../data/views/adminBaseViews.php";
     }
 
     public function addSurveyViews()
     {
-        return require self::getViewsFolder()."/adminSurveyViews.php";
+        return require __DIR__."/../data/views/adminSurveyViews.php";
     }
 
     public function addSettingsViews()
     {
-        return require self::getViewsFolder()."/adminSettingsViews.php";
+        return require __DIR__."/../data/views/adminSettingsViews.php";
     }
 
     public function addUsersViews()
     {
-        return require self::getViewsFolder()."/adminUsersViews.php";
+        return require __DIR__."/../data/views/adminUsersViews.php";
     }
     public function addParticipantsViews()
     {
-        return require self::getViewsFolder()."/adminParticipantsViews.php";
+        return require __DIR__."/../data/views/adminParticipantsViews.php";
     }
 
     public function addGeneralSettingsViews()
     {
-        return require self::getViewsFolder()."/adminGeneralSettingsViews.php";
+        return require __DIR__."/../data/views/adminGeneralSettingsViews.php";
     }
 
     /**
@@ -89,7 +89,7 @@ class AdminViewsTest extends TestBaseClassView
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).
-            $surveyFile = self::$surveysFolder . '/limesurvey_survey_454287.lss';
+            $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
             self::importSurvey($surveyFile);
 
         }
