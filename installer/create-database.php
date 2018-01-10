@@ -11,16 +11,12 @@ function createDatabase($oDB){
     * - Always prefix key/index names by using curly brackets {{ }}*
     */
 
-    ////// Current database version: //////
+    // Get current database version:
     $version = require(\Yii::app()->getBasePath() . '/config/version.php');
     $databaseCurrentVersion = $version['dbversionnumber'];
-    ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
-
-    ///// Load DefaultData Helper
-    // $oDB                        = Yii::app()->getDb();
 
     $oTransaction = $oDB->beginTransaction();
     try{
@@ -146,30 +142,32 @@ function createDatabase($oDB){
         ));        
         $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], true);
 
-        
-
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
             'code' =>  "string(5) NOT NULL default ''",
-            'title' =>  "text",
             'sortorder' =>  "integer NOT NULL",
-            'language' =>  "string(20) NOT NULL DEFAULT 'en'",
             'assessment_value' =>  "integer NOT NULL default '0'",
         ));
-
         $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
         $oDB->createCommand()->createIndex('{{idx3_labels}}', '{{labels}}', 'language', false);
         $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
 
+        // label_l10ns
+        $oDB->createCommand()->createTable('{{label_l10ns}}', array(
+            'id' =>  "pk",
+            'label_id' =>  "integer NOT NULL",
+            'title' =>  "text",
+            'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+        ));  
 
         // labelsets
         $oDB->createCommand()->createTable('{{labelsets}}', array(
             'lid' => 'pk',
             'label_name' =>  "string(100) NOT NULL DEFAULT ''",
-            'languages' =>  "string(200) DEFAULT 'en'",
+            'languages' =>  "string(255) NOT NULL",
         ));
 
 
@@ -309,7 +307,7 @@ function createDatabase($oDB){
             'parent_qid' =>  "integer NOT NULL default '0'",
             'sid' =>  "integer NOT NULL default '0'",
             'gid' =>  "integer NOT NULL default '0'",
-            'type' =>  "string(1) NOT NULL default 'T'",
+            'type' =>  "string(30) NOT NULL default 'T'",
             'title' =>  "string(20) NOT NULL default ''",
             'preg' =>  "text",
             'other' =>  "string(1) NOT NULL default 'N'",

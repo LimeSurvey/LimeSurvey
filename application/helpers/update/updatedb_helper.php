@@ -928,6 +928,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 350) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
+            
             // Question table 
             $oDB->createCommand()->createTable('{{question_l10ns}}', array(
                 'id' =>  "pk",
@@ -981,7 +982,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
-            $dataReader = $oDB->createCommand("select qid,code,scale_id from {{answers}} group by qid,code,scale_id")->query();
+            $dataReader = $oDB->createCommand("select qid, code from {{answers}} group by qid, code")->query();
             $iCounter = 1;
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id='{$row['scale_id']}'")->execute();
@@ -995,7 +996,40 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{answers}}', 'aid', "pk", false);
             $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
             $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
+            
+            // Labels table
+            // label_l10ns
+            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
+                'id' =>  "pk",
+                'label_id' =>  "integer NOT NULL",
+                'title' =>  "text",
+                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+            ));  
+            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            
+            alterColumn('{{labels}}', 'id', "int", true);
+            dropPrimaryKey('labels');
+            $dataReader = $oDB->createCommand("select lid,code from {{labels}} group by lid,code")->query();
+            $iCounter = 1;
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("update {{labels}} set id={$iCounter} where lid={$row['lid']} and code='{$row['code']}'")->execute();
+                $iCounter++;
+            }
+            $oDB->createCommand("INSERT INTO {{label_l10ns}} (label_id, title, language) select id, title, language from {{labels}}")->execute();
+            $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 WHERE l1.id = l2.id and l1.language<l2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("delete from  {{labels}} where id={$row['id']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{labels}}', 'id', "pk", false);
+            $oDB->createCommand()->dropColumn('{{labels}}', 'title');
+            $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
+           
 
+           // Extend language field on labelsets
+           alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+
+            // Extend question type field length
+            alterColumn('{{questions}}','type','string(30)',false,'T');
             
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
             $oTransaction->commit();
