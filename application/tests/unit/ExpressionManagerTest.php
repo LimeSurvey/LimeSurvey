@@ -1,23 +1,22 @@
 <?php
-	class ExpressionManagerTest extends CTestCase
-	{
-		/**
-		 *
-		 * @var ExpressionManager
-		 */
-		protected $em;
+    class ExpressionManagerTest extends CTestCase
+    {
+        /**
+         *
+         * @var ExpressionManager
+         */
+        protected $em;
 
-		public function setUp()
-		{
-			parent::setUp();
-			Yii::import('application.helpers.expressions.em_core_helper', 'true');
-            if (!function_exists('gT'))
-			{
-				// Create gT function that ExpressionManager uses (but ideally should not).
-				eval('function gT() { }');
-			}
-			$this->em = new ExpressionManager();
-		}
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::import('application.helpers.expressions.em_core_helper', 'true');
+            if (!function_exists('gT')) {
+                // Create gT function that ExpressionManager uses (but ideally should not).
+                eval('function gT() { }');
+            }
+            $this->em = new ExpressionManager();
+        }
 		
 //		public function testVariables()
 //		{
@@ -72,54 +71,51 @@
 //
 //		}
 //		
-		public function testEvaluator()
-		{
-			$booleanExpressions = array(
-				"1" => true,
-				"0" => false,
-				"" => false,
-				"1 == 1" => true,
-				"0 == 1" => false,
-				"1 && 0" => false,
-				"1 && 1" => true,
-				"1 || 0" => true,
-				"0 || 0" => false,
-			);
+        public function testEvaluator()
+        {
+            $booleanExpressions = array(
+                "1" => true,
+                "0" => false,
+                "" => false,
+                "1 == 1" => true,
+                "0 == 1" => false,
+                "1 && 0" => false,
+                "1 && 1" => true,
+                "1 || 0" => true,
+                "0 || 0" => false,
+            );
 
-			foreach ($booleanExpressions as $expr => $expected)
-			{
-				$this->assertEquals($expected, $this->em->ProcessBooleanExpression($expr), "Expression: '$expr'");
-			}
-		}
+            foreach ($booleanExpressions as $expr => $expected) {
+                $this->assertEquals($expected, $this->em->ProcessBooleanExpression($expr), "Expression: '$expr'");
+            }
+        }
 
         public function testFunctions()
-		{
-			$functions = array(
-				'abs(5)' => 5,
-				'abs(-5)' => 5,
-				'abs(0)' => 0,
-				'acos(0.5)' => acos(0.5),
-				'acos(0.1)' => acos(0.1),
+        {
+            $functions = array(
+                'abs(5)' => 5,
+                'abs(-5)' => 5,
+                'abs(0)' => 0,
+                'acos(0.5)' => acos(0.5),
+                'acos(0.1)' => acos(0.1),
 				
-			);
-			foreach ($functions as $function => $expected)
-			{
-				$this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{' . $function . '}'));
-			}
-		}
+            );
+            foreach ($functions as $function => $expected) {
+                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{'.$function.'}'));
+            }
+        }
 
-		public function testEscapes()
-		{
-			$strings = array(
-				'\{1+1}' => '{1+1}',
-				'x{1+1}' => 'x2',
-				'x{1+1\}' => 'x{1+1}',
-			);
-			foreach ($strings as $escaped => $expected)
-			{
-				$this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
-			}
-		}
+        public function testEscapes()
+        {
+            $strings = array(
+                '\{1+1}' => '{1+1}',
+                'x{1+1}' => 'x2',
+                'x{1+1\}' => 'x{1+1}',
+            );
+            foreach ($strings as $escaped => $expected) {
+                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
+            }
+        }
 
         public function testJuggling()
         {
@@ -134,20 +130,19 @@
                 '"05" + "1"' => 6,
                 '"" + "1" + "2"' => 12
             );
-            foreach ($equalities as $expression => $expected)
-            {
-                $result = $this->em->sProcessStringContainingExpressions('{' . $expression . '}');
+            foreach ($equalities as $expression => $expected) {
+                $result = $this->em->sProcessStringContainingExpressions('{'.$expression.'}');
                 $this->assertEquals($expected, $result);
             }
         }
-		public function oldTestEvaluator()
-		{
+        public function oldTestEvaluator()
+        {
 			
 
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
-        $tests  = <<<EOD
+        $tests = <<<EOD
 <B>Empty Vs. Empty</B>~"<B>Empty Vs. Empty</B>"
 1~'' == ''
 0~'' != ''
@@ -678,18 +673,18 @@ NULL~convert_value( -10000, 1, '0,5,10,15,20', '0,50,100,150,200')
 NULL~convert_value( 30, 1, '0,5,10,15,20', '0,50,100,150,200')
 EOD;
 
-        $atests = explode("\n",$tests);
+        $atests = explode("\n", $tests);
         $atests[] = "1\n2\n3~BREAKS";
         $atests[] = "1<br />\n2<br />\n3~nl2br(BREAKS)";
         $atests[] = "hi<br />\nthere<br />\nhow<br />\nare<br />\nyou?~nl2br('hi\\nthere\\nhow\\nare\\nyou?')";
         $atests[] = "hi<br />\nthere,<br />\nuser!~nl2br(implode('\\n','hi','there,','user!'))";
 
-		$LEM =& LimeExpressionManager::singleton();
+        $LEM = & LimeExpressionManager::singleton();
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
         //$LEMsessid = 'survey_' . Yii::app()->getConfig('surveyID');
-		$LEMsessid = 'survey_12345';
+        $LEMsessid = 'survey_12345';
         // manually set relevance status
         $_SESSION[$LEMsessid]['relevanceStatus'] = array();
         foreach ($vars as $var) {
@@ -701,57 +696,50 @@ EOD;
         $allJsVarnamesUsed = array();
         $body = '';
         $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
-        $i=0;
+        $i = 0;
         $javaScript = array();
-        foreach($atests as $test)
-        {
+        foreach ($atests as $test) {
             ++$i;
-            $values = explode("~",$test);
+            $values = explode("~", $test);
             $expectedResult = array_shift($values);
-            $expr = implode("~",$values);
+            $expr = implode("~", $values);
             $resultStatus = 'ok';
-            $em->groupSeq=2;
-            $em->questionSeq=3;
+            $em->groupSeq = 2;
+            $em->questionSeq = 3;
             $status = $em->RDP_Evaluate($expr);
-            if ($status)
-            {
-                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
+            if ($status) {
+                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed, $em->GetJsVarsUsed());
             }
             $result = $em->GetResult();
-            $valToShow = $result;   // htmlspecialchars($result,ENT_QUOTES,'UTF-8',false);
+            $valToShow = $result; // htmlspecialchars($result,ENT_QUOTES,'UTF-8',false);
             $expectedToShow = $expectedResult; // htmlspecialchars($expectedResult,ENT_QUOTES,'UTF-8',false);
             $body .= "<tr>";
-            $body .= "<td>" . $em->GetPrettyPrintString() . "</td>\n";
+            $body .= "<td>".$em->GetPrettyPrintString()."</td>\n";
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
-            if ($valToShow != $expectedToShow)
-            {
+            if ($valToShow != $expectedToShow) {
                 $resultStatus = 'error';
             }
-            $body .= "<td class='" . $resultStatus . "'>" . $valToShow . "</td>\n";
-            $body .= '<td>' . $expectedToShow . "</td>\n";
+            $body .= "<td class='".$resultStatus."'>".$valToShow."</td>\n";
+            $body .= '<td>'.$expectedToShow."</td>\n";
             $javaScript[] = $em->GetJavascriptTestforExpression($expectedToShow, $i);
-            $body .= "<td id='test_" . $i . "'>&nbsp;</td>\n";
+            $body .= "<td id='test_".$i."'>&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
                 foreach ($varsUsed as $v) {
                     $varDesc[] = $v;
                 }
-                $body .= '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
-            }
-            else {
+                $body .= '<td>'.implode(',<br/>', $varDesc)."</td>\n";
+            } else {
                 $body .= "<td>&nbsp;</td>\n";
             }
             $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
-            if ($jsEqn == '')
-            {
+            if ($jsEqn == '') {
                 $body .= "<td>&nbsp;</td>\n";
-            }
-            else
-            {
-                $body .= '<td>' . $jsEqn . "</td>\n";
+            } else {
+                $body .= '<td>'.$jsEqn."</td>\n";
             }
             $body .= '</tr>';
         }
@@ -761,7 +749,7 @@ EOD;
         $body .= "var LEMgseq=2;\n";
         $body .= "var LEMmode='group';\n";
         $body .= "function recompute() {\n";
-        $body .= implode("\n",$javaScript);
+        $body .= implode("\n", $javaScript);
         $body .= "}\n//-->\n</script>\n";
 
         $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
@@ -769,67 +757,65 @@ EOD;
         $pre = '';
         $pre .= "<h3>Change some Relevance values to 0 to see how it affects computations</h3>\n";
         $pre .= '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Starting Value</th><th>Relevance</th></tr>';
-        $i=0;
-        $LEMvarNameAttr=array();
-        $LEMalias2varName=array();
-        foreach ($allJsVarnamesUsed as $jsVarName)
-        {
+        $i = 0;
+        $LEMvarNameAttr = array();
+        $LEMalias2varName = array();
+        foreach ($allJsVarnamesUsed as $jsVarName) {
             ++$i;
-            $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($vars as $k => $v) {
-                if ($v['jsName'] == $jsVarName)
-                {
+            $pre .= "<tr><td>".$i."</td><td>".$jsVarName;
+            foreach ($vars as $k => $v) {
+                if ($v['jsName'] == $jsVarName) {
                     $value = $v['code'];
                 }
             }
-            $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
-            $pre .= "<input type='hidden' id='" . $jsVarName . "' name='" . $jsVarName . "' value='" . $value . "'/>\n";
+            $pre .= "</td><td>".$value."</td><td><input type='text' id='relevance".$i."' value='1' onchange='recompute()'/>\n";
+            $pre .= "<input type='hidden' id='".$jsVarName."' name='".$jsVarName."' value='".$value."'/>\n";
             $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
-            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
-            $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'".substr($jsVarName, 5)."':'".$jsVarName."'";
+            $LEMalias2varName[] = "'".$jsVarName."':'".$jsVarName."'";
+            $attrInfo = "'".$jsVarName."': {'jsName':'".$jsVarName."'";
 
-            $varInfo = $vars[substr($jsVarName,5)];
+            $varInfo = $vars[substr($jsVarName, 5)];
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'code') {
-                    continue;   // will access it from hidden node
+                    continue; // will access it from hidden node
                 }
-               if ($k == 'shown') {
+                if ($k == 'shown') {
                     $k = 'shown';
-                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
+                    $v = htmlspecialchars(preg_replace("/[[:space:]]/", ' ', $v), ENT_QUOTES);
                 }
                 if ($k == 'jsName') {
-                    continue;   // since already set
+                    continue; // since already set
                 }
-                $attrInfo .= ", '" . $k . "':'" . $v . "'";
+                $attrInfo .= ", '".$k."':'".$v."'";
 
             }
-            $attrInfo .= ",'qid':" . $i . "}";
+            $attrInfo .= ",'qid':".$i."}";
             $LEMvarNameAttr[] = $attrInfo;
         }
         $pre .= "</table>\n";
 
         $pre .= "<script type='text/javascript'>\n";
         $pre .= "<!--\n";
-        $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
-        $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        $pre .= "var LEMalias2varName= {".implode(",\n", $LEMalias2varName)."};\n";
+        $pre .= "var LEMvarNameAttr= {".implode(",\n", $LEMvarNameAttr)."};\n";
         $pre .= "var LEMradix = '.';\n";
         $pre .= "//-->\n</script>\n";
 
         print $pre;
         print $body;
     
-		}
+        }
 
 
-		 /**
-     * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
-     * surrounded by curly braces, allowing for strings and escaped curly braces.
-     */
+            /**
+             * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
+             * surrounded by curly braces, allowing for strings and escaped curly braces.
+             */
 
     public function oldStringSplitter()
     {
-       $tests = <<<EOD
+        $tests = <<<EOD
 This string does not contain an expression
 "This is only a string"
 "this is a string that contains {something in curly brace}"
@@ -857,15 +843,14 @@ EOD;
 
         $em = new ExpressionManager();
 
-        $atests = explode("\n",$tests);
-        array_push($atests,'"hi\nthere\nhow\nare\nyou?\n"');
+        $atests = explode("\n", $tests);
+        array_push($atests, '"hi\nthere\nhow\nare\nyou?\n"');
 
-        foreach($atests as $test)
-        {
+        foreach ($atests as $test) {
             $tokens = $em->asSplitStringOnExpressions($test);
-            print '<b>' . $test . '</b><hr/>';
+            print '<b>'.$test.'</b><hr/>';
             print '<code>';
-            print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
+            print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
         }
     }
@@ -896,15 +881,14 @@ EOD;
 
         $em = new ExpressionManager();
 
-        foreach(explode("\n",$tests) as $test)
-        {
+        foreach (explode("\n", $tests) as $test) {
             $tokens = array(); //$em->RDP_Tokenize($test);
-            print '<b>' . $test . '</b><hr/>';
+            print '<b>'.$test.'</b><hr/>';
             print '<code>';
-            print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
+            print implode("<br/>\n", explode("\n", print_r($tokens, true)));
             print '</code><hr/>';
         }
     }
-	}
+    }
 
 ?>

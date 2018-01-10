@@ -4,19 +4,25 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-?>
-<script type="text/javascript">
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPresentationOptions');
+
+
+ App()->getClientScript()->registerScript("presentation-panel-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN); 
+?>
+
 <!-- Presentation panel -->
-<div id='presentation' class="container-fluid">
+<div id='presentation-panel' class="container-fluid">
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">

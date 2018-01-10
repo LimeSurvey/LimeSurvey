@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-xs-12">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("Your profile"); ?></a></li>
-                <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("Your personal settings"); ?></a></li>
-                <li role="presentation" ><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("Your personal menus"); ?></a></li>
-                <li role="presentation" ><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("Your personal menu entries"); ?></a></li>
+                <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("My profile"); ?></a></li>
+                <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("My personal settings"); ?></a></li>
+                <li role="presentation" ><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("My personal menus"); ?></a></li>
+                <li role="presentation" ><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
             </ul>
             <div class="tab-content">
 
-                <!-- TAB: Your profile settings -->
+                <!-- TAB: My profile settings -->
                 <div role="tabpanel" class="tab-pane fade in active" id="your-profile">
-                    <div class="pagetitle h3"><?php eT("Your profile"); ?></div>
+                    <div class="pagetitle h3"><?php eT("My profile"); ?></div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
@@ -58,25 +58,42 @@
                             <hr/>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Old password:"), 'lang', array('class'=>"control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('oldpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
-                                    </div>
-                                </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-default btn-warning" id="selector__showChangePassword" style="color: white; outline: none;">
+                                    <i class="fa fa-lock"></i>
+                                    <?=gT("Change password")?>
+                                </button>
+                                <br/>
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                            <div class="col-md-9">
+                                <div class="container-fluid">
+                                    <div class="row selector__password-row hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("Old password:"), 'lang', array('class'=>"control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('oldpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                    <div class="row selector__password-row hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("New password:"), 'lang', array('class'=>" control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('password', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo CHtml::label(gT("Repeat new password:"), 'lang', array('class'=>" control-label")); ?>
+                                                <div class="">
+                                                    <?php echo CHtml::passwordField('repeatpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -84,9 +101,9 @@
                     </div>
                 </div>
 
-                <!-- TAB: Your personal settings -->
+                <!-- TAB: My personal settings -->
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-settings">
-                    <div class="pagetitle h3"><?php eT("Your personal settings"); ?></div>
+                    <div class="pagetitle h3"><?php eT("My personal settings"); ?></div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
@@ -102,7 +119,7 @@
                                             'pluginOptions' => array(
                                                 'buttonWidth' => '100%',
                                                 'htmlOptions' => array(
-                                                    'id' => 'lang', 
+                                                    'id' => 'lang',
                                                     'style'=> "widht:100%;"
                                                 )
                                             ),
@@ -113,7 +130,7 @@
                                                 'data-width' => '100%'
                                             )
                                         ));
-                                            
+
                                             ?>
                                     </div>
                                 </div>
@@ -209,3 +226,15 @@
     <?php echo CHtml::endForm(); ?>
 
 </div>
+
+<?php App()->getClientScript()->registerScript("personalSettings", "
+$('#selector__showChangePassword').on('click', function(e){
+    e.preventDefault();
+    $('.selector__password-row').toggleClass('hidden').find('input').each(
+        function(i,item){
+            $(item).prop('disabled', !$(item).prop('disabled'));
+        }
+    );
+    $(this).find('i').toggleClass('fa-unlock').toggleClass('fa-lock');
+});
+", LSYii_ClientScript::POS_POSTSCRIPT);

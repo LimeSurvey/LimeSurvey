@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -36,7 +38,7 @@ class QuotaMember extends LSActiveRecord
     public static function model($class = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($class);
+        $model = parent::model($class);
         return $model;
     }
 
@@ -82,8 +84,8 @@ class QuotaMember extends LSActiveRecord
     {
         $sFieldName = null;
         $sValue = null;
-        if($this->question){
-            switch($this->question->type) {
+        if ($this->question) {
+            switch ($this->question->type) {
                 case "L":
                 case "O":
                 case "!":
@@ -91,17 +93,17 @@ class QuotaMember extends LSActiveRecord
                 case "G":
                 case "Y":
                 case "*":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid;
                     $sValue = $this->code;
                     break;
                 case "M":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
                     $sValue = "Y";
                     break;
                 case "A":
                 case "B":
-                    $temp = explode('-',$this->code);
-                    $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                    $temp = explode('-', $this->code);
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
                     $sValue = $temp[1];
                     break;
                 default:
@@ -130,11 +132,12 @@ class QuotaMember extends LSActiveRecord
 
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $members = new self;
-        foreach ($data as $k => $v)
-            $members->$k = $v;
+        foreach ($data as $k => $v) {
+                    $members->$k = $v;
+        }
         return $members->save();
     }
 }

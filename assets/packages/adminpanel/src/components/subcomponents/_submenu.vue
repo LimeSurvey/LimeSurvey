@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 import Menuicon from './_menuicon.vue';
@@ -27,10 +26,8 @@ export default {
         setActiveMenuItemIndex(menuItem){
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
-            
-            if($('a#'+this.menu.id+'_'+menuItem.id)[0])
-                $('a#'+this.menu.id+'_'+menuItem.id)[0].click();
-            
+            this.$log.log('Opened Menuitem', menuItem);
+            return true;
         },
         checkIsOpen(toCheckMenu){
             let directSelect = this.$store.state.lastMenuOpen == toCheckMenu.id;
@@ -52,9 +49,9 @@ export default {
             return JSON.stringify(obj);
         },
         getLinkClass(menuItem){
-            let classes = "ls-flex-row nowrap align-item-center align-content-center ";
+            let classes = "ls-flex-row nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
-            classes += menuItem.menu_class;
+            classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
             return classes;
         }
     },
@@ -76,8 +73,28 @@ export default {
 }
 </script>
 <template>
-    <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">
-        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.stop="setActiveMenuIndex(submenu)" >
+    <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">        
+        <a  v-for="(menuItem, index) in sortedMenuEntries" 
+            v-bind:key="menuItem.id" 
+            v-on:click="setActiveMenuItemIndex(menuItem)"  
+            :href="menuItem.link" 
+            :id="'sidemenu_'+menu.id+'_'+menuItem.id" 
+            class="list-group-item"
+            :class="getLinkClass(menuItem)" >
+
+            <div class="col-12" :class="menuItem.menu_class" 
+            :title="menuItem.menu_description"  
+            data-toggle="tooltip" >
+                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
+                    <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
+                    <span v-html="menuItem.menu_title"></span>
+                </div>
+                <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
+                    <i class="fa fa-chevron-right">&nbsp;</i>
+                </div>
+            </div>
+        </a>
+        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture="setActiveMenuIndex(submenu)" >
             <a href="#" :title="submenu.description"   data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
                 <div class="ls-space col-sm-10 padding all-0">
                     <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>
@@ -87,18 +104,9 @@ export default {
                     <i class="fa fa-level-down"></i>
                 </div>
             </a>
+            <transition name="slide-fade-down">
             <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>
-        </li>
-        <li v-for="(menuItem, index) in sortedMenuEntries" class="list-group-item" @click.stop="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
-            <a :href="menuItem.link" :id="'sidemenu_'+menu.id+'_'+menuItem.id" :title="menuItem.menu_description"  data-toggle="tooltip" :class="getLinkClass(menuItem)">
-                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
-                    <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
-                    <span v-html="menuItem.menu_title"></span>
-                </div>
-                <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                    <i class="fa fa-chevron-right">&nbsp;</i>
-                </div>
-            </a>
+            </transition>
         </li>
     </ul>
 </template>

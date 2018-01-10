@@ -57,7 +57,7 @@
                 <label class=" control-label" for='help_<?php echo $oSurvey->language; ?>'><?php eT("Help:"); ?></label>
                 <div class="">
                 <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("help_$oSurvey->language}",$eqrow['help'],array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")); ?>
+                    <?php echo CHtml::textArea("help_".$oSurvey->language,$eqrow['help'],array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")); ?>
                     <?php echo getEditor("question-help","help_".$oSurvey->language, "[".gT("Help:", "js")."](".$oSurvey->language.")",$surveyid,$gid,$qid,$action); ?>
                 </div>
                 </div>

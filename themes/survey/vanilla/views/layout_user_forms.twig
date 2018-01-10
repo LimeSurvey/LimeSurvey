@@ -1,0 +1,211 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· User Forms Layout  ·._.·´¯)·._.·´¯)
+
+    This file renders the user forms such as: token (survey participant), and register.
+
+    NOTE: see layout_global.twig for more infos
+#}
+
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.class.html }} {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} " {{ aSurveyInfo.attr.html }}>
+
+    {# Headers, metadatas, etc #}
+    {{ include('./subviews/header/head.twig') }}
+
+    <body class="{{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
+
+        {# Bootstrap Navigation Bar: the top menu #}
+        {{ include('./subviews/header/nav_bar.twig') }}
+
+
+        <!-- Outer Frame Container -->
+        <div class="{{ aSurveyInfo.class.outerframe }} container" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }}>
+
+            <!-- Main Row -->
+            <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }}>
+
+                <!-- Main Col -->
+                <div class="{{ aSurveyInfo.class.maincol }} col-centered " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
+
+                    <div class='{{aSurveyInfo.aForm.sType}}-page' {{ aSurveyInfo.attr.maincoldiv }}>
+                        <div class="{{ aSurveyInfo.class.maincoldivdiva }} h3" {{ aSurveyInfo.attr.maincoldivdiva }}>
+                            {# OLD FORMHEADING #}
+                            {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                {{ "To participate in this restricted survey, you need a valid token." | t }}
+                            {% endif %}
+
+                            {% if aSurveyInfo.aForm.sType == 'captcha'  %}
+                                {{ "Before you start, please prove you are human." | t }}
+                            {% endif %}
+                        </div>
+
+                        <div class="{{ aSurveyInfo.class.maincoldivdivb }} well container-fluid" {{ aSurveyInfo.attr.maincoldivdivb }}>
+
+                            {# TOKEN #}
+                            {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                <p class='{{ aSurveyInfo.class.maincoldivdivbp }} text-info' {{ aSurveyInfo.attr.maincoldivdivbp }}>
+                                    {% if aSurveyInfo.aForm.token == null  %}
+                                        {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
+                                    {% else %}
+                                        {{ "Please confirm the token by answering the security question below and click continue." | t }}
+                                    {% endif %}
+                                </p>
+                            {% endif %}
+
+                            {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
+                                <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.maincoldivdivbul }}>
+                                    {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                            <div class="form-{{ aSurveyInfo.aForm.sType }} {{ aSurveyInfo.class.maincoldivdivbdiv }}" {{ aSurveyInfo.attr.maincoldivdivbdiv }} >
+                                {#
+                                    array of attributes of the form tag.
+                                    To add a new attribute, just add an entry:
+                                    'attribute' : 'value',
+                                #}
+                                {%
+                                    set htmlOptions = {
+                                       'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
+                                       'name'        : 'limesurvey',
+                                       'class'       : 'ls-form form form-horizontal',
+                                   }
+                                %}
+
+                                {#  TOKEN FORM #}
+                                <!-- Start of the main Form-->
+                                {{
+                                    C.Html.form(
+                                        ( aSurveyInfo.surveyUrl ),
+                                            'post',
+                                           (htmlOptions)
+                                        )
+                                }}
+
+                                {% if aSurveyInfo.aForm.sType == 'token'  %}
+
+                                    <div class='{{ aSurveyInfo.class.maincolform }} form-group' {{ aSurveyInfo.attr.maincolform }}>
+                                        <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformlabel }}>
+                                            <small class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                                            {{ "Token:" | t }}
+                                            <span class="{{ aSurveyInfo.class.maincolformlabelspan }} sr-only text-danger asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
+                                                ( {{ "Mandatory" | t }} )
+                                            <span>
+
+                                        </label>
+
+                                        <div class='{{ aSurveyInfo.class.maincolformdiva }} col-sm-7' {{ aSurveyInfo.attr.maincolformdiva }}>
+                                            {% if aSurveyInfo.aForm.token == null  %}
+                                                <input class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' {{ aSurveyInfo.attr.maincolformdivainput }} >
+                                            {% else %}
+
+                                                {% set passwordFieldHtmlOptions = {
+                                                    'id'       : 'token',
+                                                    'required' : true,
+                                                    'readonly' : true,
+                                                    }
+                                                %}
+
+                                                {{
+                                                    C.Html.passwordField(
+                                                        'token',
+                                                        (( aSurveyInfo.aForm.token )),
+                                                        (passwordFieldHtmlOptions)
+                                                    )
+                                                }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    {#  CAPTACHA INSIDE TOKEN FORM #}
+                                    {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+                                        <div class='{{ aSurveyInfo.class.maincolformdivb }}  form-group ' {{ aSurveyInfo.attr.maincolformdivb }}>
+
+                                            <!-- Doesn't seems aria capable -->
+                                            <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                                                {{ "Please enter the letters you see:" | t }}
+                                                <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                                                <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                                                    ( {{ "Mandatory" | t }} )
+                                                <span>
+                                            </label>
+
+                                            <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-sm-7' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                                                <div class='{{ aSurveyInfo.class.maincolformdivbdivdiv }} form-control' {{ aSurveyInfo.attr.maincolformdivbdivdiv }}>
+                                                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
+                                                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
+                                                        {{ renderCaptcha() }}
+                                                    </div>
+                                                    <input class='{{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {{ aSurveyInfo.aForm.hiddenFields }}
+
+                                    <div class='{{ aSurveyInfo.class.maincolformdivc }} form-group ' {{ aSurveyInfo.attr.maincolformdivc }}>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                                            <button class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                                                {{ "Continue" | t }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if aSurveyInfo.aForm.sType == 'captcha'  %}
+                                    <div class='{{ aSurveyInfo.class.maincolformdivd }} form-group' {{ aSurveyInfo.attr.maincolformdivd }}>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivddiv }} form-group' {{ aSurveyInfo.attr.maincolformdivddiv }}>
+                                            <label class='{{ aSurveyInfo.class.maincolformdivddivlabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformdivddivlabel }}>
+                                                {{ "Please enter the letters you see:" | t }}
+                                            </label>
+                                            <div class='{{ aSurveyInfo.class.maincolformdivddivcol }} col-sm-7' {{ aSurveyInfo.attr.maincolformdivddivcol }}>
+                                                <div class='{{ aSurveyInfo.class.maincolformdivddivcoldiv }}' {{ aSurveyInfo.attr.maincolformdivddivcoldiv }}>
+                                                    <div class='{{ aSurveyInfo.class.maincolformdivddivcoldivdiv }}' {{ aSurveyInfo.attr.maincolformdivddivcoldivdiv }} >
+                                                        {{ renderCaptcha() }}
+                                                    </div>
+                                                    <input class='{{ aSurveyInfo.class.maincolformdivddivcolinput }} form-control' {{ aSurveyInfo.attr.maincolformdivddivcolinput }} >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{ aSurveyInfo.aForm.hiddenFields }}
+
+                                        <div class='{{ aSurveyInfo.class.maincolformdivddivb }} form-group ' {{ aSurveyInfo.attr.maincolformdivddivb }}>
+                                            <div class='{{ aSurveyInfo.class.maincolformdivddivbdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivddivbdiv }}>
+                                                <button {{ aSurveyInfo.attr.maincolformdivddivbdivbutton }} class='{{ aSurveyInfo.class.maincolformdivddivbdivbutton }} btn btn-default' >
+                                                    {{ "Continue" | t }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- main col -->
+            </div> <!-- main row -->
+        </div> <!-- outer frame container -->
+
+        {# Bootstrap alert modal #}
+        {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
+
+        {# Basic ThemeScript options  #}
+        {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
+
+    </body>
+</html>
+<!-- end of startpage.twig -->

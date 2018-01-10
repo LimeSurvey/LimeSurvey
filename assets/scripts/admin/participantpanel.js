@@ -43,7 +43,7 @@ LS.CPDB = (function() {
                     method: 'POST',
                     success: secondSuccess,
                     error : function() {
-                        console.log(arguments);
+                        console.ls.log(arguments);
                     }
                 });
             });
@@ -55,7 +55,7 @@ LS.CPDB = (function() {
             data: data,
             method: 'POST',
             success: firstSuccess,
-            error: console.log
+            error: console.ls.log
         });
     },
 
@@ -100,7 +100,7 @@ LS.CPDB = (function() {
                     $('#exportcsv').modal('show');
                     $('#exportcsv').on('shown.bs.modal', function(e) {
                         var self = this;
-                        $(this).find('h4.modal-title').text(count);
+                        $('#exportcsv').find('h4.modal-title').text(count);
                         $(this).find('.exportButton').on('click', function() {
                             var dldata = postdata;
                             var val = $('#attributes').val();
@@ -295,7 +295,11 @@ LS.CPDB = (function() {
         $('#pageSizeParticipantView').on("change", function(){
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
         });
+        bindListItemclick();
 
+        if($('#export').hasClass('hidden')){
+            $('#export').removeClass('hidden');
+        }
     },
     //JS-bindings especially for the attributePanel
     attributePanel = function(){
@@ -339,6 +343,9 @@ LS.CPDB = (function() {
                 }
             })
         });
+        if(!$('#export').hasClass('hidden')){
+            $('#export').addClass('hidden');
+        }
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function() {
@@ -364,8 +371,20 @@ LS.CPDB = (function() {
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
         });
+        if($('#export').hasClass('hidden')){
+            $('#export').removeClass('hidden');
+        }
     },
-
+    importPanel = function(){
+        if(!$('#export').hasClass('hidden')){
+            $('#export').addClass('hidden');
+        }
+    },
+    blacklistPanel = function(){
+        if(!$('#export').hasClass('hidden')){
+            $('#export').addClass('hidden');
+        }
+    },
     /**
      * Modal for sharing checked items, massive action
      * @param {array} participantIds - Array of participant ids
@@ -434,16 +453,18 @@ LS.CPDB = (function() {
         basics();
         switch($('#locator').data('location')){
             case 'participants' : participantPanel(); break;
-            case 'attributes' :  attributePanel(); break;
-            case 'sharepanel' :  sharePanel(); break;
+            case 'attributes'   : attributePanel(); break;
+            case 'sharepanel'   : sharePanel(); break;
+            case 'import'       : importPanel(); break;
+            case 'blacklist'    : blacklistPanel(); break;
         }
-        
         /**
          * @TODO rewrite export
          */
         $('#export').click(function() { onClickExport(true); });
 
         doToolTip();
+        window.dispatchEvent((new Event('pjax:refresh')));
     };
 
     return {
@@ -452,6 +473,8 @@ LS.CPDB = (function() {
         participantPanel: participantPanel,
         attributePanel: attributePanel,
         sharePanel: sharePanel,
+        importPanel : importPanel,
+        blacklistPanel : blacklistPanel,
         onClickExport: onClickExport,
         bindButtons: bindButtons,
         shareMassiveAction: shareMassiveAction,
@@ -506,4 +529,4 @@ function insertSearchCondition(id, options){
     options.data.searchcondition=$('#searchcondition').val();
     return options;
 }
-$(document).on('ready  pjax:complete', (LS.CPDB.bindButtons));
+$(document).on('ready  pjax:scriptcomplete', (LS.CPDB.bindButtons));

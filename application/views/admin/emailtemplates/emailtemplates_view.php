@@ -4,34 +4,25 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
-App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
+
 $count=0;
-?>
 
-<script type='text/javascript'>
-    var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
-    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
-    var LS = LS || {};  // namespace
+
+App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
+var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';
+var sKCFinderLanguage='".sTranslateLangCode2CK(App()->language)."';
+
+var LS = LS || {};  // namespace
     LS.lang = LS.lang || {};  // object holding translations
-    LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
-    LS.lang['Edit relevance equation'] = '<?php echo eT("Edit relevance equation"); ?>';
+    LS.lang['Remove attachment'] = '".gT("Remove attachment")."';
+    LS.lang['Edit relevance equation'] = '".gT("Edit relevance equation")."';
+", LSYii_ClientScript::POS_BEGIN );
 
-    $(document).ready(function () {
-        $('button.add-attachment').click(function(e)
-        {
-            e.preventDefault();
-            var target = $(this).parent().parent().parent().find('table');
-            console.log("target = ");
-            console.log(target);
-            openKCFinder_singleFile(target);
-
-        });
-    });
-</script>
-
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+?>        
+        <div class="side-body <?php echo getSideBodyClass(false); ?>" style="max-height: 75vh;">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">
@@ -81,6 +72,20 @@ $count=0;
 
 </div>
 </div>
+</div>
+
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><?=gT("Choose file")?></h4>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="attachment-relevance-editor" class="modal fade">

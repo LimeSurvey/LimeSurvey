@@ -14,7 +14,7 @@
     <div class='upload-button'>
         <a
             id='upload_<?php echo $fileid;?>'
-            class='btn btn-default upload'
+            class='btn btn-primary upload'
             href='#'
             onclick='javascript:upload_<?php echo $fileid;?>();'
         >

@@ -1,5 +1,6 @@
 <?php
 
-class AuthPluginBase extends \LimeSurvey\PluginManager\AuthPluginBase {
+class AuthPluginBase extends \LimeSurvey\PluginManager\AuthPluginBase
+{
 
 }

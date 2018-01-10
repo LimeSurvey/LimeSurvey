@@ -52,34 +52,39 @@ $codeids = '';
                                 </td>
                                 <?php endif;?>
                             <td>
+                            <div class="input-group">
                                 <input type='text' class=" form-control  " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
-                                <?php  echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
+                                <span class="input-group-addon">
+                                    <?php  echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
+                                </span>
+                            </div>
+                                
                             </td>
 
                             <td style='text-align:center;'>
+                            &nbsp;&nbsp;
                                 <?php if ($first && Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                                    <span class="icon-add btnaddanswer text-success"></span> <?php // eT("Insert a new label after this one") ?>
-                                    <span class="fa fa-trash  text-warning btndelanswer"></span> <?php //eT("Delete this label") ?>
+                                    <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add  text-success"></i> </button> <?php // eT("Insert a new label after this one") ?>
+                                    <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash  text-warning "></i> </button> <?php //eT("Delete this label") ?>
                                     <?php endif;?>
                             </td>
                         </tr>
                         <?php  $position++; ?>
-                        <?php  endforeach; ?>
+                    <?php  endforeach; ?>
                 </tbody>
             </table>
 
+            
+            <div class="action-buttons">
             <?php $i++;
             if (Permission::model()->hasGlobalPermission('labelsets','update'))
             { ?>
-                <div class="action-buttons">
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
                         <?php eT('Quick add...') ?>
                     </button>
-                </div>
                 <?php }; ?>
-            <p>
-                <input type='submit' class='hidden' name='method' value='<?php eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' />
-            </p>
+                <input type='submit' class="btn btn-success" name='method' value='<?php eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' />
+                </div>
         </div>
         <?php  $first=false;
         endforeach;?>

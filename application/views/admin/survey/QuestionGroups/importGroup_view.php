@@ -1,7 +1,11 @@
 <?php
 /**
  * Import a group view
+ * @var AdminController $this
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('importQuestionGroup');
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -23,7 +27,7 @@
 
                 <!-- Convert resource links -->
                 <div class="form-group">
-                    <label for='translinksfields' class=" control-label"><?php eT("Convert resource links?"); ?></label>
+                    <label for='translinksfields' class="control-label col-sm-2"><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-10">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',

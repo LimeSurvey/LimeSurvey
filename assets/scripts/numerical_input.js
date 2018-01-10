@@ -1,4 +1,4 @@
-$(document).on('ready pjax:complete',function () {
+$(document).on('ready pjax:scriptcomplete',function () {
     if (typeof LEMradix === 'undefined') { return; }
 
     if (LEMradix == ',')
@@ -29,12 +29,12 @@ $(document).on('ready pjax:complete',function () {
         'allowNegative' : true
     });
 
-    $(selector).bind('keyup', custom_checkconditions);
+    $(selector).on('keyup', custom_checkconditions);
     // Initialize LEM tabs first.
     LEMsetTabIndexes();
 
     $(selector).removeAttr('onkeyup');
-    $('form#limesurvey').bind('submit', {'selector': selector}, ls_represent_all    );
+    $('form#limesurvey').on('submit', {'selector': selector}, ls_represent_all    );
 
     window.orgLEMval = window.LEMval;
     window.LEMval = function (alias) {

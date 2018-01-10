@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $tgis AdminController
+ */
+?>
+
 <script type="text/javascript">
     var sImageURL = '';
     var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
@@ -7,6 +13,9 @@
 
 <div class="col-lg-12 list-surveys">
     <h3><?php if ($action == "newlabelset") { eT("Create or import new label set(s)");} else {eT("Edit label set"); } ?></h3>
+    <?=// DO NOT REMOVE This is for automated testing to validate we see that page
+    viewHelper::getViewTestTag('createLabelSets');?>
+
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -34,15 +43,15 @@
 
 
                             <!-- Set name -->
-                            <div class="form-group">
-                                <label  class=" control-label" for='label_name'><?php eT("Set name:"); ?></label>
+                            <div class="form-group col-md-6">
+                                <label  class="control-label" for='label_name'><?php eT("Set name:"); ?></label>
                                 <div class="">
-                                <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
+                                <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50, 'class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <!-- Languages -->
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <label class=" control-label"><?php eT("Languages:"); ?></label>
                                 <div class=""><?php
                                 $aAllLanguages=getLanguageDataRestricted (false,'short');

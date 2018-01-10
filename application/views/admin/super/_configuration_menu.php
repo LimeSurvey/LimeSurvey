@@ -113,7 +113,7 @@
 
                     <!-- Show Survey logic file -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">
+                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_form'); ?>">
                             <?php eT("Show survey logic file");?>
                         </a>
                     </li>
@@ -132,10 +132,10 @@
                     <?php eT('Advanced');?>
                 </li>
                 <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
-                    <!-- Template Editor -->
+                    <!-- Theme Editor -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                            <?php eT("Template editor");?>
+                        <a href="<?php echo $this->createUrl("admin/themeoptions"); ?>">
+                            <?php eT("Themes");?>
                         </a>
                     </li>
                     <?php endif;?>

@@ -4,8 +4,11 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-?>
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('statisticsIndex');
+
+?>
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 

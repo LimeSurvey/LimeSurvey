@@ -5,12 +5,16 @@
 *
 * @var $model  obj    the QuestionGroup model
 */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('listSurveys');
+
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="ls-space margin left-15 right-15 row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="active"><a href="#surveys"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups"><?php eT('Surveys groups'); ?></a></li>
+        <li><a href="#surveygroups"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
         <div id="surveys" class="tab-pane active">
@@ -61,7 +65,7 @@
         e.preventDefault();
         $(this).tab('show');
     });
-    $(document).on('ready pjax:complete', function(){
+    $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
             $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
         }

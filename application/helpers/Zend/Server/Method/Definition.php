@@ -83,7 +83,7 @@ class Zend_Server_Method_Definition
     public function setOptions(array $options)
     {
         foreach ($options as $key => $value) {
-            $method = 'set' . ucfirst($key);
+            $method = 'set'.ucfirst($key);
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }
@@ -230,7 +230,7 @@ class Zend_Server_Method_Definition
     {
         if (!is_object($object) && (null !== $object)) {
             require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Invalid object passed to ' . __CLASS__ . '::' . __METHOD__);
+            throw new Zend_Server_Exception('Invalid object passed to '.__CLASS__.'::'.__METHOD__);
         }
         $this->_object = $object;
         return $this;

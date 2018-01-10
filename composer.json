@@ -17,7 +17,6 @@
 		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
 		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
 	},
-	"minimum-stability" : "dev",
 	"autoload": {
 		"psr-4": {
 			"LimeSurvey\\PluginManager\\": [
@@ -27,5 +26,15 @@
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
+	},
+	"require": {
+		"facebook/webdriver": "^1.4"
+	},
+    "config": {
+        "vendor-dir": "third_party",
+        "bin-dir": "third_party/bin"
+    },
+	"require-dev": {
+		"squizlabs/php_codesniffer": "2.*"
 	}
 }

@@ -32,6 +32,7 @@
             <table id='languageSelection'>
             <tr>
                 <td>
+                <?php eT("Visible:"); ?><br>
                 <select class="form-control"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
                             foreach ($restrictToLanguages as $sLanguageCode) {?>
                             <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
@@ -52,6 +53,7 @@
                     </button>
                 </td>
                 <td >
+                <?php eT("Hidden:"); ?><br>
                 <select class="form-control"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                         <?php foreach ($excludedLanguages as $sLanguageCode) {
                             ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php

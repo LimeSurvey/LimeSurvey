@@ -32,8 +32,8 @@ class NotificationController extends Survey_Common_Action
             
         }
         $not = Notification::model()->findByPk($notId);
-        if(!$not) {
-            throw new CHttpException(404,sprintf(gT("Notification %s not found"),$notId));
+        if (!$not) {
+            throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
         header('Content-type: application/json');
         echo json_encode(array('result' => $not->getAttributes()));
@@ -50,11 +50,11 @@ class NotificationController extends Survey_Common_Action
         $this->checkPermission();
 
         if ((string) (int) $notId !== (string) $notId) {
-            throw new CHttpException(403,gT("Invalid notification id"));
+            throw new CHttpException(403, gT("Invalid notification id"));
         }
         $not = Notification::model()->findByPk($notId);
-        if(!$not) {
-            throw new CHttpException(404,sprintf(gT("Notification %s not found"),$notId));
+        if (!$not) {
+            throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
         $result = $not->markAsRead();
         header('Content-type: application/json');
@@ -82,13 +82,13 @@ class NotificationController extends Survey_Common_Action
     {
         Notification::model()->deleteAll(
             'entity = :entity AND entity_id = :entity_id',
-            array(":entity"=>'user',":entity_id"=>Yii::app()->user->id)
+            array(":entity"=>'user', ":entity_id"=>Yii::app()->user->id)
         );
 
         if (is_int($surveyId)) {
             Notification::model()->deleteAll(
                 'entity = :entity AND entity_id = :entity_id',
-                array(":entity"=>'survey',":entity_id"=>$surveyId)
+                array(":entity"=>'survey', ":entity_id"=>$surveyId)
             );
         }
     }
@@ -111,6 +111,7 @@ class NotificationController extends Survey_Common_Action
      * @param int|null $surveyId
      * @param bool $showLoader If true, show spinning loader instead of messages (fetch them using ajax)
      * @return string HTML
+     * @throws CException
      */
     public static function getMenuWidget($surveyId = null, $showLoader = false)
     {
@@ -124,10 +125,10 @@ class NotificationController extends Survey_Common_Action
         $data = array();
         $data['surveyId'] = $surveyId;
         $data['showLoader'] = $showLoader;
-        $params=array(
+        $params = array(
             'sa' => 'clearAllNotifications',
         );
-        if ($surveyId) {
+        if ($surveyId !== null) {
             $params['surveyId'] = $surveyId;
         }
         $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', $params);

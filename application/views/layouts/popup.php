@@ -7,8 +7,8 @@
             App()->bootstrap->register();
             App()->getClientScript()->registerPackage('jqueryui');
         ?>
-        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('publicstyleurl'); ?>favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="<?php echo Yii::app()->getConfig('publicstyleurl'); ?>favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
         <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title><?php echo $this->pageTitle; ?></title>

@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Helper class for expression core tests.
  */
-class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
+class ExpressionCoreAux extends TestCase
 {
     /**
      * If true, compares JS result with json_encode(PHP result)

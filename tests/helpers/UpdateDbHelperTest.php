@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-16
  * @group dbhelper
@@ -16,103 +14,29 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
-        $dbo = \Yii::app()->getDb();
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_258')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_315')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_install_script')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        $dbo->setActive(false);
-        unset($dbo);
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        \Yii::app()->setComponent('db', $config['components']['db'], false);
-    }
-
-    /**
-     * Test the SQL install script.
-     * Not used.
-     */
-    public function testInstallSql()
-    {
-        // SQL not used anymore, see the PHP file.
-        $this->markTestSkipped();
-
-        $db = \Yii::app()->getDb();
-
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_install_script');
-        $this->assertTrue($result, 'Could connect to new database');
-
-        // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-
-        // Check SQL file.
-        $file = \Yii::app()->basePath . '/../installer/sql/create-mysql.sql';
-        $this->assertFileExists($file);
-
-        // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        if ($result) {
-            print_r($result);
-        }
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
-
-        // Dump database to file.
-        /*
-        $output = array();
-        $result = exec(
-            sprintf(
-                'mysqldump -u %s -p%s __test_install_script > tests/data/tmp/__test_install_script-dump.sql',
-                $config['components']['db']['username'],
-                $config['components']['db']['password']
-            ),
-            $output
-        );
-        $this->assertEmpty($output, 'No output from mysqldump');
-        $this->assertEmpty($result, 'No last line output from mysqldump');
-         */
-
-        // Connect to old database.
-        \Yii::app()->setComponent('db', $config['components']['db'], false);
-        $db->setActive(true);
+        self::$testHelper->teardownDatabase('__test_update_helper_258');
+        self::$testHelper->teardownDatabase('__test_update_helper_315');
+        self::$testHelper->teardownDatabase('__test_install_script');
+        self::$testHelper->teardownDatabase('__test_install_script_compare');
     }
 
     /**
      * Run the database PHP install script.
      * @group install
+     * @throws \CException
      */
-    public function testInstallPHP()
+    public function testInstallPhp()
     {
         $db = \Yii::app()->getDb();
 
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_install_script');
-        $this->assertTrue($result, 'Could connect to new database');
+        $connection = self::$testHelper->connectToNewDatabase('__test_install_script');
+        $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
-        $filename = dirname(APPPATH).'/installer/php/create-database.php';
+        $filename = dirname(APPPATH).'/installer/create-database.php';
         $result = $inst->_setup_tables($filename);
         if ($result) {
             print_r($result);
@@ -134,6 +58,7 @@ class UpdateDbHelperTest extends TestBaseClass
          */
 
         // Connect to old database.
+        $db->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
@@ -142,10 +67,11 @@ class UpdateDbHelperTest extends TestBaseClass
      * Run db_upgrade_all() from dbversion 258, to make sure
      * there are no conflicts or syntax errors.
      * @group upgradeall
+     * @throws \CException
      */
     public function testDbUpgradeFrom258()
     {
-        $this->updateDbFromVersion(258);
+        self::$testHelper->updateDbFromVersion(258);
 
         $db = \Yii::app()->getDb();
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
@@ -174,43 +100,149 @@ class UpdateDbHelperTest extends TestBaseClass
 
     /**
      * @group from315
+     * @throws \CException
      */
     public function testDbUpgradeFrom315()
     {
-        $this->updateDbFromVersion(315);
+        self::$testHelper->updateDbFromVersion(315);
 
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        // Connect to old database.
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
     }
 
     /**
-     * @param int $version
-     * @return void
+     * Compare database between upgrade and fresh install.
+     * @group dbcompare
+     * @throws \CException
      */
-    protected function updateDbFromVersion($version)
+    public function testCompareUpgradeAndFreshInstall()
     {
-        $result = self::$testHelper->connectToNewDatabase('__test_update_helper_' . $version);
-        $this->assertTrue($result, 'Could connect to new database');
+        $connection = self::$testHelper->updateDbFromVersion(258);
+        $upgradeTables = $connection->schema->getTables();
+        $this->compareAux($upgradeTables, 258);
+
+        $connection = self::$testHelper->updateDbFromVersion(315);
+        $upgradeTables = $connection->schema->getTables();
+        $this->compareAux($upgradeTables, 315);
+    }
+
+    /**
+     * @param array $upgradeTables
+     * @return void
+     * @throws \CException
+     */
+    protected function compareAux(array $upgradeTables, $upgradedFrom)
+    {
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        $dbo = \Yii::app()->getDb();
+
+        /*
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        // Get database name.
+        preg_match("/dbname=([^;]*)/", \Yii::app()->db->connectionString, $matches);
+        $this->assertEquals(2, count($matches));
+        $oldDatabase = $matches[1];
+        $newConfig = $config;
+        $newConfig['components']['db']['connectionString'] = str_replace(
+            'dbname=' . $oldDatabase,
+            'dbname=' . '__test_install_script_compare',
+            $config['components']['db']['connectionString']
+        );
+        $connection= new \DbConnection(
+            $newConfig['components']['db']['connectionString'],
+            'root',
+            ''
+        );
+        $connection->active = true;
+         */
+
+        \Yii::app()->cache->flush();
+
+        self::$testHelper->teardownDatabase('__test_install_script_compare');
+        $connection = self::$testHelper->connectToNewDatabase('__test_install_script_compare');
+        $this->assertNotEmpty($connection, 'Could not connect to new database: ' . json_encode($connection));
+        $connection->schemaCachingDuration = 0; // Deactivate schema caching
+        $connection->schema->refresh();
 
         // Get InstallerController.
+        $db = \Yii::app()->getDb();
         $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-
-        // Check SQL file.
-        $file = __DIR__ . '/../data/sql/create-mysql.' . $version . '.sql';
-        $this->assertFileExists($file);
-
-        // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
-
-        // Run upgrade.
-        $result = \db_upgrade_all($version);
-
-        // Check error messages.
-        $flashes = \Yii::app()->user->getFlashes();
-        if ($flashes) {
-            print_r($flashes);
+        $inst->connection = $db;
+        $filename = dirname(APPPATH).'/installer/create-database.php';
+        try {
+            $result = $inst->_setup_tables($filename);
+        } catch (\CHttpException $ex) {
+            $this->assertTrue(
+                false,
+                $ex->getMessage()
+            );
         }
-        $this->assertEmpty($flashes, 'No flash error messages');
-        $this->assertTrue($result, 'Upgrade successful');
+        if ($result) {
+            print_r($result);
+        }
+        $inst->connection->schema->refresh();
+        $freshInstallTables = $inst->connection->schema->getTables();
+
+        $this->assertEquals(count($upgradeTables), count($freshInstallTables), 'Same number of tables');
+        $this->assertEquals(array_keys($upgradeTables), array_keys($freshInstallTables), 'Same number of tables');
+
+        // Loop tables.
+        $upgradeKeys = array_keys($upgradeTables);
+        $freshInstallKeys = array_keys($freshInstallTables);
+        for ($i = 0; $i < count(array_keys($upgradeTables)); $i++) {
+            $this->assertEquals($upgradeKeys[$i], $freshInstallKeys[$i]);
+            $upgradeTable = $upgradeTables[$upgradeKeys[$i]];
+            $freshTable = $freshInstallTables[$freshInstallKeys[$i]];
+
+            $upgradeColumns = $upgradeTable->columns;
+            $freshColumns = $freshTable->columns;
+
+            // Loop columns.
+            foreach ($upgradeColumns as $columnName => $upgradeColumn) {
+                $upgradeColumn = (array) $upgradeColumn;
+                $freshColumn = (array) $freshColumns[$columnName];
+                // Loop fields in column.
+                foreach ($upgradeColumn as $fieldName => $field) {
+                    $this->assertEquals(
+                        $field,
+                        $freshColumn[$fieldName],
+                        sprintf(
+                            '(Upgraded from db version %d) Comparing field name "%s" for column "%s" in table "%s": '
+                            .' upgraded value: %s;  fresh install value: %s',
+                            $upgradedFrom,
+                            $fieldName,
+                            $columnName,
+                            $upgradeKeys[$i],
+                            json_encode($field),
+                            json_encode($freshColumn[$fieldName])
+                        )
+                    );
+                }
+            }
+        }
+
+        /* Code to dump diff, but nearly useless due to collate difference.
+        $output = array();
+        exec(
+            sprintf(
+                'mysqldump -u %s -p%s __test_update_helper_%d > tests/tmp/__test_update_helper_%d-dump.sql',
+                $config['components']['db']['username'],
+                $config['components']['db']['password'],
+                $upgradedFrom,
+                $upgradedFrom
+            ),
+            $output
+        );
+         */
+
+        // Connect to old database.
+        $dbo->setActive(false);
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $dbo->setActive(true);
     }
 }

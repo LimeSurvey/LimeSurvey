@@ -2,54 +2,25 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
+ * @group dateforward
  */
 class DateTimeForwardBackTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
+        $_POST = [];
+        $_SESSION = [];
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_917744.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_917744.lss';
+        self::importSurvey($surveyFile);
     }
 
     /**
@@ -112,8 +83,7 @@ class DateTimeForwardBackTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');

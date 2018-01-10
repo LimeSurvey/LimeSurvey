@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMixin from '../mixins/runAjax.js';
 import Questionexplorer from './subcomponents/_questionsgroups.vue';
@@ -19,7 +18,8 @@ export default {
         'getQuestionsUrl' : {type: String},
         'getMenuUrl' : {type: String},
         'createQuestionGroupLink' : {type: String},
-        'createQuestionLink' : ''
+        'createQuestionLink' : {type: String},
+        'updateOrderLink' : {type: String},
     },
     data: () => {
         return {
@@ -37,6 +37,7 @@ export default {
             'collapsedmenus': {},
             'topmenus': {},
             'bottommenus': {},
+            'sideBarHeight': '400px'
         };
     },
     computed: {
@@ -53,13 +54,31 @@ export default {
             return (!this.$store.state.isCollapsed && this.$store.state.currentTab == 'questiontree');
         },
         calculateSideBarMenuHeight(){
-            return (this.$store.state.generalContainerHeight-70)+'px';
+            return (this.$store.state.sideBarHeight-70)+'px';
         }
     },
     methods: {
+        calculateHeight(self){
+            self.$store.commit('changeSideBarHeight', $('#in_survey_common').height());
+        },
+        changedQuestionGroupOrder(){
+            const self = this;
+            const onlyGroupsArray = _.map(this.$store.state.questiongroups, (questiongroup, count)=>{
+                const questions = _.map(questiongroup.questions, (question,i)=>{
+                    return {qid: question.qid, question: question.question, gid: question.gid, question_order: question.question_order};
+                });
+                return {gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions}
+            });
+            this.$log.debug("QuestionGroup order changed");
+            this.post(this.updateOrderLink, {grouparray: onlyGroupsArray, surveyid: this.$store.surveyid}).then(
+                (result) => {self.$log.debug('questiongroups updated');},
+                (error) => {self.$log.error('questiongroups updating error!');}
+            );
+        },
         controlActiveLink(){
             //get current location
             let currentUrl = window.location.href;
+
             //Check for corresponding menuItem
             let lastMenuItemObject = false;
             _.each(this.$store.state.sidemenus, (itm,i)=>{
@@ -67,6 +86,7 @@ export default {
                     lastMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastMenuItemObject;
                 });
             });
+
             //check for quickmenu menuLinks
             let lastQuickMenuItemObject = false;
             _.each(this.$store.state.collapsedmenus, (itm,i)=>{
@@ -74,12 +94,14 @@ export default {
                     lastQuickMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastQuickMenuItemObject;
                 });
             });
+
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
             _.each(this.$store.state.questiongroups, (itm,i)=>{
                 let regTest = new RegExp('questiongroups/sa/edit/surveyid/'+itm.sid+'/gid/'+itm.gid);
                 lastQuestionGroupObject =  (regTest.test(currentUrl) || _.endsWith(currentUrl,itm.link)) ? itm : lastQuestionGroupObject;
             });
+            
             //check for corresponding question group
             let lastQuestionObject = false;
              _.each(this.$store.state.questiongroups, (itm,i)=>{
@@ -171,14 +193,65 @@ export default {
         mousemove(e,self) {
             if(this.isMouseDown){
                 // prevent to emit unwanted value on dragend
-                if (e.screenX === 0 && e.screenY === 0) return;
-                if(e.clientX > (screen.width/2)) return;
+                if (e.screenX === 0 && e.screenY === 0){ 
+                    return; 
+                };
+                if(e.clientX > (screen.width/2)) {
+                    this.$store.commit('maxSideBarWidth', true);
+                    return
+                };
                 self.sideBarWidth = (e.pageX+8)+'px';
                 this.$store.commit('changeSidebarwidth', this.sideBarWidth);
+                this.$store.commit('maxSideBarWidth', false);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
-        }
+        },
+        getQuestions(){
+            return this.get(this.getQuestionsUrl).then( (result) =>{
+                this.$log.log('Questions', result);
+                this.questiongroups = result.data.groups;
+                this.$store.commit('updateQuestiongroups', this.questiongroups);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getSidemenus(){
+            return this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
+                this.$log.log('sidemenues',result);
+                this.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateSidemenus', this.sidemenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getCollapsedmenus(){
+            return this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
+                this.$log.log('quickmenu',result);
+                this.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit( 'updateCollapsedmenus', this.collapsedmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getTopmenus(){
+            return this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
+                this.$log.log('topmenus',result);
+                this.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateTopmenus', this.topmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getBottommenus(){
+            return this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
+                this.$log.log('bottommenus',result);
+                this.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateBottommenus', this.bottommenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
     },
     created(){
         const self = this;
@@ -194,65 +267,53 @@ export default {
     mounted(){
         const self = this;
 
-
+        $(document).trigger('sidebar:mounted');
+        //Calculate the sidebar height and bin it to the resize event
+        self.calculateHeight(self);
+        window.addEventListener('resize', ()=>{
+            self.calculateHeight(self);
+        });
         //retrieve the current menues via ajax
-        //questions
-        this.get(this.getQuestionsUrl).then( (result) =>{
-            // self.$log.debug(result);
-            self.questiongroups = result.data.groups;
-            self.$store.commit('updateQuestiongroups', self.questiongroups);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
+
+        $(document).on('vue-sidemenu-update-link', ()=>{
+            this.controlActiveLink();
         });
 
-        //sidemenus
-        this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-            self.$log.debug('sidemenues',result);
-            self.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateSidemenus', self.sidemenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
+        $(document).on('vue-reload-remote', ()=>{
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
+            this.$forceUpdate();
         });
 
-        //collapsedmenus
-        this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-            self.$log.debug('quickmenu',result);
-            self.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit( 'updateCollapsedmenus', self.collapsedmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //topmenus
-        this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
-            self.$log.debug('topmenus',result);
-            self.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateTopmenus', self.topmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //bottommenus
-        this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
-            self.$log.debug('bottommenus',result);
-            self.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateBottommenus', self.bottommenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
+        $(document).on('vue-redraw', ()=>{
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
+            this.$forceUpdate();
         });
 
         //control the active link
         this.controlActiveLink();
 
-        self.$forceUpdate();
+        this.$forceUpdate();
         this.updatePjaxLinks();
         $('body').on('mousemove', (event) => {self.mousemove(event,self)});
     }
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width fill-height" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="col-12 fill-height ls-space padding all-0" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+        <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
                     <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
@@ -264,8 +325,8 @@ export default {
                         <transition name="fade">
                             <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
                                 <div class="btn-group btn-group col-12">
-                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
-                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+                                    <button id="adminpanel__sidebar--selectorSettingsButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
+                                    <button id="adminpanel__sidebar--selectorStructureButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
                                 </div>
                             </div>
                         </transition>
@@ -277,13 +338,13 @@ export default {
                     </div>
                 </div>
                 <transition name="slide-fade">
-                    <sidemenu :style="{height: calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
+                    <sidemenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <questionexplorer :style="{height: calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" ></questionexplorer>
+                    <questionexplorer :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu :style="{height: calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
+                    <quickmenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
                 </transition>
             </div>
         </div>
@@ -293,109 +354,5 @@ export default {
     </div>
 </template>
 <style lang="scss">
-    .tabbutton.btn-primary{
-        outline: none;
-        &:hover, &:focus, &:active{
-            &:after{
-                color: #246128;
-            }
-        }
-        &:after{
-            position: absolute;
-            left: 45%;
-            bottom: -12px;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: 28px;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            content: "\F078";
-            color: #328637;
-        }
-    }
-
-    .background.white{
-        background-color: rgba(255,255,255,1);
-        box-shadow: none;
-    }
-
-    .overflow-auto{
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-    .resize-handle{
-        position: absolute;
-        right: 14px;
-        top: 0;
-        bottom: 0;
-        height:100%;
-        width: 4px;
-        //box-shadow: 0px 5px 9px #0f3e12;
-        cursor: col-resize;
-        button{
-            outline:0;
-            &:focus,&:active,&:hover {outline:0 !important; background-color: transparent !important;}
-            cursor: col-resize;
-            width:100%;
-            height:100%;
-            text-align: left;
-            border-radius: 0;
-            padding: 0px 7px 0px 4px;
-            i{
-                font-size: 12px;
-                width:5px;
-            }
-        }
-    }
-
-    .transition-animate-width {
-        -moz-transition: width 0.5s ease;
-        -webkit-transition: width 0.5s ease;
-        -ms-transition: width 0.5s ease;
-        transition: width 0.5s ease;
-    }
-
-    .fade-enter-active {
-        -moz-transition: all 0.8s ease;
-        -webkit-transition: all 0.8s ease;
-        -ms-transition: all 0.8s ease;
-        transition: all 0.8s ease;
-    }
-    .fade-leave-active {
-        -moz-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        -webkit-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        -ms-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .fade-enter, .fade-leave-to{
-        -moz-transform: translateY(10px);
-        -webkit-transform: translateY(10px);
-        -ms-transform: translateY(10px);
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    .slide-fade-enter-active {
-        -moz-transition: all 0.3s ease;
-        -webkit-transition: all 0.3s ease;
-        -ms-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-    }
-    .slide-fade-leave-active {
-        -moz-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        -webkit-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        -ms-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-        transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .slide-fade-enter, .slide-fade-leave-to {
-        -moz-transform: rotateY(90);
-        -webkit-transform: rotateY(90);
-        -ms-transform: rotateY(90);
-        transform: rotateY(90);
-        -moz-transform-origin: left;
-        -webkit-transform-origin: left;
-        -ms-transform-origin: left;
-        transform-origin: left;
-        opacity: 0;
-    }
-
+    
 </style>

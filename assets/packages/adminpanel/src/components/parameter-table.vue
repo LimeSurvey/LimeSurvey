@@ -1,6 +1,4 @@
-
 <script>
-    import Vue from 'vue';
     import _ from 'lodash';
     import ParameterPopup from './parameter-popup.vue'
 
@@ -46,10 +44,11 @@
                             let rowArray = {
                                 'id': row.id,
                                 'parameter': row.parameter,
-                                'targetQuestionText': row.question,
-                                'sid': row.datas.sid,
-                                'qid': row.datas.targetqid || '',
-                                'sqid': row.datas.targetsqid || ''
+                                'targetQuestionText': row.questionTitle,
+                                'targetSubQuestionText': row.subquestionTitle,
+                                'sid': row.sid,
+                                'qid': row.targetqid || '',
+                                'sqid': row.targetsqid || ''
                             };
                             dataSet.push(rowArray);
                         });
@@ -146,7 +145,7 @@
                                 </div> 
                             </td>
                             <td v-show="true"> {{parameterRow.parameter }} </td>
-                            <td v-show="true" v-html="parameterRow.targetQuestionText"> </td>
+                            <td v-show="true" v-html="parameterRow.targetQuestionText+(parameterRow.sqid != '' ? ' => '+ parameterRow.targetSubQuestionText : '')"> </td>
                             <td v-show="showAllColumns"> {{parameterRow.sid }} </td>
                             <td v-show="showAllColumns"> {{parameterRow.qid }} </td>
                             <td v-show="showAllColumns"> {{parameterRow.sqid }} </td>

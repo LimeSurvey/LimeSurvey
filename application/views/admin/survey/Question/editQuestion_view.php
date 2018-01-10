@@ -2,6 +2,10 @@
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
 /* @var Survey $oSurvey */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuestion');
+
 ?>
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
@@ -144,6 +148,7 @@
                         <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <div>
+                                    <!-- Question selector start -->
                                     <div  class="form-group">
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
@@ -151,83 +156,41 @@
                                             ?>
                                         </label>
                                         <div>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-                                            <?php
-                                            $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
-                                            foreach ( $aQuestionTypeList as $key=> $questionType)
-                                            {
-                                                if (!isset($groups[$questionType['group']]))
-                                                {
-                                                    $groups[$questionType['group']] = array();
-                                                }
-                                                $groups[$questionType['group']][$key] = $questionType['description'];
-                                            }
-                                            ?>
-                                            <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                             <div class=" btn-group" id="question_type_button">
-                                                <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                                                    <?php foreach($groups as $name => $group):?>
-                                                        <?php foreach($group as $type => $option):?>
-                                                            <?php if($type == $eqrow['type']):?>
-                                                                <span class="buttontext">
-                                                                    <?php echo $option; ?>
-                                                                    <?php if(YII_DEBUG):?>
-                                                                        <em class="small">
-                                                                            Type code: <?php echo $type; ?>
-                                                                        </em>
-                                                                        <?php endif;?>
-                                                                </span>
-                                                                <?php endif; ?>
-                                                            <?php endforeach;?>
-                                                        <?php endforeach;?>
+                                                <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
+                                                    <span class="buttontext" id="selector__editView_question_type_description">
+                                                        <?=Question::getQuestionTypeName($eqrow['type']); ?>
+                                                        <?php if(YII_DEBUG):?>
+                                                            <em class="small">
+                                                                Type code: <?php echo $eqrow['type']; ?>
+                                                            </em>
+                                                        <?php  endif;?>
+                                                    </span>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <span class="caret"></span>
+                                                    <i class="fa fa-folder-open"></i>                                       
                                                 </button>
-
-                                                <ul class="dropdown-menu" style="z-index: 1000">
-
-                                                    <?php foreach($groups as $name => $group):?>
-                                                        <small><?php echo $name;?></small>
-
-                                                        <?php foreach($group as $type => $option):?>
-                                                            <li>
-                                                                <a href="#" class="questionType" data-value="<?php echo $type; ?>" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
-                                                                <?php if(Yii::app()->getConfig("debug")===2):?>
-                                                                    <em class="small text-info col-sm-offset-1">
-                                                                        question type code: <?php echo $type; ?>
-                                                                    </em>
-                                                                    <?php endif;?>
-                                                            </li>
-                                                            <?php endforeach;?>
-
-                                                        <li role="separator" class="divider"></li>
-                                                        <?php endforeach;?>
-                                                </ul>
                                             </div>
                                             <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                            <div class=" btn-group" id="question_type_button" style="z-index: 1000">
-                                                <?php
-                                                $aQtypeData=array();
-                                                foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
-                                                {
-                                                    $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
-                                                }
-                                                echo CHtml::dropDownList(
-                                                    'type',
-                                                    $eqrow['type'],
-                                                    CHtml::listData($aQtypeData,'code','description','group'),
-                                                    array(
-                                                        'class' => 'form-control',
-                                                        'id'=>'question_type',
-                                                        'disabled'=>$activated == "Y", // readony is more beautifull : but allow open
-                                                    )
-                                                );
-                                                ?>
+                                            <div class=" btn-group" id="question_type_button">
+                                                <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
+                                                    <span class="buttontext" id="selector__editView_question_type_description">
+                                                        <?=Question::getQuestionTypeName($eqrow['type']); ?>
+                                                        <?php if(YII_DEBUG):?>
+                                                            <em class="small">
+                                                                Type code: <?php echo $eqrow['type']; ?>
+                                                            </em>
+                                                        <?php  endif;?>
+                                                    </span>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <i class="fa  fa-lock"></i>                                       
+                                                </button>
                                             </div>
                                         <?php endif; ?>
                                         </div>
                                     </div>
-
+                                    <!-- Question selector end -->
                                     <div  class="form-group">
                                         <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                         <div class="">
@@ -320,7 +283,34 @@
             <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
-        <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
         </form>
     </div>
 </div>
+
+<?php
+$aQuestionTypeGroups = array();
+$aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+
+foreach ( $aQuestionTypeList as $key=> $questionType)
+{
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
+    {
+        $aQuestionTypeGroups[$htmlReadyGroup] = array(
+            'questionGroupName' => $questionType['group']
+        );
+    }
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+}
+?>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $eqrow['type'], 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
+    </div>
+  </div>
+</div>
+

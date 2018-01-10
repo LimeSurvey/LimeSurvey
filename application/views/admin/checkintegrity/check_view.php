@@ -1,3 +1,11 @@
+<?php
+/* @var $this AdminController */
+/* @var $dataProvider CActiveDataProvider */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('checkIntegrity');
+
+?>
 <div class="pagetitle h3"><?php eT("Check data integrity");?></div>
 
 <div class="row" style="margin-bottom: 100px">
@@ -199,7 +207,7 @@
                 <?php
                     if (isset($orphantokentables))
                     {?>
-                    <li><?php eT("The following old token tables should be deleted because they contain no records or their parent survey no longer exists:"); ?>
+                    <li><?php eT("The following old survey participants tables should be deleted because they contain no records or their parent survey no longer exists:"); ?>
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($orphantokentables as $tokentable) {?>
@@ -211,7 +219,7 @@
                     }
                     else
                     { ?>
-                    <li><?php eT("All old token tables meet consistency standards."); ?></li><?php
+                    <li><?php eT("All old survey participants tables meet consistency standards."); ?></li><?php
                 } ?>
             </ul>
 

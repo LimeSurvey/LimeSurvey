@@ -1,11 +1,15 @@
 <?php
 
 /**
-* Index view for plugin manager
-*
-* @since 2015-10-02
-* @author Olle Haerstedt
-*/
+ * Index view for plugin manager
+ * @var $this AdminController
+ *
+ * @since 2015-10-02
+ * @author Olle Haerstedt
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('pluginManager');
 
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>

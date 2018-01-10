@@ -14,7 +14,7 @@
         )
     )); ?>
 
-    <h3><?php eT('Surveys Groups:'); ?></h3>
+    <h3><?php eT('Survey groups:'); ?></h3>
 
     <div class="row">
         <div class="col-sm-12 content-right">

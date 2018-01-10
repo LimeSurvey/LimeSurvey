@@ -46,9 +46,10 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                if (($aAttribute['readonly'] || isset($aAttribute['readonly_when_active']) && $aAttribute['readonly_when_active']) && $bIsActive)
+                if ( $aAttribute['readonly'] || (isset($aAttribute['readonly_when_active']) && $bIsActive) )
                 {
-                    echo $aAttribute['value'];
+                    // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
+                    echo "<div class='form-control-static'>".\CHtml::encode($aAttribute['value'])."</div>";
                 }
                 else
                 {

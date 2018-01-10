@@ -10,19 +10,6 @@
             <div class="modal-body">
                 <div class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></div>
 
-                <!-- the ajax loader -->
-                <div id="ajaxContainerLoading" >
-                    <p><?php eT('Please wait, loading data...');?></p>
-                    <div class="preloader loading">
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                    </div>
-                </div>
-
                 <?php if (isset($aAction['aCustomDatas'])):?>
                     <!--
                         Custom datas needed for action defined directly in the widget call.

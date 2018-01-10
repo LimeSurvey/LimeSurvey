@@ -5,7 +5,7 @@ var LS = LS || {
 };
 
 var iRunningThreads=0;
-$(document).on('ready  pjax:complete',  function(){
+$(document).on('ready  pjax:scriptcomplete',  function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
     $('#translationtabs').show();

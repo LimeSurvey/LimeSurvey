@@ -203,7 +203,7 @@ class Zend_XmlRpc_Fault
         } catch (Exception $e) {
             // Not valid XML
             require_once 'Zend/XmlRpc/Exception.php';
-            throw new Zend_XmlRpc_Exception('Failed to parse XML fault: ' .  $e->getMessage(), 500, $e);
+            throw new Zend_XmlRpc_Exception('Failed to parse XML fault: '.$e->getMessage(), 500, $e);
         }
 
         // Check for fault
@@ -287,10 +287,10 @@ class Zend_XmlRpc_Fault
 
         $generator = Zend_XmlRpc_Value::getGenerator();
         $generator->openElement('methodResponse')
-                  ->openElement('fault');
+                    ->openElement('fault');
         $value->generateXml();
         $generator->closeElement('fault')
-                  ->closeElement('methodResponse');
+                    ->closeElement('methodResponse');
 
         return $generator->flush();
     }

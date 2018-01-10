@@ -48,7 +48,7 @@ class UniqueNotification extends Notification
      */
     public function save($runValidation = true, $attributes = null)
     {
-        $toHash = $this->entity . $this->entity_id . $this->title . $this->message;
+        $toHash = $this->entity.$this->entity_id.$this->title.$this->message;
         $this->hash = hash('sha256', $toHash);
 
         $duplicate = self::model()->findByAttributes(array(

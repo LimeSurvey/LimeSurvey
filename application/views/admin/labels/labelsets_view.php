@@ -3,8 +3,13 @@
  * This file render the list of label sets
  * It use the Label Sets model getAllRecords method to build the data provider.
  *
- * @var $model  obj    the LabelSets model
+ * @var $this AdminController
+ * @var LabelSet $model the LabelSets model
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('viewLabelSets');
+
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">

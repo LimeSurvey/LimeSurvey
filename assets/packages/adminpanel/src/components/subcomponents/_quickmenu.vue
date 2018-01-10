@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 
@@ -84,7 +83,4 @@ export default {
     </div>
 </template>
 <style lang="scss">
-    .quickmenuIcon{
-        font-size:"28px";
-    }
 </style>

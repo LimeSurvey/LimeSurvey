@@ -4,7 +4,7 @@
  *
  */
 
-$(document).on('ready pjax:complete',function () {
+$(document).on('ready pjax:scriptcomplete',function () {
     $('div.array-multi-flexi-text table.show-totals input:enabled').keyup(updatetotals);
     $('div.array-multi-flexi-text table.show-totals input:enabled').each(updatetotals);
 });

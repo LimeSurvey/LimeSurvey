@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -23,72 +25,81 @@
 class LabelSet extends LSActiveRecord
 {
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{labelsets}}';
-	}
+    public function tableName()
+    {
+        return '{{labelsets}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return 'lid';
-	}
+    public function primaryKey()
+    {
+        return 'lid';
+    }
 
-	/**
+    /**
      * @inheritdoc
-	 * @return LabelSet
-	 */
-	public static function model($class = __CLASS__)
-	{
+     * @return LabelSet
+     */
+    public static function model($class = __CLASS__)
+    {
         /** @var self $model */
-        $model =parent::model($class);
+        $model = parent::model($class);
         return $model;
-	}
+    }
 
     /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('label_name','required'),
-            array('label_name','length', 'min' => 1, 'max'=>100),
-            array('label_name','LSYii_Validators'),
-            array('languages','required'),
-            array('languages','LSYii_Validators','isLanguageMulti'=>true),
+            array('label_name', 'required'),
+            array('label_name', 'length', 'min' => 1, 'max'=>100),
+            array('label_name', 'LSYii_Validators'),
+            array('languages', 'required'),
+            array('languages', 'LSYii_Validators', 'isLanguageMulti'=>true),
         );
     }
 
+    /** @inheritdoc */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order'=>'language ASC, sortorder ASC')
+        );
+    }
 
     /**
      * @param mixed|bool $condition
      * @return static[]
      */
-    public function getAllRecords($condition=FALSE)
-	{
+    public function getAllRecords($condition = false)
+    {
         $criteria = new CDbCriteria;
-		if ($condition != FALSE) {
-		    foreach ($condition as $item => $value) {
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
+        if ($condition != false) {
+            foreach ($condition as $item => $value) {
+                $criteria->addCondition($item.'="'.$value.'"');
+            }
         }
 
-		return $this->findAll($criteria);
-	}
+        return $this->findAll($criteria);
+    }
 
     /**
      * @return array
      */
-	public function getLID()
+    public function getLID()
     {
-		return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
+        return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
     }
 
-	function insertRecords($data)
+    public function insertRecords($data)
     {
         $lblset = new self;
-		foreach ($data as $k => $v)
-			$lblset->$k = $v;
-		if ($lblset->save())
-        {
+        foreach ($data as $k => $v) {
+                    $lblset->$k = $v;
+        }
+        if ($lblset->save()) {
             return $lblset->lid;
         }
         return false;
@@ -105,19 +116,19 @@ class LabelSet extends LSActiveRecord
             $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
             // Edit labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','update')) {
+            if (Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
             }
 
             // Export labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','export')) {
+            if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
                 $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Export label set').'" href="'.$url.'" role="button"><span class="icon-export" ></span></a>';
             }
 
             // Delete labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','delete')) {
+            if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="fa fa-trash text-warning"></span></a>';
             }
@@ -127,25 +138,25 @@ class LabelSet extends LSActiveRecord
 
     public function search()
     {
-        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
         $sort->attributes = array(
-          'labelset_id'=>array(
+            'labelset_id'=>array(
             'asc'=>'lid',
             'desc'=>'lid desc',
-          ),
-          'name'=>array(
+            ),
+            'name'=>array(
             'asc'=>'label_name',
             'desc'=>'label_name desc',
-          ),
-          'languages'=>array(
+            ),
+            'languages'=>array(
             'asc'=>'languages',
             'desc'=>'languages desc',
-          ),
+            ),
         );
 
-        $dataProvider=new CActiveDataProvider('LabelSet', array(
+        $dataProvider = new CActiveDataProvider('LabelSet', array(
             'sort'=>$sort,
             'pagination'=>array(
                 'pageSize'=>$pageSize,

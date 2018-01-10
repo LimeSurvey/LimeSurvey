@@ -907,7 +907,7 @@
             case "X": //This is a boilerplate question and it has no business in this script
             case '*': // EQUATION
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
-                eT("This question type can't be selected='selected' .");
+                eT("This question type can't be selected.");
                 break;
 
                 /*

@@ -12,20 +12,20 @@
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyQuotas');
+
+Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change', "
+    $('#pageSize').on('change', function()
+    {
+        $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
+    });
+", LSYii_ClientScript::POS_POSTSCRIPT);
 
 ?>
+
 <!-- To update grid when pageSize is changed -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        jQuery(function($)
-        {
-            jQuery(document).on("change", '#pageSize', function()
-            {
-                $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
-            });
-        });
-    });
-</script>
+
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -74,7 +74,7 @@
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
                                             'aQuotaItems'=>$aQuotaItems,
-                                    )).'<p>';
+                                        ),true).'<p>';
                                     return $out;
                                 },
                             ),
@@ -101,27 +101,27 @@
                                 'header'=>gT("Action"),
                                 'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
                                     /** @var Quota $oQuota */
-                                    $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
+                                    return $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
                                             'editUrl'=>$aEditUrls[$oQuota->getPrimaryKey()],
                                             'deleteUrl'=>$aDeleteUrls[$oQuota->getPrimaryKey()],
                                             'aQuotaItems'=>$aQuotaItems,
-                                        ));
+                                        ),true);
                                 },
+                                'type' => 'raw',
                                 'headerHtmlOptions'=>array(
                                     'style'=>'text-align:right;',
                                 ),
                                 'htmlOptions'=>array(
-                                    'align'=>'right',
-                                    'style'=>'vertical-align:top',
+                                    'style'=>'text-align: right; vertical-align:top',
                                 ),
                             ),
 
                         ),
                         'itemsCssClass' =>'table-quotas table-striped table-condensed',
-                        'ajaxUpdate' => true,
+                        'ajaxUpdate' => 'quota-grid',
                     ));
                     ?>
                 </div>

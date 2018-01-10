@@ -5,19 +5,22 @@
  * @var Survey $oSurvey
  * @var array $dateformatdetails
  */
-?>
-<script type="text/javascript">
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPublicationOptions');
+
+ App()->getClientScript()->registerScript("publication-panel-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- Publication panel -->
-<div id='publication' class="container-fluid">
+<div id='publication-panel' class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
 
@@ -28,7 +31,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,

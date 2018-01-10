@@ -13,6 +13,9 @@ $spaces: 0 5 10 15 25 30 35 40 45 50;
         &.bottom-#{$space} {
             margin-bottom: $space*1px;
         }
+        &.all-#{$space} {
+            margin : $space*1px;
+        }
     }
 }
 
