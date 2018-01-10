@@ -1001,7 +1001,7 @@ class TemplateConfiguration extends TemplateConfig
                 // NOTE: this is object recursive (if parent configuration field is set to inherit, then it will lead to this method again.)
                 $sAttribute = null;
                 $parentCongiguration = $this->getParentConfiguration();
-                if(isset($parentCongiguration->$name)){
+                if (isset($parentCongiguration->$name)) {
                     $sAttribute = $parentCongiguration->$name;
                 }
             }
