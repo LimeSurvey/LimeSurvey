@@ -43,7 +43,7 @@ before_script:
     - sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
     - sudo chown -R travis:travis /var/lib/apache2/fastcgi
     - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-    - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
+    - sudo cp -f tests/resources/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
