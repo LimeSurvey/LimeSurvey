@@ -107,8 +107,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
         if (isset($aGIDReplacements[$insertdata['gid']])) {
             $insertdata['gid'] = $aGIDReplacements[$oldgid];
-        }
-        else{
+        } else {
             continue; //Skip invalid group ID
         }
         Yii::app()->db->createCommand()->insert('{{group_l10ns}}', $insertdata);
@@ -1008,8 +1007,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
             }
-            if (!empty($aDataL10n))
-            {                                      
+            if (!empty($aDataL10n)) {
                 $aDataL10n['gid']=$aGIDReplacements[$oldgid];
                 $oQuestionGroupL10n=new QuestionGroupL10n(); 
                 $oQuestionGroupL10n->setAttributes($aDataL10n,false);
@@ -1033,8 +1031,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
-            }
-            else{
+            } else {
                 continue; //Skip invalid group ID
             }
             $oQuestionGroupL10n=new QuestionGroupL10n(); 
@@ -1099,7 +1096,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
 
-            if (!isset($aQIDReplacements[$iOldQID])) { 
+            if (!isset($aQIDReplacements[$iOldQID])) {
             // Try to fix question title for valid question code enforcement
                 if (!$oQuestion->validate(array('title'))) {
                     $sOldTitle = $oQuestion->title;
@@ -1178,7 +1175,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 XSSFilterArray($insertdata);
             }
             if (!isset($insertdata['help'])) {
-                $insertdata['help']='';
+                $insertdata['help'] = '';
             }            // now translate any links
             if ($iDBVersion < 350) {
                 if ($bTranslateInsertansTags) {
@@ -1269,8 +1266,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
-            }
-            else{
+            } else {
                 continue; //Skip invalid group ID
             }
             $oQuestionL10n=new QuestionL10n(); 
@@ -1345,8 +1341,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (isset($aAIDReplacements[$insertdata['aid']])) {
                 $insertdata['aid'] = $aAIDReplacements[$insertdata['aid']];
-            }
-            else{
+            } else {
                 continue; //Skip invalid answer ID
             }
             $oAnswerL10n=new AnswerL10n(); 

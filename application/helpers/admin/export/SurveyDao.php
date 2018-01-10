@@ -43,7 +43,7 @@ class SurveyDao
 
         $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'group_order'));
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
-        $aAnswers = Answer::model()->with('question', array('condition'=>'sid='.$intId))->findAll( array('order' => 'question.question_order, t.scale_id, sortorder'));
+        $aAnswers = Answer::model()->with('question', array('condition'=>'sid='.$intId))->findAll(array('order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
             $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
         }

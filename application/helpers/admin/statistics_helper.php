@@ -1153,7 +1153,7 @@ class statistics_helper
             $rqid = $qqid;
 
             //get question data
-            $nrow=Question::model()->findByPk($rqid);
+            $nrow = Question::model()->findByPk($rqid);
             $qtitle = flattenText($nrow['title']);
             $qtype = $nrow['type'];
             $qquestion = flattenText($nrow->questionL10ns[$language]->question);
@@ -1166,7 +1166,7 @@ class statistics_helper
                 case "A":
 
                     //get data
-                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     //loop through results
                     foreach ($qresult as $qrow) {
                         $qrow = array_values($qrow);
@@ -1189,7 +1189,7 @@ class statistics_helper
                     //Array of 10 point choices
                     //same as above just with 10 items
                 case "B":
-                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     foreach ($qresult as $qrow) {
                         for ($i = 1; $i <= 10; $i++) {
                             $alist[] = array("$i", "$i");
@@ -1205,7 +1205,7 @@ class statistics_helper
 
                     //Array of Yes/No/gT("Uncertain")
                 case "C":
-                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     //loop thorugh results
                     foreach ($qresult as $qrow) {
                         //add results
@@ -1224,7 +1224,7 @@ class statistics_helper
                     //Array of Yes/No/gT("Uncertain")
                     //same as above
                 case "E":
-                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     foreach ($qresult as $qrow) {
                         $alist[] = array("I", gT("Increase"));
                         $alist[] = array("S", gT("Same"));
@@ -1239,9 +1239,9 @@ class statistics_helper
                 case ";": //Array (Multi Flexi) (Text)
                     list($qacode, $licode) = explode("_", $qanswer);
 
-                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     foreach ($qresult as $qrow) {
-                        $fresult = Answer::model()->findAll(array('condition'=>'qid=:qid AND code=:code ND scale_id=0', 'params'=>array(":qid"=>$qiqid,':code'=>$licode)));
+                        $fresult = Answer::model()->findAll(array('condition'=>'qid=:qid AND code=:code ND scale_id=0', 'params'=>array(":qid"=>$qiqid, ':code'=>$licode)));
                         foreach ($fresult as $frow) {
                             $alist[] = array($frow['code'], $frow->answerL10ns[$language]->answer);
                             $ltext = $frow->answerL10ns[$language]->answer;
@@ -1290,10 +1290,10 @@ class statistics_helper
 
                 case "F": //Array of Flexible
                 case "H": //Array of Flexible by Column
-                    $qresult = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid,':title'=>$qanswer)));
+                    $qresult = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     //loop through answers
                     foreach ($qresult as $qrow) {
-                        $fresult = Answer::model()->findAllByAttributes(['qid'=>$qiqid,'scale_id'=>0]);
+                        $fresult = Answer::model()->findAllByAttributes(['qid'=>$qiqid, 'scale_id'=>0]);
                         //this question type uses its own labels
                         //add code and title to results for outputting them later
                         foreach ($fresult as $frow) {
@@ -1409,7 +1409,7 @@ class statistics_helper
                 default:    //default handling
 
                     //get answer code and title
-                    $qresult = Answer::model()->findAllByAttributes(['qid'=>$qqid,'scale_id'=>0]);
+                    $qresult = Answer::model()->findAllByAttributes(['qid'=>$qqid, 'scale_id'=>0]);
                     //put answer code and title into array
                     foreach ($qresult as $qrow) {
                         $alist[] = array($qrow->code, flattenText($qrow->answerL10ns[$language]->answer));

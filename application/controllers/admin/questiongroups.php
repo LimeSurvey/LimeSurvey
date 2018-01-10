@@ -185,7 +185,7 @@ class questiongroups extends Survey_Common_Action
 
             $oGroup = new QuestionGroup;
             $oGroup->sid = $surveyid;
-            $oGroup->group_order = getMaxGroupOrder($surveyid);;
+            $oGroup->group_order = getMaxGroupOrder($surveyid); ;
             $oGroup->randomization_group = Yii::app()->request->getPost('randomization_group');
             $oGroup->grelevance = Yii::app()->request->getPost('grelevance');
             if ($oGroup->save()) {
@@ -348,7 +348,7 @@ class questiongroups extends Survey_Common_Action
             $first = true;
             $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
             foreach ($aLanguages as $sLanguage) {
-                $oResult = QuestionGroupL10n::model()->findByAttributes(array( 'gid' => $gid, 'language' => $sLanguage));
+                $oResult = QuestionGroupL10n::model()->findByAttributes(array('gid' => $gid, 'language' => $sLanguage));
                 $aData['aGroupData'][$sLanguage] = array_merge($oResult->attributes, $oQuestionGroup->attributes);
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first) {

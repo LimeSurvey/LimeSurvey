@@ -908,7 +908,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             
             $oDB->createCommand()->truncateTable('{{tutorials}}');
-            foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
+            foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials) {
                 $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
             }
             
@@ -925,7 +925,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-		if ($iOldDBVersion < 350) {
+        if ($iOldDBVersion < 350) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             // Question table 
@@ -938,8 +938,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
-            $dataReader=$oDB->createCommand("select q1.language,q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->query();
-            while(($row=$dataReader->read())!==false) {
+            $dataReader = $oDB->createCommand("select q1.language,q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 WHERE q1.qid = q2.qid and q1.language<q2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
             }
             alterColumn('{{questions}}', 'qid', "int", true);
@@ -958,8 +958,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
-            $dataReader=$oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 WHERE g1.gid = g2.gid and g1.language<g2.language")->query();
-            while(($row=$dataReader->read())!==false) {
+            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 WHERE g1.gid = g2.gid and g1.language<g2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
             }
             alterColumn('{{groups}}', 'gid', "int", true);
@@ -981,15 +981,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
-            $dataReader=$oDB->createCommand("select qid,code,scale_id from {{answers}} group by qid,code,scale_id")->query();
-            $iCounter=1;
-            while(($row=$dataReader->read())!==false) {
+            $dataReader = $oDB->createCommand("select qid,code,scale_id from {{answers}} group by qid,code,scale_id")->query();
+            $iCounter = 1;
+            while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id='{$row['scale_id']}'")->execute();
                 $iCounter++;
             }
             $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
-            $dataReader=$oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 WHERE a1.aid = a2.aid and a1.language<a2.language")->query();
-            while(($row=$dataReader->read())!==false) {
+            $dataReader = $oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 WHERE a1.aid = a2.aid and a1.language<a2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{answers}} where aid={$row['aid']} and language='{$row['language']}'")->execute();
             }
             alterColumn('{{answers}}', 'aid', "pk", false);
@@ -1019,7 +1019,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . gT('File') . ' ' . $file .', ' . gT('line') . ' ' . $trace[1]['line'] . '.'
+            . gT('File').' '.$file.', '.gT('line').' '.$trace[1]['line'].'.'
         );
         return false;
     }

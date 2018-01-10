@@ -20,8 +20,6 @@
  * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
  * @property string $question Question dieplay text. The actual question.
  * @property string $help Question help-text for display
-
-
  */
 class AnswerL10n extends LSActiveRecord
 {

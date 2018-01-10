@@ -1479,7 +1479,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = [];
         $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
         $aQuestions = [];
-        foreach($oResult as $aRecord) {
+        foreach ($oResult as $aRecord) {
             $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
         }
         $aData['questions'] = $aQuestions;

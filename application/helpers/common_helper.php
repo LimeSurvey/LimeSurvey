@@ -694,7 +694,7 @@ function getGroupList($gid, $surveyid)
     $surveyid = sanitize_int($surveyid);
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
     $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
-    $oGroups=QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
+    $oGroups = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
     foreach ($oGroups as $oGroup) {
         $groupselecter .= "<option";
         if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
@@ -2757,7 +2757,7 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
-    if ($sString=='') {
+    if ($sString == '') {
         return $sString;
     }
     $iOldSurveyID = (int) $iOldSurveyID;
@@ -3751,7 +3751,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ($result as $row) {
-        Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id ='.$row['id'] )->execute();
+        Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id ='.$row['id'])->execute();
     }
     // Remove From Questions Table
     $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
@@ -3759,7 +3759,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ($result as $row) {
-        Yii::app()->db->createCommand('delete from {{question_l10ns}} where id ='.$row['id'] )->execute();
+        Yii::app()->db->createCommand('delete from {{question_l10ns}} where id ='.$row['id'])->execute();
     }
 
     // Remove From Questions Table
@@ -3768,7 +3768,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ($result as $row) {
-        Yii::app()->db->createCommand('delete from {{group_l10ns}} where id ='.$row['id'] )->execute();
+        Yii::app()->db->createCommand('delete from {{group_l10ns}} where id ='.$row['id'])->execute();
     }
 }
 
@@ -3780,7 +3780,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 */
 function fixLanguageConsistency($sid, $availlangs = '')
 {
-    $sid = (int)$sid;
+    $sid = (int) $sid;
     if (trim($availlangs) != '') {
         $availlangs = sanitize_languagecodeS($availlangs);
         $langs = explode(" ", $availlangs);
