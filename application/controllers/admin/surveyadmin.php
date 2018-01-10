@@ -1818,15 +1818,17 @@ class SurveyAdmin extends Survey_Common_Action
     {
         // Now create a new dummy group
         $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        $aInsertData = array(
-            'sid' => $iSurveyID,
-            'group_order' => 1,
-            'grelevance' => '1');
-        $aInsertData[$sLanguage] = array(
-            'group_name' => gt('My first question group', 'html', $sLanguage),
-            'description' => '',
-            'language' => $sLanguage);
-        return QuestionGroup::model()->insertNewGroup($aInsertData);
+        $oGroup=new QuestionGroup();
+        $oGroup->sid=$iSurveyID;
+        $oGroup->group_order=1;
+        $oGroup->grelevance='1';
+        $oGroup->save();
+        $oGroupL10ns=new QuestionGroupL10ns();
+        $oGroupL10ns->gid=$oGroup->gid;
+        $oGroupL10ns->group_name=gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->language=$sLanguage;
+        $oGroupL10ns->save();
+        return $oGroup->gid;
     }
 
     /**

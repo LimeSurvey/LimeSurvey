@@ -1031,6 +1031,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Extend question type field length
             alterColumn('{{questions}}','type','string(30)',false,'T');
             
+            // Drop autoincrement on timings table primary key
+            upgradeSurveyTimings350();
+            
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
             $oTransaction->commit();
         }        
@@ -1087,6 +1090,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
+
+function upgradeSurveyTimings350()
+{
+    $aTables = dbGetTablesLike("%timings");
+    foreach ($aTables as $sTable) {
+            alterColumn($sTable, 'id', "int", false);
+    }
+}
+
 
 
 /**

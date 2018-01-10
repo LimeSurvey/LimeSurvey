@@ -461,7 +461,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $timingsfieldmap = createTimingsFieldMap($iSurveyID, "full", false, false, $oSurvey->language);
 
         $aTimingTableDefinition = array();
-        $aTimingTableDefinition['id'] = $aTableDefinition['id'];
+        $aTimingTableDefinition['id'] = 'integer';
         foreach ($timingsfieldmap as $field=>$fielddata) {
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
@@ -469,6 +469,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try {
             Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
+            Yii::app()->db->createCommand()->addPrimaryKey('PK_Timing_'.rand(1, 50000), $sTableName, 'id');
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } catch (CDbException $e) {
             return array('error'=>'timingstablecreation');

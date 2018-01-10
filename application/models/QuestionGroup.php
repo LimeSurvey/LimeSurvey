@@ -137,36 +137,6 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
-
-    /**
-     * This functions insert question group data in the form of array('<grouplanguage>'=>array( <array of fieldnames => values >))
-     * It will take care of maintaining the group ID
-     *
-     * @param mixed $aQuestionGroupData
-     * @return bool|int
-     */
-    public function insertNewGroup($aQuestionGroupData)
-    {
-        $aFirstRecord = reset($aQuestionGroupData);
-        $iSurveyID = $aFirstRecord['sid'];
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $bFirst = true;
-        $iGroupID = null;
-        foreach ($oSurvey->allLanguages as $sLanguage) {
-            if ($bFirst) {
-                $iGroupID = $this->insertRecords($aQuestionGroupData[$sLanguage]);
-                $bFirst = false;
-            } else {
-                $aQuestionGroupData[$sLanguage]['gid'] = $iGroupID;
-                switchMSSQLIdentityInsert('groups', true);
-                $this->insertRecords($aQuestionGroupData[$sLanguage]);
-                switchMSSQLIdentityInsert('groups', false);
-            }
-        }
-        return $iGroupID;
-    }
-
-
     /**
      * @param int $surveyid
      * @return array

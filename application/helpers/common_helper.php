@@ -3909,25 +3909,6 @@ function fixLanguageConsistency($sid, $availlangs = '')
 }
 
 /**
-* This function switches identity insert on/off for the MSSQL database
-*
-* @param string $table table name (without prefix)
-* @param boolean $state  Set to true to activate ID insert, or false to deactivate
-*/
-function switchMSSQLIdentityInsert($table, $state)
-{
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-        if ($state === true) {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');
-        } else {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
-        }
-    }
-}
-
-/**
  * Retrieves the last Insert ID realiable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
