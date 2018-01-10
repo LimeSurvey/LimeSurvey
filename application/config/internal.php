@@ -252,7 +252,7 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date', 'format'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),

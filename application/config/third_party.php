@@ -333,10 +333,10 @@ return array(
 
     // Moment.js use real simple dateTime modification
     'moment' => array(
+        'devBaseUrl' => 'third_party/moment',
         'basePath' => 'third_party.moment',
-        'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'moment-with-locales.min.js'
+            'moment-with-locales'.$minVersion.'.js'
         ),
         'depends' => array(
         )

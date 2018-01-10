@@ -686,7 +686,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168) NOT NULL');
+            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168)');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
@@ -699,7 +699,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'mainmenu'), 'id = 1');
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
-            $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128) NOT NULL');
+            $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128)');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -738,7 +738,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'created_by' => 0
                     )
                 );
-            $pluginMenuId = $oDB->getLastInsertID();
+            $pluginMenuId = getLastInsertID('{{surveymenu}}');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array(
                 'menu_id' => $pluginMenuId,
                 'title' => 'Simple plugins',
@@ -769,7 +769,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
                     'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
                     )),
-                    'title' => 'First start tour',
+                    'title' => 'Take beginner tour',
                     'icon' => 'fa-rocket'
             ]);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>334), "stg_name='DBVersion'");
@@ -832,10 +832,97 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
                 $position = $rowToRemove['position'];
             }
+            // NB: Needed since Postgres id seq might not work.
+            $maxId = $oDB->createCommand()->select('max(id)')->from("{{boxes}}")->queryScalar();
 
-            $oDB->createCommand()->insert("{{boxes}}", ['position' => $position, 'url' => 'admin/themeoptions', 'title' => 'Themes', 'ico' => 'templates', 'desc' => 'Themes', 'page' => 'welcome', 'usergroup' => '-2']);
+            $oDB->createCommand()->insert(
+                "{{boxes}}",
+                [
+                    'id' => $maxId + 1,
+                    'position' => $position,
+                    'url' => 'admin/themeoptions',
+                    'title' => 'Themes',
+                    'ico' => 'templates',
+                    'desc' => 'Themes',
+                    'page' => 'welcome',
+                    'usergroup' => '-2'
+                ]
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>338), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+      
+        if ($iOldDBVersion < 339) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->update("{{tutorials}}", [
+                    'settings' => json_encode(array(
+                        'keyboard' => false,
+                        'orphan' => true,
+                        'template' => ""
+                        ."<div class='popover tour lstutorial__template--mainContainer'>" 
+                            ."<div class='arrow'></div>"
+                            ."<h3 class='popover-title lstutorial__template--title'></h3>"
+                            ."<div class='popover-content lstutorial__template--content'></div>"
+                            ."<div class='popover-navigation lstutorial__template--navigation'>"
+                                ."<div class='row'>"
+                                    ."<div class='btn-group col-xs-12' role='group' aria-label='...'>"
+                                        ."<button class='btn btn-default col-md-6' data-role='prev'>".gT('Previous')."</button>"
+                                        ."<button class='btn btn-primary col-md-6' data-role='next'>".gT('Next')."</button>"
+                                    ."</div>"
+                                ."</div>"
+                                ."<div class='row ls-space margin top-5'>"
+                                    ."<div class='text-left col-sm-12'>"
+                                        ."<button class='pull-left btn btn-warning col-sm-6' data-role='end'>".gT('End tour')."</button>"
+                                    ."</div>"
+                                ."</div>"
+                            ."</div>"
+                        ."</div>",
+                        'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
+                        'onEnd' => "(function(tour){window.location.reload();})",
+                        'endOnOrphan' => true,
+                    )), 
+                ], 
+                "tid=1"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Rename 'First start tour' to 'Take beginner tour'.
+         */
+        If ($iOldDBVersion < 340) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{tutorials}}', array('title'=>'Beginner tour'), "name='firstStartTour'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>340), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Recreate basic tour again from DefaultDataSet
+         */
+        If ($iOldDBVersion < 341) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->truncateTable('{{tutorials}}');
+            foreach ($tutorialsData = LsDefaultDataSets::getTutorialData() as $tutorials) {
+                $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
+            }
+            
+            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
+            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+
+            foreach ($tutorialEntryData = LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
+                $teid = $tutorialEntry['teid'];
+                unset($tutorialEntry['teid']);
+                $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
+                $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -848,8 +935,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
-        //echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
-        Yii::app()->user->setFlash('error', gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />');
+        $trace = $e->getTrace();
+        $fileInfo = explode('/', $trace[1]['file']);
+        $file = end($fileInfo);
+        Yii::app()->user->setFlash(
+            'error',
+            gT('An non-recoverable error happened during the update. Error details:')
+            .'<p>'
+            .htmlspecialchars($e->getMessage())
+            .'</p><br />'
+            . gT('File').' '.$file.', '.gT('line').' '.$trace[1]['line'].'.'
+        );
         return false;
     }
 
@@ -887,12 +983,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  *
  * @return void
  */
-function resetTutorials337($oDB) {
+function resetTutorials337($oDB)
+{
     $oDB->createCommand()->truncateTable('{{tutorials}}');
     $oDB->createCommand()->insert('{{tutorials}}', array(
         'tid' => 1,
         'name' => 'firstStartTour',
-        'title' => 'First start tour',
+        'title' => 'Take beginner tour',
         'icon' => 'fa-rocket',
         'description' => 'The first start tour to get your first feeling into LimeSurvey',
         'active' => 1,
@@ -1514,12 +1611,13 @@ function resetTutorials337($oDB) {
 * @param CDbConnection $oDB
 * @return void
 */
-function upgrade333($oDB) {
+function upgrade333($oDB)
+{
 
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
         'uid' => 'int DEFAULT NULL',
-        'taken' => 'boolean DEFAULT 1',
+        'taken' => 'int DEFAULT 1',
     ));
 
     $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid', 'tid']);

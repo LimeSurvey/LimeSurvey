@@ -540,6 +540,7 @@ class TemplateConfig extends CActiveRecord
         // Register
         $aClassAndAttributes['class']['register']                 = '  ';
         $aClassAndAttributes['class']['registerrow']              = '  ';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' jumbotron ';
         $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' ';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
@@ -558,6 +559,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchadivb']  = '  ';
         $aClassAndAttributes['class']['registerformcaptchadivc']  = '  captcha-widget ';
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
+        $aClassAndAttributes['class']['registersuccessblock'] = ' col-sm-12 ';
+        $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
+        $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-sm-4 text-right  ';
+        $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';
+        $aClassAndAttributes['class']['registersuccesslistcontent'] = ' col-sm-8 text-left ';
+        $aClassAndAttributes['attr']['registersuccesslistcontent'] = ' ';
+        $aClassAndAttributes['attr']['registersuccesslist'] = ' ';
+        $aClassAndAttributes['class']['registersuccesslist'] = ' list-group ';
+        $aClassAndAttributes['attr']['registersuccesslistitem'] = ' ';
+        $aClassAndAttributes['class']['registersuccesslistitem'] = ' list-group-item ';
+
         $aClassAndAttributes['class']['registermandatoryinfo']    = '  ';
         $aClassAndAttributes['class']['registersave']             = ' ';
         $aClassAndAttributes['class']['registersavediv']          = '  ';

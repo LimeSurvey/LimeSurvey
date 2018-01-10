@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests;
+namespace LimeSurvey\tests;
 
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriver;
@@ -24,7 +24,7 @@ use User;
 /**
  * Class TestBaseClassWeb
  * this is the base class for functional tests that need browser simulation
- * @package ls\tests
+ * @package LimeSurvey\tests
  */
 class TestBaseClassWeb extends TestBaseClass
 {

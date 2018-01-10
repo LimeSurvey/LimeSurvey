@@ -72,6 +72,7 @@ class database extends Survey_Common_Action
                 'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsapikeysetting' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsapikey' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -821,52 +822,53 @@ class database extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
             foreach ($languagelist as $langname) {
                 if ($langname) {
-                    $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
-                    $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
                     $data = array();
-
-                    // Fix bug with FCKEditor saving strange BR types
-                    $short_title = Yii::app()->request->getPost('short_title_'.$langname);
-                    $description = Yii::app()->request->getPost('description_'.$langname);
-                    $welcome = Yii::app()->request->getPost('welcome_'.$langname);
-                    $endtext = Yii::app()->request->getPost('endtext_'.$langname);
-
-                    $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
-                    $description = $this->oFixCKeditor->fixCKeditor($description);
-                    $welcome = $this->oFixCKeditor->fixCKeditor($welcome);
-                    $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
-                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname);
-                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
-
-                    if (!empty($short_title)) {
+                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, NULL);
+                    $sURL = Yii::app()->request->getPost('url_'.$langname, NULL);
+                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, NULL);
+                    $description = Yii::app()->request->getPost('description_'.$langname, NULL);
+                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, NULL);
+                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, NULL);
+                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, NULL);
+                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, NULL);
+                    
+                    if ($short_title !== NULL) {
+                        // Fix bug with FCKEditor saving strange BR types
+                        $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
                     }
-                    if (!empty($description)) {
+                    if ($description !== NULL) {
+                        // Fix bug with FCKEditor saving strange BR types
+                        $description = $this->oFixCKeditor->fixCKeditor($description);
                         $data['surveyls_description'] = $description;
                     }
-                    if (!empty($welcome)) {
+                    if ($welcome !== NULL) {
+                        // Fix bug with FCKEditor saving strange BR types
+                        $welcome = $this->oFixCKeditor->fixCKeditor($welcome);
                         $data['surveyls_welcometext'] = $welcome;
                     }
-                    if (!empty($endtext)) {
+                    if ($endtext !== NULL) {
+                        // Fix bug with FCKEditor saving strange BR types
+                        $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
                         $data['surveyls_endtext'] = $endtext;
                     }
-                    if (!empty($sURL)) {
-                        $data['surveyls_url'] = $sURL;
+                    if ($sURL !== NULL) {
+                        $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
                     }
-                    if (!empty($sURLDescription)) {
-                        $data['surveyls_urldescription'] = $sURLDescription;
+                    if ($sURLDescription !== NULL) {
+                        $data['surveyls_urldescription'] = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
                     }
-                    if (!empty($dateformat)) {
+                    if ($dateformat !== NULL) {
                         $data['surveyls_dateformat'] = $dateformat;
                     }
-                    if (!empty($numberformat)) {
+                    if ($numberformat !== NULL) {
                         $data['surveyls_numberformat'] = $numberformat;
                     }
 
-                    $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
-                    $oSurveyLanguageSetting->setAttributes($data);
-                    $oSurveyLanguageSetting->save(); // save the change to database
-                    if ((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat))) {
+                    if (count($data) > 0) {
+                        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
+                        $oSurveyLanguageSetting->setAttributes($data);
+                        $oSurveyLanguageSetting->save(); // save the change to database
                     }
                 }
             }
@@ -948,12 +950,14 @@ class database extends Survey_Common_Action
             $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
             $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey, 'emailresponseto');
             $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey, 'emailnotificationto');
-            $oSurvey->googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
-            if ($oSurvey->googleanalyticsapikeysetting == "Y") {
+            $googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
+            $oSurvey->googleanalyticsapikeysetting = $googleanalyticsapikeysetting;
+
+            if ($googleanalyticsapikeysetting == "Y") {
                 $oSurvey->googleanalyticsapikey = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikey');
-            } elseif ($oSurvey->googleanalyticsapikeysetting == "G") {
+            } elseif ($googleanalyticsapikeysetting == "G") {
                 $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-            } elseif ($oSurvey->googleanalyticsapikeysetting == "N") {
+            } elseif ($googleanalyticsapikeysetting == "N") {
                 $oSurvey->googleanalyticsapikey = "";
             }
 
@@ -1152,6 +1156,7 @@ class database extends Survey_Common_Action
         $newValue = trim($newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
+
         switch ($options['type']) {
             case 'yesno':
             if ($newValue != 'Y' && $newValue != 'N') {
@@ -1161,7 +1166,7 @@ class database extends Survey_Common_Action
             break;
             case 'Int':
                 $newValue = (int) $newValue;
-                break;
+            break;
         }
 
         return $newValue;

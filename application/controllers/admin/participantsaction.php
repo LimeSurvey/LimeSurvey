@@ -226,7 +226,7 @@ $url .= "_view"; });
         $count = (int) Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         if ($count > 1) {
             return sprintf(gT("Export %s participants to CSV"), $count);
-        } else if($count == 1) {
+        } else if ($count == 1) {
             return gT("Export participant to CSV");
         } else {
             return $count;
