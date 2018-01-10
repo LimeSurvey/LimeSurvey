@@ -1,8 +1,8 @@
 <?php
-
-namespace ls\tests;
+namespace LimeSurvey\tests\acceptance\surveys;
 
 use Facebook\WebDriver\WebDriverBy;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-12-01

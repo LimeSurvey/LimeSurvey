@@ -1,6 +1,22 @@
 <?php
+namespace LimeSurvey\tests\acceptance\question;
 
-namespace ls\tests;
+use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\DummyController;
+use LimeExpressionManager;
+
+/**
+ *  LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 
 /**
  * @since 2017-06-16
@@ -56,11 +72,12 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
-        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $moveResult = LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
+            self::$surveyId
         );
 
         $correctDate = date('d/m/Y');
@@ -87,7 +104,6 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
-        $survey = \Survey::model()->findByPk(self::$surveyId);
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
@@ -122,7 +138,8 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1],  // 1 = second question (q2)
+            self::$surveyId
         );
 
         $correctDate = date('d/m/Y');
@@ -178,11 +195,12 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
-        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $moveResult = LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2],  // 2 = third question (q3)
+            self::$surveyId
         );
 
         // NB: Empty value, since default answer expression is not parsed by qanda.
