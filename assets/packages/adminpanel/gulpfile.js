@@ -16,12 +16,20 @@ const
     gulpWebpack = require('gulp-webpack'),
     sass = require('gulp-sass');
 
+//filename definitions
+const 
+    cssOutFile = 'lsadminpanel.css',
+    cssOutFileProducton = 'lsadminpanel.min.css',
+    jsOutFile = 'lsadminpanel.js',
+    jsOutFileDebug = 'lsadminpanel.debug.js',
+    jsOutFileProducton = 'lsadminpanel.min.js';
+
 gulp.task('default', function (cb) {
     runSequence('compile:production', 'compile', cb);
 });
 
 //general combined tasks
-gulp.task('compile', ['sass', 'webpack']);
+gulp.task('compile', ['sass', 'webpack', 'babelify']);
 gulp.task('compile:production', function (cb) {
     runSequence(['sass:production', 'webpack:production'], 'compress', 'compresslibs', cb);
 });
@@ -46,7 +54,7 @@ gulp.task('lint:watch', function () {
 gulp.task('sass', function () {
     return gulp.src('./scss/main.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('lsadminpanel.css'))
+        .pipe(concat(cssOutFile))
         .pipe(gulp.dest('./build'));
 });
 
@@ -59,7 +67,7 @@ gulp.task('sass:production', function (cb) {
                 outputStyle: 'compressed'
             }).on('error', sass.logError),
             autoprefixer(),
-            concat('lsadminpanel.min.css'),
+            concat(cssOutFileProducton),
             sourcemaps.write(),
             gulp.dest('./build')
         ], cb);
@@ -88,6 +96,19 @@ gulp.task('webpack:production', function (cb) {
         ],
         cb
     );
+});
+
+gulp.task('babelify', function(cb){
+    pump([
+        gulp.src('build/'+jsOutFile),
+        sourcemaps.init(),
+        babel({
+            presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
+        }),
+        concat(jsOutFileDebug),
+        gulp.dest('build')
+    ],
+    cb );
 });
 
 //linter
@@ -129,13 +150,13 @@ gulp.task('js:lint', function (cb) {
 gulp.task('compress', function (cb) {
     pump(
         [
-            gulp.src('build/lsadminpanel.js'),
+            gulp.src('build/'+jsOutFile),
             sourcemaps.init(),
             babel({
-                presets: ['es2015']
+                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
             }),
             uglify(),
-            concat('lsadminpanel.min.js'),
+            concat(jsOutFileProducton),
             gulp.dest('build')
         ],
         cb
@@ -152,7 +173,7 @@ gulp.task('compresslibs', function (cb) {
             gulp.src('lib/*.js'),
             sourcemaps.init(),
             babel({
-                presets: ['es2015']
+                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
             }),
             uglify(),
             rename({ suffix: '.min' }),

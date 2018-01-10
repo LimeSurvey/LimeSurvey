@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist'
+import VuexPersistence from 'vuex-persist';
 import VueLocalStorage from 'vue-localstorage';
 
 Vue.use(VueLocalStorage);
@@ -139,8 +139,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });

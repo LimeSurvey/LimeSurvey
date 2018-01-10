@@ -37114,9 +37114,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
-            let event = new Event('pjax:load');
-            event.url = question.link;
-            window.dispatchEvent(event);
+            $(document).trigger('pjax:load', { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
@@ -39512,8 +39510,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });
