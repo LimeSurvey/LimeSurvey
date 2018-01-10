@@ -79,23 +79,6 @@ function updateset($lid)
     $labelset->save();
 }
 
-/**
-* Deletes a label set alog with its labels
-*
-* @param mixed $lid Label ID
-* @return boolean Returns always true
-*/
-function deletelabelset($lid)
-{
-    $query = "DELETE FROM {{labels}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
-    $query = "DELETE FROM {{labelsets}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
-    return true;
-}
-
-
-
 function insertlabelset()
 {
     $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
@@ -134,31 +117,37 @@ function modlabelsetanswers($lid)
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc()) {
-        $data = json_decode(stripslashes($sPostData));
+        $data = json_decode(stripslashes($sPostData),true);
     } else {
-        $data = json_decode($sPostData);
+        $data = json_decode($sPostData,true);
     }
 
     if ($ajax) {
             $lid = insertlabelset();
     }
     $aErrors = array();
-    if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'})) {
+    if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
 
+        debugbreak();
+        // First delete all labels without corresponding code
+        $aLabels=Label::model()->findAllByAttributes(['lid'=>$lid]);
+        foreach($aLabels as $aLabel)
+        {
+//            if {}
+        }
         $query = "DELETE FROM {{labels}} WHERE lid = '$lid'";
 
         Yii::app()->db->createCommand($query)->execute();
 
-        foreach ($data->{'codelist'} as $index=>$codeid) {
+        foreach ($data['codelist'] as $index=>$codeid) {
 
             $codeObj = $data->$codeid;
 
 
-            $actualcode = $codeObj->{'code'};
-            //$codeid = App()->db->quoteValue($codeid,true);
+            $actualcode = $codeObj['code'];
 
-            $assessmentvalue = (int) ($codeObj->{'assessmentvalue'});
-            foreach ($data->{'langs'} as $lang) {
+            $assessmentvalue = (int) ($codeObj['assessmentvalue']);
+            foreach ($data['langs'] as $lang) {
 
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;

@@ -924,11 +924,11 @@ function XMLImportLabelsets($sFullFilePath, $options)
     if ($xml->LimeSurveyDocType != 'Label set') {
         safeDie('This is not a valid LimeSurvey label set structure XML file.');
     }
-    $csarray = buildLabelSetCheckSumArray();
     $aLSIDReplacements = $results = [];
     $results['labelsets'] = 0;
     $results['labels'] = 0;
     $results['warnings'] = array();
+    $aImportedLabelSetIDs= array();
 
     // Import label sets table ===================================================================================
     foreach ($xml->labelsets->rows->row as $row) {
@@ -936,34 +936,46 @@ function XMLImportLabelsets($sFullFilePath, $options)
         foreach ($row as $key=>$value) {
             $insertdata[(string) $key] = (string) $value;
         }
-        $oldlsid = $insertdata['lid'];
+        $iOldLabelSetID = $insertdata['lid'];
         unset($insertdata['lid']); // save the old qid
 
-        if ($insertdata) {
-                    XSSFilterArray($insertdata);
-        }
         // Insert the new question
-        Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
+        $arLabelset= new LabelSet();
+        $arLabelset->setAttributes($insertdata);
+        $arLabelset->save();
+        $aLSIDReplacements[$iOldLabelSetID] = $arLabelset->lid; // add old and new lsid to the mapping array
         $results['labelsets']++;
-
-        $newlsid = getLastInsertID('{{labelsets}}');
-        $aLSIDReplacements[$oldlsid] = $newlsid; // add old and new lsid to the mapping array
+        $aImportedLabelSetIDs[]=$arLabelset->lid;
     }
-
 
     // Import labels table ===================================================================================
     if (isset($xml->labels->rows->row)) {
         foreach ($xml->labels->rows->row as $row) {
             $insertdata = [];
+            $insertdataLS = [];
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
-            if ($insertdata) {
-                            XSSFilterArray($insertdata);
+            $insertdataLS['title'] =$insertdata['title']; 
+            $insertdataLS['language'] =$insertdata['language']; 
+            unset ($insertdata['title']);
+            unset ($insertdata['id']);
+            unset ($insertdata['language']);
+            
+            $findLabel = Label::model()->findByAttributes($insertdata);
+            if (empty($findLabel)) {
+                $arLabel= new Label();
+                $arLabel->setAttributes($insertdata);
+                $arLabel->save();
+                $insertdataLS['label_id']=$arLabel->id;
+            } else {
+                $insertdataLS['label_id'] = $findLabel->id;
             }
-
-            Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+            $arLabelL10n = new LabelL10n();
+            $arLabelL10n->setAttributes($insertdataLS);
+            $arLabelL10n->save();
+            
             $results['labels']++;
         }
     }
@@ -971,42 +983,17 @@ function XMLImportLabelsets($sFullFilePath, $options)
     //CHECK FOR DUPLICATE LABELSETS
 
     if (isset($_POST['checkforduplicates'])) {
-        foreach (array_values($aLSIDReplacements) as $newlid) {
-            $thisset = "";
-            $query2 = "SELECT code, title, sortorder, language, assessment_value
-            FROM {{labels}}
-            WHERE lid=".$newlid."
-            ORDER BY language, sortorder, code";
-            $result2 = Yii::app()->db->createCommand($query2)->query();
-            foreach ($result2->readAll() as $row2) {
-                $row2 = array_values($row2);
-                $thisset .= implode('.', $row2);
-            } // while
-            $newcs = dechex(crc32($thisset) * 1);
-            unset($lsmatch);
 
-            if (isset($csarray) && $options['checkforduplicates'] == 'on') {
-                foreach ($csarray as $key=>$val) {
-                    if ($val == $newcs) {
-                        $lsmatch = $key;
-                    }
-                }
-            }
-            if (isset($lsmatch)) {
-                //There is a matching labelset. So, we will delete this one and refer
-                //to the matched one.
-                $query = "DELETE FROM {{labels}} WHERE lid=$newlid";
-                $result = Yii::app()->db->createCommand($query)->execute();
-                $results['labels'] = $results['labels'] - $result;
-                $query = "DELETE FROM {{labelsets}} WHERE lid=$newlid";
-                Yii::app()->db->createCommand($query)->query();
-
-                $results['labelsets']--;
-                $newlid = $lsmatch;
-                $results['warnings'][] = gT("Label set was not imported because the same label set already exists.")." ".sprintf(gT("Existing LID: %s"), $newlid);
-
-            }
+        $aLabelSetCheckSums = buildLabelSetCheckSumArray();
+        $aCounts=array_count_values($aLabelSetCheckSums);
+        foreach ($aImportedLabelSetIDs as $iLabelSetID)
+        {
+           if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1)
+           {
+               LabelSet::model()->deleteLabelSet($iLabelSetID);
+           }
         }
+
         //END CHECK FOR DUPLICATES
     }
     return $results;

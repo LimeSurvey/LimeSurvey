@@ -782,8 +782,14 @@ class export extends Survey_Common_Action
         buildXMLFromQuery($xml, $lsquery, 'labelsets');
 
         // Labels
-        $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {{labels}} WHERE lid=".implode(' or lid=', $lids);
+        $lquery = "SELECT lid, code, sortorder, assessment_value FROM {{labels}} WHERE lid=".implode(' or lid=', $lids);
         buildXMLFromQuery($xml, $lquery, 'labels');
+
+        // Labels localization
+        $lquery = "SELECT ls.id, label_id, title, language FROM {{label_l10ns}} ls
+        join {{labels}} l on l.id=label_id WHERE lid=".implode(' or lid=', $lids);
+        buildXMLFromQuery($xml, $lquery, 'labels');
+
         $xml->endElement(); // close columns
         $xml->endDocument();
         Yii::app()->end();

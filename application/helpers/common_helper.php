@@ -2095,15 +2095,13 @@ function buildLabelSetCheckSumArray()
 {
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
 
-    /**$query = "SELECT lid
-    FROM ".db_table_name('labelsets')."
-    ORDER BY lid"; */
-    $result = LabelSet::model()->getLID(); //($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = LabelSet::model()->getLID();
     $csarray = array();
     foreach ($result as $row) {
         $thisset = "";
         $query2 = "SELECT code, title, sortorder, language, assessment_value
-        FROM {{labels}}
+        FROM {{labels}} l
+        join {{label_l10ns}} ls on label_id=l.id
         WHERE lid={$row['lid']}
         ORDER BY language, sortorder, code";
         $result2 = Yii::app()->db->createCommand($query2)->query();
@@ -2115,7 +2113,6 @@ function buildLabelSetCheckSumArray()
 
     return $csarray;
 }
-
 
 
 /**
