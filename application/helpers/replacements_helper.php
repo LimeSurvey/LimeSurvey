@@ -466,10 +466,11 @@ function getStandardsReplacementFields($thissurvey)
         $_datestamp = '-';
     }
 
-    $_saveall = "";
-    $aSaveAllButtons = "";
-    $_restart = "";
-    $_return_to_survey = "";
+    if (!empty($thissurvey['aAssessments'])){
+        $_assessment_current_total = $thissurvey['aAssessments']['total'];
+    }else{
+        $_assessment_current_total = '';
+    }
 
 
     // Set the array of replacement variables here - don't include curly braces
@@ -510,6 +511,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
 
+    $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     return $coreReplacements;
 }
 
