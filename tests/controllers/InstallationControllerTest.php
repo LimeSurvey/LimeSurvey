@@ -17,15 +17,21 @@ class InstallationControllerTest extends TestBaseClassWeb
     {
         // NB: Does not call parent, because there might not
         // be a database (happens if this test is run multiple
-        // times).
+        // times with failures).
         self::$testHelper = new TestHelper();
         self::$webDriver = self::$testHelper->getWebDriver();
         self::$domain = getenv('DOMAIN');
     }
 
+    /**
+     *
+     */
     public static function teardownAfterClass()
     {
-        self::$testHelper->connectToOriginalDatabase();
+        $configFile = \Yii::app()->getBasePath() . '/config/config.php';
+        if (file_exists($configFile)) {
+            self::$testHelper->connectToOriginalDatabase();
+        }
     }
 
     /**
@@ -34,6 +40,8 @@ class InstallationControllerTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
+        //$this->checkFolders();
+
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         $databaseName = 'limesurvey';
 
@@ -165,5 +173,34 @@ class InstallationControllerTest extends TestBaseClassWeb
                 self::$testHelper->javaTrace($ex)
             );
         }
+    }
+
+    /**
+     * Check that upload/tmp folders are writable.
+     * @todo Does not work.
+     */
+    public function checkFolders()
+    {
+        $instContr = new \InstallerController('dummyvalue');
+        $data = [];
+        $folder = \Yii::app()->getConfig('tempdir') . '/';
+        $tempdirIsWritable = $instContr->checkDirectoryWriteable(
+            $folder,
+            $data,
+            'tmpdir',
+            'tperror',
+            true
+        );
+        $this->assertTrue($tempdirIsWritable, 'Can write to tmp/');
+
+        $folder = \Yii::app()->getConfig('uploaddir') . '/';
+        $uploadIsWritable = $instContr->checkDirectoryWriteable(
+            $folder,
+            $data,
+            'uploaddir',
+            'uerror',
+            true
+        );
+        $this->assertTrue($uploadIsWritable, 'Can write to upload/');
     }
 }
