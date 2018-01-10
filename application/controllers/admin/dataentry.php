@@ -1763,7 +1763,7 @@ class dataentry extends Survey_Common_Action
             foreach ($aGroups as $arGroup) {
                 LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
 
-                $aQuestions = Question::model()->findAllByAttributes(['sid'=>$surveyid,'parent_qid'=>0,'gid'=>$arGroup['gid']]);
+                $aQuestions = Question::model()->findAllByAttributes(['sid'=>$surveyid, 'parent_qid'=>0, 'gid'=>$arGroup['gid']]);
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 ."<!-- Inside controller dataentry.php -->"
                 ."<td colspan='3'><h4>".flattenText($arGroup->questionGroupL10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
@@ -1991,13 +1991,13 @@ class dataentry extends Survey_Common_Action
                             $cdata['maxvalue'] = $maxvalue;
                             $cdata['stepvalue'] = $stepvalue;
 
-                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>1]); 
+                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'], 'scale_id'=>1]); 
                             if (empty($cdata['lresult'])) {
                                 $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
-                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>0]); 
+                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'], 'scale_id'=>0]); 
                             if (empty($cdata['mearesult'])) {
                                 $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
                                 Yii::app()->setFlashMessage($eMessage);
@@ -2005,8 +2005,8 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case ";": //ARRAY (Multi Flexi)
-                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>1]); 
-                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'],'scale_id'=>0]); 
+                            $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'], 'scale_id'=>1]); 
+                            $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid'=>$arQuestion['qid'], 'scale_id'=>0]); 
                             break;
                         case "F": //ARRAY (Flexible Labels)
                         case "H":

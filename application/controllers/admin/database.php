@@ -266,8 +266,8 @@ class database extends Survey_Common_Action
         }
 
         //First delete all answers
-        $oldAnswers=Answer::model()->findAllByAttributes(array('qid'=>$this->iQuestionID));
-        foreach($oldAnswers as $oAnswer)
+        $oldAnswers = Answer::model()->findAllByAttributes(array('qid'=>$this->iQuestionID));
+        foreach ($oldAnswers as $oAnswer)
         {
             AnswerL10n::model()->deleteAllByAttributes(array('aid'=>$oAnswer->aid));
             $oAnswer->delete();
@@ -311,7 +311,7 @@ class database extends Survey_Common_Action
 
                     // Now we insert the answers
                     $oAnswerL10n = new AnswerL10n;
-                    $oAnswerL10n->aid              = $oAnswer->aid;
+                    $oAnswerL10n->aid = $oAnswer->aid;
                     $oAnswerL10n->answer            = $sAnswerText;
                     $oAnswerL10n->language          = $sLanguage;
                     $oAnswerL10n->save();
@@ -396,7 +396,7 @@ class database extends Survey_Common_Action
         $aInsertQID = array();
 
         // Give existing subquestions a temporary random title (code) to avoid title duplication on update
-        $aoSubquestions=Question::model()->findAllByAttributes(['parent_qid'=>$this->iQuestionID]);
+        $aoSubquestions = Question::model()->findAllByAttributes(['parent_qid'=>$this->iQuestionID]);
         foreach ($aoSubquestions as $oSubQuestion) {
             $bAnswerSave = false;
             while (!$bAnswerSave) {
@@ -414,7 +414,7 @@ class database extends Survey_Common_Action
                     if (substr($iSubQuestionID, 0, 3) != 'new') {
                         //update record
                         $oSubQuestion = Question::model()->findByPk($iSubQuestionID);
-                        $oSubQuestionL10n = QuestionL10n::model()->findByAttributes(array('qid'=>$iSubQuestionID,'language'=>$sLanguage));
+                        $oSubQuestionL10n = QuestionL10n::model()->findByAttributes(array('qid'=>$iSubQuestionID, 'language'=>$sLanguage));
                         if (!is_object($oSubQuestion)) {
                             throw new CHttpException(502, "could not find subquestion $iSubQuestionID !");
                         }
@@ -457,20 +457,20 @@ class database extends Survey_Common_Action
                     }
                     else
                     {
-                        $bSubQuestionResult=true;
+                        $bSubQuestionResult = true;
                     }
                     if (isset($oSubQuestionL10n))
                     {
                         if (empty($oSubQuestionL10n->qid))
                         {
-                            $oSubQuestionL10n->qid=$aInsertQID[$iScaleID][$iPosition];
+                            $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
                         }
                         $bSubQuestionResult = $oSubQuestionL10n->save();
                         unset($oSubQuestionL10n);
                     }
 
                     if ($bSubQuestionResult) {
-                        if ($bSubQuestionResult!== true && substr($iSubQuestionID, 0, 3) != 'new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition]) {
+                        if ($bSubQuestionResult !== true && substr($iSubQuestionID, 0, 3) != 'new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition]) {
                             Condition::model()->updateAll(array('cfieldname'=>'+'.$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID.$aCodes[$iScaleID][$iPosition], 'value'=>$aCodes[$iScaleID][$iPosition]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$this->iQuestionID, ':cfieldname'=>$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID, ':value'=>$aOldCodes[$iScaleID][$iPosition]));
                         }
                     } else {
@@ -833,45 +833,45 @@ class database extends Survey_Common_Action
             foreach ($languagelist as $langname) {
                 if ($langname) {
                     $data = array();
-                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, NULL);
-                    $sURL = Yii::app()->request->getPost('url_'.$langname, NULL);
-                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, NULL);
-                    $description = Yii::app()->request->getPost('description_'.$langname, NULL);
-                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, NULL);
-                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, NULL);
-                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, NULL);
-                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, NULL);
+                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, null);
+                    $sURL = Yii::app()->request->getPost('url_'.$langname, null);
+                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, null);
+                    $description = Yii::app()->request->getPost('description_'.$langname, null);
+                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, null);
+                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, null);
+                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
+                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
                     
-                    if ($short_title !== NULL) {
+                    if ($short_title !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
                     }
-                    if ($description !== NULL) {
+                    if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $description = $this->oFixCKeditor->fixCKeditor($description);
                         $data['surveyls_description'] = $description;
                     }
-                    if ($welcome !== NULL) {
+                    if ($welcome !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $welcome = $this->oFixCKeditor->fixCKeditor($welcome);
                         $data['surveyls_welcometext'] = $welcome;
                     }
-                    if ($endtext !== NULL) {
+                    if ($endtext !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
                         $data['surveyls_endtext'] = $endtext;
                     }
-                    if ($sURL !== NULL) {
+                    if ($sURL !== null) {
                         $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
                     }
-                    if ($sURLDescription !== NULL) {
+                    if ($sURLDescription !== null) {
                         $data['surveyls_urldescription'] = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
                     }
-                    if ($dateformat !== NULL) {
+                    if ($dateformat !== null) {
                         $data['surveyls_dateformat'] = $dateformat;
                     }
-                    if ($numberformat !== NULL) {
+                    if ($numberformat !== null) {
                         $data['surveyls_numberformat'] = $numberformat;
                     }
 

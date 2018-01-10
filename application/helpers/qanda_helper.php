@@ -1796,7 +1796,7 @@ function do_ranking($ia)
         $sOrder = 'sortorder';
     }
     $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
-    $anscount  = count($aAnswers);
+    $anscount = count($aAnswers);
 
 
     $max_subquestions = intval($aQuestionAttributes['max_subquestions']) > 0 ? intval($aQuestionAttributes['max_subquestions']) : $anscount;
@@ -1891,7 +1891,7 @@ function do_ranking($ia)
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
-        $aDisplayAnswers[]=array_merge($aAnswer->attributes, $aAnswer->answerL10ns[$sSurveyLanguage]->attributes);
+        $aDisplayAnswers[] = array_merge($aAnswer->attributes, $aAnswer->answerL10ns[$sSurveyLanguage]->attributes);
     }
     
     $answer = doRender('/survey/questions/answer/ranking/answer', array(
@@ -2159,7 +2159,7 @@ function do_multiplechoice_withcomments($ia)
         $sOrder = 'question_order';
     }
     $aSubquestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
-    $anscount  = count($aSubquestions) * 2;
+    $anscount = count($aSubquestions) * 2;
 
     $fn = 1;
     if ($aQuestion->other == 'Y') {
@@ -5142,9 +5142,9 @@ function do_arraycolumns($ia)
         }
  
         if ($aQuestionAttributes['random_order'] == 1) {
-            $sOrder=dbRandom();
+            $sOrder = dbRandom();
         } else {
-            $sOrder='question_order';
+            $sOrder = 'question_order';
         }
         $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
         $anscount = count($aQuestions);
@@ -5165,7 +5165,7 @@ function do_arraycolumns($ia)
             $aData['cellwidth'] = $cellwidth;
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = [];
-            foreach ($aQuestions as $aQuestion){
+            foreach ($aQuestions as $aQuestion) {
                 $aData['aQuestions'][]=array_merge($aQuestion->attributes,$aQuestion->questionL10ns[$sSurveyLanguage]->attributes);    
             }
             $anscode = [];
@@ -5267,7 +5267,7 @@ function do_array_dual($ia)
     $anscount = count($aSubQuestionsR);
     $aSubQuestions = [];
     foreach ($aSubQuestionsR as $oQuestion) {
-      $aSubQuestions[]=array_merge($oQuestion->attributes,$oQuestion->questionL10ns[$sLanguage]->attributes);
+        $aSubQuestions[]=array_merge($oQuestion->attributes,$oQuestion->questionL10ns[$sLanguage]->attributes);
     }
     
    

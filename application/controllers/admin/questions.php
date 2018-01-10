@@ -1205,8 +1205,8 @@ class questions extends Survey_Common_Action
             if ($adding) {
                 $oQuestion = new Question;
 //                $oQuestion->language'] = $baselang;
- //               $oQuestion->question'] = '';
- //               $oQuestion->help'] = '';
+    //               $oQuestion->question'] = '';
+    //               $oQuestion->help'] = '';
                 $oQuestion->type = 'T';
                 $oQuestion->lid = 0;
                 $oQuestion->lid1 = 0;

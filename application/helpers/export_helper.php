@@ -1918,7 +1918,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
     WHERE qid = $qid order by language, scale_id, sortorder";
     buildXMLFromQuery($xml, $aquery);
 
-      // Answer localizations
+        // Answer localizations
     $qquery = "SELECT ls.*
     FROM {{answer_l10ns}} ls
     join {{answers}} a on ls.aid=a.aid
