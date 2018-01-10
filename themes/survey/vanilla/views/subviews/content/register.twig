@@ -16,7 +16,6 @@
     NOTE: This content is included inside mainrow.twig
     NOTE: see layout_global.twig for more infos
 #}
-
     <div class="{{ aSurveyInfo.class.register }} container" {{ aSurveyInfo.attr.register }}>
         {# This will display the script and the hidden inputs needed for Expression Manager #}
         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
@@ -30,8 +29,9 @@
             </div>
         </div>
         {{ include('./subviews/registration/register_error.twig') }}
-        <div class="{{ aSurveyInfo.class.registerform }} row" {{ aSurveyInfo.attr.registerform }}>
-            {{ include('./subviews/registration/register_form.twig') }}
-        </div>
+
+        {% set sViewContent =  './subviews/registration/' ~ aSurveyInfo.registration_view ~ '.twig' %}
+        {% include sViewContent %}
+
     </div>
     <input type='hidden' class='hidemenubutton'/>
