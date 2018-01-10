@@ -924,6 +924,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     if ($xml->LimeSurveyDocType != 'Label set') {
         safeDie('This is not a valid LimeSurvey label set structure XML file.');
     }
+    $iDBVersion = (int) $xml->DBVersion;
     $aLSIDReplacements = $results = [];
     $results['labelsets'] = 0;
     $results['labels'] = 0;
@@ -957,29 +958,55 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
-            $insertdataLS['title'] =$insertdata['title']; 
-            $insertdataLS['language'] =$insertdata['language']; 
-            unset ($insertdata['title']);
+            if ($iDBVersion < 350) {
+                $insertdataLS['title'] =$insertdata['title']; 
+                $insertdataLS['language'] =$insertdata['language']; 
+                unset ($insertdata['title']);
+                unset ($insertdata['language']);
+            } else {
+                $iOldLabelID=$insertdata['id'];
+            }
             unset ($insertdata['id']);
-            unset ($insertdata['language']);
             
-            $findLabel = Label::model()->findByAttributes($insertdata);
-            if (empty($findLabel)) {
+            if ($iDBVersion < 350) {
+                $findLabel = Label::model()->findByAttributes($insertdata);
+                if (empty($findLabel)) {
+                    $arLabel= new Label();
+                    $arLabel->setAttributes($insertdata);
+                    $arLabel->save();
+                    $insertdataLS['label_id']=$arLabel->id;
+                } else {
+                    $insertdataLS['label_id'] = $findLabel->id;
+                }
+                $arLabelL10n = new LabelL10n();
+                $arLabelL10n->setAttributes($insertdataLS);
+                $arLabelL10n->save();
+            } else {
                 $arLabel= new Label();
                 $arLabel->setAttributes($insertdata);
                 $arLabel->save();
-                $insertdataLS['label_id']=$arLabel->id;
-            } else {
-                $insertdataLS['label_id'] = $findLabel->id;
+                $aLIDReplacements[$iOldLabelID]=$arLabel->id;
             }
-            $arLabelL10n = new LabelL10n();
-            $arLabelL10n->setAttributes($insertdataLS);
-            $arLabelL10n->save();
             
             $results['labels']++;
         }
     }
 
+    // Import label_l10ns table ===================================================================================
+    if (isset($xml->label_l10ns->rows->row)) {
+        foreach ($xml->label_l10ns->rows->row as $row) {
+            $insertdata = [];
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            $insertdata['label_id'] = $aLIDReplacements[$insertdata['label_id']];
+            $arLabelL10n = new LabelL10n();
+            $arLabelL10n->setAttributes($insertdata);
+            $arLabelL10n->save();
+            
+        }
+    }
+    
     //CHECK FOR DUPLICATE LABELSETS
 
     if ($options['checkforduplicates']=='on') {

@@ -61,17 +61,23 @@ function updateset($lid)
     }
 
     // If languages are removed, delete labels for these languages
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('lid' => $lid));
-    $langcriteria = new CDbCriteria();
-    foreach ($dellangidsarray as $dellangid) {
-            $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
-    }
-    $criteria->mergeWith($langcriteria);
-
     if (!empty($dellangidsarray)) {
-            Label::model()->deleteAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->addColumnCondition(array('lid' => $lid));
+        $langcriteria = new CDbCriteria();
+        foreach ($dellangidsarray as $sDeleteLanguage) {
+            $langcriteria->addColumnCondition(array('labelL10ns.language' => $sDeleteLanguage), 'OR');
+        }
+        $criteria->mergeWith($langcriteria);
+debugbreak();
+        $aLabels=Label::model()->with('labelL10ns')->together()->findAll($criteria);
+        foreach ($aLabels as $aLabel) {
+            foreach ($aLabel->labelL10ns as $aLabelL10ns){
+                $aLabelL10ns->delete();
+            }
+        } 
     }
+    
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
@@ -134,10 +140,7 @@ function modlabelsetanswers($lid)
         {
 //            if {}
         }
-        $query = "DELETE FROM {{labels}} WHERE lid = '$lid'";
-
-        Yii::app()->db->createCommand($query)->execute();
-
+        debugbreak();
         foreach ($data['codelist'] as $index=>$codeid) {
 
             $codeObj = $data->$codeid;

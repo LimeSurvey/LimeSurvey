@@ -152,8 +152,7 @@ function createDatabase($oDB){
         ));
         $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
-        $oDB->createCommand()->createIndex('{{idx3_labels}}', '{{labels}}', 'language', false);
-        $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
+        $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder'], false);
 
         // label_l10ns
         $oDB->createCommand()->createTable('{{label_l10ns}}', array(
