@@ -5166,7 +5166,7 @@ function do_arraycolumns($ia)
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = [];
             foreach ($aQuestions as $aQuestion) {
-                $aData['aQuestions'][]=array_merge($aQuestion->attributes,$aQuestion->questionL10ns[$sSurveyLanguage]->attributes);    
+                $aData['aQuestions'][] = array_merge($aQuestion->attributes, $aQuestion->questionL10ns[$sSurveyLanguage]->attributes);    
             }
             $anscode = [];
             $answers = [];
@@ -5254,20 +5254,20 @@ function do_array_dual($ia)
     * Get Question Attributes
     */
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $sLanguage=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    $sLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
 
     // Get questions and answers by defined order
     if ($aQuestionAttributes['random_order'] == 1) {
-        $sOrder=dbRandom();
+        $sOrder = dbRandom();
     } else {
-        $sOrder='question_order';
+        $sOrder = 'question_order';
     }
 
     $aSubQuestionsR = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));        
     $anscount = count($aSubQuestionsR);
     $aSubQuestions = [];
     foreach ($aSubQuestionsR as $oQuestion) {
-        $aSubQuestions[]=array_merge($oQuestion->attributes,$oQuestion->questionL10ns[$sLanguage]->attributes);
+        $aSubQuestions[] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$sLanguage]->attributes);
     }
     
    
