@@ -355,7 +355,6 @@ class remotecontrol_handle
      * * Always
      *     * sid
      *     * active
-     *     * language
      *     * additional_languages
      * * If survey is active
      *     * anonymized
@@ -385,9 +384,7 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                //unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
-                unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
                 // Remove invalid fields
                 $aDestinationFields = array_flip(Survey::model()->tableSchema->columnNames);
