@@ -265,9 +265,7 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         input: '#upload_image_frontend',
         progress: '#upload_progress_frontend',
         onSuccess : function(){
-            var triggerEvent = new Event('pjax:load');
-            triggerEvent.url =  window.location.href;
-            window.dispatchEvent( triggerEvent );
+            $(document).trigger('pjax:load', {url : window.location.href});
         }
     });
 });

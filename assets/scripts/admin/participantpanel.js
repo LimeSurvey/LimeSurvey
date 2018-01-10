@@ -464,7 +464,7 @@ LS.CPDB = (function() {
         $('#export').click(function() { onClickExport(true); });
 
         doToolTip();
-        window.dispatchEvent((new Event('pjax:refresh')));
+        $(document).trigger('pjax:refresh');
     };
 
     return {

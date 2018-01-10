@@ -908,15 +908,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             
             $oDB->createCommand()->truncateTable('{{tutorials}}');
-            foreach ($tutorialsData = LsDefaultDataSets::getTutorialData() as $tutorials) {
+            foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
                 $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
             }
             
             $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
 
-            foreach ($tutorialEntryData = LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
-                $teid = $tutorialEntry['teid'];
+            foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
+                $teid =  $tutorialEntry['teid'];
                 unset($tutorialEntry['teid']);
                 $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
                 $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
@@ -944,7 +944,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . gT('File').' '.$file.', '.gT('line').' '.$trace[1]['line'].'.'
+            . gT('File') . ' ' . $file .', ' . gT('line') . ' ' . $trace[1]['line'] . '.'
         );
         return false;
     }
