@@ -17,131 +17,59 @@ use Facebook\WebDriver\WebDriverBy;
 use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
- * @since 2017-11-24
- * @group inst
+ * @since 2017-10-15
+ * @group tempcontr
+ * @group template
  */
-class InstallationControllerTest extends TestBaseClassWeb
+class TemplateControllerTest extends TestBaseClass
 {
     /**
-     * 
+     * Test copy a template.
+     * @group copytemplate
      */
-    public static function setupBeforeClass()
+    public function testCopyTemplate()
     {
-        parent::setUpBeforeClass();
+        \Yii::app()->session['loginID'] = 1;
+        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.helpers.globalsettings_helper', true);
+        // Clean up from last test.
+        $templateName = 'foobartest';
+        \TemplateConfiguration::uninstall($templateName);
+        \Template::model()->deleteAll('name = \'foobartest\'');
+        \Permission::model()->deleteAllByAttributes(array('permission' => $templateName,'entity' => 'template'));
+        // Remove folder from last test.
+        $newname = 'foobartest';
+        $newdirname  = \Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
+        if (file_exists($newdirname)) {
+            exec('rm -r ' . $newdirname);
+        }
+        $config = require(\Yii::app()->getBasePath() . '/config/config-defaults.php');
+        // Simulate a POST.
+        $_POST['newname'] = $newname;
+        // NB: If default theme is not installed, this test will fail.
+        $_POST['copydir'] = $config['defaulttheme'];
+        $_SERVER['SERVER_NAME'] = 'localhost';
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $contr->templatecopy();
+        $flashes = \Yii::app()->user->getFlashes();
+        $this->assertEmpty($flashes, 'No flash messages');
+        $template = \Template::model()->find(
+            sprintf(
+                'name = \'%s\'',
+                $templateName
+            )
+        );
+        $this->assertNotEmpty($template);
+        $this->assertEquals($templateName, $template->name);
+        // Clean up.
+        \Template::model()->deleteAll('name = \'foobartest\'');
     }
-
     /**
-     * 
+     * @todo Copy template folder that does not exist.
      */
-    public function testBasic()
+    /*
+    public function testCopyWrongFolder()
     {
-        $configFile = \Yii::app()->getBasePath() . '/config/config.php';
-        $databaseName = 'limesurvey';
-
-        $username = getenv('ADMINUSERNAME');
-        if (!$username) {
-            $username = 'admin';
-        }
-        $password = getenv('PASSWORD');
-        if (!$password) {
-            $password = 'password';
-        }
-
-        $dbuser = getenv('DBUSER');
-        if (!$dbuser) {
-            $dbuser = 'root';
-            echo 'Default to database user "root". Use DBUSER=... from command-line to override this.' . PHP_EOL;
-        }
-        $dbpwd = getenv('DBPASSWORD');
-        if (!$dbpwd) {
-            $dbpwd = '';
-            echo 'Default to empty database password. Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
-        }
-
-        if (file_exists($configFile)) {
-            // Delete possible previous database.
-            try {
-                $dbo = \Yii::app()->getDb();
-                $dbo->createCommand('DROP DATABASE ' . $databaseName)->execute();
-            } catch (\CDbException $ex) {
-                $msg = $ex->getMessage();
-                // Only this error is OK.
-                self::assertTrue(
-                    strpos($msg, "database doesn't exist") !== false,
-                    'Could drop database. Error message: ' . $msg
-                );
-            }
-
-            // Remove config.php if present.
-            $result = unlink($configFile);
-            $this->assertTrue($result, 'Could unlink config.php');
-        }
-
-        // Run installer.
-        $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        $url = $urlMan->createUrl('');
-
-        // Installer start page.
-        self::$webDriver->get($url);
-
-        // Click "Start installation".
-        $start = self::$webDriver->findElement(WebDriverBy::id('ls-start-installation'));
-        $start->click();
-
-        // Accept license.
-        $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
-        $accept->click();
-
-        // Click next at pre-check.
-        $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
-        $next->click();
-
-        // Fill in database form.
-        $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
-        $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
-        $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-        $dbuserInput->clear()->sendKeys($dbuser);
-        $dbpwdInput->clear()->sendKeys($dbpwd);
-        $dbnameInput->sendKeys($databaseName);
-
-        // Click next.
-        $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
-        $next->click();
-
-        // Click "Create database".
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
-
-        // Click "Populate".
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
-
-        // Fill in admin username/password.
-        $adminLoginName = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
-        $adminLoginPwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
-        $confirmPwd     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
-        $adminLoginName->clear()->sendKeys($username);
-        $adminLoginPwd->clear()->sendKeys($password);
-        $confirmPwd->clear()->sendKeys($password);
-
-        // Confirm optional settings (admin password etc).
-        $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
-        $button->click();
-
-        // Go to administration.
-        $button = self::$webDriver->findElement(WebDriverBy::id('ls-administration'));
-        $button->click();
-
-        // Reset urlManager to adapt to latest config.
-        $configFile = \Yii::app()->getBasePath() . '/config/config.php';
-        $config = require($configFile);
-        $urlMan = \Yii::app()->urlManager;
-        $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
-
-        // Login.
-        self::adminLogin($username, $password);
-
-        self::$testHelper->connectToOriginalDatabase();
     }
+     */
 }

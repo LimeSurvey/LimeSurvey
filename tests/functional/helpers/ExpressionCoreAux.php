@@ -13,42 +13,35 @@ class ExpressionCoreAux extends TestCase
      * @var boolean
      */
     public $jsonEncodeEmResult = false;
-
     /**
      * If true, sets onlynum = 1 in LEMvarNameAttr.
      * @var int
      */
     public $onlynum = 0;
-
     /**
      * @var string
      */
     public $expression;
-
     /**
      * Survey-group-question-answer code, like '123X123X123_1'.
      * @var string
      */
     public $sgqa;
-
     /**
      * Question type char. Defaults to 'T' = long free text.
      * @var string
      */
     public $questionType = 'T';
-
     /**
      * Value of question, as in $_SESSION and <input>.
      * @mixed
      */
     public $value;
-
     /**
      * Question alias.
      * @var string
      */
     public $alias = 'test';
-
     /**
      * @param string $expression
      * @param string $sgqa
@@ -62,7 +55,6 @@ class ExpressionCoreAux extends TestCase
         $this->questionType = $questionType;
         $this->value = $value;
     }
-
     /**
      * @return void
      */
@@ -70,7 +62,6 @@ class ExpressionCoreAux extends TestCase
     {
         // Input value 3.
         $_SESSION['survey_563168'][$this->sgqa] = $this->value;
-
         $em = new \ExpressionManager();
         $lem = \LimeExpressionManager::singleton();
         $lem->setVariableAndTokenMappingsForExpressionManager('563168');
@@ -83,23 +74,16 @@ class ExpressionCoreAux extends TestCase
                 ]
             ]
         );
-
         $em->RDP_Evaluate($this->expression);
-
         $emResult = $em->GetResult();
-
         if ($this->jsonEncodeEmResult) {
             $emResult = json_encode($emResult);
         }
-
         $errors = $em->RDP_GetErrors();
         $this->assertEmpty($errors, print_r($errors, true));
         $jsOfExpression = $em->GetJavaScriptEquivalentOfExpression();
-
         $js = $this->getDummyNodeSetup() . $jsOfExpression;
-
         $nodeOutput = $this->runNode($js);
-
         $this->assertCount(1, $nodeOutput);
         $this->assertEquals(
             $emResult,
@@ -114,7 +98,6 @@ class ExpressionCoreAux extends TestCase
         );
     }
 
-
     /**
      * JS code to setup environment so LEMval() can run.
      * @return string
@@ -126,7 +109,6 @@ class ExpressionCoreAux extends TestCase
         } else {
             $value = $this->value;
         }
-
         list($surveyId, $groupId, /* questionId */) = explode('X', $this->sgqa, 3);
         return <<<EOT
             // Dummy jQuery.
@@ -172,7 +154,6 @@ class ExpressionCoreAux extends TestCase
             };
 EOT;
     }
-
     /**
      * Run $js code in Node on command line.
      * @param string $js

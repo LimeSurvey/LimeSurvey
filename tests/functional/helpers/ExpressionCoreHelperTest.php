@@ -10,7 +10,6 @@ use LimeSurvey\tests\TestBaseClass;
  */
 class ExpressionManagerCoreTest extends TestBaseClass
 {
-
     /**
      * List of expressions to test.
      * @var array [[string $value, string $expression], ...]
@@ -40,7 +39,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
         //[3, '((563168X136X5376.NAOK + "2"))'],
         //[3, '((563168X136X5376.NAOK + 2))']
     ];
-
     /**
      *
      */
@@ -53,10 +51,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
             echo ('Node is not installed');
             exit(7);
         }
-
         require_once(__DIR__ . '/ExpressionCoreAux.php');
     }
-
     /**
      * Some code on how to use tokens manually.
      */
@@ -68,16 +64,13 @@ class ExpressionManagerCoreTest extends TestBaseClass
             1 => 2,
             2 => 'NUMBER'
         ];
-
         $dqString = [
             0 => ' ',
             1 => 26,
             2 => 'DQ_STRING'
         ];
-
         $em->RDP_StackPush($number);
         $em->RDP_StackPush($dqString);
-
         $compare = [
             0 => '>=',
             1 => 23,
@@ -85,15 +78,12 @@ class ExpressionManagerCoreTest extends TestBaseClass
         ];
         $noErrors = $em->RDP_EvaluateBinary($compare);
         $this->assertTrue($noErrors);
-
         $result = $em->RDP_StackPop();
-
         $em->RDP_StackPush($number);
         $em->RDP_StackPush($dqString);
         $em->RDP_StackPush($compare);
         $em->SetJsVarsUsed([]);
          */
-
         /*
         $pageInfo = [
             'qid' => '5377',
@@ -110,7 +100,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
         ];
          */
     }
-
     /**
      * @group me
      */
@@ -126,7 +115,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
             $test->compareExpression();
         }
     }
-
     /**
      * @group me2
      */

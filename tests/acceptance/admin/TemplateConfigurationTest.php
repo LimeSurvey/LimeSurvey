@@ -19,9 +19,6 @@ class TemplateConfigurationTest extends TestBaseClass
         \Yii::import('application.helpers.globalsettings_helper', true);
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
-
-        // FIXME
-
         // No PHP notices.
         $this->assertTrue(true);
     }

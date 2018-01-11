@@ -32,14 +32,12 @@ class DateTimeValidationTest extends TestBaseClassWeb
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-
         $surveyFile = self::$surveysFolder.'/limesurvey_survey_834477.lss';
         self::importSurvey($surveyFile);
         self::$testHelper->enablePreview();
     }
-
     /**
-     * 
+     *
      */
     public function testBasic()
     {
@@ -53,9 +51,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 'lang' => 'pt'
             ]
         );
-
         self::$webDriver->get($url);
-
         try {
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
@@ -68,15 +64,13 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
-
         $this->assertNotEmpty($submit);
         self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-		WebDriverBy::id('ls-button-submit')
-	    )
+                WebDriverBy::id('ls-button-submit')
+            )
         );
         $submit->click();
-
         // After submit we should see the complete page.
         try {
             // Wait max 10 second to find this div.
@@ -98,14 +92,14 @@ class DateTimeValidationTest extends TestBaseClassWeb
             );
         } catch (TimeOutException $ex) {
             $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-	    var_dump($body->getText());
-	    $reflect = new \ReflectionClass($this);
-	    //if ($reflect->getShortName() === 'Name') {
+            var_dump($body->getText());
+            $reflect = new \ReflectionClass($this);
+            //if ($reflect->getShortName() === 'Name') {
             self::$testHelper->takeScreenshot(self::$webDriver, $reflect->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-	}
+        }
     }
 }

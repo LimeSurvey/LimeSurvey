@@ -11,7 +11,13 @@ use LimeSurvey\tests\TestBaseClass;
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
-
+    /**
+     *
+     */
+    public static function setupBeforeClass()
+    {
+        parent::setupBeforeClass();
+    }
     /**
      * Tear down fixtures.
      */
@@ -21,7 +27,6 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         self::$testHelper->teardownDatabase('__test_update_helper_258');
         self::$testHelper->teardownDatabase('__test_update_helper_315');
     }
-
     /**
      *
      * @throws \CException
@@ -29,12 +34,10 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     public function testCreate()
     {
         $db = \Yii::app()->getDb();
-
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         $version = require(\Yii::app()->getBasePath() . '/config/version.php');
         $connection = self::$testHelper->connectToNewDatabase('__test_check_database_json');
         $this->assertNotEmpty($connection, 'Could connect to new database');
-
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
@@ -43,55 +46,45 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         if ($result) {
             print_r($result);
         }
-
         // Run upgrade.
         $result = \db_upgrade_all($version['dbversionnumber']);
-
         // Check JSON.
         $this->checkMenuEntriesJson($inst->connection);
         $this->checkTemplateConfigurationJson($inst->connection);
-
         // Connect to old database.
         $db->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
-
     /**
-     * 
+     *
      */
     public function testUpdateFrom258()
     {
         $connection = self::$testHelper->updateDbFromVersion(258);
-
         // Check JSON.
         $this->checkMenuEntriesJson($connection);
         $this->checkTemplateConfigurationJson($connection);
-
         $db = \Yii::app()->getDb();
         $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
-
     /**
      */
     public function testUpdateFrom315()
     {
         $connection = self::$testHelper->updateDbFromVersion(315);
-
         // Check JSON.
         $this->checkMenuEntriesJson($connection);
         $this->checkTemplateConfigurationJson($connection);
-
         $db = \Yii::app()->getDb();
         $db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
-
     /**
      * @param \CDbConnection $connection
      * @return void
@@ -109,7 +102,6 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
             }
         }
     }
-
     /**
      * @param \CDbConnection $connection
      * @return void
@@ -139,7 +131,6 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
                 } else {
                     // Nothing to check.
                 }
-
             }
         }
     }
