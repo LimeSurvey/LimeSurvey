@@ -67,6 +67,11 @@ class AjaxModeTest extends TestBaseClassWeb
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
 
+            // TODO: Temporary, test fails here (but only on fresh install).
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/AjaxModeTest.png';
+            file_put_contents($filename, $screenshot);
+
             // Find yes-no radio buttons, click "Yes".
             $items = self::$webDriver->findElements(WebDriverBy::cssSelector('ul.yesno-button li'));
             $this->assertCount(3, $items, 'Three radio buttons for yes-no question');
