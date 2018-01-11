@@ -67,7 +67,7 @@ class AjaxModeTest extends TestBaseClassWeb
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
 
-            usleep(500);
+            sleep(1);
 
             // TODO: Temporary, test fails here (but only on fresh install).
             $screenshot = self::$webDriver->takeScreenshot();
