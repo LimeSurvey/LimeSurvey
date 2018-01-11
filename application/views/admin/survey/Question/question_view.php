@@ -22,7 +22,7 @@
 
                     <td>
                         <?php echo $qrrow['title']; ?>
-                        <?php if ($qrrow['type'] != "X"): ?>
+                        <?php if ($qrrow['type'] != Question::QT_X_BOILERPLATE_QUESTION): ?>
                             <?php if ($qrrow['mandatory'] == "Y") :?>
                                 : (<i><?php eT("Mandatory Question"); ?></i>)
                             <?php else: ?>
@@ -126,7 +126,7 @@
                 <?php endif; ?>
 
                 <!-- Option 'Other' -->
-                <?php if ($qrrow['type'] == "M" or $qrrow['type'] == "P"):?>
+                <?php if ($qrrow['type'] == Question::QT_M_MULTIPLE_CHOICE or $qrrow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS):?>
                     <tr>
                         <td>
                             <strong>
@@ -144,7 +144,7 @@
                 <?php endif; ?>
 
                 <!-- Mandatory -->
-                <?php if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|")):?>
+                <?php if (isset($qrrow['mandatory']) and ($qrrow['type'] != Question::QT_X_BOILERPLATE_QUESTION) and ($qrrow['type'] != Question::QT_VERTICAL_FILE_UPLOAD)):?>
                     <tr>
                         <td>
                             <strong>

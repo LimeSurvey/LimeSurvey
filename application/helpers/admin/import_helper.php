@@ -2769,11 +2769,11 @@ function TSVImportSurvey($sFullFilePath)
             case 'SQ':
                 $sqname = (isset($row['name']) ? $row['name'] : 'SQ'.$sqseq);
                 $sqid = '';
-                if ($qtype == 'O' || $qtype == '|') {
+                if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {
 // If last question have other to Y : it's not a real SQ row
-                    if ($qtype == "!" || $qtype == "L") {
+                    if($qtype==Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype==Question::QT_L_LIST_DROPDOWN) {
                         // only used to set default value for 'other' in these cases
                         if (isset($row['default']) && $row['default'] != "") {
                             $insertdata = array();

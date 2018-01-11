@@ -514,7 +514,7 @@ class quotas extends Survey_Common_Action
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
-        if ($aQuestionType == 'M') {
+        if ($aQuestionType == Question::QT_M_MULTIPLE_CHOICE) {
             $aResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
 
@@ -522,11 +522,11 @@ class quotas extends Survey_Common_Action
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
                 $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
             }
-        } elseif ($aQuestionType == 'G') {
+        } elseif ($aQuestionType == Question::QT_G_GENDER_DROPDOWN) {
             $aAnswerList = array(
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-        } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!') {
+        } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
 
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
@@ -536,7 +536,7 @@ class quotas extends Survey_Common_Action
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
-        } elseif ($aQuestionType == 'A') {
+        } elseif ($aQuestionType == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
@@ -547,7 +547,7 @@ class quotas extends Survey_Common_Action
                     $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'B') {
+        } elseif ($aQuestionType == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS) {
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
@@ -558,11 +558,11 @@ class quotas extends Survey_Common_Action
                     $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'Y') {
+        } elseif ($aQuestionType == Question::QT_Y_YES_NO_RADIO) {
             $aAnswerList = array(
                 'Y' => array('Title' => $aQuestion['title'], 'Display' => gT("Yes"), 'code' => 'Y'),
                 'N' => array('Title' => $aQuestion['title'], 'Display' => gT("No"), 'code' => 'N'));
-        } elseif ($aQuestionType == 'I') {
+        } elseif ($aQuestionType == Question::QT_I_LANGUAGE) {
             $slangs = $oSurvey->allLanguages;
 
             while (list($key, $value) = each($slangs)) {

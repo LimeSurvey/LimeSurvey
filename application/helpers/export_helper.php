@@ -393,37 +393,37 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
 {
     $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
-        '5'=>Array('name'=>'5 Point Choice', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
-        'B'=>Array('name'=>'Array (10 Point Choice)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
-        'A'=>Array('name'=>'Array (5 Point Choice)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
-        'F'=>Array('name'=>'Array (Flexible Labels)', 'size'=>1, 'SPSStype'=>'F'),
-        '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale', 'size'=>1, 'SPSStype'=>'F'),
-        'H'=>Array('name'=>'Array (Flexible Labels) by Column', 'size'=>1, 'SPSStype'=>'F'),
-        'E'=>Array('name'=>'Array (Increase, Same, Decrease)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>2),
-        'C'=>Array('name'=>'Array (Yes/No/Uncertain)', 'size'=>1, 'SPSStype'=>'F'),
-        'X'=>Array('name'=>'Boilerplate Question', 'size'=>1, 'SPSStype'=>'A', 'hide'=>1),
-        'D'=>Array('name'=>'Date', 'size'=>20, 'SPSStype'=>'DATETIME23.2'),
-        'G'=>Array('name'=>'Gender', 'size'=>1, 'SPSStype'=>'F'),
-        'U'=>Array('name'=>'Huge Free Text', 'size'=>1, 'SPSStype'=>'A'),
-        'I'=>Array('name'=>'Language Switch', 'size'=>1, 'SPSStype'=>'A'),
-        '!'=>Array('name'=>'List (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
-        'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
-        'Z'=>Array('name'=>'List (Flexible Labels) (Radio)', 'size'=>1, 'SPSStype'=>'F'),
-        'L'=>Array('name'=>'List (Radio)', 'size'=>1, 'SPSStype'=>'F'),
-        'O'=>Array('name'=>'List With Comment', 'size'=>1, 'SPSStype'=>'F'),
-        'T'=>Array('name'=>'Long free text', 'size'=>1, 'SPSStype'=>'A'),
-        'K'=>Array('name'=>'Multiple Numerical Input', 'size'=>1, 'SPSStype'=>'F'), // Why not F32.10 because it's DECIMAL(30,10) in DB ? (32 because - and .)
-        'M'=>Array('name'=>'Multiple choice', 'size'=>1, 'SPSStype'=>'F'),
-        'P'=>Array('name'=>'Multiple choice with comments', 'size'=>1, 'SPSStype'=>'F'),
-        'Q'=>Array('name'=>'Multiple Short Text', 'size'=>1, 'SPSStype'=>'A'),
-        'N'=>Array('name'=>'Numerical Input', 'size'=>3, 'SPSStype'=>'F', 'Scale'=>3), // Why not F32.10 because it's DECIMAL(30,10) in DB ? (32 because - and .)
-        'R'=>Array('name'=>'Ranking', 'size'=>1, 'SPSStype'=>'F'),
-        'S'=>Array('name'=>'Short free text', 'size'=>1, 'SPSStype'=>'A'),
-        'Y'=>Array('name'=>'Yes/No', 'size'=>1, 'SPSStype'=>'F'),
-        ':'=>Array('name'=>'Multi flexi numbers', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
-        ';'=>Array('name'=>'Multi flexi text', 'size'=>1, 'SPSStype'=>'A'),
-        '|'=>Array('name'=>'File upload', 'size'=>1, 'SPSStype'=>'A'),
-        '*'=>Array('name'=>'Equation', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_5_POINT_CHOICE=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        Question::QT_A_ARRAY_5_CHOICE_QUESTIONS=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        Question::QT_F_ARRAY_FLEXIBLE_ROW=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_1_ARRAY_MULTISCALE=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
+        Question::QT_H_ARRAY_FLEXIBLE_COLUMN=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
+        Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
+        Question::QT_C_ARRAY_YES_UNCERTAIN_NO=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_X_BOILERPLATE_QUESTION=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
+        Question::QT_D_DATE=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
+        Question::QT_G_GENDER_DROPDOWN=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
+        Question::QT_U_HUGE_FREE_TEXT=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
+        Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
+        Question::QT_EXCLAMATION_LIST_DROPDOWN=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_W=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_Z_LIST_RADIO_FLEXIBLE=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_L_LIST_DROPDOWN=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
+        Question::QT_O_LIST_WITH_COMMENT=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
+        Question::QT_T_LONG_FREE_TEXT=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
+        Question::QT_K_MULTIPLE_NUMERICAL_QUESTION=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
+        Question::QT_M_MULTIPLE_CHOICE=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
+        Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
+        Question::QT_Q_MULTIPLE_SHORT_TEXT=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
+        Question::QT_N_NUMERICAL=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
+        Question::QT_R_RANKING_STYLE=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
+        Question::QT_S_SHORT_FREE_TEXT=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
+        Question::QT_Y_YES_NO_RADIO=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+        Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+        Question::QT_VERTICAL_FILE_UPLOAD=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
+        Question::QT_ASTERISK_EQUATION=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
     );
 
     if (empty($sLanguage)) {
@@ -1504,7 +1504,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
         //boilerplate questions convert to sectionInfo elements
         //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND type LIKE 'X'");
+        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND type LIKE '{Question::QT_X_BOILERPLATE_QUESTION}'");
         foreach ($QR as $RowQ) {
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1517,7 +1517,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE 'X'");
+        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE '" . Question::QT_X_BOILERPLATE_QUESTION . "'");
         foreach ($QR as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
@@ -1530,13 +1530,13 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $sgq = $RowQ['title'];
 
             //if this is a multi-flexi style question, create multiple questions
-            if ($type == ':' || $type == ';') {
+            if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
 
                 $SQueryResult = Question::model()->findAllByAttributes(['parent_qid'=>$qid, 'scale_id'=>0]); 
                 foreach ($SQueryResult as $SRow) {
                     $question = quexml_create_question($RowQ, $SRow->questionL10ns[$quexmllang]->question);
 
-                    if ($type == ":") {
+                    if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS) {
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
                         $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
                         if ($mcb != -1) {
@@ -1546,7 +1546,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen(quexml_get_lengthth($qid, 'multiflexible_max', 1)));
                             quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                         }
-                    } else if ($type == ";") {
+                    } else if ($type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
@@ -1555,7 +1555,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     $section->appendChild($question);
                 }
 
-            } else if ($type == '1') {
+            } else if ($type == Question::QT_1_ARRAY_MULTISCALE) {
 //dual scale array need to split into two questions
                 $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
                 $QRE = Yii::app()->db->createCommand($Query)->query();

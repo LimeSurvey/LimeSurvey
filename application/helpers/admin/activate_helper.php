@@ -171,7 +171,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //Check that certain array question types have answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
     join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_W . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
@@ -180,14 +180,14 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //CHECK THAT DUAL Array has answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
     join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='" . Question::QT_1_ARRAY_MULTISCALE . "' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow; } // Get table output into array
@@ -304,44 +304,45 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "lastpage":
                 $aTableDefinition[$aRow['fieldname']] = "integer";
                 break;
-            case "N":  //Numerical
-            case "K":  //Multiple Numerical
+            case Question::QT_N_NUMERICAL:  //Numerical
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:  //Multiple Numerical
                 $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
                 break;
-            case "S":  //SHORT TEXT
+            case Question::QT_S_SHORT_FREE_TEXT:  //SHORT TEXT
                 $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
-            case "L":  //LIST (RADIO)
-            case "!":  //LIST (DROPDOWN)
-            case "M":  //Multiple choice
-            case "P":  //Multiple choice with comment
-            case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
+            case Question::QT_L_LIST_DROPDOWN:  //LIST (RADIO)
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //LIST (DROPDOWN)
+            case Question::QT_M_MULTIPLE_CHOICE:  //Multiple choice
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //Multiple choice with comment
+            case Question::QT_O_LIST_WITH_COMMENT:  //DROPDOWN LIST WITH COMMENT
+                if ($aRow['aid'] != 'other' && strpos($aRow['aid'],'comment')===false && strpos($aRow['aid'],'othercomment')===false)
+                {
                     $aTableDefinition[$aRow['fieldname']] = "string(5)";
                 } else {
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 }
                 break;
-            case "U":  //Huge text
-            case "Q":  //Multiple short text
-            case "T":  //LONG TEXT
-            case ";":  //Multi Flexi
-            case ":":  //Multi Flexi
+            case Question::QT_U_HUGE_FREE_TEXT:  //Huge text
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:  //Multiple short text
+            case Question::QT_T_LONG_FREE_TEXT:  //LONG TEXT
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //Multi Flexi
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //Multi Flexi
                 $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
-            case "D":  //DATE
+            case Question::QT_D_DATE:  //DATE
                 $aTableDefinition[$aRow['fieldname']] = "datetime";
                 break;
-            case "5":  //5 Point Choice
-            case "G":  //Gender
-            case "Y":  //YesNo
-            case "X":  //Boilerplate
+            case Question::QT_5_POINT_CHOICE:  //5 Point Choice
+            case Question::QT_G_GENDER_DROPDOWN:  //Gender
+            case Question::QT_Y_YES_NO_RADIO:  //YesNo
+            case Question::QT_X_BOILERPLATE_QUESTION:  //Boilerplate
                 $aTableDefinition[$aRow['fieldname']] = "string(1)";
                 break;
-            case "I":  //Language switch
+            case Question::QT_I_LANGUAGE:  //Language switch
                 $aTableDefinition[$aRow['fieldname']] = "string(20)";
                 break;
-            case "|":
+            case Question::QT_VERTICAL_FILE_UPLOAD:
                 $bCreateSurveyDir = true;
                 if (strpos($aRow['fieldname'], "_")) {
                                     $aTableDefinition[$aRow['fieldname']] = "integer";
@@ -362,10 +363,10 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "token":
                 $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
                 break;
-            case '*': // Equation
+            case Question::QT_ASTERISK_EQUATION: // Equation
                 $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
-            case 'R':
+            case Question::QT_R_RANKING_STYLE:
                 /**
                  * See bug #09828: Ranking question : update allowed can broke Survey DB
                  * If max_subquestions is not set or is invalid : set it to actual answers numbers

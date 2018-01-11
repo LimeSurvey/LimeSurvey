@@ -134,15 +134,15 @@ function retrieveAnswers($ia)
     $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
 
     switch ($ia[4]) {
-        case 'X': //BOILERPLATE QUESTION
+        case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
             $values = do_boilerplate($ia);
             break;
 
-        case '5': //5 POINT CHOICE radio-buttons
+        case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
             $values = do_5pointchoice($ia);
             break;
 
-        case 'D': //DATE
+        case Question::QT_D_DATE: //DATE
             $values = do_date($ia);
             // if a drop box style date was answered incompletely (dropbox), print an error/help message
             if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
@@ -154,108 +154,108 @@ function retrieveAnswers($ia)
             }
             break;
 
-        case 'L': //LIST drop-down/radio-button list
+        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
             break;
 
-        case '!': //List - dropdown
-            $values = do_list_dropdown($ia);
+        case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+            $values=do_list_dropdown($ia);
             break;
 
-        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-            $values = do_listwithcomment($ia);
+        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+            $values=do_listwithcomment($ia);
             break;
 
-        case 'R': //RANKING STYLE
-            $values = do_ranking($ia);
+        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+            $values=do_ranking($ia);
             break;
 
-        case 'M': //Multiple choice checkbox
-            $values = do_multiplechoice($ia);
+        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+            $values=do_multiplechoice($ia);
             break;
 
-        case 'I': //Language Question
-            $values = do_language($ia);
+        case Question::QT_I_LANGUAGE: //Language Question
+            $values=do_language($ia);
             break;
 
-        case 'P': //Multiple choice with comments checkbox + text
-            $values = do_multiplechoice_withcomments($ia);
+        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+            $values=do_multiplechoice_withcomments($ia);
             break;
 
-        case '|': //File Upload
-            $values = do_file_upload($ia);
+        case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+            $values=do_file_upload($ia);
             break;
 
-        case 'Q': //MULTIPLE SHORT TEXT
-            $values = do_multipleshorttext($ia);
+        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+            $values=do_multipleshorttext($ia);
             break;
 
-        case 'K': //MULTIPLE NUMERICAL QUESTION
-            $values = do_multiplenumeric($ia);
+        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+            $values=do_multiplenumeric($ia);
             break;
 
-        case 'N': //NUMERICAL QUESTION TYPE
-            $values = do_numerical($ia);
+        case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+            $values=do_numerical($ia);
             break;
 
-        case 'S': //SHORT FREE TEXT
-            $values = do_shortfreetext($ia);
+        case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+            $values=do_shortfreetext($ia);
             break;
 
-        case 'T': //LONG FREE TEXT
-            $values = do_longfreetext($ia);
+        case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+            $values=do_longfreetext($ia);
             break;
 
-        case 'U': //HUGE FREE TEXT
-            $values = do_hugefreetext($ia);
+        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+            $values=do_hugefreetext($ia);
             break;
 
-        case 'Y': //YES/NO radio-buttons
-            $values = do_yesno($ia);
+        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+            $values=do_yesno($ia);
             break;
 
-        case 'G': //GENDER drop-down list
-            $values = do_gender($ia);
+        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+            $values=do_gender($ia);
             break;
 
-        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-            $values = do_array_5point($ia);
+        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+            $values=do_array_5point($ia);
             break;
 
-        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-            $values = do_array_10point($ia);
+        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+            $values=do_array_10point($ia);
             break;
 
-        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-            $values = do_array_yesnouncertain($ia);
+        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+            $values=do_array_yesnouncertain($ia);
             break;
 
-        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-            $values = do_array_increasesamedecrease($ia);
+        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+            $values=do_array_increasesamedecrease($ia);
             break;
 
-        case 'F': //ARRAY (Flexible) - Row Format
-            $values = do_array($ia);
+        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+            $values=do_array($ia);
             break;
 
-        case 'H': //ARRAY (Flexible) - Column Format
-            $values = do_arraycolumns($ia);
+        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+            $values=do_arraycolumns($ia);
             break;
 
-        case ':': //ARRAY (Multi Flexi) 1 to 10
-            $values = do_array_multiflexi($ia);
+        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+            $values=do_array_multiflexi($ia);
             break;
 
-        case ';': //ARRAY (Multi Flexi) Text
-            $values = do_array_texts($ia); //It's like the "5th element" movie, come to life
+        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+            $values=do_array_texts($ia);  //It's like the "5th element" movie, come to life
             break;
 
-        case '1': //Array (Flexible Labels) dual scale
-            $values = do_array_dual($ia);
+        case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
+            $values=do_array_dual($ia);
             break;
 
-        case '*': // Equation
-            $values = do_equation($ia);
+        case Question::QT_ASTERISK_EQUATION: // Equation
+            $values=do_equation($ia);
             break;
     }
 

@@ -108,10 +108,10 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column])) {
 
-                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null) {
-// For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
+                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null) {
+                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
                         // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
                         // This is especially important for the deletenonvalue feature,
                         // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
@@ -245,7 +245,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
             $fields = explode("|", $_POST['fieldnames']);
 
             foreach ($fields as $field) {
-                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
+                if ($fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
                     $validation = QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
@@ -1389,7 +1389,7 @@ function getNavigatorDatas()
     }
 
     // Previous ?
-    if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
+    if ($thissurvey['format'] != Question::QT_A_ARRAY_5_CHOICE_QUESTIONS && ($thissurvey['allowprev'] != "N")
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')
@@ -1513,18 +1513,16 @@ function doAssessment($surveyid)
                 // Init Assessment Value
                 $assessmentValue = null;
 
-                if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
-
+                if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_W,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
                     $fieldmap[$field['fieldname']]['assessment_value'] = 0;
-
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-
-                        //Multiflexi choice  - result is the assessment attribute value
-                        if (($field['type'] == "M") || ($field['type'] == "P")) {
-                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
-
-                                $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
-                                $assessmentValue = (int) $aAttributes['assessment_value'];
+                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
+                    {
+                        if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) //Multiflexi choice  - result is the assessment attribute value
+                        {
+                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
+                            {
+                                $aAttributes=getQuestionAttributeValues($field['qid']);
+                                $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         } else {
                                 // Single choice question

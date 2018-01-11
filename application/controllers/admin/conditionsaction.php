@@ -1375,7 +1375,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 
             } //foreach
             
-        } elseif ($rows['type'] == ":" || $rows['type'] == ";") {
+        } elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
             // Multiflexi
             // Get the Y-Axis
             $fquery = "SELECT sq.*, q.other"
@@ -1420,7 +1420,6 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $shortquestion = $rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question'])."][".strip_tags($val)."] ".flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, "", gT("No answer"));
                     }
                 }
             }
@@ -1465,7 +1464,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
                 }
             } //foreach
-        } elseif ($rows['type'] == "K" || $rows['type'] == "Q") {
+        } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||$rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
             //Multi shorttext/numerical
             $aresult = Question::model()->findAllByAttributes(array(
             "parent_qid" => $rows['qid'],
@@ -1483,7 +1482,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 }
                 
             } //foreach
-        } elseif ($rows['type'] == "R") {
+        } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
             //Answer Ranking
             $aresult = Answer::model()->findAllByAttributes(
             array(
@@ -1511,36 +1510,36 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer"));
                 }
             }
-            unset($quicky);
+                unset($quicky);
             // End if type R
-        } elseif ($rows['type'] == "M" || $rows['type'] == "P") {
+        } ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
             
-            $shortanswer = " [".gT("Group of checkboxes")."]";
-            $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
-            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
-            
-            $aresult = Question::model()->findAllByAttributes(array(
-            "parent_qid" => $rows['qid'],
-            "language" => $this->language
-            ), array('order' => 'question_order desc'));
-            
+                $shortanswer = " [".gT("Group of checkboxes")."]";
+                $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+
+                $aresult = Question::model()->findAllByAttributes(array(
+                    "parent_qid" => $rows['qid'],
+                    "language" => $this->language
+                ), array('order' => 'question_order desc'));
+
             foreach ($aresult as $arows) {
-                $theanswer = $arows['question'];
+                    $theanswer = $arows['question'];
                 $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
-                
+
                 $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
-                $shortanswer .= "[".gT("Single checkbox")."]";
+                    $shortanswer .= "[".gT("Single checkbox")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
                 $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', gT("checked"));
                 $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
-            }
+                }
             
         } else {
             $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
         
             switch ($rows['type']) {
-                case "Y": // Y/N/NA
+                case Question::QT_Y_YES_NO_RADIO: // Y/N/NA
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                     // Only Show No-Answer if question is not mandatory
@@ -1548,7 +1547,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
-                case "G": //Gender
+                case Question::QT_G_GENDER_DROPDOWN: //Gender
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
                     // Only Show No-Answer if question is not mandatory
@@ -1556,7 +1555,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
-                case "5": // 5 choice
+                case Question::QT_5_POINT_CHOICE: // 5 choice
                     for ($i = 1; $i <= 5; $i++) {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
                     }
@@ -1564,8 +1563,8 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     if ($rows['mandatory'] != 'Y') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
-                break;
-                case "N": // Simple Numerical questions
+                    break;
+                case Question::QT_N_NUMERICAL: // Simple Numerical questions
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
@@ -1583,17 +1582,21 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $theanswer = $arows['answer'];
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                     }
-
-                    if ($rows['type'] == "D") {
+                    if ($rows['type'] == Question::QT_D_DATE) {
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y') {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
-                    } elseif ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I") {
+                    } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
+                        $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
+                        $rows['type'] != QT_J &&
+                        $rows['type'] != Question::QT_I_LANGUAGE ) {
                         // For dropdown questions
                         // optinnaly add the 'Other' answer
-                        if (($rows['type'] == "L" || $rows['type'] == "!")
-                            && $rows['other'] == "Y") {
+                        if ( ($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                            $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
+                            $rows['other'] == "Y" )
+{
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
                         }
                         

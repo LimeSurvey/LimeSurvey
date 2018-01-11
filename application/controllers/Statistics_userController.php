@@ -317,8 +317,8 @@ class Statistics_userController extends SurveyController
 
             //let's switch through the question type for each question
             switch ($flt[2]) {
-                case "K": // Multiple Numerical
-                case "Q": // Multiple Short Text
+                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
                     //get answers
                     $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
@@ -329,12 +329,12 @@ class Statistics_userController extends SurveyController
                         $allfields[] = $myfield2;
                     }
                     break;
-                case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-                case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-                case "F": // FlEXIBLE ARRAY
-                case "H": // ARRAY (By Column)
+                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
+                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
+                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
                     //get answers
                     $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
@@ -346,14 +346,14 @@ class Statistics_userController extends SurveyController
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
-                case "T": // Long free text
-                case "U": // Huge free text
-                case "S": // Short free text
+                case Question::QT_T_LONG_FREE_TEXT: // Long free text
+                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
+                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                     $myfield = "T".$myfield;
                     $allfields[] = $myfield;
                     break;
-                case ";":  //ARRAY (Multi Flex) (Text)
-                case ":":  //ARRAY (Multi Flex) (Numbers)
+                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
+                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
                     $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
                     foreach ($result as $row) {
@@ -365,7 +365,7 @@ class Statistics_userController extends SurveyController
                     }
                     }
                     break;
-                case "R": //RANKING
+                case Question::QT_R_RANKING_STYLE: //RANKING
                     //get some answers
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
@@ -380,9 +380,9 @@ class Statistics_userController extends SurveyController
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case "X":  //This is a boilerplate question and it has no business in this script
+                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
                     break;
-                case "1": // MULTI SCALE
+                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
                     //get answers
                     $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
@@ -398,10 +398,10 @@ class Statistics_userController extends SurveyController
                     }    //end WHILE -> loop through all answers
                     break;
 
-                case "P":  //P - Multiple choice with comments
-                case "M":  //M - Multiple choice
-                case "N":  //N - Numerical input
-                case "D":  //D - Date
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
+                case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
+                case Question::QT_N_NUMERICAL:  //N - Numerical input
+                case Question::QT_D_DATE:  //D - Date
                     $myfield2 = $flt[2].$myfield;
                     $allfields[] = $myfield2;
                     break;

@@ -335,7 +335,7 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id]['sqresult'] = array();
 
                     $options = array();
-                    if ($questionrow['type'] == 'M' || $questionrow['type'] == 'P') {
+                    if ($questionrow['type'] == Question::QT_M_MULTIPLE_CHOICE || $questionrow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                                             $options = array('' => gT('<No default value>'), 'Y' => gT('Checked'));
                     }
 
@@ -1002,7 +1002,7 @@ class questions extends Survey_Common_Action
         $aData['ajaxDatas']['qTypeOutput'] = json_encode($qtypelist);
 
         $oQuestion = new Question;
-        $oQuestion->type = 'T';
+        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
         $oQuestion->other = 'N';
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = 1;
@@ -1489,7 +1489,8 @@ class questions extends Survey_Common_Action
                     $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
 
                     // These are the questions types that have no mandatory property - so zap it accordingly
-                    if ($oQuestion->type != "X" && $oQuestion->type != "|") {
+                    if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION  && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD)
+                    {
                         $oQuestion->mandatory = $bMandatory;
                         $oQuestion->save();
                     }
@@ -1519,7 +1520,7 @@ class questions extends Survey_Common_Action
                     $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
 
                     // These are the questions types that have the other option therefore we set everything else to 'No Other'
-                    if (($oQuestion->type == "L") || ($oQuestion->type == "!") || ($oQuestion->type == "P") || ($oQuestion->type == "M")) {
+                    if (( $oQuestion->type == Question::QT_L_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($oQuestion->type==Question::QT_M_MULTIPLE_CHOICE)) {
                         $oQuestion->other = $bOther;
                         $oQuestion->save();
                     }

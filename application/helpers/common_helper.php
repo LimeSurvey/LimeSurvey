@@ -1140,71 +1140,73 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
         //Find out the question type
         $this_type = $fields['type'];
-        switch ($this_type) {
-            case 'D':
-                if (trim($sValue) != '') {
+        switch($this_type)
+        {
+            case Question::QT_D_DATE:
+                if (trim($sValue)!='')
+                {
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
                 break;
-            case 'K':
-            case 'N':
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_N_NUMERICAL:
                 if (trim($sValue) != '') {
                     if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
                     }
                 }
                 break;
-            case "L":
-            case "!":
-            case "O":
-            case "^":
-            case "I":
-            case "R":
+            case Question::QT_L_LIST_DROPDOWN:
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+            case Question::QT_O_LIST_WITH_COMMENT:
+            case "^": // @todo Fix me
+            case Question::QT_I_LANGUAGE:
+            case Question::QT_R_RANKING_STYLE:
                 $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
                 break;
-            case "M":
-            case "J":
-            case "P":
+            case Question::QT_M_MULTIPLE_CHOICE:
+            case QT_J:
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
             switch ($sValue) {
                 case "Y": $this_answer = gT("Yes", null, $sLanguage); break;
             }
             break;
-            case "Y":
+            case Question::QT_Y_YES_NO_RADIO:
             switch ($sValue) {
                 case "Y": $this_answer = gT("Yes", null, $sLanguage); break;
                 case "N": $this_answer = gT("No", null, $sLanguage); break;
                 default: $this_answer = gT("No answer", null, $sLanguage);
             }
             break;
-            case "G":
+            case Question::QT_G_GENDER_DROPDOWN:
             switch ($sValue) {
                 case "M": $this_answer = gT("Male", null, $sLanguage); break;
                 case "F": $this_answer = gT("Female", null, $sLanguage); break;
                 default: $this_answer = gT("No answer", null, $sLanguage);
             }
             break;
-            case "C":
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
             switch ($sValue) {
                 case "Y": $this_answer = gT("Yes", null, $sLanguage); break;
                 case "N": $this_answer = gT("No", null, $sLanguage); break;
                 case "U": $this_answer = gT("Uncertain", null, $sLanguage); break;
             }
             break;
-            case "E":
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
             switch ($sValue) {
                 case "I": $this_answer = gT("Increase", null, $sLanguage); break;
                 case "D": $this_answer = gT("Decrease", null, $sLanguage); break;
                 case "S": $this_answer = gT("Same", null, $sLanguage); break;
             }
             break;
-            case "F":
-            case "H":
-            case "1":
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+            case Question::QT_1_ARRAY_MULTISCALE:
                 if (isset($fields['scale_id'])) {
                     $iScaleID = $fields['scale_id'];
                 } else {
@@ -1215,7 +1217,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $this_answer = gT("Other", null, $sLanguage);
                 }
                 break;
-            case "|": //File upload
+            case Question::QT_VERTICAL_FILE_UPLOAD: //File upload
                 if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue, true);
@@ -1321,8 +1323,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             $sLanguage = $oSurvey->language;
         }
         switch ($flt['type']) {
-            case "K": // Multiple Numerical
-            case "Q": // Multiple Short Text
+                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1332,12 +1334,12 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-            case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-            case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-            case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-            case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-            case "F": // FlEXIBLE ARRAY
-            case "H": // ARRAY (By Column)
+                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
+                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
+                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1348,14 +1350,14 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 }
                 break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
-            case "T": // Long free text
-            case "U": // Huge free text
-            case "S": // Short free text
+                case Question::QT_T_LONG_FREE_TEXT: // Long free text
+                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
+                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
-            case ";":  //ARRAY (Multi Flex) (Text)
-            case ":":  //ARRAY (Multi Flex) (Numbers)
+                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
+                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
 
                 foreach ($result as $row) {
@@ -1366,7 +1368,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     }
                 }
                 break;
-            case "R": //RANKING
+                case Question::QT_R_RANKING_STYLE: //RANKING
                 //get some answers
                 $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
                 //get number of answers
@@ -1380,9 +1382,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case "X":  //This is a boilerplate question and it has no business in this script
+                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
                 break;
-            case "1": // MULTI SCALE
+                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //loop through answers
@@ -1396,10 +1398,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 }   //end WHILE -> loop through all answers
                 break;
 
-            case "P":  //P - Multiple choice with comments
-            case "M":  //M - Multiple choice
-            case "N":  //N - Numerical input
-            case "D":  //D - Date
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
+                case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
+                case Question::QT_N_NUMERICAL:  //N - Numerical input
+                case Question::QT_D_DATE:  //D - Date
                 $myfield2 = $flt['type'].$myfield;
                 $allfields[] = $myfield2;
                 break;
@@ -1621,7 +1623,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($qtypes[$arow['type']]['subquestions'] == 0 && $arow['type'] != "R" && $arow['type'] != "|") {
+        if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
             }
@@ -1642,8 +1644,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             switch ($arow['type']) {
-                case "L":  //RADIO LIST
-                case "!":  //DROPDOWN LIST
+                case Question::QT_L_LIST_DROPDOWN:  //RADIO LIST
+                case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //DROPDOWN LIST
                     if ($arow['other'] == "Y") {
                         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
                         if (isset($fieldmap[$fieldname])) {
@@ -1673,7 +1675,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         }
                     }
                     break;
-                case "O": //DROPDOWN LIST WITH COMMENT
+                case Question::QT_O_LIST_WITH_COMMENT: //DROPDOWN LIST WITH COMMENT
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
@@ -1749,7 +1751,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             unset($answerset);
-        } elseif ($arow['type'] == "1") {
+        } elseif ($arow['type'] == Question::QT_1_ARRAY_MULTISCALE) {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -1790,7 +1792,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
-        } elseif ($arow['type'] == "R") {
+        } elseif ($arow['type'] == Question::QT_R_RANKING_STYLE) {
             // Sub question by answer number OR attribute
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
@@ -1813,7 +1815,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
             }
-        } elseif ($arow['type'] == "|") {
+        } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
@@ -1886,7 +1888,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
                 }
-                if ($arow['type'] == "P") {
+                if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
@@ -1905,7 +1907,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                 }
             }
-            if ($arow['other'] == "Y" && ($arow['type'] == "M" || $arow['type'] == "P")) {
+            if ($arow['other']=="Y" && ($arow['type']==Question::QT_M_MULTIPLE_CHOICE || $arow['type']==Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
@@ -1923,7 +1925,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
-                if ($arow['type'] == "P") {
+                if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
@@ -1997,8 +1999,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 */
 function hasFileUploadQuestion($iSurveyID)
 {
-    $iCount = Question::model()->count("sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));
-    return $iCount > 0;
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='" . Question::QT_VERTICAL_FILE_UPLOAD . "'", array(':surveyid' => $iSurveyID));
+    return $iCount > 0 ;
 }
 
 /**

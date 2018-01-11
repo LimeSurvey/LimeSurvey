@@ -3,7 +3,7 @@
 <?php
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
-    $specialQuestionTypes = array("M", "P");
+    $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
     if ( in_array( $flt[2], $specialQuestionTypes))
     {
         $myfield = $flt[2].$myfield;
@@ -16,7 +16,7 @@
 
     <div class="question-filter-container grow-3 nofloat ls-space padding all-10">
     <?php echo "<!-- Question type :  $flt[2] -->"; ?>
-        <?php if ($flt[2]=='M' || $flt[2]=='|' || $flt[2]=='P' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
+        <?php if ($flt[2]==Question::QT_M_MULTIPLE_CHOICE || $flt[2]==Question::QT_VERTICAL_FILE_UPLOAD || $flt[2]==Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $flt[2]==Question::QT_L_LIST_DROPDOWN || $flt[2]==Question::QT_5_POINT_CHOICE || $flt[2]==Question::QT_G_GENDER_DROPDOWN || $flt[2]==Question::QT_I_LANGUAGE || $flt[2]==Question::QT_O_LIST_WITH_COMMENT || $flt[2]==Question::QT_Y_YES_NO_RADIO || $flt[2]==Question::QT_EXCLAMATION_LIST_DROPDOWN): ?>
             <!--  TYPE =='M' || 'P' || 'N' || 'L' || '5' || 'G' || 'I' || 'O' || 'Y' || '!' -->
             <div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">
                 <input type='checkbox'
@@ -34,10 +34,10 @@
                 </label>
             </div>
 
-            <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
+            <?php if ($flt[2] != Question::QT_N_NUMERICAL && $flt[2] != Question::QT_VERTICAL_FILE_UPLOAD):?>
                 <select name='<?php
-                    if ($flt[2] == "M" ) { echo "M";};
-                    if ($flt[2] == "P" ) { echo "P";};
+                    if ($flt[2] == Question::QT_M_MULTIPLE_CHOICE ) { echo Question::QT_M_MULTIPLE_CHOICE;};
+                    if ($flt[2] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS ) { echo Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS;};
                     echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
             <?php endif; ?>
 
@@ -46,7 +46,7 @@
         <?php
         switch ($flt[2])
         {
-            case "K": // Multiple Numerical
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //go through all the (multiple) answers
                 foreach($result[$key1] as $row1)
@@ -97,7 +97,7 @@
 
 
 
-            case "Q": // Multiple Short Text
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get subqestions
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]'", 'question_order');
@@ -132,8 +132,8 @@
             /*
             * all "free text" types (T, U, S)  get the same prefix ("T")
             */
-            case "T": // Long free text
-            case "U": // Huge free text
+            case Question::QT_T_LONG_FREE_TEXT: // Long free text
+            case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
@@ -150,7 +150,7 @@
 
 
 
-            case "S": // Short free text
+            case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
@@ -168,7 +168,7 @@
 
 
 
-            case "N": // Numerical
+            case Question::QT_N_NUMERICAL: // Numerical
                 //textfields for greater and less than X
                 ?>
                 <div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">
@@ -201,7 +201,7 @@
                 break;
 
 
-            case "|": // File Upload
+            case Question::QT_VERTICAL_FILE_UPLOAD: // File Upload
 
                 // Number of files uploaded for greater and less than X
                 $myfield2 = "{$myfield}G";
@@ -224,7 +224,7 @@
             * See bug report #2539 and
             * feature request #2620
             */
-            case "D": // Date
+            case Question::QT_D_DATE: // Date
 
                 /*
                 * - input name
@@ -260,7 +260,7 @@
 
 
 
-            case "5": // 5 point choice
+            case Question::QT_5_POINT_CHOICE: // 5 point choice
 
                 //we need a list of 5 entries
                 for ($i=1; $i<=5; $i++)
@@ -280,7 +280,7 @@
 
 
 
-            case "G": // Gender
+            case Question::QT_G_GENDER_DROPDOWN: // Gender
                 echo "\t<option value='F'";
 
                 //pre-select values which were marked before
@@ -297,7 +297,7 @@
 
 
 
-            case "Y": // Yes\No
+            case Question::QT_Y_YES_NO_RADIO: // Yes\No
                 echo "\t<option value='Y'";
 
                 //pre-select values which were marked before
@@ -314,7 +314,7 @@
 
 
 
-            case "I": // Language
+            case Question::QT_I_LANGUAGE: // Language
                 $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                 $survlangs[] = Survey::model()->findByPk($surveyid)->language;
                 foreach ($survlangs  as $availlang)
@@ -334,7 +334,7 @@
 
                 //----------------------- ARRAYS --------------------------
 
-            case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get answers
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
@@ -381,7 +381,7 @@
 
 
             //just like above only a different loop
-            case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
@@ -417,7 +417,7 @@
 
 
 
-            case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //loop answers
                 foreach($result[$key1] as $row)
@@ -467,7 +467,7 @@
 
 
             //similiar to the above one
-            case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
@@ -509,7 +509,7 @@
                 $counter=0;
                 break;
 
-            case ";":  //ARRAY (Multi Flex) (Text)
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $key => $row)
                 {
@@ -534,7 +534,7 @@
                 $counter=0;
                 break;
 
-            case ":":  //ARRAY (Multi Flex) (Numbers)
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
@@ -602,8 +602,8 @@
             * The only difference is that the labels are applied to column heading
             * or rows respectively
             */
-            case "F": // FlEXIBLE ARRAY
-            case "H": // ARRAY (By Column)
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
 
                 //Get answers. We always use the answer code because the label might be too long elsewise
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
@@ -666,7 +666,7 @@
 
 
 
-                case "R": //RANKING
+                case Question::QT_R_RANKING_STYLE: //RANKING
 
                 //get some answers
                 //get number of columns
@@ -729,7 +729,7 @@
                 break;
 
 
-            case "1": // MULTI SCALE
+            case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
 
                 //special dual scale counter
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
@@ -875,8 +875,8 @@
 
                 break;
 
-            case "P":  //P - Multiple choice with comments
-            case "M":  //M - Multiple choice
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
+            case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //loop through answers
                 foreach($result[$key1] as $row)
@@ -893,8 +893,8 @@
                 break;
 
             //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case "X": //This is a boilerplate question and it has no business in this script
-            case '*': // EQUATION
+            case Question::QT_X_BOILERPLATE_QUESTION: //This is a boilerplate question and it has no business in this script
+            case Question::QT_ASTERISK_EQUATION: // EQUATION
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 eT("This question type can't be selected.");
                 break;

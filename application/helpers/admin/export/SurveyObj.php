@@ -97,8 +97,8 @@ class SurveyObj
 
         //echo "\n$fieldName: $fieldType = $answerCode";
         switch ($fieldType) {
-            case 'K':
-            case 'N':
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
                 if (trim($fullAnswer) != '') {
                     if (strpos($fullAnswer, ".") !== false) {
@@ -111,11 +111,11 @@ class SurveyObj
                 }
                 break;
 
-            case 'R':   //RANKING TYPE
+            case Question::QT_R_RANKING_STYLE:   //RANKING TYPE
                 $fullAnswer = $answer;
                 break;
 
-            case '1':   //Array dual scale
+            case Question::QT_1_ARRAY_MULTISCALE:   //Array dual scale
                 if (mb_substr($fieldName, -1) == 0) {
                     $answers = $this->getAnswers($questionId, 0);
                 } else {
@@ -128,8 +128,8 @@ class SurveyObj
                 }
                 break;
 
-            case 'L':   //DROPDOWN LIST
-            case '!':
+            case Question::QT_L_LIST_DROPDOWN:   //DROPDOWN LIST
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 if (mb_substr($fieldName, -5, 5) == 'other') {
                     $fullAnswer = $answerCode;
                 } else {
@@ -141,7 +141,7 @@ class SurveyObj
                 }
                 break;
 
-            case 'O':   //DROPDOWN LIST WITH COMMENT
+            case Question::QT_O_LIST_WITH_COMMENT:   //DROPDOWN LIST WITH COMMENT
                 if (isset($answer)) {
                     //This is one of the dropdown list options.
                     $fullAnswer = $answer;
@@ -151,7 +151,7 @@ class SurveyObj
                 }
                 break;
 
-            case 'Y':   //YES/NO
+            case Question::QT_Y_YES_NO_RADIO:   //YES/NO
             switch ($answerCode) {
                 case 'Y':
                     $fullAnswer = $translator->translate('Yes', $sLanguageCode);
@@ -166,7 +166,7 @@ class SurveyObj
             }
             break;
 
-            case 'G':
+            case Question::QT_G_GENDER_DROPDOWN:
             switch ($answerCode) {
                 case 'M':
                     $fullAnswer = $translator->translate('Male', $sLanguageCode);
@@ -181,9 +181,10 @@ class SurveyObj
             }
             break;
 
-            case 'M':   //MULTIOPTION
-            case 'P':
-                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment') {
+            case Question::QT_M_MULTIPLE_CHOICE:   //MULTIOPTION
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment')
+                {
                     //echo "\n -- Branch 1 --";
                     $fullAnswer = $answerCode;
                 } else {
@@ -198,7 +199,7 @@ class SurveyObj
                 }
                 break;
 
-            case 'C':
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
             switch ($answerCode) {
                 case 'Y':
                     $fullAnswer = $translator->translate('Yes', $sLanguageCode);
@@ -214,7 +215,7 @@ class SurveyObj
             }
             break;
 
-            case 'E':
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
             switch ($answerCode) {
                 case 'I':
                     $fullAnswer = $translator->translate('Increase', $sLanguageCode);
@@ -230,8 +231,8 @@ class SurveyObj
             }
             break;
 
-            case 'F':
-            case 'H':
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                 $answers = $this->getAnswers($questionId, 0);
                 $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]->answerL10ns[$sLanguageCode]->answer : "";
                 break;
@@ -257,8 +258,8 @@ class SurveyObj
         $sFieldType = $aQuestion['type'];
 
         switch ($sFieldType) {
-            case 'K':
-            case 'N':
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_N_NUMERICAL:
                 if (trim($sValue) != '') {
                     if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
