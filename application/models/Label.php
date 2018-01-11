@@ -45,6 +45,7 @@ class Label extends LSActiveRecord
     {
         return 'id';
     }
+     
     /**
      * @inheritdoc
      * @return Label
@@ -84,7 +85,7 @@ class Label extends LSActiveRecord
     
     public function defaultScope()
     {
-        return array('order'=>'sortorder');
+        return array('order'=>'sortorder', 'index'=>'id');
     }    
 
     /**
