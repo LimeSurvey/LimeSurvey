@@ -191,9 +191,9 @@ export default {
                     <ul class="list-group background-muted padding-left question-question-list" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
                         <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
                             <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
-                            <a :href="question.link" class="col-12 pjax question-question-list-item-link" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question"> 
+                            <a :href="question.link" class="col-12 pjax question-question-list-item-link" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question_flat"> 
                                 <i>[{{question.title}}]</i> 
-                                <span class="question_text_ellipsize" :style="{ width: itemWidth }"> {{ question.question }} </span> 
+                                <span class="question_text_ellipsize" :style="{ width: itemWidth }"> {{ question.question_flat }} </span> 
                             </a>
                         </li>
                     </ul>
