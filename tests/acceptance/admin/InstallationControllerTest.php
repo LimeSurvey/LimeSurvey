@@ -14,6 +14,9 @@
 namespace LimeSurvey\tests\acceptance\admin;
 
 use LimeSurvey\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestHelper;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2017-11-24
