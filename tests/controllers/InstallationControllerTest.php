@@ -4,6 +4,9 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use LimeSurvey\tests\TestBaseClassWeb;
+use LimeSurvey\tests\TestHelper;
+
 /**
  * @since 2017-11-24
  * @group inst
