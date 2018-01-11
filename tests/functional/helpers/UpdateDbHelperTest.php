@@ -1,6 +1,7 @@
 <?php
+namespace LimeSurvey\tests\functional\helpers;
 
-namespace ls\tests;
+use LimeSurvey\tests\TestBaseClass;
 
 /**
  * @since 2017-06-16
@@ -19,7 +20,6 @@ class UpdateDbHelperTest extends TestBaseClass
         self::$testHelper->teardownDatabase('__test_install_script');
         self::$testHelper->teardownDatabase('__test_install_script_compare');
     }
-
     /**
      * Run the database PHP install script.
      * @group install
@@ -28,11 +28,9 @@ class UpdateDbHelperTest extends TestBaseClass
     public function testInstallPhp()
     {
         $db = \Yii::app()->getDb();
-
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         $connection = self::$testHelper->connectToNewDatabase('__test_install_script');
         $this->assertNotEmpty($connection, 'Could connect to new database');
-
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
@@ -41,7 +39,6 @@ class UpdateDbHelperTest extends TestBaseClass
         if ($result) {
             print_r($result);
         }
-
         // Dump database to file.
         /*
         $output = array();
@@ -56,13 +53,11 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
          */
-
         // Connect to old database.
         $db->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
-
     /**
      * Run db_upgrade_all() from dbversion 258, to make sure
      * there are no conflicts or syntax errors.
@@ -72,10 +67,8 @@ class UpdateDbHelperTest extends TestBaseClass
     public function testDbUpgradeFrom258()
     {
         self::$testHelper->updateDbFromVersion(258);
-
         $db = \Yii::app()->getDb();
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-
         // Dump database to file.
         /*
         $output = array();
@@ -90,14 +83,11 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
          */
-
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
-
         // Database is deleted in teardownAfterClass().
     }
-
     /**
      * @group from315
      * @throws \CException
@@ -105,15 +95,12 @@ class UpdateDbHelperTest extends TestBaseClass
     public function testDbUpgradeFrom315()
     {
         self::$testHelper->updateDbFromVersion(315);
-
         $db = \Yii::app()->getDb();
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
-
     /**
      * Compare database between upgrade and fresh install.
      * @group dbcompare
@@ -124,12 +111,10 @@ class UpdateDbHelperTest extends TestBaseClass
         $connection = self::$testHelper->updateDbFromVersion(258);
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 258);
-
         $connection = self::$testHelper->updateDbFromVersion(315);
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 315);
     }
-
     /**
      * @param array $upgradeTables
      * @return void
@@ -138,9 +123,7 @@ class UpdateDbHelperTest extends TestBaseClass
     protected function compareAux(array $upgradeTables, $upgradedFrom)
     {
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-
         $dbo = \Yii::app()->getDb();
-
         /*
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         // Get database name.
@@ -160,15 +143,12 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $connection->active = true;
          */
-
         \Yii::app()->cache->flush();
-
         self::$testHelper->teardownDatabase('__test_install_script_compare');
         $connection = self::$testHelper->connectToNewDatabase('__test_install_script_compare');
         $this->assertNotEmpty($connection, 'Could not connect to new database: ' . json_encode($connection));
         $connection->schemaCachingDuration = 0; // Deactivate schema caching
         $connection->schema->refresh();
-
         // Get InstallerController.
         $db = \Yii::app()->getDb();
         $inst = new \InstallerController('foobar');
@@ -187,10 +167,8 @@ class UpdateDbHelperTest extends TestBaseClass
         }
         $inst->connection->schema->refresh();
         $freshInstallTables = $inst->connection->schema->getTables();
-
         $this->assertEquals(count($upgradeTables), count($freshInstallTables), 'Same number of tables');
         $this->assertEquals(array_keys($upgradeTables), array_keys($freshInstallTables), 'Same number of tables');
-
         // Loop tables.
         $upgradeKeys = array_keys($upgradeTables);
         $freshInstallKeys = array_keys($freshInstallTables);
@@ -198,10 +176,8 @@ class UpdateDbHelperTest extends TestBaseClass
             $this->assertEquals($upgradeKeys[$i], $freshInstallKeys[$i]);
             $upgradeTable = $upgradeTables[$upgradeKeys[$i]];
             $freshTable = $freshInstallTables[$freshInstallKeys[$i]];
-
             $upgradeColumns = $upgradeTable->columns;
             $freshColumns = $freshTable->columns;
-
             // Loop columns.
             foreach ($upgradeColumns as $columnName => $upgradeColumn) {
                 $upgradeColumn = (array) $upgradeColumn;
@@ -225,7 +201,6 @@ class UpdateDbHelperTest extends TestBaseClass
                 }
             }
         }
-
         /* Code to dump diff, but nearly useless due to collate difference.
         $output = array();
         exec(
@@ -239,7 +214,6 @@ class UpdateDbHelperTest extends TestBaseClass
             $output
         );
          */
-
         // Connect to old database.
         $dbo->setActive(false);
         \Yii::app()->setComponent('db', $config['components']['db'], false);

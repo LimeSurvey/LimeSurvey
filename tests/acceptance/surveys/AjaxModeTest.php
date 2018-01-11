@@ -1,9 +1,9 @@
 <?php
-
-namespace ls\tests;
+namespace LimeSurvey\tests\acceptance\surveys;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-13
@@ -17,21 +17,17 @@ class AjaxModeTest extends TestBaseClassWeb
     public static function setupBeforeClass()
     {
         parent::setUpBeforeClass();
-
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_366446.lss';
         self::importSurvey($surveyFile);
-
         // Activate survey.
         self::$testHelper->activateSurvey(self::$surveyId);
     }
-
     /**
      * Test that Ajax mode records answer.
      */
     public function testAjaxModeRecordsAnswer()
     {
-
         // Get questions.
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $questionObjects = $survey->groups[0]->questions;
@@ -39,7 +35,6 @@ class AjaxModeTest extends TestBaseClassWeb
         foreach ($questionObjects as $q) {
             $questions[$q->title] = $q;
         }
-
         // Make sure there are no responses in database.
         $query = sprintf(
             'SELECT * FROM {{survey_%d}}',
@@ -48,7 +43,6 @@ class AjaxModeTest extends TestBaseClassWeb
         $db = \Yii::app()->getDb();
         $rows = $db->createCommand($query)->queryAll();
         $this->assertEmpty($rows, 'No answers');
-
         // Execute survey.
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
@@ -60,33 +54,26 @@ class AjaxModeTest extends TestBaseClassWeb
                 'lang' => 'pt'
             ]
         );
-
         try {
             // Click welcome page.
             self::$webDriver->get($url);
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
-
             // Find yes-no radio buttons, click "Yes".
             $items = self::$webDriver->findElements(WebDriverBy::cssSelector('ul.yesno-button li'));
             $this->assertCount(3, $items, 'Three radio buttons for yes-no question');
             $items[0]->click();
-
             // Check that EM is reacting.
             $div = self::$webDriver->findElement(WebDriverBy::cssSelector('div#question' . $questions['q2']->qid));
             $this->assertEquals($div->getText(), 'The previous answer was FALSE');
-
             // Click "No".
             $items[1]->click();
-
             // Check EM.
             $div = self::$webDriver->findElement(WebDriverBy::cssSelector('div#question' . $questions['q2']->qid));
             $this->assertEquals($div->getText(), 'The previous answer was TRUE');
-
             // Click submit.
             $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submitButton->click();
-
             // Check so that we see end page.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
             $this->assertEquals(
@@ -104,7 +91,6 @@ class AjaxModeTest extends TestBaseClassWeb
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         }
-
         // Check answer in database.
         $query = sprintf(
             'SELECT * FROM {{survey_%d}}',
