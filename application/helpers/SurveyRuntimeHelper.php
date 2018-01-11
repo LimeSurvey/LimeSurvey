@@ -367,11 +367,20 @@ class SurveyRuntimeHelper
                     $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                     //===================================================================
 
+
+                    $aStandardsReplacementFields = array();
+                    if (strpos($qa[0]['text'], "{") !== false) {
+                        // process string anyway so that it can be pretty-printed
+                        $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+                        $aStandardsReplacementFields['QID'] = $qid;
+                        $aStandardsReplacementFields['SGQ'] = $qa[7];
+                    }
+
                     // easier to understand for survey maker
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
@@ -925,6 +934,12 @@ class SurveyRuntimeHelper
         // submit page.
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
             $_SESSION[$this->LEMsessid]['test'] = time();
+
+            // TODO: Find out why language is not fetched correctly the first time.
+            $this->aSurveyInfo = getSurveyInfo(
+                $this->thissurvey['sid'],
+                $_SESSION['survey_'.$this->thissurvey['sid']]['s_lang']
+            );
 
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages

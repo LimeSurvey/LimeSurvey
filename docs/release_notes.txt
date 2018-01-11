@@ -34,6 +34,52 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 3.0.1 (build 171228) to 3.0.2 (build 180110) Jan 10, 2018
+-New feature: Else part in Expression Manager function optional (#895) (Denis Chenu)
+-Fixed issue #13108: Property "Template.creator" is not defined. (#908) (Tõnis Ormisson
+-Fixed issue #12934: Date field does not show calendar (markusfluer)
+-Fixed issue #13105: Tutor looks bad, buttons are overlapping (markusfluer)
+-Fixed issue #13106: SQL error when installing 3.0.1 (markusfluer)
+-Fixed issue #13111: Google Analytics (markusfluer)
+-Fixed issue #13113: export_responses returns page error as response (#910) (Tõnis Ormisson
+-Fixed issue #13117: Statistics cannot be shown (Olle Haerstedt)
+-Fixed issue #13120: Cant change to custom default survey template (LouisGac)
+-Fixed issue #13120: Cant use dash in template name (LouisGac)
+-Fixed issue #13131: Edit survey participant --> "Invitation sent?" and "Reminder Sent" can't be reset (markusfluer)
+-Fixed issue #13133: Can not edit qustion advanced settings on activated survey (markusfluer)
+-Fixed issue #13136: Can't remove end URL (markusfluer)
+-Fixed issue #13144: Remove 'Create theme' button (should only extend) (Olle Haerstedt)
+-Fixed issue #13147: No clearall confirmation (Olle Haerstedt)
+-Fixed issue #13149: Tour does not work when using urlFormat path (markusfluer)
+-Fixed issue: Better handling of email in LDAP account creation (Carsten Schmitz)
+-Fixed issue: End tour button seemed out of place Redirection not working in tour (markusfluer)
+-Fixed issue: Faulty Postgres id seq during db upgrade (Olle Haerstedt)
+-Fixed issue: Label set import broken (Carsten Schmitz)
+-Fixed issue: Multiple errors on IE11 (markusfluer)
+-Fixed issue: Multiple issues when updating using Postgres (Olle Haerstedt)
+-Fixed issue: Registration did not redirect to successpage (markusfluer)
+-Fixed issue: Translation not properly shown (Carsten Schmitz)
+-Fixed issue: Non webserver authentication (Pablo Garcia)
+-Fixed issue: Can't save question custom attributes for question themes (LouisGac)
+-Fixed issue: checkPassword throwing ERROR_PASSWORD_INVALID when credentials are ok. (Pablo Garcia)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han, kpadm
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by holch, jjesusfilho
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by c_schmitz
+
 Changes from 3.0.0 (build 171222) to 3.0.1 (build 171228) Dec 28, 1017
 -Fixed issue #12998: Text noise <###begin###> visible after db upgrade (markusfluer)
 -Fixed issue #13087: Template carousel button has different fonts (markusfluer)

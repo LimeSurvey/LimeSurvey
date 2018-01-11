@@ -39,6 +39,7 @@ class InstallerController extends CController
     public $lang = null;
 
     public $layout = 'installer';
+
     /**
      * Checks for action specific authorization and then executes an action
      *
@@ -673,6 +674,123 @@ class InstallerController extends CController
     }
 
     /**
+     * check image HTML template
+     *
+     * @param bool $result
+     * @return string Span with check if $result is true; otherwise a span with warning
+     */
+    public function check_HTML_image($result)
+    {
+        if ($result) {
+            return "<span class='fa fa-check text-success' alt='right'></span>";
+        } else {
+            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+        }
+    }
+
+    /**
+     * @param string $sDirectory
+     */
+    public function is_writable_recursive($sDirectory)
+    {
+        $sFolder = opendir($sDirectory);
+        if ($sFolder === false) {
+            return false; // Dir does not exist
+        }
+        while ($sFile = readdir($sFolder)) {
+            if ($sFile != '.' && $sFile != '..' &&
+                (!is_writable($sDirectory."/".$sFile) ||
+                (is_dir($sDirectory."/".$sFile) && !$this->is_writable_recursive($sDirectory."/".$sFile)))) {
+                closedir($sFolder);
+                return false;
+            }
+        }
+        closedir($sFolder);
+        return true;
+    }
+
+    /**
+     * check for a specific PHPFunction, return HTML image
+     *
+     * @param string $sFunctionName
+     * @param string $sImage return
+     * @return bool result
+     */
+    public function checkPHPFunction($sFunctionName, &$sImage)
+    {
+        $bExists = function_exists($sFunctionName);
+        $sImage = $this->check_HTML_image($bExists);
+        return $bExists;
+    }
+
+    /**
+     * check if file or directory exists and is writeable, returns via parameters by reference
+     *
+     * @param string $path file or directory to check
+     * @param int $type 0:undefined (invalid), 1:file, 2:directory
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @param string $aData
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
+    {
+        $bResult = false;
+        $aData[$base.'Present'] = 'Not Found';
+        $aData[$base.'Writable'] = '';
+        switch ($type) {
+            case 1:
+                $exists = is_file($path);
+                break;
+            case 2:
+                $exists = is_dir($path);
+                break;
+            default:
+                throw new Exception('Invalid type given.');
+        }
+        if ($exists) {
+            $aData[$base.'Present'] = 'Found';
+            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->is_writable_recursive($path))) {
+                $aData[$base.'Writable'] = 'Writable';
+                $bResult = true;
+            } else {
+                $aData[$base.'Writable'] = 'Unwritable';
+            }
+        }
+        $bResult || $aData[$keyError] = true;
+
+        return $bResult;
+    }
+
+    /**
+     * check if file exists and is writeable, returns via parameters by reference
+     *
+     * @param string $file to check
+     * @param string $data to manipulate
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkFileWriteable($file, &$data, $base, $keyError)
+    {
+        return $this->checkPathWriteable($file, 1, $data, $base, $keyError);
+    }
+
+    /**
+     * check if directory exists and is writeable, returns via parameters by reference
+     *
+     * @param string $directory to check
+     * @param string $data to manipulate
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkDirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
+    {
+        return $this->checkPathWriteable($directory, 2, $data, $base, $keyError, $bRecursive);
+    }
+
+    /**
      * check requirements
      *
      * @return bool requirements met
@@ -682,123 +800,6 @@ class InstallerController extends CController
         // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
         $bProceed = true; //lets be optimistic!
 
-        /**
-         * check image HTML template
-         *
-         * @param bool $result
-         * @return string Span with check if $result is true; otherwise a span with warning
-         */
-        function check_HTML_image($result)
-        {
-            if ($result) {
-                return "<span class='fa fa-check text-success' alt='right'></span>";
-            } else {
-                return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
-            }
-        }
-
-
-        /**
-         * @param string $sDirectory
-         */
-        function is_writable_recursive($sDirectory)
-        {
-            $sFolder = opendir($sDirectory);
-            if ($sFolder === false) {
-                return false; // Dir does not exist
-            }
-            while ($sFile = readdir($sFolder)) {
-                if ($sFile != '.' && $sFile != '..' &&
-                    (!is_writable($sDirectory."/".$sFile) ||
-                    (is_dir($sDirectory."/".$sFile) && !is_writable_recursive($sDirectory."/".$sFile)))) {
-                    closedir($sFolder);
-                    return false;
-                }
-            }
-            closedir($sFolder);
-            return true;
-        }
-
-        /**
-         * check for a specific PHPFunction, return HTML image
-         *
-         * @param string $sFunctionName
-         * @param string $sImage return
-         * @return bool result
-         */
-        function check_PHPFunction($sFunctionName, &$sImage)
-        {
-            $bExists = function_exists($sFunctionName);
-            $sImage = check_HTML_image($bExists);
-            return $bExists;
-        }
-
-        /**
-         * check if file or directory exists and is writeable, returns via parameters by reference
-         *
-         * @param string $path file or directory to check
-         * @param int $type 0:undefined (invalid), 1:file, 2:directory
-         * @param string $base key for data manipulation
-         * @param string $keyError key for error data
-         * @param string $aData
-         * @return bool result of check (that it is writeable which implies existance)
-         */
-        function check_PathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
-        {
-            $bResult = false;
-            $aData[$base.'Present'] = 'Not Found';
-            $aData[$base.'Writable'] = '';
-            switch ($type) {
-                case 1:
-                    $exists = is_file($path);
-                    break;
-                case 2:
-                    $exists = is_dir($path);
-                    break;
-                default:
-                    throw new Exception('Invalid type given.');
-            }
-            if ($exists) {
-                $aData[$base.'Present'] = 'Found';
-                if ((!$bRecursive && is_writable($path)) || ($bRecursive && is_writable_recursive($path))) {
-                    $aData[$base.'Writable'] = 'Writable';
-                    $bResult = true;
-                } else {
-                    $aData[$base.'Writable'] = 'Unwritable';
-                }
-            }
-            $bResult || $aData[$keyError] = true;
-
-            return $bResult;
-        }
-
-        /**
-         * check if file exists and is writeable, returns via parameters by reference
-         *
-         * @param string $file to check
-         * @param string $data to manipulate
-         * @param string $base key for data manipulation
-         * @param string $keyError key for error data
-         * @return bool result of check (that it is writeable which implies existance)
-         */
-        function check_FileWriteable($file, &$data, $base, $keyError)
-        {
-            return check_PathWriteable($file, 1, $data, $base, $keyError);
-        }
-
-        /**
-         * check if directory exists and is writeable, returns via parameters by reference
-         *
-         * @param string $directory to check
-         * @param string $data to manipulate
-         * @param string $base key for data manipulation
-         * @param string $keyError key for error data
-         * @return bool result of check (that it is writeable which implies existance)
-         */
-        function check_DirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
-        {
-            return check_PathWriteable($directory, 2, $data, $base, $keyError, $bRecursive);
-        }
 
         //  version check
         if (version_compare(PHP_VERSION, '5.5.9', '<')) {
@@ -811,34 +812,34 @@ class InstallerController extends CController
 
 
         // mbstring library check
-        if (!check_PHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
+        if (!$this->checkPHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
                     $bProceed = false;
         }
 
         // zlib library check    
-        if (!check_PHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
+        if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
             $bProceed = false;
         }
 
         // JSON library check
-        if (!check_PHPFunction('json_encode', $aData['bJSONPresent'])) {
+        if (!$this->checkPHPFunction('json_encode', $aData['bJSONPresent'])) {
                     $bProceed = false;
         }
 
         // ** file and directory permissions checking **
 
         // config directory
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror')) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror')) {
             $bProceed = false;
         }
 
         // templates directory check
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $aData, 'tmpdir', 'tperror', true)) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $aData, 'tmpdir', 'tperror', true)) {
             $bProceed = false;
         }
 
         //upload directory check
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror', true)) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror', true)) {
             $bProceed = false;
         }
 
@@ -846,7 +847,7 @@ class InstallerController extends CController
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null) === 'save');
         $aData['sessionWritable'] = $sessionWritable;
-        $aData['sessionWritableImg'] = check_HTML_image($sessionWritable);
+        $aData['sessionWritableImg'] = $this->check_HTML_image($sessionWritable);
         if (!$sessionWritable) {
             // For recheck, try to set the value again
             $session['saveCheck'] = 'save';
@@ -857,21 +858,21 @@ class InstallerController extends CController
 
         // gd library check
         if (function_exists('gd_info')) {
-            $aData['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+            $aData['gdPresent'] = $this->check_HTML_image(array_key_exists('FreeType Support', gd_info()));
         } else {
-            $aData['gdPresent'] = check_HTML_image(false);
+            $aData['gdPresent'] = $this->check_HTML_image(false);
         }
         // ldap library check
-        check_PHPFunction('ldap_connect', $aData['ldapPresent']);
+        $this->checkPHPFunction('ldap_connect', $aData['ldapPresent']);
 
         // php zip library check
-        check_PHPFunction('zip_open', $aData['zipPresent']);
+        $this->checkPHPFunction('zip_open', $aData['zipPresent']);
 
         // zlib php library check
-        check_PHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
+        $this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
 
         // imap php library check
-        check_PHPFunction('imap_open', $aData['bIMAPPresent']);
+        $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
 
         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();

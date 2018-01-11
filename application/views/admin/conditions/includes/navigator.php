@@ -31,9 +31,7 @@
 <?php
 App()->getClientScript()->registerScript('conditionmovetoquestion', 
 "$('#questionNav').off('.conditionmovetoquestion').on('change.conditionmovetoquestion', function(e){
-    var triggerEvent = new Event('pjax:load');
-    triggerEvent.url = $(this).val();
-    window.dispatchEvent( triggerEvent );
+    $(document).trigger('pjax:load', {url : $(this).val()});
 });", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
 

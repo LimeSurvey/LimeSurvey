@@ -56,13 +56,13 @@ module.exports = {
             exclude: /(node_modules|bower_components)/,
             loader: [
                 'eslint-loader',
-                'babel'
+                'babel-loader'
             ],
             options: {
                 data: '$env: ' + process.env.NODE_ENV + ';'
             },
             query: {
-                presets: ['es2015']
+                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
             }
         },
         {

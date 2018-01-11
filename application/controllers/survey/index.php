@@ -51,7 +51,7 @@ class index extends CAction
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         if (is_null($thissurvey) && !is_null($surveyid)) {
-                    $thissurvey = getSurveyInfo($surveyid);
+            $thissurvey = getSurveyInfo($surveyid);
         }
 
         // unused vars in this method (used in methods using compacted method vars)
