@@ -70,9 +70,9 @@ function updateset($lid)
         }
         $criteria->mergeWith($langcriteria);
 debugbreak();
-        $aLabels=Label::model()->with('labelL10ns')->together()->findAll($criteria);
+        $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
         foreach ($aLabels as $aLabel) {
-            foreach ($aLabel->labelL10ns as $aLabelL10ns){
+            foreach ($aLabel->labelL10ns as $aLabelL10ns) {
                 $aLabelL10ns->delete();
             }
         } 
@@ -123,9 +123,9 @@ function modlabelsetanswers($lid)
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc()) {
-        $data = json_decode(stripslashes($sPostData),true);
+        $data = json_decode(stripslashes($sPostData), true);
     } else {
-        $data = json_decode($sPostData,true);
+        $data = json_decode($sPostData, true);
     }
 
     if ($ajax) {
@@ -135,8 +135,8 @@ function modlabelsetanswers($lid)
     if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
 
         // First delete all labels without corresponding code
-        $aLabels=Label::model()->findAllByAttributes(['lid'=>$lid]);
-        foreach($aLabels as $aLabel)
+        $aLabels = Label::model()->findAllByAttributes(['lid'=>$lid]);
+        foreach ($aLabels as $aLabel)
         {
 //            if {}
         }

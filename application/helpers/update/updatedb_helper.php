@@ -1025,11 +1025,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
            
 
-           // Extend language field on labelsets
-           alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+            // Extend language field on labelsets
+            alterColumn('{{labelsets}}', 'languages', "string(255)", false);
 
             // Extend question type field length
-            alterColumn('{{questions}}','type','string(30)',false,'T');
+            alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
             
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
