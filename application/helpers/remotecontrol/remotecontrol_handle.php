@@ -355,7 +355,7 @@ class remotecontrol_handle
      * * Always
      *     * sid
      *     * active
-     *     * additional_languages
+     *     * language
      * * If survey is active
      *     * anonymized
      *     * datestamp
@@ -385,7 +385,7 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
                 unset($aSurveyData['active']);
-                unset($aSurveyData['additional_languages']);
+                unset($aSurveyData['language']);
                 // Remove invalid fields
                 $aDestinationFields = array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData = array_intersect_key($aSurveyData, $aDestinationFields);
