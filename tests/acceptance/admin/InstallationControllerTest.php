@@ -13,8 +13,7 @@
 
 namespace LimeSurvey\tests\acceptance\admin;
 
-use LimeSurvey\tests\DummyController;
-use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-24
