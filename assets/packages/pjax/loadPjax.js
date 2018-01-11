@@ -53,9 +53,9 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
         $('a.pjax').off('click');
         window.activePjax = null;
     },
-    triggerLoadUrl = function(e){        
+    triggerLoadUrl = function(e,data){      
         var currentPjax = singletonPjax();
-        currentPjax.loadUrl(e.url, singletonPjax().options);
+        currentPjax.loadUrl(data.url, singletonPjax().options);
     },
     reparseDocument = function(){
         var currentPjax = singletonPjax();
