@@ -94,19 +94,19 @@ class LabelSet extends LSActiveRecord
     }
     
     /**
-    * Recursively deletes a label set including labels and localizations
-    * 
-    * @param integer $id The label set ID
-    */
+     * Recursively deletes a label set including labels and localizations
+     * 
+     * @param integer $id The label set ID
+     */
     public function deleteLabelSet($id)
     {
-        $arLabelSet=$this->findByPk($id);
+        $arLabelSet = $this->findByPk($id);
         if (empty($arLabelSet)) {
             return false;
         }
-        foreach($arLabelSet->labels as $arLabel)
+        foreach ($arLabelSet->labels as $arLabel)
         {
-            foreach($arLabel->labelL10ns as $arLabelL10n)
+            foreach ($arLabel->labelL10ns as $arLabelL10n)
             {
                 $arLabelL10n->delete();    
             }

@@ -141,7 +141,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
-            $oldqid = $insertdata['qid'];  // save the old qid
+            $oldqid = $insertdata['qid']; // save the old qid
             unset($insertdata['qid']); 
 
             if ($insertdata) {
@@ -580,7 +580,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
         $insertdata['sid'] = $iNewSID;
         $insertdata['gid'] = $newgid;
         $insertdata['question_order'] = $newquestionorder;
-        $iOldQID = $insertdata['qid'];  // save the old qid
+        $iOldQID = $insertdata['qid']; // save the old qid
         unset($insertdata['qid']); 
 
         // now translate any links
@@ -929,7 +929,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     $results['labelsets'] = 0;
     $results['labels'] = 0;
     $results['warnings'] = array();
-    $aImportedLabelSetIDs= array();
+    $aImportedLabelSetIDs = array();
 
     // Import label sets table ===================================================================================
     foreach ($xml->labelsets->rows->row as $row) {
@@ -941,12 +941,12 @@ function XMLImportLabelsets($sFullFilePath, $options)
         unset($insertdata['lid']); // save the old qid
 
         // Insert the new question
-        $arLabelset= new LabelSet();
+        $arLabelset = new LabelSet();
         $arLabelset->setAttributes($insertdata);
         $arLabelset->save();
         $aLSIDReplacements[$iOldLabelSetID] = $arLabelset->lid; // add old and new lsid to the mapping array
         $results['labelsets']++;
-        $aImportedLabelSetIDs[]=$arLabelset->lid;
+        $aImportedLabelSetIDs[] = $arLabelset->lid;
     }
 
     // Import labels table ===================================================================================
@@ -959,22 +959,22 @@ function XMLImportLabelsets($sFullFilePath, $options)
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
             if ($iDBVersion < 350) {
-                $insertdataLS['title'] =$insertdata['title']; 
-                $insertdataLS['language'] =$insertdata['language']; 
+                $insertdataLS['title'] = $insertdata['title']; 
+                $insertdataLS['language'] = $insertdata['language']; 
                 unset ($insertdata['title']);
                 unset ($insertdata['language']);
             } else {
-                $iOldLabelID=$insertdata['id'];
+                $iOldLabelID = $insertdata['id'];
             }
             unset ($insertdata['id']);
             
             if ($iDBVersion < 350) {
                 $findLabel = Label::model()->findByAttributes($insertdata);
                 if (empty($findLabel)) {
-                    $arLabel= new Label();
+                    $arLabel = new Label();
                     $arLabel->setAttributes($insertdata);
                     $arLabel->save();
-                    $insertdataLS['label_id']=$arLabel->id;
+                    $insertdataLS['label_id'] = $arLabel->id;
                 } else {
                     $insertdataLS['label_id'] = $findLabel->id;
                 }
@@ -982,10 +982,10 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $arLabelL10n->setAttributes($insertdataLS);
                 $arLabelL10n->save();
             } else {
-                $arLabel= new Label();
+                $arLabel = new Label();
                 $arLabel->setAttributes($insertdata);
                 $arLabel->save();
-                $aLIDReplacements[$iOldLabelID]=$arLabel->id;
+                $aLIDReplacements[$iOldLabelID] = $arLabel->id;
             }
             
             $results['labels']++;
@@ -1015,10 +1015,10 @@ function XMLImportLabelsets($sFullFilePath, $options)
         $aCounts=array_count_values($aLabelSetCheckSums);
         foreach ($aImportedLabelSetIDs as $iLabelSetID)
         {
-           if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1)
-           {
-               LabelSet::model()->deleteLabelSet($iLabelSetID);
-           }
+            if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1)
+            {
+                LabelSet::model()->deleteLabelSet($iLabelSetID);
+            }
         }
 
         //END CHECK FOR DUPLICATES
