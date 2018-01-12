@@ -131,7 +131,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function lsdefault($attribute)
     {
-        $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
+        $oSurvey = Survey::findOne($this->surveyls_survey_id);
         $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
         $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 

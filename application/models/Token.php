@@ -142,7 +142,7 @@ abstract class Token extends Dynamic
         }
 
         // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
+        $tokenattributefieldnames = Survey::findOne($surveyId)->getTokenAttributes();
         foreach ($tokenattributefieldnames as $attrname=>$attrdetails) {
             if (!isset($fields[$attrname])) {
                 $fields[$attrname] = 'text';

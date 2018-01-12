@@ -33,7 +33,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Survey::findOne($sid);
         if ($survey) {
             self::sid($survey->sid);
             self::$survey = $survey;

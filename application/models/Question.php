@@ -181,7 +181,7 @@ class Question extends LSActiveRecord
      */
     public static function updateSortOrder($gid, $surveyid)
     {
-        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order'=>'question_order'));
+        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::findOne($surveyid)->language), array('order'=>'question_order'));
         $p = 0;
         foreach ($questions as $question) {
             $question->question_order = $p;
@@ -229,7 +229,7 @@ class Question extends LSActiveRecord
     public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage = null)
     {
         if (is_null($sLanguage)) {
-            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            $aLanguages = array_merge(array(Survey::findOne($iSurveyID)->language), Survey::findOne($iSurveyID)->additionalLanguages);
         } else {
             $aLanguages = array($sLanguage);
         }
@@ -819,7 +819,7 @@ class Question extends LSActiveRecord
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
         }
 
-        $oSurvey = Survey::model()->findByPk($this->sid);
+        $oSurvey = Survey::findOne($this->sid);
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
@@ -1021,7 +1021,7 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+            $surveyIsActive = Survey::findOne($this->sid)->active !== 'N';
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }

@@ -161,8 +161,8 @@ class QuestionGroup extends LSActiveRecord
     {
         $aFirstRecord = reset($aQuestionGroupData);
         $iSurveyID = $aFirstRecord['sid'];
-        $sBaseLangauge = Survey::model()->findByPk($iSurveyID)->language;
-        $aAdditionalLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $sBaseLangauge = Survey::findOne($iSurveyID)->language;
+        $aAdditionalLanguages = Survey::findOne($iSurveyID)->additionalLanguages;
         $aSurveyLanguages = array($sBaseLangauge) + $aAdditionalLanguages;
         $bFirst = true;
         $iGroupID = null;
@@ -187,7 +187,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public function getGroups($surveyid)
     {
-        $language = Survey::model()->findByPk($surveyid)->language;
+        $language = Survey::findOne($surveyid)->language;
         return Yii::app()->db->createCommand()
             ->select(array('gid', 'group_name'))
             ->from($this->tableName())
@@ -206,7 +206,7 @@ class QuestionGroup extends LSActiveRecord
     public static function deleteWithDependency($groupId, $surveyId)
     {
         // Abort if the survey is active
-        $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
+        $surveyIsActive = Survey::findOne($surveyId)->active !== 'N';
         if ($surveyIsActive) {
             Yii::app()->user->setFlash('error', gt("Can't delete question group when the survey is active"));
             return null;
@@ -275,7 +275,7 @@ class QuestionGroup extends LSActiveRecord
     public function getbuttons()
     {
         // Find out if the survey is active to disable add-button
-        $oSurvey = Survey::model()->findByPk($this->sid);
+        $oSurvey = Survey::findOne($this->sid);
         $surveyIsActive = $oSurvey->active !== 'N';
         $button = '';
 
@@ -371,7 +371,7 @@ class QuestionGroup extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+            $surveyIsActive = Survey::findOne($this->sid)->active !== 'N';
             if ($surveyIsActive && $this->getIsNewRecord()) {
 /* And for multi lingual, when add a new language ? */
                 $this->addError('gid', gT("You can not add a group if survey is active."));

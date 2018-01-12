@@ -123,7 +123,7 @@ class SurveymenuEntryData extends CFormModel
     private function _getValueForLinkData($getDataPair)
     {
 
-        $oSurvey = Survey::model()->findByPk($this->surveyid);
+        $oSurvey = Survey::findOne($this->surveyid);
         list($type, $attribute) = $getDataPair;
         $oTypeObject = null;
         switch ($type) {

@@ -43,7 +43,7 @@
          */
         public function getFiles()
         {
-            $survey = Survey::model()->findByPk($this->dynamicId);
+            $survey = Survey::findOne($this->dynamicId);
             $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$survey->language));
             $files = array();
             foreach ($questions as $question) {
