@@ -12,6 +12,7 @@
 *
 */
 namespace LimeSurvey\Helpers;
+use Question;
 
 /**
  * General helper class for question + question setting system
