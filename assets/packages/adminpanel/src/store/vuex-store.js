@@ -19,7 +19,6 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
@@ -84,9 +83,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;

@@ -110,7 +110,8 @@
   #sidebar .dragPointer {
     cursor: move; }
   #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
-    display: inline-flex; }
+    display: inline-flex;
+    flex-wrap: wrap; }
   #sidebar .question_text_ellipsize {
     display: inline-block;
     text-overflow: ellipsis;
