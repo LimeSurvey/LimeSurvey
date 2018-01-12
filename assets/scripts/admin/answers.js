@@ -414,7 +414,7 @@ function lsbrowser(e)
 
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
         var x=0;
-        $("#labelsets").removeOption(/.*/);
+        // $("#labelsets").removeOption(/.*/);
         for (x in json)
             {
             $('#labelsets').addOption(json[x][0],json[x][1]);
