@@ -125,8 +125,8 @@
         <?php echo  getEditor("editanswer","answer_".$oAnswer->language."_".$oAnswer->qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$oAnswer->language.")",$oAnswer->question->sid,$oAnswer->group->gid,$oAnswer->qid,'editanswer'); ?>
 
         <?php if ( $first):?>
-            <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?= $oAnswer->code;?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-            <span class="fa fa-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success " data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></i></button>
+            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></i></button>
         <?php endif; ?>
     </td>
 </tr>
