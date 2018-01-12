@@ -1161,7 +1161,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case Question::QT_L_LIST_DROPDOWN:
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
-            case "^": // @todo Fix me
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING_STYLE:
                 $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
