@@ -1175,7 +1175,7 @@ class questionHelper
         );
 
         self::$attributes["scale_export"] = array(
-        "types"=>Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_L_LIST_DROPDOWN . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_W . Question::QT_Y_YES_NO_RADIO . Question::QT_Z_LIST_RADIO_FLEXIBLE . Question::QT_1_ARRAY_MULTISCALE . Question::QT_EXCLAMATION_LIST_DROPDOWN . .Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS. Question::QT_ASTERISK_EQUATION,
+        "types"=>Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_L_LIST_DROPDOWN . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_W . Question::QT_Y_YES_NO_RADIO . Question::QT_Z_LIST_RADIO_FLEXIBLE . Question::QT_1_ARRAY_MULTISCALE . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS. Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Other'),
             'sortorder'=>100,
             'inputtype'=>'singleselect',
