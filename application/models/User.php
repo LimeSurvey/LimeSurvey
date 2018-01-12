@@ -299,14 +299,13 @@ class User extends LSActiveRecord
      * Return all super admins in the system
      * @return User[]
      */
-    public function getSuperAdmins()
+    public static function getSuperAdmins()
     {
-        // TODO should be static
         $criteria = new CDbCriteria();
         $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
         $criteria->addCondition('p.permission = \'superadmin\'');
         /** @var User[] $users */
-        $users = $this->findAll($criteria);
+        $users = User::model()->findAll($criteria);
         return $users;
     }
 

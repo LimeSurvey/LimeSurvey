@@ -1165,6 +1165,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function copy()
     {
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
@@ -1252,7 +1253,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             if ($action == 'importsurvey' && !$aData['bFailed']) {
-                $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'));
+                $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'), $user);
                 if (is_null($aImportResults)) {
                     $aImportResults = array(
                         'error'=>gT("Unknown error while reading the file, no survey created.")
@@ -1260,7 +1261,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
             } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
 
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
+                $aImportResults = XMLImportSurvey('', $user, $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance'=>'1'), 'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'), 'sid='.$aImportResults['newsid']);
@@ -1488,7 +1489,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_generalTabNewSurvey()
      * Load "General" tab of new survey screen.
-     * @return
+     * @return array
      */
     private function _generalTabNewSurvey()
     {
@@ -1521,7 +1522,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aRadixPointData[$index] = $radixptdata['desc'];
         }
         $aData['aRadixPointData'] = $aRadixPointData;
-
+        $aDateFormatData = [];
         foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) {
             $aDateFormatData[$index] = $dateformatdata['dateformat'];
         }

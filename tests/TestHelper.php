@@ -19,6 +19,7 @@ class TestHelper extends TestCase
     /**
      * Import all helpers etc.
      * @return void
+     * @throws \CException
      */
     public function importAll()
     {
@@ -26,7 +27,6 @@ class TestHelper extends TestCase
         \Yii::import('application.helpers.replacements_helper', true);
         \Yii::import('application.helpers.surveytranslator_helper', true);
         \Yii::import('application.helpers.admin.import_helper', true);
-        \Yii::import('application.helpers.expressions.em_manager_helper', true);
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         \Yii::import('application.helpers.qanda_helper', true);
         \Yii::import('application.helpers.update.updatedb_helper', true);

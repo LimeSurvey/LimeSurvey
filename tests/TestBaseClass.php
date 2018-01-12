@@ -3,6 +3,8 @@
 namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
+use User;
+use Yii;
 
 class TestBaseClass extends TestCase
 {
@@ -48,10 +50,13 @@ class TestBaseClass extends TestCase
     /**
      * @param string $fileName
      * @return void
+     * @throws \CException
      */
     protected static function importSurvey($fileName)
     {
         \Yii::app()->session['loginID'] = 1;
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
             echo 'Fatal error: found no survey file';
@@ -63,6 +68,7 @@ class TestBaseClass extends TestCase
         $result = \importSurveyFile(
             $surveyFile,
             $translateLinksFields,
+            $user,
             $newSurveyName,
             null
         );

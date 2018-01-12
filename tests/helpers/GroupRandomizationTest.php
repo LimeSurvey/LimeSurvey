@@ -4,6 +4,8 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverBy;
+use Yii;
+use User;
 
 /**
  * @since 2017-11-02
@@ -17,6 +19,8 @@ class GroupRandomizationTest extends TestBaseClassWeb
     public static $surveyId = null;
 
     /**
+     * @throws \CException
+     * @throws \Exception
      */
     public static function setupBeforeClass()
     {
@@ -25,6 +29,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
         self::$testHelper->connectToOriginalDatabase();
 
         \Yii::app()->session['loginID'] = 1;
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
@@ -38,6 +43,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
             $result = importSurveyFile(
                 $surveyFile,
                 $translateLinksFields,
+                $user,
                 $newSurveyName,
                 null
             );

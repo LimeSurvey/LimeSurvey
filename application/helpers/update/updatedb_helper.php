@@ -965,7 +965,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Notification::model()->refreshMetaData();
 
     // Inform  superadmin about update
-    $superadmins = User::model()->getSuperAdmins();
+    $superadmins = User::getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
 
     Notification::broadcast(array(
