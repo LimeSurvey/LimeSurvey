@@ -35,6 +35,30 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.0.2 (build 180110) to 3.0.3 (build 180112) Jan 12, 2018
+-Fixed a small typo (gekkedev)
+-Fixed issue #12223: Exporting database does not name columns for attributes (Matthew)
+-Fixed issue #13134: Some Expression Manager vars not rendered (LouisGac)
+-Fixed issue #13157: Exporting results with active timings results in an SQL error (Olle Haerstedt)
+-Fixed issue #13159: Cannot access logic file (Olle Haerstedt)
+-Fixed issue #13163: Can't add answer option to Single Choice Question (Olle Haerstedt)
+-Fixed issue #13166: Survey theme editor - Animate checkboxes (fruity only) (markusfluer)
+-Fixed issue: Labelsets not working correctly (markusfluer)
+-Fixed issue: Question navigator not working (Carsten Schmitz)
+-Fixed issue: labelsets not working on firefox (markusfluer)
+-Fixed issue: links in sidemenu to questions doen't work (Markus Flür)
+-Fixed issue: theme.js not loaded (LouisGac)
+-Fixed issue:vertical scrollbar in structure view (markusfluer)
+-fixed issue #13156: Some Variables are not working in ongoing survey: ASSESSMENT_CURRENT_TOTAL and TOKEN:TOKEN (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Thai by tomzt
+
+
 Changes from 3.0.1 (build 171228) to 3.0.2 (build 180110) Jan 10, 2018
 -New feature: Else part in Expression Manager function optional (#895) (Denis Chenu)
 -Fixed issue #13108: Property "Template.creator" is not defined. (#908) (Tõnis Ormisson
