@@ -471,7 +471,7 @@ class RegisterController extends LSYii_Controller
     }
     /**
      * Get the date if survey is future
-     * @param $iSurveyId
+     * @param integer $iSurveyId
      * @return null|string date
      */
     public function getStartDate($iSurveyId)
@@ -488,6 +488,7 @@ class RegisterController extends LSYii_Controller
     /**
      * Display needed public page
      * @param $iSurveyId
+     * @param string $registerContent
      */
     private function display($iSurveyId, $iTokenId = null, $registerContent)
     {

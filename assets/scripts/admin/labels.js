@@ -41,9 +41,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
-    $(document).on('click', '.btnaddanswer', add_label);
-    $(document).on('click', '.btndelanswer', del_label);
-    $(document).on('keyup change', '.codeval,.assessmentval', sync_label);
+    $('.btnaddanswer').on('click', add_label);
+    $('.btndelanswer').on('click', del_label);
+    $('.codeval').on('keyup change', sync_label);
+    $('.assessmentval').on('keyup change', sync_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -217,7 +218,6 @@ function add_label(event)
 {
     if(event!=undefined)
     {
-        event.preventDefault();
         if ($(event.target).closest('tr').find('.codeval').size()>0)
         {
             next_code=getNextCode($(event.target).closest('tr').find('.codeval').val());

@@ -44,9 +44,7 @@ if (!defined('BASEPATH')) {
  */
 class Question extends LSActiveRecord
 {
-
-
-  const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
+    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
     const QT_5_POINT_CHOICE = '5';
     const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
     const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // ARRAY OF 10 POINT CHOICE QUESTIONS
@@ -265,7 +263,7 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = questionHelper::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
 
