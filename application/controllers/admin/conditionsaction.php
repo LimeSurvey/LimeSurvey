@@ -1589,7 +1589,6 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         }
                     } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
                         $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
-                        $rows['type'] != QT_J &&
                         $rows['type'] != Question::QT_I_LANGUAGE ) {
                         // For dropdown questions
                         // optinnaly add the 'Other' answer

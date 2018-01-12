@@ -191,10 +191,11 @@ class Condition extends LSActiveRecord
 
     public function getConditionsQuestions($distinctrow, $deqrow, $scenariorow, $surveyprintlang)
     {
-        $conquery = "SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
-        ."FROM {{conditions}} c, {{questions}} q "
-        ."WHERE c.cqid=q.qid "
-        ."AND c.cqid=:distinctrow "
+        $conquery = "SELECT cid, cqid, q.title, question, value, q.type, cfieldname "
+        ."FROM {{conditions}} c " 
+        ."JOIN {{questions}} q on c.cqid=q.qid "
+        ."JOIN {{question_l10ns}} l on l.qid=q.qid "
+        ."WHERE c.cqid=:distinctrow "
         ."AND c.qid=:deqrow "
         ."AND c.scenario=:scenariorow "
         ."AND language=:surveyprintlang ";

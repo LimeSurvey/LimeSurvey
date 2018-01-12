@@ -330,11 +330,11 @@ case Question::QT_G_GENDER_DROPDOWN:
                                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     case Question::QT_O_LIST_WITH_COMMENT:
                                     case Question::QT_R_RANKING_STYLE:
-                                        $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sLanguageCode}'";
+                                        $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
                                         $ansresult = Answer::model()->findAll($condition);
 
                                         foreach ($ansresult as $ansrow) {
-                                            $conditions[] = $ansrow['answer'];
+                                            $conditions[] = $ansrow->answerL10ns[$sLanguageCode]->answer;
                                         }
                                         if ($conrow['value'] == "-oth-") {
                                             $conditions[] = gT("Other");
@@ -343,10 +343,10 @@ case Question::QT_G_GENDER_DROPDOWN:
                                         break;
                                     case Question::QT_M_MULTIPLE_CHOICE:
                                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-                                        $condition = " parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$sLanguageCode}'";
+                                        $condition = " parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}'";
                                         $ansresult = Question::model()->findAll($condition);
                                         foreach ($ansresult as $ansrow) {
-                                            $conditions[] = $ansrow['question'];
+                                            $conditions[] = $ansrow->questionL10ns[$sLanguageCode]->question;
                                         }
                                         $conditions = array_unique($conditions);
                                         break;
@@ -357,10 +357,10 @@ case Question::QT_G_GENDER_DROPDOWN:
                                     case Question::QT_F_ARRAY_FLEXIBLE_ROW:
                                     case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                                     default:
-                                        $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sLanguageCode}'";
+                                        $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
                                         $fresult = Answer::model()->getAllRecords($condition);
                                         foreach ($fresult->readAll() as $frow) {
-                                            $conditions[] = $frow['answer'];
+                                            $conditions[] = $frow->answerL10ns[$sLanguageCode]->answer;
                                         } // while
                                         break;
                                 } // switch
@@ -441,7 +441,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                             // Following line commented out because answer_section  was lost, but is required for some question types
                             //$explanation .= " ".gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if ($distinctrow['cqid']) {
-                                $sExplanation .= " <span class='scenario-at-separator'>".gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)";
+                                $sExplanation .= " <span class='scenario-at-separator'>".gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult->questionL10ns[$sLanguageCode]->question)."$answer_section)";
                             } else {
                                 $sExplanation .= " ".$distinctrow['value'];
                             }
@@ -594,8 +594,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 $question['type_help'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose *only one* of the following:"));
                                 $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
-                                $dearesult = Answer::model()->getAllRecords(" qid='{$arQuestion['qid']}' AND language='{$sLanguageCode}' ", array('sortorder', 'answer'));
-                                $dearesult = $dearesult->readAll();
+                                $dearesult = Answer::model()->findAll("qid={$arQuestion['qid']}");
                                 $deacount = count($dearesult);
                                 if ($arQuestion['other'] == "Y") {$deacount++; }
 
@@ -608,15 +607,15 @@ case Question::QT_G_GENDER_DROPDOWN:
 
                                 foreach ($dearesult as $dearow) {
                                     if (isset($optCategorySeparator)) {
-                                        list ($category, $answer) = explode($optCategorySeparator, $dearow['answer']);
+                                        list ($category, $answer) = explode($optCategorySeparator, $dearow->answerL10ns[$sLanguageCode]->answer);
                                         if ($category != '') {
-                                            $dearow['answer'] = "($category) $answer ".self::_addsgqacode("(".$dearow['code'].")");
+                                            $dearow->answerL10ns[$sLanguageCode]->answer = "($category) $answer ".self::_addsgqacode("(".$dearow['code'].")");
                                         } else {
-                                            $dearow['answer'] = $answer.self::_addsgqacode(" (".$dearow['code'].")");
+                                            $dearow->answerL10ns[$sLanguageCode]->answer = $answer.self::_addsgqacode(" (".$dearow['code'].")");
                                         }
-                                        $question['answer'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
+                                        $question['answer'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow->answerL10ns[$sLanguageCode]->answer)."\n\t\t\t".$dearow->answerL10ns[$sLanguageCode]->answer."\n".$wrapper['item-end'];
                                     } else {
-                                        $question['answer'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow['answer'])."\n\t\t\t".$dearow['answer'].self::_addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
+                                        $question['answer'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio', $dearow->answerL10ns[$sLanguageCode]->answer)."\n\t\t\t".$dearow->answerL10ns[$sLanguageCode]->answer.self::_addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
                                     }
                                     ++$rowcounter;
                                     if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols']) {
@@ -682,8 +681,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 $question['type_help'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose *all* that apply:"));
                                 $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
-                                $mearesult = Question::model()->getAllRecords(" parent_qid='{$arQuestion['qid']}' AND language='{$sLanguageCode}' ", array('question_order'));
-                                $mearesult = $mearesult->readAll();
+                                $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
                                 $meacount = count($mearesult);
                                 if ($arQuestion['other'] == 'Y') {$meacount++; }
 
@@ -694,7 +692,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 $colcounter = 1;
 
                                 foreach ($mearesult as $mearow) {
-                                    $question['answer'] .= $wrapper['item-start'].self::_input_type_image('checkbox', $mearow['question'])."\n\t\t".$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
+                                    $question['answer'] .= $wrapper['item-start'].self::_input_type_image('checkbox', $mearow->questionL10ns[$sLanguageCode]->question)."\n\t\t".$mearow->questionL10ns[$sLanguageCode]->question.self::_addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
                                     ++$rowcounter;
                                     if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols']) {
                                         if ($colcounter == $wrapper['cols'] - 1) {
@@ -710,10 +708,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                     if (trim($qidattributes['other_replace_text'][$sLanguageCode]) == '') {
                                         $qidattributes["other_replace_text"][$sLanguageCode] = "Other";
                                     }
-                                    if (!isset($mearow['answer'])) {
-                                        $mearow['answer'] = "";
-                                    }
-                                    $question['answer'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox', $mearow['answer']).gT($qidattributes["other_replace_text"][$sLanguageCode]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
+                                    $question['answer'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox', '').gT($qidattributes["other_replace_text"][$sLanguageCode]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
                                 }
                                 $question['answer'] .= $wrapper['whole-end'];
                                 //                }
@@ -975,14 +970,13 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                                 $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                                 $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
-                                $fresult = Question::model()->getAllRecords(" parent_qid='{$arQuestion['qid']}' and scale_id=1 AND language='{$sLanguageCode}' ", array('question_order'));
-                                $fresult = $fresult->readAll();
+                                $fresult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' and scale_id=1");
                                 $fcount = count($fresult);
                                 $i = 0;
                                 //array to temporary store X axis question codes
                                 $xaxisarray = array();
                                 foreach ($fresult as $frow) {
-                                    $question['answer'] .= "\t\t\t<th>{$frow['question']}</th>\n";
+                                    $question['answer'] .= "\t\t\t<th>{$frow->questionL10ns[$sLanguageCode]->question]}</th>\n";
                                     $i++;
 
                                     //add current question code
@@ -992,7 +986,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 $a = 1; //Counter for pdfoutput
                                 $rowclass = 'ls-odd';
 
-                                $mearesult = Question::model()->getAllRecords(" parent_qid='{$arQuestion['qid']}' and scale_id=0 AND language='{$sLanguageCode}' ", array('question_order'));
+                                $mearesult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' and scale_id=0");
                                 $result = $mearesult->readAll();
                                 foreach ($result as $frow) {
                                     $question['answer'] .= "\t<tr class=\"$rowclass\">\n";

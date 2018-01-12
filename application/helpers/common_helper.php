@@ -1169,7 +1169,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 }
                 break;
             case Question::QT_M_MULTIPLE_CHOICE:
-            case QT_J:
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
             switch ($sValue) {
                 case "Y": $this_answer = gT("Yes", null, $sLanguage); break;
