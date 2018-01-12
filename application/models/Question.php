@@ -474,7 +474,7 @@ class Question extends LSActiveRecord
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
                 'class' => 'array-10-pt'
             ),
             Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array(
