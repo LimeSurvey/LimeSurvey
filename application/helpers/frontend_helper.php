@@ -1513,7 +1513,7 @@ function doAssessment($surveyid)
                 // Init Assessment Value
                 $assessmentValue = null;
 
-                if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_W,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
+                if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
                     $fieldmap[$field['fieldname']]['assessment_value'] = 0;
                     if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                     {

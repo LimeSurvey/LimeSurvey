@@ -119,7 +119,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "O" -> LIST WITH COMMENT
     //  # "M" -> Multiple choice
     //    # "P" -> Multiple choice with comments
-    //    # "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
+    //    # "A", "B", "C", "E", "F", "H" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
     //  # "I" -> LANGUAGE SWITCH
@@ -171,7 +171,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //Check that certain array question types have answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
     join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_W . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "') and q.parent_qid=0";
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);

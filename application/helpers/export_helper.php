@@ -407,7 +407,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_U_HUGE_FREE_TEXT=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
         Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_W=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
         Question::QT_Z_LIST_RADIO_FLEXIBLE=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
         Question::QT_L_LIST_DROPDOWN=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
         Question::QT_O_LIST_WITH_COMMENT=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
@@ -1718,10 +1717,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "H": //ARRAY (Flexible) - Column Format
                         quexml_create_subQuestions($question, $RowQ['qid'], $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, true, false, 0, $other, $sgq));
-                        $question->appendChild($response);
-                        break;
-                    case "^": //SLIDER CONTROL - not supported
-                        $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
                         $question->appendChild($response);
                         break;
                 } //End Switch
