@@ -120,6 +120,7 @@ switch ($errorObject->error)
     case 'cant_remove_deleted_files':
         $title = gT("Could not remove deleted files");
         $message =  gT("ComfortUpdate couldn't remove one or more files that were deleted with the update.");
+        $message .=  $errorObject->message;
         break;
 
     case 'cant_remove_deleted_directory':
@@ -145,20 +146,20 @@ switch ($errorObject->error)
 <div>
 
 <?php if( $buttons == 1 ): ?>
-        <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+        <a class="btn btn-default" href="https://www.limesurvey.org/editions-and-prices/limesurvey-ce/editions-and-prices-community" role="button" aria-disabled="false" target="_blank">
             <?php eT("Buy a new key"); ?>
         </a>
 
         <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-			<?php eT("Enter a new key"); ?>
+            <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
 <?php if( $buttons == 3 ): ?>
         <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-			<?php eT("Enter a new key"); ?>
+            <?php eT("Enter a new key"); ?>
         </a>
 <?php endif;?>
 <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
-	<?php eT("Cancel"); ?>
+    <?php eT("Cancel"); ?>
 </a>
 </div>

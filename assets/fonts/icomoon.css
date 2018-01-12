@@ -1,0 +1,479 @@
+
+@font-face {
+    font-family: 'icomoon';
+    src:url('./font-src/icomoon.eot?wnghtv');
+    src:url('./font-src/icomoon.eot?wnghtv#iefix') format('embedded-opentype'),
+        url('./font-src/icomoon.ttf?wnghtv') format('truetype'),
+        url('./font-src/icomoon.woff?wnghtv') format('woff'),
+        url('./font-src/icomoon.svg?wnghtv#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block; /* to fix width problem */
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+USER GROUP !!
+*/
+
+.icon-usergroup {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.icon-usergroup:before {
+    content: "\f0c0";
+}
+
+/*
+jQuery UI replacements
+*/
+
+/* from participantdisplay.js */
+.ui-share-icon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+
+}
+.ui-share-icon:before
+{
+    content: "\e066";
+}
+
+
+/* for jQgrid */
+.ui-icon-pencil:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f040";
+}
+
+.ui-icon-cancel:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f05e";
+}
+
+.ui-icon-disk:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f0c7";
+}
+
+.ui-icon-plus, .ui-addtosurvey-icon {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ui-icon-plus:before {
+    content: "\e800";
+}
+
+.ui-icon-calculator,
+.ui-icon-minus,
+.ui-icon-refresh,
+.ui-icon-search,
+.ui-icon-extlink,
+.ui-icon-mail-closed,
+.ui-icon-mail-open,
+.ui-bounceprocessing,
+.ui-participant-link,
+.ui-icon-carat-1-w,
+.ui-icon-carat-1-e,
+.ui-add-to-cpdb-link,
+.ui-icon-seek-next,
+.ui-icon-seek-end,
+.ui-icon-seek-prev,
+.ui-icon-seek-first {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ui-icon-calculator:before{
+    content: "\f1ec";
+}
+
+.ui-icon-carat-1-w:before{
+    content: "\f060";
+}
+
+.ui-icon-carat-1-e:before{
+    content: "\f061";
+}
+
+.ui-icon-minus:before {
+    content: "\f068";
+}
+
+.ui-icon-refresh:before {
+    content: "\f021";
+}
+
+.ui-icon-search:before {
+     content: "\f002";
+}
+
+.ui-icon-extlink:before {
+     content: "\f0c1";
+}
+
+.ui-addtosurvey-icon:before {
+    content: "\e809";
+}
+.ui-icon-mail-closed:before {
+    content: "\f0e0 ";
+}
+
+.ui-icon-mail-open:before {
+    content: "\f003 ";
+}
+
+.ui-bounceprocessing:before {
+    content: "\f085";
+}
+
+.ui-participant-link:before {
+    content: "\f0c0";
+}
+
+.ui-add-to-cpdb-link:before {
+    content: "\f234";
+}
+
+.ui-icon-seek-next:before {
+    content: "\f04e";
+}
+
+.ui-icon-seek-end:before {
+    content: "\f051";
+}
+
+.ui-icon-seek-prev:before {
+    content: "\f04a";
+}
+
+.ui-icon-seek-first:before {
+    content: "\f048";
+}
+
+/*
+---------
+Icon Moon
+---------
+
+To add (for /admin/user/sa/setuserpermissions) :
+.icon-global:before, .icon-settings:before
+.icon-template:before, .icon-templates:before
+.icon-label:before, .icon-labels:before
+.icon-add:before, .icon-survey:before
+*/
+
+
+.icon-notyetstarted .path1:before {
+    content: "\e84c";
+    color: rgb(79, 210, 0);
+}
+.icon-notyetstarted .path2:before {
+    content: "\e84d";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-expired:before {
+    content: "\e84e";
+}
+.icon-inactive:before {
+    content: "\e84a";
+}
+.icon-active:before {
+    content: "\e84b";
+}
+.icon-takeownership2:before {
+    content: "\e846";
+}
+.icon-bounce_settings .path1:before {
+    content: "\e847";
+    color: rgb(148, 210, 0);
+}
+.icon-bounce_settings .path2:before {
+    content: "\e848";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-bounce_settings .path3:before {
+    content: "\e849";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-remind:before {
+    content: "\e845";
+}
+.icon-token_manage:before {
+    content: "\e844";
+}
+.icon-answers .path1:before {
+    content: "\e83b";
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path2:before {
+    content: "\e83c";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path3:before {
+    content: "\e83d";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path4:before {
+    content: "\e83e";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path5:before {
+    content: "\e83f";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path6:before {
+    content: "\e840";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-answers .path7:before {
+    content: "\e841";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-answers .path8:before {
+    content: "\e842";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-answers .path9:before {
+    content: "\e843";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-viewlast:before {
+    content: "\e83a";
+}
+.icon-dataforward:before {
+    content: "\e836";
+}
+.icon-dataend:before {
+    content: "\e837";
+}
+.icon-databegin:before {
+    content: "\e838";
+}
+.icon-databack:before {
+    content: "\e839";
+}
+.icon-minimize:before {
+    content: "\e833";
+}
+.icon-maximize:before {
+    content: "\e834";
+}
+.icon-import2:before {
+    content: "\e835";
+}
+.icon-invite:before {
+    content: "\e831";
+}
+.icon-superadmin:before {
+    content: "\e82f";
+}
+.icon-cpdb:before {
+    content: "\e830";
+}
+.icon-takeownership:before {
+    content: "\e82c";
+}
+.icon-templatepermissions:before {
+    content: "\e82e";
+}
+.icon-subquestions .path1:before {
+    content: "\e822";
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path2:before {
+    content: "\e824";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path3:before {
+    content: "\e825";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path4:before {
+    content: "\e826";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path5:before {
+    content: "\e827";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path6:before {
+    content: "\e828";
+    margin-left: -1em;
+    color: rgb(148, 210, 0);
+}
+.icon-subquestions .path7:before {
+    content: "\e829";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-subquestions .path8:before {
+    content: "\e82a";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-subquestions .path9:before {
+    content: "\e82b";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-renumber:before {
+    content: "\e815";
+}
+.icon-conditions_add:before {
+    content: "\e80a";
+}
+.icon-defaultanswers:before {
+    content: "\e82d";
+}
+.icon-conditions:before {
+    content: "\e80c";
+}
+.icon-copy:before {
+    content: "\e80d";
+}
+.icon-importvv:before {
+    content: "\e81f";
+}
+.icon-importldap:before {
+    content: "\e820";
+}
+.icon-importcsv:before {
+    content: "\e821";
+}
+.icon-import:before {
+    content: "\e832";
+}
+.icon-organize:before {
+    content: "\e823";
+}
+.icon-saved:before {
+    content: "\e80b";
+}
+.icon-browse:before {
+    content: "\e80e";
+}
+.icon-exportvv:before {
+    content: "\e80f";
+}
+.icon-exportspss:before {
+    content: "\e810";
+}
+.icon-exportr:before {
+    content: "\e811";
+}
+.icon-exportcsv:before {
+    content: "\e812";
+}
+.icon-export:before {
+    content: "\e813";
+}
+.icon-resetsurveylogic:before {
+    content: "\e814";
+}
+.icon-expressionmanagercheck:before {
+    content: "\e816";
+}
+.icon-emailtemplates:before {
+    content: "\e817";
+}
+.icon-assessments:before {
+    content: "\e818";
+}
+.icon-quota:before {
+    content: "\e819";
+}
+.icon-security:before {
+    content: "\e81a";
+}
+.icon-responses:before {
+    content: "\e81b";
+}
+.icon-display_export:before {
+    content: "\e81c";
+}
+.icon-edit:before {
+    content: "\e81d";
+}
+.icon-do:before {
+    content: "\e81e";
+}
+.icon-add:before, .icon-survey:before {
+    content: "\e800";
+}
+.icon-expression:before {
+    content: "\e801";
+}
+.icon-global:before, .icon-settings:before {
+    content: "\e802";
+}
+.icon-label:before, .icon-labels:before {
+    content: "\e803";
+}
+.icon-logout:before {
+    content: "\e804";
+}
+.icon-shield:before {
+    content: "\e805";
+}
+.icon-list:before {
+    content: "\e806";
+}
+.icon-template:before, .icon-templates:before {
+    content: "\e807";
+}
+.icon-tools:before {
+    content: "\e808";
+}
+.icon-user:before {
+    content: "\e809";
+}

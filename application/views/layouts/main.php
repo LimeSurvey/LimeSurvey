@@ -1,42 +1,41 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <?php
-            App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('qTip2');
-            App()->getClientScript()->registerPackage('jquery-superfish');
-            App()->getClientScript()->registerPackage('js-cookie');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
+<?php
 
-        ?>
-        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        <?php $this->widget('ext.LimeScript.LimeScript'); ?>
-        <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
-        <title>Limesurvey Administration</title>
-    </head>
-    <body>
-        <div class="wrapper clearfix">
-            <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
-            <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
-            <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
-            <div id="content">
-            <?php echo $content; ?>
-            </div>
-            <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">
-                <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
-            </div>
-        </div>
-        <?php $this->widget('ext.AdminFooter.AdminFooter'); ?>
-    </body>
+    //All paths relative from /application/views
 
-</html>
+    //headers will be generated with the template file /admin/super/header.php
+    $this->_showHeaders($aData);
+    //The adminmenu bar will be generated from /admin/super/adminmenu.php
+    $this->_showadminmenu($aData);
+    // Generated through /admin/usergroup/usergroupbar_view
+    $this->_userGroupBar($aData);
+    // Generated through /admin/super/fullpagebar_view
+    $this->_fullpagebar($aData);
+
+    $this->_updatenotification();
+    $this->_notifications();
+    
+    //The load indicator for pjax
+    echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
+
+    echo '<!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
+                <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
+                    ';
+
+    echo $content;
+
+    echo '</div>';
+
+    
+    // Footer
+    if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
+        Yii::app()->getController()->_loadEndScripts();
+    }
+
+    if (!Yii::app()->user->isGuest) {
+        if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
+            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        }
+    } else {
+        echo '</body>
+        </html>';
+    }

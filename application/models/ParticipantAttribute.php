@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -14,51 +16,50 @@
  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class ParticipantAttribute
+ *
+ * @property integer $participant_id
+ * @property integer $attribute_id
+ * @property string $value
+ *
+ * @property Participant $participant
+ * @property ParticipantAttributeName $participant_attribute_name
+ */
 class ParticipantAttribute extends LSActiveRecord
 {
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
     /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
+     * @inheritdoc
+     * @return ParticipantAttribute
      */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
+
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participant_attribute}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('participant_id', 'attribute_id');
     }
 
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Participant', 'participant_id'),
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }
 
@@ -82,13 +83,12 @@ class ParticipantAttribute extends LSActiveRecord
             ->where("participant_id='".$data['participant_id']."' AND attribute_id = ".$data['attribute_id'])
             ->from('{{participant_attribute}}')
             ->queryAll();
-        if (count($query) > 0)
-        {
+        if (count($query) > 0) {
             Yii::app()->db->createCommand()
-                  ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
+                    ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
         } else {
             Yii::app()->db->createCommand()
-                  ->insert('{{participant_attribute}}', $data);
+                    ->insert('{{participant_attribute}}', $data);
         }
     }
 

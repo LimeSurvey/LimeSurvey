@@ -14,24 +14,25 @@
 
 
 
+    <div class="question-filter-container grow-3 nofloat ls-space padding all-10">
     <?php echo "<!-- Question type :  $flt[2] -->"; ?>
-    <div class="col-sm-4 question-filter-container">
         <?php if ($flt[2]=='M' || $flt[2]=='|' || $flt[2]=='P' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
             <!--  TYPE =='M' || 'P' || 'N' || 'L' || '5' || 'G' || 'I' || 'O' || 'Y' || '!' -->
-            <input type='checkbox'
-                id='filter<?php echo $myfield; ?>'
-                name='summary[]'
-                value='<?php echo $myfield; ?>' <?php
-                if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-                { echo " checked='checked'"; }
-                ?>
-                />
-            <label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
-            </label>
-            <br />
+            <div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">
+                <input type='checkbox'
+                    id='filter<?php echo $myfield; ?>'
+                    name='summary[]'
+                    value='<?php echo $myfield; ?>' <?php
+                    if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                    || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                    || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                    { echo " checked='checked'"; }
+                    ?>
+                    />
+                <label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
+                </label>
+            </div>
 
             <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
                 <select name='<?php
@@ -68,6 +69,7 @@
                         if ($counter2 == 4) { echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                         //checkbox
+                        echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                         echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
 
                         //check SGQA -> do we want to pre-check the checkbox?
@@ -79,7 +81,8 @@
                         echo " />&nbsp;";
 
                         //show speaker
-                        echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br>\n";?>
+                        echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row[1],true))
+                        ."</div>\n";?>
 
                         <span class='smalltext'><?php eT("Number greater than");?>:</span><br />
                         <?php echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
@@ -112,7 +115,6 @@
 
                     //we have one input field for each answer
                     $myfield2 = "Q".$myfield."$row[0]";
-
                     echo "&nbsp;&nbsp; <input type='checkbox'  name='summary[]' value='$myfield2'";
 
                     if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
@@ -136,7 +138,7 @@
             */
             case "T": // Long free text
             case "U": // Huge free text
-
+                echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
                 if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
@@ -145,14 +147,15 @@
                 echo " />&nbsp;"
                 ."&nbsp;".$oStatisticsHelper::_showSpeaker($niceqtext)
                 ."<br />\n"
-                ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
+                ."\t<span class='smalltext'>".gT("Responses containing").":</span>
+                </div>\n"
                 .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'40'));
                 break;
 
 
 
             case "S": // Short free text
-
+                echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
@@ -162,7 +165,8 @@
                 echo " />&nbsp;"
                 ."&nbsp;".$oStatisticsHelper::_showSpeaker($niceqtext)
                 ."<br />\n"
-                ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
+                ."\t<span class='smalltext'>".gT("Responses containing").":</span>
+                </div>\n"
                 .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array());
                 break;
 
@@ -171,27 +175,29 @@
             case "N": // Numerical
                 //textfields for greater and less than X
                 ?>
-                <input type='checkbox'
-                    id='filter<?php echo $myfield; ?>'
-                    name='summary[]'
-                    value='N<?php echo $myfield; ?>' <?php
-                    if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-                    { echo " checked='checked'"; }
-                    ?>
-                    />
-                <label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
-                </label>
+                <div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">
+                    <input type='checkbox'
+                        id='filter<?php echo $myfield; ?>'
+                        name='summary[]'
+                        value='N<?php echo $myfield; ?>' <?php
+                        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                        || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                        || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                        || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                        { echo " checked='checked'"; }
+                        ?>
+                        />
+                    <label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
+                    </label>
+                </div>
                 <?php
                 $myfield2="{$myfield}G";
                 $myfield3="{$myfield}L";
                 echo "\t<span class='smalltext'>".gT("Number greater than").":</span><br />\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField('N'.$myfield2,isset($_POST[$myfield2])?'N'.$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                 ."\t<br />\n"
                 ."\t<span class='smalltext'>".gT("Number less than").":</span><br />\n"
-                .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField('N'.$myfield3,isset($_POST[$myfield3])?'N'.$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                 ."\t<br />\n";
 
                 //put field names into array
@@ -234,7 +240,7 @@
                 $myfield3=$myfield2."eq";
                 $myfield4=$myfield2."less";
                 $myfield5=$myfield2."more";
-
+                echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                 if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
@@ -253,6 +259,7 @@
                 .gT("AND/OR Date is")." <= <br />"
                 .CHtml::textField($myfield5,isset($_POST[$myfield5])?$_POST[$myfield5]:'',array() )
                 ."</span>\n";
+                echo '</div>';
                 break;
 
 
@@ -266,7 +273,7 @@
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield]))
-                    {echo " selected";}
+                    {echo " selected='selected' ";}
 
                     echo ">$i</option>\n";
                 }
@@ -281,13 +288,13 @@
                 echo "\t<option value='F'";
 
                 //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected";}
+                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected='selected' ";}
 
                 echo ">".gT("Female")."</option>\n";
                 echo "\t<option value='M'";
 
                 //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
+                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected='selected' ";}
 
                 echo ">".gT("Male")."</option>\n\t</select>\n";
                 break;
@@ -298,13 +305,13 @@
                 echo "\t<option value='Y'";
 
                 //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {echo " selected";}
+                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {echo " selected='selected' ";}
 
                 echo ">".gT("Yes")."</option>\n"
                 ."\t<option value='N'";
 
                 //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {echo " selected";}
+                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {echo " selected='selected' ";}
 
                 echo ">".gT("No")."</option></select>\n";
                 break;
@@ -320,7 +327,7 @@
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($availlang, $_POST[$myfield]))
-                    {echo " selected";}
+                    {echo " selected='selected' ";}
 
                     echo ">".getLanguageNameFromCode($availlang,false)."</option>\n";
                 }
@@ -347,6 +354,7 @@
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                     echo " -->\n";
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                     //pre-check
@@ -354,7 +362,7 @@
 
                     echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-                    ."<br />\n"
+                    ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
                     //there are always exactly 5 values which have to be listed
@@ -363,8 +371,8 @@
                         echo "\t<option value='$i'";
 
                         //pre-select
-                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected";}
-                        if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {echo " selected";}
+                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected='selected' ";}
+                        if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {echo " selected='selected' ";}
 
                         echo ">$i</option>\n";
                     }
@@ -388,6 +396,7 @@
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                     echo " -->\n";
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
@@ -395,15 +404,15 @@
 
                     echo " />&nbsp;"
                     .'<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3]).'</strong>'
-                    ."<br />\n"
+                    ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
                     //here wo loop through 10 entries to create a larger output form
                     for ($i=1; $i<=10; $i++)
                     {
                         echo "\t<option value='$i'";
-                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected";}
-                        if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {echo " selected";}
+                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {echo " selected='selected' ";}
+                        if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {echo " selected='selected' ";}
                         echo ">$i</option>\n";
                     }
 
@@ -425,6 +434,7 @@
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                     echo " -->\n";
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
@@ -433,24 +443,25 @@
 
                     echo " />&nbsp;<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-                    ."</strong><br />\n"
+                    ."</strong>\n"
+                    ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n"
                     ."\t<option value='Y'";
 
                     //pre-select "yes"
-                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("Yes")."</option>\n"
                     ."\t<option value='U'";
 
                     //pre-select "uncertain"
-                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("Uncertain")."</option>\n"
                     ."\t<option value='N'";
 
                     //pre-select "no"
-                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("No")."</option>\n"
                     ."\t</select>";
@@ -472,27 +483,29 @@
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                     echo " -->\n";
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-                    ."</strong><br />\n"
+                    ."</strong>\n"
+                    ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-control'>\n"
                     ."\t<option value='I'";
 
-                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("Increase")."</option>\n"
                     ."\t<option value='S'";
 
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("Same")."</option>\n"
                     ."\t<option value='D'";
 
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected='selected' ";}
 
                     echo ">".gT("Decrease")."</option>\n"
                     ."\t</select>";
@@ -513,7 +526,7 @@
                         echo "<!-- $myfield2 - ";
                         if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                         echo " -->\n";
-                        echo "<br/><input type='checkbox'  name='summary[]' value='$myfield2'";
+                        echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
                         echo " />&nbsp;<strong>"
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
@@ -530,7 +543,7 @@
             case ":":  //ARRAY (Multi Flex) (Numbers)
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
-                $qidattributes=getQuestionAttributeValues($flt[0]);
+                $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
                 if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                     $maxvalue=$qidattributes['multiflexible_max'];
                     $minvalue=1;
@@ -571,17 +584,19 @@
                         echo "<!-- MyField2:  $myfield2 - ";
                         if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                         echo " -->\n";
+                        echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
                         echo " />&nbsp;<strong>"
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
-                        ."</strong><br />\n";
+                        ."</strong>\n"
+                        ."</div>\n";
                         echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-control'>\n";
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                         {
                             echo "\t<option value='$ii'";
-                            if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
+                            if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
                             echo ">$ii</option>\n";
                         }
                         echo "\t</select>";
@@ -611,13 +626,15 @@
                         echo "\t</tr>\n\t<tr>\n";
                         $counter2=0;
                     }
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-                    ."</strong><br />\n";
+                    ."</strong>
+                    </div>\n";
 
                     /*
                     * when hoovering the speaker symbol we show the whole question
@@ -644,7 +661,7 @@
                         echo "\t<option value='{$frow['code']}'";
 
                         //pre-select
-                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
+                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
 
                         echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
                     }
@@ -681,7 +698,7 @@
                     $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
                     $myfield3 = $myfield . $i;
                     echo "<!-- $myfield2 --> ";
-
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
@@ -693,7 +710,8 @@
 
                     echo " />&nbsp;<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $trow[1])." - # ".$flt[3])
-                    ."</strong><br />\n"
+                    ."</strong>
+                    </div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-control'>\n";
 
                     //output lists of ranking items
@@ -702,7 +720,7 @@
                         echo "\t<option value='$ans[0]'";
 
                         //pre-select
-                        if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected";}
+                        if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected='selected' ";}
 
                         echo ">".flattenText($ans[1])."</option>\n";
                     }
@@ -742,6 +760,7 @@
                     }
                     echo " -->\n";
 
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     //output checkbox and question/label text
                     echo "<input type='checkbox' name='summary[]' value='$myfield2'";
 
@@ -767,9 +786,11 @@
                         $labeltitle='';
                     }
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
+                    ."<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle)
-                    ."</strong><br />\n";
+                    ."</strong>
+                    </div>\n";
 
                     /* get labels
                     * table "labels" contains
@@ -790,7 +811,7 @@
                         echo "\t<option value='{$frow['code']}'";
 
                         //pre-check
-                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
+                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
 
                         echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
 
@@ -811,6 +832,7 @@
                     }
 
                     echo " -->\n";
+                    echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     echo "<input type='checkbox' name='summary[]' value='$myfield2'";
                     //pre-check
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -838,7 +860,8 @@
 
                     echo " />&nbsp;<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle2)
-                    ."</strong><br />\n";
+                    ."</strong>
+                    </div>\n";
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
                     //this is for debugging only
@@ -850,7 +873,7 @@
                         echo "\t<option value='{$frow['code']}'";
 
                         //pre-check
-                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
+                        if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected='selected' ";}
 
                         echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
 
@@ -872,7 +895,7 @@
                     echo "\t<option value='{$row[0]}'";
 
                     //pre-check
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected='selected' ";}
 
                     echo '>'.flattenText($row[1],true)."</option>\n";
                 }
@@ -903,7 +926,7 @@
                     echo "\t<option value='{$row[0]}'";
 
                     //pre-check
-                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
+                    if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected='selected' ";}
 
                     echo '>'.flattenText($row[1],true)."</option>\n";
                 }

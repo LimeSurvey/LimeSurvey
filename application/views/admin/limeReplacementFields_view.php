@@ -26,13 +26,12 @@
         if (count($replFields) > 0)
         {
             ?>
-            <optgroup label='<?php eT("Standard Fields");?>'>
+            <optgroup label='<?php eT("Standard fields");?>'>
                 <?php
-
-                foreach ($replFields as $stdfield)
+                foreach ($replFields as $stdfield=>$stdfieldvalue)
                 {
                     ?>
-                    <option value='<?php echo $stdfield[0];?>' title='<?php echo $stdfield[1];?>'><?php echo $stdfield[1];?></option>
+                    <option value='<?php echo $stdfield;?>' title='<?php echo $stdfieldvalue;?>'><?php echo $stdfieldvalue;?></option>
                     <?php
                 }
                 ?>
@@ -85,11 +84,11 @@
                     <div class="panel-body">
 
                         <br />
-                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
+                        <font color='orange'><?php eT("Some questions have been disabled");?></font>
                         <br />
-                        <?php echo sprintf(gT("Survey Format is %s:"), gT("All in one"));?>
+                        <?php echo sprintf(gT("Survey display mode is set to %s:"), gT("All in one"));?>
                         <br />
-                        <i><?php eT("Only Previous pages answers are available");?></i>
+                        <i><?php eT("Only previous pages answers are available");?></i>
                         <br />
                     </div>
                     <?php
@@ -98,9 +97,9 @@
                     ?>
                     <div>
                         <br />
-                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
-                        <br /><?php echo sprintf(gT("Survey mode is set to %s:"), gT("Group by Group"));?>
-                        <br/><i><?php eT("Only Previous pages answers are available");?>
+                        <font color='orange'><?php eT("Some questions have been disabled");?></font>
+                        <br /><?php echo sprintf(gT("Survey display mode is set to %s:"), gT("Group by Group"));?>
+                        <br/><i><?php eT("Only previous pages answers are available");?>
                         </i><br />
                     </div>
                     <?php

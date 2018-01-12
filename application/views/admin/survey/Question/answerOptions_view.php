@@ -1,5 +1,4 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>$pageTitle )); ?>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
     </h3>
@@ -236,7 +235,14 @@
                             type="hidden"
                             id="add-input-javascript-datas"
                             data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
-                            data-quickurl="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowQuickAdd/');?>"
+                            data-quickurl="<?php echo App()->createUrl(
+                                '/admin/questions/',
+                                array(
+                                    'sa' => 'getSubquestionRowQuickAdd',
+                                    'surveyid' => $surveyid,
+                                    'gid' => $gid
+                                )
+                            );?>"
                             data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"

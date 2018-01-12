@@ -1,12 +1,13 @@
 <?php
 /**
-* Manage token attribute fields/ Add or delete token attributes
-*/
+ *
+ * Manage token attribute fields/ Add or delete token attributes
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 ?>
-
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php if( count($tokenfieldlist)) : ?>
-        <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Manage attribute fields"))); ?>
         <h3><?php eT("Manage attribute fields"); ?></h3>
 
         <div class="row">
@@ -15,10 +16,9 @@
                 <div>
                     <ul class="nav nav-tabs">
                         <?php $c=true; ?>
-                        <?php foreach ($languages as $sLanguage) {
+                        <?php foreach ($oSurvey->allLanguages as $sLanguage) {
                             $sTabTitle = getLanguageNameFromCode($sLanguage, false);
-                            if ($sLanguage == Survey::model()->findByPk($iSurveyID)->language)
-                            {
+                            if ($sLanguage == $oSurvey->language) {
                                 $sTabTitle .= ' (' . gT("Base language") . ')';
                             }
                             ?>
@@ -30,7 +30,7 @@
 
                     <div class="tab-content">
                         <?php $c=true;?>
-                        <?php foreach ($languages as $sLanguage) { ?>
+                        <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
                             <div id="language_<?php echo $sLanguage ?>"  class="tab-pane fade in <?php if ($c){$c=false; echo 'active'; }?>">
                                 <table class='listtokenattributes table'>
                                     <thead> <tr>
@@ -53,7 +53,7 @@
                                         echo "
                                         <tr>
                                         <td>{$sTokenField}</td>";
-                                        if ($sLanguage == $thissurvey['language'])
+                                        if ($sLanguage == $oSurvey->language)
                                         { ?>
                                             <td><input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                             <td>
@@ -87,7 +87,7 @@
                                         }; ?>
                                         <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                         <td><?php
-                                            if ($sLanguage == $thissurvey['language'])
+                                            if ($sLanguage == $oSurvey->language)
                                             {
                                                 echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
                                             }
@@ -119,7 +119,7 @@
                     <input type='hidden' name='action' value='tokens' />
                     <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
                 </p>
-                </form>
+                <?php echo CHtml::endForm() ?>
 
             </div>
         </div>
@@ -129,11 +129,11 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <p><?php neT('There is {n} user attribute field in this survey participant table.|There are {n} user attribute fields in this survey participant table.', $nrofattributes); ?></p>
+            <p><?php neT('There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
-                <div class='col-sm-1'>
+                <div class=''>
                     <input class='form-control' type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
                 </div>
             </p>
@@ -148,7 +148,7 @@
                 <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
-                    <div class='col-sm-2'>
+                    <div class=''>
                         <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-control')); ?>
                     </div>
                 </p>

@@ -15,13 +15,12 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
-$(document).on('click', '.listActions a', function ()
-{
-    var $that          = $(this);                                                             // The cliked link
+var onClickListAction =  function () {
+    var $that          = $(this);                                                             // The clicked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
-    var $gridid        = $('.listActions').data('grid-id');
-    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
+    var $gridid        = $(this).closest('div.listActions').data('grid-id');
+    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
 
@@ -64,7 +63,7 @@ $(document).on('click', '.listActions a', function ()
     {
         // postUrl is defined as a var in the View
         $(this).load(postUrl, {
-            participantid:$oCheckedItems},function(){
+            itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
         return;
@@ -116,7 +115,7 @@ $(document).on('click', '.listActions a', function ()
         {
             $.fn.yiiGridView.update($gridid);                         // Update the surveys list
             setTimeout(function(){
-                $('#'+$gridid).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+                $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
         }
 
     })
@@ -171,12 +170,16 @@ $(document).on('click', '.listActions a', function ()
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                 }
 
+                if (html.ajaxHelper) {
+                    LS.ajaxHelperOnSuccess(html);
+                    return;
+                }
+
                 if (onSuccess) {
                     var func = eval(onSuccess);
                     func(html);
                     return;
                 }
-
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
@@ -188,7 +191,7 @@ $(document).on('click', '.listActions a', function ()
 
     // open the modal
     $modal.modal();
-});
+};
 
 /**
  * Bootstrap switch extension
@@ -241,13 +244,52 @@ function prepareBsSwitchInteger($gridid){
     });
 }
 
-$(document).ready(function() {
+function prepareBsDateTimePicker($gridid){
+    var dateTimeSettings = getDefaultDateTimePickerSettings();
+    var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
+    $('.date input').each(function(){
+        $(this).datetimepicker({
+            format: dateTimeFormat,
+            showClear: dateTimeSettings.showClear,
+            allowInputToggle: dateTimeSettings.allowInputToggle,
+        });
+    });
+
+}
+// get user session datetimesettings
+function getDefaultDateTimePickerSettings() {
+    //Switch between path and get based routing
+    if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
+        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+    } else {
+        var url = "/index.php/admin/survey/sa/datetimesettings";
+    }
+    var mydata = [];
+    $.ajaxSetup({
+        async: false
+    });
+    $.getJSON( url, function( data ) {
+        mydata = data;
+    });
+    return mydata;
+}
+
+function bindListItemclick(){
+    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
+}
+
+
+$(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);
 
     // Grid refresh: see point 3
-    $(document).on('actions-updated', '#'+gridId,  function(){
+    $(document).on('actions-updated', function(){
         prepareBsSwitchBoolean(gridId);
         prepareBsSwitchInteger(gridId);
+        prepareBsDateTimePicker(gridId);
+        bindListItemclick();
     });
+    bindListItemclick();
 });
+

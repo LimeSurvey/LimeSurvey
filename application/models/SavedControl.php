@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,54 +13,61 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class SavedControl extends LSActiveRecord {
-		/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{saved_control}}';
-	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'scid';
-	}
+/**
+ * Class SavedControl
+ * @property integer $scid Primary key
+ * @property integer $sid Survey id
+ * @property integer $srid
+ * @property string $identifier
+ * @property string $access_code
+ * @property string $email
+ * @property string $ip
+ * @property string $saved_thisstep
+ * @property string $status
+ * @property string $saved_date
+ * @property string $refurl
+ */
+class SavedControl extends LSActiveRecord
+{
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    /** @inheritdoc */
+    public function tableName()
+    {
+        return '{{saved_control}}';
+    }
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    /** @inheritdoc */
+    public function primaryKey()
+    {
+        return 'scid';
+    }
 
-		$data = $this->db->get('saved_control');
+    /**
+     * @inheritdoc
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-		return $data;
-	}
 
+    public function getAllRecords($condition = false)
+    {
+        if ($condition != false) {
+            $this->db->where($condition);
+        }
+
+        $data = $this->db->get('saved_control');
+
+        return $data;
+    }
+
+    /**
+     * @param int $sid
+     * @return mixed
+     */
     public function getCountOfAll($sid)
     {
         $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=:sid")->bindParam(":sid", $sid, PDO::PARAM_INT)->query();
@@ -68,29 +77,27 @@ class SavedControl extends LSActiveRecord {
     }
 
     /**
-    * Deletes some records meeting speicifed condition
-    *
-    * @access public
-    * @param array $condition
-    * @return int (rows deleted)
-    */
+     * Deletes some records meeting specified condition
+     *
+     * @access public
+     * @param array $condition
+     * @return int (rows deleted)
+     */
     public function deleteSomeRecords($condition)
     {
-    	$record = new self;
-    	$criteria = new CDbCriteria;
+        $record = new self;
+        $criteria = new CDbCriteria;
 
-    	if($condition != FALSE)
-    	{
-    		foreach($condition as $column=>$value)
-    		{
-    			$criteria->addCondition("$column='$value'");
-    		}
-    	}
+        if ($condition != false) {
+            foreach ($condition as $column=>$value) {
+                $criteria->addCondition("$column='$value'");
+            }
+        }
 
-    	return $record->deleteAll($criteria);
+        return $record->deleteAll($criteria);
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data);
     }

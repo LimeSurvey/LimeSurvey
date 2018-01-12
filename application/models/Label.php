@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,6 +15,17 @@
  *
  */
 
+/**
+ * Class Label
+ *
+ * @property integer $id Primary Key
+ * @property integer $lid Related Label Set
+ * @property string $code
+ * @property string $title
+ * @property integer $sortorder
+ * @property string $language
+ * @property integer $assessment_value
+ */
 class Label extends LSActiveRecord
 {
     /**
@@ -21,87 +34,87 @@ class Label extends LSActiveRecord
      */
     public $maxsortorder;
 
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{labels}}';
-	}
-
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string[]
-	 */
-	public function primaryKey()
-	{
-		return array('lid', 'language');
-	}
-    /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return CActiveRecord
-    */
-    public static function model($class = __CLASS__)
+    /** @inheritdoc */
+    public function tableName()
     {
-        return parent::model($class);
+        return '{{labels}}';
     }
 
+    /** @inheritdoc */
+    public function primaryKey()
+    {
+        return array('id');
+    }
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * @inheritdoc
+     * @return Label
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('lid','numerical', 'integerOnly'=>true),
+            array('lid', 'numerical', 'integerOnly'=>true),
             array('code', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
                             'condition'=>'lid = :lid AND language=:language',
-                            'params'=>array(':lid'=>$this->lid,':language'=>$this->language)
+                            'params'=>array(':lid'=>$this->lid, ':language'=>$this->language)
                     ),
                     'message'=>'{attribute} "{value}" is already in use.'),
-            array('title','LSYii_Validators'),
-            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
-            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('title', 'LSYii_Validators'),
+            array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
+            array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
         );
     }
 
-
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-		$data = $this->findAll($criteria);
-
-        return $data;
-	}
-
-    function getLabelCodeInfo($lid)
+    /** @inheritdoc */
+    public function relations()
     {
-		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'labelset' => array(self::HAS_ONE, 'LabelSet', 'lid')
+        );
     }
 
-	function insertRecords($data)
+    /**
+     * @param mixed|bool $condition
+     * @return static[]
+     */
+    public function getAllRecords($condition = false)
+    {
+        $criteria = new CDbCriteria;
+        if ($condition != false) {
+            foreach ($condition as $item => $value) {
+                $criteria->addCondition($item.'="'.$value.'"');
+            }
+        }
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * @param integer $lid
+     * @return array
+     */
+    public function getLabelCodeInfo($lid)
+    {
+        return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from($this->tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
+    }
+
+    public function insertRecords($data)
     {
         $lbls = new self;
-		foreach ($data as $k => $v)
-			$lbls->$k = $v;
-		$lbls->save();
+        foreach ($data as $k => $v) {
+                    $lbls->$k = $v;
+        }
+        $lbls->save();
     }
 
 }

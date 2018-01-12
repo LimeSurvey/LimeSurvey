@@ -80,81 +80,81 @@ class LSHttpRequest extends CHttpRequest
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
      * @return string if success, else null
      */
-    public function getUrlReferrer($sAlternativeUrl=null)
+    public function getUrlReferrer($sAlternativeUrl = null)
     {
 
-       $referrer = parent::getUrlReferrer();
-       $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
-       $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
-       $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
+        $referrer = parent::getUrlReferrer();
+        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
+        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
+        $referrer = ($baseReferrer != $baseRequestUri) ? $referrer : null;
         //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
-        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) )
-        {
+        if (($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer))) {
             // Checks if the alternative url should be used
-            if(isset($sAlternativeUrl))
-            {
+            if (isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
+            } else {
+                return App()->createUrl('admin/index');
             }
-            else 
-            {
-               return App()->createUrl('admin/index');
-            }
-       }
-       return $referrer;
+        }
+        return $referrer;
+    }
+
+    public function getOriginalUrlReferrer()
+    {
+        return parent::getUrlReferrer();
     }
 
     /**
-    * Method to update the LimeSurvey Navigation Stack to prevent looping
-    */
+     * Method to update the LimeSurvey Navigation Stack to prevent looping
+     */
     public function updateNavigationStack()
     {
         $referrer = parent::getUrlReferrer();
         $navStack = App()->session['LSNAVSTACK'];
 
-        if(!is_array($navStack))
-        {
+        if (!is_array($navStack)) {
             $navStack = array();
         }
 
-        array_unshift($navStack,$referrer);
+        array_unshift($navStack, $referrer);
 
-        if(count($navStack)>5)
-        {
+        if (count($navStack) > 5) {
             array_pop($navStack);
         }
         App()->session['LSNAVSTACK'] = $navStack;
     }
 
     /**
-    * Method to check if an url is part of the stack
-    * Returns true, when an url is saved in the stack
-    * @param $referrerURL The URL that is checked against the stack 
-    */
+     * Method to check if an url is part of the stack
+     * @return bool Returns true, when an url is saved in the stack
+     * @param string $referrerURL The URL that is checked against the stack
+     */
     protected function checkLoopInNavigationStack($referrerURL)
     {
         $navStack = App()->session['LSNAVSTACK'];
-        foreach($navStack as $url)
-        {
+        foreach ($navStack as $url) {
             $refEqualsUrl = ($referrerURL == $url);
-              if ($refEqualsUrl)
-              {
-                  return true;
-              }
+                if ($refEqualsUrl) {
+                    return true;
+                }
         }
         return false;  
     }
 
-    protected function normalizeRequest(){
+    protected function normalizeRequest()
+    {
         parent::normalizeRequest();
 
-        if(!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') return;
+        if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') {
+            return;
+        }
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
-        if($this->enableCsrfValidation){
-            foreach($this->noCsrfValidationRoutes as $cr){
-                if(preg_match('#'.$cr.'#', $route)){
+        if ($this->enableCsrfValidation) {
+            foreach ($this->noCsrfValidationRoutes as $cr) {
+                if (preg_match('#'.$cr.'#', $route)) {
                     Yii::app()->detachEventHandler('onBeginRequest',
-                        array($this,'validateCsrfToken'));
+                        array($this, 'validateCsrfToken'));
                     Yii::trace('Route "'.$route.' passed without CSRF validation');
                     break; // found first route and break
                 }
@@ -165,35 +165,38 @@ class LSHttpRequest extends CHttpRequest
 
     public function getPathInfo()
     {
-        if($this->_pathInfo===null)
-        {
-            $pathInfo=$this->getRequestUri();
+        if ($this->_pathInfo === null) {
+            $pathInfo = $this->getRequestUri();
 
-            if(($pos=strpos($pathInfo,'?'))!==false)
-                $pathInfo=substr($pathInfo,0,$pos);
+            if (($pos = strpos($pathInfo, '?')) !== false) {
+                            $pathInfo = substr($pathInfo, 0, $pos);
+            }
 
-            $pathInfo=$this->decodePathInfo($pathInfo);
+            $pathInfo = $this->decodePathInfo($pathInfo);
 
-            $scriptUrl=$this->getScriptUrl();
-            $baseUrl=$this->getBaseUrl();
-            if(strpos($pathInfo,$scriptUrl)===0)
-                $pathInfo=substr($pathInfo,strlen($scriptUrl));
-            elseif($baseUrl==='' || strpos($pathInfo,$baseUrl)===0)
-                $pathInfo=substr($pathInfo,strlen($baseUrl));
-            elseif(strpos($_SERVER['PHP_SELF'],$scriptUrl)===0)
-                $pathInfo=substr($_SERVER['PHP_SELF'],strlen($scriptUrl));
-            else
-                throw new CException(Yii::t('yii','CHttpRequest is unable to determine the path info of the request.'));
+            $scriptUrl = $this->getScriptUrl();
+            $baseUrl = $this->getBaseUrl();
+            if (strpos($pathInfo, $scriptUrl) === 0) {
+                            $pathInfo = substr($pathInfo, strlen($scriptUrl));
+            } elseif ($baseUrl === '' || strpos($pathInfo, $baseUrl) === 0) {
+                            $pathInfo = substr($pathInfo, strlen($baseUrl));
+            } elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0) {
+                            $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+            } else {
+                            throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
+            }
 
-            if($pathInfo==='/')
-                $pathInfo='';
-            elseif(!empty($pathInfo) && $pathInfo[0]==='/')
-                $pathInfo=substr($pathInfo,1);
+            if ($pathInfo === '/') {
+                            $pathInfo = '';
+            } elseif (!empty($pathInfo) && $pathInfo[0] === '/') {
+                            $pathInfo = substr($pathInfo, 1);
+            }
 
-            if(($posEnd=strlen($pathInfo)-1)>0 && $pathInfo[$posEnd]==='/')
-                $pathInfo=substr($pathInfo,0,$posEnd);
+            if (($posEnd = strlen($pathInfo) - 1) > 0 && $pathInfo[$posEnd] === '/') {
+                            $pathInfo = substr($pathInfo, 0, $posEnd);
+            }
 
-            $this->_pathInfo=$pathInfo;
+            $this->_pathInfo = $pathInfo;
         }
         return $this->_pathInfo;
     }

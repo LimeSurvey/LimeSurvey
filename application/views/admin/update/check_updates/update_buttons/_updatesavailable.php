@@ -106,9 +106,9 @@
                     </button>
 
                      <?php if ($aUpdateVersion['branch']!='master'): ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('http://www.limesurvey.org/en/unstable-release/viewcategory/26-unstable-releases', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://www.limesurvey.org/unstable-release', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php else: ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('http://www.limesurvey.org/en/stable-release', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://www.limesurvey.org/stable-release', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php endif; ?>
 
                  <?php echo CHtml::endForm(); ?>
@@ -118,7 +118,7 @@
 </table>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('.launchUpdateForm').comfortUpdateNextStep({'step': 0});
 </script>

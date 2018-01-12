@@ -4,8 +4,8 @@
             <div class="col-md-12">
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
-                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
-                    <span class="glyphicon glyphicon-list-alt text-success"></span>
+                <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
+                    <span class="fa fa-list-alt text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>
             <?php endif;?>
@@ -15,20 +15,20 @@
 
                 <!-- Display Responses -->
                 <?php if (count($tmp_survlangs) < 2): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <span class="glyphicon glyphicon-list text-success"></span>
+                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
+                        <span class="fa fa-list text-success"></span>
                         <?php eT("Display responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Responses"); ?> <span class="caret"></span>
+                        <span class="fa fa-list text-success"></span> 
+                        <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <?php foreach ($tmp_survlangs as $tmp_lang): ?>
                         <li>
-                            <a href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
+                            <a class="pjax" href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                              </a>
                         </li>
@@ -50,14 +50,14 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')): ?>
                 <!-- Get statistics from these responses -->
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>' role="button">
-                    <span class="glyphicon glyphicon-stats text-success"></span>
+                    <span class="fa fa-bar-chart text-success"></span>
                     <?php eT("Statistics"); ?>
                 </a>
 
                 <!-- Get time statistics from these responses -->
                 <?php if ($thissurvey['savetimings'] == "Y"):?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/time/surveyid/$surveyid"); ?>' role="button">
-                        <span class="glyphicon glyphicon-time text-success"></span>
+                        <span class="fa fa-time text-success"></span>
                         <?php eT("Timing statistics"); ?>
                     </a>
                 <?php endif;?>
@@ -76,14 +76,14 @@
                         <!-- Export results to application -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
-                                <?php eT("Export results to application"); ?>
+                                <?php eT("Export responses"); ?>
                             </a>
                         </li>
 
                         <!-- Export results to a SPSS/PASW command file -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportspss/sid/$surveyid"); ?>'>
-                                <?php eT("Export results to a SPSS/PASW command file"); ?>
+                                <?php eT("Export responses to SPSS"); ?>
                             </a>
                         </li>
 
@@ -149,25 +149,27 @@
         <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
+                <?php /*
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-button">
-                    <span class="glyphicon glyphicon-saved"></span>
+                    <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
+                */ ?>
             <?php endif;?>
 
             <?php if(isset($menu['export'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-download-alt"></span>
+                    <span class="fa fa-download-alt"></span>
                     <?php eT("Export");?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($menu['import'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-upload"></span>
+                    <span class="fa fa-upload"></span>
                     <?php eT("Import");?>
                 </a>
             <?php endif;?>
@@ -175,21 +177,21 @@
             <?php if(isset($menu['stats'])):?>
                 <?php if (isset($menu['expertstats']) && $menu['expertstats'] =  true):?>
                     <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" role="" id="">
-                        <span class="glyphicon glyphicon-stats"></span>
+                        <span class="fa fa-bar-chart"></span>
                         <?php eT("Expert mode"); ?>
                     </a>
                 <?php else: ?>
                     <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" role="" id="">
-                        <span class="glyphicon glyphicon-stats"></span>
+                        <span class="fa fa-bar-chart"></span>
                         <?php eT("Simple mode"); ?>
                     </a>
                     <a class="btn btn-success" href="#" role="button" id="save-button">
-                        <span class="glyphicon"></span>
+                        <span class="fa"></span>
                         <?php eT("View statistics"); ?>
                     </a>
 
                     <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
-                        <span class="glyphicon glyphicon-refresh text-success"></span>
+                        <span class="fa fa-refresh text-success"></span>
                         <?php eT("Clear"); ?>
                     </a>
                 <?php endif; ?>
@@ -199,20 +201,20 @@
                 <?php if ($exist): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' role="button">
 
-                        <span class="glyphicon glyphicon-pencil text-success"></span>
+                        <span class="fa fa-pencil text-success"></span>
                         <?php eT("Edit this entry"); ?>
                     </a>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage)): ?>
                     <a class="btn btn-default" href='#' role="button" onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/id/$id/sid/$surveyid")); ?>}">
-                        <span class="glyphicon glyphicon-trash text-warning"></span>
+                        <span class="fa fa-trash text-warning"></span>
                         <?php eT("Delete this entry"); ?>
                     </a>
                     <?php endif;?>
 
                     <?php if ($bHasFile): ?>
                     <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' role="button" >
-                        <span class="glyphicon  glyphicon-download-alt text-success"></span>
-                        <?php eT("Delete this entry"); ?>
+                        <span class="fa  fa-download-alt text-success"></span>
+                        <?php eT("Download files"); ?>
                     </a>
                     <?php endif;?>
 
@@ -235,7 +237,7 @@
 
             <?php if(isset($menu) && isset($menu['close']) && $menu['close']): ?>
                 <a class="btn btn-danger" href="<?php echo  $menu['closeurl'];  ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>

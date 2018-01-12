@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-lg-12 content-right">
 
-            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form-horizontal col-md-6  col-md-offset-3', 'role' => 'form')); ?>
+            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>' col-md-6  col-md-offset-3', 'role' => 'form')); ?>
 
             <div class="form-group">
                 <label for="defaultname" class='control-label col-sm-3'><?php eT('Default attribute name:'); ?></label>
@@ -70,10 +70,10 @@
                     </div>
                 </td>
                 <td class='actions'>
-                    <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-remove-circle text-warning cancel ui-pg-button" title="<?php eT('Cancel editing'); ?>"></span>
-                    <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-pencil text-success edit ui-pg-button" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
+                    <span data-toggle='tooltip' data-placement='bottom' class="fa fa-remove-circle text-warning cancel ui-pg-button" title="<?php eT('Cancel editing'); ?>"></span>
+                    <span data-toggle='tooltip' data-placement='bottom' class="fa fa-pencil text-success edit ui-pg-button" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
                     <a href="<?php echo $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']); ?>" title="<?php eT('Delete value'); ?>" >
-                        <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-trash text-warning delete ui-pg-button" title="<?php eT('Delete value'); ?>"></span>
+                        <span data-toggle='tooltip' data-placement='bottom' class="fa fa-trash text-warning delete ui-pg-button" title="<?php eT('Delete value'); ?>"></span>
                     </a>
                 </td>
             </tr>

@@ -1,6 +1,6 @@
 <?php
 
-echo '<link rel="stylesheet" type="text/css" href="' . getTemplateURL(Yii::app()->getConfig('defaulttemplate')) . '/print_template.css" />';
+echo '<link rel="stylesheet" type="text/css" href="' . getTemplateURL(getGlobalSetting('defaulttheme')) . '/print_template.css" />';
 
 echo $surveydesc . "<br />";
 echo $welcome . "<br /><br />";

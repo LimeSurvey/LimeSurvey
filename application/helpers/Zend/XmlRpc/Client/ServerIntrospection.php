@@ -87,12 +87,12 @@ class Zend_XmlRpc_Client_ServerIntrospection
         $multicallParams = array();
         foreach ($methods as $method) {
             $multicallParams[] = array('methodName' => 'system.methodSignature',
-                                       'params'     => array($method));
+                                        'params'     => array($method));
         }
 
         $serverSignatures = $this->_system->multicall($multicallParams);
 
-        if (! is_array($serverSignatures)) {
+        if (!is_array($serverSignatures)) {
             $type = gettype($serverSignatures);
             $error = "Multicall return is malformed.  Expected array, got $type";
             require_once 'Zend/XmlRpc/Client/IntrospectException.php';
@@ -145,7 +145,7 @@ class Zend_XmlRpc_Client_ServerIntrospection
     {
         $signature = $this->_system->methodSignature($method);
         if (!is_array($signature)) {
-            $error = 'Invalid signature for method "' . $method . '"';
+            $error = 'Invalid signature for method "'.$method.'"';
             require_once 'Zend/XmlRpc/Client/IntrospectException.php';
             throw new Zend_XmlRpc_Client_IntrospectException($error);
         }

@@ -1,4 +1,5 @@
 <?php
+/** @var ListSurveysWidget $this */
 /**
  * Render the selector for surveys massive actions.
  *
@@ -20,7 +21,7 @@
                     'type'        => 'action',
                     'action'      => 'delete',
                     'url'         => App()->createUrl('/admin/survey/sa/deleteMultiple/'),
-                    'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+                    'iconClasses' => 'text-danger fa fa-trash',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -96,6 +97,25 @@
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Export printable survey'),
                     'htmlModalBody' => gT('This will export a printable version of your survey.').' '.gT('Continue?'),
+                ),
+                // Publication multiple
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'expire',
+                    'url'         =>  App()->createUrl('/admin/survey/sa/expireMultipleSurveys/'),
+                    'iconClasses' => 'icon-expired',
+                    'text'        =>  gT("Set expiry date"),
+                    'grid-reload' => 'yes',
+                    // modal
+                    'actionType'  => 'modal',
+                    'modalType'   => 'yes-no',
+                    'keepopen'    => 'yes',
+                    'sModalTitle'   => gT('Set expiry date'),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php',array(),true),
+
+
+
                 ),
             ),
 

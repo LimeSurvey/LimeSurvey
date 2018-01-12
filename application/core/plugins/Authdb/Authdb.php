@@ -28,43 +28,40 @@ class Authdb extends AuthPluginBase
     /**
      * Create a DB user
      *
-     * @return unknown_type
+     * @return void
      */
     public function createNewUser()
     {
         // Do nothing if the user to be added is not DB type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB')
-        {
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
             return;
         }
         $oEvent = $this->getEvent();
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        if (!validateEmailAddress($new_email))
-        {
-            $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
-            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
-            $oEvent->set('errorMessageBody',gT("The email address is not valid."));
+        if (!validateEmailAddress($new_email)) {
+            $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', gT("The email address is not valid."));
             return;
         }
         $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $new_pass = createPassword();
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
-        if (!$iNewUID)
-        {
-            $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
-            $oEvent->set('errorMessageTitle','');
-            $oEvent->set('errorMessageBody',gT("Failed to add user"));
+        if (!$iNewUID) {
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle', '');
+            $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return;
         }
 
-        Permission::model()->setGlobalPermission($iNewUID,'auth_db');
+        Permission::model()->setGlobalPermission($iNewUID, 'auth_db');
 
-        $oEvent->set('newUserID',$iNewUID);
-        $oEvent->set('newPassword',$new_pass);
-        $oEvent->set('newEmail',$new_email);
-        $oEvent->set('newFullName',$new_full_name);
-        $oEvent->set('errorCode',self::ERROR_NONE);
+        $oEvent->set('newUserID', $iNewUID);
+        $oEvent->set('newPassword', $new_pass);
+        $oEvent->set('newEmail', $new_email);
+        $oEvent->set('newFullName', $new_full_name);
+        $oEvent->set('errorCode', self::ERROR_NONE);
     }
 
     public function beforeDeactivate()
@@ -99,17 +96,16 @@ class Authdb extends AuthPluginBase
 
     public function newLoginForm()
     {
-        $sUserName='';
-        $sPassword='';
-        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
-        {
-            $sUserName=Yii::app()->getConfig("defaultuser");
-            $sPassword=Yii::app()->getConfig("defaultpass");
+        $sUserName = '';
+        $sPassword = '';
+        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) {
+            $sUserName = Yii::app()->getConfig("defaultuser");
+            $sPassword = Yii::app()->getConfig("defaultpass");
         }
 
         $this->getEvent()->getContent($this)
-             ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
-             ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', $sUserName, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', $sPassword, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))));
     }
 
     public function newUserSession()
@@ -117,8 +113,7 @@ class Authdb extends AuthPluginBase
         // Do nothing if this user is not Authdb type
         $identity = $this->getEvent()->get('identity');
 
-        if ($identity->plugin != 'Authdb')
-        {
+        if ($identity->plugin != 'Authdb') {
             return;
         }
 
@@ -129,57 +124,45 @@ class Authdb extends AuthPluginBase
 
         $user = $this->api->getUserByName($username);
 
-        if ($user == null){
-          $user = $this->api->getUserByEmail($username);
-          
-          if (is_object($user)){
-              $this->setUsername($user->users_name);
-          }
+        if ($user === null) {
+            $user = $this->api->getUserByEmail($username);
+            if (is_object($user)) {
+                $this->setUsername($user->users_name);
+            }
         }
-
-        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
-        {
+        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid)) {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
-        if ($user !== null and ($username==$user->users_name || $username==$user->email)) // Control of equality for uppercase/lowercase with mysql
-        {
-            if (gettype($user->password)=='resource')
-            {
-                $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
-            }
-            else
-            {
-                $sStoredPassword=$user->password;
-            }
+        if ($user === null) {
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
         }
-        else
-        {
+        if ($user !== null && ($username != $user->users_name && $username != $user->email)) {
+// Control of equality for uppercase/lowercase with mysql
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw)
-        {
-            $user->one_time_pw='';
+
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw) {
+            $user->one_time_pw = '';
             $user->save();
             $this->setAuthSuccess($user);
             return;
         }
 
-        if ($sStoredPassword !== hash('sha256', $password))
-        {
+        if (!$user->checkPassword($password)) {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
-
         $this->setAuthSuccess($user);
     }
 
     /**
      * Set the onetime password
      *
-     * @param type $onepass
+     * @param string $onepass
      * @return Authdb
      */
     protected function setOnePass($onepass)

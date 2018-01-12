@@ -3,106 +3,110 @@ class FormattingOptions
 {
     public $responseMinRecord;
     public $responseMaxRecord;
+    /** @var string $aResponses Comma separated values */
+    public $aResponses;
 
     /**
-    * The columns that have been selected for output.  The values must be
-    * in fieldMap format.
-    *
-    * @var array[]string
-    */
+     * The columns that have been selected for output.  The values must be
+     * in fieldMap format.
+     *
+     * @var array[]string
+     */
     public $selectedColumns;
 
     /**
-    * Acceptable values are:
-    * "complete" = include only incomplete answers
-    * "incomplete" = only include incomplete answers
-    * "all" = include ALL answers
-    *
-    * @var mixed
-    */
+     * Acceptable values are:
+     * "complete" = include only incomplete answers
+     * "incomplete" = only include incomplete answers
+     * "all" = include ALL answers
+     *
+     * @var mixed
+     */
     public $responseCompletionState;
 
     /**
-    * Acceptable values are:
-    * "abbreviated" = Abbreviated headings
-    * "full" = Full headings
-    * "code" = Question codes
-    *
-    * @var string
-    */
+     * Acceptable values are:
+     * "abbreviated" = Abbreviated headings
+     * "full" = Full headings
+     * "code" = Question codes
+     *
+     * @var string
+     */
     public $headingFormat;
 
     /**
-    * Indicates whether to convert spaces in question headers to underscores.
-    *
-    * @var boolean
-    */
+     * Indicates whether to convert spaces in question headers to underscores.
+     *
+     * @var boolean
+     */
     public $headerSpacesToUnderscores;
 
     /**
-    * Indicates whether to ellipsize each text part to.
-    *
-    * @var integer
-    */
+     * Indicates whether to ellipsize each text part to.
+     *
+     * @var integer
+     */
     public $headingTextLength;
 
     /**
-    * Indicates whether to use Expression Manager code
-    *
-    * @var bolean
-    */
+     * Indicates whether to use Expression Manager code
+     *
+     * @var boolean
+     */
     public $useEMCode;
 
     /**
-    * What is the caracters to separate code and text
-    *
-    * @var bolean
-    */
+     * What is the caracters to separate code and text
+     *
+     * @var boolean
+     */
     public $headCodeTextSeparator;
 
     /**
-    * Valid values are:
-    * "short" = Answer codes
-    * "long" = Full answers
-    *
-    * @var string
-    */
+     * Valid values are:
+     * "short" = Answer codes
+     * "long" = Full answers
+     *
+     * @var string
+     */
     public $answerFormat;
 
     /**
-    * If $answerFormat is set to "short" then this indicates that 'Y' responses
-    * should be converted to another value that is specified by $yValue.
-    *
-    * @var boolean
-    */
+     * If $answerFormat is set to "short" then this indicates that 'Y' responses
+     * should be converted to another value that is specified by $yValue.
+     *
+     * @var boolean
+     */
     public $convertY;
 
     public $yValue;
 
     /**
-    * If $answerFormat is set to "short" then this indicates that 'N' responses
-    * should be converted to another value that is specified by $nValue.
-    *
-    * @var boolean
-    */
+     * If $answerFormat is set to "short" then this indicates that 'N' responses
+     * should be converted to another value that is specified by $nValue.
+     *
+     * @var boolean
+     */
     public $convertN;
 
     public $nValue;
     
     /**
-    * Destination format - either 'display' (send to browser) or 'file' (send to file)
-    * 
-    * @var string
-    */
+     * Destination format - either 'display' (send to browser) or 'file' (send to file)
+     * 
+     * @var string
+     */
     public $output;
 
+    public $format;
+    
     public function toString()
     {
         return $this->format.','.$this->headingFormat.','
         .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
-        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','
+        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','.$this->aResponses.','
         .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
         .$this->convertN.','.$this->nValue.','
-        .implode(',',$this->selectedColumns);
+        .implode(',', $this->selectedColumns);
     }
 }

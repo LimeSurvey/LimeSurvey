@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('ready  pjax:scriptcomplete',function() {
     var removeRow = function ()
     {
         // Don't remove last row.
@@ -40,7 +40,7 @@ $(document).ready(function() {
         newRow.fadeIn();
 
     }
-    $('.settingswidget .setting-list a.remove').bind('click',removeRow);
-    $('.settingswidget .setting-list a.add').bind('click', addRow);
+    $('.settingswidget .setting-list a.remove').on('click',removeRow);
+    $('.settingswidget .setting-list a.add').on('click', addRow);
 
 })

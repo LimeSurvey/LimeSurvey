@@ -1,0 +1,44 @@
+.file-upload-modal{
+    text-align: center;
+}
+.file-upload-modal::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    margin-right: -4px;
+    vertical-align: middle;
+}
+.file-upload-modal .modal-dialog
+{
+  margin:0 auto;
+}
+.file-upload-modal .modal-dialog {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+}
+.rtl .file-upload-modal .modal-dialog {
+    text-align: right;
+}
+.file-upload-modal .modal-body
+{
+  height:auto;
+  width:auto;
+  max-height:100%;
+  box-sizing:border-box;
+  overflow-y:show;
+  overflow-x:hidden;
+}
+.file-upload-modal-footer{margin-top:0}
+
+.uploader-frame{
+  border:0 none;
+  width:100%;
+  height:100%;
+}
+@media only screen and (max-width: 760px){
+  .file-upload-modal .modal-dialog {
+      margin: 0;
+      width: 100%;
+  }
+}

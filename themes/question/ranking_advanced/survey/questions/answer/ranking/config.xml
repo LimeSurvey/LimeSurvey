@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the multiplechoice question template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>ranking_advanced</name>
+        <creationDate>15/11/2017</creationDate>
+        <author>Markus Flür</author>
+        <authorEmail>mfluer@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2017 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>New implementation of the ranking question</description>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>css/ranking.css</filename>
+        </css>
+        <js>
+            <filename>scripts/advanced_ranking.js</filename>
+        </js>
+    </files>
+
+    <custom_attributes>
+        <attribute>
+            <name>show_handle</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Show a handle for drag and drop</help>
+            <caption>Show handle: </caption>
+        </attribute>
+        <attribute>
+            <name>show_number</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Show the actual list numbers</help>
+            <caption>Show number: </caption>
+        </attribute>
+        <attribute>
+            <name>only_pull</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Allow only moving the answers</help>
+            <caption>Without reorder: </caption>
+        </attribute>
+        <attribute>
+            <name>visualize</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <list>List</list>
+                <bubbles>Bubbles</bubbles>
+                <blocks>Blocks</blocks>
+                <buttons>Buttons</buttons>
+            </options>
+            <default>list</default>
+            <help>Change visualization of the ranking question</help>
+            <caption>Viuzialisation: </caption>
+        </attribute>
+    </custom_attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

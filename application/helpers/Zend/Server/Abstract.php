@@ -111,20 +111,7 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
         return $this->_table;
     }
 
-    /**
-     * Lowercase a string
-     *
-     * Lowercase's a string by reference
-     *
-     * @deprecated
-     * @param  string $key
-     * @return string Lower cased string
-     */
-    public static function lowerCase(&$value, &$key)
-    {
-        trigger_error(__CLASS__ . '::' . __METHOD__ . '() is deprecated and will be removed in a future version', E_USER_NOTICE);
-        return $value = strtolower($value);
-    }
+
 
     /**
      * Build callback for method signature
@@ -137,11 +124,11 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
         $callback = new Zend_Server_Method_Callback();
         if ($reflection instanceof Zend_Server_Reflection_Method) {
             $callback->setType($reflection->isStatic() ? 'static' : 'instance')
-                     ->setClass($reflection->getDeclaringClass()->getName())
-                     ->setMethod($reflection->getName());
+                        ->setClass($reflection->getDeclaringClass()->getName())
+                        ->setMethod($reflection->getName());
         } elseif ($reflection instanceof Zend_Server_Reflection_Function) {
             $callback->setType('function')
-                     ->setFunction($reflection->getName());
+                        ->setFunction($reflection->getName());
         }
         return $callback;
     }
@@ -158,18 +145,18 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
     {
         $ns         = $reflection->getNamespace();
         $name       = $reflection->getName();
-        $method     = empty($ns) ? $name : $ns . '.' . $name;
+        $method     = empty($ns) ? $name : $ns.'.'.$name;
 
         if (!$this->_overwriteExistingMethods && $this->_table->hasMethod($method)) {
             require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Duplicate method registered: ' . $method);
+            throw new Zend_Server_Exception('Duplicate method registered: '.$method);
         }
 
         $definition = new Zend_Server_Method_Definition();
         $definition->setName($method)
-                   ->setCallback($this->_buildCallback($reflection))
-                   ->setMethodHelp($reflection->getDescription())
-                   ->setInvokeArguments($reflection->getInvokeArguments());
+                    ->setCallback($this->_buildCallback($reflection))
+                    ->setMethodHelp($reflection->getDescription())
+                    ->setInvokeArguments($reflection->getInvokeArguments());
 
         foreach ($reflection->getPrototypes() as $proto) {
             $prototype = new Zend_Server_Method_Prototype();

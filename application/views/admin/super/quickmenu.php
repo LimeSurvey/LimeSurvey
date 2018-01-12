@@ -7,7 +7,7 @@
         data-placement="right"
     >
         <div class='quick-icon-wrapper'>
-            <span class="glyphicon glyphicon-home navbar-brand"></span>
+            <span class="fa fa-home navbar-brand"></span>
         </div>
     </a>
 

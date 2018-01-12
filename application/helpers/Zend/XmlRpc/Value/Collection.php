@@ -44,7 +44,7 @@ abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
      */
     public function __construct($value)
     {
-        $values = (array)$value;   // Make sure that the value is an array
+        $values = (array) $value; // Make sure that the value is an array
         foreach ($values as $key => $value) {
             // If the elements of the given array are not Zend_XmlRpc_Value objects,
             // we need to convert them as such (using auto-detection from PHP value)
@@ -59,11 +59,11 @@ abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
     /**
      * Return the value of this object, convert the XML-RPC native collection values into a PHP array
      *
-     * @return arary
+     * @return array
      */
     public function getValue()
     {
-        $values = (array)$this->_value;
+        $values = (array) $this->_value;
         foreach ($values as $key => $value) {
             /* @var $value Zend_XmlRpc_Value */
             $values[$key] = $value->getValue();

@@ -1837,14 +1837,17 @@
     $v_memory_limit = trim($v_memory_limit);
     $last = strtolower(substr($v_memory_limit, -1));
  
-    if($last == 'g')
+    if($last == 'g') {
         //$v_memory_limit = $v_memory_limit*1024*1024*1024;
         $v_memory_limit = $v_memory_limit*1073741824;
-    if($last == 'm')
+    }
+    if($last == 'm') {
         //$v_memory_limit = $v_memory_limit*1024*1024;
-        $v_memory_limit = $v_memory_limit*1048576;
-    if($last == 'k')
+        $v_memory_limit = ((int) $v_memory_limit) * 1048576;
+    }
+    if($last == 'k') {
         $v_memory_limit = $v_memory_limit*1024;
+    }
             
     $p_options[PCLZIP_OPT_TEMP_FILE_THRESHOLD] = floor($v_memory_limit*PCLZIP_TEMPORARY_FILE_RATIO);
     

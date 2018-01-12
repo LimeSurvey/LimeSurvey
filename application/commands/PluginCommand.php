@@ -17,10 +17,10 @@
 
         /**
          * Call for cron action
-         * @interval int $interval Minutes for interval
+         * @param int $interval Minutes for interval
          * @return void
          */
-        public function actionCron($interval=null)
+        public function actionCron($interval = null)
         {
             $pm = \Yii::app()->pluginManager;
             $event = new PluginEvent('cron');
@@ -35,7 +35,7 @@
          * @param mixed $option Extra parameters for plugin
          * @return void
          */
-        public function actionIndex($target, $function=null,$option=null)
+        public function actionIndex($target, $function = null, $option = null)
         {
             $pm = \Yii::app()->pluginManager;
             $event = new PluginEvent('direct');
@@ -46,5 +46,3 @@
         }
 
     }
-
-?>

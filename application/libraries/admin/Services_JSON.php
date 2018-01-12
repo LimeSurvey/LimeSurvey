@@ -59,22 +59,22 @@
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_SLICE',   1);
+define('SERVICES_JSON_SLICE', 1);
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_STR',  2);
+define('SERVICES_JSON_IN_STR', 2);
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_ARR',  3);
+define('SERVICES_JSON_IN_ARR', 3);
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_OBJ',  4);
+define('SERVICES_JSON_IN_OBJ', 4);
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
@@ -149,13 +149,13 @@ class Services_JSON
     function utf162utf8($utf16)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf16, 'UTF-8', 'UTF-16');
         }
 
         $bytes = (ord($utf16{0}) << 8) | ord($utf16{1});
 
-        switch(true) {
+        switch (true) {
             case ((0x7F & $bytes) == $bytes):
                 // this case should never be reached, because we are in ASCII range
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
@@ -193,11 +193,11 @@ class Services_JSON
     function utf82utf16($utf8)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf8, 'UTF-16', 'UTF-8');
         }
 
-        switch(strlen($utf8)) {
+        switch (strlen($utf8)) {
             case 1:
                 // this case should never be reached, because we are in ASCII range
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
@@ -380,25 +380,25 @@ class Services_JSON
                     array_keys($var),
                     array_values($var));
 
-                    foreach($properties as $property) {
-                        if(Services_JSON::isError($property)) {
+                    foreach ($properties as $property) {
+                        if (Services_JSON::isError($property)) {
                             return $property;
                         }
                     }
 
-                    return '{' . join(',', $properties) . '}';
+                    return '{'.join(',', $properties).'}';
                 }
 
                 // treat it like a regular array
                 $elements = array_map(array($this, 'encode'), $var);
 
-                foreach($elements as $element) {
-                    if(Services_JSON::isError($element)) {
+                foreach ($elements as $element) {
+                    if (Services_JSON::isError($element)) {
                         return $element;
                     }
                 }
 
-                return '[' . join(',', $elements) . ']';
+                return '['.join(',', $elements).']';
 
             case 'object':
                 $vars = get_object_vars($var);
@@ -407,13 +407,13 @@ class Services_JSON
                 array_keys($vars),
                 array_values($vars));
 
-                foreach($properties as $property) {
-                    if(Services_JSON::isError($property)) {
+                foreach ($properties as $property) {
+                    if (Services_JSON::isError($property)) {
                         return $property;
                     }
                 }
 
-                return '{' . join(',', $properties) . '}';
+                return '{'.join(',', $properties).'}';
 
             default:
                 return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS)
@@ -435,11 +435,11 @@ class Services_JSON
     {
         $encoded_value = $this->encode($value);
 
-        if(Services_JSON::isError($encoded_value)) {
+        if (Services_JSON::isError($encoded_value)) {
             return $encoded_value;
         }
 
-        return $this->encode(strval($name)) . ':' . $encoded_value;
+        return $this->encode(strval($name)).':'.$encoded_value;
     }
 
     /**
@@ -506,9 +506,9 @@ class Services_JSON
                     // return (float)$str;
 
                     // Return float or int, as appropriate
-                    return ((float)$str == (integer)$str)
-                    ? (integer)$str
-                    : (float)$str;
+                    return ((float) $str == (integer) $str)
+                    ? (integer) $str
+                    : (float) $str;
 
                 } elseif (preg_match('/^("|\').*(\1)$/s', $str, $m) && $m[1] == $m[2]) {
                     // STRINGS RETURNED IN UTF-8 FORMAT
@@ -624,8 +624,8 @@ class Services_JSON
                     }
 
                     array_push($stk, array('what'  => SERVICES_JSON_SLICE,
-                                           'where' => 0,
-                                           'delim' => false));
+                                            'where' => 0,
+                                            'delim' => false));
 
                     $chrs = substr($str, 1, -1);
                     $chrs = $this->reduce_string($chrs);
@@ -739,8 +739,9 @@ class Services_JSON
                             array_pop($stk);
                             $c++;
 
-                            for ($i = $top['where']; $i <= $c; ++$i)
-                            $chrs = substr_replace($chrs, ' ', $i, 1);
+                            for ($i = $top['where']; $i <= $c; ++$i) {
+                                                        $chrs = substr_replace($chrs, ' ', $i, 1);
+                            }
 
                             //print("Found end of comment at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 

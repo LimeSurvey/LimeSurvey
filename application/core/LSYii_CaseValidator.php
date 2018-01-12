@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,36 +14,31 @@
  *
  */
 
-class LSYii_CaseValidator extends CValidator {
+class LSYii_CaseValidator extends CValidator
+{
 
-    public $type='lower';
+    public $type = 'lower';
 
 
-    public function validateAttribute($object,$attribute){
+    public function validateAttribute($object, $attribute)
+    {
 
-        if ($this->type=='upper')
-        {
-            if (strtoupper($object->$attribute)==$object->$attribute){
+        if ($this->type == 'upper') {
+            if (strtoupper($object->$attribute) == $object->$attribute) {
                 return;
-            }
-            else
-            {
+            } else {
                 $this->addError($object, $attribute, gT('Text needs to be uppercase.'));
                 return;
             }
-        }
-        else // default to lowercase
-        {
-            if (strtolower($object->$attribute)==$object->$attribute){
+        } else {
+            // default to lowercase
+            if (strtolower($object->$attribute) == $object->$attribute) {
                 return;
-            }
-            else
-            {
+            } else {
                 $this->addError($object, $attribute, gT('Text needs to be lowercase.'));
                 return;
             }
         }
-        return;
     }
 
 }

@@ -82,8 +82,10 @@
         <?php endforeach;?>
     </ul>
 </div>
-<script>
-    var gridId = "<?php  echo $this->gridid;?>";
-</script>
+
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "
+    var gridId = '".$this->gridid."';
+", LSYii_ClientScript::POS_BEGIN); ?>
+
 
 <!-- End of Massive actions widget : selector view -->

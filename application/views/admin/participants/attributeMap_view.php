@@ -13,16 +13,16 @@
 
     /* SCRIPT TEXT */
     var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";
-    var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the token table") ?>";
+    var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the survey participants table") ?>";
     var onlyOneAttributeMappedText="<?php eT("Only one central attribute is mapped with token attribute") ?>";
     var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept token attributes.") ?>";
 
 </script>
 
 <div class='header ui-widget-header'>
-    <h3 class='pagetitle'>
+    <div class='pagetitle h3'>
         <?php eT("Map your participant attributes to an existing token attribute or create a new one"); ?>
-    </h3>
+    </div>
 </div>
 <?php
     $columncount = 0;

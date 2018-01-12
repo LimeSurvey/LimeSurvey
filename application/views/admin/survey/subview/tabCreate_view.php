@@ -2,108 +2,140 @@
 /**
 * Tab Create content
 * This view display the content for the create tab.
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ *
 */
 ?>
 <?php
 extract($data);
 Yii::app()->loadHelper('admin/htmleditor');
 PrepareEditorScript(false, $this);
+
+App()->getClientScript()->registerScript("tabCreate-view-variables", "
+    var jsonUrl = '';
+    var sAction = '';
+    var sParameter = '';
+    var sTargetQuestion = '';
+    var sNoParametersDefined = '';
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sURLParameters = '';
+    var sAddParam = '';
+    var standardthemerooturl='".Yii::app()->getConfig('standardthemerooturl')."';
+    var templaterooturl='".Yii::app()->getConfig('userthemerooturl')."';
+    var formId = 'addnewsurvey';
+    
+", LSYii_ClientScript::POS_BEGIN);
 ?>
-<!-- Form submited by save buton menu bar -->
-<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form-horizontal')); ?>
-<div class='col-sm-12 col-md-6'>
-
-    <!-- Text elements -->
-    <div class="row">
-
-        <!-- base language -->
-        <div class="form-group">
-            <label class="col-sm-2 control-label" for='language' title='<?php  eT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."); ?>'><?php  eT("Base language:"); ?><span class='annotationasterisk'>*</span></label>
-            <div class="col-sm-5">
-                <select id='language' name='language'  class="form-control">
-                    <?php foreach (getLanguageDataRestricted (false) as $langkey2 => $langname) { ?>
-                        <option value='<?php echo $langkey2; ?>'
-                            <?php if (Yii::app()->getConfig('defaultlang') == $langkey2) { ?>
-                                selected='selected'
-                                <?php } ?>
-                            ><?php echo $langname['description']; ?> </option>
-                        <?php } ?>
-                </select>
-            </div>
-            <span class='text-warning'> <?php  eT("*This setting cannot be changed later!"); ?></span>
+<!-- Form submited by save button menu bar -->
+<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
+    <div class="ls-flex-row align-items-center align-content-center">
+        <div class="grow-1 ls-flex-column fill align-items-center align content-center">
+            <!-- Previous pane button -->
+            <button class="btn btn-default" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
         </div>
-
-        <!-- Title -->
-        <div class="form-group">
-            <label class="col-sm-2 control-label"  for='surveyls_title'><?php  eT("Survey title:"); ?></label>
-            <div class="col-sm-6">
-                <?php echo CHtml::textField("surveyls_title","",array('class'=>'form-control','maxlength'=>"200",'required'=>'required','autofocus'=>'autofocus','id'=>"surveyls_title")); ?>
-            </div>
-            <span class='text-warning'><?php  eT("Required"); ?> </span>
+        <div class="grow-10 ls-space padding left-10 right-10">
+            <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
+                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Text elements")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="3" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="4" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="5" href="#data-management" data-toggle="tab"><?=gT("Notification & data management")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="6" href="#tokens" data-toggle="tab"><?=gT("Participant settings")?></a></li>
+            </ul>
         </div>
-
-        <!-- Create sample group/question checkbox -->
-        <div class="form-group">
-            <label class="col-sm-2 control-label" for='createsample'><?php  eT("Sample question:"); ?></label>
-            <div class="col-sm-2">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'createsample',
-                    'value'=> false,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
-                    ));
-                ?>
-            </div>
-            <span class='help-block'><?php  eT("Adds a group and sample question to the new survey"); ?> </span>
+        <div class="grow-1 ls-flex-column fill align-items-center align-content-center">
+            <!-- Next pane button -->
+            <button class="btn" name="navigation_next" id="navigation_next" value="navigation_next"><i class="fa fa-chevron-right" style="font-size:82;"></i></button>
         </div>
-
-        <!-- Description -->
-        <div class="form-group">
-            <label for='description' class="col-sm-2 control-label"><?php  eT("Description:"); ?> </label>
-            <div class="col-sm-9">
-                <div class='htmleditor input-group' >
-                    <?php echo CHtml::textArea("description","",array('class'=>'form-control','cols'=>'80','rows'=>'10','id'=>"description")); ?>
-                    <?php echo getEditor("survey-desc", "description", "[" .  gT("Description:", "js") . "]", '', '', '', $action); ?>
-                </div>
-            </div>
-        </div>
-
-        <!-- Welcome message -->
-        <div class="form-group">
-            <label for='welcome' class="col-sm-2 control-label">
-                <?php  eT("Welcome message:"); ?>
-            </label>
-            <div class="col-sm-9">
-                <div class='htmleditor input-group'>
-                    <?php echo CHtml::textArea("welcome","",array('class'=>'form-control','cols'=>'80','rows'=>'10','id'=>"welcome")); ?>
-                    <?php echo getEditor("survey-welc", "welcome", "[" .  gT("Welcome message:", "js") . "]", '', '', '', $action) ?>
-                </div>
-            </div>
-        </div>
-
-        <!-- End message -->
-        <div class="form-group">
-            <label for='endtext' class="col-sm-2 control-label">
-                <?php  eT("End message:") ;?>
-            </label>
-            <div class="col-sm-9">
-                <div class='htmleditor input-group'>
-                    <?php echo CHtml::textArea("endtext","",array('class'=>'form-control','cols'=>'80','rows'=>'10','id'=>"endtext")); ?>
-                    <?php echo getEditor("survey-endtext", "endtext", "[" .  gT("End message:", "js") . "]", '', '', '', $action) ?>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
-
-<!-- Settings in accordion -->
-<div class='col-sm-12 col-md-6'>
-    <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$data)); ?>
-</div>
-
-<!-- Submit button -->
-<p>
-    <button type="submit" name="save"  class="hide" value='insertsurvey'><?php eT("Save"); ?></button>
-</p>
+    <div class="ls-flex-row align-items-center align-content-center">
+        <div class="grow-10 ls-space padding left-10 right-10">
+            <div class="tab-content">
+                <div class="tab-pane active" id="texts" data-count="1">
+                    <?php echo $this->renderPartial('/admin/survey/subview/_create_survey_text', $edittextdata); ?>
+                </div>
+                <div class="tab-pane" id="general-settings" data-count="2">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $generalsettingsdata); ?>
+                </div>
+                <div class="tab-pane" id="presentation" data-count="3">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $presentationsettingsdata); ?>
+                </div>
+                <div class="tab-pane" id="publication" data-count="4">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_publication_panel', $publicationsettingsdata); ?>
+                </div>
+                <div class="tab-pane" id="data-management" data-count="5">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_notification_panel', $notificationsettingsdata); ?>
+                </div>
+                <div class="tab-pane" id="tokens" data-count="6">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_tokens_panel', $tokensettingsdata); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <input type="hidden" name="saveandclose" id="submitaddnesurvey" value="1" />
+            <!-- Submit button -->
+            <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
+    </div>
 </form>
+
+<script>
+    var updateCKfields = function(){
+        $('textarea').each(function () {
+            var $textarea = $(this);
+            if(CKEDITOR.instances[$textarea.attr('name')] != undefined || CKEDITOR.instances[$textarea.attr('name')] != null) {
+                $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+            }
+        });
+    }
+    $(document).on('ready pjax:scriptcomplete', function(){
+        sessionStorage.setItem('maxtabs', 1);
+
+        $('#navigation_back').on('click', function(e){
+            e.preventDefault();
+            updateCKfields();
+            $('#create_survey_tablist').find('.active').prev('li').find('a').trigger('click');
+        })
+        $('#navigation_next').on('click', function(e){
+            e.preventDefault();
+            updateCKfields();
+            $('#create_survey_tablist').find('.active').next('li').find('a').trigger('click');
+        })
+
+        $('a.create_survey_wizard_tabs').on('shown.bs.tab', function (e) {
+            var count = $(e.target).data('count'); 
+            var sessionStorageValue = sessionStorage.getItem('maxtabs') || 1;
+            //console.log(count, sessionStorageValue);
+            if(count>3 || sessionStorageValue>3){
+                $('#save-form-button').removeClass('disabled');
+                $('#save-and-close-form-button').removeClass('disabled');
+            }
+        });
+        $('#addnewsurvey').on('submit',  function(event){
+            event.preventDefault();
+            var form = this;
+
+            updateCKfields();
+            var data = $(form).serializeArray();
+            var uri = $(form).attr('action');
+            $.ajax({
+                url: uri,
+                method:'POST',
+                data: data,
+                success: function(result){
+                if(result.redirecturl != undefined ){
+                    window.location.href=result.redirecturl;
+                } else {
+                    window.location.reload();
+                }
+                },
+                error: function(result){
+                console.log({result: result});
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

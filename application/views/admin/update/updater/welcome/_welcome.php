@@ -56,7 +56,7 @@
         <div id="keyInfosbuttons">
             <br/>
             <?php  if ($serverAnswer->key_infos->remaining_updates!=-999):?>
-                <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+                <a class="btn btn-default" href="https://www.limesurvey.org/editions-and-prices/limesurvey-ce/editions-and-prices-community" role="button" aria-disabled="false" target="_blank">
                     <?php eT("Buy a new key"); ?>
                 </a>
             <?php endif; ?>
@@ -89,7 +89,7 @@
 </div>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchCheckLocalErrorsForm').comfortUpdateNextStep({'step': 0});
 </script>

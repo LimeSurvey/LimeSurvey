@@ -1,0 +1,79 @@
+{#
+!!!! BECAREFUL: ONLY FOR TESTING !!!!!
+!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
+
+!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
+
+/**
+ * Shortfreetext, input text style, item Html
+ *
+ * $extraclass
+ * $name        $ia[1]
+ * $prefix
+ * $suffix
+ * $kpclass
+ * $tiwidth
+ * $dispVal
+ * $maxlength
+ * $checkconditionFunction
+ **** Additional attributes:
+ * @var question_template_attribute.add_platform_info
+ */
+#}
+
+{#<p>DEBUG:<br>
+question_template_attribute.add_platform_info           : {{question_template_attribute.add_platform_info}}<br/>
+</p>
+#}
+
+{% if withColumn %}
+<div class='{{coreClass}} row'>
+    <div class="{{extraclass}}">
+{% else %}
+<div class='{{coreClass}} {{extraclass}}'>
+{% endif %}
+
+    {% if prefix is not empty or suffix is not empty %}
+        <div class="ls-input-group">
+    {% endif %}
+        <!-- Prefix -->
+        {% if prefix is not empty %}
+            <div class='ls-input-group-extra prefix-text prefix'>{{prefix}} </div>
+        {% endif %}
+
+        <!-- Input -->
+        <input
+            class="form-control {{kpclass}}"
+            type="text"
+            name="{{name}}"
+            id="answer{{name}}"
+            value="{{dispVal}}"
+            {% if inputsize is not empty %} size="{{inputsize}}" {% endif %}
+            {% if maxlength is not empty %} maxlength='{{maxlength}}' {% endif %}
+            disabled="disabled"
+            aria-labelledby="ls-question-text-{{basename}}"
+        />
+
+        <!-- Suffix -->
+        {% if suffix is not empty %}
+            <div class='ls-input-group-extra suffix-text suffix'><?php echo $suffix; ?></div>
+        {% endif %}
+    {% if prefix is not empty or suffix is not empty %}
+        </div>
+    {% endif %}
+{% if withColumn %}
+    </div>
+</div>
+{% else %}
+</div>
+{% endif %}
+<script>
+$(function(){
+    var browserCheckObject = new BrowserCheck();
+    {% if question_template_attribute.add_platform_info == true %}
+        $("#answer{{name}}").val(browserCheckObject.getBrowserInfoLong());
+    {% else %}
+        $("#answer{{name}}").val(browserCheckObject.getBrowserInfoShort());
+    {% endif %}
+});
+</script>

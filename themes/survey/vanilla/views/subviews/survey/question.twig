@@ -1,0 +1,48 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Question Layout  ·._.·´¯)·._.·´¯)
+
+    This file is one of the most important of the rendering progress.
+    It will render a question. It's included in the for loop in group.twig
+
+    Here, you have access to the array aQuestion that contains the data of the current question.
+    To see what's inside aQuestion, turn debug mode on, and copy the following line to the end of this file:
+    {{ dump(aQuestion) }}
+
+    All content of aQuestion itself is generated from qanda_helper.
+    To modify it, you must create a question theme and apply it to the question in its display settings
+    (here, you're inside the survey theme, applied to the survey in its settings).
+
+#}
+
+
+{# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
+{% set aShow        = aSurveyInfo.aShow   %}
+
+    <!-- Question {{ aQuestion.code }} -->
+
+    {# Question Text #}
+    {{ include('./subviews/survey/question_subviews/question_text_container.twig') }}
+
+
+    {# Valide message and help #}
+    {{ include('./subviews/survey/question_subviews/valid_message_and_help.twig') }}
+
+    {# Answers #}
+    {{ include('./subviews/survey/question_subviews/answers.twig') }}
+
+    {# Survey question Help #}
+    {{ include('./subviews/survey/question_subviews/survey_question_help.twig') }}
+
+    <!-- End of question {{ aQuestion.code }} -->

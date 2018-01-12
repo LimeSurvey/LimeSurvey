@@ -14,7 +14,7 @@ namespace ls\ajax;
 class AjaxHelper
 {
     /**
-     * As createAbsoluteUrl, but appends param ajax = 1 to url
+     * As Yii createUrl, but appends param ajax = 1 to url
      * Use when creating Ajax action links, like button clicks that
      * will open modals or save data.
      * @param string $route
@@ -24,7 +24,7 @@ class AjaxHelper
     public static function createUrl($route, array $params = array())
     {
         $params['ajax'] = 1;
-        return App()->createAbsoluteUrl($route, $params);
+        return App()->createUrl($route, $params);
     }
     /**
      * Echoes json with result set as $msg
@@ -36,7 +36,7 @@ class AjaxHelper
     public static function output($msg)
     {
         $output = new JsonOutput($msg);
-        self::echoString($output);  // Encoded to json format when converted to string
+        self::echoString($output); // Encoded to json format when converted to string
     }
 
     /**
@@ -82,9 +82,18 @@ class AjaxHelper
     }
 
     /**
+     * @param string $target
+     * @return void
+     */
+    public static function outputHtml($html, $target)
+    {
+        $output = new JsonOutputHtml($html, $target);
+        self::echoString($output);
+    }
+
+    /**
      * Echo $str with json header
-     * @param string str
-     * @param JsonOutput $str
+     * @param string $str
      * @return void
      */
     private static function echoString($str)
@@ -157,11 +166,12 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
-            'success' => $this->success,
-            'result' => $this->result,
-            'error' => $this->error,
-            'loggedIn' => $this->loggedIn,
-            'hasPermission' => $this->hasPermission,
+            'ajaxHelper'       => true, // To help JS parse in some cases.
+            'success'          => $this->success,
+            'result'           => $this->result,
+            'error'            => $this->error,
+            'loggedIn'         => $this->loggedIn,
+            'hasPermission'    => $this->hasPermission,
             'noPermissionText' => gT('No permission')
         ));
     }
@@ -279,8 +289,7 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
         // This should not be possible here
         if (isset($result[0]) && $result[0] == 'success') {
             throw new \CException('Internal error: login form submitted');
-        }
-        else if (isset($result[0]) && $result[0] == 'failed') {
+        } else if (isset($result[0]) && $result[0] == 'failed') {
             throw new \CException('Internal error: login form submitted');
         }
 
@@ -289,5 +298,48 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
 
         $this->hasPermission = true;
         $this->loggedIn = false;
+    }
+}
+
+/**
+ * Echo HTML and put it in a <div> with id $target.
+ */
+class JsonOutputHtml extends JsonOutput
+{
+
+    /**
+     * Content.
+     * @var string
+     */
+    public $html;
+
+    /**
+     * ID of element to put HTML in.
+     * @var string
+     */
+    public $target;
+
+    /**
+     * @param string $html
+     * @param string $target ID of element to put HTML in.
+     */
+    public function __construct($html, $target)
+    {
+        $this->html    = $html;
+        $this->target  = $target;
+    }
+
+    public function __toString()
+    {
+        return json_encode(
+            array(
+                'loggedIn'      => true,
+                'hasPermission' => true,
+                'success'       => true,
+                'html'          => $this->html,
+                'outputType'    => 'jsonoutputhtml',
+                'target'        => $this->target
+            )
+        );
     }
 }

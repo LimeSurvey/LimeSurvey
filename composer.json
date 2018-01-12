@@ -1,0 +1,40 @@
+{
+	"name" : "limesurvey/limesurvey",
+	"description" : "The most popular FOSS online survey tool on the web",
+	"homepage" : "https://www.limesurvey.org/",
+	"license" : "GPL 2.0",
+	"authors" : [{
+			"name" : "LimeSurvey Team",
+			"email" : "support@limesurvey.org",
+			"homepage" : "https://www.limesurvey.org",
+			"role" : "Developer"
+		}
+	],
+	
+	"support" : {
+		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
+		"source" : "https://github.com/LimeSurvey/LimeSurvey",
+		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
+		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
+	},
+	"autoload": {
+		"psr-4": {
+			"LimeSurvey\\PluginManager\\": [
+				"application/libraries/PluginManager/",
+				"application/libraries/PluginManager/Storage"
+			],
+			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
+			"LimeSurvey\\Helpers\\": "application/helpers"
+		}
+	},
+	"require": {
+		"facebook/webdriver": "^1.4"
+	},
+    "config": {
+        "vendor-dir": "third_party",
+        "bin-dir": "third_party/bin"
+    },
+	"require-dev": {
+		"squizlabs/php_codesniffer": "2.*"
+	}
+}

@@ -1,5 +1,5 @@
 <?php
-use ls\pluginmanager\PluginEvent;
+use LimeSurvey\PluginManager\PluginEvent;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,7 +19,8 @@ use ls\pluginmanager\PluginEvent;
  *
  * @@TODO Move to LSWebUser and change documentation / workflow for authentication plugins
  */
-class LSUserIdentity extends CUserIdentity {
+class LSUserIdentity extends CUserIdentity
+{
 
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
@@ -48,7 +49,8 @@ class LSUserIdentity extends CUserIdentity {
      */
     public $plugin = 'Authdb';
 
-    public function authenticate() {
+    public function authenticate()
+    {
         // First initialize the result, we can later retieve it to get the exact error code/message
         $result = new LSAuthResult(self::ERROR_NONE);
 
@@ -59,13 +61,12 @@ class LSUserIdentity extends CUserIdentity {
         }
 
         // If still ok, continue
-        if ($result->isValid())
-        {
+        if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
-                $authEvent = new PluginEvent('newUserSession', $this);          // TODO: rename the plugin function authenticate()
+                $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
                 App()->getPluginManager()->dispatchEvent($authEvent);
                 $pluginResult = $authEvent->get('result');
@@ -79,11 +80,13 @@ class LSUserIdentity extends CUserIdentity {
 
         if ($result->isValid()) {
             // Perform postlogin
+            regenerateCSRFToken();
             $this->postLogin();
         } else {
             // Log a failed attempt
             $userHostAddress = getIPAddress();
-            FailedLoginAttempt::model()->addAttempt($userHostAddress);
+            FailedLoginAttempt::model()->addAttempt();
+            regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii
         }
 
@@ -99,22 +102,22 @@ class LSUserIdentity extends CUserIdentity {
     }
 
     /**
-    * Returns the current user's ID
-    *
-    * @access public
-    * @return int
-    */
+     * Returns the current user's ID
+     *
+     * @access public
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-    * Returns the active user's record
-    *
-    * @access public
-    * @return User
-    */
+     * Returns the active user's record
+     *
+     * @access public
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
@@ -127,12 +130,19 @@ class LSUserIdentity extends CUserIdentity {
 
         // Check for default password
         if ($this->password === 'password') {
-            Yii::app()->setFlashMessage(gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."),'warning');
+            $not = new UniqueNotification(array(
+                'user_id' => App()->user->id,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'title' => 'Password warning',
+                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                    gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
+            ));
+            $not->save();
         }
 
-        if ((int)App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
-        {
-            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."),'error');
+        if ((int) App()->request->getPost('width', '1220') < 1220) {
+// Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
         }
 
         // Do session setup
@@ -143,33 +153,36 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang', 'default') != 'default')
-        {
+        if (App()->request->getPost('loginlang', 'default') != 'default') {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
-            $sLanguage=$user->lang;
-        }
-        else if ($user->lang=='auto' || $user->lang=='')
-        {
-            $sLanguage=getBrowserLanguage();
-        }
-        else
-        {
-            $sLanguage=$user->lang;
+            $sLanguage = $user->lang;
+        } else if ($user->lang == 'auto' || $user->lang == '') {
+            $sLanguage = getBrowserLanguage();
+        } else {
+            $sLanguage = $user->lang;
         }
 
         Yii::app()->session['adminlang'] = $sLanguage;
         App()->setLanguage($sLanguage);
+
+        // Read all plugin config files if superadmin logged in
+        if (Permission::model()->hasGlobalPermission('superadmin')) {
+            $pm = Yii::app()->getPluginManager();
+            $pm->readConfigFiles();
+        }
     }
 
-    public function setPlugin($name) {
+    public function setPlugin($name)
+    {
         $this->plugin = $name;
     }
 
-    public function setConfig($config) {
+    public function setConfig($config)
+    {
         $this->config = $config;
     }
 }

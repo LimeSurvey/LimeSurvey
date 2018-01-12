@@ -1,7 +1,7 @@
 <!-- List all notifications -->
 
 <div class="container-fluid welcome full-page-wrapper">
-    <h3 class="pagetitle"><?php eT('Notifications'); ?></h3>
+    <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
 
 $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(

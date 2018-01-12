@@ -32,18 +32,18 @@
 
                                         <?php if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','update'))
                                             { ?>
-                                            <span onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" title='<?php eT('Edit entry'); ?>'  class="glyphicon glyphicon-pencil text-success"></span>
+                                            <span onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" title='<?php eT('Edit entry'); ?>'  class="fa fa-pencil text-success"></span>
                                             <?php }
                                             if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
                                             { ?>
-                                            <span class="glyphicon glyphicon-trash text-warning" title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" ></span>
+                                            <span class="fa fa-trash text-warning" title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" ></span>
                                             <?php } ?>
                                     </td>
 
-                                    <td><?php echo $oResult->identifier; ?></td>
+                                    <td><?php echo htmlspecialchars($oResult->identifier); ?></td>
                                     <td><?php echo $oResult->ip; ?></td>
                                     <td><?php echo $oResult->saved_date; ?></td>
-                                    <td><a href='mailto: <?php echo $oResult->email; ?>'> <?php echo $oResult->email; ?></td>
+                                    <td><?php echo CHtml::link(htmlspecialchars($oResult->email),'mailto:'.htmlspecialchars($oResult->email)); ?></td>
 
                                 </tr>
                                 <?php } ?>

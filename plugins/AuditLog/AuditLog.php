@@ -1,5 +1,5 @@
 <?php
-    class AuditLog extends \ls\pluginmanager\PluginBase {
+    class AuditLog extends \LimeSurvey\PluginManager\PluginBase {
 
         protected $storage = 'DbStorage';
         static protected $description = 'Core: Create an audit log of changes';
@@ -18,7 +18,7 @@
             ),
             'AuditLog_Log_UserLogout' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if user has logged out',
+                'label' =>  'Log if user has logged out',                                                
                 'default' => '1',
             ),
             'AuditLog_Log_UserFailedLoginAttempt' => array(
@@ -325,7 +325,6 @@
                 $oAutoLog->action="import";
                 $oAutoLog->newvalues=json_encode($aValues);
                 $oAutoLog->fields=implode(',',array_keys($aValues));
-                $oAutoLog->reason=App()->request->getPost("reason");
                 $oAutoLog->save();
             }
         }
@@ -424,9 +423,9 @@
             else
             {
                 $sAction = 'update';
-                $oCurrentUser=$this->api->getCurrentUser();
                 $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
             }
+            $oCurrentUser=$this->api->getCurrentUser();
             $aNewValues=$oNewParticipant->getAttributes();
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {

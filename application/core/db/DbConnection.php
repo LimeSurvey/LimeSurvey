@@ -1,8 +1,11 @@
 <?php
-
+/**
+* @property boolean $active Whether the DB connection is established. 
+*/
 class DbConnection extends \CDbConnection
 {
-    public function __construct($dsn = '', $username = '', $password = '') {
+    public function __construct($dsn = '', $username = '', $password = '')
+    {
         parent::__construct($dsn, $username, $password);
         $this->driverMap = array_merge($this->driverMap, array(
             'mysql' => 'MysqlSchema',
@@ -14,6 +17,15 @@ class DbConnection extends \CDbConnection
         ));
     }
 
+    protected function initConnection($pdo)
+    {
+        parent::initConnection($pdo);
+        $driver = strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
+        if (in_array($driver, array('mysql', 'mysqli'))) {
+            $pdo->exec("SET collation_connection='utf8mb4_unicode_ci'");
+        }
+    }
+        
     /**
      * Quotes a string value for use in a query.
      * @param string $str string to be quoted
@@ -23,14 +35,16 @@ class DbConnection extends \CDbConnection
      */
     public function quoteValueExtended($str, $quoteParam)
     {
-        if(is_int($str) || is_float($str))
-            return $str;
+        if (is_int($str) || is_float($str)) {
+                    return $str;
+        }
 
         $this->setActive(true);
-        if(($value=$this->getPdoInstance()->quote($str, $quoteParam))!==false)
-            return $value;
-        else  // the driver doesn't support quote (e.g. oci)
-            return "'" . addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032") . "'";
+        if (($value = $this->getPdoInstance()->quote($str, $quoteParam)) !== false) {
+                    return $value;
+        } else {
+            // the driver doesn't support quote (e.g. oci)
+            return "'".addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032")."'";
+        }
     }
 }
-?>

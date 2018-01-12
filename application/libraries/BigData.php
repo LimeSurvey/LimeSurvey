@@ -4,7 +4,8 @@
      * Class containing helper functions for dealing with "big data".
      * @author Sam Mousa <sam@befound.nl>
      */
-    class BigData {
+    class BigData
+    {
 
 
 
@@ -23,12 +24,9 @@
             $hasStream = array_reduce($json, array('BigData', 'hasStream'), false);
 
             // If there is no stream we are done.
-            if (!$hasStream)
-            {
+            if (!$hasStream) {
                 echo json_encode($json, $options);
-            }
-            else
-            {
+            } else {
                 self::json_echo_data($json, ($options & JSON_FORCE_OBJECT) == JSON_FORCE_OBJECT);
             }
 
@@ -36,21 +34,15 @@
 
         protected static function hasStream(&$result, $item)
         {
-            if ($result === true)
-            {
+            if ($result === true) {
                 return true;
-            }
-            elseif(is_array($item))
-            {
+            } elseif (is_array($item)) {
                 return array_reduce($item, array('BigData', 'hasStream'), false);
             }
             // Should use get_resource_type to do stricter check.
-            elseif (self::isStream($item))
-            {
+            elseif (self::isStream($item)) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -63,10 +55,8 @@
 
         protected static function isAssociative($array)
         {
-            foreach ($array as $key => $value)
-            {
-                if (is_string($key))
-                {
+            foreach ($array as $key => $value) {
+                if (is_string($key)) {
                     return true;
                 }
             }
@@ -76,28 +66,17 @@
 
         protected static function json_echo_data($json)
         {
-            if (self::isStream($json))
-            {
+            if (self::isStream($json)) {
                 self::json_echo_stream($json);
-            }
-            elseif ((is_array($json) && self::isAssociative($json)) || is_object($json))
-            {
+            } elseif ((is_array($json) && self::isAssociative($json)) || is_object($json)) {
                 self::json_echo_object($json);
-            }
-            elseif (is_array($json))
-            {
+            } elseif (is_array($json)) {
                 self::json_echo_array($json);
-            }
-            elseif (is_numeric($json))
-            {
+            } elseif (is_numeric($json)) {
                 self::json_echo_number($json);
-            }
-            elseif (is_string($json))
-            {
+            } elseif (is_string($json)) {
                 self::json_echo_string($json);
-            }
-            elseif (is_null($json))
-            {
+            } elseif (is_null($json)) {
                 echo json_encode(null);
             }
         }
@@ -105,9 +84,8 @@
         protected static function json_echo_array($json)
         {
             echo '[';
-                foreach ($json as $key => $entry)
-                {
-                    echo json_encode($key) . ':';
+                foreach ($json as $key => $entry) {
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
                     echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
                 }
@@ -125,12 +103,10 @@
                 end($json);
                 $lastKey = key($json);
                 reset($json);
-                foreach ($json as $key => $entry)
-                {
-                    echo json_encode($key) . ':';
+                foreach ($json as $key => $entry) {
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
-                    if ($lastKey !== $key)
-                    {
+                    if ($lastKey !== $key) {
                         echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
                     }
                 }
@@ -166,24 +142,15 @@
          */
         public static function xmlrpc_echo($data)
         {
-            if (self::isStream($data))
-            {
+            if (self::isStream($data)) {
                 self::xmlrpc_echo_stream($data);
-            }
-            elseif ((is_array($data) && self::isAssociative($data)) || is_object($data))
-            {
+            } elseif ((is_array($data) && self::isAssociative($data)) || is_object($data)) {
                 self::xmlrpc_echo_object($data);
-            }
-            elseif (is_array($data))
-            {
+            } elseif (is_array($data)) {
                 self::xmlrpc_echo_array($data);
-            }
-            elseif (is_numeric($data))
-            {
+            } elseif (is_numeric($data)) {
                 self::xmlrpc_echo_number($data);
-            }
-            elseif (is_string($data))
-            {
+            } elseif (is_string($data)) {
                 self::xmlrpc_echo_string($data);
             }
 
@@ -193,8 +160,7 @@
         {
             echo '<array>';
             echo '<data>';
-            foreach ($data as $element)
-            {
+            foreach ($data as $element) {
                 echo '<value>';
                 self::xmlrpc_echo($element);
                 echo '</value>';
@@ -209,10 +175,9 @@
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (floor($data) == $data){
+            if (floor($data) == $data) {
                 self::tag('int', $data);
-            }
-            else {
+            } else {
                 self::tag('double', $data);
             }
         }
@@ -220,8 +185,7 @@
         protected static function xmlrpc_echo_object($data)
         {
             echo '<struct>';
-            foreach ($data as $key => $value)
-            {
+            foreach ($data as $key => $value) {
                 echo '<member>';
                 echo self::tag('name', "<![CDATA[$key]]>");
                 echo '<value>';
@@ -249,13 +213,14 @@
         }
     }
 
-    class BigFile {
+    class BigFile
+    {
 
         public $fileName;
         protected $deleteAfterUse;
         protected $defaultEcho;
 
-        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho ='base64')
+        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho = 'base64')
         {
             $this->fileName = $fileName;
             $this->deleteAfterUse = $deleteAfterUse;
@@ -265,16 +230,13 @@
 
         public function render($type = null)
         {
-            if (!isset($type))
-            {
+            if (!isset($type)) {
                 $type = $this->defaultEcho;
             }
-            if (method_exists($this, "echo_{$type}"))
-            {
+            if (method_exists($this, "echo_{$type}")) {
                 call_user_func(array($this, "echo_{$type}"));
             }
-            if ($this->deleteAfterUse)
-            {
+            if ($this->deleteAfterUse) {
                 unlink($this->fileName);
             }
         }
