@@ -936,6 +936,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Column assessment_value not null but default to 0.
+         */
+        if ($iOldDBVersion < 343) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>343), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

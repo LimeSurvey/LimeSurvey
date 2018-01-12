@@ -30,7 +30,7 @@ function createDatabase($oDB){
             'code' => 'string(5) NOT NULL',
             'answer' => 'text NOT NULL',
             'sortorder' => 'integer NOT NULL',
-            'assessment_value' => 'integer NOT NULL',
+            'assessment_value' => 'integer NOT NULL DEFAULT 0',
             'language' => "string(20) NOT NULL DEFAULT 'en'",
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ));
