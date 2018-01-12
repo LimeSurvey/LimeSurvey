@@ -171,20 +171,6 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * @param mixed|bool $condition
-     * @param bool $return_query
-     * @return mixed
-     */
-    public function getAllRecords($condition = false, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != false) {
-            $query->where($condition);
-        }
-        return ($return_query) ? $query->queryAll() : $query;
-    }
-
-    /**
      * @param integer $surveyid
      * @param string $languagecode
      * @return mixed

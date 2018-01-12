@@ -1063,7 +1063,7 @@ class questionHelper
 
         /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
         self::$attributes["text_input_columns"] = array(
-        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT,
+        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',

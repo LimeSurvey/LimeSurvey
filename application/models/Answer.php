@@ -219,15 +219,6 @@ class Answer extends LSActiveRecord
         return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order = false)
-    {
-        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != false) {
-            $command->order($order);
-        }
-        return $command->query();
-    }
-
     /**
      * @param string $fields
      * @param string $orderby

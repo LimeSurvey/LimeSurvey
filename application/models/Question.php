@@ -374,21 +374,6 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * This function is called from everywhere, which is quiet weird...
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object]) (thumbs up)
-     */
-    function getAllRecords($condition, $order = false)
-    {
-        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != false) {
-            $command->order($order);
-        }
-        return $command->query();
-    }
-
-
-
-    /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      * @param string $fields
      * @param mixed $condition

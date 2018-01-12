@@ -100,28 +100,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns all users
-     *
-     * @access public
-     * @param mixed|boolean $condition
-     * @return CActiveRecord[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-            }
-        }
-
-        $data = $this->findAll($criteria);
-
-        return $data;
-    }
-
-    /**
      * @return string
      */
     public function getSurveysCreated()

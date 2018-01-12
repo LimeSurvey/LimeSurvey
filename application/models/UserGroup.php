@@ -68,32 +68,6 @@ class UserGroup extends LSActiveRecord
         );
     }
 
-
-    /**
-     * @param mixed|bool $condition
-     * @return mixed
-     * TODO should be removed and replaced by yii's options
-     */
-    public function getAllRecords($condition = false)
-    {
-        $this->connection = Yii::app()->db;
-        if ($condition != false) {
-            $where_clause = array("WHERE");
-
-            foreach ($condition as $key=>$val) {
-                $where_clause[] = $key.'=\''.$val.'\'';
-            }
-
-            $where_string = implode(' AND ', $where_clause);
-        }
-
-        $query = 'SELECT * FROM '.$this->tableName().' '.$where_string;
-
-        $data = $this->connection->createCommand($query)->query()->resultAll();
-
-        return $data;
-    }
-
     public function insertRecords($data)
     {
         return $this->db->insert('user_groups', $data);

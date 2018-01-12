@@ -79,21 +79,6 @@ class QuestionGroup extends LSActiveRecord
     {
         return array('order'=>'group_order');
     }    
-        
-    public function getAllRecords($condition = false, $order = false, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
-
-        if ($condition != false) {
-            $query->where($condition);
-        }
-
-        if ($order != false) {
-            $query->order($order);
-        }
-
-        return ($return_query) ? $query->queryAll() : $query;
-    }
 
     /**
      * @param integer $sid
