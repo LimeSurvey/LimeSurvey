@@ -83,6 +83,7 @@ $internalConfig = array(
         'application.core.*',
         'application.core.db.*',
         'application.models.*',
+        'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
         'bootstrap.helpers.*',

@@ -9243,7 +9243,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-            $aAttributesDefinitions=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
+            $aAttributesDefinitions=questionHelper::getAttributesDefinitions();
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
@@ -9852,7 +9852,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             );
 
             // Advanced question attributes : @todo get used question attribute by question in survey ?
-            $aQuestionAttributes=array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
+            $aQuestionAttributes=array_keys(questionHelper::getAttributesDefinitions());
             sort($aQuestionAttributes);
             $fields=array_merge($aBaseFields,$aQuestionAttributes);
 

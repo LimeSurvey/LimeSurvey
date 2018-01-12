@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-namespace LimeSurvey\Helpers;
 
 /**
  * General helper class for question + question setting system
