@@ -1,6 +1,9 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
+li.question-item.answer-item.text-item.form-group{
+    clear: both;
+}
 /* Minimal RWD img/video */
 .ls-answers img:not(.fixed-width),.ls-answers video:not(.fixed-width),.ls-answers svg:not(.fixed-width){
   max-width: 100%;height: auto;

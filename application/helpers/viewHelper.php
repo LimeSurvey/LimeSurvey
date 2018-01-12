@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -38,19 +40,19 @@ class viewHelper
         } else {
             $linkUrl = "#";
         }
-        $output = '<a href="' . $linkUrl;
+        $output = '<a href="'.$linkUrl;
         if (!empty($linkClass)) {
-            $output .= '" class="' . $linkClass . '"';
+            $output .= '" class="'.$linkClass.'"';
         }
         if (!empty($linkTarget)) {
-            $output .= ' target="' . $linkTarget . '"';
+            $output .= ' target="'.$linkTarget.'"';
         }
         if (!empty($attribs)) {
-            foreach($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+            foreach ($attribs as $attrib => $value) {
+                $output .= ' '.$attrib.'="'.str_replace('"', '&quot;', $value).'"';
             }
         }
-        $output .= '><img src="' . Yii::app()->getConfig('adminimageurl') . $imgName . '" alt="' . $linkTxt. '" title="' . $linkTxt. '"></a>';
+        $output .= '><img src="'.Yii::app()->getConfig('adminimageurl').$imgName.'" alt="'.$linkTxt.'" title="'.$linkTxt.'"></a>';
 
         return $output;
     }
@@ -75,16 +77,16 @@ class viewHelper
         } else {
             $linkUrl = "#";
         }
-        $output = '<a href="' . $linkUrl;
+        $output = '<a href="'.$linkUrl;
         if (!empty($linkClass)) {
-            $output .= '" class="' . $linkClass . '"';
+            $output .= '" class="'.$linkClass.'"';
         }
         if (!empty($linkTarget)) {
-            $output .= ' target="' . $linkTarget . '"';
+            $output .= ' target="'.$linkTarget.'"';
         }
         if (!empty($attribs)) {
-            foreach($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+            foreach ($attribs as $attrib => $value) {
+                $output .= ' '.$attrib.'="'.str_replace('"', '&quot;', $value).'"';
             }
         }
         $output .= '><span class="'.$icoClasses.'"></span></a>';
@@ -102,39 +104,34 @@ class viewHelper
      * @param array $aField the field information from createFieldMap
      * @param array $aOption option (see default)
      */
-    public static function getFieldText($aField, $aOption=array())
+    public static function getFieldText($aField, $aOption = array())
     {
         // Default options
-        $aDefaultOption=array(
+        $aDefaultOption = array(
             'flat'=>true,
-            'separator'=>array('(',')'),
+            'separator'=>array('(', ')'),
             'abbreviated'=>false,
             'afterquestion'=>" ",
-            'ellipsis'=>'...',// more for export or option, less for HTML display
+            'ellipsis'=>'...', // more for export or option, less for HTML display
             );
-        $aOption=array_merge($aDefaultOption,$aOption);
+        $aOption = array_merge($aDefaultOption, $aOption);
 
-        $sQuestionText="";// Allways return a string
-        if(isset($aField['fieldname']))
-        {
-            $sQuestionText=self::flatEllipsizeText($aField['question'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']).$aOption['afterquestion'];
+        $sQuestionText = ""; // Allways return a string
+        if (isset($aField['fieldname'])) {
+            $sQuestionText = self::flatEllipsizeText($aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']).$aOption['afterquestion'];
             // Did this question have sub question, maybe not needed, think only isset is OK
-            $bHaveSubQuestion=isset($aField['aid']) && $aField['aid']!="";
-            if(isset($aField['subquestion']) && $bHaveSubQuestion)
-            {
-                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
+            $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
+            if (isset($aField['subquestion']) && $bHaveSubQuestion) {
+                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if(isset($aField['subquestion1']) && $bHaveSubQuestion)
-            {
-                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion1'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
+            if (isset($aField['subquestion1']) && $bHaveSubQuestion) {
+                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion1'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if(isset($aField['subquestion2']) && $bHaveSubQuestion)
-            {
-                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion2'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
+            if (isset($aField['subquestion2']) && $bHaveSubQuestion) {
+                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion2'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
-            if(isset($aField['scale']) && $aField['scale'])
-            {
-                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['scale'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);;
+            if (isset($aField['scale']) && $aField['scale']) {
+                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['scale'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']); ;
             }
         }
 
@@ -150,39 +147,33 @@ class viewHelper
      * @param array $aField the field information from createFieldMap
      * @param array $aOption option for filtering
      */
-    public static function getFieldCode($aField, $aOption=array())
+    public static function getFieldCode($aField, $aOption = array())
     {
         // Default options
-        $aDefaultOption=array(
+        $aDefaultOption = array(
             'LEMcompat'=>false,
-            'separator'=>array('[',']'),
+            'separator'=>array('[', ']'),
             );
-        $aOption=array_merge($aDefaultOption,$aOption);
-        if($aOption['LEMcompat']){$aOption['separator']="_";}
+        $aOption = array_merge($aDefaultOption, $aOption);
+        if ($aOption['LEMcompat']) {$aOption['separator'] = "_"; }
 
-        $sQuestionCode="";
-        if(isset($aField['fieldname']))
-        {
-            if(isset($aField['title']) && $aField['title'])
-            {
-                $sQuestionCode=$aField['title'];
-                if(isset($aField['aid']) && $aField['aid']!="")
-                {
-                    $sQuestionCode.=self::putSeparator($aField['aid'],$aOption['separator']);
+        $sQuestionCode = "";
+        if (isset($aField['fieldname'])) {
+            if (isset($aField['title']) && $aField['title']) {
+                $sQuestionCode = $aField['title'];
+                if (isset($aField['aid']) && $aField['aid'] != "") {
+                    $sQuestionCode .= self::putSeparator($aField['aid'], $aOption['separator']);
                 }
-                if(isset($aField['scale']) && $aField['scale'])
-                {
-                    if($aOption['LEMcompat']){
-                        $scalenum=intval($aField['scale_id']);
-                    }else{
-                        $scalenum=intval($aField['scale_id'])+1;
+                if (isset($aField['scale']) && $aField['scale']) {
+                    if ($aOption['LEMcompat']) {
+                        $scalenum = intval($aField['scale_id']);
+                    } else {
+                        $scalenum = intval($aField['scale_id']) + 1;
                     }
-                    $sQuestionCode.=self::putSeparator($scalenum,$aOption['separator']);
+                    $sQuestionCode .= self::putSeparator($scalenum, $aOption['separator']);
                 }
-            }
-            else
-            {
-                $sQuestionCode=$aField['fieldname'];
+            } else {
+                $sQuestionCode = $aField['fieldname'];
             }
         }
 
@@ -190,18 +181,16 @@ class viewHelper
     }
 
     /**
-    * Return a string with the good separator before and after
-    *
-    * @param $sString :the string
-    * @param : string/array : the string to put before of the array (before,after)
-    */
-    public static function putSeparator($sString,$separator){
-        if(is_array($separator))
-        {
+     * Return a string with the good separator before and after
+     *
+     * @param $sString :the string
+     * @param : string/array : the string to put before of the array (before,after)
+     */
+    public static function putSeparator($sString, $separator)
+    {
+        if (is_array($separator)) {
             return $separator[0].$sString.$separator[1];
-        }
-        else
-        {
+        } else {
             return $separator.$sString;
         }
     }
@@ -217,13 +206,13 @@ class viewHelper
      *
      * @return string
      */
-    public static function flatEllipsizeText($sString,$bFlat=true,$iAbbreviated=0,$sEllipsis='...',$fPosition = 1)
+    public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
     {
-        if($bFlat || $iAbbreviated) {
+        if ($bFlat || $iAbbreviated) {
             $sString = flattenText($sString, false, true);
         }
 
-        if($iAbbreviated) {
+        if ($iAbbreviated>0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;
@@ -237,12 +226,12 @@ class viewHelper
      * @return void
      * @author Menno Dekker
      */
-     public static function disableHtmlLogging(){
-        foreach (App()->log->routes as $route)
+        public static function disableHtmlLogging()
         {
+        foreach (App()->log->routes as $route) {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
-     }
+        }
 
     /**
      * Deactivate script but show it for debuging
@@ -254,26 +243,28 @@ class viewHelper
      * @return string
      * @author Denis Chenu
      */
-     public static function filterScript($sHtml){
+        public static function filterScript($sHtml)
+        {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
-     }
+        }
     /**
      * Show purified html
      * @param string : Html to purify
      * @param string $sHtml
      * @return string
      */
-     public static function purified($sHtml){
+        public static function purified($sHtml)
+        {
         $oPurifier = new CHtmlPurifier();
         return $oPurifier->purify($sHtml);
-     }
+        }
     /**
      * Show clean string, leaving ONLY tag for Expression
      * @param string : Html to clean
      * @return string
      */
-     public static function stripTagsEM($sHtml)
-     {
+        public static function stripTagsEM($sHtml)
+        {
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
             'HTML.Allowed'=>'span[title|class],a[class|title|href]',
@@ -296,24 +287,25 @@ class viewHelper
                 )
         );
         return $oPurifier->purify($sHtml);
-     }
+        }
 
-     /**
-     * NOTE:  A real class helper is needed for twig, so I used this one for now.
-     * TODO: convert surveytranslator to a real helper
-     */
-     public static function getLanguageData($bOrderByNative=false,$sLanguageCode='en')
-     {
-         Yii::app()->loadHelper("surveytranslator");
-         return getLanguageData($bOrderByNative, $sLanguageCode );
-     }
+        /**
+         * NOTE:  A real class helper is needed for twig, so I used this one for now.
+         * TODO: convert surveytranslator to a real helper
+         */
+        public static function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
+        {
+            Yii::app()->loadHelper("surveytranslator");
+            return getLanguageData($bOrderByNative, $sLanguageCode);
+        }
 
-    /**
-     * Get a tag to help automated tests identify pages
-     * @param string $name unique view name
-     * @return string
-     */
-     public static function getViewTestTag($name){
-         return CHtml::tag('div',['id'=>'action::'.$name,'style'=>'']);
-     }
+        /**
+         * Get a tag to help automated tests identify pages
+         * @param string $name unique view name
+         * @return string
+         */
+        public static function getViewTestTag($name)
+        {
+            return sprintf('<x-test id="action::%s"></x-test>', $name);
+        }
 }

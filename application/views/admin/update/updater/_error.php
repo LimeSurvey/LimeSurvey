@@ -146,7 +146,7 @@ switch ($errorObject->error)
 <div>
 
 <?php if( $buttons == 1 ): ?>
-        <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+        <a class="btn btn-default" href="https://www.limesurvey.org/editions-and-prices/limesurvey-ce/editions-and-prices-community" role="button" aria-disabled="false" target="_blank">
             <?php eT("Buy a new key"); ?>
         </a>
 

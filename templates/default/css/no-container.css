@@ -1,7 +1,0 @@
-/* Remove question container*/
-.question-title-container, .question-container, .question-valid-container{
-    background: none;
-}
-.answer-container, .question-container{
-    border: none;
-}

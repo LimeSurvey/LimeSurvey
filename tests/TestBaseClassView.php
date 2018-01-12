@@ -39,9 +39,7 @@ class TestBaseClassView extends TestBaseClassWeb
         }
 
         self::adminLogin($username, $password);
-
     }
-
 
     /**
      * @param string $name

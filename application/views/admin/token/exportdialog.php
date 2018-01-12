@@ -123,7 +123,7 @@
         'settings' => $aSettings,
         'action'=>$sAction,
         'form' => true,
-        'title' => gT("Survey participant options"),
+        'title' => gT("Survey Survey participant settings"),
         'buttons' => $aButtons,
     ));*/
     ?>

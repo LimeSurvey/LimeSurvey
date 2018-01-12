@@ -57,7 +57,7 @@ function updateMaxHeightModalbody(modal)
 {
     var modalHeader=$(modal).find(".modal-header").outerHeight();
     var modalFooter=$(modal).find(".modal-footer").outerHeight();
-    console.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
+    console.ls.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
     var finalMaxHeight=Math.max(150,$(window).height()-(modalHeader+modalFooter+16));// Not less than 150px
     $(modal).find(".modal-body").css("max-height",finalMaxHeight);
 }
@@ -123,7 +123,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-default" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 

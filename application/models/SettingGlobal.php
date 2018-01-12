@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,26 +24,26 @@
  */
 class SettingGlobal extends LSActiveRecord
 {
-	/**
+    /**
      * @inheritdoc
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{settings_global}}';
-	}
+    public function tableName()
+    {
+        return '{{settings_global}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return 'stg_name';
-	}
+    public function primaryKey()
+    {
+        return 'stg_name';
+    }
 
 
     /**
@@ -60,7 +62,7 @@ class SettingGlobal extends LSActiveRecord
         $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
         $query = $user->queryRow('settings_global');
         $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        if(count($query) == 0) {
+        if (count($query) == 0) {
             return $user1->insert('{{settings_global}}', $data);
         } else {
             $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);

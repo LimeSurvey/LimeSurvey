@@ -1,3 +1,10 @@
+<?php
+/* @var $this AdminController  */
+/* @var $dataProvider CActiveDataProvider */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('configurePlugin');
+?>
 <div class="pagetitle h3"><?php echo sprintf(gT("Settings for plugin: %s"), $plugin['name']); ?></div>
 
 <div class="col-md-6 col-md-offset-1">

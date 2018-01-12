@@ -1,4 +1,4 @@
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
     // If no step is required, then the checkupdates buttons is display by php controler.
     // When user click on this button, it build the comfort updater buttons.
     //$("#ajaxcheckupdate").buildComfortButtons();

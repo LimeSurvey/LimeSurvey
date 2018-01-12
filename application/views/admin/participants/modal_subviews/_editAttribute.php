@@ -30,8 +30,8 @@
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
         echo 
         "<div class='row'>
-            <label class='control-label '>".gT("Should this attribute be visible on the panel?")."</label>
-            <div class=''>
+            <label class='control-label col-sm-12'>".gT("Should this attribute be visible on the panel?")."</label>
+            <div class='col-sm-12'>
                 &nbsp;
                 <label class='radio-inline'>"
                  . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"TRUE\" "
@@ -97,13 +97,13 @@
                 </button>
             </div>
         </div>
-        <div id='languagesList'>
+        <div id='languagesList' class="row">
             <?php 
                 if($editType!=='edit'){
                     $languageKey = Yii::app()->getLanguage();
                     echo 
-                    '<div class=" form-group" data-lang="'.$languageKey .'">
-                        <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                    '<div class="form-group" data-lang="'.$languageKey .'">
+                        <label class="col-sm-12 control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
@@ -119,7 +119,7 @@
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
                 {
                     echo 
-                    '<div class=" form-group" data-lang="'.$languageKey.'">
+                    '<div class="col-sm-12 form-group" data-lang="'.$languageKey.'">
                         <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
@@ -155,6 +155,7 @@
                 </div>
             </div>
         </div>
+    </div>
         
     <script>
         jQuery('#ParticipantAttributeName_attribute_type').on('change', function(){

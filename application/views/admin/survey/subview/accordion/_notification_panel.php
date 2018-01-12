@@ -8,19 +8,19 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyNotificationOptions');
 
-?>
-<script type="text/javascript">
+App()->getClientScript()->registerScript("notification-panel-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
-</script>
+", LSYii_ClientScript::POS_BEGIN);
+?>
 <!-- Notification panel -->
-<div id='notification'  class="container-fluid">
+<div id='notification-panel'  class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <!-- Date Stamp -->
@@ -44,12 +44,13 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                             'offLabel'=>gT('Off'),
                             'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
-                                $('#datestampModal').modal();
+                                $('#datestampModal_1').modal();
                                 }
                             }")
                             ));
                             $this->widget('bootstrap.widgets.TbModal', array(
-                                'id' => 'datestampModal',
+                                'id' => 'datestampModal_1',
+                                'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
                                 'header' => gt('Warning','unescaped'),
                                 'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
                                 'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
@@ -75,10 +76,15 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                             'name' => 'ipaddr',
                             'value'=> $oSurvey->isIpAddr,
                             'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
+                            'offLabel'=>gT('Off'),
+                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                                if ($('#anonymized').is(':checked') == true) {
+                                $('#datestampModal_2').modal();
+                                }
+                            }")
                         ));
                         $this->widget('bootstrap.widgets.TbModal', array(
-                            'id' => 'datestampModal',
+                            'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
                             'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
@@ -223,4 +229,4 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
         </div>
     </div>
 </div>
-<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js'); ?>
+<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js', LSYii_ClientScript::POS_BEGIN); ?>

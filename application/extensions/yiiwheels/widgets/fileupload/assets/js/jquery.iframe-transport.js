@@ -51,7 +51,7 @@
                     iframe = $(
                         '<iframe src="javascript:false;" name="iframe-transport-' +
                             (counter += 1) + '"></iframe>'
-                    ).bind('load', function () {
+                    ).on('load', function () {
                             var fileInputClones,
                                 paramNames = $.isArray(options.paramName) ?
                                     options.paramName : [options.paramName];

@@ -17,7 +17,7 @@
 ?>
     <!-- Call the countdown script -->
     <script type='text/javascript'>
-        $(document).ready(function()
+        $(document).on('ready pjax:scriptcomplete', function()
         {
             countdown(<?php echo $iQid; ?>, <?php echo $time_limit; ?>, <?php echo $time_limit_action; ?>, <?php echo $time_limit_warning; ?>, <?php echo $time_limit_warning_2; ?>, <?php echo $time_limit_warning_display_time; ?>, <?php echo $time_limit_warning_2_display_time; ?>, '<?php echo $disable; ?>');
         });

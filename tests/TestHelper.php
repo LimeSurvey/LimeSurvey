@@ -2,7 +2,16 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriver;
+use Facebook\WebDriver\Firefox\FirefoxDriver;
+use Facebook\WebDriver\Firefox\FirefoxProfile;
+use Facebook\WebDriver\Firefox\FirefoxPreferences;
+use Facebook\WebDriver\Exception\WebDriverCurlException;
+use Facebook\WebDriver\Exception\NoSuchDriverException;
 
 class TestHelper extends TestCase
 {
@@ -83,6 +92,7 @@ class TestHelper extends TestCase
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'radix'=>$radix,
+            // FIXME !! $LEMsessid is not defined
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
@@ -140,7 +150,7 @@ class TestHelper extends TestCase
      *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
      *
      * @param string $databaseName
-     * @return boolean True at success.
+     * @return boolean | \CDbConnection
      */
     public function connectToNewDatabase($databaseName)
     {
@@ -158,7 +168,7 @@ class TestHelper extends TestCase
         $this->assertTrue($isMysql, 'This test only works on MySQL');
 
         // Get database name.
-        preg_match("/dbname=([^;]*)/", \Yii::app()->db->connectionString, $matches);
+        preg_match("/dbname=([^;]*)/", $config['components']['db']['connectionString'], $matches);
         $this->assertEquals(2, count($matches));
         $oldDatabase = $matches[1];
 
@@ -193,7 +203,10 @@ class TestHelper extends TestCase
             $config['components']['db']['connectionString']
         );
         \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
-        return true;
+        $db->setActive(true);
+        \Yii::app()->db->schema->getTables();
+        \Yii::app()->db->schema->refresh();
+        return \Yii::app()->getDb();
     }
 
     /**
@@ -211,16 +224,18 @@ class TestHelper extends TestCase
 
     /**
      * @param int $version
-     * @return CDbConnection
+     * @return \CDbConnection
      */
-    public function updateDbFromVersion($version)
+    public function updateDbFromVersion($version, $connection = null)
     {
-        $result = $this->connectToNewDatabase('__test_update_helper_' . $version);
-        $this->assertTrue($result, 'Could connect to new database');
+        if (is_null($connection)) {
+            $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
+            $this->assertNotEmpty($connection, 'Could connect to new database');
+        }
 
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
+        $inst->connection = $connection;
 
         // Check SQL file.
         $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
@@ -272,11 +287,14 @@ class TestHelper extends TestCase
      * @param string $databaseName
      * @return void
      */
-    public function teardownDatabase($databaseName)
+    public function teardownDatabase($databaseName, $connection = null)
     {
-        $dbo = \Yii::app()->getDb();
+        if (is_null($connection)) {
+            $connection = \Yii::app()->getDb();
+        }
         try {
-            $dbo->createCommand('DROP DATABASE ' . $databaseName)->execute();
+            $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
+            $this->assertTrue(true);
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
             // Only this error is OK.
@@ -288,5 +306,105 @@ class TestHelper extends TestCase
                 'Unexpected exception: ' . $ex->getMessage()
             );
         }
+    }
+
+    /**
+     * Use webdriver to put a screenshot in screenshot folder.
+     * @param WebDriver $webDriver
+     * @param string $name
+     * @return void
+     */
+    public function takeScreenshot($webDriver, $name)
+    {
+        $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
+        $folder     = $tempFolder.'/screenshots/';
+        $screenshot = $webDriver->takeScreenshot();
+        $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
+        $result     = file_put_contents($filename, $screenshot);
+        $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
+    }
+
+    /**
+     * javaTrace() - provide a Java style exception trace
+     *
+     * Copied from here: http://php.net/manual/en/exception.gettraceasstring.php
+     *
+     * @param $exception
+     * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
+     *                     leave as NULL when calling this function
+     * @return array of strings, one entry per trace line
+     */
+    public function javaTrace($ex, $seen = null)
+    {
+        $starter = $seen ? 'Caused by: ' : '';
+        $result = array();
+        if (!$seen) {
+            $seen = array();
+        }
+        $trace  = $ex->getTrace();
+        $prev   = $ex->getPrevious();
+        $result[] = sprintf('%s%s: %s', $starter, get_class($ex), $ex->getMessage());
+        $file = $ex->getFile();
+        $line = $ex->getLine();
+        while (true) {
+            $current = "$file:$line";
+            if (is_array($seen) && in_array($current, $seen)) {
+                $result[] = sprintf(' ... %d more', count($trace)+1);
+                break;
+            }
+            $result[] = sprintf(
+                ' at %s%s%s(%s%s%s)',
+                count($trace) && array_key_exists('class', $trace[0]) ? str_replace('\\', '.', $trace[0]['class']) : '',
+                count($trace) && array_key_exists('class', $trace[0]) && array_key_exists('function', $trace[0]) ? '.' : '',
+                count($trace) && array_key_exists('function', $trace[0]) ? str_replace('\\', '.', $trace[0]['function']) : '(main)',
+                $line === null ? $file : basename($file),
+                $line === null ? '' : ':',
+                $line === null ? '' : $line
+            );
+            if (is_array($seen)) {
+                $seen[] = "$file:$line";
+            }
+            if (!count($trace)) {
+                break;
+            }
+            $file = array_key_exists('file', $trace[0]) ? $trace[0]['file'] : 'Unknown Source';
+            $line = array_key_exists('file', $trace[0]) && array_key_exists('line', $trace[0]) && $trace[0]['line'] ? $trace[0]['line'] : null;
+            array_shift($trace);
+        }
+        $result = join("\n", $result);
+        if ($prev) {
+            $result  .= "\n" . jTraceEx($prev, $seen);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return WebDriver|null
+     */
+    public function getWebDriver()
+    {
+        // NB: Travis might be slow, better try more than once to connect.
+        $tries = 0;
+        $success = false;
+        $webDriver = null;
+        do {
+            try {
+                $host = 'http://localhost:'.TestBaseClassWeb::$webPort.'/wd/hub'; // this is the default
+                $capabilities = DesiredCapabilities::firefox();
+                $profile = new FirefoxProfile();
+                $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                // Open target="_blank" in new tab.
+                $profile->setPreference('browser.link.open_newwindow', 3);
+                $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
+                $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $success = true;
+            } catch (WebDriverException $ex) {
+                $tries++;
+                sleep(1);
+            }
+        } while (!$success && $tries < 5);
+
+        return $webDriver;
     }
 }

@@ -165,10 +165,10 @@
     </div>
 </div>
 
-<script>
-    $( document ).ready(function(){
+<?php
+App()->getClientScript()->registerScript("Tokens:BindInviteView", "
         $('#send-invitation-button').on('click', function(){
-            $("#sendinvitation").submit();
+            $('#sendinvitation').submit();
         })
-    });
-</script>
+", LSYii_ClientScript::POS_POSTSCRIPT ); 
+?>

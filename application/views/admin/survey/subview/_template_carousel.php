@@ -7,13 +7,17 @@
  * @var $iSurveyId
  */
  $count = 0;
+
+ App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'jcarousel.min.js', LSYii_ClientScript::POS_BEGIN);
+ App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'template.jcarousel.js', LSYii_ClientScript::POS_BEGIN);
+
 ?>
 
 <div class="row template-caroussel">
     <div class="col-sm-12" id='carrousel-container'>
         <div class="row">
             <div class="col-sm-12" id="item-container"> <!-- width defined in css -->
-                <div class="h4"><?php eT('Select your template:'); ?></div>
+                <div class="h4"><?php eT('Select your theme:'); ?></div>
 
                 <?php foreach($templates as $key=>$template):?>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
@@ -33,7 +37,7 @@
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>"
                                     data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/changetemplate/surveyid/$iSurveyId/template/$key" ); ?>"
                                     data-template="<?php echo $key;?>"
-                                    class="selectTemplate btn btn-default btn-xs">
+                                    class="selectTemplate btn btn-default">
                                     <?php eT('Select');?>&nbsp;<?php echo $key;?>
                                 </button>
                             <?php endif;?>

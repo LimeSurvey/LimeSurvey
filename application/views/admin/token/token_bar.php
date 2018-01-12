@@ -15,7 +15,7 @@
 
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'read')): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
+                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
                         <span class="fa fa-list-alt text-success"></span>
                         <?php eT("Display participants"); ?>
                     </a>
@@ -32,7 +32,7 @@
                 <ul class="dropdown-menu">
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create')): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
+                    <a class="pjax" href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
                         <span class="icon-add"></span>
                         <?php eT("Add participant"); ?>
                     </a>
@@ -40,7 +40,7 @@
 
                 <!-- Create dummy tokens -->
                 <li>
-                    <a href="<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
+                    <a class="pjax"  href="<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
                        <span class="fa fa-plus-square"></span>
                        <?php eT("Create dummy participants"); ?>
                     </a>
@@ -50,11 +50,13 @@
                 <!-- Import tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'import')): ?>
                     <li role="separator" class="divider"></li>
-                    <small><?php eT("Import participants from:"); ?></small>
+                    <li>
+                        <small><?php eT("Import participants from:"); ?></small>
+                    </li>
 
                     <!-- from CSV file -->
                     <li>
-                       <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
+                       <a class="pjax"  href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
                            <span class="icon-importcsv"></span>
                            <?php eT("CSV file"); ?>
                        </a>
@@ -62,7 +64,7 @@
 
                     <!-- from LDAP query -->
                     <li>
-                        <a href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
+                        <a class="pjax"  href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
                             <span class="icon-importldap"></span>
                             <?php eT("LDAP query"); ?>
                         </a>
@@ -73,7 +75,7 @@
 
                 <!-- Manage additional attribute fields -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update')): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
+                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
                        <span class="icon-token_manage text-success"></span>
                        <?php eT("Manage attributes"); ?>
                     </a>
@@ -81,7 +83,7 @@
 
                 <!-- Export tokens to CSV file -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'export')): ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
                        <span class="icon-exportcsv"></span>
                        <?php eT("Export"); ?>
                     </a>
@@ -100,7 +102,7 @@
 
                         <!-- Send email invitation -->
                         <li>
-                            <a href="<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
+                            <a class="pjax" href="<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
                                 <span class="icon-invite"></span>
                                 <?php eT("Send email invitation"); ?>
                             </a>
@@ -108,7 +110,7 @@
 
                         <!-- Send email reminder -->
                         <li>
-                            <a href="<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
+                            <a class="pjax" href="<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
                                 <span class="icon-remind"></span>
                                 <?php eT("Send email reminder"); ?>
                             </a>
@@ -117,7 +119,7 @@
                         <!-- Edit email template -->
                         <!-- Send email invitation -->
                         <li>
-                            <a href="<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
+                            <a class="pjax" href="<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
                                 <span class="fa fa-envelope-o"></span>
                                 <?php eT("Edit email templates"); ?>
                             </a>
@@ -147,8 +149,8 @@
                         <?php endif;?>
 
                         <?php if (isset($eMessage)):?>
-                            <li>
-                                <a  href="#" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
+                            <li class="disabled">
+                                <a  href="#" class="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
                                     <span class="ui-bounceprocessing"></span>
                                     <?php eT("Start bounce processing"); ?>
                                 </a>
@@ -261,19 +263,6 @@
                 <p class='modal-body-text'>
 
                 </p>
-
-                <!-- the ajax loader -->
-                <div id="ajaxContainerLoading" >
-                    <p><?php eT('Please wait, loading data...');?></p>
-                    <div class="preloader loading">
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                        <span class="slice"></span>
-                    </div>
-                </div>
 
             </div>
             <div class="modal-footer">

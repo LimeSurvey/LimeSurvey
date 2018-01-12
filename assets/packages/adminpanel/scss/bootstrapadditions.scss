@@ -21,6 +21,12 @@
         content: "\f061";
         font: normal normal normal 18px/1 FontAwesome;
     }
+
+    .pager li > a, .pager li > span {
+        border-radius: 4px;
+        margin: 1px;
+    }
+    
 }
 
 div[class^="col-"],
@@ -29,3 +35,4 @@ div[class*=" col-"] {
         float: none;
     }
 }
+

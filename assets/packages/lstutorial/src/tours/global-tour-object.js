@@ -22,9 +22,9 @@ const globalTourObject = function(){
             if(url.charAt(0) == '/')
                 url = url.substring(1);
             
-            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : 'admin/';
-            const conatainsIndex = (/\/index.php\/?/.test(window.location.href));
-            const returnUrl = window.LS.data.baseUrl+(conatainsIndex ? '/index.php/' : '/')+baseUrl+url+combineParams(params);
+            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : '/admin/';
+            const containsIndex = (/\/index.php\/?/.test(window.location.href));
+            const returnUrl = window.LS.data.baseUrl+(containsIndex ? '/index.php' : '')+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
@@ -42,12 +42,15 @@ const globalTourObject = function(){
                 step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
                 step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
                 step.onShown = step.onShown ? eval(step.onShown) : undefined;
-                console.log(step);
+                step.onHide = step.onHide ? eval(step.onHide) : undefined;
+                step.onHidden = step.onHidden ? eval(step.onHidden) : undefined;
+                if(window.debugState.backend) { console.ls.log(step); }
                 return step;
             });
             
             tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
-
+            tutorialObject.onEnd = tutorialObject.onEnd ? eval(tutorialObject.onEnd) : null;
+            tutorialObject.onStart = tutorialObject.onStart ? eval(tutorialObject.onStart) : null;
             return tutorialObject;
         };
 
@@ -55,7 +58,7 @@ const globalTourObject = function(){
         get : function(tourName){
             return new Promise((resolve, reject)=>{
                 $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt'),
+                    url: filterUrl('/tutorial/sa/servertutorial'),
                     data: {tutorialname: tourName, ajax: true},
                     method: 'POST',
                     success: (tutorialData)=>{

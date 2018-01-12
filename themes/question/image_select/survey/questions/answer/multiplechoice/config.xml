@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the multiplechoice question template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>image_select-multiplechoice</name>
+        <creationDate>23/12/2016</creationDate>
+        <author>Markus Flür</author>
+        <authorEmail>mfluer@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Multiplechoice with images.</description>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>css/imageselect.css</filename>
+        </css>
+        <js>
+            <filename>scripts/imageselect.js</filename>
+        </js>
+    </files>
+
+    <custom_attributes>
+        <attribute>
+            <name>horizontal_scroll</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Show an horizontal scroll for the images instead of a vertical list. Needs JavaScript enabled.</help>
+            <caption>Horizontal scroll: </caption>
+        </attribute>
+
+
+        <attribute>
+            <name>keep_aspect</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Keep images aspect ratio. Can be achieved by not setting both width and height. Needs JavaScript enabled.</help>
+            <caption>Keep aspect-ratio</caption>
+        </attribute>
+
+        <attribute>
+            <name>crop_or_resize</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <resize>Resize</resize>
+                <crop>Crop</crop>
+            </options>
+            <default>resize</default>
+            <help>Crop images to fit into size. Needs JavaScript enabled.</help>
+            <caption>Crop or Resize</caption>
+        </attribute>
+
+        <attribute>
+            <name>fix_width</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>integer</inputtype>
+            <default>-1</default>
+            <help>Fix width of the images to this value. Leave empty to not change them.</help>
+            <caption>Fix width</caption>
+        </attribute>
+
+        <attribute>
+            <name>fix_height</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>integer</inputtype>
+            <default>200</default>
+            <help>Fix height of the images to this value. Leave empty to not change them.</help>
+            <caption>Fix height</caption>
+        </attribute>
+    </custom_attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

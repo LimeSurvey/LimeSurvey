@@ -26,7 +26,8 @@
     /* Value submited by default, replaced by next if checked */
     /* EM use javaXXXX, no need updating the value of this one, just submit '' if other one is unchecked , review JS ? */
     /* See http://www.yiiframework.com/doc/api/1.1/CHtml#checkBox-detail width uncheckValue for replacing ? */
-    echo \CHtml::hiddenField($myfname2,"",array(
+    /* Add prefix 'answer' to make question relevance work in LEMval(). */
+    echo \CHtml::hiddenField('answer' . $myfname2,"",array(
         'class' => "hidden",
     ));
     echo \CHtml::checkBox($myfname2,$value,array(

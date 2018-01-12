@@ -14098,7 +14098,7 @@ var BFHTimezonesList = {
   /* COLORPICKER DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('div.bfh-colorpicker').each(function () {
       var $colorpicker;
 
@@ -14308,7 +14308,7 @@ var BFHTimezonesList = {
   /* COUNTRY DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-countries, span.bfh-countries, div.bfh-countries').each(function () {
       var $countries;
 
@@ -14524,7 +14524,7 @@ var BFHTimezonesList = {
   /* CURRENCY DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-currencies, span.bfh-currencies, div.bfh-currencies').each(function () {
       var $currencies;
 
@@ -15106,7 +15106,7 @@ var BFHTimezonesList = {
   /* DATEPICKER DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('div.bfh-datepicker').each(function () {
       var $datepicker;
 
@@ -15293,7 +15293,7 @@ var BFHTimezonesList = {
   /* FONTS DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-fonts, span.bfh-fonts, div.bfh-fonts').each(function () {
       var $fonts;
 
@@ -15476,7 +15476,7 @@ var BFHTimezonesList = {
   /* FONTSIZES DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-fontsizes, span.bfh-fontsizes, div.bfh-fontsizes').each(function () {
       var $fontSizes;
 
@@ -15681,7 +15681,7 @@ var BFHTimezonesList = {
   /* GOOGLE FONTS DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-googlefonts, span.bfh-googlefonts, div.bfh-googlefonts').each(function () {
       var $googleFonts;
 
@@ -15904,7 +15904,7 @@ var BFHTimezonesList = {
   /* LANGUAGES DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-languages, span.bfh-languages, div.bfh-languages').each(function () {
       var $languages;
 
@@ -16211,7 +16211,7 @@ var BFHTimezonesList = {
   /* NUMBER DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form input[type="text"].bfh-number, form input[type="number"].bfh-number').each(function () {
       var $number;
 
@@ -16485,7 +16485,7 @@ var BFHTimezonesList = {
   /* PHONE DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form input[type="text"].bfh-phone, form input[type="tel"].bfh-phone, span.bfh-phone').each(function () {
       var $phone;
 
@@ -16826,7 +16826,7 @@ var BFHTimezonesList = {
   /* SELECTBOX DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('div.bfh-selectbox').each(function () {
       var $selectbox;
 
@@ -17054,7 +17054,7 @@ var BFHTimezonesList = {
   /* SLIDER DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('div.bfh-slider').each(function () {
       var $slider;
 
@@ -17297,7 +17297,7 @@ var BFHTimezonesList = {
   /* STATES DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-states, span.bfh-states, div.bfh-states').each(function () {
       var $states;
 
@@ -17687,7 +17687,7 @@ var BFHTimezonesList = {
   /* TIMEPICKER DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('div.bfh-timepicker').each(function () {
       var $timepicker;
 
@@ -17906,7 +17906,7 @@ var BFHTimezonesList = {
   /* TIMEZONES DATA-API
    * ============== */
 
-  $(document).on('ready  pjax:complete',  function () {
+  $(document).on('ready  pjax:scriptcomplete',  function () {
     $('form select.bfh-timezones, div.bfh-timezones').each(function () {
       var $timezones;
 

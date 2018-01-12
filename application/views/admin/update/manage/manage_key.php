@@ -3,7 +3,7 @@
         <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
         <?php eT('ComfortUpdate'); ?>
         <?php if(YII_DEBUG):?>
-            <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
+            <small>Server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
         <?php endif;?>
     </h3>
 
@@ -61,7 +61,7 @@
             </p>
             <p>
                 <?php
-                    $aopen  = '<a href="https://www.limesurvey.org/limesurvey-profile" target="_blank">';
+                    $aopen  = '<a href="https://www.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
                     $aclose = '</a>';
                 ?>
                 <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>

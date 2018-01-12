@@ -89,8 +89,12 @@ const TourLibrary = function () {
             window.localStorage.setItem('lstutorial-is-tour-active', tourName);
         },
 
-        _setNoTourActive = () => {
+        _setNoTourActive = (tid) => {
             window.localStorage.removeItem('lstutorial-is-tour-active');
+            
+            if(tid !== undefined) {
+                $.post(LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/tutorial/sa/triggerfinished/tid/' : '?r=admin/tutorial/sa/triggerfinished/tid/')+tid);
+            }
         },
         
         clearActiveTour = () => {
@@ -110,9 +114,11 @@ const TourLibrary = function () {
                     _setTourActive(tourName);
 
                     tourObject.onEnd = () => {
-                        _setNoTourActive();
+                        _setNoTourActive(tourObject.tid);
                     };
                     
+                    tourObject.debug = window.debugState.backend;
+
                     _actionActiveTour = new __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js___default.a(tourObject);
                     _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
@@ -120,18 +126,45 @@ const TourLibrary = function () {
                     });
                     
                     resolve(_actionActiveTour);
-                }, console.log);
+                }, console.ls.err);
             });
+        },
+        triggerTourStart = (tutorialName) => {
+            clearActiveTour();
+            initTour(tutorialName).then(
+                (startedTutorial) => {
+                    if(startedTutorial.ended())
+                        startedTutorial.restart();
+                    else
+                        startedTutorial.start(true);
+                },
+                (err) => {
+                    console.ls.log('Couldn\'t be loaded!');
+                    console.ls.error(err);
+                }
+            );
         };
 
     let _activeTour = _getIsTourActive();
     let _actionActiveTour = null;
 
     if (_activeTour !== false && (typeof _actionActiveTour !== 'function')) {
-        initTour(_activeTour);
+        initTour(_activeTour).then(
+            (startedTutorial) => {
+                if(startedTutorial.ended())
+                    startedTutorial.restart();
+                else
+                    startedTutorial.start(true);
+            },
+            (err) => {
+                console.ls.log('Couldn\'t be loaded!');
+                console.ls.error(err);
+            }
+        );
     }
 
     return {
+        triggerTourStart: triggerTourStart,
         clearActiveTour: clearActiveTour,
         initTour: initTour,
         _actionActiveTour: _actionActiveTour
@@ -139,26 +172,14 @@ const TourLibrary = function () {
 };
 
 
-$(document).on('ready pjax:complete', function () {
+$(document).on('ready pjax:scriptcomplete', function () {
     if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
     }
 
     $('#selector__welcome-modal--starttour').on('click', function (e) {
         $(e.currentTarget).closest('.modal').modal('hide');
-        window.tourLibrary.clearActiveTour();
-        window.tourLibrary.initTour('firstStartTour').then(
-            (firstStartTour) => {
-                if(firstStartTour.ended())
-                    firstStartTour.restart();
-                else
-                    firstStartTour.start(true);
-            },
-            (err) => {
-                console.log('Couldn\'t be loaded!');
-                console.log(err);
-            }
-        );
+        window.tourLibrary.triggerTourStart('firstStartTour');
     });
 });
 
@@ -226,6 +247,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
         backdropPadding: 0,
         redirect: true,
         orphan: false,
+        endOnOrphan: false,
         duration: false,
         delay: false,
         basePath: '',
@@ -287,6 +309,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
           reflexElement: this._options.steps[i].element,
           backdropElement: this._options.steps[i].element,
           orphan: this._options.orphan,
+          endOnOrphan: this._options.endOnOrphan,
           duration: this._options.duration,
           delay: this._options.delay,
           template: this._options.template,
@@ -509,6 +532,11 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
       showStepHelper = (function(_this) {
         return function(e) {
           if (_this._isOrphan(step)) {
+            if (step.endOnOrphan === true) {
+              _this._debug("Ended on orphan step " + (_this._current + 1) + ".\nEnd on orphan option is true.");
+              _this.end();
+              return;
+            }
             if (step.orphan === false) {
               _this._debug("Skip the orphan step " + (_this._current + 1) + ".\nOrphan option is false and the element does not exist or is hidden.");
               if (skipToPrevious) {
@@ -640,7 +668,9 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
     Tour.prototype._debug = function(text) {
       if (this._options.debug) {
-        return window.console.log("Bootstrap Tour '" + this._options.name + "' | " + text);
+        window.console.ls.group("Bootstrap-Tour");
+        window.console.ls.log("Bootstrap Tour '" + this._options.name + "' | " + text);
+        window.console.ls.groupEnd("Bootstrap-Tour");
       }
     };
 
@@ -733,6 +763,9 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
       isOrphan = this._isOrphan(step);
       step.template = this._template(step, i);
       if (isOrphan) {
+          if(options.endOnOrphan){
+              this.end();
+          }
         step.element = 'body';
         step.placement = 'top';
       }
@@ -18361,9 +18394,9 @@ const globalTourObject = function(){
             if(url.charAt(0) == '/')
                 url = url.substring(1);
             
-            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : 'admin/';
-            const conatainsIndex = (/\/index.php\/?/.test(window.location.href));
-            const returnUrl = window.LS.data.baseUrl+(conatainsIndex ? '/index.php/' : '/')+baseUrl+url+combineParams(params);
+            const baseUrl = (getBasedUrls || forceGet) ? '?r=admin/' : '/admin/';
+            const containsIndex = (/\/index.php\/?/.test(window.location.href));
+            const returnUrl = window.LS.data.baseUrl+(containsIndex ? '/index.php' : '')+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
@@ -18381,12 +18414,15 @@ const globalTourObject = function(){
                 step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
                 step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
                 step.onShown = step.onShown ? eval(step.onShown) : undefined;
-                console.log(step);
+                step.onHide = step.onHide ? eval(step.onHide) : undefined;
+                step.onHidden = step.onHidden ? eval(step.onHidden) : undefined;
+                if(window.debugState.backend) { console.ls.log(step); }
                 return step;
             });
             
             tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
-
+            tutorialObject.onEnd = tutorialObject.onEnd ? eval(tutorialObject.onEnd) : null;
+            tutorialObject.onStart = tutorialObject.onStart ? eval(tutorialObject.onStart) : null;
             return tutorialObject;
         };
 
@@ -18394,7 +18430,7 @@ const globalTourObject = function(){
         get : function(tourName){
             return new Promise((resolve, reject)=>{
                 $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt'),
+                    url: filterUrl('/tutorial/sa/servertutorial'),
                     data: {tutorialname: tourName, ajax: true},
                     method: 'POST',
                     success: (tutorialData)=>{

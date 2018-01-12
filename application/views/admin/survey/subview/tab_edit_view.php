@@ -34,8 +34,9 @@ PrepareEditorScript(false, $this);
     ?>
 <?php endforeach; ?>
 </div>
-<script type="text/javascript">
+
+<?php App()->getClientScript()->registerScript("EditSurveyTextTabs", "
 $('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
-    $(e.relatedTarget).find('textarea').ckeditor();
-})
-</script>
+    try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }
+})", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+

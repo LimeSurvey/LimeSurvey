@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the multiplechoice question template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>browserdetect</name>
+        <creationDate>07/09/2017</creationDate>
+        <author>Markus Flür</author>
+        <authorEmail>mfluer@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2017 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Browser, Platform and Proxy detection</description>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>css/srv_sprite.css</filename>
+            <filename>css/browserdetect.css</filename>
+        </css>
+        <js>
+            <filename>scripts/bowser.min.js</filename>
+            <filename>scripts/proxydetect.js</filename>
+            <filename>scripts/browserdetect.js</filename>
+        </js>
+    </files>
+
+    <custom_attributes>
+        <attribute>
+            <name>add_platform_info</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Show also the platform information of the participant</help>
+            <caption>Show Platform information: </caption>
+        </attribute>
+    </custom_attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

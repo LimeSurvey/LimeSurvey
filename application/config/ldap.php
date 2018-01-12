@@ -22,7 +22,7 @@
 /* LDAP servers                              */
 /*********************************************/
 
-$serverId=0;
+$serverId = 0;
 // Define the server DNS name or IP Address
 // If encryption is enabled, make sure the name given here
 // corresponds to the certificate's identity
@@ -62,8 +62,8 @@ $ldap_server[$serverId]['referrals'] = false;
 // you are authorized to read its content. Remeber as well that user's DN
 // in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 //
-$ldap_server[$serverId]['binddn']	=	"uid=mybinduser,dc=mycompany,dc=org";
-$ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
+$ldap_server[$serverId]['binddn']	= "uid=mybinduser,dc=mycompany,dc=org";
+$ldap_server[$serverId]['bindpw']	= "AsecretPassword";
 
 /********* Copy for more definitions *****
  $serverId++;
@@ -79,7 +79,7 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 /**********************************************************************/
 /* Predefined Queries for Token Imports                               */
 /*                                                                    */
-/* This sample query definition is just an fake template: do not      */
+/* This sample query definition is just an fake theme: do not      */
 /* expect it to do something intelligent on your directory            */
 /* Instead have a look at the online documentation:                   */
 /* - Section Installation, paragraph LDAP_Settings                     */
@@ -88,7 +88,7 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 /*   How_do_I_configure_LDAP_settings_to_work_with_Active_Directory_  */
 /**********************************************************************/
 
-$query_id=0;
+$query_id = 0;
 
 // First define the serverId on which you want to run the query
 $ldap_queries[$query_id]['ldapServerId'] = 0;
@@ -183,7 +183,7 @@ $ldap_queries[$query_id]['groupscope'] = 'sub';
 // Define which attribute within the group entry contains users' IDs
 $ldap_queries[$query_id]['groupmemberattr'] = 'memberuid';
 // Declare that groupmemberattr contains users' IDs and not DNs
-$ldap_queries[$query_id]['groupmemberisdn'] = FALSE;
+$ldap_queries[$query_id]['groupmemberisdn'] = false;
 // Give the name of the attribute in the user entry that matches the
 // 'groupmemberattr' value
 $ldap_queries[$query_id]['useridattr'] = 'uid';
@@ -210,4 +210,3 @@ $ldap_queries[$query_id]['attr2'] = '';
 //DO NOT CHANGE BELOW HERE --------------------
 
 return array('ldap_server' => $ldap_server, 'ldap_queries' => $ldap_queries);
-?>

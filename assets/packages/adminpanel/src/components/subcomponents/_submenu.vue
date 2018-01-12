@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 import Menuicon from './_menuicon.vue';
@@ -27,7 +26,7 @@ export default {
         setActiveMenuItemIndex(menuItem){
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
-            this.$log.log('Opened Menu', menuItem);
+            this.$log.log('Opened Menuitem', menuItem);
             return true;
         },
         checkIsOpen(toCheckMenu){
@@ -77,7 +76,7 @@ export default {
     <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">        
         <a  v-for="(menuItem, index) in sortedMenuEntries" 
             v-bind:key="menuItem.id" 
-            v-on:click.capture="setActiveMenuItemIndex(menuItem)"  
+            v-on:click="setActiveMenuItemIndex(menuItem)"  
             :href="menuItem.link" 
             :id="'sidemenu_'+menu.id+'_'+menuItem.id" 
             class="list-group-item"
@@ -95,7 +94,7 @@ export default {
                 </div>
             </div>
         </a>
-        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.stop.prevent="setActiveMenuIndex(submenu)" >
+        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture="setActiveMenuIndex(submenu)" >
             <a href="#" :title="submenu.description"   data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
                 <div class="ls-space col-sm-10 padding all-0">
                     <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>

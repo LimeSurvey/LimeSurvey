@@ -16,9 +16,6 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         self::importSurvey($fileName);
     }
 
-
-
-
     /**
      * Test the question with lacking default answer expression,
      * date('Y-m-d'), will be filled with ' 00:00' to work with
@@ -63,8 +60,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
         );
 
         $correctDate = date('d/m/Y');
@@ -126,8 +122,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1],  // 1 = second question (q2)
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
         );
 
         $correctDate = date('d/m/Y');
@@ -187,8 +182,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2],  // 2 = third question (q3)
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
         );
 
         // NB: Empty value, since default answer expression is not parsed by qanda.

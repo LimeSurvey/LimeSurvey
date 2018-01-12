@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,17 +23,17 @@
 
 $config = array();
 
-$config['rootdir']                 = Yii::getPathOfAlias('webroot');
+$config['rootdir']                  = (string) Yii::getPathOfAlias('webroot');
 
-$config['publicdir']               = $config['rootdir']; // The directory path of the public scripts
-$config['homedir']                 = $config['rootdir']; // The directory path of the admin scripts
-$config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
-$config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['assets']                  = $config['rootdir'].DIRECTORY_SEPARATOR."assets";
-$config['styledir']                = $config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
-$config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
+$config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
+$config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
+$config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp"; // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."images"; // The directory path of the image directory
+$config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
+$config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the standard themes
+$config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user themes
+$config['assets']                   = $config['rootdir'].DIRECTORY_SEPARATOR."assets";
+$config['styledir'] = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
+$config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 
 return $config;

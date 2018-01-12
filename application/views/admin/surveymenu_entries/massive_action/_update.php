@@ -61,7 +61,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value"></input>
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='permission_grade'><?php eT("Permission grade?"); ?></label>
+            <label class="col-sm-3 control-label"  for='permission_grade'><?php eT("Permission level?"); ?></label>
             <div class="col-sm-8">
                 <?php echo TbHtml::textField('permission_grade', 'lskeep', array('size'=>60,'maxlength'=>255,'disabled'=>'disabled','class'=>'custom-data selector_submitField'));?>
             </div>

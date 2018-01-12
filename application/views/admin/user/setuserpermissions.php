@@ -34,14 +34,6 @@ echo viewHelper::getViewTestTag('setUserPermissions');
 
                 <!-- Permissions -->
                 <?php foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions): ?>
-                    <?php
-                        if ($sPermissionKey == 'auth_ldap' && !App()->getPluginManager()->isPluginActive('AuthLDAP')
-                            || $sPermissionKey == 'auth_webserver' && !App()->getPluginManager()->isPluginActive('Authwebserver'))
-                        {
-                            continue;
-                        }
-                    ?>
-
                     <tr>
                         <!-- Icon -->
                         <td>

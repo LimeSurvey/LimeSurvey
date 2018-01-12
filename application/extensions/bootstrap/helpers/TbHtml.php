@@ -353,7 +353,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const ICON_EXPAND = 'fa-expand';
     const ICON_EXPORT = 'fa-export';
     const ICON_EYE_CLOSE = 'fa-eye-close';
-    const ICON_EYE_OPEN = 'fa-eye-open';
+    const ICON_EYE_OPEN = 'fa-eye';
     const ICON_FACETIME_VIDEO = 'fa-facetime-video';
     const ICON_FAST_BACKWARD = 'fa-fast-backward';
     const ICON_FAST_FORWARD = 'fa-fast-forward';

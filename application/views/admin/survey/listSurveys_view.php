@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('listSurveys');
         e.preventDefault();
         $(this).tab('show');
     });
-    $(document).on('ready pjax:complete', function(){
+    $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
             $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
         }
