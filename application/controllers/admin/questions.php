@@ -491,6 +491,7 @@ class questions extends Survey_Common_Action
                 $oAnswer->language = $baselang;
                 $oAnswer->sortorder = 0;
                 $oAnswer->scale_id = $i;
+                $oAnswer->assessment_value = 0;
                 $oAnswer->save();
             }
         }
