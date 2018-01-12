@@ -892,7 +892,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
      * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
-     * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
+     * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
     public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = null)

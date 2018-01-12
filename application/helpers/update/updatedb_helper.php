@@ -1038,6 +1038,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }        
 
+        /**
+         * Url parameter "surveyid" should be "sid" for this link.
+         */
+        If ($iOldDBVersion < 342) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}'), "name='surveyLogicFile'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>342), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2740,7 +2750,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         array(2, null, 8, 'quotas', 'Edit quotas', 'Quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 12, 'tokens', 'Survey participant settings', 'Participant settings', 'Set additional options for survey participants', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
