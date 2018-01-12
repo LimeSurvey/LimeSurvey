@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,27 +14,27 @@
 *
 */
 
-class LSYii_Locale extends CLocale {
+class LSYii_Locale extends CLocale
+{
     /**
-    * Converts a locale ID to its canonical form.
-    * In canonical form, a locale ID consists of only underscores and lower-case letters.
-    * @param string $id the locale ID to be converted
-    * @return string the locale ID in canonical form
-    */
-
+     * Converts a locale ID to its canonical form.
+     * In canonical form, a locale ID consists of only underscores and lower-case letters.
+     * @param string $id the locale ID to be converted
+     * @return Clocale The locale ID in canonical form
+     */
     public static function getInstance($id)
     {
         // Fix up the LimeSurvey language code for Yii
-        $aLanguageData=getLanguageData();
-        if (isset($aLanguageData[$id]['cldr']))
-        {
-            $id=$aLanguageData[$id]['cldr'];
+        $aLanguageData = getLanguageData();
+        if (isset($aLanguageData[$id]['cldr'])) {
+            $id = $aLanguageData[$id]['cldr'];
         }
-        static $locales=array();
-        if(isset($locales[$id]))
-            return $locales[$id];
-        else
-            return $locales[$id]=new CLocale($id);
+        static $locales = array();
+        if (isset($locales[$id])) {
+                    return $locales[$id];
+        } else {
+                    return $locales[$id] = new CLocale($id);
+        }
     }
 
 }

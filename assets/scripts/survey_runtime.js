@@ -14,7 +14,7 @@
 
 // Some function can be launch before document ready (and seems intersting)
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
-$(document).on('ready pjax:complete',function()
+$(document).on('ready pjax:scriptcomplete',function()
 {
     tableCellAdapters();
     doToolTipTable();
@@ -107,17 +107,25 @@ function checkconditions(value, name, type, evt_type)
 
     aQuestionsWithDependencies = $('#aQuestionsWithDependencies').data('qids');
 
-    var result;
-    if(typeof name !== 'undefined')
-    {
-        result = name.split('X');
-        result = result[2]
+    var questionCode;
+    if(typeof name !== 'undefined') {
+        var parts = name.split('X');
+        questionCode = parts[2];
+        var LEMvarNameAttr = LEMvarNameAttr || {};
+        if (LEMvarNameAttr['java' + name] != undefined) {
+            questionCode = '' + LEMvarNameAttr['java' + name].qid;
+        }
     }
 
-    // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
-    var $isRelevant = 1;
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
+    /*
+    // STILL NOT WORKING !!!!!
+    // But we're getting closer... 
+    var $isRelevant = $.inArray(questionCode, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    }*/
+
+    ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
 
 /**
@@ -174,7 +182,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             clearTimeout(window.correctNumberField);
             window.correctNumberField = null;
         }
-        
+
         var addition = "";
         if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
@@ -479,4 +487,3 @@ function doToolTipTable()
         }
     });
 }
-

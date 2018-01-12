@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    (¯`·._.·(¯`·._.· Bootswatch Theme Manifest  ·._.·´¯)·._.·´¯)
+
+    Base configuration for Vanilla Theme.
+    The content of this file is imported into DB when you install the template.
+
+-->
+<config>
+    <!-- Those metadata are displayed in the theme configuration page.  -->
+    <metadata>
+        <name>bootswatch</name>
+        <title>Bootswatch Theme</title>
+
+        <creationDate>08/01/2016</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>2.0</version>
+        <apiVersion>3</apiVersion>
+        <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
+        <last_update>2017-11-29 19:28:00</last_update>
+        <extends>vanilla</extends>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to add to the template package.
+        About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+    -->
+    <files>
+        <css>
+            <add>css/ajaxify.css</add>
+            <add>css/theme.css</add>
+            <add>css/custom.css</add>
+        </css>
+        <js>
+            <add>scripts/theme.js</add>
+            <add>scripts/ajaxify.js</add>
+            <add>scripts/custom.js</add>
+        </js>
+        <print_css>
+            <add>css/print_theme.css</add>
+        </print_css>
+    </files>
+
+    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
+    <options>
+        <ajaxmode>on</ajaxmode>
+        <brandlogo>on</brandlogo>
+        <brandlogofile>./files/logo.png</brandlogofile>
+        <container>on</container>
+    </options>
+
+    <!-- Here datas about how LimeSurvey should load the theme -->
+    <engine>
+        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
+        <cssframework>
+            <name>bootstrap</name>
+            <css replace="css/bootstrap.css">css/variations/flatly.min.css</css>
+        </cssframework>
+
+        <!-- Path of the views files (can be different than pstpl -->
+        <viewdirectory>views</viewdirectory>
+
+        <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
+        <filesdirectory>files</filesdirectory>
+
+        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
+        <!-- If bootstrap is registered as a css framework, it will be loaded first -->
+        <!-- Example: <packages>moment</packages> -->
+        <packages>
+            <add>pjax</add>
+            <add>moment</add>
+        </packages>
+
+        <!--
+            List of pages/files for tempalte editor
+            When a user select a page, the related files will be offer in the editable files
+        -->
+        <template_editor>
+            <screens>
+                <question>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/survey/group.twig</file>
+                    <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
+                    <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>
+                    <file type="view" role="subview">./subviews/survey/group_subviews/group_name.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_container.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </question>
+
+                <surveylist>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/survey_list.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </surveylist>
+
+                <welcome>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/firstpage.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/messages/warnings.twig</file>
+                    <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
+                    <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </welcome>
+
+                <completed>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/submit.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </completed>
+
+                <assessments>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/submit.twig</file>
+                    <file type="view" role="subview">./subviews/messages/assessments.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </assessments>
+
+                <error>
+                    <file type="view" role="layout">layout_errors.twig</file>
+                </error>
+
+                <clearall>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/clearall.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </clearall>
+
+                <load>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/load.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </load>
+
+                <save>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/save.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </save>
+            </screens>
+        </template_editor>
+    </engine>
+
+</config>

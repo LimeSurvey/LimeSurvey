@@ -4,7 +4,11 @@
  *
  */
 
-$(document).on('ready pjax:complete',function()
+var gmaps = gmaps || new Object;
+var osmaps = osmaps || new Object;
+var zoom = zoom || [];
+
+$(document).on('ready pjax:scriptcomplete',function()
 {
     $(".ls-answers .location").each(function(index,element){
         var question = $(element).attr('name');
@@ -27,10 +31,6 @@ $(document).on('ready pjax:complete',function()
     });
 
 });
-
-gmaps = new Object;
-osmaps = new Object;
-zoom = [];
 
 
 function isvalidCoord(val,type){
@@ -221,7 +221,7 @@ function OSGeoInitialize(question,latLng){
             }
             $(this).data('prevvalue',$(this).val());
         });
-        console.log(window.location.protocol);
+        console.ls.log(window.location.protocol);
         if(window.location.protocol=='https:'){
             // Currently api.geonames.org are unsecure (ssl for api.geonames.net)
             $("#searchbox_"+name).parent().remove();

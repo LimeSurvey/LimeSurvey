@@ -23,6 +23,9 @@ class TestBaseClass extends TestCase
     /** @var  string $dataFolder */
     protected static $dataFolder;
 
+    /** @var  string $viewsFolder */
+    protected static $viewsFolder;
+
     /** @var  \Survey */
     protected static $testSurvey;
 
@@ -35,12 +38,12 @@ class TestBaseClass extends TestCase
         self::$testHelper = new TestHelper();
 
         self::$dataFolder = __DIR__.'/data';
+        self::$viewsFolder = self::$dataFolder."/views";
         self::$surveysFolder = self::$dataFolder.'/surveys';
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
     }
-
 
     /**
      * @param string $fileName
@@ -51,7 +54,8 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
+            echo 'Fatal error: found no survey file';
+            exit(1);
         }
 
         $translateLinksFields = false;
@@ -66,7 +70,8 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            die('Fatal error: Could not import survey');
+            echo 'Fatal error: Could not import survey';
+            exit(2);
         }
     }
 
@@ -74,9 +79,14 @@ class TestBaseClass extends TestCase
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
-        if(self::$testSurvey){
+
+        // Make sure we have permission to delete survey.
+        \Yii::app()->session['loginID'] = 1;
+
+        if (self::$testSurvey) {
             if (!self::$testSurvey->delete()) {
-                die('Fatal error: Could not clean up survey ' . serialize(self::$testSurvey->errors));
+                echo 'Fatal error: Could not clean up survey ' . self::$testSurvey->sid . '; errors: ' . json_encode(self::$testSurvey->errors);
+                exit(3);
             }
             self::$testSurvey = null;
         }

@@ -4,17 +4,22 @@
  * @var AdminController $this
  * @var Survey $oSurvey
 */
+    $scriptVarsNeccessary = "
+        var jsonUrl = '';
+        var sAction = '';
+        var sParameter = '';
+        var sTargetQuestion = '';
+        var sNoParametersDefined = '';
+        var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+        var sURLParameters = '';
+        var sAddParam = '';
+    ";
+    Yii::app()->getClientScript()->registerScript(
+        "GeneralOption-variables",
+        $scriptVarsNeccessary,
+        LSYii_ClientScript::POS_BEGIN
+    );
 ?>
-<script type="text/javascript">
-    var jsonUrl = '';
-    var sAction = '';
-    var sParameter = '';
-    var sTargetQuestion = '';
-    var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
-    var sURLParameters = '';
-    var sAddParam = '';
-</script>
 <!-- General options -->
     <?php
     $yii = Yii::app();
@@ -24,41 +29,38 @@
 <?php if($action=='editsurveysettings'):?>
     <?php
     $sConfirmLanguageScript="
-    $(document).on('submit','#globalsetting',function(){
-      if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
-        return false;
-      }
-    });
-    function ConfirmLanguageChange(confirmtxt)
-    {
-    if ($('#oldlanguages').val().trim()=='')
-    {
-    mylangs= []
-    }
-    else{
-    mylangs=$('#oldlanguages').val().split(' ');
-    }
-    if (checkSelect2Languages(mylangs))
-    {
-    return true;
-    } else
-    {
-    return confirm(confirmtxt);
-    }
-    };
-    function checkSelect2Languages(mylangs)
-    {
-    newLanguages=$('#additional_languages').val();
-    for (x = 0; x < mylangs.length; x++)
-    {
-    if ($.inArray(mylangs[x],newLanguages)==-1)
-    {
-    return false;
-    }
-    }
-    return true;
-    };";
-    echo "<script type='text/javascript'>".$sConfirmLanguageScript."</script>";
+        $(document).on('submit','#globalsetting',function(){
+        if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
+            return false;
+        }
+        });
+
+        function ConfirmLanguageChange(confirmtxt) {
+
+            if ($('#oldlanguages').val().trim()=='') {
+                mylangs= [];
+            } else {
+                mylangs=$('#oldlanguages').val().split(' ');
+            }
+
+            if (checkSelect2Languages(mylangs)) {
+                return true;
+            } else {
+                return confirm(confirmtxt);
+            }
+        }
+
+        function checkSelect2Languages(mylangs) {
+            newLanguages=$('#additional_languages').val();
+            for (x = 0; x < mylangs.length; x++) {
+                if ($.inArray(mylangs[x],newLanguages)==-1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    ";
+    Yii::app()->getClientScript()->registerScript( "GeneralOption-confirm-language", $sConfirmLanguageScript, LSYii_ClientScript::POS_POSTSCRIPT) ;
     // var_dump($owner);
     ?>
 
@@ -162,14 +164,6 @@
                 </div>
             </div>
 
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
-                <div class="">
-                    <input class="form-control" type='text' size='50' id='faxto' name='faxto' value="<?php echo htmlspecialchars($oSurvey->faxto); ?>" />
-                </div>
-            </div>
-
             <?php else: ?>
             <!-- End URL -->
             <div class="form-group">
@@ -227,14 +221,6 @@
                 </div>
             </div>
 
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
-                <div class="">
-                    <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
-                </div>
-            </div>
-
             <?php endif;?>
     </div>
     <div class="col-md-6 col-sm-12">
@@ -270,27 +256,29 @@
             </div>
         </div>
         <!-- Template -->
-            
+
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>'>
-                    <?php foreach (array_keys(getTemplateList()) as $tname) {
+                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>'>
+                    <?php
+                    $aTemplateList = Template::getTemplateListWithPreviews();
+                    foreach ($aTemplateList as $templateName => $preview) {
 
-                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
-                            <option value='<?php echo $tname; ?>'
-                                <?php if ($oSurvey->template && htmlspecialchars($tname) == $oSurvey->template) { ?>
+                        if (Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
+                            <option value='<?php echo $templateName; ?>'
+                                <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template) { ?>
                                     selected='selected'
-                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                    <?php   } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme')) { ?>
                                     selected='selected'
                                     <?php } ?>
-                                ><?php echo $tname; ?></option>
+                                ><?php echo $templateName; ?></option>
                             <?php }
                     } ?>
                 </select>
             </div>
-            <div class="col-sm-6 col-md-offset-3 template-img" style="margin-top: 13px;">
-                <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($oSurvey->template); ?>/preview.png' />
+            <div class="col-sm-6 col-md-offset-3 template-img" style="margin-top: 13px;" id="preview-image-container">
+                <?php echo TemplateConfiguration::getInstanceFromTemplateName($oSurvey->template)->getPreview() ?>
             </div>
         </div>
 <?php

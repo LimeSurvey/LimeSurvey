@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <metadatas>
+    <metadata>
         <name>List Radio External</name>
 	    <creationDate>12/12/2015</creationDate>
 	    <author>Louis-Sébastien Gac Artigas</author>
@@ -11,7 +11,7 @@
 	    <version>1.0</version>
 	    <description>Just the normal list radio question, but as an external component.</description>
         <screenshot>TODO</screenshot>
-    </metadatas>
+    </metadata>
     <type>
         <modulename>listRadio</modulename>
         <typeid>L_M</typeid>

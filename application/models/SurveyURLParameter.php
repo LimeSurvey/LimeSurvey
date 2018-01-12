@@ -21,7 +21,8 @@
  * @property integer $targetqid
  * @property integer $targetsqid
  */
-class SurveyURLParameter extends LSActiveRecord {
+class SurveyURLParameter extends LSActiveRecord
+{
     /**
      * @inheritdoc
      * @return SurveyURLParameter
@@ -29,7 +30,7 @@ class SurveyURLParameter extends LSActiveRecord {
     public static function model($class = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($class);
+        $model = parent::model($class);
         return $model;
     }
 
@@ -44,26 +45,27 @@ class SurveyURLParameter extends LSActiveRecord {
     {
         return '{{survey_url_parameters}}';
     }
-
+    /** @inheritdoc */
+    public function relations()
+    {
+        return array(
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid', 'together' => true),
+            'question' => array(self::BELONGS_TO, 'Question', array('targetqid' => 'qid')),
+            'subquestion' => array(self::BELONGS_TO, 'Question', array('targetsqid' => 'qid'))
+        );
+    }
     /**
      * @param integer $iSurveyID
      * @return mixed
      */
     public function getParametersForSurvey($iSurveyID)
     {
-        return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
+        return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle from {{survey_url_parameters}} up
             left join {{questions}} q on q.qid=up.targetqid
             left join {{questions}} sq on q.qid=up.targetsqid
             where up.sid=:surveyid")
             ->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)
             ->query();
-    }
-
-    /**
-     * @param array $compareToArray
-     */
-    public function compareToArray($compareToArray){
-
     }
 
     /**
@@ -73,9 +75,9 @@ class SurveyURLParameter extends LSActiveRecord {
     public function deleteRecords($aConditions)
     {
         foreach ($aConditions as $sFieldname=>$sFieldvalue) {
-            Yii::app()->db->createCommand()->where($sFieldname,$sFieldvalue);
+            Yii::app()->db->createCommand()->where($sFieldname, $sFieldvalue);
         }
-        return Yii::app()->db->delete('survey_url_parameters');// Deletes from token
+        return Yii::app()->db->delete('survey_url_parameters'); // Deletes from token
     }
 
     /**
@@ -84,7 +86,7 @@ class SurveyURLParameter extends LSActiveRecord {
      */
     public function insertRecord($aData)
     {
-        return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}',$aData);
+        return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aData);
     }
 
 }

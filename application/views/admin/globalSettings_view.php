@@ -25,6 +25,7 @@ App()->getClientScript()->registerPackage('jquery-selectboxes');
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#presentation'><?php eT("Presentation"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#storage'><?php eT("Storage"); ?></a></li>
 </ul>
 
 <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>

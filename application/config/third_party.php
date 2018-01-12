@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This file contains package definition for third party libraries.
@@ -8,12 +10,12 @@
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
-$minVersion = ($debug>0) ? "":".min";
-$minFolder = ($debug>0) ? "/dev":"/min";
+$minVersion = ($debug > 0) ? "" : ".min";
+$minFolder = ($debug > 0) ? "/dev" : "/min";
 
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
-if(isset($_GET['isAjax'])){
+if (isset($_GET['isAjax'])) {
     return array();
 }
 
@@ -23,6 +25,7 @@ return array(
     'jquery' => array(
         'devBaseUrl' => 'third_party/jquery',
         'basePath' => 'third_party.jquery',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-3.1.1'.$minVersion.'.js',
             'jquery-migrate-3.0.0'.$minVersion.'.js',
@@ -31,13 +34,13 @@ return array(
 
     // Bootstrap
     // This package replace the Yiistrap register() function
-    // Then instead of using the composer dependency system for templates
+    // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
     'bootstrap' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
         'basePath' => 'core.bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
@@ -49,12 +52,12 @@ return array(
     ),
 
     // Bootstrap admin
-    // must be different for template editor not to colide with template files replacement
+    // must be different for theme editor not to colide with theme files replacement
     'bootstrap-admin' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
         'basePath' => 'core.bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
@@ -63,12 +66,13 @@ return array(
         'depends' => array(
             'jquery',
         )
-    ),    
+    ),
 
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
         'basePath' => 'core.bootstrap.plugins.slider',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'css/bootstrap-slider'.$minVersion.'.css'
         ),
@@ -85,6 +89,7 @@ return array(
     'bootstrap-multiselect' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/multiselect',
         'basePath' => 'core.bootstrap.plugins.multiselect',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'js/bootstrap-multiselect.js',
         ),
@@ -117,6 +122,7 @@ return array(
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'css/bootstrap-datetimepicker'.$minVersion.'.css'
         ),
@@ -133,11 +139,12 @@ return array(
     'bootstrap-switch' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/switch/',
         'basePath' => 'core.bootstrap.plugins.switch',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-switch.min.css'
+            'css/bootstrap-switch'.$minVersion.'.css'
         ),
         'js' => array(
-            'js/bootstrap-switch.min.js'
+            'js/bootstrap-switch'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
@@ -148,8 +155,8 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'devBaseUrl' => 'fonts/fontawesome/',
-        'basePath' => 'fonts.fontawesome',
+        'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
+        'basePath' => 'fonts.font-src.fontawesome',
         'css'=> array(
             'css/font-awesome'.$minVersion.'.css',
         ),
@@ -159,6 +166,7 @@ return array(
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
+        'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
         ),
@@ -229,6 +237,7 @@ return array(
     // qTip2
     'qTip2' => array(
         'basePath' => 'third_party.qTip2',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'dist/jquery.qtip.min.js'
         ),
@@ -255,6 +264,7 @@ return array(
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
         'basePath' => 'third_party.jquery-nestedSortable',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.mjs.nestedSortable.js'
         ),
@@ -276,9 +286,9 @@ return array(
     ),
 
     // jQuery Ace
-     'jquery-ace' => array(
-         'devBaseUrl' => 'third_party/jquery-ace',
-         'basePath' => 'third_party.jquery-ace',
+        'jquery-ace' => array(
+            'devBaseUrl' => 'third_party/jquery-ace',
+            'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
         ),
@@ -311,7 +321,7 @@ return array(
 
     // Decimal.js calculate in js
     'decimal' => array(
-        'devBaseUrl' => 'third_party/decimal',
+        'position' => CClientScript::POS_BEGIN,
         'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
@@ -323,9 +333,10 @@ return array(
 
     // Moment.js use real simple dateTime modification
     'moment' => array(
+        'devBaseUrl' => 'third_party/moment',
         'basePath' => 'third_party.moment',
         'js' => array(
-            'moment-with-locales.min.js'
+            'moment-with-locales'.$minVersion.'.js'
         ),
         'depends' => array(
         )
@@ -349,6 +360,7 @@ return array(
     ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'datatables.min.css'
         ),
@@ -388,27 +400,25 @@ return array(
         )
     ),
     /* Used by ranking question type */
-    'rubaxa-sortable' => array(
-        'basePath' => 'third_party.rubaxa-sortable', /* for sorting ability */
+    'sortable' => array(
+        'devBaseUrl' => 'third_party/sortable',
+        'basePath' => 'third_party.sortable', /* for sorting ability */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        ),
-        'depends' => array(
-            'jquery',
         )
     ),
     'jquery-actual' => array(
+        'position' => CClientScript::POS_BEGIN,
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
             'jquery.actual.min.js'
         ),
-        'depends' => array(
-            'jquery'
-        )
     ),
     /* Used by short text with map by leaflet */
     'leaflet' => array(
         'basePath' => 'third_party.leaflet',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'leaflet.js'
         ),
@@ -418,6 +428,7 @@ return array(
     ),
     'devbridge-autocomplete' => array(
         'basePath' => 'third_party.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.autocomplete'.$minVersion.'.js'
         ),

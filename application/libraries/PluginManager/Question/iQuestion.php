@@ -1,6 +1,7 @@
 <?php
 namespace LimeSurvey\PluginManager;
-    interface iQuestion {      
+    interface iQuestion
+    {
         
         
         /**
@@ -55,4 +56,3 @@ namespace LimeSurvey\PluginManager;
         
         
     }
-?>

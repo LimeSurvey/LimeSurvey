@@ -21,16 +21,16 @@
                 $oUser = User::findByUsername($sArgument[0]);
                 if ($oUser) {
                     $oUser->setPassword($sArgument[1]);
-                    if($oUser->save()) {
+                    if ($oUser->save()) {
                         echo "Password for user {$sArgument[0]} was set.\n";
-                        return 1;
+                        return 0;
                     } else {
                         echo "An error happen when set password for user {$sArgument[0]}.\n";
-                        return 0;
+                        return 1;
                     }
                 } else {
-                    echo "User {$sArgument[0]} not found.\n";
-                    return 0;
+                    echo "User ".$sArgument[0]." not found.\n";
+                    return 1;
                 }
 
             } else {

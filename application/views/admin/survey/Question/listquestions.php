@@ -42,7 +42,7 @@
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->group_name);?>
+                                                <?php echo flattenText($group->questionGroupL10ns[$baselang]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
@@ -86,7 +86,7 @@
                             array(
                                 'header' => gT('Question'),
                                 'name' => 'question',
-                                'value'=>'viewHelper::flatEllipsizeText($data->question,true,0)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10ns[$baselang]->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -99,7 +99,7 @@
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
-                                'value'=>'$data->groups->group_name',
+                                'value'=>'$data->group->groupL10n[0]->group_name',
                             ),
                             array(
                                 'header' => gT('Mandatory'),
@@ -138,7 +138,7 @@
                         'id' => 'question-grid',
                         'type'=>'striped',
                         'emptyText'=>gT('No questions found.'),
-                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
@@ -147,6 +147,7 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                                 'columns' => $columns,
                                 'ajaxUpdate' => true,
+                                'afterAjaxUpdate' => 'bindPageSizeChange'
                             ));
                             ?>
                         </div>
@@ -154,16 +155,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- To update rows per page via ajax -->
-<script type="text/javascript">
-jQuery(function($) {
-jQuery(document).on("change", '#pageSize', function(){
-    $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
-    });
-});
-</script>
 
 
 
@@ -184,4 +175,15 @@ jQuery(document).on("change", '#pageSize', function(){
   </div>
 </div>
 
-<?php // $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group', array('model'=>$model, 'oSurvey'=>$oSurvey)); ?>
+
+<!-- To update rows per page via ajax -->
+<?php App()->getClientScript()->registerScript("ListQuestions-pagination", "
+        var bindPageSizeChange = function(){
+            $('#pageSize').on('change', function(){
+                $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
+            });
+            $(document).trigger('actions-updated');            
+        };
+    ", LSYii_ClientScript::POS_BEGIN); ?>
+    
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>

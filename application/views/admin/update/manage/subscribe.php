@@ -12,7 +12,7 @@
     <p>
     <?php eT('The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.');?></p><p>
     <?php
-        $aopen  = '<a href="https://www.limesurvey.org/your-account/your-limesurvey-profile" target="_blank">';
+        $aopen  = '<a href="https://www.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
         $aclose = '</a>';
     ?>
     <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
@@ -35,9 +35,8 @@
         ?>
         </div>
     </div>
-    <?php
-    echo CHtml::submitButton('submit', array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
-    ?>
+    <?php echo CHtml::submitButton(gT('Submit'), array("class"=>"btn btn-default", "id"=>"submitKeyButton")); ?>
+
     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>

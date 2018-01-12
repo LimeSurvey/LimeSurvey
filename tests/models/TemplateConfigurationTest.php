@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-13
  * @group tempconf
@@ -11,12 +9,13 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateConfigurationTest extends TestBaseClass
 {
-
     /**
      * Issue #12795.
+     * @throws \CException
      */
     public function testCopyMinimalTemplate()
     {
+        \Yii::import('application.helpers.globalsettings_helper', true);
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
 

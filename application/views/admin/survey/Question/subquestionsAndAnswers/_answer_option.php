@@ -39,9 +39,8 @@
 
             <input
                 type='text'
-                class="code form-control input"
+                class="code form-control input code-title"
                 id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                class='code code-title'
                 name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?= $oAnswer->code; ?>"
                 maxlength='5'
@@ -100,16 +99,21 @@
 
     <!-- Answer (Subquestion Text) -->
     <td  class="subquestion-text" style="vertical-align: middle;">
-        <input
-            type='text'
-            size='20'
-            class='answer form-control input'
-            id='answer_<?= $oAnswer->language;?>_<?= $oAnswer->sortorder;?>_<?php echo $scale_id; ?>'
-            name='answer_<?= $oAnswer->language;?>_<?= $oAnswer->sortorder;?>_<?php echo $scale_id; ?>'
-            placeholder='<?php eT("Some example answer option","js") ?>'
-            value="<?= $oAnswer->answer;?>"
-            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
-        />
+        <div class="input-group">
+            <input
+                    type='text'
+                    size='20'
+                    class='answer form-control input'
+                    id='answer_<?= $oAnswer->language;?>_<?= $oAnswer->sortorder;?>_<?php echo $scale_id; ?>'
+                    name='answer_<?= $oAnswer->language;?>_<?= $oAnswer->sortorder;?>_<?php echo $scale_id; ?>'
+                    placeholder='<?php eT("Some example answer option","js") ?>'
+                    value="<?= $oAnswer->answer;?>"
+                    onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+            />
+            <span class="input-group-addon">
+                <?php echo  getEditor("editanswer","answer_".$oAnswer->language."_".$oAnswer->qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$oAnswer->language.")",$surveyid,$oAnswer->question->gid,$oAnswer->qid,'editanswer'); ?>
+            </span>
+        </div>
     </td>
 
     <!-- No relevance equation for answer options -->

@@ -1,0 +1,27 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Valid message and helper  ·._.·´¯)·._.·´¯)
+
+    This file render the quetion text.
+    The container div itself could often change from a template to another, so we clearly separate it.
+    NOTE: see views/subviews/survey/question.twig comments for more infos
+
+#}
+
+<!-- LimeSurvey valid message and help -->
+<div class="{{ aSurveyInfo.class.questionvalidcontainer }} bg-primary text-info col-xs-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
+    {{ aQuestion.valid_message      | raw }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
+    {{ aQuestion.man_message        | raw }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
+    {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}
+</div>

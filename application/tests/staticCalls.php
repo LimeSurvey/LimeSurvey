@@ -1,6 +1,6 @@
 <?php
 
-$dir = realpath(dirname(__FILE__) . "/..");
+$dir = realpath(dirname(__FILE__)."/..");
 
 
 $dir = new RecursiveDirectoryIterator($dir);
@@ -10,23 +10,20 @@ iterateList($dir);
 
 function ignore($entry)
 {
-  // Check if directory is ignored.
-  if (substr($entry, -9, 9) == 'libraries') return true;
-}
+    // Check if directory is ignored.
+    if (substr($entry, -9, 9) == 'libraries') {
+        return true;
+    }
+    }
 
 function iterateList(Iterator $i)
 {
-    foreach ($i as $entry)
-    {
+    foreach ($i as $entry) {
 
-        if ($i->hasChildren() && !ignore($entry))
-        {
+        if ($i->hasChildren() && !ignore($entry)) {
             iterateList($i->getChildren());
-        }
-        else
-        {
-            if (substr($entry, -4, 4) == '.php')
-            {
+        } else {
+            if (substr($entry, -4, 4) == '.php') {
                 checkFile($entry);
             }
         }
@@ -36,15 +33,13 @@ function iterateList(Iterator $i)
 // Get all static calls in file.
 function checkFile($filename)
 {
-    if ($filename == __FILE__)
-    {
+    if ($filename == __FILE__) {
         return;
     }
     $file = file($filename, FILE_IGNORE_NEW_LINES);
     $file = array_filter($file, "checkStatic");
     
-    if (!empty($file))
-    {
+    if (!empty($file)) {
         pr($filename);
         print_r($file);
     } 
@@ -144,6 +139,6 @@ function checkStatic($line)
 }
 function pr($msg)
 {
-    echo $msg . "\n";
+    echo $msg."\n";
 }
 ?>

@@ -139,7 +139,7 @@ class Zend_XmlRpc_Request
     public function setMethod($method)
     {
         if (!is_string($method) || !preg_match('/^[a-z0-9_.:\/]+$/i', $method)) {
-            $this->_fault = new Zend_XmlRpc_Fault(634, 'Invalid method name ("' . $method . '")');
+            $this->_fault = new Zend_XmlRpc_Fault(634, 'Invalid method name ("'.$method.'")');
             $this->_fault->setEncoding($this->getEncoding());
             return false;
         }
@@ -180,7 +180,7 @@ class Zend_XmlRpc_Request
                 $type        = $xmlRpcValue->getType();
             }
         }
-        $this->_types[]  = $type;
+        $this->_types[] = $type;
         $this->_xmlRpcParams[] = array('value' => $value, 'type' => $type);
     }
 
@@ -409,8 +409,8 @@ class Zend_XmlRpc_Request
 
         $generator = Zend_XmlRpc_Value::getGenerator();
         $generator->openElement('methodCall')
-                  ->openElement('methodName', $method)
-                  ->closeElement('methodName');
+                    ->openElement('methodName', $method)
+                    ->closeElement('methodName');
 
         if (is_array($args) && count($args)) {
             $generator->openElement('params');

@@ -186,8 +186,7 @@ LS.onDocumentReady.Statistics2 = function () {
                     location.reload();
                 },
                 error: function (html, statut) {
-                    console.log('error');
-                    console.log(html);
+                    console.ls.error(html);
                 }
             });
 
@@ -748,7 +747,7 @@ var exportImages = function () {
         });
 };
 
-$(document).on('ready  pjax:complete', function () {
+$(document).on('ready  pjax:scriptcomplete', function () {
     LS.onDocumentReady.Statistics2();
     $('body').addClass('onStatistics');
     var exportImagesButton = $('<button class="btn btn-info" style="margin: auto;">Export images</button>');
@@ -765,7 +764,7 @@ $(document).on('ready  pjax:complete', function () {
         // )
 
         // var thisTable = $('#'+$(this).data('questionId'));
-        // console.log(thisTable.html());
+        // console.ls.log(thisTable.html());
 
         var $self = $(this),
             overlay = createOverlay(),
@@ -779,7 +778,7 @@ $(document).on('ready  pjax:complete', function () {
                 thisTable.find('.chartjs-buttons').closest('tr').css({ display: '' });
                 $self.css({ display: '' });
             },
-            function () { console.log(arguments); }
+            function () { console.ls.error(arguments); }
         )
     });
 });

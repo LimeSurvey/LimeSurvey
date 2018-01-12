@@ -84,11 +84,10 @@ class WhMultiSelect extends CInputWidget
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
 
-        $cs->registerCssFile($assetsUrl . '/css/bootstrap-multiselect.css');
-        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-multiselect.js');
-
-        /* initialize plugin */
+        $cs->registerPackage('bootstrap-multiselect');
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
+        
+        /* initialize plugin */
 
         $this->getApi()->registerPlugin('multiselect', $selector, $this->pluginOptions);
         $this->getApi()->registerEvents($selector, $this->events);

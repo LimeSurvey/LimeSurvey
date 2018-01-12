@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -26,57 +28,58 @@
  */
 class QuotaLanguageSetting extends LSActiveRecord
 {
-	/**
+    /**
      * @inheritdoc
-	 * @return QuotaLanguageSetting
-	 */
-	public static function model($class = __CLASS__)
-	{
-		/** @var QuotaLanguageSetting $model */
-	    $model = parent::model($class);
-	    return $model;
-	}
+     * @return QuotaLanguageSetting
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var QuotaLanguageSetting $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{quota_languagesettings}}';
-	}
+    public function tableName()
+    {
+        return '{{quota_languagesettings}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return 'quotals_id';
-	}
+    public function primaryKey()
+    {
+        return 'quotals_id';
+    }
 
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		return array(
-			'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
-		);
-	}
+    /**
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
+        );
+    }
 
-	/** @inheritdoc */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('quotals_message','required'),
-            array('quotals_name','LSYii_Validators'),// No access in quota editor, set to quota.name
-            array('quotals_message','LSYii_Validators'),
-            array('quotals_url','LSYii_Validators','isUrl'=>true),
-            array('quotals_urldescrip','LSYii_Validators'),
-            array('quotals_url','urlValidator'),
+            array('quotals_message', 'required'),
+            array('quotals_name', 'LSYii_Validators'), // No access in quota editor, set to quota.name
+            array('quotals_message', 'LSYii_Validators'),
+            array('quotals_url', 'LSYii_Validators', 'isUrl'=>true),
+            array('quotals_urldescrip', 'LSYii_Validators'),
+            array('quotals_url', 'urlValidator'),
         );
     }
-    public function urlValidator(){
-        if($this->quota->autoload_url == 1 && !$this->quotals_url ){
-            $this->addError('quotals_url',gT('URL must be set if autoload URL is turned on!'));
+    public function urlValidator()
+    {
+        if ($this->quota->autoload_url == 1 && !$this->quotals_url) {
+            $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
         }
     }
 
@@ -89,12 +92,12 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
-
-	function insertRecords($data)
+    public function insertRecords($data)
     {
         $settings = new self;
-		foreach ($data as $k => $v)
-			$settings->$k = $v;
-		return $settings->save();
+        foreach ($data as $k => $v) {
+                    $settings->$k = $v;
+        }
+        return $settings->save();
     }
 }

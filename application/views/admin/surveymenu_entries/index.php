@@ -1,5 +1,5 @@
 <?php
-/* @var $this SurveymenuEntriesController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // $this->breadcrumbs=array(
@@ -13,23 +13,30 @@
 
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyMenuEntries');
+
 ?>
+
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
-        <div class="col-12 h1">
+        <div class="col-12 h1 pagetitle">
             <?php eT('Menu entries')?>
-            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenuentry">
+        </div>
+        <div class="col-12">
+            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-1" id="createnewmenuentry">
                 <i class="fa fa-plus"></i>&nbsp;
-                <?php eT('New menu entry') ?>
+                <?php eT('New') ?>
             </a>
-            <a class="btn btn-warning pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" id="reorderentries">
-                <i class="fa fa-plus"></i>&nbsp;
-                <?php eT('Reorder entries') ?>
+            <a class="btn btn-warning pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-1" id="reorderentries">
+                <i class="fa fa-sort"></i>&nbsp;
+                <?php eT('Reorder') ?>
             </a>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
+                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-1" href="#restoremodal" data-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
-                    <?php eT('Reset menu entries') ?>
+                    <?php eT('Reset') ?>
                 </a>
             <?php endif; ?>
         </div>
@@ -57,7 +64,7 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entrie
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => true,
                     'afterAjaxUpdate'=>'bindAction',
-                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 ));
             ?>
             </div>
@@ -131,5 +138,5 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entrie
     }),
     bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
 
-    $(document).on('ready pjax:complete', bindAction);
+    $(document).on('ready pjax:scriptcomplete', bindAction);
   </script>

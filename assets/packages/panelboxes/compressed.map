@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,sCAAwB;EACpB,OAAO,EAAC,IAAI;EACZ,MAAM,EAAE,KAAK;EACb,QAAQ,EAAC,QAAQ;EACjB,MAAM,EAAE,MAAM;EAEd,oEAA8B;IAC1B,QAAQ,EAAE,QAAQ;IAClB,KAAK,EAAC,GAAG;IACT,MAAM,EAAC,IAAI",
+"sources": ["src/box.scss"],
+"names": [],
+"file": "compressed"
+}

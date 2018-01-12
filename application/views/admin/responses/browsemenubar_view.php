@@ -4,7 +4,7 @@
             <div class="col-md-12">
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
-                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
+                <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
                     <span class="fa fa-list-alt text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>
@@ -15,7 +15,7 @@
 
                 <!-- Display Responses -->
                 <?php if (count($tmp_survlangs) < 2): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
+                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="fa fa-list text-success"></span>
                         <?php eT("Display responses"); ?>
                     </a>
@@ -28,7 +28,7 @@
                     <ul class="dropdown-menu">
                         <?php foreach ($tmp_survlangs as $tmp_lang): ?>
                         <li>
-                            <a href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
+                            <a class="pjax" href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                              </a>
                         </li>

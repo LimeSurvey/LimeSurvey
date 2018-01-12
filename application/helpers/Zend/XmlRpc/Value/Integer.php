@@ -50,7 +50,7 @@ class Zend_XmlRpc_Value_Integer extends Zend_XmlRpc_Value_Scalar
         }
 
         $this->_type = self::XMLRPC_TYPE_INTEGER;
-        $this->_value = (int)$value;    // Make sure this value is integer
+        $this->_value = (int) $value; // Make sure this value is integer
     }
 
     /**

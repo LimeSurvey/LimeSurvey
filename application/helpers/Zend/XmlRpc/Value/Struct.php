@@ -57,19 +57,19 @@ class Zend_XmlRpc_Value_Struct extends Zend_XmlRpc_Value_Collection
     {
         $generator = $this->getGenerator();
         $generator->openElement('value')
-                  ->openElement('struct');
+                    ->openElement('struct');
 
         if (is_array($this->_value)) {
             foreach ($this->_value as $name => $val) {
                 /* @var $val Zend_XmlRpc_Value */
                 $generator->openElement('member')
-                          ->openElement('name', $name)
-                          ->closeElement('name');
+                            ->openElement('name', $name)
+                            ->closeElement('name');
                 $val->generateXml();
                 $generator->closeElement('member');
             }
         }
         $generator->closeElement('struct')
-                  ->closeElement('value');
+                    ->closeElement('value');
     }
 }

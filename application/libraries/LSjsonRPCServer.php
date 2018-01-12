@@ -4,65 +4,66 @@
     class LSjsonRPCServer extends jsonRPCServer
     {
         /**
-	 * This function handle a request binding it to a given object
-	 *
-	 * @param remotecontrol_handle $object
-	 * @return boolean
-	 */
-	public static function handle($object) {
+         * This function handle a request binding it to a given object
+         *
+         * @param remotecontrol_handle $object
+         * @return boolean
+         */
+    public static function handle($object)
+    {
         // checks if a JSON-RCP request has been received
-		if (
-			$_SERVER['REQUEST_METHOD'] != 'POST' ||
-			empty($_SERVER['CONTENT_TYPE']) ||
-			strpos($_SERVER['CONTENT_TYPE'], "application/json") === FALSE
-			) {
-			// This is not a JSON-RPC request
-			return false;
-		}
+        if (
+            $_SERVER['REQUEST_METHOD'] != 'POST' ||
+            empty($_SERVER['CONTENT_TYPE']) ||
+            strpos($_SERVER['CONTENT_TYPE'], "application/json") === false
+            ) {
+            // This is not a JSON-RPC request
+            return false;
+        }
         
-		// reads the input data
-		$request = json_decode(file_get_contents('php://input'),true);
+        // reads the input data
+        $request = json_decode(file_get_contents('php://input'), true);
         // executes the task on local object
         if (is_null($request)) {
             // Can not decode the json, issue error
-            $response = array (
+            $response = array(
                                 'id' => null,
-                                'result' => NULL,
+                                'result' => null,
                                 'error' => sprintf('unable to decode malformed json')
                                 );
         } else {
             try {
-                $result = @call_user_func_array(array($object,$request['method']),$request['params']);
-                if ($result!==false) {
-                    $response = array (
+                $result = @call_user_func_array(array($object, $request['method']), $request['params']);
+                if ($result !== false) {
+                    $response = array(
                                         'id' => $request['id'],
                                         'result' => $result,
-                                        'error' => NULL
+                                        'error' => null
                                         );
                 } else {
-                    $response = array (
+                    $response = array(
                                         'id' => $request['id'],
-                                        'result' => NULL,
+                                        'result' => null,
                                         'error' => 'unknown method or incorrect parameters'
                                         );
                 }
             } catch (Exception $e) {
-                $response = array (
+                $response = array(
                                     'id' => $request['id'],
-                                    'result' => NULL,
+                                    'result' => null,
                                     'error' => $e->getMessage()
                                     );
             }
         }
 
-		// output the response
-		if (is_null($request) || !empty($request['id'])) { // notifications don't want response
-			header('content-type: text/javascript');
+        // output the response
+        if (is_null($request) || !empty($request['id'])) {
+// notifications don't want response
+            header('content-type: text/javascript');
             BigData::json_echo($response);
-		}
+        }
 
-		// finish
-		return true;
-	}
+        // finish
+        return true;
     }
-?>
+    }

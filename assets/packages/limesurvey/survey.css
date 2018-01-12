@@ -12,7 +12,7 @@
 /**
  * Expression manager relevance system
  */
-.js .ls-hidden.ls-irrelevant {display:none}/* 3 class , and don't hide without javascript*/
+.js .ls-hidden, .js .ls-irrelevant {display:none}/* 3 class , and don't hide without javascript*/
 .ls-irrelevant{}
 .js .ls-disabled{opacity:0.4;}
 

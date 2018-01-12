@@ -14,6 +14,8 @@
  * @property string $created
  * @property string $modified
  * @property integer $created_by
+ * @property object $parentgroup
+ * @property boolean $hasSurveys 
  */
 class SurveysGroups extends LSActiveRecord
 {
@@ -72,11 +74,12 @@ class SurveysGroups extends LSActiveRecord
             'parent_id' => 'Parent',
             'created' => 'Created',
             'modified' => 'Modified',
-            'created_by' => 'Created By',
+            'created_by' => 'Created by',
         );
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
         return array(
 
                 array(
@@ -154,7 +157,7 @@ class SurveysGroups extends LSActiveRecord
                     'type' => 'raw',
                     'value'=> '$data->buttons',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
             );
@@ -176,18 +179,18 @@ class SurveysGroups extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('gsid',$this->gsid);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('description',$this->description,true);
-        $criteria->compare('sortorder',$this->sortorder);
-        $criteria->compare('owner_uid',$this->owner_uid);
-        $criteria->compare('parent_id',$this->parent_id);
-        $criteria->compare('created',$this->created,true);
-        $criteria->compare('modified',$this->modified,true);
-        $criteria->compare('created_by',$this->created_by);
+        $criteria->compare('gsid', $this->gsid);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('sortorder', $this->sortorder);
+        $criteria->compare('owner_uid', $this->owner_uid);
+        $criteria->compare('parent_id', $this->parent_id);
+        $criteria->compare('created', $this->created, true);
+        $criteria->compare('modified', $this->modified, true);
+        $criteria->compare('created_by', $this->created_by);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -197,16 +200,20 @@ class SurveysGroups extends LSActiveRecord
     public function getParentTitle()
     {
         // "(gsid: ".$data->parent_id.")"." ".$data->parentgroup->title,
-        if (empty($this->parent_id)){
+        if (empty($this->parent_id)) {
             return "";
-        }else{
+        } else {
             return $this->parentgroup->title;
         }
     }
 
+    /**
+     * Returns true if survey group has surveys
+     * @return boolean
+     */
     public function getHasSurveys()
     {
-        $nbSurvey =  Survey::model()->countByAttributes(array("gsid"=>$this->gsid));
+        $nbSurvey = Survey::model()->countByAttributes(array("gsid"=>$this->gsid));
         return $nbSurvey > 0;
     }
 
@@ -216,14 +223,14 @@ class SurveysGroups extends LSActiveRecord
     public function getButtons()
     {
         $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
-        $sEditUrl     = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
+        $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
         $button         = '';
 
-        if (! $this->gsid !== 1){
+        if (!$this->gsid !== 1) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
-        if (! $this->hasSurveys){
-            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " ></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+        if (!$this->hasSurveys) {
+            $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger "></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
         return $button;
@@ -234,30 +241,32 @@ class SurveysGroups extends LSActiveRecord
         $aSurveyList = [];
         $oSurveyGroups = self::model()->findAll();
 
-        foreach( $oSurveyGroups as $oSurveyGroup){
+        foreach ($oSurveyGroups as $oSurveyGroup) {
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
-        } 
-        
+        }
+
         return $aSurveyList;
     }
 
-	public function getNextOrderPosition(){
-		$oSurveysGroups = SurveysGroups::model()->findAll();
-		return count($oSurveysGroups)+1;
-	}
+    public function getNextOrderPosition()
+    {
+        $oSurveysGroups = SurveysGroups::model()->findAll();
+        return count($oSurveysGroups) + 1;
+    }
 
-    public function getParentGroupOptions (){
-		$oSurveysGroups = SurveysGroups::model()->findAll();
-		$options = [
-			'' => gT('No parent menu')
-		];
-		foreach($oSurveysGroups as $oSurveysGroup){
-			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-			$options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
-		}
-		//return join('\n',$options);
-		return $options;
-	}
+    public function getParentGroupOptions()
+    {
+        $oSurveysGroups = SurveysGroups::model()->findAll();
+        $options = [
+            '' => gT('No parent menu')
+        ];
+        foreach ($oSurveysGroups as $oSurveysGroup) {
+            //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+            $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+        }
+        //return join('\n',$options);
+        return $options;
+    }
 
     /**
      * Returns the static model of the specified AR class.
@@ -265,10 +274,10 @@ class SurveysGroups extends LSActiveRecord
      * @param string $className active record class name.
      * @return SurveysGroups the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 }

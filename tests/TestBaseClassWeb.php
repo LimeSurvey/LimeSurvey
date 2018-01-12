@@ -13,14 +13,10 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Chrome\ChromeDriver;
-use Facebook\WebDriver\Chrome\ChromeOptions;
 
 /**
  * Class TestBaseClassWeb
@@ -33,36 +29,44 @@ class TestBaseClassWeb extends TestBaseClass
      * @var int web server port
      * TODO this should be in configuration somewhere
      */
-    protected static $webPort = 4444;
+    public static $webPort = 4444;
 
     /**
      * @var WebDriver $webDriver
      */
     protected static $webDriver;
 
+    /**
+     * @var string
+     */
+    protected static $domain;
+
+    /**
+     * @throws \Exception
+     */
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
-        if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
+            echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
+            exit(12);
         }
 
-        //$capabilities = DesiredCapabilities::phantomjs();
-        //$port = self::$webPort;
+        self::$domain = getenv('DOMAIN');
 
-        $base = \Yii::app()->getBasePath();
+        self::$webDriver = self::$testHelper->getWebDriver();
 
-        $caps = new DesiredCapabilities();
-        $chromeOptions = new ChromeOptions();
-        $chromeOptions->addArguments(['--headless', 'window-size=1024,768']);
-        $caps->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+        if (empty(self::$webDriver)) {
+            throw new \Exception('Could not connect to remote web driver');
+        }
 
-        putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
-        self::$webDriver = ChromeDriver::start($caps);
+        // Implicit timout so we don't have to wait manually.
+        self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
-        //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
-        //self::$webDriver->manage()->window()->maximize();
+        // Anyone can preview surveys.
+        self::$testHelper->enablePreview();
     }
 
     public static function tearDownAfterClass()
@@ -89,16 +93,12 @@ class TestBaseClassWeb extends TestBaseClass
      * Get URL to admin view.
      * @param array $view
      * @return string
+     * @todo Rename to getAdminUrl.
      */
     public static function getUrl(array $view)
     {
-        $domain = getenv('DOMAIN');
-        if (empty($domain)) {
-            $domain = '';
-        }
-
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('admin/' . $view['route']);
         return $url;
     }
@@ -107,11 +107,11 @@ class TestBaseClassWeb extends TestBaseClass
      * @param string $userName
      * @param string $password
      * @return void
+     * @throws \Exception
+     * @throws \Facebook\WebDriver\Exception\NoSuchElementException
      */
     public static function adminLogin($userName, $password)
     {
-
-
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
         try {
@@ -149,12 +149,25 @@ class TestBaseClassWeb extends TestBaseClass
             );
         } catch (TimeOutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder .'/FailedLogin.png', $screenshot);
+            $filename = self::$screenshotsFolder .'/FailedLogin.png';
+            file_put_contents($filename, $screenshot);
             self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
                 'Found no welcome jumbotron after login.'
             );
         }
+    }
+
+    /**
+     * Delete failed login attempts.
+     * @throws \CDbException
+     */
+    protected static function deleteLoginTimeout()
+    {
+        $dbo = \Yii::app()->getDb();
+        $dbo
+            ->createCommand('DELETE FROM {{failed_login_attempts}}')
+            ->execute();
     }
 }

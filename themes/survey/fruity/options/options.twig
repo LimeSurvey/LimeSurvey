@@ -1,0 +1,945 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Default survey template options ._.·´¯)·._.·´¯)
+
+    This is the form for the option parameters of the basic default template.
+
+#}
+{% set aOptions = json_decode(templateConfiguration.options)  %}
+
+{{ registerPackage('font-roboto') }}
+{{ registerPackage('font-noto') }}
+{{ registerPackage('font-news_cycle') }}
+{{ registerPackage('font-ubuntu') }}
+{{ registerPackage('font-lato') }}
+{{ registerPackage('font-websafe') }}
+
+{{registerScriptFile(optionsPath ~ '/spectrum.js')}}
+{{registerCssFile(optionsPath ~ '/spectrum.css')}}
+
+{# The animation options are pulled from animate.css #}
+{% set animationOptions = '' %}
+{# For surveyspecific settings add an inherit option #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set animationOptions = animationOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+{# List of possible animation of animate.css #}
+{% set animationOptions %}
+{{animationOptions}}
+<optgroup label="Attention Seekers">
+    <option value="bounce">bounce</option>
+    <option value="flash">
+        flash</option>
+    <option value="pulse">
+        pulse</option>
+    <option value="rubberBand">
+        rubberBand</option>
+    <option value="shake">
+        shake</option>
+    <option value="swing">
+        swing</option>
+    <option value="tada">
+        tada</option>
+    <option value="wobble">
+        wobble</option>
+    <option value="jello">
+        jello</option>
+</optgroup>
+
+<optgroup label="Bouncing Entrances">
+    <option value="bounceIn">bounceIn</option >
+    <option value="bounceInDown">bounceInDown</option>
+    <option value="bounceInLeft">
+        bounceInLeft</option>
+    <option value="bounceInRight">
+        bounceInRight</option>
+    <option value="bounceInUp">
+        bounceInUp</option>
+</optgroup>
+
+<optgroup label="Bouncing Exits">
+    <option value="bounceOut">bounceOut</option >
+    <option value="bounceOutDown">bounceOutDown</option>
+    <option value="bounceOutLeft">
+        bounceOutLeft</option>
+    <option value="bounceOutRight">
+        bounceOutRight</option>
+    <option value="bounceOutUp">
+        bounceOutUp</option>
+</optgroup>
+
+<optgroup label="Fading Entrances">
+    <option value="fadeIn">fadeIn</option >
+    <option value="fadeInDown">fadeInDown</option>
+    <option value="fadeInDownBig">
+        fadeInDownBig</option>
+    <option value="fadeInLeft">
+        fadeInLeft</option>
+    <option value="fadeInLeftBig">
+        fadeInLeftBig</option>
+    <option value="fadeInRight">
+        fadeInRight</option>
+    <option value="fadeInRightBig">
+        fadeInRightBig</option>
+    <option value="fadeInUp">
+        fadeInUp</option>
+    <option value="fadeInUpBig">
+        fadeInUpBig</option>
+</optgroup>
+
+<optgroup label="Fading Exits">
+    <option value="fadeOut">fadeOut</option >
+    <option value="fadeOutDown">fadeOutDown</option>
+    <option value="fadeOutDownBig">
+        fadeOutDownBig</option>
+    <option value="fadeOutLeft">
+        fadeOutLeft</option>
+    <option value="fadeOutLeftBig">
+        fadeOutLeftBig</option>
+    <option value="fadeOutRight">
+        fadeOutRight</option>
+    <option value="fadeOutRightBig">
+        fadeOutRightBig</option>
+    <option value="fadeOutUp">
+        fadeOutUp</option>
+    <option value="fadeOutUpBig">
+        fadeOutUpBig</option>
+</optgroup>
+
+<optgroup label="Flippers">
+    <option value="flip">flip</option >
+    <option value="flipInX">flipInX</option>
+    <option value="flipInY">
+        flipInY</option>
+    <option value="flipOutX">
+        flipOutX</option>
+    <option value="flipOutY">
+        flipOutY</option>
+</optgroup>
+
+<optgroup label="Lightspeed">
+    <option value="lightSpeedIn">lightSpeedIn</option >
+    <option value="lightSpeedOut">lightSpeedOut</option>
+</optgroup>
+
+<optgroup label="Rotating Entrances">
+    <option value="rotateIn">rotateIn</option >
+    <option value="rotateInDownLeft">rotateInDownLeft</option>
+    <option value="rotateInDownRight">
+        rotateInDownRight</option>
+    <option value="rotateInUpLeft">
+        rotateInUpLeft</option>
+    <option value="rotateInUpRight">
+        rotateInUpRight</option>
+</optgroup>
+
+<optgroup label="Rotating Exits">
+    <option value="rotateOut">rotateOut</option >
+    <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+    <option value="rotateOutDownRight">
+        rotateOutDownRight</option>
+    <option value="rotateOutUpLeft">
+        rotateOutUpLeft</option>
+    <option value="rotateOutUpRight">
+        rotateOutUpRight</option>
+</optgroup>
+
+<optgroup label="Sliding Entrances">
+    <option value="slideInUp">slideInUp</option >
+    <option value="slideInDown">slideInDown</option>
+    <option value="slideInLeft">
+        slideInLeft</option>
+    <option value="slideInRight">
+        slideInRight</option>
+</optgroup>
+
+<optgroup label="Sliding Exits">
+    <option value="slideOutUp">slideOutUp</option >
+    <option value="slideOutDown">slideOutDown</option>
+    <option value="slideOutLeft">
+        slideOutLeft</option>
+    <option value="slideOutRight">
+        slideOutRight</option>
+</optgroup>
+
+<optgroup label="Zoom Entrances">
+    <option value="zoomIn">zoomIn</option >
+    <option value="zoomInDown">zoomInDown</option>
+    <option value="zoomInLeft">
+        zoomInLeft</option>
+    <option value="zoomInRight">
+        zoomInRight</option>
+    <option value="zoomInUp">
+        zoomInUp</option>
+</optgroup>
+
+<optgroup label="Zoom Exits">
+    <option value="zoomOut">zoomOut</option >
+    <option value="zoomOutDown">zoomOutDown</option>
+    <option value="zoomOutLeft">
+        zoomOutLeft</option>
+    <option value="zoomOutRight">
+        zoomOutRight</option>
+    <option value="zoomOutUp">
+        zoomOutUp</option>
+</optgroup>
+
+<optgroup label="Specials">
+    <option value="hinge">hinge</option >
+    <option value="jackInTheBox">jackInTheBox</option>
+    <option value="rollIn">
+        rollIn</option>
+    <option value="rollOut">
+        rollOut</option>
+</optgroup>
+{% endset %}
+
+{# The default template offers the variety of styles #}
+{% set fruityOptions = '' %}
+
+{# For surveyspecific settings add an inherit option #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set fruityOptions = fruityOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+
+{# List of Bootswatch styles #}
+{% set fruityOptions %}
+{{fruityOptions}}
+<option value="css/variations/sea_green.css">Sea Green</option>
+<option value="css/variations/apple_blossom.css">Apple Blossom</option>
+<option value="css/variations/bay_of_many.css">Bay of Many</option>
+<option value="css/variations/black_pearl.css">Black Pearl</option>
+<option value="css/variations/free_magenta.css">Free Magenta</option>
+<option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
+<option value="css/variations/sunset_orange.css">Sunset_Orange</option>
+{% endset %}
+
+{% set checkIconOptions = '' %}
+
+{# Selecting different check icons #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set checkIconOptions = checkIconOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+
+{% set checkIconOptions %}
+{{checkIconOptions}}
+<option value="f00c"> <i class="fa fa-check"></i> Check </option>
+<option value="f058"> <i class="fa fa-check-circle"></i> Check circle </option>
+<option value="f14a"> <i class="fa fa-check-square"></i> Check square </option>
+<option value="f111"> <i class="fa fa-circle"></i> Circle </option>
+<option value="f067"> <i class="fa fa-plus"></i> Plus </option>
+<option value="f0c8"> <i class="fa fa-square"></i> Square </option>
+<option value="f005"> <i class="fa fa-star"></i> Star </option>
+<option value="f00d"> <i class="fa fa-times"></i> Times </option>
+<option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
+<option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
+<option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
+<option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
+{% endset %}
+
+{# The default template offers the variety of styles #}
+{% set fontOptions = '' %}
+
+
+{# For surveyspecific settings add an inherit option #}
+{% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+    {% set fontOptions = fontOptions ~ '<option value = "inherit" > Inherit</option>' %}
+{% endif %}
+
+
+{% set fontOptions %}
+    {{fontOptions}}
+    <optgroup  label="{{ "Local Server" | t }}">
+            <option class="font-roboto"     value="roboto"     data-font-package="roboto"      >Roboto</option>
+            <option class="font-news_cycle" value="news_cycle" data-font-package="news_cycle"  >News Cycle</option>
+            <option class="font-lato"       value="lato"       data-font-package="lato"        >Lato</option>
+            <option class="font-noto"       value="noto"       data-font-package="noto"        >Noto Sans</option>
+            <option class="font-ubuntu"     value="ubuntu"     data-font-package="ubuntu"       >Ubuntu</option>
+    </optgroup>
+
+    <optgroup  label="{{ "User browser" | t }}">
+
+      <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
+      <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
+      <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
+      <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
+      <option class="font-arial_black     " value="arial_black"     data-font-package="websafe" >Arial Black</option>
+      <option class="font-comic_sans      " value="comic_sans"      data-font-package="websafe" >Comic Sans</option>
+      <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
+      <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
+      <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
+      <option class="font-courier         " value="courier"         data-font-package="websafe" >Courier New</option>
+      <option class="font-lucida_console  " value="lucida_console"  data-font-package="websafe" >Lucida Console</option>
+    </optgroup>
+{% endset %}
+
+<div class="container-fluid" style="position:relative">
+    {# Small loading animation to give the scripts time to parse and render the correct values #}
+    <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
+        <div style="position:absolute; left:49%;top:35%;" class="text-center">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        </div>
+    </div>
+    <div class="row">
+        {# Begin template option form #}
+        <form class='form action_update_options_string_form' action=''>
+
+            {# If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template #}
+            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                <div class='row' id="general_inherit_active">
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_general_inherit' class='control-label'>{{"Inherit everything" | t}}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    {{ "No" | t}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row action_hide_on_inherit">
+                    <hr/>
+                </div>
+            {% endif %}
+
+            {# First settings row #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-3'>
+
+                    {# Ajaxmode setting #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_ajaxmode' class='control-label'> {{ "Ajax mode" | t}} </label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input name='ajaxmode' type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input name='ajaxmode' type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input name='ajaxmode' type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                                        {{ "Inherit" | t }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Container #}
+                <div class='col-sm-12 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_container' class='control-label'> {{ "Survey container" | t }} </label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='container' value='on' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='container' value='off' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
+                                        {{ "Inherit" | t }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Question Border #}
+                <div class='col-sm-12 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionborder' class='control-label'>{{ "Question borders" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionborder' value='on' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionborder' value='off' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                    {{ "No" | t}}
+                                </label>
+
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='questionborder' value='inherit' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Question Shadow #}
+                <div class='col-sm-12 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ "Question shadow" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questioncontainershadow' value='on' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                    {{ "Yes" | t }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questioncontainershadow' value='off' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                    {{ "No" | t }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='questioncontainershadow' value='inherit' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <hr/>
+            </div>
+
+            <div class='row action_hide_on_inherit'>
+
+                {# Background Color #}
+                <div class='col-sm-6 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ "Background color" | t }}</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Font Color #}
+                <div class='col-sm-6 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_fontcolor' class='control-label'>{{ "Font color" | t }}</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Question Background Color #}
+                <div class='col-sm-6 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ "Question background color" | t }}</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
+                            </div>
+                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
+                            <div class="input-group-addon">
+                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Check icon #}
+                <div class='col-sm-6 col-md-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_checkicon' class='control-label'>{{ "Check icon" | t }}</label>
+                        <div class="input-group">
+                            <select name="checkicon" value="" class="selector_option_value_field form-control simple_edit_options_checkicon" data-id="checkicon" >
+                                {{checkIconOptions}}
+                            </select>
+                            <div class="input-group-addon selector__checkicon-preview">
+                                ( <i class="fa" data-inheritvalue="{{ oParentOptions.checkicon }}" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
+                                    &#x{{ oParentOptions.checkicon }};
+                                </i> )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='row action_hide_on_inherit'>
+                <hr/>
+            </div>
+
+             <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Background image #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_backgroundimage' class='control-label'>{{ "Background image" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='backgroundimage' value='on' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='backgroundimage' value='off' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='backgroundimage' value='inherit' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='col-sm-8 col-md-6'>
+                    {#  Background image file selector #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ "Background image file" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <option value="inherit">{{ "Inherit" | t}}</option>
+                                {% endif %}
+
+                                {% for image in templateConfiguration.imageFileList %}
+                                    <option data-lightbox-src="{{imageSrc(image.filepath)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-4 col-md-2'>
+                    <br/>
+                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_backgroundimagefile"> {{ gT('Preview Image')}}</button>
+                </div>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Brandlogo #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_brandlogo' class='control-label'> {{ "Brand logo" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='brandlogo' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='brandlogo' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='brandlogo' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-8 col-md-6'>
+                    {#  Brandlogo file selector #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ "Brand logo file" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <option value="inherit">{{ "Inherit" | t }}</option>
+                                {% endif %}
+
+                                {% for image in templateConfiguration.imageFileList %}
+                                    <option data-lightbox-src="{{imageSrc(image.filepath)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-4 col-md-2'>
+                    <br/>
+                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_brandlogofile"> {{ gT('Preview Image')}}</button>
+                </div>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <hr/>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    <div class='form-group row'>
+                        {# Animate body On/Off #}
+                        <label for='simple_edit_options_animatebody' class='control-label'>{{ "Animate body" | t}}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-10 col-md-6'>
+                    {# Animate body -> Animation type #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_bodyanimation' class='control-label'>{{ "Body animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate body -> Animation type duration #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_bodyanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimationduration' name='bodyanimationduration' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate question -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animatequestion' class='control-label'>{{ "Animate question" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-10 col-md-6'>
+                    {# Animate question -> Animation type #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionanimation' class='control-label'>{{ "Question animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate question -> Animation type #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5"  class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimationduration' name='questionanimationduration' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Animate alert #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate alert -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animatealert' class='control-label'>{{ "Animate alert" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-10 col-md-6'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_alertanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_alertanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5"  class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimationduration' name='alertanimationduration'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Animate checkbox #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate alert -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animatecheckbox' class='control-label'>{{ "Animate checkbox" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-10 col-md-6'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-2'>
+                    {# Animate alert -> Animation options #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_checkboxanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimationduration' name='checkboxanimationduration' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Animate radio #}
+            <div class='row action_hide_on_inherit'>
+                <div class='col-sm-12 col-md-4'>
+                    {# Animate alert -> On/Off #}
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_animateradio' class='control-label'>{{ "Animate radio buttons" | t }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                    {{ "Yes" | t}}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                    {{ "No" | t}}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
+                                        {{ "Inherit" | t}}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Animate alert -> Animation options #}
+                <div class='col-sm-10 col-md-6'>
+
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_radioanimation' class='control-label'>{{ "Radio button animation" | t }}</label>
+                        <div class='col-sm-12'>
+                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
+                                {{animationOptions}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {# Animate alert -> Animation options #}
+                <div class='col-sm-2'>
+
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_radioanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <div class='col-sm-12'>
+                            <input type="number" step="0.1" min="0" max="5" class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimationduration' name='radioanimationduration' />
+                        </div>
+                    </div>
+                </div>
+            </div>            
+
+            <div class='row ls-space margin top-15 bottom-15 '>
+                <hr/>
+            </div>
+
+            <div class='row'>
+                <div class='col-sm-6'>
+                    <div class='panel panel-default'>
+                        <div class='panel-heading'>{{ "Fruity fonts" | t }}</div>
+                        <div class='panel-body'>
+                            <div class='form-group row'>
+                                <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
+                                <div class='col-sm-12'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font'>
+                                        {{ fontOptions }}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-6'>
+                    <div class='panel panel-default'>
+                        <div class='panel-heading'>{{ "Fruity variations" | t }} </div>
+                        <div class='panel-body'>
+                            <div class='form-group row'>
+                                <label for='simple_edit_add_css' class='control-label'>{{ "Select variation:" | t }}</label>
+                                <div class='col-sm-12'>
+                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework'>
+                                        {{fruityOptions}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row hidden'>
+                <div class='col-sm-12'>
+                    <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>{{ "Save" | t }} </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class='row action_hide_on_inherit'>
+        {# Upload an image #}
+        <div class="container-fluid ls-space margin bottom-15">
+            <div class="row ls-space margin bottom-15">
+                <div class="col-sm-6">
+                    {{ sprintf( gT("Upload an image (maximum size: %d MB):"), (templateConfiguration.maxFileSize/1024/1024) ) }}
+                </div>
+                <div class="col-sm-6">
+                {{ C.Html.form(createUrl('/admin/themes/sa/upload'), 'post', { 'id' : 'upload_frontend', 'name' : 'upload_frontend', 'enctype' :'multipart/form-data' }) }}
+                    <span id="fileselector_frontend">
+                        <label class="btn btn-default col-xs-8" for="upload_image_frontend">
+                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                            <i class="fa fa-upload ls-space margin right-10"></i>
+                            {{ gT("Upload") }}
+                        </label>
+                    </span>
+
+                        <input type='hidden' name='templatename' value='{{ templateConfiguration.template_name }}' />
+                        <input type='hidden' name='templateconfig' value='{{ templateConfiguration.id }}' />
+                        <input type='hidden' name='action' value='templateuploadimagefile' />
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="progress">
+                    <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span class="sr-only">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="lightbox-modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title selector__title"> </h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img class="selector__image img-responsive" src="" alt="title"  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

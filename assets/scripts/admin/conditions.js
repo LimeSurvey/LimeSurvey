@@ -68,7 +68,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:scriptcomplete', function(){
 
     // TODO: Localization
     $('#copyconditions').submit(function() {
@@ -193,13 +193,13 @@ $(document).on('ready  pjax:complete', function(){
     $('#quick-add-condition-save-button').on('click', function(ev) {
         var formData = $('#quick-add-conditions-form').serializeArray();
         var url = $('#quick-add-url').html();
-        console.log('formData', formData);
+        console.ls.log('formData', formData);
         LS.ajax({
             url: url,
             data: formData,
             method: 'POST',
             error: function () {
-                console.log(arguments);
+                console.ls.log(arguments);
             }
         });
     });
@@ -216,7 +216,7 @@ $(document).on('ready  pjax:complete', function(){
                 location.reload();
             },
             error: function () {
-                console.log(arguments);
+                console.ls.log(arguments);
             }
         });
     });
