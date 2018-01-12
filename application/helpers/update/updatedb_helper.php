@@ -2524,7 +2524,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "user_id" =>  "integer DEFAULT NULL",
         "ordering" =>  "integer DEFAULT '0'",
         "level" =>  "integer DEFAULT '0'",
-        "title" =>  "string(192)  NOT NULL DEFAULT ''",
+        "title" =>  "string(168)  NOT NULL DEFAULT ''",
         "position" =>  "string(192)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
         "changed_at" =>  "datetime",
