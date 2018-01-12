@@ -465,7 +465,7 @@ class Question extends LSActiveRecord
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 0),
+                'answerscales' => 0,
                 'class' => 'array-5-pt'
             ),
            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array(
