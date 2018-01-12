@@ -191,7 +191,7 @@ class RegisterController extends LSYii_Controller
      * 
      * @return Array The rendereable array
      */
-    public function getRegisterSuccess($iSurveyId, $iTokenId){
+    public function getRegisterSuccess($iSurveyId, $iTokenId) {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
@@ -471,7 +471,7 @@ class RegisterController extends LSYii_Controller
     }
     /**
      * Get the date if survey is future
-     * @param $iSurveyId
+     * @param integer $iSurveyId
      * @return null|string date
      */
     public function getStartDate($iSurveyId)
@@ -488,8 +488,9 @@ class RegisterController extends LSYii_Controller
     /**
      * Display needed public page
      * @param $iSurveyId
+     * @param string $registerContent
      */
-    private function display($iSurveyId, $iTokenId=null, $registerContent)
+    private function display($iSurveyId, $iTokenId = null, $registerContent)
     {
         $sLanguage = Yii::app()->language;
         $this->aGlobalData['surveyid'] = $surveyid = $iSurveyId;
@@ -501,7 +502,7 @@ class RegisterController extends LSYii_Controller
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
 
-        if($iTokenId!==null){
+        if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
             $aData['registerSuccess'] = true;
         } else {
