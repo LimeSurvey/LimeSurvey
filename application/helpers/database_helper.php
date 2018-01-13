@@ -22,7 +22,7 @@ if (!defined('BASEPATH')) {
  * @param boolean $silent
  * @return bool|CDbDataReader
  * @throws Exception
- * @deprecated Do not use anymore. If you see this replace it with a proper CDbCommand query
+ * @deprecated Do not use anymore. If you see this replace it with a proper ActiveRecord Model query
  */
 function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
 {

@@ -10,13 +10,10 @@ echo viewHelper::getViewTestTag('expressionsNavigationTest');
 if (count($_POST) == 0) {
     
 
-    $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
-    . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
-    . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
-    $data = dbExecuteAssoc($query);
+    $aSurveys = Survey::model()->findAll();
     $surveyList='';
-    foreach($data->readAll() as $row) {
-        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
+    foreach($aSurveys as $row) {
+        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row->defaultlanguage->title) . "</option>\n";
     }
 
     $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');

@@ -141,8 +141,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php foreach ($dearesult as $dearow):?>
                         <?php
                             // first scale
-                            $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
-                            $delresult = dbExecuteAssoc($delquery);
+                            $delresult = Answer::model()->findAll("qid={$deqrow['qid']} and scale_id=0");
                         ?>
                         <tr>
                             <td><?php echo $dearow['question']; ?></td>
@@ -151,20 +150,19 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                     <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-control'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow): ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->AnswerL10ns[$sDataEntryLanguage]->answer; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                             </td>
-                            <?php $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
-                            $delresult = dbExecuteAssoc($delquery); ?>
+                            <?php $delresult = Answer::model()->findAll("qid={$deqrow['qid']} and scale_id=1"); ?>
                             <td>
                                 <div class="col-sm-10">
                                     <select name='<?php echo $fieldname.$dearow['title']; ?>#1'  class='form-control'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow)
                                         { ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->AnswerL10ns[$sDataEntryLanguage]->answer; ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>

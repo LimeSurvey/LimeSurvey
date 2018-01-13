@@ -316,7 +316,13 @@ class Usergroups extends Survey_Common_Action
                 $aData["userloop"] = $userloop;
                 if ($row2 !== false) {
                     $aData["useradddialog"] = true;
-                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
+                    
+                    $aUsers = User::model()->findAll(['join'=>"LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id",'condition'=>"id IS NULL"]);
+                    $aNewUserListData = CHtml::listData($aUsers,'uid',function($user) {
+                        return \CHtml::encode($user->users_name)." (".\CHtml::encode($user->full_name).')';});
+                    // Remove group owner because an owner is automatically member of a group
+                    unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
+                    $aData["addableUsers"] = array('-1'=>gT("Please choose..."))+$aNewUserListData;
                     $aData["useraddurl"] = "";
                 }
                 $aViewUrls[] = 'viewUserGroup_view';

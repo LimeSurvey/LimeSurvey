@@ -1466,7 +1466,6 @@ function getNavigatorDatas()
  */
 function doAssessment($surveyid)
 {
-
     $survey = Survey::model()->findByPk($surveyid);
     $baselang = $survey->language;
     if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
@@ -1478,147 +1477,139 @@ function doAssessment($surveyid)
         $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
 
-    $query = "SELECT * FROM {{assessments}}
-        WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
-        ORDER BY scope, id";
+    $aAssessmentCount = Assessment::model()->count("sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'");
+    if ($aAssessmentCount > 0) {
 
-    if ($result = dbExecuteAssoc($query)) {
-        $aResultSet = $result->readAll();
+        foreach ($aResultSet as $row) {
 
-        if (count($aResultSet) > 0) {
-
-            foreach ($aResultSet as $row) {
-
-                if ($row['scope'] == "G") {
-                    $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
-                        "min"     => $row['minimum'],
-                        "max"     => $row['maximum'],
-                        "message" => $row['message']
-                    );
-                } else {
-                    $assessment['total'][] = array("name"=>$row['name'],
-                        "min"     => $row['minimum'],
-                        "max"     => $row['maximum'],
-                        "message" => $row['message']
-                    );
-                }
+            if ($row['scope'] == "G") {
+                $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
+                    "min"     => $row['minimum'],
+                    "max"     => $row['maximum'],
+                    "message" => $row['message']
+                );
+            } else {
+                $assessment['total'][] = array("name"=>$row['name'],
+                    "min"     => $row['minimum'],
+                    "max"     => $row['maximum'],
+                    "message" => $row['message']
+                );
             }
-            $fieldmap = createFieldMap($survey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
-            $i        = 0;
-            $total    = 0;
-            $groups   = array();
+        }
+        $fieldmap = createFieldMap($survey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $i        = 0;
+        $total    = 0;
+        $groups   = array();
+
+        foreach ($fieldmap as $field) {
+
+            // Init Assessment Value
+            $assessmentValue = null;
+
+            if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
+                $fieldmap[$field['fieldname']]['assessment_value'] = 0;
+                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
+                {
+                    if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) //Multiflexi choice  - result is the assessment attribute value
+                    {
+                        if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
+                        {
+                            $aAttributes=getQuestionAttributeValues($field['qid']);
+                            $assessmentValue = (int)$aAttributes['assessment_value'];
+                        }
+                    } else {
+                            // Single choice question
+                        $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                        $usresult = dbExecuteAssoc($usquery); //Checked
+
+                        if ($usresult) {
+                            $usrow              = $usresult->read();
+                            $assessmentValue    = $usrow['assessment_value'];
+                        //    $total              = $total+$usrow['assessment_value'];
+                        }
+                    }
+
+                    $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
+                }
+                $groups[] = $field['gid'];
+            }
+
+            // If this is a question (and not a survey field, like ID), save asessment value
+            if ($field['qid'] > 0) {
+                /**
+                 * Allow Plugin to update assessment value
+                 */
+                // Prepare Event Info
+                $event = new PluginEvent('afterSurveyQuestionAssessment');
+                $event->set('surveyId', $surveyid);
+                $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                $event->set('gid', $field['gid']);
+                $event->set('qid', $field['qid']);
+
+                if (array_key_exists('sqid', $field)) {
+
+                    $event->set('sqid', $field['sqid']);
+                }
+
+                if (array_key_exists('aid', $field)) {
+
+                    $event->set('aid', $field['aid']);
+                }
+
+                $event->set('assessmentValue', $assessmentValue);
+
+                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                    $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                }
+
+                // Dispatch Event and Get new assessment value
+                App()->getPluginManager()->dispatchEvent($event);
+                $updatedAssessmentValue = $event->get('assessmentValue', $assessmentValue);
+
+                /**
+                 * Save assessment value on the response
+                 */
+                $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
+                $total = $total + $updatedAssessmentValue;
+            }
+
+            $i++;
+        }
+
+        $groups = array_unique($groups);
+
+        foreach ($groups as $group) {
+            $grouptotal = 0;
 
             foreach ($fieldmap as $field) {
+                if ($field['gid'] == $group && isset($field['assessment_value'])) {
 
-                // Init Assessment Value
-                $assessmentValue = null;
-
-                if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
-                    $fieldmap[$field['fieldname']]['assessment_value'] = 0;
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
-                    {
-                        if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) //Multiflexi choice  - result is the assessment attribute value
-                        {
-                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
-                            {
-                                $aAttributes=getQuestionAttributeValues($field['qid']);
-                                $assessmentValue = (int)$aAttributes['assessment_value'];
-                            }
-                        } else {
-                                // Single choice question
-                            $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                            $usresult = dbExecuteAssoc($usquery); //Checked
-
-                            if ($usresult) {
-                                $usrow              = $usresult->read();
-                                $assessmentValue    = $usrow['assessment_value'];
-                            //    $total              = $total+$usrow['assessment_value'];
-                            }
-                        }
-
-                        $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
+                    if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                        $grouptotal = $grouptotal + $field['assessment_value'];
                     }
-                    $groups[] = $field['gid'];
                 }
-
-                // If this is a question (and not a survey field, like ID), save asessment value
-                if ($field['qid'] > 0) {
-                    /**
-                     * Allow Plugin to update assessment value
-                     */
-                    // Prepare Event Info
-                    $event = new PluginEvent('afterSurveyQuestionAssessment');
-                    $event->set('surveyId', $surveyid);
-                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
-                    $event->set('gid', $field['gid']);
-                    $event->set('qid', $field['qid']);
-
-                    if (array_key_exists('sqid', $field)) {
-
-                        $event->set('sqid', $field['sqid']);
-                    }
-
-                    if (array_key_exists('aid', $field)) {
-
-                        $event->set('aid', $field['aid']);
-                    }
-
-                    $event->set('assessmentValue', $assessmentValue);
-
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-                        $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                    }
-
-                    // Dispatch Event and Get new assessment value
-                    App()->getPluginManager()->dispatchEvent($event);
-                    $updatedAssessmentValue = $event->get('assessmentValue', $assessmentValue);
-
-                    /**
-                     * Save assessment value on the response
-                     */
-                    $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
-                    $total = $total + $updatedAssessmentValue;
-                }
-
-                $i++;
             }
 
-            $groups = array_unique($groups);
-
-            foreach ($groups as $group) {
-                $grouptotal = 0;
-
-                foreach ($fieldmap as $field) {
-                    if ($field['gid'] == $group && isset($field['assessment_value'])) {
-
-                        if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-                            $grouptotal = $grouptotal + $field['assessment_value'];
-                        }
-                    }
-                }
-
-                $subtotal[$group] = $grouptotal;
-            }
+            $subtotal[$group] = $grouptotal;
         }
-        $assessment['subtotal']['show'] = false;
-
-        if (isset($subtotal) && is_array($subtotal)) {
-            $assessment['subtotal']['show']  = true;
-            $assessment['subtotal']['datas'] = $subtotal;
-        }
-
-        $assessment['total']['show'] = false;
-
-        if (isset($assessment['total'])) {
-            $assessment['total']['show'] = true;
-        }
-
-        $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
-        $assessment['total_score']    = (isset($total)) ? $total : '';
-        //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
-        return array('show'=>true, 'datas' => $assessment);
-
     }
+    $assessment['subtotal']['show'] = false;
+
+    if (isset($subtotal) && is_array($subtotal)) {
+        $assessment['subtotal']['show']  = true;
+        $assessment['subtotal']['datas'] = $subtotal;
+    }
+
+    $assessment['total']['show'] = false;
+
+    if (isset($assessment['total'])) {
+        $assessment['total']['show'] = true;
+    }
+
+    $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
+    $assessment['total_score']    = (isset($total)) ? $total : '';
+    //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+    return array('show'=>true, 'datas' => $assessment);
 }
 
 

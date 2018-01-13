@@ -355,13 +355,10 @@ function convertGETtoPOST($url)
 */
 function calculateTotalFileUploadUsage()
 {
-    global $uploaddir;
-    $sQuery = 'select sid from {{surveys}}';
-    $oResult = dbExecuteAssoc($sQuery); //checked
-    $aRows = $oResult->readAll();
+    $aRows = Survey::findAll();
     $iTotalSize = 0.0;
     foreach ($aRows as $aRow) {
-        $sFilesPath = $uploaddir.'/surveys/'.$aRow['sid'].'/files';
+        $sFilesPath = Yii::app()->getConfig("uploaddir").'/surveys/'.$aRow->sid.'/files';
         if (file_exists($sFilesPath)) {
             $iTotalSize += (float) getDirectorySize($sFilesPath);
         }
@@ -3481,12 +3478,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $oldsid = (int) $oldsid;
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')";
-    $result = dbExecuteAssoc($sql) or safeDie("Can't read groups table in translateInsertansTags"); // Checked
-
-    //while ($qentry = $res->FetchRow())
-    foreach ($result->readAll() as $qentry) {
+    $result = SurveyLanguageSetting::model()->findAll("surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')");
+    foreach ($result as $qentry) {
         $urldescription = $qentry['surveyls_urldescription'];
         $endurl = $qentry['surveyls_url'];
         $language = $qentry['surveyls_language'];
@@ -3519,11 +3512,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
-    WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
-    $result = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns"); // Checked
-
-    foreach ($result->readAll() as $qentry) {
+    $result = QuotaLanguageSetting::model()->findAll("sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')");
+    foreach ($result as $qentry) {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl = $qentry['quotals_url'];
 
@@ -3536,8 +3526,9 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
         if (strcmp($urldescription, $qentry['quotals_urldescrip']) != 0 || (strcmp($endurl, $qentry['quotals_url']) != 0)) {
             // Update Field
-            $sqlupdate = "UPDATE {{quota_languagesettings}} SET quotals_urldescrip='".$urldescription."', quotals_url='".$endurl."' WHERE quotals_id={$qentry['quotals_id']}";
-            dbExecuteAssoc($sqlupdate) or safeDie("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />"); //Checked
+            $qentry->quotals_urldescrip=$urldescription;
+            $qentry->quotals_url=$endurl;
+            $qentry->save();
         } // Enf if modified
     } // end while qentry
 
@@ -3545,7 +3536,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $sql = "SELECT g.gid, language, group_name, description from {{groups}} g
     join {{group_l10ns}} l on g.gid=l.gid
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
-    $res = dbExecuteAssoc($sql) or safeDie("Can't read groups table in transInsertAns"); // Checked
+    $res = Yii::app()->db->createCommand($sql)->query();
 
     //while ($qentry = $res->FetchRow())
     foreach ($res->readAll() as $qentry) {
@@ -3579,9 +3570,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     $sql = "SELECT q.qid, language, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
-    $result = dbExecuteAssoc($sql) or safeDie("Can't read question table in transInsertAns "); // Checked
-
-    //while ($qentry = $res->FetchRow())
+    $result = Yii::app()->db->createCommand($sql)->query();
     $aResultData = $result->readAll();
     foreach ($aResultData as $qentry) {
         $question = $qentry['question'];
@@ -4244,33 +4233,6 @@ function getUserGroupList()
         }
     }
     return $simplegidarray;
-}
-
-// TODO use Yii model forms
-function getGroupUserList($ugid)
-{
-    Yii::app()->loadHelper('database');
-
-
-    $ugid = sanitize_int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
-
-    $surveyidresult = dbExecuteAssoc($surveyidquery); //Checked
-    if (!$surveyidresult) {return "Database Error"; }
-    $surveyselecter = "";
-    $aSurveyNames = [];
-    foreach ($surveyidresult->readAll() as $row) {
-        $aSurveyNames[] = $row;
-    }
-    //$surveynames = $surveyidresult->GetRows();
-    if (isset($aSurveyNames)) {
-        foreach ($aSurveyNames as $sv) {
-            $surveyselecter .= "<option";
-            $surveyselecter .= " value='{$sv['uid']}'>".\CHtml::encode($sv['users_name'])." (".\CHtml::encode($sv['full_name']).")</option>\n";
-        }
-    }
-    $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
-    return $surveyselecter;
 }
 
 /**

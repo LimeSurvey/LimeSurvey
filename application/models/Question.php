@@ -66,7 +66,6 @@ class Question extends LSActiveRecord
     const QT_S_SHORT_FREE_TEXT = 'S';
     const QT_T_LONG_FREE_TEXT = 'T';
     const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_W = 'W';
     const QT_X_BOILERPLATE_QUESTION = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
     const QT_Z_LIST_RADIO_FLEXIBLE = 'Z';
