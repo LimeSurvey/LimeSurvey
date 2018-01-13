@@ -1410,7 +1410,7 @@ function do_list_radio($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $othertext           = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
-    $iNbCols             = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
+    $iNbCols             = $aQuestionAttributes['display_columns']; // number of columns
     $sTimer              = (trim($aQuestionAttributes['time_limit']) != '') ?return_timer_script($aQuestionAttributes, $ia) : ''; //Time Limit
     //// Retrieving datas
 
@@ -1931,7 +1931,7 @@ function do_multiplechoice($ia)
     // Question attribute variables
     $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
-    $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
+    $iNbCols                = $aQuestionAttributes['display_columns']; // number of columns
     if ($aQuestionAttributes['other_numbers_only'] == 1) {
         $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator                 = $sSeparator['separator'];

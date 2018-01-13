@@ -145,7 +145,7 @@ class Statistics_userController extends SurveyController
          */
 
         $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa
-                    WHERE g.gid = q.gid AND g.language = :lang1 AND q.language = :lang2 AND q.sid = :surveyid AND q.qid = qa.qid AND q.parent_qid = 0 AND qa.attribute = 'public_statistics'";
+                    WHERE g.gid = q.gid AND q.sid = :surveyid AND q.qid = qa.qid AND q.parent_qid = 0 AND qa.attribute = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
         if ($databasetype == 'mssql' || $databasetype == "sqlsrv" || $databasetype == "dblib") {
             $query .= " AND CAST(CAST(qa.value as varchar) as int)='1'\n";
@@ -154,7 +154,7 @@ class Statistics_userController extends SurveyController
         }
 
         //execute query
-        $result = Yii::app()->db->createCommand($query)->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->queryAll();
+        $result = Yii::app()->db->createCommand($query)->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->queryAll();
 
         //store all the data in $rows
         $rows = $result;

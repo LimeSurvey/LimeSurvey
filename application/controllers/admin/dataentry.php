@@ -448,21 +448,6 @@ class dataentry extends Survey_Common_Action
 
             Yii::app()->loadHelper('database');
 
-            //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-            $fnquery = "SELECT * FROM {{questions}}, {{groups}} g, {{surveys}} WHERE
-            {{questions}}.gid=g.gid AND
-            {{questions}}.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
-            {{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'
-            order by group_order, question_order";
-            $fnresult = dbExecuteAssoc($fnquery);
-            $fnresult = $fnresult->readAll();
-
-            $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($fnresult as $fnrow) {
-                $fnrows[] = $fnrow;
-                $private = $fnrow['anonymized'];
-            } // Get table output into array
-
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
             // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
             $fnames = [];
@@ -574,7 +559,7 @@ class dataentry extends Survey_Common_Action
                     switch ($fname['type']) {
                         case "completed":
                             // First compute the submitdate
-                            if (isset($private) && $private == "Y") {
+                            if ($survey->anonymized == "Y") {
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
@@ -694,18 +679,17 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
                             } else {
-                                $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                                $lresult = dbExecuteAssoc($lquery);
+                                $lresult = Answer::model()->findAll("qid={$fname['qid']}");
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'"; }
                                 $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
                                 if (!isset($optCategorySeparator)) {
-                                    foreach ($lresult->readAll() as $llrow) {
+                                    foreach ($lresult as $llrow) {
                                         $aDataentryoutput .= "<option value='{$llrow['code']}'";
                                         if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'"; }
-                                        $aDataentryoutput .= ">{$llrow['answer']}</option>\n";
+                                        $aDataentryoutput .= ">{$llrow->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
                                     }
                                 } else {
                                     $defaultopts = array();
@@ -735,14 +719,8 @@ class dataentry extends Survey_Common_Action
                                     }
 
                                 }
-
-                                $oquery = "SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
-                                $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
-                                $fother = '';
-                                foreach ($oresult->readAll() as $orow) {
-                                    $fother = $orow['other'];
-                                }
-                                if ($fother == "Y") {
+                                $oresult = Question::model()->findByPk($fname['qid']);
+                                if ($oresult->other == "Y") {
                                     $aDataentryoutput .= "<option value='-oth-'";
                                     if ($idrow[$fname['fieldname']] == "-oth-") {$aDataentryoutput .= " selected='selected'"; }
                                     $aDataentryoutput .= ">".gT("Other")."</option>\n";
@@ -751,17 +729,16 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $lresult = dbExecuteAssoc($lquery);
+                            $lresult = Answer::model()->findAll("qid={$fname['qid']}");
                             $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                             ."<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'"; }
                             $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
-                            foreach ($lresult->readAll() as $llrow) {
+                            foreach ($lresult as $llrow) {
                                 $aDataentryoutput .= "<option value='{$llrow['code']}'";
                                 if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'"; }
-                                $aDataentryoutput .= ">{$llrow['answer']}</option>\n";
+                                $aDataentryoutput .= ">{$llrow->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
                             }
                             $fname = next($fnames);
                             $aDataentryoutput .= "\t</select>\n"
@@ -861,10 +838,6 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case Question::QT_I_LANGUAGE: //Language Switch
-                            $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            dbExecuteAssoc($lquery);
-
-
                             $slangs = $oSurvey->allLanguages;
                             $baselang = $oSurvey->language;
 
@@ -1094,13 +1067,12 @@ class dataentry extends Survey_Common_Action
                                 if (isset($fname['scale_id'])) {
                                     $scale_id = $fname['scale_id'];
                                 }
-                                $fquery = "SELECT * FROM {{answers}} WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
-                                $fresult = dbExecuteAssoc($fquery);
+                                $fresult = Answer::model()->findAll("qid='{$fname['qid']}' and scale_id={$scale_id}");
                                 $aDataentryoutput .= "<td>\n";
-                                foreach ($fresult->readAll() as $frow) {
+                                foreach ($fresult as $frow) {
                                     $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value='{$frow['code']}'";
                                     if ($idrow[$fname['fieldname']] == $frow['code']) {$aDataentryoutput .= " checked"; }
-                                    $aDataentryoutput .= " />".$frow['answer']."&nbsp;\n";
+                                    $aDataentryoutput .= " />".$frow->answerL10ns[$sDataEntryLanguage]->answer."&nbsp;\n";
                                 }
                                 //Add 'No Answer'
                                 $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value=''";
@@ -1616,39 +1588,23 @@ class dataentry extends Survey_Common_Action
                     $aUserData = Yii::app()->session;
                     //CREATE ENTRY INTO "saved_control"
 
-
-                    $saved_control_table = '{{saved_control}}';
-
-                    $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
-                        "refurl", 'saved_thisstep', "status", "saved_date");
-                    $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".(string) getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
-
-                    $SQL = "INSERT INTO $saved_control_table
-                        (".implode(',', $columns).")
-                        VALUES
-                        (".implode(',', $values).")";
-
-                        /*$scdata = array("sid"=>$surveyid,
-                        "srid"=>$srid,
-                        "identifier"=>$saver['identifier'],
-                        "access_code"=>$password,
-                        "email"=>$saver['email'],
-                        "ip"=>$aUserData['ip_address'],
-                        "refurl"=>getenv("HTTP_REFERER"),
-                        'saved_thisstep' => 0,
-                        "status"=>"S",
-                        "saved_date"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
-                        $this->load->model('saved_control_model');*/
-                    if (dbExecuteAssoc($SQL)) {
-                        $scid = getLastInsertID('{{saved_control}}');
-
+                    $arSaveControl = new SavedControl();
+                    $arSaveControl->sid = $surveyid;
+                    $arSaveControl->srid = $srid;
+                    $arSaveControl->identifier = $saver['identifier'];
+                    $arSaveControl->access_code = $password;
+                    $arSaveControl->email = $saver['email'];
+                    $arSaveControl->ip = $aUserData['ip_address'];
+                    $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
+                    $arSaveControl->saved_thisstep = 0;
+                    $arSaveControl->status = 'S';
+                    $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'));
+                    $arSaveControl->save();
+                    if ($arSaveControl->save()) {
                         $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
-                        //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
-
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
-//If the query fails, assume no tokens table exists
+                        //If the query fails, assume no tokens table exists
                             $tkquery = "SELECT * FROM {$tokens_table}";
                             dbExecuteAssoc($tkquery);
                                 /*$tokendata = array (
@@ -1683,7 +1639,7 @@ class dataentry extends Survey_Common_Action
                                 $message .= gT("Password").": ".$saver['password']."\n\n";
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                 $aParams = array('lang'=>$saver['language'], 'loadname'=>$saver['identifier'], 'loadpass'=>$saver['password']);
-                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/", $aParams);
+                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
                                 $from     = $thissurvey['adminemail'];
                                 $sitename = Yii::app()->getConfig('sitename');
                                 if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid))) {
@@ -1826,23 +1782,12 @@ class dataentry extends Survey_Common_Action
                     switch ($arQuestion['type']) {
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                         case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
-                            $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$arQuestion['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $arAnswers = dbExecuteAssoc($deaquery);
-                            $cdata['dearesult'] = $arAnswers->readAll();
-
+                            $cdata['dearesult'] = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
                             break;
 
                         case Question::QT_1_ARRAY_MULTISCALE: // multi scale^
-                            $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$arQuestion['qid']} AND language='{$baselang}' ORDER BY question_order";
-                            $arAnswers = dbExecuteAssoc($deaquery);
-
-                            $cdata['dearesult'] = $arAnswers->readAll();
-
-                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$arQuestion['qid']} AND language='{$baselang}'";
-                            $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
-                            foreach ($oresult->readAll() as $orow) {
-                                $cdata['fother'] = $orow['other'];
-                            }
+                            $cdata['dearesult'] = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $cdata['fother'] = $arQuestion->other;
 
                             break;
 
@@ -1891,15 +1836,7 @@ class dataentry extends Survey_Common_Action
                                     $aDatatemp .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-
-                            $oquery = "SELECT other FROM {{questions}} WHERE qid={$arQuestion['qid']}";
-                            $oresult = dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
-                            $fother = '';
-                            foreach ($oresult->readAll() as $orow) {
-                                $fother = $orow['other'];
-                            }
-
-                            $cdata['fother'] = $fother;
+                            $cdata['fother'] = $arQuestion->other;
                             $cdata['defexists'] = $defexists;
                             $cdata['datatemp'] = $aDatatemp;
 
@@ -1933,11 +1870,7 @@ class dataentry extends Survey_Common_Action
                             unset($answers);
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
-                            if (trim($qidattributes['display_columns']) != '') {
-                                $dcols = $qidattributes['display_columns'];
-                            } else {
-                                $dcols = 0;
-                            }
+                            $dcols = $qidattributes['display_columns'];
                             $cdata['mearesult'] = $arQuestion->subquestions; 
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;

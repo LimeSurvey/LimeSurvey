@@ -70,7 +70,8 @@ class User extends LSActiveRecord
         return array(
             'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
             'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id')),
-            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid')
+            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid'),
+            'groups' => array(self::MANY_MANY, 'UserGroup','{{user_in_groups}}(uid,ugid)')
         );
     }
 

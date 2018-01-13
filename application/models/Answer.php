@@ -63,7 +63,6 @@ class Answer extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            // TODO BELONGS_TO relation should be in singular, not plural $answer->group, $answer->question
             'question' => array(self::BELONGS_TO, 'Question', '',
                 'on' => "$alias.qid = question.qid",
             ),

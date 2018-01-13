@@ -181,7 +181,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'columns',
-            'default'=>'',
+            'default'=>'1',
             "help"=>gT('The answer options will be distributed across the number of columns set here'),
             "caption"=>gT('Display columns')
         );

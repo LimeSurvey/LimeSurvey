@@ -274,9 +274,7 @@ class Usergroups extends Survey_Common_Action
                     }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
-                $eguresult = dbExecuteAssoc($eguquery);
-                $aUserInGroupsResult = $eguresult->readAll();
+                $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
                 $sCondition2 = "ugid = :ugid";
                 $sParams2 = [':ugid'=>$ugid];
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -293,7 +291,7 @@ class Usergroups extends Survey_Common_Action
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
-                foreach ($aUserInGroupsResult as $egurow) {
+                foreach ($aUserInGroupsResult->users as $egurow) {
                     // @todo: Move the zebra striping to view
                     if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";

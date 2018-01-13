@@ -661,11 +661,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 // ==================================================================
                             case Question::QT_M_MULTIPLE_CHOICE:  //Multiple choice (Quite tricky really!)
 
-                                if (trim($qidattributes['display_columns']) != '') {
-                                    $dcols = $qidattributes['display_columns'];
-                                } else {
-                                    $dcols = 0;
-                                }
+                                $dcols = $qidattributes['display_columns'];
                                 $question['type_help'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose *all* that apply:"));
                                 $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 

@@ -61,8 +61,6 @@ class UserGroup extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            // TODO remove Users... see Louis' comment
-            'Users' => array(self::HAS_MANY, 'User', 'uid'), // Louis: This one is just wrong. Don't know if it used anywhere so I let it for now. See below for the correct relation. Just for information, this wrong relation return the user having a uid equal to the currect gid. (eg: if the current group object has gid=2, this wrong relation will return the user having uid=2). So if it used anywhere, it's probably buggy.
             'users' => array(self::MANY_MANY, 'User', '{{user_in_groups}}(ugid, uid)'), // Louis: this is the correct relation
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
         );
