@@ -298,8 +298,7 @@ class statistics extends Survey_Common_Action
             /////////////////////////////////////////////////////////////////////////////////////////////////
 
             //let's switch through the question type for each question
-            switch ($flt[2])
-            {
+            switch ($flt[2]) {
                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
@@ -672,7 +671,7 @@ class statistics extends Survey_Common_Action
         // The questions to display (all question)
         foreach ($rows as $row) {
             $type = $row['type'];
-            if( $type==Question::QT_T_LONG_FREE_TEXT ||  $type==Question::QT_N_NUMERICAL)
+            if ($type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_N_NUMERICAL)
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }

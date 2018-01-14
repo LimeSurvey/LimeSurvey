@@ -171,7 +171,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //Check that certain array question types have answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
     join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "') and q.parent_qid=0";
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
@@ -180,14 +180,14 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //CHECK THAT DUAL Array has answers set
     $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
     join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='" . Question::QT_1_ARRAY_MULTISCALE . "' and q.parent_qid=0";
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='".Question::QT_1_ARRAY_MULTISCALE."' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('".Question::QT_S_SHORT_FREE_TEXT."', '".Question::QT_D_DATE."', '".Question::QT_T_LONG_FREE_TEXT."', '".Question::QT_Q_MULTIPLE_SHORT_TEXT."')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow; } // Get table output into array
@@ -316,8 +316,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case Question::QT_M_MULTIPLE_CHOICE:  //Multiple choice
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //Multiple choice with comment
             case Question::QT_O_LIST_WITH_COMMENT:  //DROPDOWN LIST WITH COMMENT
-                if ($aRow['aid'] != 'other' && strpos($aRow['aid'],'comment')===false && strpos($aRow['aid'],'othercomment')===false)
-                {
+                if ($aRow['aid'] != 'other' && strpos($aRow['aid'],'comment')===false && strpos($aRow['aid'],'othercomment')===false) {
                     $aTableDefinition[$aRow['fieldname']] = "string(5)";
                 } else {
                     $aTableDefinition[$aRow['fieldname']] = "text";

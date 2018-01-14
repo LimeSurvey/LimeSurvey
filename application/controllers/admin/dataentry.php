@@ -1285,7 +1285,7 @@ class dataentry extends Survey_Common_Action
 
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
-            $aFieldAttributes=[];
+            $aFieldAttributes = [];
             foreach ($fieldmap as $irow) {
                 $fieldname = $irow['fieldname'];
                 if ($fieldname == 'id') {
@@ -1300,7 +1300,7 @@ class dataentry extends Survey_Common_Action
                     $thisvalue = 0;
                 } elseif ($irow['type'] == Question::QT_D_DATE) {
                     if ($thisvalue == "") {
-                        $aFieldAttributes[$fieldname] = NULL;
+                        $aFieldAttributes[$fieldname] = null;
                     } else {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1316,12 +1316,12 @@ class dataentry extends Survey_Common_Action
                         $aFieldAttributes[$fieldname] = $dateoutput;
                     }
                 } elseif (($irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION) && $thisvalue == "") {
-                    $aFieldAttributes[$fieldname] = NULL;
+                    $aFieldAttributes[$fieldname] = null;
                 } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD && strpos($irow['fieldname'], '_filecount') && $thisvalue == "") {
-                    $aFieldAttributes[$fieldname] = NULL;
+                    $aFieldAttributes[$fieldname] = null;
                 } elseif ($irow['type'] == 'submitdate') {
                     if (isset($_POST['completed']) && ($_POST['completed'] == "N")) {
-                        $aFieldAttributes[$fieldname] = NULL;
+                        $aFieldAttributes[$fieldname] = null;
                     } elseif (isset($_POST['completed']) && $thisvalue == "") {
                         $aFieldAttributes[$fieldname] = $_POST['completed'];
                     } else {
@@ -1337,8 +1337,8 @@ class dataentry extends Survey_Common_Action
             $beforeDataEntryUpdate->set('iResponseID', $id);
             App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
 
-            $arResponse=Response::model($surveyid)->findByPk($id);
-            $arResponse->setAttributes($aFieldAttributes,false);
+            $arResponse = Response::model($surveyid)->findByPk($id);
+            $arResponse->setAttributes($aFieldAttributes, false);
             $arResponse->save();
 
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
@@ -1541,27 +1541,27 @@ class dataentry extends Survey_Common_Action
                         $submitdate = date("Y-m-d H:i:s");
                     }
                     // query for updating tokens uses left
-                    $aToken=Token::model($surveyid)->findByAttributes(['token'=>$_POST['token']]);
+                    $aToken = Token::model($surveyid)->findByAttributes(['token'=>$_POST['token']]);
                     if (isTokenCompletedDatestamped($thissurvey)) {
                         if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft=((int)$aToken->usesleft)-1;
-                            $aToken->completed=$submitdate;
+                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            $aToken->completed = $submitdate;
                         } else {
-                            $aToken->usesleft=((int)$aToken->usesleft)-1;
+                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
                         }
                     } else {
                         if ($aToken->usesleft <= 1) {
-                            $aToken->usesleft=((int)$aToken->usesleft)-1;
-                            $aToken->completed='Y';
+                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
+                            $aToken->completed = 'Y';
                         } else {
-                            $aToken->usesleft=((int)$aToken->usesleft)-1;
+                            $aToken->usesleft = ((int) $aToken->usesleft) - 1;
                         }
                     }
                     $aToken->save();
                     
                     // save submitdate into survey table
-                    $aResponse=Response::model($surveyid)->findByPk($last_db_id);
-                    $aResponse->submitdate=$submitdate;
+                    $aResponse = Response::model($surveyid)->findByPk($last_db_id);
+                    $aResponse->submitdate = $submitdate;
                     $aResponse->save();
                 }
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
@@ -1585,7 +1585,7 @@ class dataentry extends Survey_Common_Action
                         $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
-                            $tokendata = array (
+                            $tokendata = array(
                             "firstname"=> $saver['identifier'],
                             "lastname"=> $saver['identifier'],
                             "email"=>$saver['email'],
@@ -1594,7 +1594,7 @@ class dataentry extends Survey_Common_Action
                             "sent"=>date("Y-m-d H:i:s"),
                             "completed"=>"N");
 
-                            $aToken=new Token($surveyid);  
+                            $aToken = new Token($surveyid);  
                             $aToken->setAttributes($tokendata, false);  
                             $aToken->save();
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));

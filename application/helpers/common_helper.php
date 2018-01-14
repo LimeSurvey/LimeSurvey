@@ -1137,11 +1137,9 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
         //Find out the question type
         $this_type = $fields['type'];
-        switch($this_type)
-        {
+        switch($this_type) {
             case Question::QT_D_DATE:
-                if (trim($sValue)!='')
-                {
+                if (trim($sValue)!='') {
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
@@ -1618,7 +1616,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($qtypes[$arow['type']]['subquestions'] == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
             }
@@ -1902,7 +1900,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                 }
             }
-            if ($arow['other']=="Y" && ($arow['type']==Question::QT_M_MULTIPLE_CHOICE || $arow['type']==Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+            if ($arow['other'] == "Y" && ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE || $arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
@@ -1994,8 +1992,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 */
 function hasFileUploadQuestion($iSurveyID)
 {
-    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='" . Question::QT_VERTICAL_FILE_UPLOAD . "'", array(':surveyid' => $iSurveyID));
-    return $iCount > 0 ;
+    $iCount = Question::model()->count("sid=:surveyid AND parent_qid=0 AND type='".Question::QT_VERTICAL_FILE_UPLOAD."'", array(':surveyid' => $iSurveyID));
+    return $iCount > 0;
 }
 
 /**
@@ -3526,8 +3524,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 
         if (strcmp($urldescription, $qentry['quotals_urldescrip']) != 0 || (strcmp($endurl, $qentry['quotals_url']) != 0)) {
             // Update Field
-            $qentry->quotals_urldescrip=$urldescription;
-            $qentry->quotals_url=$endurl;
+            $qentry->quotals_urldescrip = $urldescription;
+            $qentry->quotals_url = $endurl;
             $qentry->save();
         } // Enf if modified
     } // end while qentry

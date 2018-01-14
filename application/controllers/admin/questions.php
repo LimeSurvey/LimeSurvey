@@ -1489,7 +1489,7 @@ class questions extends Survey_Common_Action
                     $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
 
                     // These are the questions types that have no mandatory property - so zap it accordingly
-                    if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION  && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD)
+                    if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD)
                     {
                         $oQuestion->mandatory = $bMandatory;
                         $oQuestion->save();
@@ -1520,7 +1520,7 @@ class questions extends Survey_Common_Action
                     $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
 
                     // These are the questions types that have the other option therefore we set everything else to 'No Other'
-                    if (( $oQuestion->type == Question::QT_L_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($oQuestion->type==Question::QT_M_MULTIPLE_CHOICE)) {
+                    if (($oQuestion->type == Question::QT_L_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)) {
                         $oQuestion->other = $bOther;
                         $oQuestion->save();
                     }

@@ -450,8 +450,8 @@ class Question extends LSActiveRecord
                 'answerscales' => 0,
                 'class' => 'array-5-pt'
             ),
-           Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array(
-                 'description' => gT("Array (10 Point Choice)"),
+            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array(
+                    'description' => gT("Array (10 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -842,7 +842,7 @@ class Question extends LSActiveRecord
 
     public function getMandatoryIcon()
     {
-        if ($this->type != Question::QT_X_BOILERPLATE_QUESTION  && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($this->type != Question::QT_X_BOILERPLATE_QUESTION && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
             $sIcon = ($this->mandatory == "Y") ? '<span class="fa fa-asterisk text-danger"></span>' : '<span></span>';
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
@@ -853,7 +853,7 @@ class Question extends LSActiveRecord
     public function getOtherIcon()
     {
 
-        if (( $this->type == Question::QT_L_LIST_DROPDOWN) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type==Question::QT_M_MULTIPLE_CHOICE)) {
+        if (($this->type == Question::QT_L_LIST_DROPDOWN) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
