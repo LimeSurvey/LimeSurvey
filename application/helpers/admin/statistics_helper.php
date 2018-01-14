@@ -1416,13 +1416,11 @@ class statistics_helper
                     }
 
                     //handling for "other" field for list radio or list drowpdown
-                    if ((($qtype == Question::QT_L_LIST_DROPDOWN || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO))
-                    {
+                    if ((($qtype == Question::QT_L_LIST_DROPDOWN || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
                         //add "other"
                         $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'].'other');
                     }
-                    if ($qtype == Question::QT_O_LIST_WITH_COMMENT)
-                    {
+                    if ($qtype == Question::QT_O_LIST_WITH_COMMENT) {
                         //add "comment"
                         $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'].'comment', 'is_comment');
                     }
@@ -1705,8 +1703,7 @@ class statistics_helper
             }
 
             // For multi question type, we have to check non completed with ALL sub question set to NULL
-            if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
-            {
+            if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
                 $criteria = new CDbCriteria;
                 foreach ($outputs['alist'] as $al) {
                     $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
@@ -1801,8 +1798,7 @@ class statistics_helper
                 //data available
                 if (($gdata[$i] !== "N/A")) {
                     //check if data should be aggregated
-                    if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
-                    {
+                    if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)) {
                         //mark that we have done soemthing special here
                         $aggregated = true;
 
@@ -1905,8 +1901,7 @@ class statistics_helper
                 //it's only useful to calculate standard deviation and arithmetic means for question types
                 //5 = 5 Point Scale
                 //A = Array (5 Point Choice)
-                if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
-                {
+                if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
                     $stddev = 0;
                     $stddevarray = array_slice($grawdata, 0, 5, true);
                     $am = 0;
@@ -2199,10 +2194,8 @@ class statistics_helper
             if (isset($al[2]) && $al[2]) {
 
                 //handling for "other" option
-                if ($al[0] == gT("Other"))
-                {
-                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN)
-                    {
+                if ($al[0] == gT("Other")) {
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
@@ -2406,8 +2399,7 @@ class statistics_helper
             //check if aggregated results should be shown
             elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
                 if (!isset($showheadline) || $showheadline != false) {
-                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
-                    {
+                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
                         switch ($outputType) {
                             case 'xls':
                                 $this->xlsRow++;
@@ -2678,8 +2670,7 @@ class statistics_helper
         }
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
-        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
-        {
+        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria;
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
@@ -2830,8 +2821,7 @@ class statistics_helper
             //data available
             else {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
-                {
+                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)) {
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -3077,8 +3067,7 @@ class statistics_helper
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
-            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
-            {
+            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;

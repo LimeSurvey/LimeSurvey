@@ -1428,20 +1428,17 @@ class userstatistics_helper
                     $qresult = Yii::app()->db->createCommand($qquery)->query();
 
                     //put answer code and title into array
-                    foreach ($qresult->readAll() as $qrow)
-                    {
+                    foreach ($qresult->readAll() as $qrow) {
                         $qrow = array_values($qrow);
                         $alist[] = array("$qrow[0]", flattenText($qrow[1]));
                     }
 
                     //handling for "other" field for list radio or list drowpdown
-                    if ((($qtype == Question::QT_L_LIST_DROPDOWN || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO))
-                    {
+                    if ((($qtype == Question::QT_L_LIST_DROPDOWN || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
                         //add "other"
                         $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'].'other');
                     }
-                    if ($qtype == Question::QT_O_LIST_WITH_COMMENT)
-                    {
+                    if ($qtype == Question::QT_O_LIST_WITH_COMMENT) {
                         //add "comment"
                         $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'].'comment');
                     }
@@ -1544,10 +1541,8 @@ class userstatistics_helper
             if (isset($al[2]) && $al[2]) {
 
                 //handling for "other" option
-                if ($al[0] == gT("Other"))
-                {
-                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN)
-                    {
+                if ($al[0] == gT("Other")) {
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
@@ -1743,8 +1738,7 @@ class userstatistics_helper
             //check if aggregated results should be shown
             elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
                 if (!isset($showheadline) || $showheadline != false) {
-                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
-                    {
+                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
                         switch ($outputType) {
                             case 'xls':
                                 $this->xlsRow++;
@@ -1969,8 +1963,7 @@ class userstatistics_helper
         }
 
         // For multiple choice question type, we have to check non completed with ALL sub question set to NULL
-        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
-        {
+        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             $criteria = new CDbCriteria;
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
@@ -2046,8 +2039,7 @@ class userstatistics_helper
             * */
             if (strpos($label[$i], "class='statisticsbrowsebutton'")) {
                 $extraline = "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>";
-                if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
-                {
+                if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $extraline .= "<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
                 } else {
                     $extraline .= "<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
@@ -2102,8 +2094,7 @@ class userstatistics_helper
             //data available
             else {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
-                {
+                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)) {
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -2309,8 +2300,7 @@ class userstatistics_helper
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
-            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
-            {
+            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;

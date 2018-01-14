@@ -80,7 +80,7 @@ class questionHelper
         );
 
         self::$attributes["repeat_headings"] = array(
-            "types"=>Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_1_ARRAY_MULTISCALE . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+            "types"=>Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_1_ARRAY_MULTISCALE.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',

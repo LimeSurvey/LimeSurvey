@@ -245,9 +245,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => gT('Uncertain')
                     );
-                }
-                elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS)
-                {
+                } elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Increase')

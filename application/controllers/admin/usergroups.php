@@ -318,7 +318,8 @@ class Usergroups extends Survey_Common_Action
                     $aData["useradddialog"] = true;
                     
                     $aUsers = User::model()->findAll(['join'=>"LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition'=>"id IS NULL"]);
-                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function($user) {
+                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function($user)
+                    {
                         return \CHtml::encode($user->users_name)." (".\CHtml::encode($user->full_name).')'; });
                     // Remove group owner because an owner is automatically member of a group
                     unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
@@ -393,7 +394,7 @@ class Usergroups extends Survey_Common_Action
                             }
                             break;
                     }
-                    if (!empty($sFlashType) && !empty($sFlashMessage)) { 
+                    if (!empty($sFlashType) && !empty($sFlashMessage)) {
                         Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
                     }
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
