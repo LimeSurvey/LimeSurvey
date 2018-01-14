@@ -316,7 +316,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case Question::QT_M_MULTIPLE_CHOICE:  //Multiple choice
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //Multiple choice with comment
             case Question::QT_O_LIST_WITH_COMMENT:  //DROPDOWN LIST WITH COMMENT
-                if ($aRow['aid'] != 'other' && strpos($aRow['aid'],'comment')===false && strpos($aRow['aid'],'othercomment')===false) {
+                if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
                     $aTableDefinition[$aRow['fieldname']] = "string(5)";
                 } else {
                     $aTableDefinition[$aRow['fieldname']] = "text";

@@ -1512,15 +1512,15 @@ function doAssessment($surveyid)
                     {
                         if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                         {
-                            $aAttributes=getQuestionAttributeValues($field['qid']);
+                            $aAttributes = getQuestionAttributeValues($field['qid']);
                     }
-                            $assessmentValue = (int)$aAttributes['assessment_value'];
+                            $assessmentValue = (int) $aAttributes['assessment_value'];
                         }
                     } else {
                             // Single choice question
-                        $usrow = Answer::findByAttributes(['qid'=>$field['qid'],'code'=>$_SESSION['survey_'.$surveyid][$field['fieldname']]]);
+                        $usrow = Answer::findByAttributes(['qid'=>$field['qid'], 'code'=>$_SESSION['survey_'.$surveyid][$field['fieldname']]]);
                         if (!empty($usrow)) {
-                            $assessmentValue    = $usrow->assessment_value;
+                            $assessmentValue = $usrow->assessment_value;
                         //    $total              = $total+$usrow['assessment_value'];
                         }
                     }

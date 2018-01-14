@@ -1009,12 +1009,12 @@ function XMLImportLabelsets($sFullFilePath, $options)
     
     //CHECK FOR DUPLICATE LABELSETS
 
-    if ($options['checkforduplicates']=='on') {
+    if ($options['checkforduplicates'] == 'on') {
 
         $aLabelSetCheckSums = buildLabelSetCheckSumArray();
-        $aCounts=array_count_values($aLabelSetCheckSums);
+        $aCounts = array_count_values($aLabelSetCheckSums);
         foreach ($aImportedLabelSetIDs as $iLabelSetID) {
-            if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1) {
+            if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]] > 1) {
                 LabelSet::model()->deleteLabelSet($iLabelSetID);
             }
         }

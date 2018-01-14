@@ -671,8 +671,7 @@ class statistics extends Survey_Common_Action
         // The questions to display (all question)
         foreach ($rows as $row) {
             $type = $row['type'];
-            if ($type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_N_NUMERICAL)
-            {
+            if ($type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_N_NUMERICAL) {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
             switch ($type) {

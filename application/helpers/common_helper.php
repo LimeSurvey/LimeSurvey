@@ -1137,9 +1137,9 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
         //Find out the question type
         $this_type = $fields['type'];
-        switch($this_type) {
+        switch ($this_type) {
             case Question::QT_D_DATE:
-                if (trim($sValue)!='') {
+                if (trim($sValue) != '') {
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
