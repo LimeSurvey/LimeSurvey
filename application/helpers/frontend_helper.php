@@ -1069,7 +1069,7 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
         $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
     }
     foreach ($rgresult as $rgrow) {
-        $randomGroups[$rgrow['value']][] = $rgrow['qid']; // Get the question IDs for each randomization group
+        $randomGroups[$rgrow->questionAttributes['random_group']->value][] = $rgrow['qid']; // Get the question IDs for each randomization group
     }
 
     // If we have randomization groups set, then lets cycle through each group and

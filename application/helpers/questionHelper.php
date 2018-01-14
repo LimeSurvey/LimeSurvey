@@ -722,9 +722,8 @@ class questionHelper
             'help' =>    gT('Show grand total for either columns or rows'),
             'caption' =>    gT('Show grand total')
         );
-
         self::$attributes["input_size"] = array(
-        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',

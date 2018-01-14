@@ -458,7 +458,7 @@ class CheckIntegrity extends Survey_Common_Action
         $aDelete = array();
         foreach ($aConditions as $condition) {
             if ($condition['cqid'] != 0) {
-// skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
+                // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
                     if (Question::model()->hasErrors()) {

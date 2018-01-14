@@ -62,6 +62,17 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
+     /**
+     * This defaultScope indexes the ActiveRecords given back by attribute name
+     * Important: This does not work if you want to retrieve records for more than one question at a time.
+     * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
+     * @return array Scope that indexes the records by their attribute bane
+     */
+    public function defaultScope()
+    {
+        return array('index'=>'attribute');
+    }
+    
     /** @inheritdoc */
     public function rules()
     {
