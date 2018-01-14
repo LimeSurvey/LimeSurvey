@@ -434,15 +434,12 @@ class dataentry extends Survey_Common_Action
     public function editdata($subaction, $id, $surveyid)
     {
 
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($surveyid);
-        $id = sanitize_int($id);
+        $id = (int) $id;
         $aViewUrls = array();
-        $survey = Survey::model()->findByPk($surveyid);
-        $sDataEntryLanguage = $survey->language;
-
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-            $surveytable = $survey->responsesTableName;
+            $sDataEntryLanguage = $oSurvey->language;
             $aData = [];
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
@@ -453,7 +450,7 @@ class dataentry extends Survey_Common_Action
             $fnames = [];
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
-            $fnames = array_merge($fnames, createFieldMap($survey, 'full', false, false, $sDataEntryLanguage));
+            $fnames = array_merge($fnames, createFieldMap($oSurvey, 'full', false, false, $sDataEntryLanguage));
             // Fix private if disallowed to view token
             if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')) {
                             unset($fnames['token']);
@@ -463,9 +460,8 @@ class dataentry extends Survey_Common_Action
             //SHOW INDIVIDUAL RECORD
             $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                $idquery = "SELECT * FROM $surveytable WHERE id=$id";
-                $idresult = dbExecuteAssoc($idquery) or safeDie("Couldn't get individual record<br />$idquery<br />");
-                foreach ($idresult->readAll() as $idrow) {
+                $idresult = Response::model($surveyid)->findByPk($id);
+                foreach ($idresult as $idrow) {
                     $results[] = $idrow;
                 }
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
@@ -495,7 +491,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
+                $fieldmap = createFieldMap($oSurvey, 'full', false, false, $oSurvey->language);
                 $results1 = array();
                 foreach ($fieldmap as $fm) {
                     if (isset($responses[$fm['fieldname']])) {
@@ -559,7 +555,7 @@ class dataentry extends Survey_Common_Action
                     switch ($fname['type']) {
                         case "completed":
                             // First compute the submitdate
-                            if ($survey->anonymized == "Y") {
+                            if ($oSurvey->anonymized == "Y") {
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
                                 // 1st Jan 1980
@@ -1235,7 +1231,6 @@ class dataentry extends Survey_Common_Action
             $surveytable = $survey->responsesTableName;
             $aData['thissurvey'] = getSurveyInfo($surveyid);
 
-            $delquery = "DELETE FROM $surveytable WHERE id=$id";
             Yii::app()->loadHelper('database');
 
             $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
@@ -1243,7 +1238,7 @@ class dataentry extends Survey_Common_Action
             $beforeDataEntryDelete->set('iResponseID', $id);
             App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
 
-            dbExecuteAssoc($delquery) or safeDie("Couldn't delete record $id<br />\n");
+            Response::model($surveyid)->findByPk($id)->delete(true);
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -1290,7 +1285,7 @@ class dataentry extends Survey_Common_Action
 
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
-
+            $aFieldAttributes=[];
             foreach ($fieldmap as $irow) {
                 $fieldname = $irow['fieldname'];
                 if ($fieldname == 'id') {
@@ -1305,7 +1300,7 @@ class dataentry extends Survey_Common_Action
                     $thisvalue = 0;
                 } elseif ($irow['type'] == Question::QT_D_DATE) {
                     if ($thisvalue == "") {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
+                        $aFieldAttributes[$fieldname] = NULL;
                     } else {
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
@@ -1318,33 +1313,33 @@ class dataentry extends Survey_Common_Action
                         }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = '{$dateoutput}', \n";
+                        $aFieldAttributes[$fieldname] = $dateoutput;
                     }
                 } elseif (($irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION) && $thisvalue == "") {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
+                    $aFieldAttributes[$fieldname] = NULL;
                 } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD && strpos($irow['fieldname'], '_filecount') && $thisvalue == "") {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
+                    $aFieldAttributes[$fieldname] = NULL;
                 } elseif ($irow['type'] == 'submitdate') {
                     if (isset($_POST['completed']) && ($_POST['completed'] == "N")) {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
+                        $aFieldAttributes[$fieldname] = NULL;
                     } elseif (isset($_POST['completed']) && $thisvalue == "") {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($_POST['completed']).", \n";
+                        $aFieldAttributes[$fieldname] = $_POST['completed'];
                     } else {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
+                        $aFieldAttributes[$fieldname] = $thisvalue;
                     }
                 } else {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
+                    $aFieldAttributes[$fieldname] = $thisvalue;
                 }
             }
-            $updateqr = substr($updateqr, 0, -3);
-            $updateqr .= " WHERE id=$id";
 
             $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
             $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
             $beforeDataEntryUpdate->set('iResponseID', $id);
             App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
 
-            dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
+            $arResponse=Response::model($surveyid)->findByPk($id);
+            $arResponse->setAttributes($aFieldAttributes,false);
+            $arResponse->save();
 
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
             if (Yii::app()->request->getPost('close-after-save') == 'true') {
@@ -1386,30 +1381,21 @@ class dataentry extends Survey_Common_Action
             $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
 
             if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
-                $tokencompleted = "";
-                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".App()->db->quoteValue($_POST['token']);
-                $tcresult = dbExecuteAssoc($tcquery);
-                $tcresult = $tcresult->readAll();
-                $tccount = count($tcresult);
-                foreach ($tcresult as $tcrow) {
-                    $tokencompleted = $tcrow['completed'];
-                }
-
-                if ($tccount < 1) {
-// token doesn't exist in survey participants table
+                $aToken = Token::model($surveyid)->findByAttributes(['token'=>$_POST['token']]);
+                if (empty($aToken)) {
+                // token doesn't exist in survey participants table
                     $lastanswfortoken = 'UnknownToken';
                 } elseif ($survey->isAnonymized) {
-// token exist but survey is anonymous, check completed state
+                // token exist but survey is anonymous, check completed state
                     // token is completed
-                    if ($tokencompleted != "" && $tokencompleted != "N") {
+                    if ($aToken->completed != "" && $aToken->completed != "N") {
                         $lastanswfortoken = 'PrivacyProtected';
                     }
                 } else {
-// token is valid, survey not anonymous, try to get last recorded response id
-                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".App()->db->quoteValue($_POST['token']);
-                    $aresult = dbExecuteAssoc($aquery);
-                    foreach ($aresult->readAll() as $arow) {
-                        if ($tokencompleted != "N") { $lastanswfortoken = $arow['id']; }
+                // token is valid, survey not anonymous, try to get last recorded response id
+                    $aresult = Response::model($surveyid)->findAllByAttributes(['token'=>$_POST['token']]);
+                    foreach ($aresult as $arow) {
+                        if ($aToken->completed != "N") { $lastanswfortoken = $arow['id']; }
                         $rlanguage = $arow['startlanguage'];
                     }
                 }
@@ -1547,41 +1533,36 @@ class dataentry extends Survey_Common_Action
                 $new_response->save();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
-// submittoken
+                    // submittoken
                     // get submit date
                     if (isset($_POST['closedate'])) {
                         $submitdate = $_POST['closedate'];
                     } else {
                         $submitdate = date("Y-m-d H:i:s");
                     }
-
-                    // check how many uses the token has left
-                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".App()->db->quoteValue($_POST['token']);
-                    $usesresult = dbExecuteAssoc($usesquery);
-                    $usesrow = $usesresult->readAll(); //$usesresult->row_array()
-                    if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
-
-                    // query for updating tokens
-                    $utquery = "UPDATE {{tokens_$surveyid}}\n";
+                    // query for updating tokens uses left
+                    $aToken=Token::model($surveyid)->findByAttributes(['token'=>$_POST['token']]);
                     if (isTokenCompletedDatestamped($thissurvey)) {
-                        if (isset($usesleft) && $usesleft <= 1) {
-                            $utquery .= "SET usesleft=usesleft-1, completed=".App()->db->quoteValue($submitdate);
+                        if ($aToken->usesleft <= 1) {
+                            $aToken->usesleft=((int)$aToken->usesleft)-1;
+                            $aToken->completed=$submitdate;
                         } else {
-                            $utquery .= "SET usesleft=usesleft-1\n";
+                            $aToken->usesleft=((int)$aToken->usesleft)-1;
                         }
                     } else {
-                        if (isset($usesleft) && $usesleft <= 1) {
-                            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+                        if ($aToken->usesleft <= 1) {
+                            $aToken->usesleft=((int)$aToken->usesleft)-1;
+                            $aToken->completed='Y';
                         } else {
-                            $utquery .= "SET usesleft=usesleft-1\n";
+                            $aToken->usesleft=((int)$aToken->usesleft)-1;
                         }
                     }
-                    $utquery .= "WHERE token=".App()->db->quoteValue($_POST['token']);
-                    dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
-
+                    $aToken->save();
+                    
                     // save submitdate into survey table
-                    $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
-                    dbExecuteAssoc($sdquery) or safeDie("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
+                    $aResponse=Response::model($surveyid)->findByPk($last_db_id);
+                    $aResponse->submitdate=$submitdate;
+                    $aResponse->save();
                 }
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
                     $srid = $last_db_id;
@@ -1604,30 +1585,19 @@ class dataentry extends Survey_Common_Action
                         $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
-                        //If the query fails, assume no tokens table exists
-                            $tkquery = "SELECT * FROM {$tokens_table}";
-                            dbExecuteAssoc($tkquery);
-                                /*$tokendata = array (
-                                "firstname"=> $saver['identifier'],
-                                "lastname"=> $saver['identifier'],
-                                "email"=>$saver['email'],
-                                "token"=>randomChars(15),
-                                "language"=>$saver['language'],
-                                "sent"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
-                                "completed"=>"N");*/
+                            $tokendata = array (
+                            "firstname"=> $saver['identifier'],
+                            "lastname"=> $saver['identifier'],
+                            "email"=>$saver['email'],
+                            "token"=>$password,
+                            "language"=>$saver['language'],
+                            "sent"=>date("Y-m-d H:i:s"),
+                            "completed"=>"N");
 
-                            $columns = array("firstname", "lastname", "email", "token",
-                                "language", "sent", "completed");
-                            $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
-                                "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
-
-                            $SQL = "INSERT INTO {$tokens_table}
-                                (".implode(',', $columns).")
-                                VALUES
-                                (".implode(',', $values).")";
-                            dbExecuteAssoc($SQL);
+                            $aToken=new Token($surveyid);  
+                            $aToken->setAttributes($tokendata, false);  
+                            $aToken->save();
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
-                            //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                         }
                         if ($saver['email']) {
                             //Send email

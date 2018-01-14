@@ -4340,16 +4340,15 @@ function do_array($ia)
             $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+
         if ($aQuestionAttributes['random_order'] == 1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $sOrder = dbRandom();
         } else {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $sOrder = 'question_order';
         }
+        $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));        
 
-        $ansresult  = dbExecuteAssoc($ansquery); //Checked
-        $aQuestions = $ansresult->readAll();
         $fn         = 1;
-
         $inputnames = [];
 
         $sRows = "";

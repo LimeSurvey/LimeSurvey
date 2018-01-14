@@ -5426,9 +5426,8 @@
                 }
             }
             if (count($updatedValues) > 0 || $finished)
-            {
-                $query = 'UPDATE ' . $this->surveyOptions['tablename'] . ' SET ';
-                $setter = array();
+            {                          
+                $aResponseAttributes = array();
                 switch ($this->surveyMode)
                 {
                     case 'question':
@@ -5445,14 +5444,14 @@
                         $thisstep = 0;
                         break;
                 }
-                $setter[] = App()->db->quoteColumnName('lastpage') . "=" . App()->db->quoteValue($thisstep);
+                $aResponseAttributes['lastpage'] = $thisstep;
 
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                    $setter[] = App()->db->quoteColumnName('datestamp') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                    $aResponseAttributes['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 }
                 if ($this->surveyOptions['ipaddr']) {
-                    $setter[] = App()->db->quoteColumnName('ipaddr') . "=" . App()->db->quoteValue(getIPAddress());
+                    $aResponseAttributes['ipaddr'] = getIPAddress();
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -5485,29 +5484,24 @@
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
                             break;
                     }
-                    if (is_null($val))
-                    {
-                        $setter[] = App()->db->quoteColumnName($key) . "=NULL";
-                    }
-                    else
-                    {
-                        $setter[] = App()->db->quoteColumnName($key) . "=" . App()->db->quoteValue(stripCtrlChars($val));
+                    if (is_null($val)) {
+                        $aResponseAttributes[$key] = NULL;
+                    } else {
+                        $aResponseAttributes[$key] = stripCtrlChars($val);
                     }
                 }
-                $query .= implode(', ', $setter);
-                $query .= " WHERE ID=";
 
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
-                    $query .= $_SESSION[$this->sessid]['srid'];
-
-                    if (!dbExecuteAssoc($query))
+                    $response = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                    $response->setAttributes($aResponseAttributes, false);
+                    if (!$response->save())
                     {
-                        // TODO: This kills the session if adminemail is defined, so the queries below won't work.
-                        $message = submitfailed('', $query);  // TODO - report SQL error?
+                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
+                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
+                            $message .= $this->gT('Error on response update');  // @todo Add  SQL error?
                         }
 
                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
@@ -5550,18 +5544,16 @@
                     else
                     {
                         if ($finished) {
-                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
-                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                                $submitdate = date("Y-m-d H:i:s");
+                            }  else {
+                                $submitdate  = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            else
-                            {
-                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
-                            }
-                            $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
-                            dbExecuteAssoc($sQuery);   // Checked
+                            $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                            $aResponse->submitdate = $submitdate;
+                            $aResponse->save();
                         }
                     }
 
@@ -8558,14 +8550,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $where .= " and a.language='".$lang."'" ;
             }
 
-            $query = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
+            $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
             ." FROM {{answers}} AS a"
             ." JOIN {{questions}} q on a.qid=q.qid"
             ." JOIN {{answer_l10ns}} l on l.aid=a.aid"
             ." WHERE ".$where
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
-            $data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($sQuery)->query();
 
             $qans = array();
 
@@ -9860,9 +9852,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $otherlangs='';
 
             // Export survey-level information
-            $query = "select * from {{surveys}} where sid = " . $sid;
-            $data = dbExecuteAssoc($query);
-            foreach ($data->readAll() as $r)
+            $arSurveyData = Survey::model()->findByPk($sid);
+            foreach ($arSurveyData as $r)
             {
                 foreach ($r as $key=>$value)
                 {
@@ -9888,9 +9879,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $langs = array_unique($langs);
 
             // Export survey language settings
-            $query = "select * from {{surveys_languagesettings}} where surveyls_survey_id = " . $sid;
-            $data = dbExecuteAssoc($query);
-            foreach ($data->readAll() as $r)
+            $arSurveyLanguageData = SurveyLanguageSetting::findAll("surveyls_survey_id = " . $sid);
+            foreach ($arSurveyLanguageData as $r)
             {
                 $_lang = $r['surveyls_language'];
                 foreach ($r as $key=>$value)

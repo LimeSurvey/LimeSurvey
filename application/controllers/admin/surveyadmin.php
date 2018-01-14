@@ -1812,7 +1812,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroup->group_order = 1;
         $oGroup->grelevance = '1';
         $oGroup->save();
-        $oGroupL10ns = new QuestionGroupL10ns();
+        $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
         $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
@@ -1835,13 +1835,16 @@ class SurveyAdmin extends Survey_Common_Action
         $oQuestion->gid = $iGroupID;
         $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
         $oQuestion->title = 'Q00';
-        $oQuestion->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestion->help = gt('This is a question help text.', 'html', $sLanguage);
         $oQuestion->mandatory = 'N';
         $oQuestion->relevance = '1';
         $oQuestion->question_order = 1;
-        $oQuestion->language = $sLanguage;
         $oQuestion->save();
+        $oQuestionLS = new QuestionL10n();
+        $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
+        $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->language = $sLanguage;
+        $oQuestionLS->qid=$oQuestion->qid;
+        $oQuestionLS->save();
         return $oQuestion->qid;
     }
 

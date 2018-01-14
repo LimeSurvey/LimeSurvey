@@ -512,9 +512,10 @@ function mssql_drop_constraint($fieldname, $tablename)
     sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
-    $result = dbExecuteAssoc($dfquery)->read();
-    $defaultname = $result['CONTRAINT_NAME'];
+    WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
+    $result = Yii::app()->db->createCommand($dfquery)->query();
+    $result = $result->read();
+    $defaultname = $result['CONSTRAINT_NAME'];
     if ($defaultname != false) {
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }
