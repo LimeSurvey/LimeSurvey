@@ -66,7 +66,7 @@ class questions extends Survey_Common_Action
         $aData['oQuestion'] = $oQuestion;
         $qrrow = $oQuestion->attributes;
         $aData['languagelist'] = $survey->allLanguages;
-        $aData['qtypes'] = getQuestionTypeList('', 'array');
+        $aData['qtypes'] = Question::typeList();
 
         $qshowstyle = "";
 
@@ -275,7 +275,7 @@ class questions extends Survey_Common_Action
 
         $questionrow = $oQuestion->attributes;
 
-        $qtproperties = getQuestionTypeList('', 'array');
+        $qtproperties = Question::typeList();
 
         $langopts = array();
         foreach ($survey->allLanguages as $language) {
@@ -473,7 +473,7 @@ class questions extends Survey_Common_Action
         $oQuestion = $qrow = Question::model()->findByPk($qid);
         $qtype = $qrow['type'];
 
-        $qtypes = getQuestionTypeList('', 'array');
+        $qtypes = Question::typeList();
 
         $scalecount = $qtypes[$qtype]['answerscales'];
 
@@ -685,7 +685,7 @@ class questions extends Survey_Common_Action
         $aParentQuestion = $oQuestion->attributes;
 
         $sQuestiontype = $aParentQuestion['type'];
-        $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
+        $aQuestiontypeInfo = Question::typeList();
         $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++) {
@@ -778,7 +778,7 @@ class questions extends Survey_Common_Action
          * The following line decides if the assessment input fields are visible or not
          * for some question types the assessment values is set in the label set instead of the answers
          */
-        $qtypes = getQuestionTypeList('', 'array');
+        $qtypes = Question::typeList();
         Yii::app()->loadHelper('surveytranslator');
 
         $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
@@ -998,7 +998,7 @@ class questions extends Survey_Common_Action
 
         $baselang = $survey->language;
 
-        $qtypelist = getQuestionTypeList('', 'array');
+        $qtypelist = Question::typeList();
 
         $aData['ajaxDatas']['qTypeOutput'] = json_encode($qtypelist);
 
@@ -1200,7 +1200,7 @@ class questions extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingPage(false, true); // so can click on syntax highlighting to edit questions
             }
 
-            $qtypelist = getQuestionTypeList('', 'array');
+            $qtypelist = Question::typeList();
             $aData['qTypeOutput'] = json_encode($qtypelist);
 
             if ($adding) {
@@ -1426,7 +1426,7 @@ class questions extends Survey_Common_Action
 // If survey is active it should not be possible to update
                 if ($iQuestionOrder == "") {
 // If asked "at the endd"
-                    $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid, $oSurvey->sid));
+                    $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid));
 
                     // We get the last question order, so we want the number just after it
                     // Unless it's 0
@@ -1812,7 +1812,7 @@ class questions extends Survey_Common_Action
 
         $question = $answers[0][0];
         $question['code'] = $answers[0][5];
-        $question['class'] = getQuestionClass($qrows['type']);
+        $question['class'] = Question::getQuestionClass($qrows['type']);
         $question['essentials'] = 'id="question'.$qrows['qid'].'"';
         $question['sgq'] = $ia[1];
         $question['aid'] = 'unknown';

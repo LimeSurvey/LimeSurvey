@@ -240,7 +240,7 @@ class questiongroups extends Survey_Common_Action
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
             if ($iGroupsDeleted > 0) {
-                fixSortOrderGroups($iSurveyId);
+                QuestionGroup::model()->updateGroupOrder($iSurveyId);
                 Yii::app()->setFlashMessage(gT('The question group was deleted.'));
             } else {
                             Yii::app()->setFlashMessage(gT('Group could not be deleted'), 'error');
@@ -490,11 +490,6 @@ class questiongroups extends Survey_Common_Action
                                             $oGroupLS->$k = $v;
                     }
                     $ugresult2 = $oGroupLS->save();
-
-
-                    if ($ugresult && $ugresult2) {
-                        $groupsummary = getGroupList($gid, $surveyid);
-                    }
                 }
             }
 

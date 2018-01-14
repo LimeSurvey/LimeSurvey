@@ -176,7 +176,7 @@ class database extends Survey_Common_Action
         $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
         $sQuestionType = $arQuestion['type'];
 
-        $aQuestionTypeList = getQuestionTypeList('', 'array');
+        $aQuestionTypeList = Question::typeList();
         if ($aQuestionTypeList[$sQuestionType]['answerscales'] > 0 && $aQuestionTypeList[$sQuestionType]['subquestions'] == 0) {
             for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['answerscales']; $iScaleID++) {
                 foreach ($aSurveyLanguages as $sLanguage) {
@@ -247,7 +247,7 @@ class database extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
         $sQuestionType = $arQuestion['type']; // Checked)
-        $aQuestionTypeList = getQuestionTypeList('', 'array');
+        $aQuestionTypeList = Question::typeList();
         $iScaleCount = $aQuestionTypeList[$sQuestionType]['answerscales'];
         /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
         /* @todo : add it to upgrage DB system, and see for the lsa */
@@ -353,7 +353,7 @@ class database extends Survey_Common_Action
 
         $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
         $sQuestionType = $arQuestion['type']; // Checked
-        $aQuestionTypeList = getQuestionTypeList('', 'array');
+        $aQuestionTypeList = Question::typeList();
         $iScaleCount = $aQuestionTypeList[$sQuestionType]['subquestions'];
         // First delete any deleted ids
         $aDeletedQIDs = explode(' ', trim(Yii::app()->request->getPost('deletedqids')));
@@ -605,7 +605,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        $aQuestionTypeList = getQuestionTypeList('', 'array');
+        $aQuestionTypeList = Question::typeList();
         // These are the questions types that have no answers and therefore we delete the answer in that case
         $iAnswerScales = $aQuestionTypeList[$sQuestionType]['answerscales'];
         $iSubquestionScales = $aQuestionTypeList[$sQuestionType]['subquestions'];
@@ -673,18 +673,18 @@ class database extends Survey_Common_Action
                     $oQuestion->modulename = '';
                 }
                 if ($oldgid != $this->iQuestionGroupID) {
-                    if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
+                    if (getGroupOrder($oldgid) > getGroupOrder($this->iQuestionGroupID)) {
                         // TMSW Condition->Relevance:  What is needed here?
 
                         // Moving question to a 'upper' group
                         // insert question at the end of the destination group
                         // this prevent breaking conditions if the target qid is in the dest group
-                        $insertorder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID) + 1;
+                        $insertorder = getMaxQuestionOrder($this->iQuestionGroupID) + 1;
                         $oQuestion->question_order = $insertorder;
                     } else {
                         // Moving question to a 'lower' group
                         // insert question at the beginning of the destination group
-                        shiftOrderQuestions($iSurveyID, $this->iQuestionGroupID, 1); // makes 1 spare room for new question at top of dest group
+                        Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID); // makes 1 spare room for new question at top of dest group
                         $oQuestion->question_order = 0;
                     }
                 }
@@ -735,7 +735,7 @@ class database extends Survey_Common_Action
                     Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
                     // If some questions have conditions set on this question's answers
                     // then change the cfieldname accordingly
-                    fixMovedQuestionConditions($this->iQuestionID, $oldgid, $this->iQuestionGroupID);
+                    Condition::model()->updateCFieldName($iSurveyID, $this->iQuestionID, $oldgid, $this->iQuestionGroupID);
                 }
                 // Update subquestions
                 if ($oldtype != $sQuestionType) {
@@ -1205,7 +1205,7 @@ class database extends Survey_Common_Action
                 $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
                 Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$this->iQuestionGroupID, ':order'=>$iQuestionOrder))->query();
             } else {
-                $iQuestionOrder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID);
+                $iQuestionOrder = getMaxQuestionOrder($this->iQuestionGroupID);
                 $iQuestionOrder++;
             }
             $sQuestionText = Yii::app()->request->getPost('question_'.$sBaseLanguage, '');

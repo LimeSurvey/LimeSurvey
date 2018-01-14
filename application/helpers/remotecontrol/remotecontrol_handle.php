@@ -1040,7 +1040,7 @@ class remotecontrol_handle
                 $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
 
                 if ($iGroupsDeleted === 1) {
-                    fixSortOrderGroups($iSurveyID);
+                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
                     return (int) $iGroupID;
                 } else {
                                     return array('status' => 'Group deletion failed');
@@ -1256,7 +1256,7 @@ class remotecontrol_handle
                     try {
                         // save the change to database - one by one to allow for validation to work
                         $bSaveResult = $oGroup->save();
-                        fixSortOrderGroups($oGroup->sid);
+                        QuestionGroup::model()->updateGroupOrder($oGroup->sid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset failed values
                         if (!$bSaveResult) {

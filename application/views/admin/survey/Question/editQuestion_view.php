@@ -290,7 +290,7 @@ echo viewHelper::getViewTestTag('addQuestion');
 
 <?php
 $aQuestionTypeGroups = array();
-$aQuestionTypeList = (array) getQuestionTypeList($oQuestion->type, 'array');
+$aQuestionTypeList = Question::typeList();
 
 foreach ( $aQuestionTypeList as $key=> $questionType)
 {

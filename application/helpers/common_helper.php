@@ -87,78 +87,6 @@ function quoteText($sText, $sEscapeMode = 'html')
     }
 }
 
-/**
-* getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
-*    question type
-*
-* @param string $SelectedCode Value of the Question Type (defaults to "T")
-* @param string $ReturnType Type of output from this function (defaults to selector)
-*
-* @return array|string depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
-*
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-*/
-function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
-{
-
-    $qtypes = Question::typeList();
-
-    if ($ReturnType == "array") {
-        return $qtypes;
-    }
-
-
-    if ($ReturnType == "group") {
-        $newqType = [];
-        foreach ($qtypes as $qkey => $qtype) {
-            $newqType[$qtype['group']][$qkey] = $qtype;
-        }
-
-
-        $qtypeselecter = "";
-        foreach ($newqType as $group => $members) {
-            $qtypeselecter .= '<optgroup label="'.$group.'">';
-            foreach ($members as $TypeCode => $TypeProperties) {
-                $qtypeselecter .= "<option value='$TypeCode'";
-                if ($SelectedCode == $TypeCode) {
-                    $qtypeselecter .= " selected='selected'";
-                }
-                $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-            }
-            $qtypeselecter .= '</optgroup>';
-        }
-
-        return $qtypeselecter;
-    };
-    $qtypeselecter = "";
-    foreach ($qtypes as $TypeCode => $TypeProperties) {
-        $qtypeselecter .= "<option value='$TypeCode'";
-        if ($SelectedCode == $TypeCode) {
-            $qtypeselecter .= " selected='selected'";
-        }
-        $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-    }
-
-
-    return $qtypeselecter;
-}
-
-/**
-* isStandardTemplate returns true if a template is a standard template
-* This function does not check if a template actually exists
-*
-* @param mixed $sTemplateName template name to look for
-* @return bool True if standard template, otherwise false
-*/
-function isStandardTemplate($sTemplateName)
-{
-    return Template::isStandardTemplate($sTemplateName);
-}
 
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
@@ -251,12 +179,6 @@ function getSurveyList($bReturnArray = false)
     return $surveyselecter;
 }
 
-function getTemplateList()
-{
-    return Template::getTemplateList();
-}
-
-
 /**
 * getGidPrevious() returns the Gid of the group prior to the current active group
 *
@@ -268,7 +190,6 @@ function getTemplateList()
 function getGidPrevious($surveyid, $gid)
 {
     $surveyid = (int) $surveyid;
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
@@ -295,8 +216,6 @@ function getGidPrevious($surveyid, $gid)
 function getGidNext($surveyid, $gid)
 {
     $surveyid = (int) $surveyid;
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
 
     $i = 0;
@@ -319,10 +238,14 @@ function getGidNext($surveyid, $gid)
 }
 
 
-
+/**
+* Converts GET to POSTS
+* 
+* @param mixed $url
+* @deprecated  This function must be deprecated and replaced by $.post
+*/
 function convertGETtoPOST($url)
 {
-    // This function must be deprecated and replaced by $.post
     $url = preg_replace('/&amp;/i', '&', $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
@@ -384,8 +307,8 @@ function getDirectorySize($directory)
 /**
  * Queries the database for the maximum sortorder of a group and returns the next higher one.
  *
- * @param integer $surveyid
- * @return int
+ * @param integer $surveyid The survey ID
+ * @return int Next free sortorder digit
  */
 function getMaxGroupOrder($surveyid)
 {
@@ -396,68 +319,43 @@ function getMaxGroupOrder($surveyid)
         'limit' => '1'
     ));
 
-    $current_max = !is_null($queryResult) ? $queryResult->group_order : "";
+    $current_max = !is_null($queryResult) ? $queryResult->group_order : -1;
+    $current_max += 1;
+    return $current_max;
+}
 
-    if ($current_max !== "") {
-        $current_max += 1;
-        return $current_max;
-    } else {
+
+/**
+* Queries the database for the sortorder of a group.
+*
+* @param mixed $gid  The groups ID
+* @return int The sortorder digit
+*/
+function getGroupOrder($gid)
+{
+    $arGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid)); //Checked
+    if (empty($arGroup)) {
         return 0;
     }
-}
-
-
-/**
-* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.
-*
-* @param mixed $surveyid
-* @param mixed $gid
-* @return mixed
-*/
-function getGroupOrder($surveyid, $gid)
-{
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid)); //Checked
-    $grporder_row = $grporder_result->attributes;
-    $group_order = $grporder_row['group_order'];
-    if ($group_order == "") {
-        return "0";
-    } else {
-        return $group_order;
-    }
+    return (int)$arGroup->group_order;
 }
 
 /**
-* Queries the database for the maximum sort order of a question.
+* Queries the database for the maximum sort order of questions inside question group.
 * 
 * @param integer $gid
-* @param integer|null $surveyid
 * @return integer
 */
-function getMaxQuestionOrder($gid, $surveyid)
+function getMaxQuestionOrder($gid)
 {
     $gid = (int) $gid;
     $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid={$gid}";
-    $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
-    $maxrow = $max_result->read();
-    $current_max = $maxrow['max'];
-    if ($current_max == "") {
+    $current_max = Yii::app()->db->createCommand($max_sql)->queryScalar(); //Checked
+    if ($current_max == false) {
         return 0;
-    } else {
-        return (int) $current_max;
-    }
+    } 
+    return (int) $current_max;
 }
-
-/**
-* getQuestionClass() returns a class name for a given question type to allow custom styling for each question type.
-*
-* @param string $input containing unique character representing each question type.
-* @return string containing the class name for a given question type.
-*/
-function getQuestionClass($input)
-{
-    Question::getQuestionClass($input);
-};
 
 /**
 * setupColumns() defines all the html tags to be wrapped around
@@ -468,6 +366,7 @@ function getQuestionClass($input)
 * @param string $wrapperclass - a global class for the wrapper
 * @param string $itemclass - a class for the item
 * @return array with all the various opening and closing tags to generate a set of columns.
+* @deprecated Don't use anymore. Only usage left in printabel survey where it needs to be replaced
 *
 * It returns an array with the following items:
 *    $wrapper['whole-start']   = Opening wrapper for the whole list
@@ -619,6 +518,7 @@ function alternation($alternate = '', $type = 'col')
      * @param string  $type = 'col' (default) or 'row'
      *
      * @return string representing either the first alternation or the opposite alternation to the one supplied..
+     * @deprecated Should be done by CSS/JS on display. Needs to be fixed.
      */
     /*
     // The following allows type to be left blank for row in subsequent
@@ -671,43 +571,9 @@ function longestString($new_string, $longest_length)
     return $longest_length;
 };
 
-
-
-
-/**
-* getGroupList() queries the database for a list of all groups matching the current survey sid
-*
-*
-* @param string $gid - the currently selected gid/group
-* @param integer $surveyid
-*
-* @return string string is returned containing <option></option> formatted list of groups to current survey
-*/
-function getGroupList($gid, $surveyid)
-{
-
-    $groupselecter = "";
-    $gid = sanitize_int($gid);
-    $surveyid = sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
-    $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
-    $oGroups = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
-    foreach ($oGroups as $oGroup) {
-        $groupselecter .= "<option";
-        if ($oGroup->gid == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid={$surveyid}&amp;gid=".$oGroup->gid."'>".htmlspecialchars($oGroup->questionGroupL10ns[$sBaseLanguage]->group_name)."</option>\n";
-    }
-    if ($groupselecter) {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n"; }
-    }
-    return $groupselecter;
-}
-
-
 //FIXME rename and/or document this
 function getGroupList3($gid, $surveyid)
 {
-    //
     $gid = sanitize_int($gid);
     $surveyid = sanitize_int($surveyid);
 
@@ -715,18 +581,12 @@ function getGroupList3($gid, $surveyid)
     $groupselecter = "";
     $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
 
-
-    //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-
     $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid), array('order'=>'group_order'));
-
     foreach ($gidresult as $gv) {
         $groupselecter .= "<option";
         if ($gv->gid == $gid) {$groupselecter .= " selected='selected'"; }
         $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10ns[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
     }
-
-
     return $groupselecter;
 }
 
@@ -901,7 +761,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
 * @param mixed $sLanguage Required language translationb object
 * @param string $mode Escape mode for the translation function
 * @return array
- * // TODO move to template model
+* @todo Move to defaulttexts helper
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
@@ -986,48 +846,6 @@ function groupOrderThenQuestionOrder($a, $b)
     }
     return $GroupResult;
 }
-
-
-//FIXME insert UestionGroup model to here
-/**
- * @param integer $sid
- * @param integer $gid
- * @param integer $shiftvalue
- */
-function shiftOrderQuestions($sid, $gid, $shiftvalue) //Function shifts the sortorder for questions
-{
-    $sid = (int) $sid;
-    $gid = (int) $gid;
-    $shiftvalue = (int) $shiftvalue;
-
-    $baselang = Survey::model()->findByPk($sid)->language;
-
-    Question::model()->updateQuestionOrder($gid, $baselang, $shiftvalue);
-}
-
-function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
-{
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-    QuestionGroup::model()->updateGroupOrder($surveyid, $baselang);
-}
-
-/**
- * @param integer $iSurveyID
- * @param integer $qid
- * @param integer $newgid
- */
-function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = null) //Function rewrites the cfieldname for a question after group change
-{
-    if (!isset($iSurveyID)) {
-            $iSurveyID = Yii::app()->getConfig('sid');
-    }
-    $qid = (int) $qid;
-    $oldgid = (int) $oldgid;
-    $newgid = (int) $newgid;
-    Condition::model()->updateCFieldName($iSurveyID, $qid, $oldgid, $newgid);
-    // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
-}
-
 
 /**
  * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
@@ -1416,7 +1234,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param Survey $survey
+* @param Survey $survey Survey ActiveRecord model
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
@@ -1573,7 +1391,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
         $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
     }
-    $qtypes = getQuestionTypeList('', 'array');
+    $qtypes = Question::typeList();
 
     // Main query
     $aquery = "SELECT * "
@@ -1848,7 +1666,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
         } else {
-// Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
+            // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
             //MULTI ENTRY
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
@@ -1992,7 +1810,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 */
 function hasFileUploadQuestion($iSurveyID)
 {
-    $iCount = Question::model()->count("sid=:surveyid AND parent_qid=0 AND type='".Question::QT_VERTICAL_FILE_UPLOAD."'", array(':surveyid' => $iSurveyID));
+    $iCount = Question::model()->count("sid=:surveyid AND parent_qid=0 AND type=:type", array(':surveyid' => $iSurveyID, ':type'=>Question::QT_VERTICAL_FILE_UPLOAD));
     return $iCount > 0;
 }
 
@@ -2008,7 +1826,6 @@ function hasFileUploadQuestion($iSurveyID)
 */
 function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = false, $questionid = false, $sQuestionLanguage = null)
 {
-
     static $timingsFieldMap;
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
@@ -2073,19 +1890,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers = "")
     return $output;
 }
 
-/**
-* This function returns a count of the number of saved responses to a survey
-*
-* @param mixed $surveyid Survey ID
-*/
-function getSavedCount($surveyid)
-{
-    $surveyid = (int) $surveyid;
-
-    return SavedControl::model()->getCountOfAll($surveyid);
-}
-
-
 function buildLabelSetCheckSumArray()
 {
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
@@ -2105,7 +1909,6 @@ function buildLabelSetCheckSumArray()
         } // while
         $csarray[$row['lid']] = dechex(crc32($thisset) * 1);
     }
-
     return $csarray;
 }
 
@@ -2140,10 +1943,10 @@ function categorySort($a, $b)
     return $result;
 }
 
-
-
-
-// make a string safe to include in an HTML 'value' attribute.
+/**
+* make a string safe to include in an HTML 'value' attribute.
+* @deprecated If you need this you are doing something wrong. Use CHTML functions instead.
+*/
 function HTMLEscape($str)
 {
     // escape newline characters, too, in case we put a value from
@@ -2343,7 +2146,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         ob_end_clean();
     }
     $maildebugbody = $mail->Body;
-    //if(!$sent) var_dump($maildebug);
     return $sent;
 }
 
@@ -2481,10 +2283,9 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid = "", $output = 
     return $cascaded;
 }
 
-function createPassword()
+function createPassword($iPasswordLength = 12)
 {
     $aCharacters = "ABCDEGHJIKLMNOPQURSTUVWXYZabcdefhjmnpqrstuvwxyz23456789";
-    $iPasswordLength = 12;
     $sPassword = '';
     for ($i = 0; $i < $iPasswordLength; $i++) {
         $sPassword .= $aCharacters[(int) floor(rand(0, strlen($aCharacters) - 1))];
@@ -4136,7 +3937,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 
     if ($newgid != "all") {
         $newgid = sanitize_int($newgid);
-        $newgorder = getGroupOrder($sid, $newgid);
+        $newgorder = getGroupOrder($newgid);
     } else {
         $newgorder = ''; // Not used in this case
     }

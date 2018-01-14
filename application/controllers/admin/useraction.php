@@ -696,7 +696,7 @@ class UserAction extends Survey_Common_Action
 
     private function _refreshtemplates()
     {
-        $template_a = getTemplateList();
+        $template_a = Template::getTemplateList();
         foreach ($template_a as $tp => $fullpath) {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)

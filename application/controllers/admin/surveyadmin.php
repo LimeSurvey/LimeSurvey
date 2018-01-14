@@ -701,7 +701,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("This survey is already active."), 'error');
             $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
 
-        }        $qtypes = getQuestionTypeList('', 'array');
+        }        $qtypes = Question::typeList();
         Yii::app()->loadHelper("admin/activate");
 
         if (Yii::app()->request->getPost('ok') == '') {
@@ -1188,7 +1188,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $oldGid = $oQuestion['gid'];
 
                 if ($oldGid != $gid) {
-                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                    Condition::model()->updateCFieldName($iSurveyID, $qid, $oldGid, $gid);
                 }
                 Question::model()->updateAll(array('question_order' => $aQuestionOrder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
                 Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));

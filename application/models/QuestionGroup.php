@@ -85,14 +85,13 @@ class QuestionGroup extends LSActiveRecord
      * @param string $lang
      * @param int $position
      */
-    public function updateGroupOrder($sid, $lang, $position = 0)
+    public function updateGroupOrder($sid, $position = 0)
     {
         $data = Yii::app()->db->createCommand()->select('gid')
-            ->where(array('and', 'sid=:sid', 'language=:language'))
+            ->where('sid=:sid')
             ->order('group_order, group_name ASC')
             ->from('{{groups}}')
             ->bindParam(':sid', $sid, PDO::PARAM_INT)
-            ->bindParam(':language', $lang, PDO::PARAM_STR)
             ->query();
 
         $position = intval($position);

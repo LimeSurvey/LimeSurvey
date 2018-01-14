@@ -6,7 +6,7 @@
 ?>
 <?php
 $thisdefaulttheme=getGlobalSetting('defaulttheme');
-$templatenames=array_keys(getTemplateList());
+$templatenames=array_keys(Template::getTemplateList());
 $thisadmintheme=getGlobalSetting('admintheme');
 $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
 $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');

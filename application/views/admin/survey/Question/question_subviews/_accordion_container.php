@@ -21,7 +21,7 @@
                             <div class="">
                             <?php if($selectormodeclass!="none"): ?>
                                 <?php
-                                    foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                    foreach (Question::typeList() as $key=> $questionType)
                                     {
                                         if (!isset($groups[$questionType['group']]))
                                         {
@@ -70,7 +70,7 @@
                             <?php else: ?>
                                 <?php
                                     $aQtypeData=array();
-                                    foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                    foreach (Question::typeList() as $key=> $questionType)
                                     {
                                         $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
                                     }

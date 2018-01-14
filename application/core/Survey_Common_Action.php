@@ -551,7 +551,7 @@ class Survey_Common_Action extends CAction
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
-                $aData['qtypes'] = getQuestionTypeList('', 'array');
+                $aData['qtypes'] = Question::typeList();
                 $aData['action'] = $action;
                 $aData['surveyid'] = $iSurveyID;
                 $aData['qid'] = $qid;
