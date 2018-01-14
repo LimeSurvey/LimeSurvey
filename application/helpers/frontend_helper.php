@@ -1063,10 +1063,10 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
     // Find all defined randomization groups through question attribute values
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
         //Previous query: $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
-        $rgresult=Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and CAST(value as varchar(255)) <>'' and sid={$surveyid}");
+        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and CAST(value as varchar(255)) <>'' and sid={$surveyid}");
     } else {
         //Previous query: $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
-        $rgresult=Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
+        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
     }
     foreach ($rgresult as $rgrow) {
         $randomGroups[$rgrow['value']][] = $rgrow['qid']; // Get the question IDs for each randomization group
@@ -1504,15 +1504,16 @@ function doAssessment($surveyid)
             // Init Assessment Value
             $assessmentValue = null;
 
-            if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
+            if (in_array($field['type'], array(Question::QT_1_ARRAY_MULTISCALE, Question::QT_F_ARRAY_FLEXIBLE_ROW, Question::QT_H_ARRAY_FLEXIBLE_COLUMN, Question::QT_Z_LIST_RADIO_FLEXIBLE, Question::QT_L_LIST_DROPDOWN, Question::QT_EXCLAMATION_LIST_DROPDOWN, Question::QT_M_MULTIPLE_CHOICE, Question::QT_O_LIST_WITH_COMMENT, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
                 $fieldmap[$field['fieldname']]['assessment_value'] = 0;
-                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
-                {
-                    if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) //Multiflexi choice  - result is the assessment attribute value
+                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                    if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+                        //Multiflexi choice  - result is the assessment attribute value
                     {
                         if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                         {
                             $aAttributes=getQuestionAttributeValues($field['qid']);
+                    }
                             $assessmentValue = (int)$aAttributes['assessment_value'];
                         }
                     } else {

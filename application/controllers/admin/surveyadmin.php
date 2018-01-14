@@ -1843,7 +1843,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
         $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
         $oQuestionLS->language = $sLanguage;
-        $oQuestionLS->qid=$oQuestion->qid;
+        $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
         return $oQuestion->qid;
     }

@@ -393,36 +393,36 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
 {
     $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
-        Question::QT_5_POINT_CHOICE=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        Question::QT_A_ARRAY_5_CHOICE_QUESTIONS=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        Question::QT_F_ARRAY_FLEXIBLE_ROW=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_1_ARRAY_MULTISCALE=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
-        Question::QT_H_ARRAY_FLEXIBLE_COLUMN=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
-        Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
-        Question::QT_C_ARRAY_YES_UNCERTAIN_NO=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_X_BOILERPLATE_QUESTION=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
-        Question::QT_D_DATE=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
-        Question::QT_G_GENDER_DROPDOWN=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
-        Question::QT_U_HUGE_FREE_TEXT=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
-        Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
-        Question::QT_EXCLAMATION_LIST_DROPDOWN=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_Z_LIST_RADIO_FLEXIBLE=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_L_LIST_DROPDOWN=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
-        Question::QT_O_LIST_WITH_COMMENT=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
-        Question::QT_T_LONG_FREE_TEXT=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
-        Question::QT_K_MULTIPLE_NUMERICAL_QUESTION=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
-        Question::QT_M_MULTIPLE_CHOICE=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
-        Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
-        Question::QT_Q_MULTIPLE_SHORT_TEXT=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-        Question::QT_N_NUMERICAL=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
-        Question::QT_R_RANKING_STYLE=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
-        Question::QT_S_SHORT_FREE_TEXT=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
-        Question::QT_Y_YES_NO_RADIO=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-        Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
-        Question::QT_VERTICAL_FILE_UPLOAD=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
-        Question::QT_ASTERISK_EQUATION=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
+        Question::QT_5_POINT_CHOICE=>Array('name'=>'5 Point Choice', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
+        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS=>Array('name'=>'Array (10 Point Choice)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
+        Question::QT_A_ARRAY_5_CHOICE_QUESTIONS=>Array('name'=>'Array (5 Point Choice)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
+        Question::QT_F_ARRAY_FLEXIBLE_ROW=>Array('name'=>'Array (Flexible Labels)', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_1_ARRAY_MULTISCALE=>Array('name'=>'Array (Flexible Labels) Dual Scale', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_H_ARRAY_FLEXIBLE_COLUMN=>Array('name'=>'Array (Flexible Labels) by Column', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS=>Array('name'=>'Array (Increase, Same, Decrease)', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>2),
+        Question::QT_C_ARRAY_YES_UNCERTAIN_NO=>Array('name'=>'Array (Yes/No/Uncertain)', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_X_BOILERPLATE_QUESTION=>Array('name'=>'Boilerplate Question', 'size'=>1, 'SPSStype'=>'A', 'hide'=>1),
+        Question::QT_D_DATE=>Array('name'=>'Date', 'size'=>20, 'SPSStype'=>'DATETIME23.2'),
+        Question::QT_G_GENDER_DROPDOWN=>Array('name'=>'Gender', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_U_HUGE_FREE_TEXT=>Array('name'=>'Huge Free Text', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_EXCLAMATION_LIST_DROPDOWN=>Array('name'=>'List (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_Z_LIST_RADIO_FLEXIBLE=>Array('name'=>'List (Flexible Labels) (Radio)', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_L_LIST_DROPDOWN=>Array('name'=>'List (Radio)', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_O_LIST_WITH_COMMENT=>Array('name'=>'List With Comment', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_T_LONG_FREE_TEXT=>Array('name'=>'Long free text', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_K_MULTIPLE_NUMERICAL_QUESTION=>Array('name'=>'Multiple Numerical Input', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_M_MULTIPLE_CHOICE=>Array('name'=>'Multiple choice', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS=>Array('name'=>'Multiple choice with comments', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_Q_MULTIPLE_SHORT_TEXT=>Array('name'=>'Multiple Short Text', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_N_NUMERICAL=>Array('name'=>'Numerical Input', 'size'=>3, 'SPSStype'=>'F', 'Scale'=>3),
+        Question::QT_R_RANKING_STYLE=>Array('name'=>'Ranking', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_S_SHORT_FREE_TEXT=>Array('name'=>'Short free text', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_Y_YES_NO_RADIO=>Array('name'=>'Yes/No', 'size'=>1, 'SPSStype'=>'F'),
+        Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS=>Array('name'=>'Multi flexi numbers', 'size'=>1, 'SPSStype'=>'F', 'Scale'=>3),
+        Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT=>Array('name'=>'Multi flexi text', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_VERTICAL_FILE_UPLOAD=>Array('name'=>'File upload', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_ASTERISK_EQUATION=>Array('name'=>'Equation', 'size'=>1, 'SPSStype'=>'A'),
     );
 
     if (empty($sLanguage)) {
@@ -1516,7 +1516,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //$Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE '" . Question::QT_X_BOILERPLATE_QUESTION . "'");
+        $QR = Question::model()->findAll("sid={$iSurveyID} AND gid = {$gid} AND parent_qid=0 AND type NOT LIKE '".Question::QT_X_BOILERPLATE_QUESTION."'");
         foreach ($QR as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];

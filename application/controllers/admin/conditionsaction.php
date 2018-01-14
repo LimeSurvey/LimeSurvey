@@ -1464,7 +1464,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
                 }
             } //foreach
-        } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||$rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+        } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
             //Multi shorttext/numerical
             $aresult = Question::model()->findAllByAttributes(array(
             "parent_qid" => $rows['qid'],
@@ -1594,8 +1594,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         // optinnaly add the 'Other' answer
                         if ( ($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
                             $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
-                            $rows['other'] == "Y" )
-{
+                            $rows['other'] == "Y" ) {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
                         }
                         

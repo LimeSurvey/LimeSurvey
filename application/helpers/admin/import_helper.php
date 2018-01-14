@@ -1013,10 +1013,8 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
         $aLabelSetCheckSums = buildLabelSetCheckSumArray();
         $aCounts=array_count_values($aLabelSetCheckSums);
-        foreach ($aImportedLabelSetIDs as $iLabelSetID)
-        {
-            if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1)
-            {
+        foreach ($aImportedLabelSetIDs as $iLabelSetID) {
+            if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]]>1) {
                 LabelSet::model()->deleteLabelSet($iLabelSetID);
             }
         }
@@ -2773,7 +2771,7 @@ function TSVImportSurvey($sFullFilePath)
                     ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {
 // If last question have other to Y : it's not a real SQ row
-                    if($qtype==Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype==Question::QT_L_LIST_DROPDOWN) {
+                    if ($qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype == Question::QT_L_LIST_DROPDOWN) {
                         // only used to set default value for 'other' in these cases
                         if (isset($row['default']) && $row['default'] != "") {
                             $insertdata = array();

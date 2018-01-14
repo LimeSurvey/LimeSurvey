@@ -184,8 +184,7 @@ class printablesurvey extends Survey_Common_Action
                     // START doing questions
 
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-                    if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION)
-                    {
+                    if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
                     $bGroupHasVisibleQuestions = true;
@@ -628,7 +627,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                                 break;
 
                                 // ==================================================================
-                           case Question::QT_O_LIST_WITH_COMMENT:  //LIST WITH COMMENT
+                            case Question::QT_O_LIST_WITH_COMMENT:  //LIST WITH COMMENT
                                  $question['type_help'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose *only one* of the following:"));
                                 $dearesult = Answer::model()->findAll("qid={$arQuestion['qid']}");
 

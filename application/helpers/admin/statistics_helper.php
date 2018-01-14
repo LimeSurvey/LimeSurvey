@@ -205,7 +205,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $labelTmp = array();
             while (isset ($gdata[$i])) {
                 $aHelperArray = array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i],0,strlen(gT("Comments")))==gT("Comments"))) {
+                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen(gT("Comments"))) == gT("Comments"))) {
                     array_splice($gdata, $i, 1);
                 } else {
                     $i++;
@@ -1421,7 +1421,7 @@ class statistics_helper
                         //add "other"
                         $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'].'other');
                     }
-                    if ( $qtype == Question::QT_O_LIST_WITH_COMMENT)
+                    if ($qtype == Question::QT_O_LIST_WITH_COMMENT)
                     {
                         //add "comment"
                         $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'].'comment', 'is_comment');
@@ -1457,7 +1457,7 @@ class statistics_helper
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
-                    if($outputs['qtype']==Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype']==Question::QT_L_LIST_DROPDOWN) {
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2], 0, strlen($al[2]) - 5))."='-oth-'";
                     } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
@@ -1473,8 +1473,7 @@ class statistics_helper
                 * S = short free text
                 * Q = multiple short text
                 */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT)
-                {
+                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
 
                     //free text answers
@@ -1565,7 +1564,7 @@ class statistics_helper
                     $sColumnName = $al[2];
                 }
                 $ColumnName_RM[] = $sColumnName;
-                if ($outputs['qtype']==Question::QT_O_LIST_WITH_COMMENT) {
+                if ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
                     $TotalCompleted -= $row;
                 }
                 $fname = "$al[1]";
@@ -1584,8 +1583,7 @@ class statistics_helper
                 * S = short free text
                 * Q = multiple short text
                 */
-                elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT)
-                {
+                elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
 
                     $headPDF = array();
                     $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
@@ -1677,8 +1675,7 @@ class statistics_helper
             //no filtering of incomplete answers and NO multiple option questions
             //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
             //error_log("TIBO ".print_r($showaggregated_indice_table,true));
-            if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
-            {
+            if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
                 //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
                 //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
                 // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
@@ -1708,7 +1705,7 @@ class statistics_helper
             }
 
             // For multi question type, we have to check non completed with ALL sub question set to NULL
-            if(($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
+            if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
             {
                 $criteria = new CDbCriteria;
                 foreach ($outputs['alist'] as $al) {
@@ -1804,7 +1801,7 @@ class statistics_helper
                 //data available
                 if (($gdata[$i] !== "N/A")) {
                     //check if data should be aggregated
-                    if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
+                    if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
                     {
                         //mark that we have done soemthing special here
                         $aggregated = true;
@@ -1908,7 +1905,7 @@ class statistics_helper
                 //it's only useful to calculate standard deviation and arithmetic means for question types
                 //5 = 5 Point Scale
                 //A = Array (5 Point Choice)
-                if($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
+                if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
                 {
                     $stddev = 0;
                     $stddevarray = array_slice($grawdata, 0, 5, true);
@@ -2204,7 +2201,7 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other"))
                 {
-                    if($outputs['qtype']==Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype']==Question::QT_L_LIST_DROPDOWN)
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN)
                     {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
@@ -2225,8 +2222,7 @@ class statistics_helper
                 * S = short free text
                 * Q = multiple short text
                 */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT)
-                {
+                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
 
                     //free text answers
@@ -2374,8 +2370,7 @@ class statistics_helper
             * S = short free text
             * Q = multiple short text
             */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT)
-            {
+            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -2411,7 +2406,7 @@ class statistics_helper
             //check if aggregated results should be shown
             elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
                 if (!isset($showheadline) || $showheadline != false) {
-                    if($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
+                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
                     {
                         switch ($outputType) {
                             case 'xls':
@@ -2598,8 +2593,7 @@ class statistics_helper
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
-        if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
-        {
+        if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
@@ -2684,7 +2678,7 @@ class statistics_helper
         }
 
         // For multi question type, we have to check non completed with ALL sub question set to NULL
-        if(($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
+        if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))
         {
             $criteria = new CDbCriteria;
             foreach ($outputs['alist'] as $al) {
@@ -2836,7 +2830,7 @@ class statistics_helper
             //data available
             else {
                 //check if data should be aggregated
-                if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
+                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS))
                 {
                     //mark that we have done soemthing special here
                     $aggregated = true;
@@ -3083,7 +3077,7 @@ class statistics_helper
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
-            if($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
+            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)
             {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata, 0, 5, true);
@@ -3561,7 +3555,7 @@ class statistics_helper
                 if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {$myField = "T".$myField; }
                 //statistics for Date questions are not implemented yet.
                 if ($field['type'] == Question::QT_D_DATE) {$myField = "D".$myField; }
-                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW  || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN") {
+                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN") {
                 {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
@@ -3771,7 +3765,7 @@ class statistics_helper
                 // textfields get special treatment
                 //statistics for Date questions are not implemented yet.
                 // See buildOutputList for special treatment
-                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,Question::QT_T_LONG_FREE_TEXT,Question::QT_S_SHORT_FREE_TEXT,Question::QT_Q_MULTIPLE_SHORT_TEXT,Question::QT_R_RANKING_STYLE,Question::QT_VERTICAL_FILE_UPLOAD,"",Question::QT_N_NUMERICAL,Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,Question::QT_D_DATE);
+                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_T_LONG_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT, Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_R_RANKING_STYLE, Question::QT_VERTICAL_FILE_UPLOAD, "", Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL_QUESTION, Question::QT_D_DATE);
                 if (in_array($field['type'], $specialQuestionTypes)) {
                     $myField = $field['type'].$myField;
                 }

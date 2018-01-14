@@ -151,32 +151,19 @@ class STATAxmlWriter extends Writer
             $aQuestion['varname'] = viewHelper::getFieldCode($aFieldmap['questions'][$sSGQAkey]);
 
             //set field types for standard vars
-            if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp')
-            {
+            if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_D_DATE;
-            }
-            elseif ($aQuestion['varname'] == 'startlanguage')
-            {
+            } elseif ($aQuestion['varname'] == 'startlanguage') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
-            }
-            elseif ($aQuestion['varname'] == 'token')
-            {
+            } elseif ($aQuestion['varname'] == 'token') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
-            }
-            elseif ($aQuestion['varname'] == 'id')
-            {
+            } elseif ($aQuestion['varname'] == 'id') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
-            }
-            elseif ($aQuestion['varname'] == 'ipaddr')
-            {
+            } elseif ($aQuestion['varname'] == 'ipaddr') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
-            }
-            elseif ($aQuestion['varname'] == 'refurl')
-            {
+            } elseif ($aQuestion['varname'] == 'refurl') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
-            }
-            elseif ($aQuestion['varname'] == 'lastpage')
-            {
+            } elseif ($aQuestion['varname'] == 'lastpage') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             }
 
@@ -209,8 +196,7 @@ class STATAxmlWriter extends Writer
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
 
 
-                if ($aQuestion['type'] == Question::QT_M_MULTIPLE_CHOICE)
-                {
+                if ($aQuestion['type'] == Question::QT_M_MULTIPLE_CHOICE) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -219,9 +205,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                }
-                elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
-                {
+                } elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -230,9 +214,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                }
-                elseif ($aQuestion['type'] == Question::QT_G_GENDER_DROPDOWN)
-                {
+                } elseif ($aQuestion['type'] == Question::QT_G_GENDER_DROPDOWN) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
                         'answer' => gT('Female')
@@ -241,9 +223,7 @@ class STATAxmlWriter extends Writer
                         'code' => 'M',
                         'answer' => gT('Male')
                     );
-                }
-                elseif ($aQuestion['type'] == Question::QT_Y_YES_NO_RADIO)
-                {
+                } elseif ($aQuestion['type'] == Question::QT_Y_YES_NO_RADIO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -252,9 +232,7 @@ class STATAxmlWriter extends Writer
                         'code' => $nvalue,
                         'answer' => gT('No')
                     );
-                }
-                elseif ($aQuestion['type'] == Question::QT_C_ARRAY_YES_UNCERTAIN_NO)
-                {
+                } elseif ($aQuestion['type'] == Question::QT_C_ARRAY_YES_UNCERTAIN_NO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Yes')
@@ -270,7 +248,7 @@ class STATAxmlWriter extends Writer
                 }
                 elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS)
                 {
-                    $aFieldmap['answers'][$aQuestion['qid']]['0']['1']  = array(
+                    $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Increase')
                     );

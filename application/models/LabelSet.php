@@ -88,10 +88,8 @@ class LabelSet extends LSActiveRecord
         if (empty($arLabelSet)) {
             return false;
         }
-        foreach ($arLabelSet->labels as $arLabel)
-        {
-            foreach ($arLabel->labelL10ns as $arLabelL10n)
-            {
+        foreach ($arLabelSet->labels as $arLabel) {
+            foreach ($arLabel->labelL10ns as $arLabelL10n) {
                 $arLabelL10n->delete();    
             }
             $arLabel->delete();

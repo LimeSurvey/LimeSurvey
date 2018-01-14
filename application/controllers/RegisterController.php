@@ -191,7 +191,8 @@ class RegisterController extends LSYii_Controller
      * 
      * @return Array The rendereable array
      */
-    public function getRegisterSuccess($iSurveyId, $iTokenId) {
+    public function getRegisterSuccess($iSurveyId, $iTokenId)
+    {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId);

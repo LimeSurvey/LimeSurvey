@@ -183,8 +183,7 @@ class SurveyObj
 
             case Question::QT_M_MULTIPLE_CHOICE:   //MULTIOPTION
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment')
-                {
+                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment') {
                     //echo "\n -- Branch 1 --";
                     $fullAnswer = $answerCode;
                 } else {

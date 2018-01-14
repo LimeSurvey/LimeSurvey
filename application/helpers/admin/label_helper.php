@@ -136,8 +136,7 @@ function modlabelsetanswers($lid)
 
         // First delete all labels without corresponding code
         $aLabels = Label::model()->findAllByAttributes(['lid'=>$lid]);
-        foreach ($aLabels as $aLabel)
-        {
+        foreach ($aLabels as $aLabel) {
 //            if {}
         }
         debugbreak();
