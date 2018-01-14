@@ -489,6 +489,7 @@ class questions extends Survey_Common_Action
                 $oAnswer->code = 'A1';
                 $oAnswer->sortorder = 0;
                 $oAnswer->scale_id = $i;
+                $oAnswer->assessment_value = 0;
                 $oAnswer->save();
                 
                 $oAnserL10n = new AnswerL10n();

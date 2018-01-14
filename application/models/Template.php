@@ -167,8 +167,9 @@ class Template extends LSActiveRecord
         }
 
         /* If we're here, then the default survey theme is not installed and must be changed */
-        $aTemplateList = self::getTemplateList();
-        $sTemplateName = key($aTemplateList);
+        $aTemplateList = self::model()->search()->getData();
+        $sTemplateName = $aTemplateList[0]->name;
+
         if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
@@ -460,7 +461,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array('vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
+        $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
         return $standardTemplates;
     }
 

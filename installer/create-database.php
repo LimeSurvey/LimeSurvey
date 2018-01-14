@@ -26,7 +26,7 @@ function createDatabase($oDB){
             'qid' => 'integer NOT NULL',
             'code' => 'string(5) NOT NULL',
             'sortorder' => 'integer NOT NULL',
-            'assessment_value' => 'integer NOT NULL',
+            'assessment_value' => 'integer NOT NULL DEFAULT 0',
             'scale_id' => 'integer NOT NULL DEFAULT 0',
         ));
 
@@ -459,7 +459,7 @@ function createDatabase($oDB){
             'name' => "string(128)",
             'ordering' => "integer NULL DEFAULT '0'",
             'level' => "integer NULL DEFAULT '0'",
-            'title' => "string(192)  NOT NULL DEFAULT ''",
+            'title' => "string(168)  NOT NULL DEFAULT ''",
             'position' => "string(192)  NOT NULL DEFAULT 'side'",
             'description' => "text ",
             'active' => "boolean NOT NULL DEFAULT '0'",
@@ -472,7 +472,8 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
-        foreach($surveyMenuRowData=LsDefaultDataSets::getSurveyMenuData() as $surveyMenuRow) {
+        $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
+        foreach ($surveyMenuRowData as $surveyMenuRow) {
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
 

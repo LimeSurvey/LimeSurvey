@@ -1048,6 +1048,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Column assessment_value not null but default to 0.
+         */
+        if ($iOldDBVersion < 343) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>343), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2648,7 +2658,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "user_id" =>  "integer DEFAULT NULL",
         "ordering" =>  "integer DEFAULT '0'",
         "level" =>  "integer DEFAULT '0'",
-        "title" =>  "string(192)  NOT NULL DEFAULT ''",
+        "title" =>  "string(168)  NOT NULL DEFAULT ''",
         "position" =>  "string(192)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
         "changed_at" =>  "datetime",
