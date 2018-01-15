@@ -238,12 +238,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Find which template should be used to render a given view
      * @param  string    $sView           the view (layout) to render
      * @param  Template  $oRTemplate    the template where the custom option page should be looked for
-     * @return Template
+     * @return Template|boolean
      */
     private function getTemplateForView($sView, $oRTemplate)
     {
         while (!file_exists($oRTemplate->viewPath.$sView)) {
-
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
