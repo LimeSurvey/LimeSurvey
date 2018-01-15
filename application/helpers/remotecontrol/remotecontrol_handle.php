@@ -37,6 +37,7 @@ class remotecontrol_handle
      * @access public
      * @param string $username
      * @param string $password
+     * @param string $plugin to be used
      * @return string|array
      */
     public function get_session_key($username, $password, $plugin = 'Authdb')
@@ -44,7 +45,7 @@ class remotecontrol_handle
         $username = (string) $username;
         $password = (string) $password;
         $loginResult = $this->_doLogin($username, $password, $plugin);
-        if ( $loginResult === true) {
+        if ($loginResult === true) {
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $sDatabasetype = Yii::app()->db->getDriverName();
@@ -55,7 +56,7 @@ class remotecontrol_handle
             $session->save();
             return $sSessionKey;
         } else {
-            if(is_string($loginResult)) {
+            if (is_string($loginResult)) {
                 return array('status' => $loginResult);
             }
             return array('status' => 'Invalid user name or password');
@@ -2976,21 +2977,22 @@ class remotecontrol_handle
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
-     * @return bool
+     * @param string $sPlugin plugin to be used
+     * @return bool|string
      */
-    protected function _doLogin($sUsername, $sPassword,$sPlugin)
+    protected function _doLogin($sUsername, $sPassword, $sPlugin)
     {
-        
         /* @var $identity LSUserIdentity */
         $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
         $event = new PluginEvent('remoteControlLogin');
-        $event->set('plugin',$sPlugin);
-        $event->set('username',$sUsername);
-        $event->set('password',$sPassword);
+        $event->set('plugin', $sPlugin);
+        $event->set('username', $sUsername);
+        $event->set('password', $sPassword);
         App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
-            if($identity->errorMessage) {
+            if( $identity->errorMessage ) {
+                // Be sure to don't return an empty string
                 return $identity->errorMessage;
             }
             return false;
@@ -3021,7 +3023,7 @@ class remotecontrol_handle
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {
-                    Yii::app()->session[$k] = $v;
+            Yii::app()->session[$k] = $v;
         }
         Yii::app()->user->setId($aUserData['uid']);
 
@@ -3045,7 +3047,7 @@ class remotecontrol_handle
         $oResult = Session::model()->findByPk($sSessionKey);
 
         if (is_null($oResult)) {
-                    return false;
+            return false;
         } else {
             $this->_jumpStartSession($oResult->data);
             return true;
