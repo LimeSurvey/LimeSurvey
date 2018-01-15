@@ -37270,7 +37270,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('span', {
       staticClass: "question_text_ellipsize pull-left",
       style: ({
-        width: _vm.itemWidth
+        'max-width': _vm.itemWidth
       })
     }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
