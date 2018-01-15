@@ -445,7 +445,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             //If user cannot login via LDAP: setAuthFailure
             if (($user->uid == 1 && !$this->get('allowInitialUser'))
                 ||
-                !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
+                !Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_ldap',":uid"=>$user->uid)) // Don't use Permission::model()->hasGlobalPermission , else plugin event updated
             ) {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
                 return;
