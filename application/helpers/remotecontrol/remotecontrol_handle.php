@@ -384,6 +384,7 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
+                if (@$aSurveyData['active'] == 'Y') unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
                 // Remove invalid fields
