@@ -354,7 +354,6 @@ class remotecontrol_handle
      * Properties available are restricted
      * * Always
      *     * sid
-     *     * active
      *     * language
      *     * additional_languages
      * * If survey is active
@@ -385,8 +384,7 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                //unset($aSurveyData['owner_id']);
-                unset($aSurveyData['active']);
+                if (@$aSurveyData['active'] == 'Y') unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
                 // Remove invalid fields
