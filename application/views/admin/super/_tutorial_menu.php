@@ -1,5 +1,5 @@
 <?php
-    $aTutorials = Tutorials::model()->getActiveTutorials();
+    $aTutorials = Tutorial::model()->getActiveTutorials();
 ?>
 
 <li class="dropdown">

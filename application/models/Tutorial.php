@@ -16,7 +16,7 @@
  * The followings are the available model relations:
  * @property TutorialEntry[] $tutorialEntries
  */
-class Tutorials extends LSActiveRecord
+class Tutorial extends LSActiveRecord
 {
     
     /**

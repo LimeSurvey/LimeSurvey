@@ -12,7 +12,7 @@
  * @property string $page
  * @property integer $usergroup UserGroup ID
  */
-class Boxes extends CActiveRecord
+class Box extends CActiveRecord
 {
     /** @inheritdoc */
     public function tableName()

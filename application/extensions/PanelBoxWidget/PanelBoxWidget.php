@@ -32,13 +32,13 @@ class PanelBoxWidget extends CWidget
 
     public function getBoxes()
     {
-        $boxes = Boxes::model()->findAll(array('order' => 'position ASC'));
+        $boxes = Box::model()->findAll(array('order' => 'position ASC'));
         return $boxes;
     }
 
     protected function setValuesFromDb()
     {
-        $box = Boxes::model()->find(array(
+        $box = Box::model()->find(array(
             'condition' => 'position=:positionId',
             'params' => array(':positionId' => $this->dbPosition)
         ));

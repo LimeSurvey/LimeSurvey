@@ -59,7 +59,7 @@ class TutorialsController extends Survey_Common_Action
             $this->getController()->redirect(['/admin']);
         }
         $tutorialname = Yii::app()->request->getParam('tutorialname', '');
-        $model = Tutorials::model()->find('name=:name', [':name' => $tutorialname]);
+        $model = Tutorial::model()->find('name=:name', [':name' => $tutorialname]);
         $aTutorialArray = $model->getTutorialDataArray($tutorialname);
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -143,7 +143,7 @@ class TutorialsController extends Survey_Common_Action
 
     public function triggerfinished($tid)
     {
-        $oTutorial = Tutorials::model()->find($tid);
+        $oTutorial = Tutorial::model()->find($tid);
         $oTutorial->setFinished(App()->user->id);
         echo '{"success": true}';
     }
@@ -158,7 +158,7 @@ class TutorialsController extends Survey_Common_Action
         //$this->checkPermission();
 
         $data = array();
-        $data['model'] = Tutorials::model();
+        $data['model'] = Tutorial::model();
         //App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('tutorials/index'), $data);
     }
@@ -191,7 +191,7 @@ class TutorialsController extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model = Tutorials::model()->findByPk($id);
+        $model = Tutorial::model()->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
