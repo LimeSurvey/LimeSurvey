@@ -982,7 +982,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
-            $dataReader = $oDB->createCommand("select qid, code from {{answers}} group by qid, code")->query();
+            $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
             $iCounter = 1;
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id='{$row['scale_id']}'")->execute();
