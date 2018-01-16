@@ -969,7 +969,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropColumn('{{groups}}', 'group_name');
             $oDB->createCommand()->dropColumn('{{groups}}', 'description');
             $oDB->createCommand()->dropColumn('{{groups}}', 'language');    
-            
             // Answers table
             // Answers now have a proper answer ID - wohoo!
             $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
@@ -982,10 +981,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
+            $oDB->createCommand()->createIndex('answer_idx_10','{{answers}}',['qid','code','scale_id']);
             $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
             $iCounter = 1;
             while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id='{$row['scale_id']}'")->execute();
+                $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id={$row['scale_id']}")->execute();
                 $iCounter++;
             }
             $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
@@ -996,6 +996,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{answers}}', 'aid', "pk", false);
             $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
             $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
+            $oDB->createCommand()->dropindex('answer_idx_10','{{answers}}');
+            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
             // Labels table
             // label_l10ns
