@@ -326,8 +326,3 @@ function alertSurveyDialog(text,title)
 {
     alert(text);
 }
-
-/* document ready function */
-$(document).on('ready pjax:scriptcomplete', function () {
-    activateLanguageChanger();
-});
