@@ -136,16 +136,22 @@ function manageIndex(){
  */
 function activateLanguageChanger(){
     $('.form-change-lang a.ls-language-link').on('click', function() {
-        if(!$(this).closest('form').length){
+        var closestForm = $(this).closest('form');
+        if (!closestForm.length) {
+            var limesurveyForm = $('form#limesurvey');
             /* we are not in a forum, can not submit directly */
-            if($('form#limesurvey').length==1){
+            if (limesurveyForm.length == 1) {
                 /* The limesurvey form exist in document, move select and button inside and click */
-                $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
                 var newLang = $(this).data('limesurvey-lang');
-                $("<input type='hidden'>").attr('name','lang').val(newLang).appendTo($('form#limesurvey'));
-                $(this).closest('.ls-language-changer-item').find("[type='submit']").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey'));
-                $('form#limesurvey').submit();
-            }else{
+                // Remove existing lang input.
+                limesurveyForm.find('input[name="lang"]').remove();
+                // Append new input.
+                $('<input type="hidden">')
+                    .attr('name', 'lang')
+                    .val(newLang)
+                    .appendTo(limesurveyForm);
+                limesurveyForm.submit();
+            } else {
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){
                     /* If we have a target url : just move location to this url with lang set */
