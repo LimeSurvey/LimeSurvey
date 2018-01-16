@@ -751,7 +751,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName   = $this->template->extends;
-            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName)->prepareTemplateRendering($sMotherTemplateName, null);
+            $instance = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
+            $instance->template->checkTemplate();
+            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
         }
     }
 

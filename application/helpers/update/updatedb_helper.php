@@ -1073,7 +1073,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 [
                     'extends' => 'vanilla',
                 ],
-                "extends=''"
+                "extends = '' AND name != 'vanilla'"
             );
 
             // If vanilla template is missing, install it.

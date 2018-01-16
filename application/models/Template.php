@@ -198,11 +198,15 @@ class Template extends LSActiveRecord
         // Check that extended template is installed.
         $this->checkTemplateExtends();
 
+        // A template should not extend it self.
+        $this->checkExtendsItSelf();
+
         return true;
     }
 
     /**
-     * Returns false if any of the extended templates are not installed; otherwise true.
+     * Throws exception if any of the extended templates are not installed; otherwise
+     * returns true.
      * @return boolean
      * @throws Exception if extended template is not installed.
      */
@@ -218,6 +222,23 @@ class Template extends LSActiveRecord
                     )
                 );
             }
+        }
+        return true;
+    }
+
+    /**
+     * @return boolean
+     * @throws Exception if name equals extends.
+     */
+    public function checkExtendsItSelf()
+    {
+        if ($this->name == $this->extends) {
+            throw new Exception(
+                sprintf(
+                    'Error: The template %s extends it self',
+                    $this->name
+                )
+            );
         }
         return true;
     }
