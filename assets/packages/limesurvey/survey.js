@@ -131,17 +131,20 @@ function manageIndex(){
 }
 
 /**
- * Update survey just when select a new language
+ * Reload page when participant selects a new language.
+ * Sets input[name=lang] to new language and submits limesurvey form.
  */
 function activateLanguageChanger(){
-    $('.lctli').on('change','select',function() {
+    $('.form-change-lang a.ls-language-link').on('click', function() {
         if(!$(this).closest('form').length){
             /* we are not in a forum, can not submit directly */
             if($('form#limesurvey').length==1){
                 /* The limesurvey form exist in document, move select and button inside and click */
                 $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
-                $("<input type='hidden'>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
-                $(this).closest('.ls-language-changer-item').find("[type='submit']").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey')).click();
+                var newLang = $(this).data('limesurvey-lang');
+                $("<input type='hidden'>").attr('name','lang').val(newLang).appendTo($('form#limesurvey'));
+                $(this).closest('.ls-language-changer-item').find("[type='submit']").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey'));
+                $('form#limesurvey').submit();
             }else{
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){
@@ -174,6 +177,7 @@ function activateLanguageChanger(){
         }
     });
 }
+
 /**
  * Action link with submit object (json) : add params to form and submit
  */
@@ -322,3 +326,8 @@ function alertSurveyDialog(text,title)
 {
     alert(text);
 }
+
+/* document ready function */
+$(document).on('ready pjax:scriptcomplete', function () {
+    activateLanguageChanger();
+});
