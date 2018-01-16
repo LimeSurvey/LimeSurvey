@@ -112,35 +112,30 @@ class Usergroups extends Survey_Common_Action
      * Function responsible to delete a user group.
      * @return void
      */
-    public function delete($ugid)
+    public function delete()
     {
 
         $aViewUrls = array();
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-
+            $ugid = Yii::app()->request->getPost("ugid");
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if ($result->count() > 0) {
-// OK - AR count
                     $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
-
                     if ($delquery_result) {
-                        //Checked)
-                    {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => gT("Success!")));
-                    }
+                        Yii::app()->user->setFlash("success", gT("Successfully deleted usergroup."));
                     } else {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Could not delete user group.")));
+                        Yii::app()->user->setFlash("notice", gT("Could not delete user group."));
                     }
                 }
             } else {
-                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => gT("Could not delete user group. No group selected.")));
+                Yii::app()->user->setFlash("error", gT("Could not delete user group. No group selected."));
             }
         }
 
-        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
+        $this->getController()->redirect($this->getController()->createUrl('/admin/usergroups/sa/view'));
     }
 
 

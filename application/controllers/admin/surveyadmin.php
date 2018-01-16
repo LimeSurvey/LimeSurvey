@@ -388,6 +388,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function getAjaxQuestionGroupArray($surveyid)
     {
         $iSurveyID = sanitize_int($surveyid);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
@@ -450,6 +456,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function getAjaxMenuArray($surveyid, $position = '')
     {
         $iSurveyID = sanitize_int($surveyid);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $menus = $survey->getSurveyMenus($position);
@@ -1792,10 +1804,9 @@ class SurveyAdmin extends Survey_Common_Action
             false,
             false
         );
-
-
-
         }
+        $this->getController()->redirect(Yii::app()->request->urlReferrer);
+
     }
 
     /**

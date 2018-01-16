@@ -523,6 +523,7 @@ class TemplateConfiguration extends TemplateConfig
 
             //
 
+
         $OptionLink = '';
 
         if ($this->hasOptionPage) {
@@ -534,7 +535,6 @@ class TemplateConfiguration extends TemplateConfig
                     ".gT('Theme options')."
                 </a>";
         }
-
 
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
@@ -581,9 +581,8 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-
-
-        $oRTemplate = $this->prepareTemplateRendering($this->template->name);
+        $filteredName = Template::templateNameFilter($this->template->name);
+        $oRTemplate = $this->prepareTemplateRendering($filteredName);
 
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {

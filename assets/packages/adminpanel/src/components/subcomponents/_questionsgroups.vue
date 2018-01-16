@@ -183,7 +183,7 @@ export default {
                     <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                         <i class="fa fa-bars bigIcons dragPointer" draggable="true" @dragend="endDraggingGroup($event, questiongroup)" @dragstart="startDraggingGroup($event, questiongroup)">&nbsp;</i>
                         <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
-                            <span class="question_text_ellipsize pull-left" :style="{ width: itemWidth }"> {{questiongroup.group_name}} </span>
+                            <span class="question_text_ellipsize pull-left" :style="{ 'max-width': itemWidth }"> {{questiongroup.group_name}} </span>
                             <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                         </a>
                         <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>

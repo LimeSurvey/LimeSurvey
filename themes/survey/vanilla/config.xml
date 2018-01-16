@@ -75,8 +75,8 @@
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
             <add>pjax</add>
-            <add>font-noto</add>
             <add>moment</add>
+            <add>font-noto</add>
         </packages>
 
         <!--

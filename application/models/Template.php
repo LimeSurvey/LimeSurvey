@@ -156,7 +156,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && (self::checkTemplateXML($oTemplate->folder))) {
+        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -168,7 +168,15 @@ class Template extends LSActiveRecord
 
         /* If we're here, then the default survey theme is not installed and must be changed */
         $aTemplateList = self::model()->search()->getData();
-        $sTemplateName = $aTemplateList[0]->name;
+        $i = 0;
+        while ($sTemplateName == $sRequestedTemplate) {
+            if (!empty($aTemplateList[$i])) {
+                $sTemplateName = $aTemplateList[$i]->name;
+            } else {
+                throw new Exception('Could not find a working installed template');
+            }
+            $i++;
+        }
 
         if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
@@ -179,6 +187,39 @@ class Template extends LSActiveRecord
         } else {
             throw new Exception('No survey theme installed !!!!');
         }
+    }
+
+    /**
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplate()
+    {
+        // Check that extended template is installed.
+        $this->checkTemplateExtends();
+
+        return true;
+    }
+
+    /**
+     * Returns false if any of the extended templates are not installed; otherwise true.
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplateExtends()
+    {
+        if (!empty($this->extends)) {
+            $oRTemplate = self::model()->findByPk($this->extends);
+            if (empty($oRTemplate)) {
+                throw new Exception(
+                    sprintf(
+                        'Extended template "%s" is not installed.',
+                        $this->extends
+                    )
+                );
+            }
+        }
+        return true;
     }
 
     /**
