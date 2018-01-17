@@ -153,7 +153,7 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
 
-        $dataProvider = new CActiveDataProvider('Boxes');
+        $dataProvider = new CActiveDataProvider('Box');
         $aData = array(
             'dataProvider'=>$dataProvider,
             'bShowLogo'=>(getGlobalSetting('show_logo') == "show"),
@@ -187,7 +187,7 @@ class homepagesettings extends Survey_Common_Action
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Boxes the loaded model
+     * @return Box the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)

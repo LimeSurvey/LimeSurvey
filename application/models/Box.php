@@ -218,7 +218,7 @@ class Box extends CActiveRecord
 
     /**
      * @inheritdoc
-     * @return Boxes the static model class
+     * @return Box the static model class
      */
     public static function model($className = __CLASS__)
     {
