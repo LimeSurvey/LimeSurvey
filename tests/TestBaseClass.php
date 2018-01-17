@@ -54,8 +54,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            echo 'Fatal error: found no survey file';
-            exit(1);
+            self::assertTrue(false, 'Found no survey file ' . $fileName);
         }
 
         $translateLinksFields = false;
@@ -70,8 +69,7 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            echo 'Fatal error: Could not import survey';
-            exit(2);
+            self::assertTrue(false, 'Could not import survey file ' . $fileName);
         }
     }
 
@@ -85,8 +83,13 @@ class TestBaseClass extends TestCase
 
         if (self::$testSurvey) {
             if (!self::$testSurvey->delete()) {
-                echo 'Fatal error: Could not clean up survey ' . self::$testSurvey->sid . '; errors: ' . json_encode(self::$testSurvey->errors);
-                exit(3);
+                self::assertTrue(
+                    false,
+                    'Fatal error: Could not clean up survey '
+                    . self::$testSurvey->sid
+                    . '; errors: '
+                    . json_encode(self::$testSurvey->errors)
+                );
             }
             self::$testSurvey = null;
         }
