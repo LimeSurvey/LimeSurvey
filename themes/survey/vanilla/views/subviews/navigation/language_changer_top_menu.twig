@@ -49,27 +49,6 @@
         </ul>
     </li>
 
-    {#
-        Generates a simple bootstrap HTML button using the Yii widget.
-        @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh2
-        You can add remove attribute to the button via the array aButtonhtmlOptions
-    #}
-    {% set aButtonhtmlOptions = {
-            'id'   : 'changlangButton',
-            'type' : 'submit',
-            'value': 'changelang',
-            'name' : 'move',
-            'class': 'btn btn-default ls-js-hidden',
-            }
-    %}
-
-    {{
-        C.Html.htmlButton(
-        ("Change the language" | gT ),
-        aButtonhtmlOptions
-        )
-    }}
-
 {% endif %}
 
 {{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('." ~ aSurveyInfo.class.lctdropdownlia ~ "', 'form#limesurvey'); ", POS_READY) }}

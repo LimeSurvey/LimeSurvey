@@ -123,8 +123,6 @@ var ThemeScripts = function(){
             /* The limesurvey form exist in document, move select and button inside and click */
             $(selectorGlobalForm+" [name='lang']").remove();                        // Remove existing lang selector
             $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
-            $('#changlangButton').clone().appendTo($(selectorGlobalForm)).click();
-
         });
     };
 
