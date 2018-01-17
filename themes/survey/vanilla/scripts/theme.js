@@ -98,12 +98,13 @@ var ThemeScripts = function(){
         });
     }
 
+    /*
     var initLanguageChanger = function(selectorItem, selectorGlobalForm){
         $(selectorItem).on('change',function() {
             var lang = $(this).val();
             logObject.log(lang, 'changed');
-            // If there are no form : we can't use it */
-            /* No form, not targeturl : just see what happen */
+            // If there are no form : we can't use it
+            // No form, not targeturl : just see what happen
             var target = window.location.href;
             $("<form>", {
                 "class":'ls-js-hidden',
@@ -113,6 +114,7 @@ var ThemeScripts = function(){
             }).appendTo('body').submit();
         });
     };
+    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -219,7 +221,6 @@ var ThemeScripts = function(){
         fixBodyPadding : fixBodyPadding,
         hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
-        initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger,
         log: logObject
     }

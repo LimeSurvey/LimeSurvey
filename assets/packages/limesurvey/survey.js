@@ -150,7 +150,10 @@ function activateLanguageChanger(){
                     .attr('name', 'lang')
                     .val(newLang)
                     .appendTo(limesurveyForm);
+                // Append move type.
+                $('<input type="hidden" name="move" value="changelang" />').appendTo(limesurveyForm);
                 limesurveyForm.submit();
+                // TODO: Check all code below. When does it happen?
             } else {
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){
