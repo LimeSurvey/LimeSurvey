@@ -16,19 +16,12 @@
 <!-- answer -->
 
 <ul class="{{coreClass}} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{name}}">
-    {{sRows}}
+    {% for aRow in aRows %}
+        {% include './survey/questions/answer/5pointchoice/rows/item_row.twig' with aRow only %}
+    {% endfor %}
 </ul>
 
 {#/* Value for expression manager javascript (use id) ; no need to submit */#}
-<input type="hidden" name="java{name}" id="java{$name}" disabled value={{sessionValue}} />
+<input type="hidden" name="java{{name}}" id="java{{name}}" disabled value={{sessionValue}} />
 
-
-{% if slider_rating==1 %}
-    {{ registerScript('doRatingStar_' ~ sliderId, "alert('Not loading'); doRatingStar(" ~ sliderId ~ "); ", POS_POSTSCRIPT) }}
-{% elseif slider_rating==2 %}
-    {{ registerScript("doRatingSlider_" ~ sliderId, "
-        var doRatingSlider_" ~ sliderId ~ "= new getRatingSlider( " ~ sliderId ~ ");
-        doRatingSlider_" ~ sliderId ~ "();
-    ", POS_POSTSCRIPT)}}
-{% endif %}
 
