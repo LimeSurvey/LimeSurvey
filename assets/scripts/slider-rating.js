@@ -29,9 +29,15 @@ function getRatingSlider(qID){
     calculateMapObjects = function(){
       var maps = {};
       //the map to the relative position based on the container for screens >640px
-      var mapToStickToSelection = { 1 : 31 , 2 : 123, 3 : 214, 4 : 304, 5 : 397, 6 : 476};
+      var mapToStickToSelection = { 1 : 31 , 2 : 123, 3 : 214, 4 : 304, 5 : 397};
       //the map to the relative position based on the container for screens <640px
-      var mapToStickToSelectionSmallScreen = { 1 : 16 , 2 : 72, 3 : 127, 4 : 182, 5 : 236, 6 : 286};
+      var mapToStickToSelectionSmallScreen = { 1 : 16 , 2 : 72, 3 : 127, 4 : 182, 5 : 236};
+
+      if(checkHasNoAnswerOption()) {
+        mapToStickToSelection[6] = 476;
+        mapToStickToSelectionSmallScreen[6] = 286;
+      }
+
       if( $(window).width() < 640){
         maps.selection = mapToStickToSelectionSmallScreen;
       } else {
@@ -39,9 +45,15 @@ function getRatingSlider(qID){
       }
 
       //the map to the field with attributes min and max for screens >640px
-      var mapToStickToSelection = { 1 : {min: 0, max:78} , 2 : {min: 78, max:171}, 3 : {min: 171, max:264}, 4 : {min: 264, max:357}, 5 : {min: 357, max:450}, 6 : {min: 450, max:543}};
+      var mapToStickToSelection = { 1 : {min: 0, max:78} , 2 : {min: 78, max:171}, 3 : {min: 171, max:264}, 4 : {min: 264, max:357}, 5 : {min: 357, max:543}};
       //the map to the field with attributes min and max for screens <640px
-      var mapToStickToSelectionSmallScreen = { 1 : {min: 0, max:44}  , 2 : {min: 44, max:100} , 3 : {min: 100, max:156} , 4 : {min: 156, max:212} , 5 : {min: 212, max:268}, 6 : {min: 268, max:324} };
+      var mapToStickToSelectionSmallScreen = { 1 : {min: 0, max:44}  , 2 : {min: 44, max:100} , 3 : {min: 100, max:156} , 4 : {min: 156, max:212} , 5 : {min: 212, max:324}};
+      if(checkHasNoAnswerOption()) {
+        mapToStickToSelection[6] = {min: 450, max:543};
+        mapToStickToSelectionSmallScreen[6] = {min: 268, max:324};
+        mapToStickToSelection[5] = {min: 357, max:450};
+        mapToStickToSelectionSmallScreen[5] = {min: 212, max:268};
+      }
       if( $(window).width() < 640){
         maps.borders = mapToStickToSelectionSmallScreen;
       } else {
@@ -139,7 +151,6 @@ function getRatingSlider(qID){
       }
       //Add the "no answer" label, if the question need one, also add the mandatory class to the sliderline
       if(!checkHasNoAnswerOption()){
-        package.sliderLine.addClass('mandatory');
         package.sliderLine.addClass('mandatory');
       } else {
         package.sliderInnerHtmlElement.append(package.sliderLabelNoAnswer);
