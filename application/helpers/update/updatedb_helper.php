@@ -1050,7 +1050,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     "template_name = 'fruity'"
                 );
             } else {
-                $fruityConfData[] = [
+                $fruityConfData = [
                     'template_name'     =>  'fruity',
                     'sid'               =>  NULL,
                     'gsid'              =>  NULL,
@@ -1066,7 +1066,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'packages_ltr'      => NULL,
                     'packages_rtl'      => NULL
                 ];
-                $oDB->createCommand()->insert('{{template_configuration}}', $fruityConf);
+                $oDB->createCommand()->insert('{{template_configuration}}', $fruityConfData);
             }
             $bootswatchConf = $oDB
                 ->createCommand()
@@ -1090,7 +1090,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     "template_name = 'bootswatch'"
                 );
             } else {
-                $bootswatchConfData[] = [
+                $bootswatchConfData = [
                     'template_name'     =>  'bootswatch',
                     'sid'               =>  NULL,
                     'gsid'              =>  NULL,

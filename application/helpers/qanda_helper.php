@@ -777,7 +777,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = [];
 
-    $sRows = "";
+    $aRows = array();;
     for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {
@@ -785,7 +785,7 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
 
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => $fp,
             'id'                     => $ia[1].$fp,
@@ -793,7 +793,7 @@ function do_5pointchoice($ia)
             'itemExtraClass'         => '',
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
-            ), true);
+            );
     }
 
     if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
@@ -802,7 +802,7 @@ function do_5pointchoice($ia)
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $checkedState = ' CHECKED ';
         }
-        $aData = array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => "",
             'id'                     => $ia[1],
@@ -811,7 +811,6 @@ function do_5pointchoice($ia)
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         );
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', $aData, true);
 
     }
     $sessionValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
@@ -824,6 +823,10 @@ function do_5pointchoice($ia)
         $slider_rating = 1;
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'star-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript('doRatingSlider_'.$ia[0], "
+            var doRatingSlider_".$ia[1]."= new getRatingSlider('".$ia[0]."');
+            doRatingSlider_".$ia[1]."();
+        ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     if ($aQuestionAttributes['slider_rating'] == 2) {
@@ -831,6 +834,7 @@ function do_5pointchoice($ia)
         Yii::app()->getClientScript()->registerPackage('emoji');
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'slider-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
 
@@ -840,7 +844,7 @@ function do_5pointchoice($ia)
         'name'          => $ia[1],
         'basename'      => $ia[1],
         'sessionValue'  => $sessionValue,
-        'sRows'         => $sRows,
+        'aRows'         => $aRows,
         'slider_rating' => $slider_rating,
 
         ), true);

@@ -98,12 +98,13 @@ var ThemeScripts = function(){
         });
     }
 
+    /*
     var initLanguageChanger = function(selectorItem, selectorGlobalForm){
         $(selectorItem).on('change',function() {
             var lang = $(this).val();
             logObject.log(lang, 'changed');
-            // If there are no form : we can't use it */
-            /* No form, not targeturl : just see what happen */
+            // If there are no form : we can't use it
+            // No form, not targeturl : just see what happen
             var target = window.location.href;
             $("<form>", {
                 "class":'ls-js-hidden',
@@ -113,6 +114,7 @@ var ThemeScripts = function(){
             }).appendTo('body').submit();
         });
     };
+    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -121,8 +123,6 @@ var ThemeScripts = function(){
             /* The limesurvey form exist in document, move select and button inside and click */
             $(selectorGlobalForm+" [name='lang']").remove();                        // Remove existing lang selector
             $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
-            $('#changlangButton').clone().appendTo($(selectorGlobalForm)).click();
-
         });
     };
 
@@ -184,6 +184,9 @@ var ThemeScripts = function(){
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
+
+            // Bind language changer onclick event.
+            activateLanguageChanger();
         });
 
         /**
@@ -216,7 +219,6 @@ var ThemeScripts = function(){
         fixBodyPadding : fixBodyPadding,
         hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
-        initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger,
         log: logObject
     }

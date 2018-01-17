@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-namespace ls\tests;
+namespace LimeSurvey\tests;
 
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
@@ -21,7 +21,7 @@ use Facebook\WebDriver\Exception\TimeOutException;
 /**
  * Class TestBaseClassWeb
  * this is the base class for functional tests that need browser simulation
- * @package ls\tests
+ * @package LimeSurvey\tests
  */
 class TestBaseClassWeb extends TestBaseClass
 {

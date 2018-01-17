@@ -104,9 +104,9 @@ function doRatingStar(qID) {
       var thischoice=$(this).data('star');
       //toggle the em-action on the hidden input
       answersList.find("input[type=radio]").prop('checked',false);
-      answersList.find("input[value='"+thischoice+"']").prop('checked',true).trigger('click');
+      answersList.find("input[value='"+thischoice+"']").prop('checked',true).trigger('change');
       //clean up classes
-      $(this).siblings('.star-rating').removeClass("star-rated").removeClass("star-rated-on");
+      $(this).siblings('.star-rating').removeClass("star-thisrated").removeClass("star-rated").removeClass("star-rated-on");
       //mark the chosen star
       $(this).addClass("star-rated").addClass("star-thisrated").addClass("star-rated-on");
       //iterate through the siblings to mark the stars lower than the current
@@ -118,6 +118,7 @@ function doRatingStar(qID) {
       // if cancel, remove all classes
       if($(this).hasClass('star-cancel')){
         $(this).siblings('.star-rating').removeClass("star-rated-on").removeClass("star-rated");
+        answersList.find('.noanswer-item').find("input[type=radio]").prop('checked',true).trigger('change');
       }
 
     });

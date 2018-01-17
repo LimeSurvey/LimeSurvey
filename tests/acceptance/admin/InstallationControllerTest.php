@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace LimeSurvey\tests\acceptance\admin;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
