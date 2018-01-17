@@ -1,7 +1,20 @@
 <?php
+/**
+ *  LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
-namespace ls\tests;
+namespace LimeSurvey\tests\acceptance\question;
 
+use LimeSurvey\tests\TestBaseClass;
+use LimeSurvey\tests\DummyController;
 
 /**
  * @since 2017-06-13
@@ -9,80 +22,74 @@ namespace ls\tests;
  */
 class DateTimeTest extends TestBaseClass
 {
-
     /**
      * Import survey in tests/surveys/.
      */
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-
         $_POST = [];
         $_SESSION = [];
-
         $surveyFile = self::$surveysFolder.'/limesurvey_survey_975622.lss';
         self::importSurvey($surveyFile);
-
     }
-
     /**
      * "currentQset" in EM.
      */
     protected function getQuestionSetForQ2(\Question $question, \QuestionGroup $group, $sgqa)
     {
         $qset = array($question->qid => array
+        (
+            'info' => array
             (
-                'info' => array
-                (
-                    'relevance' => '1',
-                    'grelevance' => '',
-                    'qid' => $question->qid,
-                    'qseq' => 1,
-                    'gseq' => 0,
-                    'jsResultVar_on' => 'answer' . $sgqa,
-                    'jsResultVar' => 'java' . $sgqa,
-                    'type' => 'D',
-                    'hidden' => false,
-                    'gid' => $group->gid,
-                    'mandatory' => 'N',
-                    'eqn' => '',
-                    'help' => '',
-                    'qtext' => '',
-                    'code' => 'q2',
-                    'other' => 'N',
-                    'default' => null,
-                    'rootVarName' => 'q2',
-                    'rowdivid' => '',
-                    'aid' => '',
-                    'sqid' => '',
-                ),
-                'relevant' => true,
+                'relevance' => '1',
+                'grelevance' => '',
+                'qid' => $question->qid,
+                'qseq' => 1,
+                'gseq' => 0,
+                'jsResultVar_on' => 'answer' . $sgqa,
+                'jsResultVar' => 'java' . $sgqa,
+                'type' => 'D',
                 'hidden' => false,
-                'relEqn' => '',
-                'sgqa' => $sgqa,
-                'unansweredSQs' => $sgqa,
-                'valid' => true,
-                'validEqn' => '',
-                'prettyValidEqn' => '',
-                'validTip' => '',
-                'prettyValidTip' => '',
-                'validJS' => '',
-                'invalidSQs' => '',
-                'relevantSQs' => $sgqa,
-                'irrelevantSQs' => '',
-                'subQrelEqn' => '',
-                'mandViolation' => false,
-                'anyUnanswered' => true,
-                'mandTip' => '',
-                'message' => '',
-                'updatedValues' => array(),
-                'sumEqn' => '',
-                'sumRemainingEqn' => ''
-            )
+                'gid' => $group->gid,
+                'mandatory' => 'N',
+                'eqn' => '',
+                'help' => '',
+                'qtext' => '',
+                'code' => 'q2',
+                'other' => 'N',
+                'default' => null,
+                'rootVarName' => 'q2',
+                'rowdivid' => '',
+                'aid' => '',
+                'sqid' => '',
+            ),
+            'relevant' => true,
+            'hidden' => false,
+            'relEqn' => '',
+            'sgqa' => $sgqa,
+            'unansweredSQs' => $sgqa,
+            'valid' => true,
+            'validEqn' => '',
+            'prettyValidEqn' => '',
+            'validTip' => '',
+            'prettyValidTip' => '',
+            'validJS' => '',
+            'invalidSQs' => '',
+            'relevantSQs' => $sgqa,
+            'irrelevantSQs' => '',
+            'subQrelEqn' => '',
+            'mandViolation' => false,
+            'anyUnanswered' => true,
+            'mandTip' => '',
+            'message' => '',
+            'updatedValues' => array(),
+            'sumEqn' => '',
+            'sumRemainingEqn' => ''
+        )
         );
         return $qset;
     }
-
     /**
      * Test wrong date input and error message.
      * @group datewronginput
@@ -91,14 +98,10 @@ class DateTimeTest extends TestBaseClass
     {
         $contr = new DummyController('dummyid');
         \Yii::app()->setController($contr);
-
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
-
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
-
         $em = \LimeExpressionManager::singleton();
         $em->setCurrentQset($qset);
-
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
@@ -109,40 +112,31 @@ class DateTimeTest extends TestBaseClass
             false,
             $LEMdebugLevel
         );
-
         $qid = $question->qid;
         $gseq = 0;
         $_POST['relevance' . $qid] = 1;
         $_POST['relevanceG' . $gseq] = 1;
         $_POST[$sgqa] = 'asd';
-
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $this->assertNotEmpty($result);
         $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
         $this->assertEquals('INVALID', $result[$sgqa]['value']);
-
         $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
         \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
         $flashes = \Yii::app()->user->getFlashes();
-
         $this->assertNotEmpty($flashes);
         $this->assertEquals(1, count($flashes), 'One error message');
-
         \Yii::app()->user->setStateKeyPrefix($originalPrefix);
     }
-
     /**
      * Test correct date.
      */
     public function testCorrectDateFormat()
     {
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
-
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
-
         $em = \LimeExpressionManager::singleton();
         $em->setCurrentQset($qset);
-
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
@@ -153,27 +147,21 @@ class DateTimeTest extends TestBaseClass
             false,
             $LEMdebugLevel
         );
-
         $qid = $question->qid;
         $gseq = 0;
         $_POST['relevance' . $qid] = 1;
         $_POST['relevanceG' . $gseq] = 1;
         $_POST[$sgqa] = '23/12/2016';
-
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $this->assertNotEmpty($result);
         $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
         $this->assertEquals('2016-12-23 00:00', $result[$sgqa]['value']);
-
         $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
         \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
         $flashes = \Yii::app()->user->getFlashes();
-
         $this->assertEmpty($flashes, 'No error message');
-
         \Yii::app()->user->setStateKeyPrefix($originalPrefix);
     }
-
     /**
      * q1 is hidden question with default answer "now".
      */

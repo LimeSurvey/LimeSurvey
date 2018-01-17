@@ -109,6 +109,7 @@ third_party/composer/installed\.json
 !.eslintignore
 !.eslint.json
 !.eslintrc.json
+!.travis.yml
 
 ## ignore Vagrantfile
 Vagrantfile
