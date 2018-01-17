@@ -1652,6 +1652,11 @@ class SurveyRuntimeHelper
         //$oTemplate->registerAssets();
     }
 
+    /**
+     * Set alanguageChanger.show to true if we need to show
+     * the language changer.
+     * @return void
+     */
     private function makeLanguageChanger()
     {
         $this->aSurveyInfo['alanguageChanger']['show'] = false;
