@@ -937,11 +937,12 @@ class SurveyRuntimeHelper
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
             $_SESSION[$this->LEMsessid]['test'] = time();
 
-            // TODO: Find out why language is not fetched correctly the first time.
-            $this->aSurveyInfo = getSurveyInfo(
+            // TODO: Find out why language is not fetched correctly the first time. Where is s_lang set?
+            $tmpSurveyInfo = getSurveyInfo(
                 $this->thissurvey['sid'],
                 $_SESSION['survey_'.$this->thissurvey['sid']]['s_lang']
             );
+            $this->aSurveyInfo = array_merge($this->aSurveyInfo, $tmpSurveyInfo);
 
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
