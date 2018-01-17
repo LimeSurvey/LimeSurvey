@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * Subclass of Facebook webdriver.
@@ -14,11 +15,14 @@ use Facebook\WebDriver\WebDriverBy;
 class LimeSurveyWebDriver extends RemoteWebDriver
 {
     /**
+     * Change language using the <select> element
+     * on survey welcome page.
      * @param string $newLang Like 'de' or 'en'.
      * @return void
      */
-    public function changeLanguage($newLang)
+    public function changeLanguageSelect($newLang)
     {
+        // Try with welcome page select first.
         $langSelectOption = $this->findElement(
             WebDriverBy::cssSelector(
                 sprintf(
@@ -28,6 +32,47 @@ class LimeSurveyWebDriver extends RemoteWebDriver
             )
         );
         $langSelectOption->click();
+    }
+
+    /**
+     * Change language using links in top-right corner.
+     * @param string $newLang Like 'de' or 'en'.
+     * @return void
+     */
+    public function changeLanguage($newLang)
+    {
+        $langSelect = $this->findElement(
+            WebDriverBy::cssSelector('.form-change-lang')
+        );
+        $langSelect->click();
+        $langSelectLink = $this->findElement(
+            WebDriverBy::cssSelector(
+                sprintf(
+                    '.form-change-lang a[data-limesurvey-lang="%s"]',
+                    $newLang
+                )
+            )
+        );
+        $langSelectLink->click();
+    }
+
+    /**
+     * @param string $sgqa Like 123X345X567
+     * @param string $answer Answer to question.
+     * @return void
+     */
+    public function answerTextQuestion($sgqa, $answer)
+    {
+        $firstQuestion = $this->findElement(
+            WebDriverBy::cssSelector(
+                sprintf(
+                    'textarea[name="%s"], input[name="%s"]',
+                    $sgqa,
+                    $sgqa
+                )
+            )
+        );
+        $firstQuestion->sendKeys($answer);
     }
 
     /**
