@@ -1488,7 +1488,7 @@ class tokens extends Survey_Common_Action
                     unset($fieldsarray);
                 }
 
-                $aViewUrls = array('emailpost');
+                $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
                 if ($ctcount > $emcount) {
@@ -1502,7 +1502,9 @@ class tokens extends Survey_Common_Action
                     }
 
                     $aData['lefttosend'] = $ctcount - $iMaxEmails;
+                    $aData['nosidebodyblock'] = true;
                     $aViewUrls[] = 'emailwarning';
+                    
                 } else {
                     if (!$bInvalidDate && !$bSendError) {
                         $aData['tokenoutput'] .= "<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
@@ -1518,7 +1520,7 @@ class tokens extends Survey_Common_Action
                         $aData['tokenoutput'] .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
                     }
                 }
-
+                $aViewUrls[] = 'emailpost';
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
             } else {
                 $aData['sidemenu']['state'] = false;
