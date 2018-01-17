@@ -1,22 +1,6 @@
 <?php
-namespace LimeSurvey\tests\acceptance\question;
 
-use LimeSurvey\tests\TestBaseClass;
-use LimeSurvey\tests\DummyController;
-use LimeExpressionManager;
-
-/**
- *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
-
+namespace ls\tests;
 
 /**
  * @since 2017-06-16
@@ -24,12 +8,14 @@ use LimeExpressionManager;
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
         $fileName = self::$surveysFolder . '/limesurvey_survey_454287.lss';
         self::importSurvey($fileName);
     }
+
     /**
      * Test the question with lacking default answer expression,
      * date('Y-m-d'), will be filled with ' 00:00' to work with
@@ -40,8 +26,11 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
+
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
+
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
@@ -61,15 +50,19 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             ],
             $result
         );
+
         // Qanda needs this.
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
+
         // Check result from qanda.
         $qanda = \retrieveAnswers(
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
         );
+
         $correctDate = date('d/m/Y');
         $this->assertNotEquals(
             false,
@@ -82,7 +75,9 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             ),
             'Showing todays date'
         );
+
     }
+
     /**
      * Test full default answer expression,
      * date('Y-m-d H:i').
@@ -93,8 +88,11 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         global $thissurvey;
         $thissurvey = self::$surveyId;
         $survey = \Survey::model()->findByPk(self::$surveyId);
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
+
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
+
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
@@ -114,16 +112,21 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             ],
             $result
         );
+
         // Qanda needs this.
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
+
         // Check result from qanda.
         $qanda = \retrieveAnswers(
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
         );
+
         $correctDate = date('d/m/Y');
+
         $this->assertNotEquals(
             false,
             strpos(
@@ -136,6 +139,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             'Showing todays date'
         );
     }
+
     /**
      * Test default answer, date format HH:MM, expression
      * date('HH:ii'). Return empty value.
@@ -144,8 +148,11 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q3', self::$surveyId);
+
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
+
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
@@ -165,21 +172,26 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             ],
             $result
         );
+
         // Qanda needs this.
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
+
         // Check result from qanda.
         $qanda = \retrieveAnswers(
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
         );
+
         // NB: Empty value, since default answer expression is not parsed by qanda.
         $this->assertNotEquals(
             false,
             strpos($qanda[0][1], "value=\"\""),
             'Showing empty date due to wrong expression'
         );
+
         // NB: Value below is todays time in format H:i, which can't be
         // parsed by qanda (expects Y-m-d H:i).
         //print_r($_SESSION['survey_' . self::$surveyId][$sgqa]);

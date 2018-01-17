@@ -4,9 +4,6 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use LimeSurvey\tests\TestBaseClassWeb;
-use LimeSurvey\tests\TestHelper;
-
 /**
  * @since 2017-11-24
  * @group inst
@@ -14,7 +11,7 @@ use LimeSurvey\tests\TestHelper;
 class InstallationControllerTest extends TestBaseClassWeb
 {
     /**
-     *
+     * 
      */
     public static function setupBeforeClass()
     {
@@ -114,7 +111,7 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-
+            
             $dbuserDbType->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);

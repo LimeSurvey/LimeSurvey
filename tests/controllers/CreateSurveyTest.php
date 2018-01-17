@@ -1,17 +1,6 @@
 <?php
-/**
- *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
 
-namespace LimeSurvey\tests\acceptance\admin;
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
@@ -20,7 +9,6 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
-use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * Login and create a survey, add a group
@@ -31,7 +19,7 @@ use LimeSurvey\tests\TestBaseClassWeb;
 class CreateSurveyTest extends TestBaseClassWeb
 {
     /**
-     *
+     * 
      */
     public static function setupBeforeClass()
     {
@@ -40,22 +28,26 @@ class CreateSurveyTest extends TestBaseClassWeb
         if (!$username) {
             $username = 'admin';
         }
+
         $password = getenv('PASSWORD');
         if (!$password) {
             $password = 'password';
         }
+
         // Permission to everything.
         \Yii::app()->session['loginID'] = 1;
+
         // Browser login.
         self::adminLogin($username, $password);
     }
 
     /**
-     *
+     * 
      */
     public static function teardownAfterClass()
     {
         parent::tearDownAfterClass();
+
         // Delete survey.
         $criteria = new \CDbCriteria;
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', 'test survey 1', true, 'AND');
@@ -79,7 +71,9 @@ class CreateSurveyTest extends TestBaseClassWeb
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl('admin');
             self::$webDriver->get($url);
+
             sleep(1);
+
             // Ignore welcome modal.
             try {
                 $button = self::$webDriver->wait(1)->until(
@@ -93,7 +87,9 @@ class CreateSurveyTest extends TestBaseClassWeb
             } catch (TimeOutException $ex) {
                 // Do nothing.
             }
+
             sleep(1);
+
             // Ignore password warning.
             try {
                 $button = self::$webDriver->wait(1)->until(
@@ -107,7 +103,10 @@ class CreateSurveyTest extends TestBaseClassWeb
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
             }
+
+
             sleep(1);
+
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -115,20 +114,27 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $link->click();
+
             // Fill in title.
             $title = self::$webDriver->findElement(WebDriverBy::id('surveyls_title'));
             $title->clear()->sendKeys('test survey 1');
+
             // Click save.
             $save = self::$webDriver->findElement(WebDriverBy::id('save-form-button'));
             $save->click();
+
             sleep(1);
+
             // Remove notification.
             $save = self::$webDriver->findElement(WebDriverBy::cssSelector('button.close.limebutton'));
             $save->click();
+
             sleep(1);
+
             // Go to structure sidebar
             $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorStructureButton'));
             $selectStructureSidebar->click();
+            
 
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
@@ -137,24 +143,31 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $addgroup->click();
+
             // Fill in group title.
             $groupname = self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
             $groupname->clear()->sendKeys('group1');
+
             sleep(1);
+
             // Click save and add question.
             $save = self::$webDriver->findElement(WebDriverBy::id('save-and-new-question-button'));
             $save->click();
             sleep(3);
+
             // Add question title.
             $groupname = self::$webDriver->findElement(WebDriverBy::id('title'));
             $groupname->clear()->sendKeys('question1');
+
             // Click save.
             $save = self::$webDriver->findElement(WebDriverBy::id('save-button'));
             $save->click();
-            sleep(1);
 
+            sleep(1);
+            
             $selectSettingsSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorSettingsButton'));
             $selectSettingsSidebar->click();
+
             // Click "Overview".
             $overview = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -162,17 +175,23 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $overview->click();
+
             sleep(1);
+
             // Click "Activate survey".
             $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
             $overview->click();
+
             // Confirm.
             $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
             $overview->click();
+
             // Click "Overview".
             $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
             $overview->click();
+
             sleep(1);
+
             // Click "Execute survey".
             $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -180,16 +199,21 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $execute->click();
+
             sleep(1);
+
             // Switch to new tab.
             $windowHandles = self::$webDriver->getWindowHandles();
             self::$webDriver->switchTo()->window(
                 end($windowHandles)
             );
+
             sleep(1);
+
             // New tab with active survey.
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
+
             // Get questions.
             $dbo = \Yii::app()->getDb();
             $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
@@ -206,14 +230,18 @@ class CreateSurveyTest extends TestBaseClassWeb
             }
             $this->assertCount(1, $questions, 'We have exactly one question');
             $this->assertTrue(isset($questions['question1']), json_encode(array_keys($questions)));
+
             // Enter answer text.
             $sgqa = $sid . 'X' . $survey->groups[0]->gid . 'X' . $questions['question1']->qid;
             $question = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $question->sendKeys('foo bar');
+
             sleep(1);
+
             // Click submit.
             $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submitButton->click();
+
             // Check so that we see end page.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
             $this->assertEquals(
@@ -221,6 +249,7 @@ class CreateSurveyTest extends TestBaseClassWeb
                 "Thank you!\nYour survey responses have been recorded.",
                 'I can see completed text'
             );
+
             // Check so that response is recorded in database.
             $query = sprintf(
                 'SELECT * FROM {{survey_%d}}',
@@ -229,11 +258,13 @@ class CreateSurveyTest extends TestBaseClassWeb
             $result = $dbo->createCommand($query)->queryAll();
             $this->assertCount(1, $result, 'Exactly one response');
             $this->assertEquals('foo bar', $result[0][$sgqa], '"foo bar" response');
+
             // Switch to first window.
             $windowHandles = self::$webDriver->getWindowHandles();
             self::$webDriver->switchTo()->window(
                 reset($windowHandles)
             );
+
             // Delete survey.
             $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -253,11 +284,14 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $execute->click();
+
             sleep(1);
+
             // Make sure the survey can't be found.
             $query = 'SELECT sid FROM {{surveys}} WHERE sid = ' . $sid;
             $sids = $dbo->createCommand($query)->queryAll();
             $this->assertCount(0, $sids);
+
         } catch (NoSuchElementException $ex) {
             // TODO :Duplicated code.
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);

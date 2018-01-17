@@ -1,21 +1,9 @@
 <?php
-/**
- *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
 
-namespace LimeSurvey\tests\acceptance\surveys;
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverBy;
-use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-11-02
@@ -27,18 +15,23 @@ class GroupRandomizationTest extends TestBaseClassWeb
      * @var int
      */
     public static $surveyId = null;
+
     /**
      */
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass();
+
         self::$testHelper->connectToOriginalDatabase();
+
         \Yii::app()->session['loginID'] = 1;
-        $surveyFile = self::getSurveysFolder().'/limesurvey_survey_88881.lss';
+
+        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
             echo 'Fatal error: found no survey file';
             exit(4);
         }
+
         $translateLinksFields = false;
         $newSurveyName = null;
         try {
@@ -54,6 +47,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
                 'Could not import survey limesurvey_survey_88881.lss: ' . $ex->getMessage()
             );
         }
+
         if ($result) {
             self::$surveyId = $result['newsid'];
         } else {
@@ -61,6 +55,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
             exit(5);
         }
     }
+
     /**
      * Selenium setup.
      */
@@ -71,11 +66,13 @@ class GroupRandomizationTest extends TestBaseClassWeb
             echo 'Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".';
             exit(6);
         }
+
         //$capabilities = DesiredCapabilities::phantomjs();
         //$this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
     }
+
     /**
-     *
+     * 
      */
     public static function teardownAfterClass()
     {
@@ -85,6 +82,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
             exit(8);
         }
     }
+
     /**
      * Tear down fixture.
      */
@@ -93,16 +91,20 @@ class GroupRandomizationTest extends TestBaseClassWeb
         // Close Firefox.
         self::$webDriver->quit();
     }
+
+
     /**
-     *
+     * 
      */
     public function testRunSurvey()
     {
         self::$testHelper->activateSurvey(self::$surveyId);
+
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
             $domain = '';
         }
+
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . $domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -113,6 +115,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
                 'lang' => 'pt'
             )
         );
+
         self::$webDriver->get($url);
         $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
@@ -120,13 +123,17 @@ class GroupRandomizationTest extends TestBaseClassWeb
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
+
         $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
         $text = $body->getText();
+
         // There should be no PHP notice.
         $this->assertTrue(strpos($text, 'PHP notice') === false, $text);
+
         // NB: This is how to take a screenshot, if necessary.
         //$screenshot = self::$webDriver->takeScreenshot();
         //file_put_contents(__DIR__ . '/screenshot.png', $screenshot);
+
         self::$testHelper->deactivateSurvey(self::$surveyId);
     }
 }

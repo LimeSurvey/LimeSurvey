@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\tests;
+namespace ls\tests;
 
 use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
@@ -10,10 +10,12 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
-
+use Facebook\WebDriver\Exception\WebDriverCurlException;
+use Facebook\WebDriver\Exception\NoSuchDriverException;
 
 class TestHelper extends TestCase
 {
+
     /**
      * Import all helpers etc.
      * @return void
@@ -32,6 +34,7 @@ class TestHelper extends TestCase
         \Yii::import('application.helpers.SurveyRuntimeHelper', true);
         \Yii::app()->loadHelper('admin/activate');
     }
+
     /**
      * @param string $title
      * @param int $surveyId
@@ -46,22 +49,28 @@ class TestHelper extends TestCase
                 'sid'   => $surveyId
             ]
         );
+
         $this->assertNotEmpty($question);
+
         $group = \QuestionGroup::model()->find(
             'gid = :gid',
             [
                 'gid' => $question->gid
             ]
         );
+
         $this->assertNotEmpty($group);
+
         $sgqa = sprintf(
             '%sX%sX%s',
             $surveyId,
             $group->gid,
             $question->qid
         );
+
         return [$question, $group, $sgqa];
     }
+
     /**
      * Get survey options for imported survey.
      * @param int $surveyId
@@ -95,6 +104,7 @@ class TestHelper extends TestCase
         );
         return $surveyOptions;
     }
+
     /**
      * @param int $surveyId
      * @return void
@@ -109,9 +119,11 @@ class TestHelper extends TestCase
         $survey->savetimings = '';
         $survey->save();
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
+
         $result = \activateSurvey($surveyId);
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
+
     /**
      * @param int $surveyId
      * @return void
@@ -127,11 +139,12 @@ class TestHelper extends TestCase
         $result = $survey->save();
         $this->assertTrue($result, 'Survey deactivated');
     }
+
     /**
      * Overwrite the db component with a new
      * configuration and database.
      * Before you run this, you might want to save
-     * the old db config in a variable, so you can
+     * the old db config in a variable, so you can 
      * reconnect to it after you're done with the new
      * database.
      *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
@@ -142,7 +155,9 @@ class TestHelper extends TestCase
     public function connectToNewDatabase($databaseName)
     {
         $db = \Yii::app()->getDb();
+
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
         // Check that we're using MySQL.
         $conStr = \Yii::app()->db->connectionString;
         $isMysql = substr($conStr, 0, 5) === 'mysql';
@@ -151,10 +166,12 @@ class TestHelper extends TestCase
             return false;
         }
         $this->assertTrue($isMysql, 'This test only works on MySQL');
+
         // Get database name.
         preg_match("/dbname=([^;]*)/", $config['components']['db']['connectionString'], $matches);
         $this->assertEquals(2, count($matches));
         $oldDatabase = $matches[1];
+
         try {
             $db->createCommand('DROP DATABASE ' . $databaseName)->execute();
         } catch (\CDbException $ex) {
@@ -162,6 +179,7 @@ class TestHelper extends TestCase
             // Only this error is OK.
             self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false, 'Could drop database');
         }
+
         try {
             $result = $db->createCommand(
                 sprintf(
@@ -175,6 +193,7 @@ class TestHelper extends TestCase
             // This error is OK.
             $this->assertTrue(strpos($msg, 'database exists') !== false, 'Could create database');
         }
+
         // Connect to new database.
         $db->setActive(false);
         $newConfig = $config;
@@ -189,6 +208,7 @@ class TestHelper extends TestCase
         \Yii::app()->db->schema->refresh();
         return \Yii::app()->getDb();
     }
+
     /**
      * @return void
      */
@@ -201,6 +221,7 @@ class TestHelper extends TestCase
         \Yii::app()->db->schema->getTables();
         \Yii::app()->db->schema->refresh();
     }
+
     /**
      * @param int $version
      * @return \CDbConnection
@@ -211,17 +232,22 @@ class TestHelper extends TestCase
             $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
             $this->assertNotEmpty($connection, 'Could connect to new database');
         }
+
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = $connection;
+
         // Check SQL file.
-        $file = TestBaseClass::getDataFolder().'/sql/create-mysql.' . $version . '.sql';
+        $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
+
         // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
         $this->assertEquals([], $result, 'No error messages from _executeSQLFile' . print_r($result, true));
+
         // Run upgrade.
         $result = \db_upgrade_all($version);
+
         // Check error messages.
         $flashes = \Yii::app()->user->getFlashes();
         if ($flashes) {
@@ -229,8 +255,10 @@ class TestHelper extends TestCase
         }
         $this->assertEmpty($flashes, 'No flash error messages');
         $this->assertTrue($result, 'Upgrade successful');
+
         return $inst->connection;
     }
+
     /**
      * Make sure Selenium can preview surveys without
      * being logged in.
@@ -240,6 +268,7 @@ class TestHelper extends TestCase
     {
         // Make sure we can preview without being logged in.
         $setting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
+
         // Possibly this setting does not exist yet.
         if (empty($setting)) {
             $setting = new \SettingGlobal();
@@ -251,6 +280,7 @@ class TestHelper extends TestCase
             $setting->save();
         }
     }
+
     /**
      * Drop database $databaseName.
      * Use in teardown methods.
@@ -269,7 +299,7 @@ class TestHelper extends TestCase
             $msg = $ex->getMessage();
             // Only this error is OK.
             self::assertTrue(
-            // MySQL
+                // MySQL
                 strpos($msg, 'database doesn\'t exist') !== false ||
                 // Postgres
                 strpos($msg, "database \"$databaseName\" does not exist") !== false,
@@ -277,6 +307,7 @@ class TestHelper extends TestCase
             );
         }
     }
+
     /**
      * Use webdriver to put a screenshot in screenshot folder.
      * @param WebDriver $webDriver
@@ -292,6 +323,7 @@ class TestHelper extends TestCase
         $result     = file_put_contents($filename, $screenshot);
         $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
     }
+
     /**
      * javaTrace() - provide a Java style exception trace
      *
@@ -343,8 +375,10 @@ class TestHelper extends TestCase
         if ($prev) {
             $result  .= "\n" . jTraceEx($prev, $seen);
         }
+
         return $result;
     }
+
     /**
      * @return WebDriver|null
      */
@@ -370,6 +404,7 @@ class TestHelper extends TestCase
                 sleep(1);
             }
         } while (!$success && $tries < 5);
+
         return $webDriver;
     }
 }
