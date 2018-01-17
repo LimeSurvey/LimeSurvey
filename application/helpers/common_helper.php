@@ -106,17 +106,10 @@ function getSurveyList($bReturnArray = false)
     if (is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
+            ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            if (!empty($result->defaultlanguage)) {
-                $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
-            } elseif (!($bCheckIntegrity)) {
-                $bCheckIntegrity = true;
-                Yii::app()->setFlashMessage(
-                    CHtml::link(gT("One or more surveys seem to be broken - please use the data integrity check tool to fix this."), array("admin/checkintegrity"))
-                    ,
-                    'error');
-            }
+            $surveynames[] = array_merge($result->attributes,$result->languagesettings[$result->language]->attributes);
         }
         
         usort($surveynames, function($a, $b)
