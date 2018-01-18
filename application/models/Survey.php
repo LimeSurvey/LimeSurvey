@@ -305,7 +305,7 @@ class Survey extends LSActiveRecord
 
     public function defaultScope()
     {
-        return array('order'=>'sid');
+        return array('order'=>'t.sid');
     }    
 
     /** @inheritdoc */
