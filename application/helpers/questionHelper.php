@@ -291,7 +291,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-            "types"=>":;ABCDEFKMNOPQRSTU",
+            "types"=>":;ABCDEFHKMNOPQRSTU",
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -301,7 +301,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q_tip"] = array(
-            "types"=>":;ABCDEFKMNOPQRSTU",
+            "types"=>":;ABCDEFHKMNOPQRSTU",
             'category'=>gT('Logic'),
             'sortorder'=>210,
             'inputtype'=>'textarea',
