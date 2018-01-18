@@ -110,7 +110,8 @@ $internalConfig = array(
             'packages' => array_merge(
                 require('third_party.php'),
                 require('packages.php'),
-                require('questiontypes.php')
+                require('questiontypes.php'),
+                require('fonts.php')
             ),
             'class' => 'application.core.LSYii_ClientScript'
         ),

@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\tests;
+namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 
@@ -34,51 +34,15 @@ class TestBaseClass extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$testHelper = new TestHelper();
-        self::$dataFolder = self::getDataFolder();
-        self::$viewsFolder = self::getViewsFolder();
-        self::$surveysFolder = self::getSurveysFolder();
-        self::$tempFolder = self::getTempFolder();
-        self::$screenshotsFolder = self::getScreenShotsFolder();
-        self::$testHelper->importAll();
         parent::setUpBeforeClass();
-    }
+        self::$testHelper = new TestHelper();
 
-    // the folder getter can be used in @dataProvider methods since the setUpBeforeClass will run after them
-
-    /**
-     * @return string
-     */
-    public static function getDataFolder(){
-        return __DIR__."/resources";
-    }
-
-    /**
-     * @return string
-     */
-    public static function getViewsFolder(){
-        return self::getDataFolder().DIRECTORY_SEPARATOR.'views';
-    }
-
-    /**
-     * @return string
-     */
-    public static function getSurveysFolder(){
-        return self::getDataFolder().DIRECTORY_SEPARATOR.'surveys';
-    }
-
-    /**
-     * @return string
-     */
-    public static function getTempFolder(){
-        return __DIR__."/tmp";
-    }
-
-    /**
-     * @return string
-     */
-    public static function getScreenShotsFolder(){
-        return self::getTempFolder().DIRECTORY_SEPARATOR.'screenshots';
+        self::$dataFolder = __DIR__.'/data';
+        self::$viewsFolder = self::$dataFolder."/views";
+        self::$surveysFolder = self::$dataFolder.'/surveys';
+        self::$tempFolder = __DIR__.'/tmp';
+        self::$screenshotsFolder = self::$tempFolder.'/screenshots';
+        self::$testHelper->importAll();
     }
 
     /**
@@ -90,8 +54,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            echo 'Fatal error: found no survey file';
-            exit(1);
+            self::assertTrue(false, 'Found no survey file ' . $fileName);
         }
 
         $translateLinksFields = false;
@@ -106,8 +69,7 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            echo 'Fatal error: Could not import survey';
-            exit(2);
+            self::assertTrue(false, 'Could not import survey file ' . $fileName);
         }
     }
 
@@ -121,8 +83,13 @@ class TestBaseClass extends TestCase
 
         if (self::$testSurvey) {
             if (!self::$testSurvey->delete()) {
-                echo 'Fatal error: Could not clean up survey ' . self::$testSurvey->sid . '; errors: ' . json_encode(self::$testSurvey->errors);
-                exit(3);
+                self::assertTrue(
+                    false,
+                    'Fatal error: Could not clean up survey '
+                    . self::$testSurvey->sid
+                    . '; errors: '
+                    . json_encode(self::$testSurvey->errors)
+                );
             }
             self::$testSurvey = null;
         }

@@ -1,8 +1,8 @@
 <?php
-namespace LimeSurvey\tests\acceptance\surveys;
+
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use LimeSurvey\tests\TestBaseClassWeb;
 
 /**
  * @since 2017-12-01
@@ -11,13 +11,14 @@ use LimeSurvey\tests\TestBaseClassWeb;
 class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
 {
     /**
-     *
+     * 
      */
     public function testBasic()
     {
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_352985.lss';
         self::importSurvey($surveyFile);
+
         // Preview survey.
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
@@ -29,6 +30,7 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
                 'lang' => 'pt'
             ]
         );
+
         // Get questions.
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $questionObjects = $survey->groups[0]->questions;
@@ -41,9 +43,11 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
             $subquestions[$subq->title] = $subq;
         }
         $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q1']->qid . '123'; // 123 = first subquestion title.
+
         try {
             // Get first page.
             self::$webDriver->get($url);
+
             // Click on first multiple choice checkbox.
             $label = self::$webDriver->findElement(
                 WebDriverBy::cssSelector(
@@ -54,11 +58,13 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
                 )
             );
             $label->click();
+
             // Check that equation reacts.
             $equation = self::$webDriver->findElement(WebDriverBy::id('question' . $questions['equation1']->qid));
             $equestionText = $equation->getText();
             $trues = substr_count($equestionText, 'true');
             $this->assertEquals(2, $trues, 'Found two "true"');
+
             $label->click();
             $equestionText = $equation->getText();
             $trues = substr_count($equestionText, 'true');

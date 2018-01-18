@@ -332,7 +332,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#searchbutton').click(function(){
 
     });
-
+    $(document).on("change", '#pageSizeTokenView', function(){
+        $('#token-grid').yiiGridView('update', { data:{ pageSizeTokenView: $(this).val() }});
+    });
 });
 
 /**

@@ -135,24 +135,32 @@ function manageIndex(){
  * Sets input[name=lang] to new language and submits limesurvey form.
  */
 function activateLanguageChanger(){
+    var limesurveyForm = $('form#limesurvey');
+
+    /**
+     * @param {string} lang Language to change to.
+     */
+    var applyChangeAndSubmit = function(lang) {
+        // Remove existing lang input.
+        limesurveyForm.find('input[name="lang"]').remove();
+        // Append new input.
+        $('<input type="hidden">')
+            .attr('name', 'lang')
+            .val(lang)
+            .appendTo(limesurveyForm);
+        // Append move type.
+        $('<input type="hidden" name="move" value="changelang" />').appendTo(limesurveyForm);
+        limesurveyForm.submit();
+    };
+
     $('.form-change-lang a.ls-language-link').on('click', function() {
         var closestForm = $(this).closest('form');
         if (!closestForm.length) {
-            var limesurveyForm = $('form#limesurvey');
             /* we are not in a forum, can not submit directly */
             if (limesurveyForm.length == 1) {
                 /* The limesurvey form exist in document, move select and button inside and click */
                 var newLang = $(this).data('limesurvey-lang');
-                // Remove existing lang input.
-                limesurveyForm.find('input[name="lang"]').remove();
-                // Append new input.
-                $('<input type="hidden">')
-                    .attr('name', 'lang')
-                    .val(newLang)
-                    .appendTo(limesurveyForm);
-                // Append move type.
-                $('<input type="hidden" name="move" value="changelang" />').appendTo(limesurveyForm);
-                limesurveyForm.submit();
+                applyChangeAndSubmit(newLang);
                 // TODO: Check all code below. When does it happen?
             } else {
                 // If there are no form : we can't use it */
@@ -184,6 +192,11 @@ function activateLanguageChanger(){
             $(this).closest('form').find("[name='lang']").not($(this)).remove();
             $(this).closest('.ls-language-changer-item').find(":submit").click();
         }
+    });
+
+    // Survey welcome page language changer.
+    $('#langchangerSelectMain').on('change', function() {
+        applyChangeAndSubmit($(this).val());
     });
 }
 

@@ -16,5 +16,5 @@ $config['versionnumber'] = '3.0.4develop'; //The current version of this branch,
 $config['dbversionnumber'] = 350;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30005';
+$config['assetsversionnumber'] = '30007';
 return $config;

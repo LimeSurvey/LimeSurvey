@@ -1,24 +1,11 @@
 <?php
-namespace LimeSurvey\tests\acceptance\question;
+
+namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\TimeOutException;
-use LimeSurvey\tests\TestBaseClassWeb;
-
-/**
- *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
-
+use Facebook\WebDriver\Exception\TimeOutException;;
 
 /**
  * @since 2017-10-27
@@ -32,12 +19,14 @@ class DateTimeValidationTest extends TestBaseClassWeb
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
         $surveyFile = self::$surveysFolder.'/limesurvey_survey_834477.lss';
         self::importSurvey($surveyFile);
         self::$testHelper->enablePreview();
     }
+
     /**
-     *
+     * 
      */
     public function testBasic()
     {
@@ -51,7 +40,9 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 'lang' => 'pt'
             ]
         );
+
         self::$webDriver->get($url);
+
         try {
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
@@ -64,13 +55,15 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
+
         $this->assertNotEmpty($submit);
         self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id('ls-button-submit')
-            )
+		WebDriverBy::id('ls-button-submit')
+	    )
         );
         $submit->click();
+
         // After submit we should see the complete page.
         try {
             // Wait max 10 second to find this div.
@@ -92,14 +85,14 @@ class DateTimeValidationTest extends TestBaseClassWeb
             );
         } catch (TimeOutException $ex) {
             $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-            var_dump($body->getText());
-            $reflect = new \ReflectionClass($this);
-            //if ($reflect->getShortName() === 'Name') {
+	    var_dump($body->getText());
+	    $reflect = new \ReflectionClass($this);
+	    //if ($reflect->getShortName() === 'Name') {
             self::$testHelper->takeScreenshot(self::$webDriver, $reflect->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-        }
+	}
     }
 }
