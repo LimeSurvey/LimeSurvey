@@ -373,7 +373,7 @@ class homepagesettings extends Survey_Common_Action
 
     /**
      * Performs the AJAX validation.
-     * @param Boxes $model the model to be validated
+     * @param Box $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
