@@ -8515,7 +8515,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $aQuestionAttributesForEM=array();
             foreach($oQids as $oQid)
             {
-                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid);
+                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid, $lang);
                 // Change array lang to value
                 foreach($aAttributesValues as &$aAttributeValue)
                 {

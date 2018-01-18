@@ -303,10 +303,10 @@ class Survey extends LSActiveRecord
     }
 
 
-    public function defaultScope()
+  /*  public function defaultScope()
     {
-        return array('order'=>'t.sid');
-    }    
+        return array('order'=> $this->getTableAlias().'.sid');
+    }    */
 
     /** @inheritdoc */
     public function scopes()
