@@ -291,7 +291,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU",
+            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer …)
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -301,7 +301,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q_tip"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU",
+            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with subqs (in EM) and without
             'category'=>gT('Logic'),
             'sortorder'=>210,
             'inputtype'=>'textarea',

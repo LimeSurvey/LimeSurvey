@@ -3004,15 +3004,17 @@
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
                                 case 'D': //DATE
-                                    if ($this->sgqaNaming)
-                                    {
+                                    if ($this->sgqaNaming) {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',(string)substr($sq['jsVarName'],4), $em_validation_q) . ')';
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                     }
                                     break;
+                                // False subsq
+                                case 'L':
+                                case '!':
+                                    $sgqa = $qinfo['sgqa'];
+                                    $sq_name = '!(' . preg_replace('/\bthis\b/',$sgqa, $em_validation_q) . ')';
                                 default:
                                     // Unsure we must make always the same ?
                                     break;
@@ -3034,6 +3036,8 @@
                             'qid' => $questionNum,
                             );
                         }
+                    } else {
+
                     }
                 }
                 else
