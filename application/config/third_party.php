@@ -351,13 +351,6 @@ return array(
         ),
     ),
 
-    'emoji' => array(
-        'basePath' => 'third_party.emojifont',
-        'css' => array(
-            'css/emoji.css',
-            'css/ss-emoji.css'
-        ),
-    ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
         'position' => CClientScript::POS_BEGIN,
