@@ -359,8 +359,8 @@ class tokens extends Survey_Common_Action
         $aData['model'] = $model;
 
         // Set number of page
-        if (isset($_POST['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_POST['pageSize']);
+        if (isset($_POST['pageSizeTokenView'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);

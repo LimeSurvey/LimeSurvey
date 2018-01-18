@@ -877,7 +877,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function search()
     {
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSizeTokenView = Yii::app()->user->getState('pageSizeTokenView', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
         $sort->defaultOrder = 'tid ASC';
@@ -1006,7 +1006,7 @@ class TokenDynamic extends LSActiveRecord
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(
-                'pageSize'=>$pageSize,
+                'pageSize'=>$pageSizeTokenView,
             ),
         ));
 
