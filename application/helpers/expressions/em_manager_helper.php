@@ -2978,13 +2978,12 @@
                 if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
                 {
                     $em_validation_q = $qattr['em_validation_q'];
+                    $sq_names = array();
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
-                        $sq_names = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
-                            switch ($type)
-                            {
+                            switch ($type) {
                                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -3010,13 +3009,10 @@
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                     }
                                     break;
-                                // False subsq
                                 case 'L':
                                 case '!':
-                                    $sgqa = $qinfo['sgqa'];
-                                    $sq_name = '!(' . preg_replace('/\bthis\b/',$sgqa, $em_validation_q) . ')';
                                 default:
-                                    // Unsure we must make always the same ?
+                                    // Nothing to do : no realsubq, set it after
                                     break;
                             }
                             if (!is_null($sq_name)) {
@@ -3036,8 +3032,21 @@
                             'qid' => $questionNum,
                             );
                         }
-                    } else {
-
+                    }
+                    // No subqs or false subqs (L and !)
+                    if (empty($sq_names)) {
+                        if ($this->sgqaNaming) {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['sgqa'], $em_validation_q) . ')';
+                        } else {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['varName'], $em_validation_q) . ')';
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'em_validation_q',
+                            'class' => 'q_fn_validation',
+                            'eqn' => $eqn,
+                            'qid' => $questionNum,
+                        );
                     }
                 }
                 else
