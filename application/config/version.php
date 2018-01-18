@@ -16,5 +16,5 @@ $config['versionnumber'] = '3.0.4';  //The current version of this branch, LS3
 $config['dbversionnumber'] = 345;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30006';
+$config['assetsversionnumber'] = '30007';
 return $config;
