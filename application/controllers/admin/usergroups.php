@@ -125,7 +125,7 @@ class Usergroups extends Survey_Common_Action
                 if ($result->count() > 0) {
                     $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
                     if ($delquery_result) {
-                        Yii::app()->user->setFlash("success", gT("Successfully deleted usergroup."));
+                        Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
                     } else {
                         Yii::app()->user->setFlash("notice", gT("Could not delete user group."));
                     }

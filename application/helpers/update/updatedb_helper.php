@@ -1132,7 +1132,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . gT('File') . ' ' . $file .', ' . gT('line') . ' ' . $trace[1]['line'] . '.'
+            . sprintf(gT('File %s, line %s.'),$file,$trace[1]['line'])
         );
         return false;
     }
