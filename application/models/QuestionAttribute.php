@@ -171,7 +171,7 @@ class QuestionAttribute extends LSActiveRecord
             return $aQuestionAttributesStatic[$iQuestionID];
         }
         $aQuestionAttributes = array();
-        $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
         if ($oQuestion) {
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);

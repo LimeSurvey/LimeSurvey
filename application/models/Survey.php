@@ -302,6 +302,12 @@ class Survey extends LSActiveRecord
         );
     }
 
+
+    public function defaultScope()
+    {
+        return array('order'=>'t.sid');
+    }    
+
     /** @inheritdoc */
     public function scopes()
     {
