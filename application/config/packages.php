@@ -79,37 +79,6 @@ return array(
             'bootstrap',
         )
     ),
-    /* Ranking question type */
-    'question-ranking'=>array(
-        'devBaseUrl'  => 'assets/packages/questions/ranking/',
-        'basePath' => 'core.questions.ranking',
-        'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/ranking.css',
-        ),
-        'js'=>array(
-            'scripts/sortable.min.js',
-            'scripts/ranking.js',
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
-    /* numeric slider question : numerci question type with slider */
-    'question-numeric-slider'=>array(
-        'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
-        'basePath' => 'core.questions.numeric-slider',
-        'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/numeric-slider.css',
-        ),
-        'js'=>array(
-            'scripts/numeric-slider.js',
-        ),
-        'depends' => array(
-            'bootstrap-slider',
-        )
-    ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
