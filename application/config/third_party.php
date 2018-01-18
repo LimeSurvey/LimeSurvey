@@ -153,15 +153,6 @@ return array(
         )
     ),
 
-    'fontawesome' => array(
-        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
-        'basePath' => 'fonts.font-src.fontawesome',
-        'css'=> array(
-            'css/font-awesome'.$minVersion.'.css',
-        ),
-    ),
-
     // jQuery UI
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
