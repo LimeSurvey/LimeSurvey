@@ -1,0 +1,110 @@
+{#<?php
+/**
+ * File upload question Html
+ * @var $fileid
+ * @var $value
+ * @var $filecountvalue
+ */
+?>#}
+
+<!-- File Upload  -->
+
+<!--answer -->
+<div class="{{coreClass}}">
+    <div class='upload-button'>
+        <a
+            id='upload_{{fileid}}'
+            class='btn btn-primary upload'
+            href='#'
+            onclick='javascript:upload_{{fileid}}();'
+        >
+            <i class='fa fa-upload'></i>&nbsp;{{ 'Upload files' | gT }}
+        </a>
+    </div>
+    <input type='hidden' id='{{fileid}}' name='{{fileid}}' value='{{value}}' />
+    <input type='hidden' id='{{fileid}}_filecount' name='{{fileid}}_filecount' value="{{filecountvalue}}" />
+    <div id='{{fileid}}_uploadedfiles'>
+
+    </div>
+</div>
+
+<!-- modal -->
+<div id="file-upload-modal-{{fileid}}" class="modal fade file-upload-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header file-upload-modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="h4 modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</div>
+            </div>
+            <div class="modal-body file-upload-modal-body">
+                <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>
+            </div>
+            <div class="modal-footer file-upload-modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal"> {{ "Save changes" | gT }}</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+    
+
+<!-- end of answer -->
+
+<script type='text/javascript'>
+    var surveyid = '{{surveyId}}',
+        upload_{{fileid}} = function() {
+            var uploadurl = '{{uploadurl}}';
+            $('#upload_{{fileid}}').attr('href',uploadurl);
+        },
+        uploadLang = {
+             title: '{{ "Upload your files" | gT }}',
+             returnTxt: '{{ "Return to survey" | gT }}',
+             headTitle: '{{ "Title" | gT }}',
+             headComment: '{{ "Comment" | gT }}',
+             headFileName: '{{ "File name" | gT }}',
+             deleteFile : '{{ "Delete" | gT }}',
+             editFile : '{{ "Edit" | gT }}',
+        },
+        imageurl =  '{{imageurl}}',
+        uploadurl =  '{{scriptloc}}';
+        
+    
+    
+    
+    $(document).on("ready pjax:scriptcomplete", function(){
+        var fieldname = "{{fileid}}",
+            filecount = $("#"+fieldname+"_filecount").val(),
+            show_title = "{{showTitle}}",
+            show_comment = "{{showComment}}";
+        displayUploadedFiles( filecount, fieldname, show_title, show_comment);
+    });
+
+    $(".basic_{{fileid}}").change(function() {
+        var i = 1,
+            filecount = 0,
+            jsonArray = [];
+
+        for (; i <= LEMval("{{maxFiles}}"); i++) {
+            //Break if the file input is empty
+            if ($("#{{fileid}}_"+i).val() == "") { continue; }
+
+            filecount++;
+
+            var fileObject = {
+                title : {{showTitle}} ? $("#{{fileid}}_title_"+i).val() : '',
+                comment: {{showComment}} ? $("#{{fileid}}_comment_"+i).val() : '',
+                size: '',
+                name: '',
+                ext: ''
+            };
+
+            jsonArray.push(fileObject);
+        }
+
+        $("#{{fileid}}").val(JSON.stringify(jsonArray));
+        $("#{{fileid}}_filecount").val(filecount);
+    });
+</script>
+
