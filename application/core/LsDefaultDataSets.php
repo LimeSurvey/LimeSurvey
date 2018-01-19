@@ -234,7 +234,7 @@ class LsDefaultDataSets {
         
         $returnArray[] = [
             'name' => 'firstStartTour',
-            'title' => 'Beginner tour',
+            'title' => gT('Beginner tour'),
             'icon' => 'fa-rocket',
             'description' => 'The first start tour to get your first feeling into LimeSurvey',
             'active' => 1,
