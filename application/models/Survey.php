@@ -661,6 +661,12 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
+    private function __useTranslationForSurveymenu(&$entryData){
+        $entryData['title']             = gT($entryData['title']);
+        $entryData['menu_title']        = gT($entryData['menu_title']);
+        $entryData['menu_description']  = gT($entryData['menu_description']);
+    }
+
     private function _createSurveymenuArray($oSurveyMenuObjects)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
@@ -691,6 +697,7 @@ class Survey extends LSActiveRecord
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
                 $aEntry['debugData'] = $oDataAttribute->attributes;
                 $aEntry['pjax'] = $oDataAttribute->pjaxed;
+                $this->__useTranslationForSurveymenu($aEntry);
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
