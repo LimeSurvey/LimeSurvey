@@ -2991,8 +2991,8 @@ class remotecontrol_handle
         $event->set('password', $sPassword);
         App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
-            if( $identity->errorMessage ) {
-                // Be sure to don't return an empty string
+            if($identity->errorMessage) {
+                // don't return an empty string
                 return $identity->errorMessage;
             }
             return false;
