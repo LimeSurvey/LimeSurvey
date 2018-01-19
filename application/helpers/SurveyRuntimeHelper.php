@@ -101,9 +101,9 @@ class SurveyRuntimeHelper
         if (!isset($_SESSION[$this->LEMsessid]['step'])) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
-
-        if (!$this->previewgrp && !$this->previewquestion) {
-            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+        
+        $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+        if (!$this->previewgrp && !$this->previewquestion) {            
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
