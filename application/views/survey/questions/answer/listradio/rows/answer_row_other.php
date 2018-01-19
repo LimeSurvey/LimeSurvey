@@ -39,8 +39,9 @@
         class="form-control <?php echo $kpclass; ?> input-sm"
         id="answer<?php echo $name; ?>othertext"
         name="<?php echo $name; ?>other"
-        title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
-        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>",
+        title="<?php eT('Other'); ?>"
+        <?php echo $answer_other;?>
+        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };"
         aria-labelledby="label-id-<?php echo $name; ?>"
         />
     </div>
