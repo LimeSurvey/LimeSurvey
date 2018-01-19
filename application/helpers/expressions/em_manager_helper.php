@@ -1080,7 +1080,6 @@
             $subQrels = array();    // array of sub-question-level relevance equations
             $validationEqn = array();
             $validationTips = array();    // array of visible tips for validation criteria, indexed by $qid
-
             // Associate these with $qid so that can be nested under appropriate question-level relevance
             foreach ($this->q2subqInfo as $qinfo)
             {
@@ -2973,7 +2972,6 @@
                 {
                     $em_validation_q_tip = '';
                 }
-
                 // em_validation_q - an EM validation equation that must be satisfied for the whole question.  Uses 'this' in the equation
                 if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
                 {
@@ -3040,6 +3038,7 @@
                         } else {
                             $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['varName'], $em_validation_q) . ')';
                         }
+                        /* Did we add other here for single choice ? */
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'em_validation_q',
@@ -3053,7 +3052,6 @@
                 {
                     $em_validation_q='';
                 }
-
                 // em_validation_sq_tip - a description of the EM validation equation that must be satisfied for each subquestion.
                 if (isset($qattr['em_validation_sq_tip']) && !is_null($qattr['em_validation_sq_tip']) && trim($qattr['em_validation_sq']) != '')
                 {
@@ -4144,8 +4142,32 @@
                             );
                             break;
                     }
+                } // else {
+                if(!isset($q2subqInfo[$questionNum])) {
+                    /* Single question without subquestion */
+                    /* Do same than U/H … : subqs is array with only THIS question */
+                    /* Case with 5, G, X */
+                    $q2subqInfo[$questionNum] = array(
+                        'qid' => $questionNum,
+                        'qseq' => $questionSeq,
+                        'gseq' => $groupSeq,
+                        'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'mandatory'=>$mandatory,
+                        'varName' => $varName,
+                        'type' => $type,
+                        'fieldname' => $sgqa,
+                        'preg' => null,
+                        'rootVarName' => $fielddata['title'],
+                    );
+                    if($type != "X") { // We can add it for X (text display), but think it's more clean without
+                        $q2subqInfo[$questionNum]['subqs'][] = array(
+                            'rowdivid' => null,
+                            'varName' => $varName,
+                            'jsVarName_on' => $jsVarName_on,
+                            'jsVarName' => $jsVarName,
+                        );
+                    }
                 }
-
                 $ansList = '';
                 if (isset($ansArray) && !is_null($ansArray)) {
                     $answers = array();
