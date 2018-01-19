@@ -23,7 +23,7 @@
     <div class='{{ aSurveyInfo.class.registerformcol }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcol }}>
         {# Participants first name #}
         <div class='{{ aSurveyInfo.class.registerformcolrow }} form-group row' {{ aSurveyInfo.attr.registerformcolrow }}>
-            <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name:") }}</label>
+            <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ "First name:" | t }}</label>
             <div class="">
                 {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control'})) }}
             </div>
@@ -31,7 +31,7 @@
 
         {# Participants last name #}
         <div class='{{ aSurveyInfo.class.registerformcolrowb }} form-group row' {{ aSurveyInfo.attr.registerformcolrowb }}>
-            <label {{ aSurveyInfo.attr.registerformcolrowblabel }}  class='{{ aSurveyInfo.class.registerformcolrowblabel }} control-label '>{{ gT("Last name:") }}</label>
+            <label {{ aSurveyInfo.attr.registerformcolrowblabel }}  class='{{ aSurveyInfo.class.registerformcolrowblabel }} control-label '>{{ "Last name:" | t }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowbdiv }} >
                 {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control'})) }}
             </div>
@@ -39,7 +39,7 @@
 
         {# Participants email #}
         <div class='{{ aSurveyInfo.class.registerformcolrowc }} form-group row' {{ aSurveyInfo.attr.registerformcolrowc }}>
-            <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("Email address:") }} {{ include('./subviews/registration/required.twig') }}</label>
+            <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ "Email address:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
                 {{ C.Html.textField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control input-sm','required' : true})) }}
             </div>
@@ -59,7 +59,7 @@
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
             <div class='{{ aSurveyInfo.class.registerformcaptcha }} form-group row ' {{ aSurveyInfo.attr.registerformcaptcha }}>
-                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please enter the letters you see:") }} {{ include('./subviews/registration/required.twig') }}</label>
+                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ "Please enter the letters you see:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
                 <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                         <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
