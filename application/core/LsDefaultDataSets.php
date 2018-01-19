@@ -45,8 +45,6 @@ class LsDefaultDataSets {
         foreach($basicMenues as $basicMenu){
             $returnArray[] = array_combine($headerArray, $basicMenu);
         }
-        
-        $returnArray = [];
         return $returnArray;
     }
     
