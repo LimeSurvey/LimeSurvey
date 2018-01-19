@@ -178,7 +178,6 @@ class Authentication extends Survey_Common_Action
                 return array('success');
             } else {
                 // Failed
-                tracevar("authenticate failed");
                 $event = new PluginEvent('afterFailedLoginAttempt');
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
