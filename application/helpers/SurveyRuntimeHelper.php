@@ -148,76 +148,78 @@ class SurveyRuntimeHelper
             }
 
             $upload_file = false;
-            foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
-                ++$qnumber;
-                $ia[9] = $qnumber; // incremental question count;
+            if(isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
+                foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
+                    ++$qnumber;
+                    $ia[9] = $qnumber; // incremental question count;
 
-                // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
+                    // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
+                    if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
 
-                    // In question by question mode, we only procceed current question
-                    if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
-                        continue;
-                    }
-
-                    // In group by group mode, we only procceed current group
-                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
-                        if (isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
-                            // This is a randomized survey, don't continue.
-                        } else {
+                        // In question by question mode, we only procceed current question
+                        if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
                             continue;
                         }
-                    }
 
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)) {
-                        continue;
-                    }
-
-                    //Get the answers/inputnames
-                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
-
-                    if ($plus_qanda) {
-                        $plus_qanda[] = $ia[4];
-                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-
-                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                        if (isset($ia[10])) {
-                                                    $plus_qanda['finalgroup'] = $ia[10];
-                        } else {
-                                                    $plus_qanda['finalgroup'] = $ia[5];
+                        // In group by group mode, we only procceed current group
+                        if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
+                            if (isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
+                                // This is a randomized survey, don't continue.
+                            } else {
+                                continue;
+                            }
                         }
 
-                        $qanda[] = $plus_qanda;
-                    }
-                    if ($plus_inputnames) {
-                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
+                        if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)) {
+                            continue;
+                        }
+
+                        //Get the answers/inputnames
+                        // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+                        // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                        list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+
+                        if ($plus_qanda) {
+                            $plus_qanda[] = $ia[4];
+                            $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+
+                            // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                            if (isset($ia[10])) {
+                                                        $plus_qanda['finalgroup'] = $ia[10];
+                            } else {
+                                                        $plus_qanda['finalgroup'] = $ia[5];
+                            }
+
+                            $qanda[] = $plus_qanda;
+                        }
+                        if ($plus_inputnames) {
+                            $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                        }
+
+                        //Display the "mandatory" popup if necessary
+                        // TMSW - get question-level error messages - don't call **_popup() directly
+                        if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
+                            list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
+                        }
+
+                        //Display the "validation" popup if necessary
+                        if ($okToShowErrors && !$this->aStepInfo['valid']) {
+                            list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
+                        }
+
+                        // Display the "file validation" popup if necessary
+                        if ($okToShowErrors && ($this->filenotvalidated !== false)) {
+                            list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $this->filenotvalidated);
+                        }
                     }
 
-                    //Display the "mandatory" popup if necessary
-                    // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
-                        list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
+                    if ($ia[4] == "|") {
+                                        $upload_file = true;
                     }
-
-                    //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$this->aStepInfo['valid']) {
-                        list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
-                    }
-
-                    // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && ($this->filenotvalidated !== false)) {
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $this->filenotvalidated);
-                    }
-                }
-
-                if ($ia[4] == "|") {
-                                    $upload_file = true;
-                }
-            } //end iteration
+                } //end iteration
+            } 
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
@@ -227,7 +229,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
             } else {
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
-                $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
+                $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
             }
         }
 
@@ -338,6 +340,7 @@ class SurveyRuntimeHelper
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
+            $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($redata['groupdescription']) != "" && $showgroupdesc_);
             $aGroup['description']      = $redata['groupdescription'];
 
@@ -464,7 +467,6 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['include_content'] = 'main.twig';
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
-
 
     public function getShowNumAndCode()
     {
@@ -935,11 +937,12 @@ class SurveyRuntimeHelper
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
             $_SESSION[$this->LEMsessid]['test'] = time();
 
-            // TODO: Find out why language is not fetched correctly the first time.
-            $this->aSurveyInfo = getSurveyInfo(
+            // TODO: Find out why language is not fetched correctly the first time. Where is s_lang set?
+            $tmpSurveyInfo = getSurveyInfo(
                 $this->thissurvey['sid'],
                 $_SESSION['survey_'.$this->thissurvey['sid']]['s_lang']
             );
+            $this->aSurveyInfo = array_merge($this->aSurveyInfo, $tmpSurveyInfo);
 
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
@@ -1650,6 +1653,11 @@ class SurveyRuntimeHelper
         //$oTemplate->registerAssets();
     }
 
+    /**
+     * Set alanguageChanger.show to true if we need to show
+     * the language changer.
+     * @return void
+     */
     private function makeLanguageChanger()
     {
         $this->aSurveyInfo['alanguageChanger']['show'] = false;

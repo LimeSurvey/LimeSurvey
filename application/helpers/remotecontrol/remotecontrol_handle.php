@@ -55,12 +55,12 @@ class remotecontrol_handle
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-        } else {
-            if (is_string($loginResult)) {
-                return array('status' => $loginResult);
-            }
-            return array('status' => 'Invalid user name or password');
+
         }
+        if (is_string($loginResult)) {
+            return array('status' => $loginResult);
+        }
+        return array('status' => 'Invalid user name or password');
     }
 
     /**
@@ -3027,7 +3027,6 @@ class remotecontrol_handle
         }
         Yii::app()->user->setId($aUserData['uid']);
 
-        $this->controller->_GetSessionUserRights($aUserData['uid']);
         return true;
     }
 

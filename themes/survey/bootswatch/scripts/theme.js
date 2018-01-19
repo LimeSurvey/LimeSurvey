@@ -20,7 +20,7 @@
  * The general Template closure.
  * This is to capsule eventual errors inside of the template function, so the general script all run as the should
  */
-var Template = function(){
+var ThemeScripts = function(){
 
     /**
      * The function focusFirst puts the Focus on the first non-hidden element in the Survey.
@@ -165,6 +165,9 @@ var Template = function(){
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
+
+            // Bind language changer onclick event.
+            activateLanguageChanger();
         });
         /**
          * Code included inside this will run each time windows is resized
@@ -197,7 +200,7 @@ var Template = function(){
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,
-        window.templateCore.hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
+        hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
         initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger

@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-md-4 text-right">
                 {% if subquestion.answervalue is sameas("Y") %}
-                    {{ gT("Yes") }} <i class="fa fa-check-square-o"></i>
+                    {{ "Yes" | t }} <i class="fa fa-check-square-o"></i>
                 {% elseif subquestion.answervalue is sameas("N") %}
-                    {{ gT("No") }} <i class="fa fa-square-o"></i>
+                    {{ "No" | t }} <i class="fa fa-square-o"></i>
                 {% elseif subquestion.answervalue is sameas("U") %}
-                    {{ gT("Uncertain") }} <i class="fa fa-minus-square-o"></i>
+                    {{ "Uncertain" | t }} <i class="fa fa-minus-square-o"></i>
                 {% else %}
 
                 {% endif %}

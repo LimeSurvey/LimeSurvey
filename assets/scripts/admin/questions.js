@@ -105,21 +105,22 @@ var QuestionFunctions = function () {
         init = function () {
 
             updatequestionattributes();
-
             $('#question_type').on('change', updatequestionattributes);
+            if(selectormodeclass == 'default'){
+                //bind advanced selector
+                $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
+                $('#selector__modal_select-question-type').on('show.bs.modal', function () {
+                    var question_class = questionTypeArray[$('#question_type').val()].class;
+                    $('#selector__question-type-select-modal_question-type-' + question_class).addClass('mark-as-selected').trigger('click').closest('div.panel-collapse').addClass('in');
+                });
 
-            $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
-            $('#selector__modal_select-question-type').on('show.bs.modal', function () {
-                var question_class = questionTypeArray[$('#question_type').val()].class;
-                $('#selector__question-type-select-modal_question-type-' + question_class).addClass('mark-as-selected').trigger('click').closest('div.panel-collapse').addClass('in');
-            });
-
-            $('#selector__select-this-questiontype').on('click', function () {
-                $('#question_type').val($('#selector__selected_questiontype').val());
-                $('#selector__editView_question_type_description').html($('#selector__currentQuestionTypeTitle').html());
-                $('#selector__modal_select-question-type').modal('hide');
-            })
-            $('.selector__select-question-type').on('click', onSelectQuestionType);
+                $('#selector__select-this-questiontype').on('click', function () {
+                    $('#question_type').val($('#selector__selected_questiontype').val());
+                    $('#selector__editView_question_type_description').html($('#selector__currentQuestionTypeTitle').html());
+                    $('#selector__modal_select-question-type').modal('hide');
+                })
+                $('.selector__select-question-type').on('click', onSelectQuestionType);
+            }
 
             /**
              * Validate question object on blur on title element

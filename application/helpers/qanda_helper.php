@@ -778,7 +778,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = array();
 
-    $sRows = "";
+    $aRows = array();;
     for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {
@@ -786,7 +786,7 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
 
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => $fp,
             'id'                     => $ia[1].$fp,
@@ -794,7 +794,7 @@ function do_5pointchoice($ia)
             'itemExtraClass'         => '',
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
-            ), true);
+            );
     }
 
     if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
@@ -803,7 +803,7 @@ function do_5pointchoice($ia)
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $checkedState = ' CHECKED ';
         }
-        $aData = array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => "",
             'id'                     => $ia[1],
@@ -812,7 +812,6 @@ function do_5pointchoice($ia)
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         );
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', $aData, true);
 
     }
     $sessionValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
@@ -823,15 +822,17 @@ function do_5pointchoice($ia)
 
     if ($aQuestionAttributes['slider_rating'] == 1) {
         $slider_rating = 1;
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'star-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-star');
+        Yii::app()->getClientScript()->registerScript('doRatingSlider_'.$ia[0], "
+            var doRatingSlider_".$ia[1]."= new getRatingSlider('".$ia[0]."');
+            doRatingSlider_".$ia[1]."();
+        ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     if ($aQuestionAttributes['slider_rating'] == 2) {
         $slider_rating = 2;
-        Yii::app()->getClientScript()->registerPackage('emoji');
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'slider-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
+        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
 
@@ -841,7 +842,7 @@ function do_5pointchoice($ia)
         'name'          => $ia[1],
         'basename'      => $ia[1],
         'sessionValue'  => $sessionValue,
-        'sRows'         => $sRows,
+        'aRows'         => $aRows,
         'slider_rating' => $slider_rating,
 
         ), true);
@@ -2350,28 +2351,13 @@ function do_file_upload($ia)
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
+    
+    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
+    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
+    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
+    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
+    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
 
-    $answer = "<script type='text/javascript'>
-        function upload_$ia[1]() {
-            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
-            uploadurl += '&preview={$questgrppreview}&show_title={$aQuestionAttributes['show_title']}';
-            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}';
-            uploadurl += '&minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
-            uploadurl += '&maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
-            $('#upload_$ia[1]').attr('href',uploadurl);
-        }
-        var uploadLang = {
-             title: '".gT('Upload your files', 'js')."',
-             returnTxt: '" . gT('Return to survey', 'js')."',
-             headTitle: '" . gT('Title', 'js')."',
-             headComment: '" . gT('Comment', 'js')."',
-             headFileName: '" . gT('File name', 'js')."',
-             deleteFile : '".gT('Delete')."',
-             editFile : '".gT('Edit')."'
-            };
-        var imageurl =  '".Yii::app()->getConfig('imageurl')."';
-        var uploadurl =  '".$scriptloc."';
-    </script>\n";
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js", LSYii_ClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
     // Modal dialog
@@ -2384,95 +2370,29 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
+    $surveyId = Yii::app()->getConfig('surveyID');
     $fileuploadData = array(
+        'surveyId' => $surveyId,
+        'qid' => $ia[0],
         'fileid' => $ia[1],
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue'=>$filecountvalue,
         'coreClass'=>$coreClass,
         'basename' => $ia[1],
+        'maxFiles' => $aQuestionAttributes['max_num_of_files'],
+        'minFiles' => $aQuestionAttributes['min_num_of_files'],
+        'uploadurl' => $uploadurl,
+        'showTitle' => $aQuestionAttributes["show_title"],
+        'showComment' => $aQuestionAttributes["show_comment"],
     );
-    $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
+    App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
+    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
+    // App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
+    // App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
 
-    $answer .= '<script type="text/javascript">
-    var surveyid = '.Yii::app()->getConfig('surveyID').';
-    $(document).on("ready pjax:scriptcomplete", function(){
-    var fieldname = "'.$ia[1].'";
-    var filecount = $("#"+fieldname+"_filecount").val();
-    var json = $("#"+fieldname).val();
-    var show_title = "'.$aQuestionAttributes["show_title"].'";
-    var show_comment = "'.$aQuestionAttributes["show_comment"].'";
-    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);
-    });
-    </script>';
-
-    $answer .= '<script type="text/javascript">
-    $(".basic_'.$ia[1].'").change(function() {
-    var i;
-    var jsonstring = "[";
-
-    for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
-    {
-    if ($("#'.$ia[1].'_"+i).val() == "")
-    continue;
-
-    filecount++;
-    if (i != 1)
-    jsonstring += ", ";
-
-    if ($("#answer'.$ia[1].'_"+i).val() != "")
-    jsonstring += "{ ';
-
-    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_title'])) {
-            $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
-    } else {
-            $answer .= '\"title\":\"\",';
-    }
-
-    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_comment'])) {
-            $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
-    } else {
-            $answer .= '\"comment\":\"\",';
-    }
-
-    $answer .= '\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
-    }
-    jsonstring += "]";
-
-    $("#'.$ia[1].'").val(jsonstring);
-    $("#'.$ia[1].'_filecount").val(filecount);
-    });
-    </script>';
-
-    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
-    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
-    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
-
-    $answer .= '
-    <!-- Trigger the modal with a button -->
-
-        <!-- Modal -->
-        <div id="file-upload-modal-' . $ia[1].'" class="modal fade file-upload-modal" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header file-upload-modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <div class="h4 modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']).'</div>
-                    </div>
-                    <div class="modal-body file-upload-modal-body">
-                        <iframe id="uploader' . $ia[1].'" name="uploader'.$ia[1].'" class="uploader-frame" src="'.$uploadurl.'" title="'.gT("Upload").'"></iframe>
-                    </div>
-                    <div class="modal-footer file-upload-modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes").'</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    ';
+    $answer = doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
 
     $inputnames = array();
     $inputnames[] = $ia[1];

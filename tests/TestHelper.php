@@ -397,7 +397,7 @@ class TestHelper extends TestCase
                 // Open target="_blank" in new tab.
                 $profile->setPreference('browser.link.open_newwindow', 3);
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
-                $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;
             } catch (WebDriverException $ex) {
                 $tries++;

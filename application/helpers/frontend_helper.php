@@ -1255,12 +1255,15 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
             $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled'])) ? $aEnterTokenData['bCaptchaEnabled'] : '';
-
+            if($aForm['bCaptchaEnabled']) {
+                Yii::app()->getController()->createAction('captcha');
+            }
             // Rendering layout_user_forms.twig
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
-
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            $thissurvey['include_content']  = 'userforms.twig';
+            
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
