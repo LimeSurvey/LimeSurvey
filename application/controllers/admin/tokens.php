@@ -175,7 +175,7 @@ class tokens extends Survey_Common_Action
                         $aMessageIDs = array();
                     }
                     foreach ($aMessageIDs as $sMessageID) {
-                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID & FT_PEEK)); // Don't mark messages as read
+                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID | FT_PEEK)); // Don't mark messages as read
                         $iSurveyIdBounce = '';
                         foreach ($header as $item) {
                             if (preg_match('/^X-surveyid/', $item)) {
@@ -359,8 +359,8 @@ class tokens extends Survey_Common_Action
         $aData['model'] = $model;
 
         // Set number of page
-        if (isset($_POST['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_POST['pageSize']);
+        if (isset($_POST['pageSizeTokenView'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);
@@ -404,7 +404,7 @@ class tokens extends Survey_Common_Action
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
                                             $aData['email'] = 'lskeep';
                     } else {
@@ -1488,7 +1488,7 @@ class tokens extends Survey_Common_Action
                     unset($fieldsarray);
                 }
 
-                $aViewUrls = array('emailpost');
+                $aViewUrls = array();
                 $aData['tokenoutput'] = $tokenoutput;
 
                 if ($ctcount > $emcount) {
@@ -1502,7 +1502,9 @@ class tokens extends Survey_Common_Action
                     }
 
                     $aData['lefttosend'] = $ctcount - $iMaxEmails;
+                    $aData['nosidebodyblock'] = true;
                     $aViewUrls[] = 'emailwarning';
+                    
                 } else {
                     if (!$bInvalidDate && !$bSendError) {
                         $aData['tokenoutput'] .= "<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
@@ -1518,7 +1520,7 @@ class tokens extends Survey_Common_Action
                         $aData['tokenoutput'] .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
                     }
                 }
-
+                $aViewUrls[] = 'emailpost';
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
             } else {
                 $aData['sidemenu']['state'] = false;

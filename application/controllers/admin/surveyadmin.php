@@ -190,7 +190,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $this->getController()->error('Invalid survey ID');
         }
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys', 'read')) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -447,12 +447,20 @@ class SurveyAdmin extends Survey_Common_Action
     public function getAjaxQuestionGroupArray($surveyid)
     {
         $iSurveyID = sanitize_int($surveyid);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
         $lastquestion = getGlobalSetting($setting_entry);
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
         $lastquestiongroup = getGlobalSetting($setting_entry);
+        
+
         $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $baselang), array('order'=>'group_order ASC'));
         $aGroupViewable = array();
         if (count($aGroups)) {
@@ -465,7 +473,7 @@ class SurveyAdmin extends Survey_Common_Action
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question, true, 20, '[...]', 1);
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->question, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
 
@@ -508,6 +516,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function getAjaxMenuArray($surveyid, $position = '')
     {
         $iSurveyID = sanitize_int($surveyid);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $menus = $survey->getSurveyMenus($position);
@@ -798,19 +812,8 @@ class SurveyAdmin extends Survey_Common_Action
                 // Special feedback from plugin
                 $aViewUrls['output'] = $aResult['pluginFeedback'];
             } else if (isset($aResult['error'])) {
-                $aViewUrls['output'] = "<br />\n<div class='messagebox ui-corner-all'>\n";
-                if ($aResult['error'] == 'surveytablecreation') {
-                    $aViewUrls['output'] .= "<div class='alert alert-warning' role='alert'>".gT("The survey response table could not be created.")." ".gT("Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey.")."</div>\n";
-                } else {
-                    $aViewUrls['output'] .= "<div class='alert alert-success' role='alert'>".gT("Timings table could not be created.")."</div>\n";
-                }
-                if (App()->getConfig('debug')) {
-                    $aViewUrls['output'] .= "<strong class='text-warning'>".
-                    gT("Database error!!")."\n "."\n".
-                    "<pre>".var_export($aResult['error'], true)."</pre>\n";
-                }
-
-                $aViewUrls['output'] .= "<a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</strong><br/>";
+                $data['result'] = $aResult;
+                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/survey/_activation_error', $data, true);
             } else {
                 $warning = (isset($aResult['warning'])) ?true:false;
                 $allowregister = $survey->isAllowRegister;
@@ -2046,10 +2049,9 @@ class SurveyAdmin extends Survey_Common_Action
             false,
             false
         );
-
-
-
         }
+        $this->getController()->redirect(Yii::app()->request->urlReferrer);
+
     }
 
     /**

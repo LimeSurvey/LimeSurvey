@@ -36373,13 +36373,14 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        inSurveyOffset = 230,
+                        adminmenuHeight = $('body').find('nav').first().height(),
+                        footerHeight = $('body').find('footer').last().height(),
                         menuHeight = $('.menubar').outerHeight(),
-                        windowHeight = $('html').height(),
-                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
-                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
+                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                        windowHeight = window.innerHeight,
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-                    this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
             created() {
@@ -37054,7 +37055,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.state.questiongroups.length > 0;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 135 + 'px';
+            return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
         }
     },
     methods: {
@@ -37199,7 +37200,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column fill ls-ba",
+    staticClass: "ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5",
     attrs: {
       "id": "questionexplorer"
     }
@@ -37221,8 +37222,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group",
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "ls-flex-row ls-space padding all-0"
+  }, [_c('ul', {
+    staticClass: "list-group col-12",
     on: {
       "drop": function($event) {
         _vm.dropQuestionGroup($event, _vm.questiongroup)
@@ -37265,9 +37268,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_c('span', {
-      staticClass: "question_text_ellipsize",
+      staticClass: "question_text_ellipsize pull-left",
       style: ({
-        width: _vm.itemWidth
+        'max-width': _vm.itemWidth
       })
     }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
@@ -37319,7 +37322,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "href": question.link,
           "data-toggle": "tootltip",
-          "title": question.question
+          "title": question.question_flat
         },
         on: {
           "click": function($event) {
@@ -37327,14 +37330,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.openQuestion(question)
           }
         }
-      }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" "), _c('span', {
+      }, [_c('span', {
         staticClass: "question_text_ellipsize",
         style: ({
           width: _vm.itemWidth
         })
-      }, [_vm._v(" " + _vm._s(question.question) + " ")])])])
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
     })) : _vm._e()])], 1)
-  }))])
+  }))])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39390,7 +39393,6 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
@@ -39455,9 +39457,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;

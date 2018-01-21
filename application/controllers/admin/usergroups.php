@@ -112,35 +112,30 @@ class Usergroups extends Survey_Common_Action
      * Function responsible to delete a user group.
      * @return void
      */
-    public function delete($ugid)
+    public function delete()
     {
 
         $aViewUrls = array();
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-
+            $ugid = Yii::app()->request->getPost("ugid");
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if ($result->count() > 0) {
-// OK - AR count
                     $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
-
                     if ($delquery_result) {
-                        //Checked)
-                    {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => gT("Success!")));
-                    }
+                        Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
                     } else {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Could not delete user group.")));
+                        Yii::app()->user->setFlash("notice", gT("Could not delete user group."));
                     }
                 }
             } else {
-                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => gT("Could not delete user group. No group selected.")));
+                Yii::app()->user->setFlash("error", gT("Could not delete user group. No group selected."));
             }
         }
 
-        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
+        $this->getController()->redirect($this->getController()->createUrl('/admin/usergroups/sa/view'));
     }
 
 
@@ -372,23 +367,27 @@ class Usergroups extends Survey_Common_Action
                     list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('You can not add or remove the group owner from the group.')));
                 } else {
                     $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
-
+                    $sFlashType='';$sFlashMessage='';
                     switch ($action) {
                         case 'add' :
                             if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User added.')));
+                                $sFlashType='success'; $sFlashMessage=gT('User added.');
                             } else {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to add user.').'<br />'.gT('User already exists in the group.')));
+                                $sFlashType='error'; $sFlashMessage=gT('Failed to add user.').'<br />'.gT('User already exists in the group.');
                             }
                             break;
                         case 'remove' :
                             if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid))) {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User removed.')));
+                                $sFlashType='success'; $sFlashMessage=gT('User removed.');
                             } else {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.')));
+                                $sFlashType='error'; $sFlashMessage=gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.');
                             }
                             break;
                     }
+                    if(!empty($sFlashType) && !empty($sFlashMessage)) { 
+                        Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
+                    }
+                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
             } else {
                 list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('User not found.')));

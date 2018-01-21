@@ -31,7 +31,7 @@
 
         if (!is_null($sFileName)) {
             $oFile = fopen($sFileName, 'w');
-            if ($oFile !== false) {
+            if ($oFile === false) {
                 safeDie('Could not open output file.');
             } else {
                 fwrite($oFile, $sOutput);

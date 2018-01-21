@@ -11,7 +11,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class InstallationControllerTest extends TestBaseClassWeb
 {
     /**
-     *
+     * 
      */
     public static function setupBeforeClass()
     {
@@ -111,7 +111,7 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-
+            
             $dbuserDbType->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);

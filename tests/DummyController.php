@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\tests;
+namespace ls\tests;
 
 class DummyController extends \CController
 {
@@ -8,6 +8,7 @@ class DummyController extends \CController
      * @var string
      */
     public $sTemplate = 'dummyvalue';
+
     /**
      * Do nothing.
      */

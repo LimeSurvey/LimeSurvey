@@ -131,18 +131,38 @@ function manageIndex(){
 }
 
 /**
- * Update survey just when select a new language
+ * Reload page when participant selects a new language.
+ * Sets input[name=lang] to new language and submits limesurvey form.
  */
 function activateLanguageChanger(){
-    $('.lctli').on('change','select',function() {
-        if(!$(this).closest('form').length){
+    var limesurveyForm = $('form#limesurvey');
+
+    /**
+     * @param {string} lang Language to change to.
+     */
+    var applyChangeAndSubmit = function(lang) {
+        // Remove existing lang input.
+        limesurveyForm.find('input[name="lang"]').remove();
+        // Append new input.
+        $('<input type="hidden">')
+            .attr('name', 'lang')
+            .val(lang)
+            .appendTo(limesurveyForm);
+        // Append move type.
+        $('<input type="hidden" name="move" value="changelang" />').appendTo(limesurveyForm);
+        limesurveyForm.submit();
+    };
+
+    $('.form-change-lang a.ls-language-link').on('click', function() {
+        var closestForm = $(this).closest('form');
+        if (!closestForm.length) {
             /* we are not in a forum, can not submit directly */
-            if($('form#limesurvey').length==1){
+            if (limesurveyForm.length == 1) {
                 /* The limesurvey form exist in document, move select and button inside and click */
-                $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
-                $("<input type='hidden'>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
-                $(this).closest('.ls-language-changer-item').find("[type='submit']").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey')).click();
-            }else{
+                var newLang = $(this).data('limesurvey-lang');
+                applyChangeAndSubmit(newLang);
+                // TODO: Check all code below. When does it happen?
+            } else {
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){
                     /* If we have a target url : just move location to this url with lang set */
@@ -173,7 +193,13 @@ function activateLanguageChanger(){
             $(this).closest('.ls-language-changer-item').find(":submit").click();
         }
     });
+
+    // Survey welcome page language changer.
+    $('#langchangerSelectMain').on('change', function() {
+        applyChangeAndSubmit($(this).val());
+    });
 }
+
 /**
  * Action link with submit object (json) : add params to form and submit
  */

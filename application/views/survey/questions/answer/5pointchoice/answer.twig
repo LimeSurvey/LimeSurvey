@@ -1,0 +1,27 @@
+{#
+/**
+ * 5 point choice Html
+ *
+ * @var $sRows         : the rows, generated with the view item_row.php
+ * @var $slider_rating : slider rating display in question attribute
+ *
+ * @var $id
+ * @var $sliderId  $ia[0];
+ * @var $name'                   => $ia[1],
+ * @var $sessionValue
+ */
+#}
+
+<!-- 5 point choice -->
+<!-- answer -->
+
+<ul class="{{coreClass}} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{name}}">
+    {% for aRow in aRows %}
+        {% include './survey/questions/answer/5pointchoice/rows/item_row.twig' with aRow only %}
+    {% endfor %}
+</ul>
+
+{#/* Value for expression manager javascript (use id) ; no need to submit */#}
+<input type="hidden" name="java{{name}}" id="java{{name}}" disabled value={{sessionValue}} />
+
+

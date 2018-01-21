@@ -212,7 +212,7 @@ class viewHelper
             $sString = flattenText($sString, false, true);
         }
 
-        if ($iAbbreviated) {
+        if ($iAbbreviated>0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;

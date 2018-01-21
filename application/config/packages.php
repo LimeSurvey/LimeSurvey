@@ -79,37 +79,6 @@ return array(
             'bootstrap',
         )
     ),
-    /* Ranking question type */
-    'question-ranking'=>array(
-        'devBaseUrl'  => 'assets/packages/questions/ranking/',
-        'basePath' => 'core.questions.ranking',
-        'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/ranking.css',
-        ),
-        'js'=>array(
-            'scripts/sortable.min.js',
-            'scripts/ranking.js',
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
-    /* numeric slider question : numerci question type with slider */
-    'question-numeric-slider'=>array(
-        'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
-        'basePath' => 'core.questions.numeric-slider',
-        'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/numeric-slider.css',
-        ),
-        'js'=>array(
-            'scripts/numeric-slider.js',
-        ),
-        'depends' => array(
-            'bootstrap-slider',
-        )
-    ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
@@ -264,70 +233,6 @@ return array(
             'jquery',
             'pjaxbackend',
         )
-    ),
-
-    'font-roboto' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'roboto.css',
-        ),
-    ),
-
-    'font-icomoon' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'icomoon.css',
-        ),
-    ),
-
-    'font-noto' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'noto.css',
-        ),
-    ),
-
-    'font-news_cycle' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'news_cycle.css',
-        ),
-    ),
-
-    'font-ubuntu' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'ubuntu.css',
-        ),
-    ),
-
-    'font-lato' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'lato.css',
-        ),
-    ),
-
-    // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
-    'font-websafe' => array(
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'websafe.css',
-        ),
     ),
 
     'surveymenufunctions' => array(
