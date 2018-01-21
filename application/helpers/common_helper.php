@@ -2646,7 +2646,7 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 * @param mixed $attachments
 * @return bool If successful returns true
 */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="", $cc=array(), $bcc=array())
 {
     global $maildebug, $maildebugbody;
     require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
@@ -2671,7 +2671,13 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $to=array($to);
     }
 
+    if (!is_array($cc)){
+        $cc=array($cc);
+    }
 
+    if (!is_array($bcc)){
+        $bcc=array($bcc);
+    }
 
     if (!is_array($customheaders) && $customheaders == '')
     {
@@ -2759,19 +2765,48 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail)
+    foreach ($to as $recipient)
     {
-        if (strpos($singletoemail, '<') )
+        if (strpos($recipient, '<') )
         {
-            $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
-            $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
-            $mail->AddAddress($toemail,$toname);
+            $email=substr($recipient,strpos($recipient,'<')+1,strpos($recipient,'>')-1-strpos($recipient,'<'));
+            $name=trim(substr($recipient,0,strpos($recipient,'<')-1));
+            $mail->AddAddress($email,$name);
         }
         else
         {
-            $mail->AddAddress($singletoemail);
+            $mail->AddAddress($recipient);
         }
     }
+
+    foreach ($cc as $recipient)
+    {
+        if (strpos($recipient, '<') )
+        {
+            $email=substr($recipient,strpos($recipient,'<')+1,strpos($recipient,'>')-1-strpos($recipient,'<'));
+            $name=trim(substr($recipient,0,strpos($recipient,'<')-1));
+            $mail->addCC($email,$name);
+        }
+        else
+        {
+            $mail->addCC($recipient);
+        }
+    }
+
+    foreach ($bcc as $recipient)
+    {
+        if (strpos($recipient, '<') )
+        {
+            $email=substr($recipient,strpos($recipient,'<')+1,strpos($recipient,'>')-1-strpos($recipient,'<'));
+            $name=trim(substr($recipient,0,strpos($recipient,'<')-1));
+            $mail->addBCC($email,$name);
+        }
+        else
+        {
+            $mail->addBCC($recipient);
+        }
+    }
+
     if (is_array($customheaders))
     {
         foreach ($customheaders as $key=>$val) {
@@ -3472,7 +3507,7 @@ function getNextCode($sourcecode)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
-    $iOldSurveyID = (int)$iOldSurveyID; 
+    $iOldSurveyID = (int)$iOldSurveyID;
     $iNewSurveyID = (int)$iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey')
     {
@@ -6186,7 +6221,7 @@ function humanFilesize($bytes, $decimals = 2)
 
 /**
 * This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
-* 
+*
 * @param string $sSize
 * @return integer The value in bytes
 */
@@ -6195,8 +6230,8 @@ function convertPHPSizeToBytes($sSize)
     //
     $sSuffix = strtoupper(substr($sSize, -1));
     if (!in_array($sSuffix,array('P','T','G','M','K'))){
-        return (int)$sSize;  
-    } 
+        return (int)$sSize;
+    }
     $iValue = substr($sSize, 0, -1);
     switch ($sSuffix) {
         case 'P':
@@ -6270,7 +6305,7 @@ function convertPHPSizeToBytes($sSize)
 
     /**
     * Force Yii to create a new CSRF token by removing the old one
-    * 
+    *
     */
     function regenerateCSRFToken(){
         // Expire the CSRF cookie
@@ -6278,10 +6313,10 @@ function convertPHPSizeToBytes($sSize)
         $cookie->expire = time()-3600;
         Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
     }
-    
+
     /**
     * A function to remove ../ or ./ from paths to prevent directory traversal
-    * 
+    *
     * @param mixed $path
     */
     function get_absolute_path($path) {
@@ -6298,5 +6333,5 @@ function convertPHPSizeToBytes($sSize)
         }
         return implode(DIRECTORY_SEPARATOR, $absolutes);
     }
-    
+
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -4,6 +4,9 @@
 # ignore CAssetManager for debugging
 /framework/web/CAssetManager.php
 
+# vendor directory
+/vendor
+
 # upload directory : whole except the index.html and readme.txt
 /upload/*
 !/upload/index.html
@@ -70,12 +73,6 @@ Thumbs.db
 .buildpath
 *.un~
 launch.json
-# ignore plugins directory by default except LS plugin
-# if you want to add a new distributed plugin : add the directory here
-/plugins/*
-!/plugins/index.html
-!/plugins/Demo/
-!/plugins/AuditLog/
 enabletests
 
 ## Ignore test tmp files
