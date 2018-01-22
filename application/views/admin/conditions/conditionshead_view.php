@@ -10,7 +10,7 @@
                 data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
                 class='btn btn-warning pull-right condition-header-button'
-                onclick='return false';
+                onclick='return false;'
             >
                 <span class="fa fa-trash"></span>
                 &nbsp;
