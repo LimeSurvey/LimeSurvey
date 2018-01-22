@@ -1263,7 +1263,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
             $thissurvey['include_content']  = 'userforms.twig';
             
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user

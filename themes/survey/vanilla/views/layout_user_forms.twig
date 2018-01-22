@@ -12,33 +12,7 @@
     (¯`·._.·(¯`·._.· User Forms Layout  ·._.·´¯)·._.·´¯)
 
     This file renders the user forms such as: token (survey participant), and register.
-
+    => it is a direct child of layout_global
     NOTE: see layout_global.twig for more infos
 #}
-
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.class.html }} {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} " {{ aSurveyInfo.attr.html }}>
-
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/header/head.twig') }}
-
-    <body class="{{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
-
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/header/nav_bar.twig') }}
-
-
-        <!-- Outer Frame Container -->
-        <div class="{{ aSurveyInfo.class.outerframe }} container" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }}>
-
-        </div> <!-- outer frame container -->
-
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
-
-        {# Basic ThemeScript options  #}
-        {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
-
-    </body>
-</html>
-<!-- end of startpage.twig -->
+{% extends "layout_global.twig" %}
