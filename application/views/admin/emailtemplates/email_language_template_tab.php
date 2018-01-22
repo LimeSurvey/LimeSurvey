@@ -35,7 +35,7 @@ $script = array();
                 </a> 
                 <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
-                echo CHtml::button(gT("Reset this template"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
+                echo CHtml::button(gT("Reset this template"),array( 'id'=>'reset_template_'.$grouplang.'_'.$tab, 'class'=>'fillin btn btn-default selector__reset_template','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
                 ?>
             </div>
         </div>
@@ -115,6 +115,9 @@ $script = array();
 
 App()->getClientScript()->registerScript("ScriptEmailTemplateLanguageTemplate_<?=$grouplang?>_<?=$tab?>", "
     $('#validate_expression_".$grouplang."_".$tab."').remoteModal();\n\n
+    $('#reset_template_".$grouplang."_".$tab."').on('click', function(){
+        $('#'+$(this).data('target')).val($(this).data('value'));
+    });\n\n
     var prepEmailTemplates = PrepEmailTemplates();\n
     prepEmailTemplates.init();\n
     ".implode("\n", $script), LSYii_ClientScript::POS_POSTSCRIPT);

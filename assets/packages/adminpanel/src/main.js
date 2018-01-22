@@ -34,13 +34,14 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        inSurveyOffset = 230,
+                        adminmenuHeight = $('body').find('nav').first().height(),
+                        footerHeight = $('body').find('footer').last().height(),
                         menuHeight = $('.menubar').outerHeight(),
-                        windowHeight = $('html').height(),
-                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
-                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
+                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                        windowHeight = window.innerHeight,
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-                    this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
             created() {

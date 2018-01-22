@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+/*
+* Symbolset
+* www.symbolset.com
+* Copyright © 2014 Oak Studios LLC
+*
+* Upload this file to your web server
+* and place this within your <head> tags.
+* <link href="webfonts/ss-emoji.css" rel="stylesheet" />
+*/
+
+@font-face {
+  font-family: "SSEmoji";
+  src: url('../fonts/ss-emoji-adobe-mozilla.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ss-icon, .ss-icon.ss-emoji {
+  font-family: "SSEmoji";
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: none;
+  text-rendering: optimizeLegibility;
+  white-space: nowrap;
+  font-feature-settings: "liga";
+  -moz-osx-font-smoothing: grayscale;
+}

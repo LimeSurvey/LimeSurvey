@@ -926,6 +926,194 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Url parameter "surveyid" should be "sid" for this link.
+         */
+        If ($iOldDBVersion < 342) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}'), "name='surveyLogicFile'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>342), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Column assessment_value not null but default to 0.
+         */
+        if ($iOldDBVersion < 343) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>343), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Fix missing database values for templates after updating
+         * from 2.7x.
+         */
+        if ($iOldDBVersion < 344) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // All templates should inherit from vanilla as default (if extends is empty).
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                [
+                    'extends' => 'vanilla',
+                ],
+                "extends = '' AND name != 'vanilla'"
+            );
+
+            // If vanilla template is missing, install it.
+            $vanilla = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from('{{templates}}')
+                ->where('name=:name', ['name'=>'vanilla'])
+                ->queryRow();
+            if (empty($vanilla)) {
+                $vanillaData = [
+                    'name'          => 'vanilla',
+                    'folder'        => 'vanilla',
+                    'title'         => 'Vanilla Theme',
+                    'creation_date' => date('Y-m-d H:i:s'),
+                    'author'        =>'Louis Gac',
+                    'author_email'  => 'louis.gac@limesurvey.org',
+                    'author_url'    => 'https://www.limesurvey.org/',
+                    'copyright'     => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                    'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+                    'version'       => '3.0',
+                    'api_version'   => '3.0',
+                    'view_folder'   => 'views',
+                    'files_folder'  => 'files',
+                    'description'   => '<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.',
+                    'last_update'   => null,
+                    'owner_id'      => 1,
+                    'extends'       => '',
+                ];
+                $oDB->createCommand()->insert('{{templates}}', $vanillaData);
+            }
+            $vanillaConf = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from('{{template_configuration}}')
+                ->where('template_name=:template_name', ['template_name'=>'vanilla'])
+                ->queryRow();
+            if (empty($vanillaConf)) {
+                $vanillaConfData = [
+                    'template_name'     =>  'vanilla',
+                    'sid'               =>  NULL,
+                    'gsid'              =>  NULL,
+                    'uid'               =>  NULL,
+                    'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                    'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
+                    'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
+                    'cssframework_name' => 'bootstrap',
+                    'cssframework_css'  => '{}',
+                    'cssframework_js'   => '',
+                    'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+                    'packages_ltr'      => NULL,
+                    'packages_rtl'      => NULL
+                ];
+                $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>344], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Fruit template configuration might be faulty when updating
+         * from 2.7x, as well as bootswatch.
+         */
+        if ($iOldDBVersion < 345) {
+            $oTransaction = $oDB->beginTransaction();
+            $fruityConf = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from('{{template_configuration}}')
+                ->where('template_name=:template_name', ['template_name'=>'fruity'])
+                ->queryRow();
+            if ($fruityConf) {
+                // Brute force way. Just have to hope noone changed the default
+                // config yet.
+                $oDB->createCommand()->update(
+                    '{{template_configuration}}',
+                    [
+                        'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
+                        'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                        'files_print_css'   => '{"add":["css/print_theme.css"]}',
+                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                        'cssframework_name' => 'bootstrap',
+                        'cssframework_css'  => '{}',
+                        'cssframework_js'   => '',
+                        'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
+                    ],
+                    "template_name = 'fruity'"
+                );
+            } else {
+                $fruityConfData = [
+                    'template_name'     =>  'fruity',
+                    'sid'               =>  NULL,
+                    'gsid'              =>  NULL,
+                    'uid'               =>  NULL,
+                    'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
+                    'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
+                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                    'cssframework_name' => 'bootstrap',
+                    'cssframework_css'  => '{}',
+                    'cssframework_js'   => '',
+                    'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
+                    'packages_ltr'      => NULL,
+                    'packages_rtl'      => NULL
+                ];
+                $oDB->createCommand()->insert('{{template_configuration}}', $fruityConfData);
+            }
+            $bootswatchConf = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from('{{template_configuration}}')
+                ->where('template_name=:template_name', ['template_name'=>'bootswatch'])
+                ->queryRow();
+            if ($bootswatchConf) {
+                $oDB->createCommand()->update(
+                    '{{template_configuration}}',
+                    [
+                        'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                        'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                        'files_print_css'   => '{"add":["css/print_theme.css"]}',
+                        'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+                        'cssframework_name' => 'bootstrap',
+                        'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
+                        'cssframework_js'   => '',
+                        'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+                    ],
+                    "template_name = 'bootswatch'"
+                );
+            } else {
+                $bootswatchConfData = [
+                    'template_name'     =>  'bootswatch',
+                    'sid'               =>  NULL,
+                    'gsid'              =>  NULL,
+                    'uid'               =>  NULL,
+                    'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                    'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
+                    'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+                    'cssframework_name' => 'bootstrap',
+                    'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
+                    'cssframework_js'   => '',
+                    'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+                    'packages_ltr'      => NULL,
+                    'packages_rtl'      => NULL
+                ];
+                $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
+            }
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>345], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -944,7 +1132,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . gT('File') . ' ' . $file .', ' . gT('line') . ' ' . $trace[1]['line'] . '.'
+            . sprintf(gT('File %s, line %s.'),$file,$trace[1]['line'])
         );
         return false;
     }
@@ -2514,7 +2702,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "user_id" =>  "integer DEFAULT NULL",
         "ordering" =>  "integer DEFAULT '0'",
         "level" =>  "integer DEFAULT '0'",
-        "title" =>  "string(192)  NOT NULL DEFAULT ''",
+        "title" =>  "string(168)  NOT NULL DEFAULT ''",
         "position" =>  "string(192)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
         "changed_at" =>  "datetime",
@@ -2616,7 +2804,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         array(2, null, 8, 'quotas', 'Edit quotas', 'Quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 12, 'tokens', 'Survey participant settings', 'Participant settings', 'Set additional options for survey participants', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
         array(2, null, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),

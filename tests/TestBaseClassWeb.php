@@ -32,7 +32,7 @@ class TestBaseClassWeb extends TestBaseClass
     public static $webPort = 4444;
 
     /**
-     * @var WebDriver $webDriver
+     * @var LimeSurveyWebDriver $webDriver
      */
     protected static $webDriver;
 

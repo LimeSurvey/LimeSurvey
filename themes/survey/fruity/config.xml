@@ -61,13 +61,13 @@
         <backgroundimagefile>./files/pattern.png</backgroundimagefile>
         <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
-        <bodyanimationduration>1.0</bodyanimationduration>
+        <bodyanimationduration>1000</bodyanimationduration>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
-        <questionanimationduration>1.0</questionanimationduration>
+        <questionanimationduration>1000</questionanimationduration>
         <animatealert>off</animatealert>
         <alertanimation>shake</alertanimation>
-        <alertanimationduration>1.0</alertanimationduration>
+        <alertanimationduration>1000</alertanimationduration>
         <font>noto</font>
         <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
         <fontcolor>#444444</fontcolor>
@@ -77,10 +77,10 @@
         <checkicon>f00c</checkicon>
         <animatecheckbox>on</animatecheckbox>
         <checkboxanimation>rubberBand</checkboxanimation>
-        <checkboxanimationduration>0.5</checkboxanimationduration>
+        <checkboxanimationduration>1000</checkboxanimationduration>
         <animateradio>on</animateradio>
         <radioanimation>zoomIn</radioanimation>
-        <radioanimationduration>0.3</radioanimationduration>
+        <radioanimationduration>1000</radioanimationduration>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

@@ -105,10 +105,6 @@ class AdminController extends LSYii_Controller
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
-
-        if (!empty($this->user_id)) {
-            $this->_GetSessionUserRights($this->user_id);
-        }
     }
 
     /**
@@ -230,32 +226,6 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * Set Session User Rights
-     *
-     * @access public
-     * @return void
-     */
-    public function _GetSessionUserRights($loginID)
-    {
-        $oUser = User::model()->findByPk($loginID);
-
-        // SuperAdmins
-        // * original superadmin with uid=1 unless manually changed and defined
-        //   in config-defaults.php
-        // * or any user having USER_RIGHT_SUPERADMIN right
-
-        // Let's check if I am the Initial SuperAdmin
-
-        $oUser = User::model()->findByAttributes(array('parent_id' => 0));
-
-        if (!is_null($oUser) && $oUser->uid == $loginID) {
-                    Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
-        } else {
-                    Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
-        }
-    }
-
-    /**
      * Prints Admin Header
      *
      * @access protected
@@ -273,7 +243,6 @@ class AdminController extends LSYii_Controller
         $aData['adminlang'] = Yii::app()->language;
         $aData['languageRTL'] = "";
         $aData['styleRTL'] = "";
-
         Yii::app()->loadHelper("surveytranslator");
 
         if (getLanguageRTL(Yii::app()->language)) {

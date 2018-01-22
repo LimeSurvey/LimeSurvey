@@ -523,6 +523,7 @@ class TemplateConfiguration extends TemplateConfig
 
             //
 
+
         $OptionLink = '';
 
         if ($this->hasOptionPage) {
@@ -534,7 +535,6 @@ class TemplateConfiguration extends TemplateConfig
                     ".gT('Theme options')."
                 </a>";
         }
-
 
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
@@ -581,9 +581,8 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-
-
-        $oRTemplate = $this->prepareTemplateRendering($this->template->name);
+        $filteredName = Template::templateNameFilter($this->template->name);
+        $oRTemplate = $this->prepareTemplateRendering($filteredName);
 
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
@@ -714,6 +713,7 @@ class TemplateConfiguration extends TemplateConfig
                     $key = array_search($sFileName, $aSettings);
                     //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
                     unset($aSettings[$key]);
+                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
                     /* Old way todo
                         $oTemplate = $this->getTemplateForFile($sFileName, $this);
                         if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)) {
@@ -751,7 +751,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName   = $this->template->extends;
-            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName)->prepareTemplateRendering($sMotherTemplateName, null);
+            $instance = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
+            $instance->template->checkTemplate();
+            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
         }
     }
 

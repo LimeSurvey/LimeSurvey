@@ -186,7 +186,7 @@ class Survey extends LSActiveRecord
         $this->template = Template::templateNameFilter(getGlobalSetting('defaulttheme'));
         $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
-        $this->attachEventHandler("onAfterFind", array($this, 'fixSurveyAttribute'));
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
@@ -289,18 +289,24 @@ class Survey extends LSActiveRecord
     public function relations()
     {
         return array(
-            'permissions'     => array(self::HAS_MANY, 'Permission', array('entity_id'=> 'sid'), 'together' => true), //
-            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language', 'together' => true),
-            'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
-            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
-            'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true, 'order'=>'group_order ASC'),
+            'permissions'     => array(self::HAS_MANY, 'Permission', array('entity_id'=> 'sid')), //
+            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
+            'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
+            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'group_order ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
-            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
+            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template'))
         );
     }
+
+
+  /*  public function defaultScope()
+    {
+        return array('order'=> $this->getTableAlias().'.sid');
+    }    */
 
     /** @inheritdoc */
     public function scopes()
@@ -386,16 +392,16 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * fixSurveyAttribute to fix and/or add some survey attribute
+     * afterFindSurvey to fix and/or add some survey attribute
      * - Fix template name to be sure template exist
      */
-    public function fixSurveyAttribute()
+    public function afterFindSurvey()
     {
-        $event = new PluginEvent('afterFindSurvey');
+        $event =  new PluginEvent('afterFindSurvey');
         $event->set('surveyid', $this->sid);
         App()->getPluginManager()->dispatchEvent($event);
         // set the attributes we allow to be fixed
-        $allowedAttributes = array('template', 'usecookie', 'allowprev',
+        $allowedAttributes = array( 'template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
         foreach ($allowedAttributes as $attribute) {
@@ -403,7 +409,6 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
-        $this->template = Template::templateNameFilter($this->template);
     }
 
 
@@ -656,6 +661,12 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
+    private function __useTranslationForSurveymenu(&$entryData){
+        $entryData['title']             = gT($entryData['title']);
+        $entryData['menu_title']        = gT($entryData['menu_title']);
+        $entryData['menu_description']  = gT($entryData['menu_description']);
+    }
+
     private function _createSurveymenuArray($oSurveyMenuObjects)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
@@ -686,6 +697,7 @@ class Survey extends LSActiveRecord
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
                 $aEntry['debugData'] = $oDataAttribute->attributes;
                 $aEntry['pjax'] = $oDataAttribute->pjaxed;
+                $this->__useTranslationForSurveymenu($aEntry);
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
@@ -1467,10 +1479,6 @@ class Survey extends LSActiveRecord
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
-
-
-        $criteria->compare('t.gsid', [$this->gsid], false, 'AND');
-
 
         // Active filter
         if (isset($this->active)) {

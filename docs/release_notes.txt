@@ -35,6 +35,66 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.0.4 (build 180116) to 3.0.5 (build 180118) Jan 18, 2018
+-Fixed issue #13061: Survey list displays only the surveys from the default survey group (Olle Haerstedt)
+-Fixed issue #13110: Language changer doesn't work (Olle Haerstedt)
+-Fixed issue #13118: Hide group name and/or group description not working (Olle Haerstedt)
+-Fixed issue #13153: Confirm Popup stays active after deleting a single token and clicking "yes" (markusfluer)
+-Fixed issue #13176: Conditions on 1-5 Single Choice doesn't work with Star Rating (default + slider works) (markusfluer)
+-Fixed issue #13177: 1-5 Single Choice with Slider & deactivated "no answer" still let's the slider move to 6th element (outside of the slider) (markusfluer)
+-Fixed issue: Mass actions not working correctly (markusfluer)
+-Fixed issue: More fixes to theme configuration in database after update (Olle Haerstedt)
+-Fixed issue: Slow performance on every admininstration page if you have alot of surveys (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han 
+#Updated translation: Hungarian by kkd 
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+
+Changes from 3.0.3 (build 180112) to 3.0.4 (build 180116) Jan 16, 2018
+-Fixed issue #13124: LDAP Authencation failed (Denis Chenu)
+-Fixed issue #13139: Editing assessment rules->message text gets lost (markusfluer)
+-Fixed issue #13145: Unable to process IMAP bounces (Carsten Schmitz)
+-Fixed issue #13151: Display issue in survey theme editor (markusfluer)
+-Fixed issue #13154: "Resume Later" fails with "General error: 1364 Field 'saved_thisstep' doesn't have a default value" (markusfluer)
+-Fixed issue: Missing vanilla and fruity theme configuration after upgrading from 2.73 (Olle Haerstedt)
+-Fixed issue: POST URLs on user editing (Carsten Schmitz)
+-Fixed issue: ComfortUpdate ZIP problem (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from 3.0.2 (build 180110) to 3.0.3 (build 180112) Jan 12, 2018
+-Fixed a small typo (gekkedev)
+-Fixed issue #12223: Exporting database does not name columns for attributes (Matthew)
+-Fixed issue #13134: Some Expression Manager vars not rendered (LouisGac)
+-Fixed issue #13157: Exporting results with active timings results in an SQL error (Olle Haerstedt)
+-Fixed issue #13159: Cannot access logic file (Olle Haerstedt)
+-Fixed issue #13163: Can't add answer option to Single Choice Question (Olle Haerstedt)
+-Fixed issue #13166: Survey theme editor - Animate checkboxes (fruity only) (markusfluer)
+-Fixed issue: Labelsets not working correctly (markusfluer)
+-Fixed issue: Question navigator not working (Carsten Schmitz)
+-Fixed issue: labelsets not working on firefox (markusfluer)
+-Fixed issue: links in sidemenu to questions doen't work (Markus Flür)
+-Fixed issue: theme.js not loaded (LouisGac)
+-Fixed issue:vertical scrollbar in structure view (markusfluer)
+-fixed issue #13156: Some Variables are not working in ongoing survey: ASSESSMENT_CURRENT_TOTAL and TOKEN:TOKEN (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Thai by tomzt
+
+
 Changes from 3.0.1 (build 171228) to 3.0.2 (build 180110) Jan 10, 2018
 -New feature: Else part in Expression Manager function optional (#895) (Denis Chenu)
 -Fixed issue #13108: Property "Template.creator" is not defined. (#908) (Tõnis Ormisson

@@ -79,6 +79,12 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function update($id)
     {
+
+        if (!(Permission::model()->hasGlobalPermission('settings', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if ($id != 0) {
                     $model = $this->loadModel($id);
         } else {
@@ -179,6 +185,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function restore()
     {
+        if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update') )) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -222,6 +233,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function massDelete()
     {
+        if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
             $success = [];
@@ -262,6 +278,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function delete()
     {
+        if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             $menuEntryid = Yii::app()->request->getPost('menuEntryid', 0);
             $success = false;
@@ -300,6 +321,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function reorder()
     {
+        if (!(Permission::model()->hasGlobalPermission('settings', 'update') )) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();

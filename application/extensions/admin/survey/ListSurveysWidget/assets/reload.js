@@ -9,7 +9,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
     {
         jQuery(document).on("change", '#pageSize', function()
         {
-            $.fn.yiiGridView.update('survey-grid',{ data:{ pageSize: $(this).val() }});
+            $('#survey-grid').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
         });
     });
 });

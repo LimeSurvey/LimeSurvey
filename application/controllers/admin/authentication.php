@@ -169,11 +169,6 @@ class Authentication extends Survey_Common_Action
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
 
-                // This call to AdminController::_GetSessionUserRights() ;
-                // NB 1:calling another controller method from a controller method is a bad pratice
-                // NB 2: this function only check if logged in user is super admin to set in session USER_RIGHT_INITIALSUPERADMIN
-                // TODO: move this function to the user object
-                Yii::app()->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
                 Yii::app()->session['loginsummary'] = self::getSummary();
 
