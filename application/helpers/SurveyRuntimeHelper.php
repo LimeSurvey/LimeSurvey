@@ -468,7 +468,6 @@ class SurveyRuntimeHelper
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
 
-
     public function getShowNumAndCode()
     {
 

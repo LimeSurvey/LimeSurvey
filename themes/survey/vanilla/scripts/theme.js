@@ -196,6 +196,7 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
+        fixBodyPadding();
     };
 
     var initUserForms = function(){

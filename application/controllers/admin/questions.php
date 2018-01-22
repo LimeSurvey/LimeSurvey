@@ -1034,6 +1034,7 @@ class questions extends Survey_Common_Action
 
         $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
         $aData['selectormodeclass'] = $selectormodeclass;
+        $aData['ajaxDatas']['selectormodeclass'] = $selectormodeclass;
 
 
         $aData['accordionDatas']['oQuestion'] = $oQuestion;
@@ -1238,20 +1239,17 @@ class questions extends Survey_Common_Action
                 $this->getController()->error('Invalid Survey ID');
             }
 
-            // $surveyinfo = $sumresult1->attributes;
-            // $surveyinfo = array_map('flattenText', $surveyinfo);
-            $aData['activated'] = $activated = $oSurvey->active;
+            $aData['activated'] = $oSurvey->active;
 
-            if ($oSurvey->isActive) {
                 // Prepare selector Class for javascript function
-                if (Yii::app()->session['questionselectormode'] !== 'default') {
-                    $selectormodeclass = Yii::app()->session['questionselectormode'];
-                } else {
+            if (Yii::app()->session['questionselectormode'] !== 'default') {
+                $selectormodeclass = Yii::app()->session['questionselectormode'];
+            } else {
                     $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
-                }
-
-                $aData['selectormodeclass'] = $selectormodeclass;
             }
+
+            $aData['selectormodeclass'] = $selectormodeclass;
+            $aData['ajaxDatas']['selectormodeclass'] = $selectormodeclass;
 
             /**
              * Since is moved via ajax call only : it's not needed, when we have time : readd it for no-js solution
@@ -1270,6 +1268,8 @@ class questions extends Survey_Common_Action
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questions.js', LSYii_ClientScript::POS_BEGIN);
 
             $aData['sValidateUrl'] = ($adding || $copying) ? $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid)) : $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid, 'qid'=>$qid));
+            $aData['ajaxDatas']['sValidateUrl'] = $aData['sValidateUrl'];
+            $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
 
             $aData['addlanguages'] = $oSurvey->additionalLanguages;
 
@@ -1279,7 +1279,7 @@ class questions extends Survey_Common_Action
                     include('accessDenied.php');
         }
 
-        $aData['ajaxDatas']['sValidateUrl'] = (isset($aData['sValidateUrl'])) ? $aData['sValidateUrl'] : $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid));
+        
         $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
 
         ///////////

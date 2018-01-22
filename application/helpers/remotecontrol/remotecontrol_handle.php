@@ -51,9 +51,9 @@ class remotecontrol_handle
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-        } else {
-                    return array('status' => 'Invalid user name or password');
         }
+        return array('status' => 'Invalid user name or password');
+
     }
 
     /**
@@ -3005,11 +3005,10 @@ class remotecontrol_handle
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {
-                    Yii::app()->session[$k] = $v;
+            Yii::app()->session[$k] = $v;
         }
         Yii::app()->user->setId($aUserData['uid']);
 
-        $this->controller->_GetSessionUserRights($aUserData['uid']);
         return true;
     }
 

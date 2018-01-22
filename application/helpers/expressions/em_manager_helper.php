@@ -2991,14 +2991,13 @@
                     $em_validation_q_tip = '';
                 }
 
-
                 // em_validation_q - an EM validation equation that must be satisfied for the whole question.  Uses 'this' in the equation
                 if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
                 {
                     $em_validation_q = $qattr['em_validation_q'];
+                    $sq_names = array();
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
-                        $sq_names = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
                             switch ($type)
@@ -3008,6 +3007,7 @@
                                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                                 case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                                 case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+								case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
@@ -3024,13 +3024,14 @@
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',(string)substr($sq['jsVarName'],4), $em_validation_q) . ')';
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                     }
                                     break;
+                                case 'L':
+                                case '!':
                                 default:
+                                    // Nothing to do : no realsubq, set it after
                                     break;
                             }
                             if (!is_null($sq_name)) {
@@ -3050,6 +3051,21 @@
                             'qid' => $questionNum,
                             );
                         }
+                    }
+                    // No subqs or false subqs (L and !)
+                    if (empty($sq_names)) {
+                        if ($this->sgqaNaming) {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['sgqa'], $em_validation_q) . ')';
+                        } else {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['varName'], $em_validation_q) . ')';
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'em_validation_q',
+                            'class' => 'q_fn_validation',
+                            'eqn' => $eqn,
+                            'qid' => $questionNum,
+                        );
                     }
                 }
                 else
@@ -3897,7 +3913,6 @@
                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                     case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                     case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
                     case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
@@ -3907,8 +3922,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != Question::QT_H_ARRAY_FLEXIBLE_COLUMN) {
-                            if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", $sgqa)) {
+                        if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
                             else {
@@ -4154,7 +4168,6 @@
                     }
                     $ansList = ",'answers':{ " . implode(",",$answers) . "}";
                 }
-
                 // Set mappings of variable names to needed attributes
                 $varInfo_Code = array(
                 'jsName_on'=>$jsVarName_on,
@@ -4181,7 +4194,6 @@
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'onlynum'=>$onlynum,
                 );
-
                 $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
                 'grelevance'=>$grelevance,
@@ -5537,7 +5549,7 @@
                         $criteria->addCondition('srid=:srid');
                         $criteria->addCondition('sid=:sid');
                         $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
-                        $savedControl = SavedControl::model()->findAll($criteria);
+                        $savedControl = SavedControl::model()->find($criteria);
 
                         if($savedControl){
                             $savedControl->delete();

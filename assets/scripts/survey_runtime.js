@@ -124,8 +124,9 @@ function checkconditions(value, name, type, evt_type)
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
     }*/
-
-    ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    try{
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    } catch(e) { console.ls.error(e); }
 }
 
 /**

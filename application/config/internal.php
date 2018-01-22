@@ -250,7 +250,7 @@ $internalConfig = array(
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
-                't'     => 'eT',
+                't'     => 'gT',
                 'gT'    => 'gT',
             ),
 
@@ -261,6 +261,7 @@ $internalConfig = array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
+                    'LSCaptcha'                          =>  array("renderOut")
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),

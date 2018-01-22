@@ -295,7 +295,6 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return null;
         }
-
         Permission::model()->setGlobalPermission($iNewUID, 'auth_ldap');
 
         $oEvent->set('newUserID', $iNewUID);
@@ -422,7 +421,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'AuthLDAP') {
             return;
         }
-
+        /* unsubscribe from beforeHasPermission, else updating event */
+        $this->unsubscribe('beforeHasPermission');
         // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
@@ -443,9 +443,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         if ($user !== null) {
             //If user cannot login via LDAP: setAuthFailure
-            if (($user->uid == 1 && !$this->get('allowInitialUser'))
-                ||
-                !Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_ldap',":uid"=>$user->uid)) // Don't use Permission::model()->hasGlobalPermission , else plugin event updated
+            if ( ($user->uid == 1 && !$this->get('allowInitialUser'))
+                || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)
             ) {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
                 return;

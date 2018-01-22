@@ -224,6 +224,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 if (!in_array('lastpage', $oTableSchema->columnNames)) {
                     continue;
                 }
+                //If seed already exists, due to whatsoever
+                if (in_array('seed', $oTableSchema->columnNames)) {
+                    continue;
+                }
                 // If survey has active table, create seed column
                 Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
@@ -1247,7 +1251,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . gT('File').' '.$file.', '.gT('line').' '.$trace[1]['line'].'.'
+            . sprintf(gT('File %s, line %s.'),$file,$trace[1]['line'])
         );
         return false;
     }

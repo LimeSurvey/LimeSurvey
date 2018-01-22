@@ -45,7 +45,8 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
             <?php
 
                 // This is a quick and dirty solution.
-                // Todo: a clean system to show the level and indicate where the inherited values are taken
+                // @Todo A clean system to show the level and indicate where the inherited values are taken
+                // @Todo: Don't concatenate translations, fix them, Louis
 
                 if (!is_null($sid)){
                     eT(" for survey id: $sid ");
