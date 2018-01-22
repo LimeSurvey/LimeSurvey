@@ -851,12 +851,18 @@
         /**
         * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
         * If $qid is NULL, returns an array of relevance equations generated from Condition, keyed on the question ID
-        * @param integer|null $surveyId
+        * @param integer $surveyId
         * @param integer|null $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
         * @return array of generated relevance strings, indexed by $qid
         */
-        public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
+        public static function ConvertConditionsToRelevance($surveyId, $qid=NULL)
         {
+            $aDictionary = LimeExpressionManager::getLEMqcode2sgqa($surveyId);
+            if (is_null($aDictionary)) {
+                $aDictionary=array();
+            } else {
+                $aDictionary = array_flip($aDictionary);
+            } 
             $query = LimeExpressionManager::getConditionsForEM($surveyId,$qid);
             $aConditions=$query->readAll();
             $_qid = -1;
@@ -926,11 +932,18 @@
                 else if ($row['type'] == Question::QT_M_MULTIPLE_CHOICE || $row['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     if ((string)substr($row['cfieldname'],0,1) == '+') {
                         // if prefixed with +, then a fully resolved name
-                        $fieldname = (string)substr($row['cfieldname'],1) . '.NAOK';
+                        $row['cfieldname']=(string)substr($row['cfieldname'],1);
+                        if (isset($aDictionary[$row['cfieldname']])) {
+                            $row['cfieldname'] = $aDictionary[$row['cfieldname']];
+                        }
+                        $fieldname = $row['cfieldname'] . '.NAOK';
                         $subqid = $fieldname;
                         $value = $row['value'];
                     }
                     else {
+                        if (isset($aDictionary[$row['cfieldname']])) {
+                            $row['cfieldname'] = $aDictionary[$row['cfieldname']];
+                        }                        
                         // else create name by concatenating two parts together
                         debugbreak();
                         $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
@@ -939,6 +952,9 @@
                     }
                 }
                 else {
+                    if (isset($aDictionary[$row['cfieldname']])) {
+                        $row['cfieldname'] = $aDictionary[$row['cfieldname']];
+                    }
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
                     $value = $row['value'];
@@ -4821,9 +4837,9 @@
             }
             if (count($vars) > 0)
             {
-                return implode(',',$vars);
+                return implode(',',$vars);               
             }
-            return $varname;    // invalid
+            return $varname;     // invalid
         }
 
         /**
