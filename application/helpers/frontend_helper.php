@@ -1261,7 +1261,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
-            $thissurvey['include_content']  = 'userforms.twig';
+            $thissurvey['include_content']  = 'userforms';
             
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
             break;
@@ -1867,7 +1867,7 @@ function checkCompletedQuota($surveyid, $return = false)
             header("Location: ".$sUrl);
         }
     }
-    $thissurvey['include_content'] = 'quotas.twig';
+    $thissurvey['include_content'] = 'quotas';
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
@@ -1962,7 +1962,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index", array("sid"=>$surveyid)); // For form action (will remove newtest)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] = '';
 
-    $thissurvey['include_content'] = 'firstpage.twig';
+    $thissurvey['include_content'] = 'firstpage';
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
