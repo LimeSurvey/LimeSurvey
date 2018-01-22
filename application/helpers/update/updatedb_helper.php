@@ -224,6 +224,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 if (!in_array('lastpage', $oTableSchema->columnNames)) {
                     continue;
                 }
+                //If seed already exists, due to whatsoever
+                if (in_array('seed', $oTableSchema->columnNames)) {
+                    continue;
+                }
                 // If survey has active table, create seed column
                 Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
