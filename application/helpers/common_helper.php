@@ -3054,12 +3054,10 @@ function stripJavaScript($sContent)
 */
 function showJavaScript($sContent)
 {
-    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', create_function(
-            // single quotes are essential here,
-            // or alternative escape all $ as \$
-            '$matches',
-            'return htmlspecialchars($matches[0]);'
-        ), $sContent);
+    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
+        function($matches){
+            return htmlspecialchars($matches[0]);
+        }, $sContent);
     return $text;
 }
 
@@ -3437,7 +3435,7 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
+    uksort($fieldnames, function($a,$b) {return strlen($a) < strlen($b);});
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;
