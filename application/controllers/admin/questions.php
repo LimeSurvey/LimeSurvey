@@ -1298,17 +1298,15 @@ class questions extends Survey_Common_Action
             // $surveyinfo = array_map('flattenText', $surveyinfo);
             $aData['activated'] = $activated = $sumresult1->active;
 
-            if ($activated != "Y") {
-                // Prepare selector Class for javascript function
-                if (Yii::app()->session['questionselectormode'] !== 'default') {
-                    $selectormodeclass = Yii::app()->session['questionselectormode'];
-                } else {
-                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
-                }
-
-                $aData['selectormodeclass'] = $selectormodeclass;
-                $aData['ajaxDatas']['selectormodeclass'] = $selectormodeclass;
+            // Prepare selector Class for javascript function
+            if (Yii::app()->session['questionselectormode'] !== 'default') {
+                $selectormodeclass = Yii::app()->session['questionselectormode'];
+            } else {
+                $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
             }
+
+            $aData['selectormodeclass'] = $selectormodeclass;
+            $aData['ajaxDatas']['selectormodeclass'] = $selectormodeclass;
 
             /**
              * Since is moved via ajax call only : it's not needed, when we have time : readd it for no-js solution
