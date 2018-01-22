@@ -1289,15 +1289,13 @@ class questions extends Survey_Common_Action
 
             $aData['action'] = $action;
 
-            $sumresult1 = Survey::model()->findByPk($surveyid);
-            if (is_null($sumresult1)) {
+            $arSurveyInfo = Survey::model()->findByPk($surveyid);
+            if (is_null($arSurveyInfo)) {
                 $this->getController()->error('Invalid Survey ID');
             }
 
-            // $surveyinfo = $sumresult1->attributes;
-            // $surveyinfo = array_map('flattenText', $surveyinfo);
-            $aData['activated'] = $activated = $sumresult1->active;
-
+            $aData['activated'] = $arSurveyInfo->active;
+            
             // Prepare selector Class for javascript function
             if (Yii::app()->session['questionselectormode'] !== 'default') {
                 $selectormodeclass = Yii::app()->session['questionselectormode'];
@@ -1318,7 +1316,7 @@ class questions extends Survey_Common_Action
 
             if ($adding) {
                 // Get the questions for this group
-                $baselang = Survey::model()->findByPk($surveyid)->language;
+                $baselang = $arSurveyInfo->language;
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
