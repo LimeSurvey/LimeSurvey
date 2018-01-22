@@ -5543,9 +5543,9 @@
                         $criteria->addCondition('srid=:srid');
                         $criteria->addCondition('sid=:sid');
                         $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
-                        $savedControl = SavedControl::model()->findAll($criteria);
+                        $savedControls = SavedControl::model()->findAll($criteria);
 
-                        if($savedControl){
+                        foreach ($savedControls as $savedControl) {
                             $savedControl->delete();
                         }
 
