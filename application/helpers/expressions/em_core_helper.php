@@ -2167,7 +2167,8 @@ class ExpressionManager
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j = 0; $j < count($aInitTokens); ++$j) {
+        $countInitTokens =count($aInitTokens);
+        for ($j = 0; $j < $countInitTokens; ++$j) {
             for ($i = 0; $i < count($this->RDP_CategorizeTokensRegex); ++$i) {
                 $sToken = $aInitTokens[$j][0];
                 if (preg_match($this->RDP_CategorizeTokensRegex[$i], $sToken)) {

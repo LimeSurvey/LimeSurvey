@@ -155,7 +155,8 @@ class Surveymenu extends LSActiveRecord
     {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [];
-        for ($i = 0; $i <= count($oSurveymenus); $i++) {
+        $arraySize = count($oSurveymenus);
+        for ($i = 0; $i <= $arraySize; $i++) {
             $options[$i] = $i;
         }
         //return join('\n',$options);
