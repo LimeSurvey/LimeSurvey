@@ -120,7 +120,7 @@ class TemplateManifest extends TemplateConfiguration
             if ($file->attributes()->role == "content") {
 
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = explode('/', $file);
+                $aExplodedFile = explode(DIRECTORY_SEPARATOR, $file);
                 $sFormatedFile = end($aExplodedFile);
                 return (string) $sFormatedFile;
             }
