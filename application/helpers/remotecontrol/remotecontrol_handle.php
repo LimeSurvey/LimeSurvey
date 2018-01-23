@@ -590,8 +590,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
         }
         $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey)) {
+        if (is_null($survey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
         if (!in_array($sType, array('day', 'hour'))) {

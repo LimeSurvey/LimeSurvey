@@ -702,7 +702,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
     }
     // if no language code is set then get the base language one
     if ((!isset($languagecode) || $languagecode == '')) {
-        $languagecode = Survey::model()->findByPk($surveyid)->language;
+        $languagecode = $oSurvey->language;
     }
 
     if (isset($staticSurveyInfo[$surveyid][$languagecode])) {
@@ -712,7 +712,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
-            $languagecode = Survey::model()->findByPk($surveyid)->language;
+            $languagecode = $oSurvey->language;
             $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         }
         if ($result) {
@@ -4103,13 +4103,14 @@ function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
     global $surveyid;
+    $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
     if (Yii::app()->session['survey_'.$surveyid]['s_lang']) {
         $languagecode = Yii::app()->session['survey_'.$surveyid]['s_lang'];
-    } elseif (isset($surveyid) && $surveyid && Survey::model()->findByPk($surveyid)) {
-        $languagecode = Survey::model()->findByPk($surveyid)->language;
+    } elseif (isset($surveyid) && $surveyid && $oSurvey) {
+        $languagecode = $oSurvey->language;
     } else {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
