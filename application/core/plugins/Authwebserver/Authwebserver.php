@@ -126,8 +126,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             $oUser->email = $aUserProfile['email'];
 
             if ($oUser->save()) {
-                $permission = new Permission;
-                $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                Permission::setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
                 Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
 
                 // read again user from newly created entry
