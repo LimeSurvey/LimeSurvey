@@ -857,12 +857,13 @@
         */
         public static function ConvertConditionsToRelevance($surveyId, $qid=NULL)
         {
-            $aDictionary = LimeExpressionManager::getLEMqcode2sgqa($surveyId);
-            if (is_null($aDictionary)) {
-                $aDictionary=array();
-            } else {
-                $aDictionary = array_flip($aDictionary);
-            } 
+            $aDictionary=array();
+            if (!is_null($surveyId)) {
+                $aDictionary = LimeExpressionManager::getLEMqcode2sgqa($surveyId);
+                if (!is_null($aDictionary)) {
+                    $aDictionary = array_flip($aDictionary);
+                } 
+            }
             $query = LimeExpressionManager::getConditionsForEM($surveyId,$qid);
             $aConditions=$query->readAll();
             $_qid = -1;
@@ -945,7 +946,6 @@
                             $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                         }                        
                         // else create name by concatenating two parts together
-                        debugbreak();
                         $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
                         $subqid = $row['cfieldname'];
                         $value = 'Y';
