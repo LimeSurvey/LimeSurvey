@@ -656,14 +656,20 @@ protected function resetSurveyLogic($iSurveyID)
 /**
 * Add a new condition
 * @todo Better way than to extract $args
-* @params $args
+* @param array $args
 * @return void
 */
 protected function insertCondition(array $args)
 {
     // Extract p_scenario, p_cquestions, ...
+    /** @var integer $qid */
+    /** @var string $p_scenario */
+    /** @var string $p_cqid */
+    /** @var string $p_method */
+    /** @var array $p_canswers */
+    /** @var CHttpRequest $request */
     extract($args);
-    
+
     if (isset($p_cquestions) && $p_cquestions != '') {
         $conditionCfieldname = $p_cquestions;
     } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
