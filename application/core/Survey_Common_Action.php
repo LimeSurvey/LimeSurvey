@@ -608,7 +608,6 @@ class Survey_Common_Action extends CAction
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
-            $baselang = $oSurvey->language;
 
             $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
 
@@ -914,7 +913,6 @@ class Survey_Common_Action extends CAction
         if (isset($aData['display']['menu_bars']['listquestions'])) {
             $iSurveyID = $aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
-            $baselang = $oSurvey->language;
 
             // The DataProvider will be build from the Question model, search method
             $model = new Question('search');
@@ -954,7 +952,6 @@ class Survey_Common_Action extends CAction
         $aSurveyInfo = getSurveyInfo($iSurveyID);
         /** @var Survey $oSurvey */
         $oSurvey = $aData['oSurvey'];
-        $baselang = $aSurveyInfo['language'];
         $activated = $aSurveyInfo['active'];
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
