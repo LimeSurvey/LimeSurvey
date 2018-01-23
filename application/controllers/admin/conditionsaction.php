@@ -656,14 +656,22 @@ protected function resetSurveyLogic($iSurveyID)
 /**
 * Add a new condition
 * @todo Better way than to extract $args
-* @params $args
+* @param array $args
 * @return void
 */
 protected function insertCondition(array $args)
 {
     // Extract p_scenario, p_cquestions, ...
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $p_scenario */
+    /** @var string $p_cqid */
+    /** @var string $p_method */
+    /** @var array $p_canswers */
+    /** @var CHttpRequest $request */
+    /** @var string $editSourceTab */
     extract($args);
-    
+
     if (isset($p_cquestions) && $p_cquestions != '') {
         $conditionCfieldname = $p_cquestions;
     } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
@@ -760,6 +768,18 @@ protected function insertCondition(array $args)
 protected function insertConditionAjax($args)
 {
     // Extract scenario, cquestions, ...
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $scenario */
+    /** @var string $cqid */
+    /** @var string $method */
+    /** @var array $p_canswers */
+    /** @var string $editSourceTab */
+    /** @var string $editTargetTab */
+    /** @var string $ConditionConst */
+    /** @var string $prevQuestionSGQA */
+    /** @var string $tokenAttr */
+    /** @var string $ConditionRegexp */
     extract($args);
     
     if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
@@ -913,6 +933,15 @@ protected function getQuickAddData(LSHttpRequest $request)
 */
 protected function updateCondition(array $args)
 {
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $p_scenario */
+    /** @var string $p_cqid */
+    /** @var string $p_cid */
+    /** @var string $p_method */
+    /** @var array $p_canswers */
+    /** @var CHttpRequest $request */
+    /** @var string $editSourceTab */
     extract($args);
     
     if (isset($p_cquestions) && $p_cquestions != '') {
@@ -992,6 +1021,7 @@ protected function updateCondition(array $args)
 */
 protected function renumberScenarios(array $args)
 {
+    /** @var string $p_cid */
     extract($args);
     
     $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
@@ -1097,6 +1127,11 @@ protected function copyConditions(array $args)
 */
 protected function applySubaction($p_subaction, array $args)
 {
+    /** @var string $p_cid */
+    /** @var string $qid */
+    /** @var string $gid */
+    /** @var string $p_newscenarionum */
+    /** @var string $p_scenario */
     extract($args);
     switch ($p_subaction) {
         // Insert new condition
@@ -1512,7 +1547,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             }
                 unset($quicky);
             // End if type R
-        } ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+        } elseif ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
             
                 $shortanswer = " [".gT("Group of checkboxes")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -1610,12 +1645,14 @@ protected function getCAnswersAndCQuestions(array $theserows)
     return array($cquestions, $canswers);
     }
 
-/**
-* @param int $qid
-* @param int $gid
-* @param array $conditionsList
-* @return string html
-*/
+    /**
+     * @param int $qid
+     * @param int $gid
+     * @param array $conditionsList
+     * @param array $pquestions
+     * @return string html
+     * @throws CException
+     */
 protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
 {
     App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
@@ -1648,10 +1685,21 @@ protected function getCopyForm($qid, $gid, array $conditionsList, array $pquesti
 * Get html for add/edit condition form
 * @param array $args
 * @return string
-* //FIXME a lot of broken things here!! is this used at all?
 */
 protected function getEditConditionForm(array $args)
 {
+    /** @var array $cquestions */
+    /** @var string $p_cquestions */
+    /** @var array $p_canswers */
+    /** @var string $subaction */
+    /** @var integer $iSurveyID */
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var integer $qcount */
+    /** @var string $p_csrctoken */
+    /** @var string $p_prevquestionsgqa */
+    /** @var string $method */
+    /** @var string $scenariocount */
     extract($args);
     $result = '';
     
@@ -1719,6 +1767,14 @@ protected function getEditConditionForm(array $args)
 */
 protected function getQuickAddConditionForm(array $args)
 {
+    /** @var integer $iSurveyID */
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var string $subaction */
+    /** @var string $method */
+    /** @var string $p_csrctoken */
+    /** @var string $p_prevquestionsgqa */
+    /** @var array $cquestions */
     extract($args);
     $data = array(
     'subaction'     => $subaction,
@@ -1921,6 +1977,10 @@ protected function getEditTargetTab()
 */
 protected function getQuestionNavOptions($theserows, $postrows, $args)
 {
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var string $questiontitle */
+    /** @var string $sCurrentFullQuestionText */
     extract($args);
     
     $theserows2 = array();
