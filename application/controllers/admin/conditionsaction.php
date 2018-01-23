@@ -663,11 +663,13 @@ protected function insertCondition(array $args)
 {
     // Extract p_scenario, p_cquestions, ...
     /** @var integer $qid */
+    /** @var integer $gid */
     /** @var string $p_scenario */
     /** @var string $p_cqid */
     /** @var string $p_method */
     /** @var array $p_canswers */
     /** @var CHttpRequest $request */
+    /** @var string $editSourceTab */
     extract($args);
 
     if (isset($p_cquestions) && $p_cquestions != '') {
@@ -766,6 +768,18 @@ protected function insertCondition(array $args)
 protected function insertConditionAjax($args)
 {
     // Extract scenario, cquestions, ...
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $scenario */
+    /** @var string $cqid */
+    /** @var string $method */
+    /** @var array $p_canswers */
+    /** @var string $editSourceTab */
+    /** @var string $editTargetTab */
+    /** @var string $ConditionConst */
+    /** @var string $prevQuestionSGQA */
+    /** @var string $tokenAttr */
+    /** @var string $ConditionRegexp */
     extract($args);
     
     if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
