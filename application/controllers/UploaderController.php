@@ -319,10 +319,10 @@ class UploaderController extends SurveyController
             uploadModalObjects = uploadModalObjects || {};
             uploadModalObjects[".$fn."] = new uploadHandler(  "
                 . $qid.", {"
-                . "sFieldName : '" .$sFieldName."', "
-                . "sPreview : '" . $sPreview."', "
-                . "csrfToken: '". ls_json_encode(Yii::app()->request->csrfToken)."', "
-                . "showpopups: '" . Yii::app()->getConfig("showpopups")."'"
+                . "sFieldName : '".$sFieldName."', "
+                . "sPreview : '".$sPreview."', "
+                . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
+                . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
                 . "});
         </script>";
         $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
