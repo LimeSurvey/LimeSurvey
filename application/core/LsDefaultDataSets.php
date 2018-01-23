@@ -2,21 +2,21 @@
 /**
  * A collection of default data sets, like surveymenus, surveymenuentries, and tutorials
  */
-class LsDefaultDataSets
-{
+class LsDefaultDataSets {
 
-    public static function getSurveyMenuEntryData()
-    {
-        $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
+    public static function getSurveyMenuEntryData(){
+        $sOldLanguage = App()->language;
+        App()->setLanguage('en');
+        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
         $basicMenues = [
             [1,NULL,1,'overview', gT('Survey overview','unescaped'),gT('Overview','unescaped'),gT('Open general survey overview and quick action','unescaped'),'list','fontawesome','','admin/survey/sa/view','','','','','','','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,2,'generalsettings', gT('General survey settings','unescaped'),gT('General settings','unescaped'),gT('Open general survey settings','unescaped'),'gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,3,'surveytexts', gT('Survey text elements','unescaped'),gT('Text elements','unescaped'),gT('Survey text elements','unescaped'),'file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,4,'theme_options', gT('Theme options','unescaped'),gT('Theme options','unescaped'),gT('Edit theme options for this survey','unescaped'),'paint-brush','fontawesome','','admin/themeoptions/sa/updatesurvey','','','','','themes','read','{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,5,'participants', gT('Survey participants','unescaped'),gT('Survey participants','unescaped'),gT('Go to survey participant and token settings','unescaped'),'user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,6,'presentation', gT('Presentation and navigation settings','unescaped'),gT('Presentation','unescaped'),gT('Edit presentation and navigation settings','unescaped'),'eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,7,'publication', gT('Publication and access control settings','unescaped'),gT('Publication & access','unescaped'),gT('Edit settings for publication and access control','unescaped'),'key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,8,'surveypermissions',gT('Edit surveypermissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [1,NULL,6,'presentation', gT('Presentation & navigation settings','unescaped'),gT('Presentation','unescaped'),gT('Edit presentation and navigation settings','unescaped'),'eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [1,NULL,7,'publication', gT('Publication & access control settings','unescaped'),gT('Publication & access','unescaped'),gT('Edit settings for publication and access control','unescaped'),'key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [1,NULL,8,'surveypermissions',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,9,'tokens', gT('Survey participant settings','unescaped'),gT('Participant settings','unescaped'),gT('Set additional options for survey participants','unescaped'),'users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,10,'quotas', gT('Edit quotas','unescaped'),gT('Quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,11,'assessments', gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
@@ -30,7 +30,7 @@ class LsDefaultDataSets
             [2,NULL,4,'listQuestions',gT('List questions','unescaped'),gT('List questions','unescaped'),gT('List questions','unescaped'),'list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,5,'listQuestionGroups',gT('List question groups','unescaped'),gT('List question groups','unescaped'),gT('List question groups','unescaped'),'th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,6,'generalsettings_collapsed',gT('General survey settings','unescaped'),gT('General settings','unescaped'),gT('Open general survey settings','unescaped'),'gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,7,'surveypermissions_collapsed',gT('Edit surveypermissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [2,NULL,7,'surveypermissions_collapsed',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,8,'quotas_collapsed',gT('Edit quotas','unescaped'),gT('Survey quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,9,'assessments_collapsed',gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,10,'emailtemplates_collapsed',gT('Email templates','unescaped'),gT('Email templates','unescaped'),gT('Edit the templates for invitation, reminder and registration emails','unescaped'),'envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
@@ -40,18 +40,21 @@ class LsDefaultDataSets
             [2,NULL,14,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,15,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,16,'reorder',gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),'icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [3,NULL,16,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [3,NULL,16,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],      
         ];
         $returnArray = [];
         
         foreach ($basicMenues as $basicMenu) {
             $returnArray[] = array_combine($headerArray, $basicMenu);
         }
+        App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
     
     public static function getTemplateDefaultTexts($mode){
 
+        $sOldLanguage = App()->language;
+        App()->setLanguage('en');
         $returnArray = array(
             'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results", $mode),
             'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}", $mode),
@@ -102,7 +105,7 @@ class LsDefaultDataSets
             'registration_subject'=>gT("Survey registration confirmation", $mode),
             'registration'=>gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.", $mode)
             );
-
+            App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
     
@@ -123,17 +126,21 @@ class LsDefaultDataSets
             'created_at',
             'created_by'
         ];
+        $sOldLanguage = App()->language;
+        App()->setLanguage('en');
         $returnArray = [];
         $returnArray[] = array_combine($headerArray, [NULL,NULL,NULL,0,0,'mainmenu',gT('Survey menu'),'side',gT('Main survey menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
         $returnArray[] = array_combine($headerArray, [NULL,NULL,NULL,0,0,'quickmenu',gT('Quick menu'),'collapsed',gT('Quick menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
         $returnArray[] = array_combine($headerArray, [1,NULL,NULL,0,1,'pluginmenu',gT('Plugin menu'),'side',gT('Plugin menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
-        
+        App()->setLanguage($sOldLanguage);
+
         return $returnArray;
     }
 
     public static function getBoxesData()
     {
-        
+        $sOldLanguage = App()->language;
+        App()->setLanguage('en');
         $returnArray = [];
         $returnArray[] = ['position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => gT('Create survey'), 'ico' => 'add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => gT('List surveys'), 'ico' => 'list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
@@ -141,7 +148,8 @@ class LsDefaultDataSets
         $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 5, 'url' => 'admin/labels/sa/view', 'title' => gT('Label sets'), 'ico' => 'label', 'desc' => gT('Edit label sets'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 6, 'url' => 'admin/themeoptions', 'title' => gT('Themes'), 'ico' => 'templates', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
-        
+
+        App()->setLanguage($sOldLanguage);
         return $returnArray;
         
     }
@@ -293,8 +301,7 @@ class LsDefaultDataSets
     public static function getTutorialData()
     {
         $returnArray = [];
-        
-        $returnArray[] = [
+        $returnArray['firstStartTour'] = [
             'name' => 'firstStartTour',
             'title' => gT('Beginner tour'),
             'icon' => 'fa-rocket',
@@ -331,7 +338,8 @@ class LsDefaultDataSets
 
     public static function getTutorialEntryData()
     {
-        $returnArray = array(
+        $returnArray =[];
+        $returnArray['firstStartTour'] = array(
             array(
                 'teid' => 1,
                 'ordering' => 1,
@@ -922,6 +930,7 @@ class LsDefaultDataSets
                 ))
             ),
         );
+
         return $returnArray;
     }
 }

@@ -380,8 +380,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         */
         if ($iOldDBVersion < 310) {
             $oTransaction = $oDB->beginTransaction();
-            reCreateSurveyMenuTable310($oDB);
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>310), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -418,11 +416,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 313) {
             $oTransaction = $oDB->beginTransaction();
 
-            addColumn('{{surveymenu_entries}}', 'active', "boolean NOT NULL DEFAULT '0'");
-            addColumn('{{surveymenu}}', 'active', "boolean NOT NULL DEFAULT '0'");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
-            $oDB->createCommand()->update('{{surveymenu}}', array('active'=>1));
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>313), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -433,11 +426,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 314) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}',
-                array('name'=>'resources', 'title'=>'Add/Edit resources to the survey', 'menu_title'=>'Resources', 'menu_description'=>'Add/Edit resources to the survey'),
-                'id=15'
-            );
-
+     
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>314), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -490,8 +479,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 319) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": {"link": { "pjaxed": false}}}'), "name='panelintegration'");
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>319), "stg_name='DBVersion'");
 
             $table = Yii::app()->db->schema->getTable('{{surveys_groups}}');
@@ -509,18 +496,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 320) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('action'=>'updatesurveylocalesettings_generalsettings'), "name='generalsettings'");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>320), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 321) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update(
-                '{{surveymenu_entries}}',
-                array('data' => '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}'),
-                "name = 'statistics' OR name = 'responses'"
-            );
+        
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>321), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -563,29 +545,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 324) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->insert('{{surveymenu_entries}}',
-            array(
-                'menu_id' => 1,
-                'ordering' => 16,
-                'name' => 'plugins',
-                'title' => 'Plugin settings',
-                'menu_title' => 'Plugins',
-                'menu_description' => 'Edit plugin settings',
-                'menu_icon' => 'plug',
-                'menu_icon_type' => 'fontawesome',
-                'action' => 'updatesurveylocalesettings',
-                'template' => 'editLocalSettings_main_view',
-                'partial' => '/admin/survey/subview/accordion/_plugin_panel',
-                'permission' => 'surveysettings',
-                'permission_grade' => 'read',
-                'data' => '',
-                'getdatamethod' => '_pluginTabSurvey',
-                'changed_at' => date('Y-m-d H:i:s'),
-                'changed_by' => 1,
-                'created_at' => date('Y-m-d H:i:s'),
-                'created_by' => 1,
-                'active' => 0
-            ));
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>324), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -661,8 +620,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['monochrome', null, null, null, '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}', '{"add":["scripts/template.js","scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'), "name='template_options'");
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>325), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -690,21 +647,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(168)');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), "name = 'generalsettings' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'surveypermissions_collapsed'), "name = 'surveypermissions' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'quotas_collapsed'), "name = 'quotas' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'assessments_collapsed'), "name = 'assessments' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'emailtemplates_collapsed'), "name = 'emailtemplates' AND menu_id = 2");
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'tokens_collapsed'), "name = 'tokens' AND menu_id = 2");
-            $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', "name", true);
-
-            $oDB->createCommand()->addColumn('{{surveymenu}}', 'name', 'string(128) NULL');
-            $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
-            $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'mainmenu'), 'id = 1');
-            $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
-            $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128)');
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -726,29 +668,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         
         if ($iOldDBVersion < 332) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->insert(
-                '{{surveymenu}}',
-                array(
-                    'parent_id' => 1,
-                    'survey_id' => null,
-                    'ordering' => 0,
-                    'level' => 1,
-                    'name' => 'pluginmenu',
-                    'title' => 'Plugin menu',
-                    'description' => 'Plugins menu',
-                    'changed_at' => date('Y-m-d H:i:s'),
-                    'changed_by' => 0,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'created_by' => 0
-                    )
-                );
-            $pluginMenuId = getLastInsertID('{{surveymenu}}');
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array(
-                'menu_id' => $pluginMenuId,
-                'title' => 'Simple plugins',
-                'menu_title' => 'Simple plugins',
-                'menu_description' => 'Edit simple plugin settings',
-            ), "name='plugins'");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>332), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -764,59 +683,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');
             $oDB->createCommand()->addColumn('{{tutorials}}', 'icon', 'string(64)');
-            $oDB->createCommand()->update('{{tutorials}}', [
-                    'settings' => json_encode(array(
-                    'debug' => true,
-                    'orphan' => true,
-                    'keyboard' => false,
-                    'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-                    'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
-                    'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
-                    )),
-                    'title' => 'Take beginner tour',
-                    'icon' => 'fa-rocket'
-            ]);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>334), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 335) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{tutorial_entries}}', [
-                'settings' => json_encode(array(
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                    'element' => '#sidebar',
-                    'placement' => 'right',
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onShow' => "(function(tour){
-                                    return Promise.resolve(tour);
-                                })"
-                ))
-                ], 'teid=9');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>335), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 336) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{tutorials}}', [
-                'settings' => json_encode(array(
-                    'keyboard' => false,
-                    'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-                    'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",                   
-                    'onStart' => "(function(){var domaintobe=LS.data.baseUrl+(LS.data.urlFormat == 'path' ? '/admin/index' : '?r=admin/index'); if(window.location.href!=domaintobe){window.location.href=domaintobe;} })"
-                    )),
-                ], 'tid=1');
-            $oDB->createCommand()->update('{{tutorial_entries}}', [
-                'settings' => json_encode(array(
-                    'element' => '#lime-logo',
-                    'path' => '/admin/index',
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
-                    ))
-                ], 'teid=1');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>336), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -860,37 +738,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 339) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update("{{tutorials}}", [
-                    'settings' => json_encode(array(
-                        'keyboard' => false,
-                        'orphan' => true,
-                        'template' => ""
-                        ."<div class='popover tour lstutorial__template--mainContainer'>" 
-                            ."<div class='arrow'></div>"
-                            ."<h3 class='popover-title lstutorial__template--title'></h3>"
-                            ."<div class='popover-content lstutorial__template--content'></div>"
-                            ."<div class='popover-navigation lstutorial__template--navigation'>"
-                                ."<div class='row'>"
-                                    ."<div class='btn-group col-xs-12' role='group' aria-label='...'>"
-                                        ."<button class='btn btn-default col-md-6' data-role='prev'>".gT('Previous')."</button>"
-                                        ."<button class='btn btn-primary col-md-6' data-role='next'>".gT('Next')."</button>"
-                                    ."</div>"
-                                ."</div>"
-                                ."<div class='row ls-space margin top-5'>"
-                                    ."<div class='text-left col-sm-12'>"
-                                        ."<button class='pull-left btn btn-warning col-sm-6' data-role='end'>".gT('End tour')."</button>"
-                                    ."</div>"
-                                ."</div>"
-                            ."</div>"
-                        ."</div>",
-                        'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
-                        'onEnd' => "(function(tour){window.location.reload();})",
-                        'endOnOrphan' => true,
-                    )), 
-                ], 
-                "tid=1"
-            );
-
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>339), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -900,7 +747,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         If ($iOldDBVersion < 340) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{tutorials}}', array('title'=>'Beginner tour'), "name='firstStartTour'");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>340), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -912,19 +758,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             
             $oDB->createCommand()->truncateTable('{{tutorials}}');
-            foreach ($tutorialsData = LsDefaultDataSets::getTutorialData() as $tutorials) {
-                $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
-            }
-            
             $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
-
-            foreach ($tutorialEntryData = LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
-                $teid = $tutorialEntry['teid'];
-                unset($tutorialEntry['teid']);
-                $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
-                $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
-            }
+           
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -934,7 +770,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         If ($iOldDBVersion < 342) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}'), "name='surveyLogicFile'");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>342), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1116,7 +951,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         
-        
+        if ($iOldDBVersion < 346) {
+            $oTransaction = $oDB->beginTransaction();
+            createSurveyMenuTable($oDB);
+            $oDB->createCommand()->truncateTable('{{tutorials}}');
+            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
+            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>346], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }        
         
         if ($iOldDBVersion < 350) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
@@ -1305,625 +1148,8 @@ function upgradeSurveyTimings350()
 function resetTutorials337($oDB)
 {
     $oDB->createCommand()->truncateTable('{{tutorials}}');
-    $oDB->createCommand()->insert('{{tutorials}}', array(
-        'tid' => 1,
-        'name' => 'firstStartTour',
-        'title' => 'Take beginner tour',
-        'icon' => 'fa-rocket',
-        'description' => 'The first start tour to get your first feeling into LimeSurvey',
-        'active' => 1,
-        'settings' => json_encode(array(
-            'keyboard' => false,
-            'orphan' => true,
-            'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-            'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
-            'onEnd' => "(function(tour){window.location.reload();})",
-            'endOnOrphan' => true,
-        )),
-        'permission' => 'survey',
-        'permission_grade' => 'create'
-    ));
     $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
     $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
-    $contentArrays = array(
-        array(
-            'teid' => 1,
-            'ordering' => 1,
-            'title' => 'Welcome to LimeSurvey!',
-            'content' => "This tour will help you to easily get a basic understanding of LimeSurvey."."<br/>"
-                ."We would like to help you with a quick tour of the most essential functions and features.",
-            'settings' => json_encode(array(
-                'element' => '#lime-logo',
-                'path' => ['/admin/index'],
-                'placement' => 'bottom',
-                'redirect' => true,
-                'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
-                ))
-            ),
-        array(
-            'teid' => 2,
-            'ordering' => 2,
-            'title' => 'The basic functions',
-            'content' => "The three top boxes are the most basic functions of LimeSurvey."."<br/>"
-                ."From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey."
-                .'<p class="alert bg-warning">'."Click on the 'Create survey' box - or 'Next' in this tutorial".'</p>',
-            'settings' => json_encode(array(
-                'element' => '.selector__create_survey',
-                'path' => ['/admin/index'],
-                'reflex' => true,
-                'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
-                'onNext' => "(function(tour){
-                    tour.setCurrentStep(2);
-                    return new Promise(function(res,rej){});
-                })",
-            ))
-        ),
-        array(
-            'teid' => 3,
-            'ordering' => 3,
-            'title' => 'The survey title',
-            'content' => "This is the title of your survey."."<br/>"
-            ."Your participants will see this title in the browser's title bar and on the welcome screen."
-            ."<p class='bg-warning alert'>"."You have to put in at least a title for the survey to be saved.".'</p>',
-            'settings' => json_encode(array(
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'element' => '#surveyls_title',
-                'redirect' => true,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 4,
-            'ordering' => 4,
-            'title' => 'The survey description',
-            'content' => "In this field you may type a short description of your survey."."<br/>"
-            ."The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey..".' '
-            ."Describe your survey, but do not ask any question yet.",
-            'settings' => json_encode(array(
-                'element' => '#cke_description',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 5,
-            'ordering' => 5,
-            'title' => 'Create a sample question and question group',
-            'content' => "We will be creating a question group and a question in this tutorial. There is need to automatically create it.",
-            'settings' => json_encode(array(
-                'element' => '.bootstrap-switch-id-createsample',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 6,
-            'ordering' => 6,
-            'title' => 'The welcome message',
-            'content' => "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey.",
-            'settings' => json_encode(array(
-                'element' => '#cke_welcome',
-                'placement' => 'top',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 7,
-            'ordering' => 7,
-            'title' => 'The end message',
-            'content' => "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next.",
-            'settings' => json_encode(array(
-                'element' => '#cke_endtext',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 8,
-            'ordering' => 8,
-            'title' => 'Now save your survey',
-            'content' => "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'.",
-            'settings' => json_encode(array(
-                'element' => '#save-form-button',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                tour.setCurrentStep(8);
-                                $('#save-form-button').trigger('click');
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 9,
-            'ordering' => 9,
-            'title' => 'The sidebar',
-            'content' => 'This is the sidebar.'.'<br/>'
-            .'All important settings can be reached in this sidebar.'.'<br/>'
-            .'The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu.'.' '
-            .gT('You may resize it to fit your screen to easily navigate through the available options.'
-            .' If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed.'
-            .' If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
-            'settings' => json_encode(array(
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'element' => '#sidebar',
-                'placement' => 'top',
-                'redirect' => false,
-                'prev' => '-1',
-                'onShow' => "(function(tour){
-                    $('#adminpanel__sidebar--selectorSettingsButton').trigger('click');
-                })",
-            ))
-        ),
-        array(
-            'teid' => 10,
-            'ordering' => 10,
-            'title' => 'The settings tab with the survey menu',
-            'content' => 'If you click on this tab, the survey settings menu will be displayed.'.' '
-            .'The most important settings of your survey are accessible from this menu.'.'<br/>'
-            .'If you want to know more about them, check our manual.',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorSettingsButton',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 11,
-            'ordering' => 11,
-            'title' => 'The top bar',
-            'content' => 'This is the top bar.'.'<br/>'
-            .'This bar will change as you move through the functionalities.'.' '
-            .'The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.',
-            'settings' => json_encode(array(
-                'element' => '#surveybarid',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 12,
-            'ordering' => 12,
-            'title' => 'The survey structure',
-            'content' => 'This is the structure view of your survey. Here you can see all your question groups and questions.',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorStructureButton',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'onShow' => "(function(tour){
-                                $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 13,
-            'ordering' => 13,
-            'title' => "Let's add a question group",
-            'content' => "What good would your survey be without questions?".'<br/>'
-            .'In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.'
-            .'<p class="alert bg-warning">'."Click on the 'Add question group' button".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorCreateQuestionGroup',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'right',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
-                                tour.setCurrentStep(13);
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 14,
-            'ordering' => 14,
-            'title' => 'Enter a title for your first question group',
-            'content' => 'The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). '
-            .'Question groups are important because they allow the survey administrators to logically group the questions. '
-            .'By default, each question group (including its questions) is shown on its own page (this setting can be changed later).',
-            'settings' => json_encode(array(
-                'element' => '#group_name_en',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 15,
-            'ordering' => 15,
-            'title' => 'A description for your question group',
-            'content' => 'This description is also visible to your participants.'.'<br/>'
-            .'You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.',
-            'settings' => json_encode(array(
-                'element' => 'label[for=description_en]',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 16,
-            'ordering' => 16,
-            'title' => 'Advanced settings',
-            'content' => "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual.",
-            'settings' => json_encode(array(
-                'element' => '#randomization_group',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 17,
-            'ordering' => 17,
-            'title' => 'Save and add a new question',
-            'content' => "Now when you are finished click on 'Save and add question'.".'<br/>'
-            .'This will directly add a question to the current question group.'
-            .'<p class="alert bg-warning">'."Now click on 'Save and add question'.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#save-and-new-question-button',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-new-question-button').trigger('click');
-                                tour.setCurrentStep(17);
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 18,
-            'ordering' => 18,
-            'title' => 'The title of your question',
-            'content' =>
-            "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.".'<br>'
-            ."This code is also the name of the variable that will be exported to SPSS or Excel."
-            .'<p class="alert bg-warning">'."Please type in a code that consists only of letters and numbers, and doesn't start with a number.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#title',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 19,
-            'ordering' => 19,
-            'title' => 'The actual question text',
-            'content' => 'The content of this box is the actual question text shown to your participants.'.' '
-            .'It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.',
-            'settings' => json_encode(array(
-                'element' => '#cke_question_en',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 20,
-            'ordering' => 20,
-            'title' => 'An additional help text for your question',
-            'content' => 'You can add some additional help text to your question. '
-            .'If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.',
-            'settings' => json_encode(array(
-                'element' => '#cke_help_en',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 21,
-            'ordering' => 21,
-            'title' => 'Set your question type.',
-            'content' => "LimeSurvey offers you a lot of different question types.".'<br/>'
-            ."As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.".'<br/>'
-            ."This type of question allows you to add multiple subquestions and a set of answers."
-            .'<p class="alert bg-warning">'."Please select the 'Array'-type.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#question_type_button',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 22,
-            'ordering' => 22,
-            'title' => 'Now save the created question',
-            'content' => 'Next, we will create subquestions and answer options.'.'<br/>'
-                .'Please remember that in order to have a valid code, it must contain only letters and numbers, '
-                .'also please check that it starts with a letter.',
-            'settings' => json_encode(array(
-                'element' => '#save-button',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#question_type').val('F');
-                                $('#save-button').trigger('click');
-                                tour.setCurrentStep(22);
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 23,
-            'ordering' => 23,
-            'title' => 'The question bar',
-            'content' => 'This is the question bar.'.'<br/>'
-                .'The most important question-related options are displayed here.'.'<br/>'
-                .'The availability of options is related to the type of question you previously chose.',
-            'settings' => json_encode(array(
-                'element' => '#questionbarid',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'backdrop' => false,
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 24,
-            'ordering' => 24,
-            'title' => 'Add some subquestions to your question',
-            'content' => "The array question is a type that creates a matrix for the participant.".'<br/>'
-                ."To fully use it, you have to add subquestions as well as answer options.".'<br/>'
-                ."Let's start with subquestions."
-                .'<p class="alert bg-warning">'."Click on the 'Edit subquestions' button.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__topbar--selectorAddSubquestions',
-                'placement' => 'bottom',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
-                                tour.setCurrentStep(24);
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 25,
-            'ordering' => 25,
-            'title' => 'Edit subquestions',
-            'content' => "You should add some subquestions for your question here.".'<br/>'
-            ."Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions.".' '
-            ."Your participants cannot see the subquestion code, only the subquestion text itself."
-            ."<p class='bg-info alert'>"."Pro tip: The subquestion may even contain HTML code.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 26,
-            'ordering' => 26,
-            'title' => 'Add subquestion row',
-            'content' => sprintf('Click on the plus sign %s to add another subquestion to your question.', '<i class="icon-add text-success"></i>')
-            ."<p class='bg-warning alert'>".'Please add at least two subquestions'."</p>",
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 27,
-            'ordering' => 27,
-            'title' => 'Now save the subquestions',
-            'content' => "You may save empty subquestions, but that would be pointless."
-            ."<p class='bg-warning alert'>"."Save and close now and let's edit the answer options.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#save-and-close-button',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-close-button').trigger('click');
-                                tour.setCurrentStep(27);
-                                return new Promise(function(res,rej){});
-                            })"
-            ))
-        ),
-        array(
-            'teid' => 28,
-            'ordering' => 28,
-            'title' => 'Add some answer options to your question',
-            'content' => "Now that we've got some subquestions, we have to add answer options as well.".'<br/>'
-            ."The answer options will be shown for each subquestion."
-            .'<p class="alert bg-warning">'."Click on the 'Edit answer options' button.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'prev' => '-1',
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
-                                tour.setCurrentStep(28);
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 29,
-            'ordering' => 29,
-            'title' => 'Edit answer options',
-            'content' => "As you can see, editing answer options is quite similar to editing subquestions.".'<br/>'
-            .'Remember the plus button <i class="icon-add text-success"></i>?'.'<br/>'
-            .'<p class="alert bg-warning">'."Please add at least two answer options to proceed.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer',
-                'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 30,
-            'ordering' => 30,
-            'title' => 'Now save the answer options',
-            'content' => "Click on 'Save and close' or 'Next' to proceed.",
-            'settings' => json_encode(array(
-                'element' => '#save-and-close-button',
-                'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-close-button').trigger('click');
-                                tour.setCurrentStep(30);
-                                return new Promise(function(res,rej){});
-                            })"
-            ))
-        ),
-        array(
-            'teid' => 31,
-            'ordering' => 31,
-            'title' => 'Preview survey',
-            'content' => "Let's have a look at your first survey.".'<br/>'
-            ."Just click on this button and a new window will open, where you can test run your survey.".'<br/>'
-            ."Please be aware that your answers will not be saved, because the survey isn't active yet."
-            .'<p class="alert bg-warning">'."Click on 'Preview survey' and return to this window when you are done testing.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '.selector__topbar--previewSurvey',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'prev' => '-1',
-            ))
-        ),
-        array(
-            'teid' => 32,
-            'ordering' => 32,
-            'title' => 'Easy navigation with the "breadcrumbs"',
-            'content' => 'You can see the "breadcrumbs" In the top bar of the admin interface.'.'<br/>'
-            ."They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
-            .'<p class="alert bg-warning">'."Click on the name of your survey to get back to the survey settings overview.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#breadcrumb__survey--overview',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                tour.setCurrentStep(32);
-                                document.location.href = $('#breadcrumb__survey--overview').attr('href');
-                                return new Promise(function(res,rej){});
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 33,
-            'ordering' => 33,
-            'title' => 'Finally, activate your survey',
-            'content' => "Now, activate your survey.".'<br/>'
-            ."You can create as many surveys as you like."
-            .'<p class="alert bg-warning">'."Click on 'Activate this survey'".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#ls-activate-survey',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'prev' => '-1',
-                'onNext' => "(function(tour){
-                        document.location.href = $('#ls-activate-survey').attr('href');
-                        tour.setCurrentStep(33);
-                        return new Promise(function(res,rej){});
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 34,
-            'ordering' => 34,
-            'title' => 'Activation settings',
-            'content' => 'These settings cannot be changed once the survey is online.'.'<br/>'
-            ."For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys.".'<br/>'
-            ."For more information consult our manual, or our forums."
-            .'<p class="alert bg-warning">'.'Now click on "Save & activate survey"'.'</p>',
-            'settings' => json_encode(array(
-                'element' => '#activateSurvey__basicSettings--proceed',
-                'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => '',
-                'reflex' => true,
-                'redirect' => false,
-                'prev' => '-1',
-                'onNext' => "(function(tour){
-                        $('#activateSurvey__basicSettings--proceed').trigger('click');
-                        tour.setCurrentStep(34);
-                        return new Promise(function(res,rej){});
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 35,
-            'ordering' => 35,
-            'title' => ('Activate survey participants table'),
-            'content' => "Here you can select to start your survey in closed access mode."."<br/>"
-            ."For our simple survey it is better to start in open access mode."."<br/>"
-            ."The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."."<br/>"
-            ."For more information please consult our manual or our forum."
-            .'<p class="alert bg-warning">'."Click on 'No, thanks'".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#activateTokenTable__selector--no',
-                'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'prev' => '-1',
-                'onNext' => "(function(tour){
-                        $('#activateTokenTable__selector--no').trigger('click');
-                        tour.setCurrentStep(35);
-                        return new Promise(function(res,rej){});
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 36,
-            'ordering' => 36,
-            'title' => 'Share this link',
-            'content' => "Just share this link with some of your friends and of course, test it yourself."
-            .'<p class="alert bg-success lstutorial__typography--white">'."Thank you for taking the tour!".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__surveysummary--mainLanguageLink',
-                'path' => ['/'.'(index.php)?'],
-                'placement' => 'top',
-                'redirect' => false,
-                'prev' => '-1',
-                'onHide' => '(function(){window.location.reload()})'
-            ))
-        ),
-    );
-
-    foreach ($contentArrays as $contentArray) {
-        $oDB->createCommand()->insert('{{tutorial_entries}}', $contentArray);
-        $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $contentArray['teid']));
-    }
-
 }
 
 /**
@@ -1932,7 +1158,6 @@ function resetTutorials337($oDB)
 */
 function upgrade333($oDB)
 {
-
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
         'tid' => 'int NOT NULL',
         'uid' => 'int DEFAULT NULL',
@@ -1951,600 +1176,10 @@ function upgrade333($oDB)
     $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid', 'tid']);
     $oDB->createCommand()->createIndex('{{idx1_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'uid', false);
     $oDB->createCommand()->createIndex('{{idx2_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'sid', false);
-
     $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
-
-    $oDB->createCommand()->insert('{{tutorials}}', array(
-        'tid' => 1,
-        'name' => 'firstStartTour',
-        'description' => 'The first start tour to get your first feeling into LimeSurvey',
-        'active' => 1,
-        'settings' => json_encode(array(
-            'debug' => true,
-            'orphan' => true,
-            'keyboard' => false,
-            'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
-            'onShown' => "(function(tour){ console.ls.log($('#notif-container').children()); $('#notif-container').children().remove(); })",
-        )),
-        'permission' => 'survey',
-        'permission_grade' => 'create'
-
-    ));
 
     $oDB->createCommand()->dropColumn('{{tutorial_entries}}', 'tid');
     $oDB->createCommand()->addColumn('{{tutorial_entries}}', 'ordering', 'int');
-
-    $contentArrays = array(
-        array(
-            'teid' => 1,
-            'ordering' => 1,
-            'title' => 'Welcome to LimeSurvey!',
-            'content' => "This tour will help you to easily get a basic understanding of LimeSurvey."."<br/>"
-                ."We would like to help you with a quick tour of the most essential functions and features.",
-            'settings' => json_encode(array(
-                'element' => '#lime-logo',
-                'orphan' => true,
-                'path' => ['/admin/index'],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
-                ))
-            ),
-        array(
-            'teid' => 2,
-            'ordering' => 2,
-            'title' => 'The basic functions',
-            'content' => "The three top boxes are the most basic functions of LimeSurvey."."<br/>"
-                ."From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey."
-                .'<p class="alert bg-warning">'."Click on the 'Create survey' box - or 'Next' in this tutorial".'</p>',
-            'settings' => json_encode(array(
-                'element' => '.selector__create_survey',
-                'path' => ['/admin/index'],
-                'reflex' => true,
-                'redirect' => true,
-                'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); $('.selector__create_survey').on('click', function(){tour.next();});})"
-            ))
-        ),
-        array(
-            'teid' => 3,
-            'ordering' => 3,
-            'title' => 'The survey title',
-            'content' => "This is the title of your survey."."<br/>"
-            ."Your participants will see this title in the browser's title bar and on the welcome screen."
-            ."<p class='bg-warning alert'>"."You have to put in at least a title for the survey to be saved.".'</p>',
-            'settings' => json_encode(array(
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'element' => '#surveyls_title',
-                'redirect' => true,
-            ))
-        ),
-        array(
-            'teid' => 4,
-            'ordering' => 4,
-            'title' => 'The survey description',
-            'content' => "In this field you may type a short description of your survey."."<br/>"
-            ."The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey..".' '
-            ."Describe your survey, but do not ask any question yet.",
-            'settings' => json_encode(array(
-                'element' => '#cke_description',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 5,
-            'ordering' => 5,
-            'title' => 'Create a sample question and question group',
-            'content' => "We will be creating a question group and a question in this tutorial. There is need to automatically create it.",
-            'settings' => json_encode(array(
-                'element' => '.bootstrap-switch-id-createsample',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 6,
-            'ordering' => 6,
-            'title' => 'The welcome message',
-            'content' => "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey.",
-            'settings' => json_encode(array(
-                'element' => '#cke_welcome',
-                'placement' => 'top',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 7,
-            'ordering' => 7,
-            'title' => 'The end message',
-            'content' => "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next.",
-            'settings' => json_encode(array(
-                'element' => '#cke_endtext',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 8,
-            'ordering' => 8,
-            'title' => 'Now save your survey',
-            'content' => "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'.",
-            'settings' => json_encode(array(
-                'element' => '#save-form-button',
-                'path' => ['/admin/survey/sa/newsurvey'],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-form-button').trigger('click');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 9,
-            'ordering' => 9,
-            'title' => 'The sidebar',
-            'content' => 'This is the sidebar.'.'<br/>'
-            .'All important settings can be reached in this sidebar.'.'<br/>'
-            .'The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu.'.' '
-            .gT('You may resize it to fit your screen to easily navigate through the available options.'
-            .' If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed.'
-            .' If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
-            'settings' => json_encode(array(
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'element' => '#sidebar',
-                'placement' => 'right',
-                'redirect' => false,
-                'onShow' => "(function(tour){
-                                return Promise.resolve(tour);
-                            })"
-            ))
-        ),
-        array(
-            'teid' => 10,
-            'ordering' => 10,
-            'title' => 'The settings tab with the survey menu',
-            'content' => 'If you click on this tab, the survey settings menu will be displayed.'.' '
-            .'The most important settings of your survey are accessible from this menu.'.'<br/>'
-            .'If you want to know more about them, check our manual.',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorSettingsButton',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 11,
-            'ordering' => 11,
-            'title' => 'The top bar',
-            'content' => 'This is the top bar.'.'<br/>'
-            .'This bar will change as you move through the functionalities.'.' '
-            .'The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.',
-            'settings' => json_encode(array(
-                'element' => '#surveybarid',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 12,
-            'ordering' => 12,
-            'title' => 'The survey structure',
-            'content' => 'This is the structure view of your survey. Here you can see all your question groups and questions.',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorStructureButton',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-                'onShow' => "(function(tour){
-                                $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 13,
-            'ordering' => 13,
-            'title' => "Let's add a question group",
-            'content' => "What good would your survey be without questions?".'<br/>'
-            .'In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.'
-            .'<p class="alert bg-warning">'."Click on the 'Add question group' button".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__sidebar--selectorCreateQuestionGroup',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'right',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 14,
-            'ordering' => 14,
-            'title' => 'Enter a title for your first question group',
-            'content' => 'The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). '
-            .'Question groups are important because they allow the survey administrators to logically group the questions. '
-            .'By default, each question group (including its questions) is shown on its own page (this setting can be changed later).',
-            'settings' => json_encode(array(
-                'element' => '#group_name_en',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 15,
-            'ordering' => 15,
-            'title' => 'A description for your question group',
-            'content' => 'This description is also visible to your participants.'.'<br/>'
-            .'You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.',
-            'settings' => json_encode(array(
-                'element' => 'label[for=description_en]',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 16,
-            'ordering' => 16,
-            'title' => 'Advanced settings',
-            'content' => "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual.",
-            'settings' => json_encode(array(
-                'element' => '#randomization_group',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 17,
-            'ordering' => 17,
-            'title' => 'Save and add a new question',
-            'content' => "Now when you are finished click on 'Save and add question'.".'<br/>'
-            .'This will directly add a question to the current question group.'
-            .'<p class="alert bg-warning">'."Now click on 'Save and add question'.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#save-and-new-question-button',
-                'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-new-question-button').trigger('click');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 18,
-            'ordering' => 18,
-            'title' => 'The title of your question',
-            'content' => 
-            "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.".'<br>'
-            ."This code is also the name of the variable that will be exported to SPSS or Excel."
-            .'<p class="alert bg-warning">'."Please type in a code that consists only of letters and numbers, and doesn't start with a number.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#title',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 19,
-            'ordering' => 19,
-            'title' => 'The actual question text',
-            'content' => 'The content of this box is the actual question text shown to your participants.'.' '
-            .'It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.',
-            'settings' => json_encode(array(
-                'element' => '#cke_question_en',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 20,
-            'ordering' => 20,
-            'title' => 'An additional help text for your question',
-            'content' => 'You can add some additional help text to your question. '
-            .'If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.',
-            'settings' => json_encode(array(
-                'element' => '#cke_help_en',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'top',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 21,
-            'ordering' => 21,
-            'title' => 'Set your question type.',
-            'content' => "LimeSurvey offers you a lot of different question types.".'<br/>'
-            ."As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.".'<br/>'
-            ."This type of question allows you to add multiple subquestions and a set of answers."
-            .'<p class="alert bg-warning">'."Please select the 'Array'-type.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#question_type_button',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 22,
-            'ordering' => 22,
-            'title' => 'Now save the created question',
-            'content' => 'Next, we will create subquestions and answer options.'.'<br/>'
-                .'Please remember that in order to have a valid code, it must contain only letters and numbers, '
-                .'also please check that it starts with a letter.',
-            'settings' => json_encode(array(
-                'element' => '#save-button',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#question_type').val('F');
-                                $('#save-button').trigger('click');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 23,
-            'ordering' => 23,
-            'title' => 'The question bar',
-            'content' => 'This is the question bar.'.'<br/>'
-                .'The most important question-related options are displayed here.'.'<br/>'
-                .'The availability of options is related to the type of question you previously chose.',
-            'settings' => json_encode(array(
-                'element' => '#questionbarid',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 24,
-            'ordering' => 24,
-            'title' => 'Add some subquestions to your question',
-            'content' => "The array question is a type that creates a matrix for the participant.".'<br/>'
-                ."To fully use it, you have to add subquestions as well as answer options.".'<br/>'
-                ."Let's start with subquestions."
-                .'<p class="alert bg-warning">'."Click on the 'Edit subquestions' button.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__topbar--selectorAddSubquestions',
-                'placement' => 'bottom',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 25,
-            'ordering' => 25,
-            'title' => 'Edit subquestions',
-            'content' => "You should add some subquestions for your question here.".'<br/>'
-            ."Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions.".' '
-            ."Your participants cannot see the subquestion code, only the subquestion text itself."
-            ."<p class='bg-info alert'>"."Pro tip: The subquestion may even contain HTML code.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 26,
-            'ordering' => 26,
-            'title' => 'Add subquestion row',
-            'content' => sprintf('Click on the plus sign %s to add another subquestion to your question.', '<i class="icon-add text-success"></i>')
-            ."<p class='bg-warning alert'>".'Please add at least two subquestions'."</p>",
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 27,
-            'ordering' => 27,
-            'title' => 'Now save the subquestions',
-            'content' => "You may save empty subquestions, but that would be pointless."
-            ."<p class='bg-warning alert'>"."Save and close now and let's edit the answer options.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#save-and-close-button',
-                'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-close-button').trigger('click');
-                                return Promise.resolve(tour);
-                            })"
-            ))
-        ),
-        array(
-            'teid' => 28,
-            'ordering' => 28,
-            'title' => 'Add some answer options to your question',
-            'content' => "Now that we've got some subquestions, we have to add answer options as well.".'<br/>'
-            ."The answer options will be shown for each subquestion."
-            .'<p class="alert bg-warning">'."Click on the 'Edit answer options' button.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 29,
-            'ordering' => 29,
-            'title' => 'Edit answer options',
-            'content' => "As you can see, editing answer options is quite similar to editing subquestions.".'<br/>'
-            .'Remember the plus button <i class="icon-add text-success"></i>?'.'<br/>'
-            .'<p class="alert bg-warning">'."Please add at least two answer options to proceed.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#rowcontainer',
-                'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 30,
-            'ordering' => 30,
-            'title' => 'Now save the answer options',
-            'content' => "Click on 'Save and close' or 'Next' to proceed.",
-            'settings' => json_encode(array(
-                'element' => '#save-and-close-button',
-                'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                'placement' => 'left',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                $('#save-and-close-button').trigger('click');
-                                return Promise.resolve(tour);
-                            })"
-            ))
-        ),
-        array(
-            'teid' => 31,
-            'ordering' => 31,
-            'title' => 'Preview survey',
-            'content' => "Now is the time to preview your first survey.".'<br/>'
-            ."Just click on this button and a new window will open, where you can test run your survey.".'<br/>'
-            ."Please be aware that your answers will not be saved, because the survey isn't active yet."
-            .'<p class="alert bg-warning">'."Click on 'Preview survey' and return to this window when you are done testing.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '.selector__topbar--previewSurvey',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'redirect' => false,
-            ))
-        ),
-        array(
-            'teid' => 32,
-            'ordering' => 32,
-            'title' => 'Easy navigation with the "breadcrumbs"',
-            'content' => 'You can see the "breadcrumbs" In the top bar of the admin interface.'.'<br/>'
-            ."They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
-            .'<p class="alert bg-warning">'."Click on the name of your survey to get back to the survey settings overview.".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#breadcrumb-container',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => '#breadcrumb__survey--overview',
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                                document.location.href = $('#breadcrumb__survey--overview').attr('href');
-                                return Promise.resolve(tour);
-                            })",
-            ))
-        ),
-        array(
-            'teid' => 33,
-            'ordering' => 33,
-            'title' => 'Finally, activate your survey',
-            'content' => "Now, activate your survey.".'<br/>'
-            ."You can create as many surveys as you like."
-            .'<p class="alert bg-warning">'."Click on 'Activate this survey'".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#ls-activate-survey',
-                'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                        document.location.href = $('#ls-activate-survey').attr('href');
-                        return Promise.resolve(tour);
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 34,
-            'ordering' => 34,
-            'title' => 'Activation settings',
-            'content' => 'These settings cannot be changed once the survey is online.'.'<br/>'
-            ."For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys.".'<br/>'
-            ."For more information consult our manual, or our forums."
-            .'<p class="alert bg-warning">'.'Now click on "Save & activate survey"'.'</p>',
-            'settings' => json_encode(array(
-                'element' => '#activateSurvey__basicSettings--proceed',
-                'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                        $('#activateSurvey__basicSettings--proceed').trigger('click');
-                        return Promise.resolve(tour);
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 35,
-            'ordering' => 35,
-            'title' => ('Activate survey participants table'),
-            'content' => "Here you can select to start your survey in closed access mode."."<br/>"
-            ."For our simple survey it is better to start in open access mode."."<br/>"
-            ."The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."."<br/>"
-            ."For more information please consult our manual or our forum."
-            .'<p class="alert bg-warning">'."Click on 'No, thanks'".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#activateTokenTable__selector--no',
-                'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
-                'placement' => 'bottom',
-                'reflex' => true,
-                'redirect' => false,
-                'onNext' => "(function(tour){
-                        $('#activateTokenTable__selector--no').trigger('click');
-                        return Promise.resolve(tour);
-                    })",
-            ))
-        ),
-        array(
-            'teid' => 36,
-            'ordering' => 36,
-            'title' => 'Share this link',
-            'content' => "Just share this link with some of your friends and of course, test it yourself."
-            .'<p class="alert bg-success lstutorial__typography--white">'."Thank you for taking the tour!".'</p>',
-            'settings' => json_encode(array(
-                'element' => '#adminpanel__surveysummary--mainLanguageLink',
-                'path' => ['/'.'(index.php)?'],
-                'placement' => 'top',
-                'redirect' => false
-            ))
-        ),
-);
-
-    foreach ($contentArrays as $contentArray) {
-        $oDB->createCommand()->insert('{{tutorial_entries}}', $contentArray);
-        $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $contentArray['teid']));
-        $combined = array();
-    }
 
 }
 
@@ -2651,35 +1286,6 @@ function upgrade327($oDB)
         'usergroup' => '-2',
     ), "url='admin/templateoptions'");
 
-
-    // Update the survey menu so it uses the themeoptions controller
-    $oDB->createCommand()->update('{{surveymenu_entries}}', array(
-        'menu_id'          => 1,
-        'user_id'          => null,
-        'ordering'         => 4,
-        'name'             => 'theme_options',
-        'title'            => 'Theme options',
-        'menu_title'       => 'Theme options',
-        'menu_description' => 'Edit theme options for this survey',
-        'menu_icon'        =>  'paint-brush',
-        'menu_icon_type'   =>  'fontawesome',
-        'menu_class'       =>  '',
-        'menu_link'        => 'admin/themeoptions/sa/updatesurvey',
-        'action'           =>  '',
-        'partial'          => '',
-        'classes'          =>  '',
-        'permission'       =>  'templates', // TODO: change permission from template to theme
-        'permission_grade' =>  'read',
-        'data'             =>  '{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}',
-        'getdatamethod'    =>  '',
-        'language'         =>  'en-GB',
-        'active'           =>  1,
-        'changed_at'       =>  date('Y-m-d H:i:s'),
-        'changed_by'       =>  0,
-        'created_at'       =>  date('Y-m-d H:i:s'),
-        'created_by'       =>  0
-    ), "name='template_options'");
-
 }
 
 /**
@@ -2713,103 +1319,11 @@ function transferPasswordFieldToText($oDB)
     }
 }
 
-function createSurveyMenuTable293($oDB)
-{
-    // Drop the old survey rights table.
-    if (tableExists('{surveymenu_entries}')) {
-        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
-    }
-
-    if (tableExists('{surveymenu}')) {
-        $oDB->createCommand()->dropTable('{{surveymenu}}');
-    }
-
-
-    $oDB->createCommand()->createTable('{{surveymenu}}', array(
-        "id" => "pk",
-        "parent_id" => "int DEFAULT NULL",
-        "survey_id" => "int DEFAULT NULL",
-        "order" => "int DEFAULT '0'",
-        "level" => "int DEFAULT '0'",
-        "title" => "string(168) NOT NULL DEFAULT ''",
-        "description" => "text ",
-        "changed_at" => "datetime NULL",
-        "changed_by" => "int NOT NULL DEFAULT '0'",
-        "created_at" => "datetime DEFAULT NULL",
-        "created_by" => "int NOT NULL DEFAULT '0'",
-
-    ));
-
-    $oDB->createCommand()->insert(
-        '{{surveymenu}}',
-        array(
-            'parent_id' => null,
-            'survey_id' => null,
-            'order' => 0,
-            'level' => 0,
-            'title' => 'Survey menu',
-            'description' => 'Main survey menu',
-            'changed_at' => date('Y-m-d H:i:s'),
-            'changed_by' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'created_by' => 0
-        )
-    );
-
-    $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
-        "id" => "pk",
-        "menu_id" => "int DEFAULT NULL",
-        "order" => "int DEFAULT '0'",
-        "name" => "character varying(255)  NOT NULL DEFAULT ''",
-        "title" => "character varying(168)  NOT NULL DEFAULT ''",
-        "menu_title" => "character varying(168)  NOT NULL DEFAULT ''",
-        "menu_description" => "text ",
-        "menu_icon" => "character varying(255)  NOT NULL DEFAULT ''",
-        "menu_icon_type" => "character varying(255)  NOT NULL DEFAULT ''",
-        "menu_class" => "character varying(255)  NOT NULL DEFAULT ''",
-        "menu_link" => "character varying(255)  NOT NULL DEFAULT ''",
-        "action" => "character varying(255)  NOT NULL DEFAULT ''",
-        "template" => "character varying(255)  NOT NULL DEFAULT ''",
-        "partial" => "character varying(255)  NOT NULL DEFAULT ''",
-        "classes" => "character varying(255)  NOT NULL DEFAULT ''",
-        "permission" => "character varying(255)  NOT NULL DEFAULT ''",
-        "permission_grade" => "character varying(255)  DEFAULT NULL",
-        "data" => "text ",
-        "getdatamethod" => "character varying(255)  NOT NULL DEFAULT ''",
-        "language" => "character varying(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "datetime DEFAULT NULL",
-        "changed_by" => "int NOT NULL DEFAULT '0'",
-        "created_at" => "datetime DEFAULT NULL",
-        "created_by" => "int NOT NULL DEFAULT '0'",
-        "FOREIGN KEY (menu_id) REFERENCES  {{surveymenu}} (id) ON DELETE CASCADE"
-    ));
-
-    $colsToAdd = array("menu_id", "order", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
-    $rowsToAdd = array(
-        array(1, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 2, 'generalsettings', 'General survey settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 3, 'surveytexts', 'Survey text elements', 'Text elements', 'Survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', null, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 4, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', null, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 5, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', null, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 6, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 7, 'tokens', 'Survey participant settings', 'Participant settings', 'Set additional options for survey participants', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', null, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 8, 'quotas', 'Edit quotas', 'Quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 10, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', null, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 11, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', null, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 12, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', null, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, 13, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', null, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
-    );
-    foreach ($rowsToAdd as $row) {
-        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));
-    }
-}
-
 /**
 * @param CDbConnection $oDB
 * @return void
 */
-function reCreateSurveyMenuTable310(CDbConnection $oDB)
+function createSurveyMenuTable(CDbConnection $oDB)
 {
     // NB: Need to refresh here, since surveymenu table is
     // created in earlier version in same script.
@@ -2827,124 +1341,68 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     }
 
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
-        "id" =>  "pk",
-        "parent_id" =>  "integer DEFAULT NULL",
-        "survey_id" =>  "integer DEFAULT NULL",
-        "user_id" =>  "integer DEFAULT NULL",
-        "ordering" =>  "integer DEFAULT '0'",
-        "level" =>  "integer DEFAULT '0'",
-        "title" =>  "string(168)  NOT NULL DEFAULT ''",
-        "position" =>  "string(192)  NOT NULL DEFAULT 'side'",
-        "description" =>  "text ",
-        "changed_at" =>  "datetime",
-        "changed_by" =>  "integer NOT NULL DEFAULT '0'",
-        "created_at" =>  "datetime",
-        "created_by" =>  "integer NOT NULL DEFAULT '0'",
-    ));
-    $oDB->createCommand()->createIndex('{{idx_ordering}}', '{{surveymenu}}', 'ordering');
-    $oDB->createCommand()->createIndex('{{idx_title}}', '{{surveymenu}}', 'title');
-
-    $oDB->createCommand()->insert(
-        '{{surveymenu}}',
-        array(
-            "parent_id" =>null,
-            "survey_id" =>null,
-            "user_id" =>null,
-            "ordering" =>1,
-            "level" =>0,
-            "title" =>'Survey Menu',
-            "position" =>'side',
-            "description" =>'Main survey menu',
-            "changed_at" => date('Y-m-d H:i:s'),
-            "changed_by" =>0,
-            "created_at" =>date('Y-m-d H:i:s'),
-            "created_by" =>  0
-    ));
-    $oDB->createCommand()->insert(
-        '{{surveymenu}}',
-        array(
-            "parent_id" =>null,
-            "survey_id" =>null,
-            "user_id" =>null,
-            "ordering" =>1,
-            "level" =>0,
-            "title" =>'Quick menu',
-            "position" =>'collapsed',
-            "description" =>'Quick menu',
-            "changed_at" => date('Y-m-d H:i:s'),
-            "changed_by" =>0,
-            "created_at" =>date('Y-m-d H:i:s'),
-            "created_by" =>  0
+        'id' => "pk",
+        'parent_id' => "integer NULL",
+        'survey_id' => "integer NULL",
+        'user_id' => "integer NULL",
+        'name' => "string(128)",
+        'ordering' => "integer NULL DEFAULT '0'",
+        'level' => "integer NULL DEFAULT '0'",
+        'title' => "string(168)  NOT NULL DEFAULT ''",
+        'position' => "string(192)  NOT NULL DEFAULT 'side'",
+        'description' => "text ",
+        'active' => "boolean NOT NULL DEFAULT '0'",
+        'changed_at' => "datetime",
+        'changed_by' => "integer NOT NULL DEFAULT '0'",
+        'created_at' => "datetime",
+        'created_by' => "integer NOT NULL DEFAULT '0'",
     ));
 
+    $oDB->createCommand()->createIndex('{{surveymenu_name}}', '{{surveymenu}}', 'name', true);
+    $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
+
+    $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
+    foreach ($surveyMenuRowData as $surveyMenuRow) {
+        $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+    }
 
     $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
-        "id" => "pk",
-        "menu_id" => "integer DEFAULT NULL",
-        "user_id" => "integer DEFAULT NULL",
-        "ordering" => "integer DEFAULT '0'",
-        "name" => "string(168)  NOT NULL DEFAULT ''",
-        "title" => "string(168)  NOT NULL DEFAULT ''",
-        "menu_title" => "string(168)  NOT NULL DEFAULT ''",
-        "menu_description" => "text ",
-        "menu_icon" => "string(192)  NOT NULL DEFAULT ''",
-        "menu_icon_type" => "string(192)  NOT NULL DEFAULT ''",
-        "menu_class" => "string(192)  NOT NULL DEFAULT ''",
-        "menu_link" => "string(192)  NOT NULL DEFAULT ''",
-        "action" => "string(192)  NOT NULL DEFAULT ''",
-        "template" => "string(192)  NOT NULL DEFAULT ''",
-        "partial" => "string(192)  NOT NULL DEFAULT ''",
-        "classes" => "string(192)  NOT NULL DEFAULT ''",
-        "permission" => "string(192)  NOT NULL DEFAULT ''",
-        "permission_grade" => "string(192)  DEFAULT NULL",
-        "data" => "text ",
-        "getdatamethod" => "string(192)  NOT NULL DEFAULT ''",
-        "language" => "string(32)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "datetime NULL",
-        "changed_by" => "integer NOT NULL DEFAULT '0'",
-        "created_at" => "datetime DEFAULT NULL",
-        "created_by" => "integer NOT NULL DEFAULT '0'"
+        'id' =>  "pk",
+        'menu_id' =>  "integer NULL",
+        'user_id' =>  "integer NULL",
+        'ordering' =>  "integer DEFAULT '0'",
+        'name' =>  "string(168)  DEFAULT ''",
+        'title' =>  "string(168)  NOT NULL DEFAULT ''",
+        'menu_title' =>  "string(168)  NOT NULL DEFAULT ''",
+        'menu_description' =>  "text ",
+        'menu_icon' =>  "string(192)  NOT NULL DEFAULT ''",
+        'menu_icon_type' =>  "string(192)  NOT NULL DEFAULT ''",
+        'menu_class' =>  "string(192)  NOT NULL DEFAULT ''",
+        'menu_link' =>  "string(192)  NOT NULL DEFAULT ''",
+        'action' =>  "string(192)  NOT NULL DEFAULT ''",
+        'template' =>  "string(192)  NOT NULL DEFAULT ''",
+        'partial' =>  "string(192)  NOT NULL DEFAULT ''",
+        'classes' =>  "string(192)  NOT NULL DEFAULT ''",
+        'permission' =>  "string(192)  NOT NULL DEFAULT ''",
+        'permission_grade' =>  "string(192)  NULL",
+        'data' =>  "text ",
+        'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
+        'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
+        'active' =>  "boolean NOT NULL DEFAULT '0'",
+        'changed_at' =>  "datetime NULL",
+        'changed_by' =>  "integer NOT NULL DEFAULT '0'",
+        'created_at' =>  "datetime NULL",
+        'created_by' =>  "integer NOT NULL DEFAULT '0'",
     ));
-    $oDB->createCommand()->createIndex('{{idx_menu_id}}', '{{surveymenu_entries}}', 'menu_id');
-    $oDB->createCommand()->createIndex('{{idx_menu_title}}', '{{surveymenu_entries}}', 'menu_title');
 
-    $colsToAdd = array("menu_id", "user_id", "ordering", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
-    $rowsToAdd = array(
-        array(1, null, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 2, 'generalsettings', 'General survey settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 3, 'surveytexts', 'Survey text elements', 'Text elements', 'Survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', null, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 4, 'template_options', 'Template options', 'Template options', 'Edit Template options for this survey', 'paint-brush', 'fontawesome', '', 'admin/templateoptions/sa/updatesurvey', '', '', '', '', 'templates', 'read', '{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 5, 'participants', 'Survey participants', 'Survey participants', 'Go to survey participant and token settings', 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 6, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', null, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 7, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', null, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 8, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 9, 'tokens', 'Survey participant settings', 'Participant settings', 'Set additional options for survey participants', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', null, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 10, 'quotas', 'Edit quotas', 'Quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 11, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 12, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', null, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 13, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 14, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', null, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(1, null, 15, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', null, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 1, 'activateSurvey', 'Activate survey', 'Activate survey', 'Activate survey', 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 2, 'deactivateSurvey', 'Stop this survey', 'Stop this survey', 'Stop this survey', 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 3, 'testSurvey', 'Go to survey', 'Go to survey', 'Go to survey', 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 4, 'listQuestions', 'List questions', 'List questions', 'List questions', 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 5, 'listQuestionGroups', 'List question groups', 'List question groups', 'List question groups', 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 6, 'generalsettings', 'General survey settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 7, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 8, 'quotas', 'Edit quotas', 'Quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 12, 'tokens', 'Survey participant settings', 'Participant settings', 'Set additional options for survey participants', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 15, 'statistics', 'Statistics', 'Statistics', 'Statistics', 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
-        array(2, null, 16, 'reorder', 'Reorder questions/question groups', 'Reorder questions/question groups', 'Reorder questions/question groups', 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
-    );
-    foreach ($rowsToAdd as $row) {
-        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));
+    $oDB->createCommand()->createIndex('{{idx1_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_id', false);
+    $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
+    $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
+
+    foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+        $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
     }
+
 }
 /**
 * @param CDbConnection $oDB

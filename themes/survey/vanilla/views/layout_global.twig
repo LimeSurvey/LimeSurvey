@@ -69,21 +69,25 @@
 
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
-
+    {% block head %}
     {# Headers, metadata, etc #}
     {{ include('./subviews/header/head.twig') }}
-
+    {% endblock %}
     <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
         {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
+            {% block ajaxindicator %}
             {# In vanilla, this file is empty, we keep it to have a common layout between all core themes #}
             {{ include('./subviews/navigation/ajax_indicator.twig') }}
+            {% endblock %}
+            
         {% endif %}
 
         {# This used for the pjax system #}
+        {% block pjaxbegin %}
         <div id="beginScripts" class="script-container">
             <###begin###>
         </div>
-
+        {% endblock %}       
         {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
         <article>
 
@@ -106,7 +110,7 @@
                         Content depends on the action (survey, questions, register, assesments, submit, etc)
                         Action are in ./subviews/content/
                     #}
-                    {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content %}
+                    {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
                     {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
                 {% endblock %}
 
@@ -123,12 +127,17 @@
 
             {% endblock %}
             </div>
+
         </article>
+        {% block pjaxend %}
         <div id="bottomScripts" class="script-container">
             <###end###>
         </div>
+        {% endblock %}   
+        {% block themescripts %}
         <script>
             window.basicThemeScripts.init();
         </script>
+        {% endblock %}
     </body>
 </html>

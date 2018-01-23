@@ -513,7 +513,7 @@ class RegisterController extends LSYii_Controller
         $aData['aSurveyInfo']['registration_view'] = $registerContent;
 
         $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
-        $aData['aSurveyInfo']['include_content'] = 'register.twig';
+        $aData['aSurveyInfo']['include_content'] = 'register';
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }

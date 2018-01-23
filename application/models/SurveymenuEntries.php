@@ -508,8 +508,7 @@ class SurveymenuEntries extends LSActiveRecord
      */
     public function restoreDefaults()
     {
-        $sOldLanguage = App()->language;
-        App()->setLanguage('en');
+        
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
@@ -524,12 +523,10 @@ class SurveymenuEntries extends LSActiveRecord
             $oTransaction->commit();
 
         } catch (Exception $e) {
-            App()->setLanguage($sOldLanguage);
             throw $e;
             return false;
         }
 
-        App()->setLanguage($sOldLanguage);
         return true;
     }
 

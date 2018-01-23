@@ -425,8 +425,8 @@ class index extends CAction
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
-            $thissurvey['include_content'] = 'load.twig';
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>$oSurvey, 'aSurveyInfo'=>$thissurvey), false);
+            $thissurvey['include_content'] = 'load';
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
 

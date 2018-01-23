@@ -1,6 +1,6 @@
 <?php
 /* @var $this TutorialsController */
-/* @var $model Tutorials */
+/* @var $model Tutorial */
 /* @var $form CActiveForm */
 ?>
 

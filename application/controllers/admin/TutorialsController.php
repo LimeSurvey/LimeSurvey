@@ -59,7 +59,7 @@ class TutorialsController extends Survey_Common_Action
             $this->getController()->redirect(['/admin']);
         }
         $tutorialname = Yii::app()->request->getParam('tutorialname', '');
-        $model = Tutorial::model()->find('name=:name', [':name' => $tutorialname]);
+        $model = Tutorial::model()->findByName($tutorialname);
         $aTutorialArray = $model->getTutorialDataArray($tutorialname);
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -79,13 +79,13 @@ class TutorialsController extends Survey_Common_Action
      */
     public function create()
     {
-        $model = new Tutorials;
+        $model = new Tutorial;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Tutorials'])) {
-            $model->attributes = $_POST['Tutorials'];
+        if (isset($_POST['Tutorial'])) {
+            $model->attributes = $_POST['Tutorial'];
             if ($model->save()) {
                 $this->redirect(array('view', 'id'=>$model->tid));
             }
@@ -111,8 +111,8 @@ class TutorialsController extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Tutorials'])) {
-            $model->attributes = $_POST['Tutorials'];
+        if (isset($_POST['Tutorial'])) {
+            $model->attributes = $_POST['Tutorial'];
             if ($model->save()) {
                 $this->redirect(array('view', 'id'=>$model->tid));
             }
@@ -168,10 +168,10 @@ class TutorialsController extends Survey_Common_Action
      */
     public function admin()
     {
-        $model = new Tutorials('search');
+        $model = new Tutorial('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Tutorials'])) {
-            $model->attributes = $_GET['Tutorials'];
+        if (isset($_GET['Tutorial'])) {
+            $model->attributes = $_GET['Tutorial'];
         }
 
         $this->render(
@@ -186,7 +186,7 @@ class TutorialsController extends Survey_Common_Action
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Tutorials the loaded model
+     * @return Tutorial the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
@@ -200,7 +200,7 @@ class TutorialsController extends Survey_Common_Action
 
     /**
      * Performs the AJAX validation.
-     * @param Tutorials $model the model to be validated
+     * @param Tutorial $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
