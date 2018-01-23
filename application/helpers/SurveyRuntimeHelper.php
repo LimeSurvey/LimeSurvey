@@ -148,7 +148,7 @@ class SurveyRuntimeHelper
             }
 
             $upload_file = false;
-            if(isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
+            if (isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
                 foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
                     ++$qnumber;
                     $ia[9] = $qnumber; // incremental question count;

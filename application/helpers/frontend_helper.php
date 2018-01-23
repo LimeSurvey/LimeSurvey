@@ -1253,7 +1253,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
             $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled'])) ? $aEnterTokenData['bCaptchaEnabled'] : '';
-            if($aForm['bCaptchaEnabled']) {
+            if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
             // Rendering layout_user_forms.twig
@@ -1513,8 +1513,7 @@ function doAssessment($surveyid)
                     if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
                         //Multiflexi choice  - result is the assessment attribute value
                     {
-                        if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
-                        {
+                        if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
                             $aAttributes = getQuestionAttributeValues($field['qid']);
                     }
                             $assessmentValue = (int) $aAttributes['assessment_value'];

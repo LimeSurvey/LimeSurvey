@@ -31,13 +31,13 @@ class DemomodeCommand extends CConsoleCommand
 
     }
 
-    private function _resetDatabase(){
+    private function _resetDatabase() {
         Yii::import('application.helpers.common_helper', true);
         Yii::import('application.helpers.database_helper', true);
 
         //Truncate most of the tables 
-        $truncatableTables = ['{{assessments}}','{{answers}}','{{conditions}}','{{defaultvalues}}','{{labels}}','{{labelsets}}','{{groups}}','{{questions}}','{{surveys}}','{{surveys_languagesettings}}','{{quota}}','{{quota_members}}','{{quota_languagesettings}}','{{question_attributes}}','{{quota}}','{{quota_members}}','{{quota_languagesettings}}','{{question_attributes}}','{{user_groups}}','{{user_in_groups}}','{{templates}}','{{template_configuration}}','{{participants}}','{{participant_attribute_names}}','{{participant_attribute_names_lang}}','{{participant_attribute_values}}','{{participant_shares}}','{{settings_user}}','{{failed_login_attempts}}','{{saved_control}}','{{survey_links}}'];
-        foreach($truncatableTables as $table){
+        $truncatableTables = ['{{assessments}}', '{{answers}}', '{{conditions}}', '{{defaultvalues}}', '{{labels}}', '{{labelsets}}', '{{groups}}', '{{questions}}', '{{surveys}}', '{{surveys_languagesettings}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{user_groups}}', '{{user_in_groups}}', '{{templates}}', '{{template_configuration}}', '{{participants}}', '{{participant_attribute_names}}', '{{participant_attribute_names_lang}}', '{{participant_attribute_values}}', '{{participant_shares}}', '{{settings_user}}', '{{failed_login_attempts}}', '{{saved_control}}', '{{survey_links}}'];
+        foreach ($truncatableTables as $table) {
             $actquery = "truncate table ".$table;
             Yii::app()->db->createCommand($actquery)->execute();
         }
@@ -91,7 +91,7 @@ class DemomodeCommand extends CConsoleCommand
         }
     }
 
-    private function _resetFiles(){
+    private function _resetFiles() {
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
@@ -101,14 +101,14 @@ class DemomodeCommand extends CConsoleCommand
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
-    private function _createDemo(){
+    private function _createDemo() {
         Yii::app()->loadHelper('admin/import');
         require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_manager_helper.php');
         
-        Yii::app()->session->add( 'loginID', 1 );
+        Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR;
         $aSamplesurveys = scandir($documentationSurveyPath);
-        foreach($aSamplesurveys as $sSamplesurvey) {
+        foreach ($aSamplesurveys as $sSamplesurvey) {
             @XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
         }
     }

@@ -233,7 +233,7 @@ class UserGroup extends LSActiveRecord
     }
 
 
-    public function getColumns(){
+    public function getColumns() {
         return array(
             array(
                 'header' => gT('User group ID'),

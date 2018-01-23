@@ -109,7 +109,7 @@ function getSurveyList($bReturnArray = false)
             ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes,$result->languagesettings[$result->language]->attributes);
+            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
         }
         
         usort($surveynames, function($a, $b)
@@ -330,7 +330,7 @@ function getGroupOrder($gid)
     if (empty($arGroup)) {
         return 0;
     }
-    return (int)$arGroup->group_order;
+    return (int) $arGroup->group_order;
 }
 
 /**
@@ -2833,7 +2833,8 @@ function stripJavaScript($sContent)
 function showJavaScript($sContent)
 {
     $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
-        function($matches){
+        function($matches)
+        {
             return htmlspecialchars($matches[0]);
         }, $sContent);
     return $text;
@@ -3212,7 +3213,9 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, function($a,$b) {return strlen($a) < strlen($b);});
+    uksort($fieldnames, function($a,$b)
+    {
+return strlen($a) < strlen($b);});
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;
@@ -3253,7 +3256,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $result = QuotaLanguageSetting::model()->with('quota',array('condition'=>'sid='.$newsid))->together()->findAll("(quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')");
+    $result = QuotaLanguageSetting::model()->with('quota', array('condition'=>'sid='.$newsid))->together()->findAll("(quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')");
     foreach ($result as $qentry) {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl = $qentry['quotals_url'];

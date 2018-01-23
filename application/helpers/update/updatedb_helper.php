@@ -1017,7 +1017,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
-            $oDB->createCommand()->createIndex('answer_idx_10','{{answers}}',['qid','code','scale_id']);
+            $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
             $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
             $iCounter = 1;
             while (($row = $dataReader->read()) !== false) {
@@ -1032,7 +1032,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{answers}}', 'aid', "pk", false);
             $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
             $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
-            $oDB->createCommand()->dropindex('answer_idx_10','{{answers}}');
+            $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
             $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
             // Labels table
@@ -1094,7 +1094,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . sprintf(gT('File %s, line %s.'),$file,$trace[1]['line'])
+            . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
         return false;
     }
@@ -1399,7 +1399,7 @@ function createSurveyMenuTable(CDbConnection $oDB)
     $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
     $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
 
-    foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+    foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
     }
 
