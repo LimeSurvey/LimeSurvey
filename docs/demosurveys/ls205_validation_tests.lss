@@ -6278,7 +6278,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[N]]></savetimings>
-    <template><![CDATA[default]]></template>
+    <template><![CDATA[fruity]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages/>
     <datestamp><![CDATA[N]]></datestamp>
