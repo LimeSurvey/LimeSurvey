@@ -15701,7 +15701,7 @@ msgstr ""
 
 #: application/views/admin/super/_tutorial_menu.php:8
 #: application/views/admin/tutorials/index.php:23
-msgid "Tutorials"
+msgid "Tutorial"
 msgstr ""
 
 #: application/views/admin/super/admin_notifications.php:78

@@ -43,7 +43,7 @@ class TutorialEntryRelation extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'tutorials' => array(self::HAS_ONE, 'Tutorials', 'tid', 'together' => true),
+            'tutorials' => array(self::HAS_ONE, 'Tutorial', 'tid', 'together' => true),
             'tutorialEntry' => array(self::HAS_ONE, 'TutorialEntry', 'teid', 'order'=>'ordering ASC', 'together' => true),
         );
     }

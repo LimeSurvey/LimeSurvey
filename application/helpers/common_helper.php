@@ -909,16 +909,13 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-    $sOldLanguage = App()->language;
-    App()->setLanguage($sLanguage);
-    
+
     $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode);
     
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
     }
-    
-    App()->setLanguage($sOldLanguage);
+
     return $aDefaultTexts;
 }
 

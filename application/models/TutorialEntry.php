@@ -11,7 +11,7 @@
  * @property string $settings
  *
  * The followings are the available model relations:
- * @property Tutorials $t
+ * @property Tutorial $t
  */
 class TutorialEntry extends LSActiveRecord
 {

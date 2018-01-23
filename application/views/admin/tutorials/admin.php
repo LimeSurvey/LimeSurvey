@@ -1,15 +1,15 @@
 <?php
 /* @var $this TutorialsController */
-/* @var $model Tutorials */
+/* @var $model Tutorial */
 
 $this->breadcrumbs=array(
-	'Tutorials'=>array('index'),
+	'Tutorial'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Tutorials', 'url'=>array('index')),
-	array('label'=>'Create Tutorials', 'url'=>array('create')),
+	array('label'=>'List Tutorial', 'url'=>array('index')),
+	array('label'=>'Create Tutorial', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Tutorials</h1>
+<h1>Manage Tutorial</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>

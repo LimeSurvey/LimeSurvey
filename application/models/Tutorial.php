@@ -16,7 +16,7 @@
  * The followings are the available model relations:
  * @property TutorialEntry[] $tutorialEntries
  */
-class Tutorials extends LSActiveRecord
+class Tutorial extends LSActiveRecord
 {
     
     /**
@@ -137,9 +137,36 @@ class Tutorials extends LSActiveRecord
         ));
     }
 
+    public function findByName($tutorialName){
+        $defaultTutorials = LsDefaultDataSets::getTutorialData();
+        if(array_key_exists($tutorialName, $defaultTutorials)){
+            $oTutorial =  new Tutorial();
+            $oTutorial->setAttributes($defaultTutorials[$tutorialName]);
+            return $oTutorial;
+        }
+        $tutorial = $this->find('name=:name', [':name' => $tutorialName]);
+    }
+
+    public function getDefaultTutorials()
+    {
+        $aDefaultTutorials = LsDefaultDataSets::getTutorialData();
+        $result = [];
+        foreach( $aDefaultTutorials as $aDefaultTutorial){
+            $oTutorial = new Tutorial();
+            $oTutorial->setAttributes($aDefaultTutorial);
+            $result[] = $oTutorial;
+        }
+        return $result;
+    }
+
     public function getActiveTutorials()
     {
-        return self::model()->findAll('active=1');
+        $aTutorials = self::model()->findAll('active=1');
+        if(!empty($aTutorials)){
+            return array_merge($aTutorials, $this->getDefaultTutorials());
+        }
+        
+        return $this->getDefaultTutorials();
     }
 
     public function setFinished($iUserId)
@@ -157,13 +184,22 @@ class Tutorials extends LSActiveRecord
 
     public function getTutorialDataArray($tutorialName)
     {
-
-        if ($this->tid === null) { return []; }
-        $aTutorialEntryRelations = TutorialEntryRelation::model()->findAll('tid=:tid', [':tid'=>$this->tid]);
         $aSteps = [];
-        foreach ($aTutorialEntryRelations as $oTutorialMapEntry) {
-            $oTutorialEntry = $oTutorialMapEntry->tutorialEntry;
-            $aSteps[] = $oTutorialEntry->getStepFromEntry();            
+        
+        if ($this->tid === null) { 
+            $defaultEntries = LsDefaultDataSets::getTutorialEntryData();
+            $this->tid = $tutorialName;
+            foreach ($defaultEntries[$tutorialName] as $aTutorialMapEntry) {
+                $oTutorialEntry = new TutorialEntry();
+                $oTutorialEntry->setAttributes($aTutorialMapEntry, false);
+                $aSteps[] = $oTutorialEntry->getStepFromEntry();
+            }
+        } else {
+            $aTutorialEntryRelations = TutorialEntryRelation::model()->findAll('tid=:tid', [':tid'=>$this->tid]);
+            foreach ($aTutorialEntryRelations as $oTutorialMapEntry) {
+                $oTutorialEntry = $oTutorialMapEntry->tutorialEntry;
+                $aSteps[] = $oTutorialEntry->getStepFromEntry();            
+            }
         }
 
         $aTutorialData = json_decode($this->settings, true);
@@ -177,11 +213,11 @@ class Tutorials extends LSActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Tutorials the static model class
+     * @return Tutorial the static model class
      */
     public static function model($className = __CLASS__)
     {
-        /** @var Tutorials $model */
+        /** @var Tutorial $model */
         $model = parent::model($className);
         return $model;
     }
