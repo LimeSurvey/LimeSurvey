@@ -1547,8 +1547,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
             }
                 unset($quicky);
             // End if type R
-        }
-        if ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+        } elseif ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
             
                 $shortanswer = " [".gT("Group of checkboxes")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
