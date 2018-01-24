@@ -30,6 +30,8 @@ class InstallCommand extends CConsoleCommand
     /**
      * @param array $aArguments
      * @return int
+     * @throws CException
+     * @throws Exception
      */
     public function run($aArguments)
     {
@@ -48,21 +50,7 @@ class InstallCommand extends CConsoleCommand
                 $this->createDatabase();
             };
 
-            $this->connection->charset = 'utf8';
-
-            switch ($this->connection->driverName) {
-                case 'mysql':
-                case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                    break;
-                case 'pgsql':
-                case 'dblib':
-                case 'mssql':
-                case 'sqlsrv':
-                    break;
-                    default:
-                    throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
-            }
+            $this->prepareCharset();
 
             $sFileName = dirname(APPPATH).'/installer/create-database.php';
             require_once($sFileName);
@@ -74,33 +62,9 @@ class InstallCommand extends CConsoleCommand
                 return 1;
             }
 
-            $this->output('Creating admin user...');
-            $this->connection->createCommand()->insert(
-                $this->connection->tablePrefix.'users',
-                array(
-                    'users_name'=>$aArguments[0],
-                    'password'=>password_hash($aArguments[1], PASSWORD_DEFAULT),
-                    'full_name'=>$aArguments[2],
-                    'parent_id'=>0,
-                    'lang'=>'auto',
-                    'email'=>$aArguments[3]
-                )
-            );
-            $this->connection->createCommand()->insert(
-                $this->connection->tablePrefix.'permissions',
-                array(
-                    'entity'=>'global',
-                    'entity_id'=>0,
-                    'uid'=>1,
-                    'permission'=>'superadmin',
-                    'create_p'=>0,
-                    'read_p'=>1,
-                    'update_p'=>0,
-                    'delete_p'=>0,
-                    'import_p'=>0,
-                    'export_p'=>0
-                )
-            );
+            $this->createUser($aArguments);
+            $this->createPermissions();
+
             $this->output('All done!');
             return 0;
         } else {
@@ -109,6 +73,8 @@ class InstallCommand extends CConsoleCommand
             return 1;
         }
     }
+
+
 
     /**
      * @param string $sProperty
@@ -130,6 +96,7 @@ class InstallCommand extends CConsoleCommand
     /**
      * Create database with name?
      * @return void
+     * @throws CException
      */
     protected function createDatabase()
     {
@@ -197,4 +164,59 @@ class InstallCommand extends CConsoleCommand
             $this->noisy = true;
         }
     }
+
+
+    private function prepareCharset(){
+        $this->connection->charset = 'utf8';
+        switch ($this->connection->driverName) {
+            case 'mysql':
+            case 'mysqli':
+                $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                break;
+            case 'pgsql':
+            case 'dblib':
+            case 'mssql':
+            case 'sqlsrv':
+                break;
+            default:
+                throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
+        }
+
+    }
+
+    private function createUser($data){
+        $this->output('Creating admin user...');
+        $this->connection->createCommand()->insert(
+            $this->connection->tablePrefix.'users',
+            array(
+                'users_name'=>$data[0],
+                'password'=>password_hash($data[1], PASSWORD_DEFAULT),
+                'full_name'=>$data[2],
+                'parent_id'=>0,
+                'lang'=>'auto',
+                'email'=>$data[3]
+            )
+        );
+    }
+
+    private function createPermissions(){
+        $this->output('Creating permissions ...');
+        $this->connection->createCommand()->insert(
+            $this->connection->tablePrefix.'permissions',
+            array(
+                'entity'=>'global',
+                'entity_id'=>0,
+                'uid'=>1,
+                'permission'=>'superadmin',
+                'create_p'=>0,
+                'read_p'=>1,
+                'update_p'=>0,
+                'delete_p'=>0,
+                'import_p'=>0,
+                'export_p'=>0
+            )
+        );
+    }
+
+
 }
