@@ -81,7 +81,7 @@
                             <input type="text" class="form-control" value="" name="filteremail" id="filteremail" />
                         </div>
                         <div class="alert alert-info controls" role="alert">
-                            <?php eT('Only export entries which contain this string in email address.'); ?>
+                            <?php eT('Only export entries which contain this string in the email address.'); ?>
                         </div>
 
                     </div>
