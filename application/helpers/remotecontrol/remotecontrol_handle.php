@@ -396,7 +396,7 @@ class remotecontrol_handle
                 $aBasicAttributes = $oSurvey->getAttributes();
                 $aResult = array();
 
-                if ($oSurvey->active == 'Y') {
+                if ($oSurvey->isActive) {
                     // remove all fields that may not be changed when a survey is active
                     unset($aSurveyData['anonymized']);
                     unset($aSurveyData['datestamp']);
@@ -978,7 +978,7 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid survey ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
+                if ($oSurvey->isActive) {
                                     return array('status' => 'Error:Survey is active and not editable');
                 }
 
@@ -1027,8 +1027,8 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid group ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
@@ -1075,8 +1075,8 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 if (!in_array($sImportDataType, array('csv', 'lsg'))) {
@@ -1301,8 +1301,8 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Survey is active and not editable');
                 }
                 $iGroupID = $oQuestion['gid'];
 
@@ -1368,8 +1368,8 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is Active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is Active and not editable');
                 }
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
@@ -2618,11 +2618,11 @@ class remotecontrol_handle
         if (is_null($oSurvey)) {
             return 'Error: Invalid survey ID';
         }
-        if ($oSurvey->getAttribute('active') !== 'Y') {
+        if ($oSurvey->isActive) {
             return 'Error: Survey is not active.';
         }
 
-        if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
+        if ($oSurvey->isAllowEditAfterCompletion) {
             return 'Error: Survey does not allow edit after completion.';
         }
 
