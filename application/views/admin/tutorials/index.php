@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('tutorials');
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
         <div class="col-12 h1 pagetitle">
-            <?php eT('Tutorial')?> 
+            <?php eT('Tutorials')?> 
         </div>
         <div class="col-12">
             <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorial" >
