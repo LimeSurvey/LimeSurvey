@@ -176,7 +176,8 @@ class translate extends Survey_Common_Action
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 
-            for ($j = 0; $j < count($resultbase); $j++) {
+            $countResultBase =count($resultbase);
+            for ($j = 0; $j < $countResultBase; $j++) {
                 $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
                 
