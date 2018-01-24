@@ -1631,8 +1631,8 @@ class tokens extends Survey_Common_Action
                 ),
                 'tokendeleteexported'=>array(
                     'type'=>'checkbox',
-                    'label'=>gT('Delete exported tokens:'),
-                    'help'=>'Attention: If selected the exported tokens are deleted permanently from the survey participants table.',
+                    'label'=>gT('Delete exported participants:'),
+                    'help'=>'Attention: If selected the exported entries are deleted permanently from the survey participants table.',
                 ),
             );
             $this->_renderWrappedTemplate('token', array('exportdialog'), $aData);

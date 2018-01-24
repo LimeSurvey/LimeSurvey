@@ -96,7 +96,7 @@ class Save
         }
 
         /* Construction of the form */
-        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
+        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
             $captcha = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$iSurveyId));
         } else {
             $captcha = null;
@@ -143,7 +143,7 @@ class Save
 
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
-        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
+        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
             $aSaveForm['aCaptcha']['show'] = true;
             $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$iSurveyId));
         }
@@ -192,7 +192,7 @@ class Save
         }
 
         // if security question asnwer is incorrect
-        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
+        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
             if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
              || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
@@ -327,7 +327,7 @@ class Save
         }
 
         // Check captcha
-        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
+        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
 
             if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
