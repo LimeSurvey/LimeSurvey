@@ -35,6 +35,59 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.0.5 (build 180118) to 3.1.0 (build 180124) Jan 24, 2018
+-New feature #12240: Validation settings for "array by column" question type (Denis Chenu)
+-New feature: Add em_validation_q to list of choice (dropdown and radio) (Denis Chenu)
+-Fixed issue #12548: Untranslated string during installation process (Carsten Schmitz)
+-Fixed issue #12666: Untranslated string in participant export (Carsten Schmitz)
+-Fixed issue #12682: Missing start and end text in quick-translation (Carsten Schmitz)
+-Fixed issue #12877: Missing translation (Carsten Schmitz)
+-Fixed issue #12925: Untranslated string in survey groups (Carsten Schmitz)
+-Fixed issue #12927: String not picked from language files (Carsten Schmitz)
+-Fixed issue #13137: Cannot access theme editor (LouisGac)
+-Fixed issue #13190: Remove text or uncheck checkbox automatically not work (KLLam)
+-Fixed issue #13193: Unable to update question type (simple selector) (markusfluer)
+-Fixed issue #13200: LDAP Auth plugin user autocreate broken (Denis Chenu)
+-Fixed issue #13208: Missing translation in ComfortUpdate (Carsten Schmitz)
+-Fixed issue #13212: missing translation frontend survey (markusfluer)
+-Fixed issue #13215: Missing string (markusfluer)
+-Fixed issue #13216: missing translation (markusfluer)
+-Fixed issue #13223: Missing translation when editing CPDB attributes (Carsten Schmitz)
+-Fixed issue #13226: Array buttons don't stay selected in Firefox 57.0.4 (Markus flür)
+-Fixed issue #13161: Error page when submitting a form which has been saved for later and then resumed. (KLLam)
+-Fixed issue: Captcha alone not working (markusfluer)
+-Fixed issue: Captcha image does not appear (because GD library is not installed) (Carsten Schmitz)
+-Fixed issue: Captcha not showing (markusfluer)
+-Fixed issue: Default tutorials out of db and reset surveymenues to work well with translations (markusfluer)
+-Fixed issue: Demo rendered unusable with wipe command (markusfluer)
+-Fixed issue: Emailtemplate reset not working (markusfluer)
+-Fixed issue: EM expression on other for list dropdown didn't work (Denis Chenu)
+-Fixed issue: Error message with missing directories in template editor (Carsten Schmitz)
+-Fixed issue: Language error (markusfluer)
+-Fixed issue: [security] No CRSF check for uninstall theme - reported by Mustafa Hasan (LouisGac)
+-Fixed issue: Notice if survey is activated and question is edited (Carsten Schmitz)
+-Fixed issue: Reverted accidental change from develop branch (Markus flür)
+-Fixed issue: Sliders not working (markusfluer)
+-Fixed issue: Slider value empty (Markus flür)
+-Removed translation: Papiamento (Aruba) (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by abc99
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Georgian by zch5368
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Vietnamese by namphuong
+
 Changes from 3.0.4 (build 180116) to 3.0.5 (build 180118) Jan 18, 2018
 -Fixed issue #13061: Survey list displays only the surveys from the default survey group (Olle Haerstedt)
 -Fixed issue #13110: Language changer doesn't work (Olle Haerstedt)
@@ -49,7 +102,7 @@ Changes from 3.0.4 (build 180116) to 3.0.5 (build 180118) Jan 18, 2018
 #Updated translation: Dutch (Informal) by Han 
 #Updated translation: Dutch by Han 
 #Updated translation: Hungarian by kkd 
-#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Polish by elissa
 #Updated translation: Romanian by cdorin
