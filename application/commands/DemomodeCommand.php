@@ -116,8 +116,7 @@ class DemomodeCommand extends CConsoleCommand
                 $surveysToActivate[] = $result['newsid'];
             }
         }
-        Yii::app()->loadHelper('admin/activate');
-
+        require_once(__DIR__.'/../helpers/admin/activate_helper.php');
         array_map('activateSurvey', $surveysToActivate);
     }
 
