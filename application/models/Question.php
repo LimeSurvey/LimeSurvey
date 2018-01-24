@@ -39,6 +39,7 @@ if (!defined('BASEPATH')) {
  * @property Question $parents      //@TODO should be singular
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @inheritdoc
  */
@@ -111,7 +112,7 @@ class Question extends LSActiveRecord
             'group' => array(self::BELONGS_TO, 'QuestionGroup', 'gid', 'together' => true),
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
+            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true,'index'=>'language'),
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid')
