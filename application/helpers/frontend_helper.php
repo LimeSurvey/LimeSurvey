@@ -1663,12 +1663,11 @@ function updateFieldArray()
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) {
         foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value) {
             $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-            $language = $_SESSION['survey_'.$surveyid]['s_lang'];
-            $question = Question::model()->findByPk($questionarray[0]);
-            $questionL10n = $question->questionL10ns[$language];
-
-            $questionarray[2] = $question->title;
-            $questionarray[3] = $questionL10n->question;
+            $arQuestion=Question::model()->findByPk($questionarray[0]);
+            if (!empty($arQuestion)) {
+                $questionarray[2] = $arQuestion->title;
+                $questionarray[3] = $arQuestion->questionL10ns[$_SESSION['survey_'.$surveyid]['s_lang']]->question;
+            }
             unset($questionarray);
         }
     }
