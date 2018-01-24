@@ -138,12 +138,12 @@
                                 <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }} list-unstyled ' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
 
                                     {% for key, oSurvey in aSurveyInfo.publicSurveys %}
-                                    <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group btn-block" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
+                                    <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group btn-block col-sm-6 col-xs-12" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
                                         <a
                                         href="{{ oSurvey.sSurveyUrl }}"
                                         title="{{ "Start survey" | t }}"
                                         lang="{{ oSurvey.language }}"
-                                        class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
+                                        class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary col-xs-12"  >
                                         {{ oSurvey.localizedTitle }}
                                     </a>
                                 </li>

@@ -108,9 +108,16 @@ class DemomodeCommand extends CConsoleCommand
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR;
         $aSamplesurveys = scandir($documentationSurveyPath);
-        foreach ($aSamplesurveys as $sSamplesurvey) {
-            @XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
+        $surveysToActivate = [];
+        foreach($aSamplesurveys as $sSamplesurvey) {
+            $result = NULL;
+            $result = XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
+            if(in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])){
+                $surveysToActivate[] = $result['newsid'];
+            }
         }
+        require_once(__DIR__.'/../helpers/admin/activate_helper.php');
+        array_map('activateSurvey', $surveysToActivate);
     }
 
 }

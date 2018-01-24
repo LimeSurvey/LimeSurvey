@@ -124,7 +124,7 @@ class SurveyLanguageSetting extends LSActiveRecord
         );
     }
     
-    public function defaultScope()
+    public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
     }        

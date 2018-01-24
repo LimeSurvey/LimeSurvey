@@ -156,7 +156,7 @@ class RegisterController extends LSYii_Controller
         $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
 
         // Check the security question's answer
-        if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
+        if (isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
             $sLoadSecurity = Yii::app()->request->getPost('loadsecurity', '');
             $captcha = Yii::app()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -246,7 +246,7 @@ class RegisterController extends LSYii_Controller
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
-        $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
+        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid'=>$iSurveyId));
 
         $aData['formAdditions'] = '';

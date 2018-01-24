@@ -140,7 +140,6 @@ class translate extends Survey_Common_Action
         $aData['baselang'] = $baselang;
         $aData['baselangdesc'] = $baselangdesc;
         $aData['tolangdesc'] = $tolangdesc;
-
         //This is for the tab navbar
         $aData['amTypeOptions'] = array_map(array($this, 'setupTranslateFields'), $tab_names);
         $aViewUrls['translateformheader_view'][] = $aData;
@@ -739,7 +738,7 @@ class translate extends Survey_Common_Action
                     case 'emailregistrationbody':
                     case 'email_confirm':
                     case 'email_confirmbody':
-                        return SurveyLanguageSetting::model()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
+                        return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
                         return QuestionGroup::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
