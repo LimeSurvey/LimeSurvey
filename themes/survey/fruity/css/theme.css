@@ -279,6 +279,15 @@ element.style {
     background-color: rgba(236, 240, 241, 0.2);
 }
 
+@media (max-width: 768px) {
+    #surveyListFooter {
+        padding-bottom: 40px;
+        padding-top: 5px;
+        margin-top: 5px;
+        height: 40px;
+    }
+}
+
 /**
  * Specific question part
  */
