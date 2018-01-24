@@ -65,8 +65,9 @@ class InstallCommand extends CConsoleCommand
             $this->createUser($aArguments);
             $this->createPermissions();
 
+            //$this->enableRPC();
+
             $this->output('All done!');
-            $this->actionRpc();
             return 0;
         } else {
             // TODO: a valid error process
@@ -75,10 +76,10 @@ class InstallCommand extends CConsoleCommand
         }
     }
 
-    public function actionRpc($type = 'json'){
+    public function enableRPC($type = 'json'){
 
         $result = SettingGlobal::updateSetting('RPCInterface',$type);
-        if($result === 1){
+        if($result){
             $this->output('Setting RPC interface to:'.$type);
         } else {
             $this->output("Error setting RPC interface!");
