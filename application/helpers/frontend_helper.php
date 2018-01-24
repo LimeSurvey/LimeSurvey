@@ -1663,11 +1663,10 @@ function updateFieldArray()
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) {
         foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value) {
             $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if ($usrow) {
-                $questionarray[2] = $usrow['title'];
-                $questionarray[3] = $usrow['question'];
+            $arQuestion=Question::model()->findByPk($questionarray[0]);
+            if (!empty($arQuestion)) {
+                $questionarray[2] = $arQuestion->title;
+                $questionarray[3] = $arQuestion->questionL10ns[$_SESSION['survey_'.$surveyid]['s_lang']]->question;
             }
             unset($questionarray);
         }
