@@ -1302,18 +1302,20 @@ class database extends Survey_Common_Action
                     if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
                         $aSQIDMappings = [];
                         foreach ($oOldQuestion->subquestions as $qr1) {
-                            $qr1->parent_qid = $this->iQuestionID;
+                            $arQuestion=new Question();
+                            $arQuestion->attributes=$qr1->attributes;
+                            $arQuestion->parent_qid = $this->iQuestionID;
                             $oldqid = '';
                             if (isset($aSQIDMappings[$qr1->qid])) {
-                                $qr1->qid = $aSQIDMappings[$qr1->qid];
+                                $arQuestion->qid = $aSQIDMappings[$qr1->qid];
                             } else {
                                 $oldqid = $qr1->qid;
-                                $qr1->qid = null;
+                                $arQuestion->qid = null;
                             }
 
-                            $qr1->gid = $this->iQuestionGroupID;
-                            if ($qr1->save()) {
-                                $aSQIDMappings[$oldqid] = $qr1->gid;
+                            $arQuestion->gid = $this->iQuestionGroupID;
+                            if ($arQuestion->save()) {
+                                $aSQIDMappings[$oldqid] = $arQuestion->gid;
                             }
                         }
                     }
