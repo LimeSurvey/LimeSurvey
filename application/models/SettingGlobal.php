@@ -51,7 +51,7 @@ class SettingGlobal extends LSActiveRecord
      * @param string $settingvalue
      * @return int
      */
-    public function updateSetting($settingname, $settingvalue)
+    public static  function updateSetting($settingname, $settingvalue)
     {
 
         $data = array(
