@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-01-24 13:27:22+00:00\n"
+"POT-Creation-Date: 2018-01-24 14:36:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -969,7 +969,7 @@ msgstr ""
 #: application/controllers/admin/themeoptions.php:180
 #: application/controllers/admin/themeoptions.php:201
 #: application/controllers/admin/themeoptions.php:230
-#: application/controllers/admin/themeoptions.php:245
+#: application/controllers/admin/themeoptions.php:246
 #: application/controllers/admin/themes.php:33
 #: application/controllers/admin/themes.php:73
 #: application/controllers/admin/themes.php:256
@@ -3951,12 +3951,12 @@ msgstr ""
 msgid "Theme options saved."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:242
+#: application/controllers/admin/themeoptions.php:243
 msgid "You can't uninstall template '%s' because some templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:297
 #: application/controllers/admin/themeoptions.php:298
+#: application/controllers/admin/themeoptions.php:299
 msgid "Survey template options"
 msgstr ""
 
@@ -11963,7 +11963,7 @@ msgid "Edit survey group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:233
-#: application/models/TemplateConfiguration.php:544
+#: application/models/TemplateConfiguration.php:546
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -11992,28 +11992,28 @@ msgstr ""
 msgid "Theme editor"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:544
+#: application/models/TemplateConfiguration.php:546
 msgid "This will delete all the specific configurations of this theme."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:546
+#: application/models/TemplateConfiguration.php:548
 msgid "Uninstall this theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:549
-#: application/models/TemplateConfiguration.php:569
+#: application/models/TemplateConfiguration.php:551
+#: application/models/TemplateConfiguration.php:571
 msgid "Uninstall"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:566
+#: application/models/TemplateConfiguration.php:568
 msgid "You cannot uninstall the default template."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:662
+#: application/models/TemplateConfiguration.php:664
 msgid "Error: Malformed JSON: Field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:771
+#: application/models/TemplateConfiguration.php:773
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
