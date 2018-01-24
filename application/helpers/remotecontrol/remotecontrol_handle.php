@@ -2618,11 +2618,11 @@ class remotecontrol_handle
         if (is_null($oSurvey)) {
             return 'Error: Invalid survey ID';
         }
-        if ($oSurvey->isActive) {
+        if (!$oSurvey->isActive) {
             return 'Error: Survey is not active.';
         }
 
-        if ($oSurvey->isAllowEditAfterCompletion) {
+        if (!$oSurvey->isAllowEditAfterCompletion) {
             return 'Error: Survey does not allow edit after completion.';
         }
 
