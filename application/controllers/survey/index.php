@@ -377,7 +377,7 @@ class index extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
                 $captcha        = Yii::app()->getController()->createAction('captcha');
                 $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -413,7 +413,7 @@ class index extends CAction
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
 
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
+            if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }

@@ -156,6 +156,11 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     ?>
                 </div>
             </div>
+            <?php if(!extension_loaded('gd')) { ?>
+                <div class="alert alert-warning " role="alert">
+                    <p><strong><?php eT('Warning!'); ?></strong> <?php eT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."); ?></p>
+                </div>
+            <?php }?>
         </div>
     </div>
 </div>

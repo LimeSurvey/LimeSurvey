@@ -2592,6 +2592,9 @@ function incompleteAnsFilterState()
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
+    if (!extension_loaded('gd')) {
+        return false;
+    }
     switch ($screen) {
         case 'registrationscreen':
             if ($captchamode == 'A' ||
