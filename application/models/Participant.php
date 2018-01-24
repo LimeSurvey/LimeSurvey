@@ -235,7 +235,8 @@ class Participant extends LSActiveRecord
             'language' => gT('Language'),
             'blacklisted' => gT('Blacklisted'),
             'owner_uid' => gT('Owner ID'),
-            'surveyid' => gT('Active survey ID')
+            'surveyid' => gT('Active survey ID'),
+            'created' => gT('Created on')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
             $returnArray[$name] = $attribute['defaultname'];
