@@ -70,6 +70,19 @@
             animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
             animation-duration: {{ aSurveyInfo.options.checkboxanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .checkbox-item input[type="checkbox"] + label::after{
+            display: none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 
@@ -78,6 +91,19 @@
             animation-name: {{ aSurveyInfo.options.radioanimation  }};
             animation-duration: {{ aSurveyInfo.options.radioanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .radio-item input[type="radio"] + label::after{
+            display:none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 

@@ -39,6 +39,7 @@ if (!defined('BASEPATH')) {
  * @property Question $parents      //@TODO should be singular
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @inheritdoc
  */

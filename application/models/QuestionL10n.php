@@ -15,11 +15,12 @@
  */
 
 /**
- * Class SurveyLanguageSetting
+ * Class QuestionL10n
  *
  * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
- * @property string $question Question dieplay text. The actual question.
+ * @property string $question Question display text. The actual question.
  * @property string $help Question help-text for display
+ *
  */
 class QuestionL10n extends LSActiveRecord
 {
@@ -38,7 +39,7 @@ class QuestionL10n extends LSActiveRecord
 
     /**
      * @inheritdoc
-     * @return SurveyLanguageSetting
+     * @return QuestionL10n
      */
     public static function model($class = __CLASS__)
     {

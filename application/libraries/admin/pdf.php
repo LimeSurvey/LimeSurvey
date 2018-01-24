@@ -364,7 +364,8 @@ class pdf extends TCPDF
         $maxwidth = $this->getEqualWidth($array);
         $oldStyle = $this->FontStyle;
         $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             for ($b = 0; $b < sizeof($array[$a]); $b++) {
                 $this->Cell($maxwidth, 4, $this->delete_html($array[$a][$b]), 0, 0, 'L');
             }
@@ -385,7 +386,8 @@ class pdf extends TCPDF
     {
         $maxwidth = $this->getEqualWidth($array);
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a <$arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
@@ -412,11 +414,13 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
-            for ($b = 0; $b < sizeof($array[$a]); $b++) {
+            $subArraySize = sizeof($array[$a]);
+            for ($b = 0; $b < $subArraySize; $b++) {
                 //echo $maxwidth[$b]." max $b.Spalte<br/>";
                 $this->Cell($maxwidth[$b], 4, $this->delete_html($array[$a][$b]), 0, 0, 'L', $fill);
             }
@@ -441,7 +445,8 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 1; } else {$fill = 0; }
             } else {$fill = 0; }
@@ -491,7 +496,8 @@ class pdf extends TCPDF
     public function getminwidth($array)
     {
         $width = array();
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 $stringWidth = 0;
                 $chars = str_split($this->delete_html($array[$i][$j]), 1);
@@ -512,7 +518,8 @@ class pdf extends TCPDF
     }
     public function getmaxwidth($array)
     {
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (($i - 1) >= 0) {
                     if (strlen($this->delete_html($array[($i - 1)][$j])) < strlen($this->delete_html($array[$i][$j]))) {
@@ -542,7 +549,8 @@ class pdf extends TCPDF
         $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
         $faktor = $fullWidth / array_sum($width);
 
-        for ($i = 0; $i < sizeof($width); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             $maxlength[$i] = $faktor * $width[$i];
         }
         return $maxlength;
@@ -552,7 +560,7 @@ class pdf extends TCPDF
      * gets the width for each column in tables, based on pagewidth and count of columns.
      * Good for static tables with equal value String-length
      * @param $array
-     * @return unknown_type
+     * @return mixed
      */
     public function getEqualWidth($array)
     {
@@ -561,7 +569,8 @@ class pdf extends TCPDF
 
         $width = ($this->GetLineWidth() * 1000) - $deadSpace;
         $count = 0;
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (sizeof($array[$i]) > $count) {
                     $count = sizeof($array[$i]);
