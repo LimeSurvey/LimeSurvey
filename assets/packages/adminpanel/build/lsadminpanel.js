@@ -36678,7 +36678,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 return { gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions };
             });
-            this.$log.debug("QuestionGroup order changed");
+            this.$log.trace("QuestionGroup order changed");
             this.post(this.updateOrderLink, { grouparray: onlyGroupsArray, surveyid: this.$store.surveyid }).then(result => {
                 self.$log.debug('questiongroups updated');
             }, error => {
