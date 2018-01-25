@@ -925,7 +925,9 @@ class Survey extends LSActiveRecord
             }
         }
 
-        return self::findByPk($pk, $condition, $params);
+        /** @var self $model */
+        $model = parent::findByPk($pk, $condition, $params);
+        return $model;
     }
 
     /**
