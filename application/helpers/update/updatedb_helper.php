@@ -1395,7 +1395,7 @@ function createSurveyMenuTable(CDbConnection $oDB)
     $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
     $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
 
-    foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
+    foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
     }
 

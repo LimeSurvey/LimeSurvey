@@ -303,7 +303,7 @@ class Survey extends LSActiveRecord
     }
 
 
-  /*  public function defaultScope()
+    /*  public function defaultScope()
     {
         return array('order'=> $this->getTableAlias().'.sid');
     }    */
@@ -661,7 +661,8 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
-    private function __useTranslationForSurveymenu(&$entryData) {
+    private function __useTranslationForSurveymenu(&$entryData)
+    {
         $entryData['title']             = gT($entryData['title']);
         $entryData['menu_title']        = gT($entryData['menu_title']);
         $entryData['menu_description']  = gT($entryData['menu_description']);

@@ -524,51 +524,51 @@ function square($number)
 class statistics_helper
 {
     /**
-    * @var pdf
-    */
+     * @var pdf
+     */
     protected $pdf;
 
     /**
-    * The Excel worksheet we are working on
-    *
-    * @var Spreadsheet_Excel_Writer_Worksheet
-    */
+     * The Excel worksheet we are working on
+     *
+     * @var Spreadsheet_Excel_Writer_Worksheet
+     */
     protected $sheet;
 
     protected $xlsPercents;
 
     protected $formatBold;
     /**
-    * The current Excel workbook we are working on
-    *
-    * @var Xlswriter
-    */
+     * The current Excel workbook we are working on
+     *
+     * @var Xlswriter
+     */
     protected $workbook;
 
     /**
-    * Keeps track of the current row in Excel sheet
-    *
-    * @var int
-    */
+     * Keeps track of the current row in Excel sheet
+     *
+     * @var int
+     */
     protected $xlsRow = 0;
 
     /**
-    * Builds an array containing information about this particular question/answer combination
-    *
-    * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
-    * @param mixed $language The language to present output in
-    * @param mixed $surveyid The survey id
-    * @param string $outputType
-    * @param boolean $browse
-    *
-    * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
-    *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
-    *                       of the question, and the fieldname where the data is stored.
-    *                       "qtitle"=>The title of the question,
-    *                       "qquestion"=>The description of the question,
-    *                       "qtype"=>The question type code
-    * @return array
-    */
+     * Builds an array containing information about this particular question/answer combination
+     *
+     * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
+     * @param mixed $language The language to present output in
+     * @param mixed $surveyid The survey id
+     * @param string $outputType
+     * @param boolean $browse
+     *
+     * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
+     *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
+     *                       of the question, and the fieldname where the data is stored.
+     *                       "qtitle"=>The title of the question,
+     *                       "qquestion"=>The description of the question,
+     *                       "qtype"=>The question type code
+     * @return array
+     */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
         //Set up required variables
@@ -720,7 +720,7 @@ class statistics_helper
             //select details for this question
             /**
             FIXME $iQuestionIDlength not defined!!
-            */
+             */
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
@@ -1436,11 +1436,11 @@ class statistics_helper
     }
 
     /**
-    * @param string $outputType
-    * @param integer $usegraph
-    * @param boolean $browse
-    * @return array
-    */
+     * @param string $outputType
+     * @param integer $usegraph
+     * @param boolean $browse
+     * @return array
+     */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
         /* Set up required variables */
@@ -2020,11 +2020,11 @@ class statistics_helper
                 $cachefilename = '';
                 if ($outputType == 'xls' || $outputType == 'pdf') {
                     /**
-                    *
+                     *
                     //FIXME $MyCache is undefined
                     $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
-                    *
-                    */
+                     *
+                     */
                 }
 
             }
@@ -2118,18 +2118,18 @@ class statistics_helper
     }
 
     /**
-    * displayResults builds html output to display the actual results from a survey
-    *
-    * @param mixed $outputs
-    * @param INT $results The number of results being displayed overall
-    * @param mixed $rt
-    * @param string $outputType
-    * @param mixed $surveyid
-    * @param mixed $sql
-    * @param integer $usegraph
-    *
-    *
-    */
+     * displayResults builds html output to display the actual results from a survey
+     *
+     * @param mixed $outputs
+     * @param INT $results The number of results being displayed overall
+     * @param mixed $rt
+     * @param string $outputType
+     * @param mixed $surveyid
+     * @param mixed $sql
+     * @param integer $usegraph
+     *
+     *
+     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
         /* Set up required variables */
@@ -3250,8 +3250,8 @@ class statistics_helper
                     switch ($outputType) {
                         case 'xls':
                             /**
-                            * No Image for Excel...
-                            */
+                             * No Image for Excel...
+                             */
 
                             break;
                         case 'pdf':
@@ -3386,10 +3386,10 @@ class statistics_helper
     }
 
     /**
-    * Generate simple statistics
-    * @param string[] $allfields
-    * @return string
-    */
+     * Generate simple statistics
+     * @param string[] $allfields
+     * @return string
+     */
     public function generate_simple_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
 
@@ -3411,8 +3411,8 @@ class statistics_helper
         $summary = $q2show;
 
         /**
-        * Start generating
-        */
+         * Start generating
+         */
 
         //count number of answers
         $query = "SELECT count(*) FROM {{survey_$surveyid}}";
@@ -3499,8 +3499,8 @@ class statistics_helper
     }
 
     /**
-    * Generates statistics with subviews
-    */
+     * Generates statistics with subviews
+     */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
         $aStatisticsData = array();
@@ -3579,8 +3579,8 @@ class statistics_helper
                 }
         }}
         /**
-        * Start generating
-        */
+         * Start generating
+         */
         $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
@@ -3631,9 +3631,9 @@ class statistics_helper
         }    //end if (results > 0)
 
         /**
-        * Show Summary results
-        * The $summary array contains each fieldname that we want to display statistics for
-        */
+         * Show Summary results
+         * The $summary array contains each fieldname that we want to display statistics for
+         */
 
         $aData['results'] = $results;
         $aData['total'] = $total;
@@ -3695,16 +3695,16 @@ class statistics_helper
     }
 
     /**
-    * Generates statistics
-    *
-    * @param int $surveyid The survey id
-    * @param mixed $allfields
-    * @param mixed $q2show
-    * @param integer $usegraph
-    * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
-    * @param mixed $browse  Show browse buttons
-    * @return string
-    */
+     * Generates statistics
+     *
+     * @param int $surveyid The survey id
+     * @param mixed $allfields
+     * @param mixed $q2show
+     * @param integer $usegraph
+     * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
+     * @param mixed $browse  Show browse buttons
+     * @return string
+     */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
@@ -3726,11 +3726,11 @@ class statistics_helper
         //we collect all the html-output within this variable
         $sOutputHTML = '';
         /**
-        * $outputType: html || pdf ||
-        */
+         * $outputType: html || pdf ||
+         */
         /**
-        * get/set Survey Details
-        */
+         * get/set Survey Details
+         */
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid = returnGlobal('sid'); }
@@ -3793,8 +3793,8 @@ class statistics_helper
         }
 
         /**
-        * pdf Config
-        */
+         * pdf Config
+         */
         if ($outputType == 'pdf') {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
@@ -3830,8 +3830,8 @@ class statistics_helper
         }
         if ($outputType == 'xls') {
             /**
-            * Initiate the Spreadsheet_Excel_Writer
-            */
+             * Initiate the Spreadsheet_Excel_Writer
+             */
             require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
 
             if ($outputTarget == 'F') {
@@ -3864,8 +3864,8 @@ class statistics_helper
             $this->sheet->setColumn(0, 20, 20);
         }
         /**
-        * Start generating
-        */
+         * Start generating
+         */
 
 
 
@@ -4059,30 +4059,30 @@ class statistics_helper
     }
 
     /**
-    * Get the quartile using minitab method
-    *
-    * L=(1/4)(n+1), U=(3/4)(n+1)
-    * Minitab linear interpolation between the two
-    * closest data points. Minitab would let L = 2.5 and find the value half way between the
-    * 2nd and 3rd data points. In our example, that would be (4+9)/2 =
-    * 6.5. Similarly, the upper quartile value would be half way between
-    * the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
-    * were 2.25, Minitab would find the value one fourth of the way
-    * between the 2nd and 3rd data points and if L were 2.75, Minitab
-    * would find the value three fourths of the way between the 2nd and
-    * 3rd data points.
-    *
-    * @staticvar null $sid
-    * @staticvar int $recordCount
-    * @staticvar null $field
-    * @staticvar null $allRows
-    * @param integer $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
-    * @param string $fieldname
-    * @param int $surveyid
-    * @param string $sql
-    * @param bool $excludezeros
-    * @return null|float
-    */
+     * Get the quartile using minitab method
+     *
+     * L=(1/4)(n+1), U=(3/4)(n+1)
+     * Minitab linear interpolation between the two
+     * closest data points. Minitab would let L = 2.5 and find the value half way between the
+     * 2nd and 3rd data points. In our example, that would be (4+9)/2 =
+     * 6.5. Similarly, the upper quartile value would be half way between
+     * the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
+     * were 2.25, Minitab would find the value one fourth of the way
+     * between the 2nd and 3rd data points and if L were 2.75, Minitab
+     * would find the value three fourths of the way between the 2nd and
+     * 3rd data points.
+     *
+     * @staticvar null $sid
+     * @staticvar int $recordCount
+     * @staticvar null $field
+     * @staticvar null $allRows
+     * @param integer $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
+     * @param string $fieldname
+     * @param int $surveyid
+     * @param string $sql
+     * @param bool $excludezeros
+     * @return null|float
+     */
     protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
     {
         static $sid = null;
@@ -4156,8 +4156,8 @@ class statistics_helper
     }
 
     /**
-    *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
-    */
+     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
         $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
