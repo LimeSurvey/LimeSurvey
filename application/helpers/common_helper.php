@@ -3216,9 +3216,9 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, function($a,$b)
+    uksort($fieldnames, function($a, $b)
     {
-return strlen($a) < strlen($b);});
+return strlen($a) < strlen($b); });
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;

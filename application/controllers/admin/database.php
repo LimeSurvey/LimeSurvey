@@ -1300,8 +1300,8 @@ class database extends Survey_Common_Action
                     if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
                         $aSQIDMappings = [];
                         foreach ($oOldQuestion->subquestions as $qr1) {
-                            $arQuestion=new Question();
-                            $arQuestion->attributes=$qr1->attributes;
+                            $arQuestion = new Question();
+                            $arQuestion->attributes = $qr1->attributes;
                             $arQuestion->parent_qid = $this->iQuestionID;
                             $oldqid = '';
                             if (isset($aSQIDMappings[$qr1->qid])) {

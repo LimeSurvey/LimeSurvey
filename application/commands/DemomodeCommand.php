@@ -31,7 +31,8 @@ class DemomodeCommand extends CConsoleCommand
 
     }
 
-    private function _resetDatabase() {
+    private function _resetDatabase()
+    {
         Yii::import('application.helpers.common_helper', true);
         Yii::import('application.helpers.database_helper', true);
 
@@ -83,11 +84,11 @@ class DemomodeCommand extends CConsoleCommand
         }
 
         // At last reset the basic themes       
-        foreach(LsDefaultDataSets::getTemplatesData() as $template){
-            Yii::app()->db->createCommand()->insert("{{templates}}", $template );
+        foreach (LsDefaultDataSets::getTemplatesData() as $template) {
+            Yii::app()->db->createCommand()->insert("{{templates}}", $template);
         }
-        foreach(LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
-            Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
+        foreach (LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
+            Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
         }
     }
 
@@ -101,7 +102,8 @@ class DemomodeCommand extends CConsoleCommand
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
-    private function _createDemo() {
+    private function _createDemo()
+    {
         Yii::app()->loadHelper('admin/import');
         require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_manager_helper.php');
         
@@ -109,10 +111,10 @@ class DemomodeCommand extends CConsoleCommand
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR;
         $aSamplesurveys = scandir($documentationSurveyPath);
         $surveysToActivate = [];
-        foreach($aSamplesurveys as $sSamplesurvey) {
+        foreach ($aSamplesurveys as $sSamplesurvey) {
             $result = NULL;
             $result = XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
-            if(in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])){
+            if (in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])) {
                 $surveysToActivate[] = $result['newsid'];
             }
         }

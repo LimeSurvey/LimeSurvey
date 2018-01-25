@@ -124,7 +124,7 @@ class TemplateManifest extends TemplateConfiguration
                 $sFormatedFile = end($aExplodedFile);
 
                 // The file extension (.twig) is defined inside the theme itself.
-                $aExplodedFile = explode('.', $sFormatedFile );
+                $aExplodedFile = explode('.', $sFormatedFile);
                 $sFormatedFile = $aExplodedFile[0];
                 return (string) $sFormatedFile;
             }

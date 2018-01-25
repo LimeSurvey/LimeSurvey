@@ -93,7 +93,7 @@ class remotecontrol extends Survey_Common_Action
     {
         // Enable if you want to test this function
         $enabled = false;
-        if($enabled){
+        if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
             $sFileToImport = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
