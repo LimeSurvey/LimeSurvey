@@ -511,7 +511,7 @@ class TemplateConfiguration extends TemplateConfig
             $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
         }
 
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/', array("templatename"=>$this->template_name));
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
 
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
@@ -538,7 +538,9 @@ class TemplateConfiguration extends TemplateConfig
 
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
-            data-href="'.$sUninstallUrl.'"
+            data-ajax-url="'.$sUninstallUrl.'"
+            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+            data-gridid = "yw0"
             data-target="#confirmation-modal"
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"

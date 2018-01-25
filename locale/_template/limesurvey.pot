@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-01-24 11:57:13+00:00\n"
+"POT-Creation-Date: 2018-01-24 14:36:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -686,7 +686,7 @@ msgid "Validate quota"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:110
-#: application/controllers/admin/translate.php:571
+#: application/controllers/admin/translate.php:570
 msgid "Invitation email subject"
 msgstr ""
 
@@ -695,7 +695,7 @@ msgid "Invitation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:120
-#: application/controllers/admin/translate.php:601
+#: application/controllers/admin/translate.php:600
 msgid "Reminder email subject"
 msgstr ""
 
@@ -704,8 +704,8 @@ msgid "Reminder email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:130
-#: application/controllers/admin/translate.php:631
-#: application/controllers/admin/translate.php:691
+#: application/controllers/admin/translate.php:630
+#: application/controllers/admin/translate.php:690
 msgid "Confirmation email subject"
 msgstr ""
 
@@ -714,7 +714,7 @@ msgid "Confirmation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:140
-#: application/controllers/admin/translate.php:661
+#: application/controllers/admin/translate.php:660
 msgid "Registration email subject"
 msgstr ""
 
@@ -969,7 +969,7 @@ msgstr ""
 #: application/controllers/admin/themeoptions.php:180
 #: application/controllers/admin/themeoptions.php:201
 #: application/controllers/admin/themeoptions.php:230
-#: application/controllers/admin/themeoptions.php:245
+#: application/controllers/admin/themeoptions.php:246
 #: application/controllers/admin/themes.php:33
 #: application/controllers/admin/themes.php:73
 #: application/controllers/admin/themes.php:256
@@ -1647,9 +1647,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:1526
 #: application/helpers/userstatistics_helper.php:1215
 #: application/helpers/userstatistics_helper.php:1337
-#: application/models/Participant.php:330
-#: application/models/Participant.php:336
-#: application/models/Participant.php:390
+#: application/models/Participant.php:331
+#: application/models/Participant.php:337
+#: application/models/Participant.php:391
 #: application/models/ParticipantAttributeName.php:174
 #: application/models/ParticipantAttributeName.php:212
 #: application/models/ParticipantShare.php:136
@@ -1806,9 +1806,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:1526
 #: application/helpers/userstatistics_helper.php:1216
 #: application/helpers/userstatistics_helper.php:1338
-#: application/models/Participant.php:330
-#: application/models/Participant.php:338
-#: application/models/Participant.php:390
+#: application/models/Participant.php:331
+#: application/models/Participant.php:339
+#: application/models/Participant.php:391
 #: application/models/ParticipantAttributeName.php:174
 #: application/models/ParticipantAttributeName.php:212
 #: application/models/ParticipantShare.php:136
@@ -3709,7 +3709,7 @@ msgid "Survey permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:66
-#: application/models/Assessment.php:121 application/models/Participant.php:358
+#: application/models/Assessment.php:121 application/models/Participant.php:359
 #: application/models/ParticipantAttributeName.php:195
 #: application/models/ParticipantShare.php:211
 #: application/models/Surveymenu.php:246
@@ -3951,12 +3951,12 @@ msgstr ""
 msgid "Theme options saved."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:242
+#: application/controllers/admin/themeoptions.php:243
 msgid "You can't uninstall template '%s' because some templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:297
 #: application/controllers/admin/themeoptions.php:298
+#: application/controllers/admin/themeoptions.php:299
 msgid "Survey template options"
 msgstr ""
 
@@ -4643,7 +4643,7 @@ msgstr ""
 msgid "Saved"
 msgstr ""
 
-#: application/controllers/admin/translate.php:270
+#: application/controllers/admin/translate.php:269
 #: application/core/LsDefaultDataSets.php:812
 #: application/core/Survey_Common_Action.php:679
 #: application/views/admin/survey/Question/questionbar_view.php:19
@@ -4655,7 +4655,7 @@ msgstr ""
 msgid "Preview survey"
 msgstr ""
 
-#: application/controllers/admin/translate.php:270
+#: application/controllers/admin/translate.php:269
 #: application/core/Survey_Common_Action.php:681
 #: application/views/admin/survey/Question/questionbar_view.php:21
 #: application/views/admin/survey/Question/questionbar_view.php:81
@@ -4666,15 +4666,15 @@ msgstr ""
 msgid "Execute survey"
 msgstr ""
 
-#: application/controllers/admin/translate.php:301
+#: application/controllers/admin/translate.php:300
 msgid "Please select a language:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:337
+#: application/controllers/admin/translate.php:336
 msgid "Translate to"
 msgstr ""
 
-#: application/controllers/admin/translate.php:358
+#: application/controllers/admin/translate.php:357
 #: application/helpers/common_helper.php:243
 #: application/helpers/common_helper.php:700
 #: application/helpers/common_helper.php:763
@@ -4692,11 +4692,11 @@ msgstr ""
 msgid "Please choose..."
 msgstr ""
 
-#: application/controllers/admin/translate.php:420
+#: application/controllers/admin/translate.php:419
 msgid "Survey title and description"
 msgstr ""
 
-#: application/controllers/admin/translate.php:435
+#: application/controllers/admin/translate.php:434
 #: application/helpers/expressions/em_manager_helper.php:9324
 #: application/models/Boxes.php:56
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
@@ -4714,11 +4714,11 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:450
+#: application/controllers/admin/translate.php:449
 msgid "Welcome and end text"
 msgstr ""
 
-#: application/controllers/admin/translate.php:465
+#: application/controllers/admin/translate.php:464
 #: application/helpers/expressions/em_manager_helper.php:9338
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
@@ -4728,18 +4728,18 @@ msgstr ""
 msgid "End message:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:480
+#: application/controllers/admin/translate.php:479
 #: application/views/admin/survey/QuestionGroups/import_view.php:24
 #: application/views/admin/survey/copySurvey_view.php:30
 #: application/views/admin/survey/importSurvey_view.php:67
 msgid "Question groups"
 msgstr ""
 
-#: application/controllers/admin/translate.php:495
+#: application/controllers/admin/translate.php:494
 msgid "Group description"
 msgstr ""
 
-#: application/controllers/admin/translate.php:510
+#: application/controllers/admin/translate.php:509
 #: application/views/admin/conditions/includes/form_editconditions_header.php:121
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:91
 #: application/views/admin/survey/Question/import_view.php:16
@@ -4749,11 +4749,11 @@ msgstr ""
 msgid "Questions"
 msgstr ""
 
-#: application/controllers/admin/translate.php:525
+#: application/controllers/admin/translate.php:524
 msgid "Question help"
 msgstr ""
 
-#: application/controllers/admin/translate.php:540
+#: application/controllers/admin/translate.php:539
 #: application/views/admin/survey/Question/import_view.php:17
 #: application/views/admin/survey/QuestionGroups/import_view.php:26
 #: application/views/admin/survey/copySurvey_view.php:35
@@ -4761,28 +4761,28 @@ msgstr ""
 msgid "Subquestions"
 msgstr ""
 
-#: application/controllers/admin/translate.php:556
+#: application/controllers/admin/translate.php:555
 msgid "Answer options"
 msgstr ""
 
-#: application/controllers/admin/translate.php:586
+#: application/controllers/admin/translate.php:585
 msgid "Invitation email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:616
+#: application/controllers/admin/translate.php:615
 msgid "Reminder email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:646
-#: application/controllers/admin/translate.php:706
+#: application/controllers/admin/translate.php:645
+#: application/controllers/admin/translate.php:705
 msgid "Confirmation email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:676
+#: application/controllers/admin/translate.php:675
 msgid "Registration email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:814
+#: application/controllers/admin/translate.php:813
 msgid "Question code / ID"
 msgstr ""
 
@@ -6827,7 +6827,7 @@ msgstr ""
 #: application/views/admin/assessments/assessments_view.php:43
 #: application/views/admin/homepagesettings/index.php:99
 #: application/views/admin/labels/labelsets_view.php:27
-#: application/views/admin/participants/attributeControl_view.php:41
+#: application/views/admin/participants/attributeControl_view.php:42
 #: application/views/admin/participants/displayParticipants_view.php:92
 #: application/views/admin/participants/sharePanel_view.php:27
 #: application/views/admin/pluginmanager/index.php:128
@@ -6836,6 +6836,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:219
 #: application/views/admin/survey/Question/listquestions.php:142
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:50
+#: application/views/admin/survey/listSurveys_view.php:54
 #: application/views/admin/surveymenu/index.php:46
 #: application/views/admin/surveymenu/shortlist.php:16
 #: application/views/admin/surveymenu_entries/index.php:53
@@ -6852,7 +6853,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:26
 #: application/views/admin/assessments/assessments_view.php:44
 #: application/views/admin/labels/labelsets_view.php:27
-#: application/views/admin/participants/attributeControl_view.php:41
+#: application/views/admin/participants/attributeControl_view.php:42
 #: application/views/admin/participants/displayParticipants_view.php:92
 #: application/views/admin/participants/sharePanel_view.php:27
 #: application/views/admin/pluginmanager/index.php:128
@@ -6894,7 +6895,7 @@ msgid "Created"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:86
-#: application/models/Participant.php:383
+#: application/models/Participant.php:384
 #: application/models/SurveysGroups.php:137
 #: application/models/UserGroup.php:289
 #: application/views/admin/usergroup/usergroups_view.php:61
@@ -11219,7 +11220,12 @@ msgstr ""
 msgid "Active survey ID"
 msgstr ""
 
-#: application/models/Participant.php:378
+#: application/models/Participant.php:239 application/models/Surveymenu.php:194
+#: application/models/SurveymenuEntries.php:205
+msgid "Created on"
+msgstr ""
+
+#: application/models/Participant.php:379
 #: application/views/admin/global_settings/_overview.php:23
 #: application/views/admin/super/_configuration_menu.php:43
 #: application/views/admin/super/adminmenu.php:36
@@ -11839,11 +11845,6 @@ msgstr ""
 msgid "Changed by"
 msgstr ""
 
-#: application/models/Surveymenu.php:194
-#: application/models/SurveymenuEntries.php:205
-msgid "Created on"
-msgstr ""
-
 #: application/models/Surveymenu.php:195
 #: application/models/SurveymenuEntries.php:206 application/models/User.php:480
 msgid "Created by"
@@ -11962,7 +11963,7 @@ msgid "Edit survey group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:233
-#: application/models/TemplateConfiguration.php:544
+#: application/models/TemplateConfiguration.php:546
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -11991,28 +11992,28 @@ msgstr ""
 msgid "Theme editor"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:544
+#: application/models/TemplateConfiguration.php:546
 msgid "This will delete all the specific configurations of this theme."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:546
+#: application/models/TemplateConfiguration.php:548
 msgid "Uninstall this theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:549
-#: application/models/TemplateConfiguration.php:569
+#: application/models/TemplateConfiguration.php:551
+#: application/models/TemplateConfiguration.php:571
 msgid "Uninstall"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:566
+#: application/models/TemplateConfiguration.php:568
 msgid "You cannot uninstall the default template."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:662
+#: application/models/TemplateConfiguration.php:664
 msgid "Error: Malformed JSON: Field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:771
+#: application/models/TemplateConfiguration.php:773
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
@@ -12740,6 +12741,7 @@ msgstr ""
 #: application/views/admin/dataentry/active_html_view.php:99
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/update/manage/subscribe.php:38
+#: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
 msgid "Submit"
 msgstr ""
@@ -14469,6 +14471,10 @@ msgstr ""
 
 #: application/views/admin/participants/attributeControl_view.php:18
 msgid "Add new attribute"
+msgstr ""
+
+#: application/views/admin/participants/attributeControl_view.php:36
+msgid "No attributes found."
 msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:2

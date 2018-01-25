@@ -55,7 +55,7 @@
 
 
                     <li class="{{ indexItem.coreClass }} {{ statusClass }}"  {{ aSurveyInfo.attr.indexmenusgli }}>
-                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
+                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}' class='aminate'>
                             {{ indexItem.text }}
                         </a>
                     </li>
@@ -68,7 +68,7 @@
     {% if aSurveyInfo.format == 'S' %}
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="{{ aSurveyInfo.class.indexmenusli }} dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}" {{ aSurveyInfo.attr.indexmenusli }}>
-            <a class="{{ aSurveyInfo.class.indexmenuslia }} dropdown-toggle" {{ aSurveyInfo.attr.indexmenuslia }}>
+            <a class="{{ aSurveyInfo.class.indexmenuslia }} dropdown-toggle animate" {{ aSurveyInfo.attr.indexmenuslia }}>
                 {{ "Question index" | t }}
                 <span class="{{ aSurveyInfo.class.indexmenusspan }} caret" {{ aSurveyInfo.attr.indexmenusspan }}></span>
             </a>
@@ -95,7 +95,7 @@
                                 {% set statusClass = statusClass ~  ' disabled'  %}
                             {% endif %}
                             <li class="{{ indexItem.coreClass }} {{statusClass}}"  {{ aSurveyInfo.attr.indexmenussli }}>
-                                <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
+                                <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}' class='animate'>
                                     {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
                                 </a>
                             </li>

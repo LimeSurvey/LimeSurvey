@@ -752,7 +752,7 @@ function createDatabase($oDB){
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
             'tid' => 'int NOT NULL',
-            'uid' => 'int DEFAULT NULL',
+            'uid' => 'int NOT NULL',
             'taken' => 'int DEFAULT 1',
         ));
 

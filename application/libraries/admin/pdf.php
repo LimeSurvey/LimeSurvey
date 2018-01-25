@@ -767,7 +767,7 @@ class pdf extends TCPDF
         $this->startTransaction();
         $bYiiQuestionBold = Yii::app()->getConfig('bPdfQuestionBold');
         if ($bYiiQuestionBold == '1') {
-            $sFontFamily = $this->getFontFamily;
+            $sFontFamily = $this->getFontFamily();
             $this->SetFont($sFontFamily, 'B', $this->_ibaseAnswerFontSize);
         } else {
             $this->SetFontSize($this->_ibaseAnswerFontSize);
