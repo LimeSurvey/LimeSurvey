@@ -1205,8 +1205,8 @@ class SurveyRuntimeHelper
     /**
      * setJavascriptVar
      *
-     * @return @void
-     * @param integer $iSurveyId : the survey id for the script
+     * @return void
+     * @param mixed $iSurveyId : the survey id for the script
      */
     public function setJavascriptVar($iSurveyId = '')
     {
