@@ -95,11 +95,11 @@ class WipeCommand extends CConsoleCommand
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
             Yii::app()->db->createCommand($actquery)->execute();
 
-            foreach ($templateData = LsDefaultDataSets::getTemplatesData() as $template) {
-                Yii::app()->db->createCommand()->insert("{{templates}}", $template);
+            foreach(LsDefaultDataSets::getTemplatesData() as $template){
+                Yii::app()->db->createCommand()->insert("{{templates}}", $template );
             }
-            foreach ($templateConfigurationData = LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
-                Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
+            foreach(LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
+                Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
             }
 
             $surveyidresult = dbGetTablesLike("tokens%");
