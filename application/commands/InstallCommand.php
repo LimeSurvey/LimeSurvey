@@ -65,11 +65,27 @@ class InstallCommand extends CConsoleCommand
             $this->createUser($aArguments);
             $this->createPermissions();
 
+            if(isset($aArguments[5])){
+                $this->setRPC($aArguments[5]);
+            }
+
+
             $this->output('All done!');
             return 0;
         } else {
             // TODO: a valid error process
             echo "You have to set admin/password/full name and email address on the command line like this: php console.php install adminname mypassword fullname emailaddress [verbose]\n";
+            return 1;
+        }
+    }
+
+    private function setRPC($type = 'off'){
+
+        $result = SettingGlobal::updateSetting('RPCInterface',$type);
+        if($result){
+            $this->output('Setting RPC interface to:'.$type);
+        } else {
+            $this->output("Error setting RPC interface!");
             return 1;
         }
     }

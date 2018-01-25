@@ -45,29 +45,30 @@ class SettingGlobal extends LSActiveRecord
         return 'stg_name';
     }
 
+    /**
+     * @param $key
+     * @return static
+     */
+    public static function findByKey($key){
+        /** @var static $model */
+        $model = self::model()->find('stg_name = :setting_name',[":setting_name"=>$key]);
+        return $model;
+    }
+
 
     /**
      * @param string $settingname
      * @param string $settingvalue
      * @return int
      */
-    public function updateSetting($settingname, $settingvalue)
+    public static  function updateSetting($settingname, $settingvalue)
     {
-
-        $data = array(
-            'stg_name' => $settingname,
-            'stg_value' => $settingvalue
-        );
-
-        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        $query = $user->queryRow('settings_global');
-        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        if (count($query) == 0) {
-            return $user1->insert('{{settings_global}}', $data);
-        } else {
-            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-            return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
+        $model = self::findByKey($settingname);
+        if (empty($model)) {
+            $model = new SettingGlobal();
+            $model->stg_name = $settingname;
         }
-
+        $model->stg_value = $settingvalue;
+        return $model->save();
     }
 }
