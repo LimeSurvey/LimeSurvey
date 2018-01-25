@@ -569,7 +569,7 @@ class responses extends Survey_Common_Action
      * @param $iSurveyId : survey id
      * @param $iResponseId : response if
      * @param $iQID : The question ID
-     * @return application/octet-stream
+     * @return void
      */
     public function actionDownloadfile($iSurveyId, $iResponseId, $iQID, $iIndex)
     {
@@ -613,7 +613,8 @@ class responses extends Survey_Common_Action
      * @access public
      * @param $iSurveyId : survey id
      * @param $sResponseId : list of response
-     * @return application/zip
+     * @return void application/zip
+     * @throws CException
      */
     public function actionDownloadfiles($iSurveyId, $sResponseId)
     {

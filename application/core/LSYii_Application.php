@@ -37,14 +37,14 @@ class LSYii_Application extends CWebApplication
     protected $config = array();
 
     /**
-     * @var LimesurveyApi
+     * @var \LimeSurvey\PluginManager\LimesurveyApi
      */
     protected $api;
 
     /**
      * If a plugin action is accessed through the PluginHelper,
      * store it here.
-     * @var iPlugin
+     * @var \LimeSurvey\PluginManager\iPlugin
      */
     protected $plugin;
 

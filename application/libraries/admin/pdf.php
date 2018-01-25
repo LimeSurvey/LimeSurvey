@@ -379,7 +379,7 @@ class pdf extends TCPDF
      * Creates a Table with equal cell width.
      * @param $array - table array( 0=> array("td", "td", "td"),
      * 								1=> array("td", "td", "td"))
-     * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
+     * @param integer $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
      * @return void
      */
     public function equalTable($array, $modulo = 1)
@@ -445,6 +445,7 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
+        $iHeight = 0;
         $arraySize = sizeof($array);
         for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
@@ -598,11 +599,11 @@ class pdf extends TCPDF
     /**
      *
      * Create Answer PDF document, set metadata and set title
-     * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sSurveyName - Survey name (header, metadata and title),
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aSurveyInfo - Survey Information (preventing from passing to methods every time)
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sSurveyName - Survey name (header, metadata and title),
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
@@ -632,8 +633,8 @@ class pdf extends TCPDF
     /**
      *
      * Add title to pdf
-     * @param $sTitle - Title
-     * @param $sSubtitle - Subtitle
+     * @param string $sTitle - Title
+     * @param string $sSubtitle - Subtitle
      * @return void
      */
     public function addTitle($sTitle, $sSubtitle = "")
@@ -658,9 +659,9 @@ class pdf extends TCPDF
     /**
      *
      * Add header to pdf
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
@@ -726,12 +727,12 @@ class pdf extends TCPDF
      *
      * Add answer to PDF
      *
-     * @param $sQuestion - Question field text array
-     * @param $sResponse - Answer field text array
-     * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
+     * @param string $sQuestion - Question field text array
+     * @param string $sResponse - Answer field text array
+     * @param boolean $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
      *                               because we can not interpret expressions so just purify.
      *                               TODO: Find a universal valid method to interpret expressions
-     * @param $bAllowBreakPage - Allow break cell in two pages
+     * @param boolean $bAllowBreakPage - Allow break cell in two pages
      * @return void
      */
     public function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)
