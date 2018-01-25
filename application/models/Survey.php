@@ -913,19 +913,19 @@ class Survey extends LSActiveRecord
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
+        /** @var self $model */
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
             } else {
-                $result = self::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
+                $model = parent::findByPk($pk, $condition, $params);
+                if (!is_null($model)) {
+                    $this->findByPkCache[$pk] = $model;
                 }
-                return $result;
+                return $model;
             }
         }
 
-        /** @var self $model */
         $model = parent::findByPk($pk, $condition, $params);
         return $model;
     }
