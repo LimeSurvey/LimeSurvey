@@ -346,6 +346,7 @@ class Surveymenu extends LSActiveRecord
             }
             $oTransaction->commit();
         } catch (Exception $e) {
+            // FIXME $sOldLanguage is undefined
             App()->setLanguage($sOldLanguage);
             return false;
         }

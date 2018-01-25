@@ -82,7 +82,6 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * @param integer $sid
-     * @param string $lang
      * @param int $position
      */
     public function updateGroupOrder($sid, $position = 0)

@@ -82,6 +82,7 @@ class Notification extends LSActiveRecord
     /**
      * Some shortcuts for easier use
      * @param array<string, mixed>
+     * @return mixed
      */
     protected function checkShortcuts($options)
     {

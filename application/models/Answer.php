@@ -179,6 +179,7 @@ class Answer extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
+        return null;
     }
 
     /**
