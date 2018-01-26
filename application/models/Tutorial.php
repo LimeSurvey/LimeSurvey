@@ -137,6 +137,11 @@ class Tutorial extends LSActiveRecord
         ));
     }
 
+
+    /**
+     * @param string $tutorialName
+     * @return Tutorial
+     */
     public function findByName($tutorialName)
     {
         $defaultTutorials = LsDefaultDataSets::getTutorialData();
@@ -146,6 +151,7 @@ class Tutorial extends LSActiveRecord
             return $oTutorial;
         }
         $tutorial = $this->find('name=:name', [':name' => $tutorialName]);
+        return $tutorial;
     }
 
     public function getDefaultTutorials()

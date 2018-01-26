@@ -147,7 +147,7 @@ class Quota extends LSActiveRecord
     public function getCompleteCount()
     {
         if (!tableExists("survey_{$this->sid}")) {
-            return;
+            return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
         $aExistingColumnName = SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
@@ -164,7 +164,7 @@ class Quota extends LSActiveRecord
                         'warning',
                         'application.model.Quota'
                     );
-                    return;
+                    return null;
                 }
                 $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
             }

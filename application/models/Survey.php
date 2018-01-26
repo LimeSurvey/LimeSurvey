@@ -261,6 +261,7 @@ class Survey extends LSActiveRecord
         } else {
             self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
+        return null;
 
     }
 
@@ -282,7 +283,9 @@ class Survey extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var Survey $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -910,19 +913,21 @@ class Survey extends LSActiveRecord
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
+        /** @var self $model */
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
             } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
+                $model = parent::findByPk($pk, $condition, $params);
+                if (!is_null($model)) {
+                    $this->findByPkCache[$pk] = $model;
                 }
-                return $result;
+                return $model;
             }
         }
 
-        return parent::findByPk($pk, $condition, $params);
+        $model = parent::findByPk($pk, $condition, $params);
+        return $model;
     }
 
     /**

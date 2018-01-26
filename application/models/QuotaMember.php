@@ -80,6 +80,9 @@ class QuotaMember extends LSActiveRecord
         return 'id';
     }
 
+    /**
+     * @return array
+     */
     public function getMemberInfo()
     {
         $sFieldName = null;
@@ -128,6 +131,7 @@ class QuotaMember extends LSActiveRecord
                 'fieldname' => $sFieldName,
             );
         }
+        return [];
 
 
     }
