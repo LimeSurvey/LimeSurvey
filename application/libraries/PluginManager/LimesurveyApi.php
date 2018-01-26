@@ -84,7 +84,7 @@ use Template;
          * @param iPlugin $plugin
          * @param string $sTableName Name of the table.
          * @param string $bPluginTable True if the table is plugin specific.
-         * @return PluginDynamic
+         * @return \Plugin|null
          */
         public function getTable(iPlugin $plugin, $sTableName, $bPluginTable = true)
         {
@@ -237,7 +237,7 @@ use Template;
          *
          * @param integer $iSurveyId
          * @param integer $iTokenId
-         * @return object Token
+         * @return \Token Token
          */
         public function getTokenById($iSurveyId, $iTokenId)
         {
@@ -352,7 +352,7 @@ use Template;
          * Retrieves Participant data
          * @param $iParticipantID int The Participant ID
          * Returns null if the user does not exist anymore for some reason (should not really happen)
-         * @return User
+         * @return \Participant
          */
         public function getParticipant($iParticipantID)
         {
@@ -370,7 +370,7 @@ use Template;
          * For details on the object check: http://www.yiiframework.com/doc/api/1.1/CDbTableSchema
          * @param string $table Table name.
          * @param boolean $forceRefresh False if cached information is acceptable; setting this to true could affect performance.
-         * @return CDbTableSchema Table schema object, NULL if the table does not exist.
+         * @return \CDbTableSchema Table schema object, NULL if the table does not exist.
          */
         public function getTableSchema($table, $forceRefresh = false)
         {

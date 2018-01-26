@@ -87,7 +87,7 @@
                 <label class=" control-label" for='completed'>
                     <?php eT("Completed?"); ?>
                 </label>
-                <div class=" <?php echo $sCointainerClass; ?>" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                     <div class="row">
                     <?php if ($oSurvey->anonymized != 'Y'):?>
 
@@ -220,7 +220,7 @@
             <label class=" control-label" for='sent'>
                 <?php eT("Invitation sent?"); ?>
             </label>
-            <div class=" <?php echo $sCointainerClass; ?>" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+            <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                 <div class="row">
                 <div class="">
                     <?php if ($oSurvey->anonymized != 'Y'):?>
@@ -276,7 +276,7 @@
                 </div>
 
                 <div class="">
-                    <div id="sent-date-container" class="date-container" <?php if (!$bSwitchValue):?>style="display: none;"<?php endif; ?>>
+                    <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container" <?php if (!$bSwitchValue){ echo "style='display:none;'"; }?> >
                         <!-- Sent Date -->
                         <div id="sent-date_datetimepicker" class="input-group date">
                         <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : ''?>" name="sent-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
@@ -293,7 +293,7 @@
             <label class=" control-label" for='remindersent'>
                 <?php eT("Reminder sent?"); ?>
             </label>
-            <div class=" <?php echo $sCointainerClass; ?>" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+            <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
 
                 <div class="row">
                 <div class="">
@@ -322,8 +322,7 @@
                 </div>
 
                 <div class="">
-                    <div id="remind-date-container" class="date-container" <?php if (!$bRemindSwitchValue):?>style="display: none;"
-                    <?php endif; ?>>
+                    <div id="remind-date-container" data-parent="#remind-switch" class="selector__date-container_hidden date-container" <?php if (!$bRemindSwitchValue){ echo "style='display:none;'"; }?> >
 
                         <div id="remind-date_datetimepicker" class="input-group date">
                         <input class="YesNoDatePicker form-control" id="remind-date" type="text" value="<?php echo isset($remindersent) ? $remindersent : ''?>" name="remind-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
@@ -449,7 +448,4 @@
         ));
     ?>
   </div>
-  <script>
-    $(function(){$('.action_toggle_bootstrap_switch').bootstrapSwitch();});
-  </script>
 </div>

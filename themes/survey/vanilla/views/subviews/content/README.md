@@ -6,7 +6,7 @@
 
 layout_global.twig renders the specific content via this statement:
 ```
-{% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content %}
+{% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig'%}
 {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
 ```
 

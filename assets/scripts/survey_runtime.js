@@ -111,6 +111,7 @@ function checkconditions(value, name, type, evt_type)
     if(typeof name !== 'undefined') {
         var parts = name.split('X');
         questionCode = parts[2];
+        var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;
         }
@@ -123,8 +124,9 @@ function checkconditions(value, name, type, evt_type)
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
     }*/
-
-    ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    try{
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    } catch(e) { console.ls.error(e); }
 }
 
 /**

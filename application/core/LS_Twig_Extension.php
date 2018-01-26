@@ -198,7 +198,7 @@ class LS_Twig_Extension extends Twig_Extension
             /* Got to use static expression */
             $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
-                $aQuestionClass .= Chtml::encode($emCssClass);
+                $aQuestionClass .= " ".Chtml::encode($emCssClass);
             }
         }
 
@@ -215,7 +215,8 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function renderCaptcha()
     {
-        App()->getController()->widget('CCaptcha', array(
+        return App()->getController()->createWidget('LSCaptcha', array(
+            'captchaAction'=>'captcha',
             'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
             'buttonType' => 'button',
             'buttonLabel' => gt('Reload image', 'unescaped')
@@ -283,7 +284,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getTemplateForRessource($sRessource)
     {
-        $oRTemplate = Template::model()->getInstance();
+        $oRTemplate = Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
 
@@ -329,10 +330,10 @@ class LS_Twig_Extension extends Twig_Extension
         return Yii::app()->getClientScript()->unregisterScriptFile($name);
     }
 
-    public static function registerScriptFile($path, $position=null)
+    public static function registerScriptFile($path, $position = null)
     {
 
-        Yii::app()->getClientScript()->registerScriptFile($path, ($position===null ? CClientScript::POS_BEGIN : $position));
+        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? CClientScript::POS_BEGIN : $position));
     }
 
     public static function registerCssFile($path)
@@ -350,7 +351,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterScriptForAjax()
     {
-        $oTemplate            = Template::model()->getInstance();
+        $oTemplate            = Template::getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
         self::unregisterPackage('template-core');

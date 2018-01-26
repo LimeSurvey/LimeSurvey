@@ -86,7 +86,10 @@ function checkGroup($postsid)
 
 
     $baselang = Survey::model()->findByPk($postsid)->language;
-    $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
+    $groupquery = "SELECT g.gid,ls.group_name,count(q.qid) as count from {{questions}} as q 
+                   RIGHT JOIN {{groups}} as g ON q.gid=g.gid 
+                   join {{group_l10ns}} ls on g.gid=ls.gid
+                   WHERE g.sid=$postsid AND ls.language='$baselang' group by g.gid,ls.group_name;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row) {
 //TIBO
@@ -116,7 +119,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "O" -> LIST WITH COMMENT
     //  # "M" -> Multiple choice
     //    # "P" -> Multiple choice with comments
-    //    # "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
+    //    # "A", "B", "C", "E", "F", "H" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
     //  # "I" -> LANGUAGE SWITCH
@@ -126,7 +129,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     $survey = Survey::model()->findByPk($iSurveyID);
 
-    $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
+    $chkquery = "SELECT q.qid, ls.question, gid, type FROM {{questions}} q
+                join {{question_l10ns}} ls on ls.qid=q.qid
+                WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         if ($qtypes[$chkrow['type']]['subquestions'] > 0) {
@@ -141,7 +146,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         }
         if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
-                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
+                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i}";
                 $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount = count($charesult);
                 if ($chacount == 0) {
@@ -152,7 +157,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
+    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} q
+    join {{question_l10ns}} ls on ls.qid=q.qid
+    WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
@@ -162,21 +169,25 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
 
     //Check that certain array question types have answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
+    join {{question_l10ns}} ls on ls.qid=q.qid
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
+    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
+    join {{question_l10ns}} ls on ls.qid=q.qid
+    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='".Question::QT_1_ARRAY_MULTISCALE."' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow) {
         $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('".Question::QT_S_SHORT_FREE_TEXT."', '".Question::QT_D_DATE."', '".Question::QT_T_LONG_FREE_TEXT."', '".Question::QT_Q_MULTIPLE_SHORT_TEXT."')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow; } // Get table output into array
@@ -189,11 +200,13 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     $qordercount = "";
     //1: Get each condition's question id
-    $conquery = "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
+    $conquery = "SELECT {{conditions}}.qid, cqid, ls.question, "
     . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}} "
+    . "FROM {{conditions}}, {{questions}}, {{groups}},{{question_l10ns}} ls "
     . "WHERE {{questions}}.sid={$iSurveyID} "
+    . "AND {{questions}}.qid={{questions}}.qid "
     . "AND {{conditions}}.qid={{questions}}.qid "
+    . "AND ls.language='{$survey->language}'"
     . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
     $conresult = Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid
@@ -249,9 +262,10 @@ function mssql_drop_constraint($fieldname, $tablename)
     sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
-    $result = dbExecuteAssoc($dfquery)->read();
-    $defaultname = $result['CONTRAINT_NAME'];
+    WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
+    $result = Yii::app()->db->createCommand($dfquery)->query();
+    $result = $result->read();
+    $defaultname = $result['CONSTRAINT_NAME'];
     if ($defaultname != false) {
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }

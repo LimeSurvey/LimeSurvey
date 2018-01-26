@@ -43,15 +43,15 @@
 
 
                             <!-- Set name -->
-                            <div class="form-group">
-                                <label  class=" control-label" for='label_name'><?php eT("Set name:"); ?></label>
+                            <div class="form-group col-md-6">
+                                <label  class="control-label" for='label_name'><?php eT("Set name:"); ?></label>
                                 <div class="">
-                                <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
+                                <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50, 'class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <!-- Languages -->
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <label class=" control-label"><?php eT("Languages:"); ?></label>
                                 <div class=""><?php
                                 $aAllLanguages=getLanguageDataRestricted (false,'short');

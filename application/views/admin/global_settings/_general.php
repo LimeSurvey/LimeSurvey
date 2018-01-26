@@ -6,7 +6,7 @@
 ?>
 <?php
 $thisdefaulttheme=getGlobalSetting('defaulttheme');
-$templatenames=array_keys(getTemplateList());
+$templatenames=array_keys(Template::getTemplateList());
 $thisadmintheme=getGlobalSetting('admintheme');
 $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
 $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
@@ -88,7 +88,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <?php if( !isset(Yii::app()->session->connectionID)): ?>
         <div class="row ls-space margin top-10">
-            <div class="form-group" >
+            <div class="form-group col-xs-12" >
                 <label class="col-sm-12 text-left control-label" for='iSessionExpirationTime'>
                     <?php eT("Session lifetime for surveys (seconds):"); ?>
                 </label>
@@ -140,7 +140,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
             </div>
         </div>
         <div class="row ls-space margin top-10">
-            <div class='form-group'>
+            <div class='form-group col-xs-12'>
                 <label class='col-sm-12 text-left control-label' for='characterset'>
                     <?php eT("Character set for file import/export:") ?>
                 </label>

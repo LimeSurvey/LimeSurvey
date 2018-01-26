@@ -184,7 +184,8 @@ class viewHelper
      * Return a string with the good separator before and after
      *
      * @param $sString :the string
-     * @param : string/array : the string to put before of the array (before,after)
+     * @param string|array : the string to put before of the array (before,after)
+     * @return string
      */
     public static function putSeparator($sString, $separator)
     {
@@ -202,7 +203,7 @@ class viewHelper
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
      * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
-     * @param float $fPosition if abbreviated position to split (in % : 0 to 1)
+     * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      *
      * @return string
      */
@@ -212,7 +213,7 @@ class viewHelper
             $sString = flattenText($sString, false, true);
         }
 
-        if ($iAbbreviated) {
+        if ($iAbbreviated > 0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;

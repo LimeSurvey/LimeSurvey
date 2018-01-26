@@ -82,7 +82,7 @@
                 $position=0;
                 ?>
                 <li role="presentation" class="<?=($assessmentlang==$baselang ? 'active' : '')?>">
-                    <a data-toggle="tab"  href="#tablang'.$assessmentlang.'">
+                    <a data-toggle="tab"  href="#tablang<?=$assessmentlang?>">
                         <?php 
                         echo getLanguageNameFromCode($assessmentlang, false);
                             if ($assessmentlang==$baselang) {

@@ -126,11 +126,16 @@ class themeoptions  extends Survey_Common_Action
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function updatesurveygroup($id = null, $gsid)
+    public function updatesurveygroup($id = null, $gsid, $l = null)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+
             $sTemplateName = $id !== null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
+
+            if ($model->bJustCreated === true && $l === null) {
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurveygroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+            }
 
             if (isset($_POST['TemplateConfiguration'])) {
                 $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
@@ -202,7 +207,7 @@ class themeoptions  extends Survey_Common_Action
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return TemplateOptions the loaded model
+     * @return TemplateConfiguration the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
@@ -228,8 +233,9 @@ class themeoptions  extends Survey_Common_Action
 
     }
 
-    public function uninstall($templatename)
+    public function uninstall()
     {
+        $templatename = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (!Template::hasInheritance($templatename)) {
                 TemplateConfiguration::uninstall($templatename);
@@ -255,13 +261,14 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
-    public function getPreviewTag(){
-        $templatename = Yii::app()->request->getPost('templatename');        
+    public function getPreviewTag()
+    {
+        $templatename = Yii::app()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
         $previewTag = $oTemplate->getPreview();
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            ['data' => ['image' =>  $previewTag ]], 
+            ['data' => ['image' =>  $previewTag]],
             false,
             false
         );

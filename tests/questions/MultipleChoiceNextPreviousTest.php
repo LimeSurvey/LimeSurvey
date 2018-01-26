@@ -3,7 +3,6 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**

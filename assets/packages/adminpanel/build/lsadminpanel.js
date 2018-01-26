@@ -36373,26 +36373,14 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        menuOffset = $('nav.navbar').outerHeight(),
-                        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-                        footerHeight = $('footer').outerHeight(),
-                        windowHeight = screen.height,
-                        innerMenuHeight = $('#breadcrumb-container').outerHeight() + menuHeight,
-                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * footerHeight))),
-                        generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
-                    this.$log.log({
-                        menuOffset : menuOffset,
-                        menuHeight : menuHeight,
-                        footerHeight : footerHeight,
-                        windowHeight : windowHeight,
-                        windowHeightScreen : screen.availHeight,
-                        windowHeightScreenAvail : screen.height,
-                        innerMenuHeight : innerMenuHeight,
-                        inSurveyViewHeight : inSurveyViewHeight,
-                        generalContainerHeight : generalContainerHeight
-                    });
+                        adminmenuHeight = $('body').find('nav').first().height(),
+                        footerHeight = $('body').find('footer').last().height(),
+                        menuHeight = $('.menubar').outerHeight(),
+                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                        windowHeight = window.innerHeight,
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-                    this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
             created() {
@@ -36428,6 +36416,11 @@ $(document).on('ready', function () {
                 });
                 window.singletonPjax();
 
+                $(document).trigger('vue-reload-remote');
+                
+                window.setInterval(function(){
+                    $(document).trigger('vue-reload-remote');
+                }, (60*5*1000));
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -36459,6 +36452,7 @@ $(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploadi
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
     $(document).trigger('vue-resize-height');
+    $(document).trigger('vue-reload-remote');
     // $(document).trigger('vue-sidemenu-update-link');
     setTimeout(function () {
         $('#pjax-file-load-container').find('div').css({
@@ -36784,7 +36778,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.isMouseDown) {
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if (parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
+                if (parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
                     this.$store.commit('changeSidebarwidth', '340px');
                 } else {
@@ -36821,7 +36815,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getQuestions() {
             return this.get(this.getQuestionsUrl).then(result => {
-                this.$log.log(result);
+                this.$log.log('Questions', result);
                 this.questiongroups = result.data.groups;
                 this.$store.commit('updateQuestiongroups', this.questiongroups);
                 this.$forceUpdate();
@@ -36904,18 +36898,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.controlActiveLink();
         });
 
+        $(document).on('vue-reload-remote', () => {
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
+            this.$forceUpdate();
+        });
+
         $(document).on('vue-redraw', () => {
             this.getQuestions();
             this.getSidemenus();
             this.getCollapsedmenus();
             this.getTopmenus();
             this.getBottommenus();
+            this.$forceUpdate();
         });
 
         //control the active link
         this.controlActiveLink();
 
-        self.$forceUpdate();
+        this.$forceUpdate();
         this.updatePjaxLinks();
         $('body').on('mousemove', event => {
             self.mousemove(event, self);
@@ -37049,6 +37053,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         createQuestionAllowed() {
             return this.$store.state.questiongroups.length > 0;
+        },
+        itemWidth() {
+            return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
         }
     },
     methods: {
@@ -37108,19 +37115,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
-            let event = new Event('pjax:load');
-            event.url = question.link;
-            window.dispatchEvent(event);
+            $(document).trigger('pjax:load', { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
             this.questiongroupDragging = true;
+            $event.dataTransfer.setData('text/plain', 'node');
         },
         endDraggingGroup($event, questiongroupObject) {
-            this.draggedQuestionGroup = null;
-            this.questiongroupDragging = false;
-            this.$emit('questiongrouporder');
+            if (this.draggedQuestionGroup !== null) {
+                this.draggedQuestionGroup = null;
+                this.questiongroupDragging = false;
+                this.$emit('questiongrouporder');
+            }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
             if (this.questiongroupDragging) {
@@ -37161,20 +37169,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.draggedQuestionsGroup = questionGroupObject;
         },
         endDraggingQuestion($event, question) {
-            this.questionDragging = false;
-            this.draggedQuestion = null;
-            this.draggedQuestionsGroup = null;
-            this.$emit('questiongrouporder');
+            if (this.questionDragging) {
+                this.questionDragging = false;
+                this.draggedQuestion = null;
+                this.draggedQuestionsGroup = null;
+                this.$emit('questiongrouporder');
+            }
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
-            let orderSwap = questionObject.question_order;
-            questionObject.question_order = this.draggedQuestion.question_order;
-            this.draggedQuestion.question_order = orderSwap;
+            if (this.questionDragging) {
+                let orderSwap = questionObject.question_order;
+                questionObject.question_order = this.draggedQuestion.question_order;
+                this.draggedQuestion.question_order = orderSwap;
+            }
         }
     },
     mounted() {
         this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
+
+        $(document).on('vue-reload-remote', () => {
+            this.$forceUpdate();
+        });
     }
 });
 
@@ -37184,7 +37200,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column fill ls-ba",
+    staticClass: "ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5",
     attrs: {
       "id": "questionexplorer"
     }
@@ -37206,8 +37222,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group",
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "ls-flex-row ls-space padding all-0"
+  }, [_c('ul', {
+    staticClass: "list-group col-12",
     on: {
       "drop": function($event) {
         _vm.dropQuestionGroup($event, _vm.questiongroup)
@@ -37249,7 +37267,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.openQuestionGroup(questiongroup)
         }
       }
-    }, [_vm._v(" \n                    " + _vm._s(questiongroup.group_name) + " \n                    "), _c('span', {
+    }, [_c('span', {
+      staticClass: "question_text_ellipsize pull-left",
+      style: ({
+        'max-width': _vm.itemWidth
+      })
+    }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
     }, [_vm._v(_vm._s(questiongroup.questions.length))])]), _vm._v(" "), _c('i', {
       staticClass: "fa bigIcons",
@@ -37265,7 +37288,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "slide-fade-down"
       }
     }, [(_vm.isActive(questiongroup.gid)) ? _c('ul', {
-      staticClass: "list-group background-muted padding-left",
+      staticClass: "list-group background-muted padding-left question-question-list",
       on: {
         "drop": function($event) {
           _vm.dropQuestion($event, _vm.question)
@@ -37274,7 +37297,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
       return _c('li', {
         key: question.qid,
-        staticClass: "list-group-item ls-flex-row align-itmes-flex-between",
+        staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
         class: _vm.questionItemClasses(question),
         on: {
           "dragenter": function($event) {
@@ -37295,11 +37318,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-        staticClass: "col-12 pjax",
+        staticClass: "col-12 pjax question-question-list-item-link",
         attrs: {
           "href": question.link,
           "data-toggle": "tootltip",
-          "title": question.question
+          "title": question.question_flat
         },
         on: {
           "click": function($event) {
@@ -37307,9 +37330,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.openQuestion(question)
           }
         }
-      }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" " + _vm._s((_vm.$store.state.maximalSidebar ? question.question : question.name_short)) + " ")])])
+      }, [_c('span', {
+        staticClass: "question_text_ellipsize",
+        style: ({
+          width: _vm.itemWidth
+        })
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
     })) : _vm._e()])], 1)
-  }))])
+  }))])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -37475,12 +37503,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted() {
         const self = this;
         this.updatePjaxLinks();
-        // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     self.$log.debug('sidemenues',result);
-        //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
+
+        $(document).on('vue-reload-remote', () => {
+            this.$forceUpdate();
+        });
     }
 });
 
@@ -39367,7 +39393,6 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
@@ -39382,6 +39407,7 @@ const getAppState = function (userid) {
         lastQuestionOpen: false,
         lastQuestionGroupOpen: false,
         questionGroupOpenArray: [],
+        questiongroups: [],
         collapsedmenus: null,
         sidemenus: null,
         topmenus: null,
@@ -39431,9 +39457,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;
@@ -39486,8 +39509,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });
@@ -43188,7 +43210,7 @@ process.umask = function() { return 0; };
 
 exports.install = function (Vue) {
     if(window.debugState.backend) {
-        console.ls.debug('The systen is currently in debug mode.');
+        console.ls.trace('The systen is currently in debug mode.');
         Vue.prototype.$log = console.ls;
     } else {
         console.log('The systen is currently in production mode.');

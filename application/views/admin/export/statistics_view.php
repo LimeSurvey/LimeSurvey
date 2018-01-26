@@ -106,11 +106,6 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     <div class="row">
         <div class="col-lg-12 content-right">
 
-            <?php
-                // TODO : show the css loader
-                flush(); //Let's give the user something to look at while they wait for the pretty pictures
-            ?>
-
             <!-- Statistics header -->
             <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_header', array()) ; ?>
 

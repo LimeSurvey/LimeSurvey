@@ -112,35 +112,30 @@ class Usergroups extends Survey_Common_Action
      * Function responsible to delete a user group.
      * @return void
      */
-    public function delete($ugid)
+    public function delete()
     {
 
         $aViewUrls = array();
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-
+            $ugid = Yii::app()->request->getPost("ugid");
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if ($result->count() > 0) {
-// OK - AR count
                     $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
-
                     if ($delquery_result) {
-                        //Checked)
-                    {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => gT("Success!")));
-                    }
+                        Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
                     } else {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Could not delete user group.")));
+                        Yii::app()->user->setFlash("notice", gT("Could not delete user group."));
                     }
                 }
             } else {
-                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => gT("Could not delete user group. No group selected.")));
+                Yii::app()->user->setFlash("error", gT("Could not delete user group. No group selected."));
             }
         }
 
-        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
+        $this->getController()->redirect($this->getController()->createUrl('/admin/usergroups/sa/view'));
     }
 
 
@@ -274,19 +269,25 @@ class Usergroups extends Survey_Common_Action
                     }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
-                $eguresult = dbExecuteAssoc($eguquery);
-                $aUserInGroupsResult = $eguresult->readAll();
-                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = ".$ugid;
+                $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
+                $sCondition2 = "ugid = :ugid";
+                $sParams2 = [':ugid'=>$ugid];
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $query2 .= " AND owner_id = ".Yii::app()->session['loginID'];
+                    $sCondition2 .= " AND owner_id = :owner_id";
+                    $sParams2[':owner_id'] = Yii::app()->session['loginID'];
                 }
-                $result2 = dbSelectLimitAssoc($query2, 1);
-                $row2 = $result2->readAll();
+                
+                $row2 = Yii::app()->db->createCommand()
+                ->select('ugid')
+                ->from('{{user_groups}}')
+                ->where($sCondition2, $sParams2)
+                ->limit(1)
+                ->queryRow();
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
-                foreach ($aUserInGroupsResult as $egurow) {
+                foreach ($aUserInGroupsResult->users as $egurow) {
+                    // @todo: Move the zebra striping to view
                     if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";
                     } else {
@@ -308,9 +309,16 @@ class Usergroups extends Survey_Common_Action
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
-                if (isset($row2[0]['ugid'])) {
+                if ($row2 !== false) {
                     $aData["useradddialog"] = true;
-                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
+                    
+                    $aUsers = User::model()->findAll(['join'=>"LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition'=>"id IS NULL"]);
+                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function($user)
+                    {
+                        return \CHtml::encode($user->users_name)." (".\CHtml::encode($user->full_name).')'; });
+                    // Remove group owner because an owner is automatically member of a group
+                    unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
+                    $aData["addableUsers"] = array('-1'=>gT("Please choose...")) + $aNewUserListData;
                     $aData["useraddurl"] = "";
                 }
                 $aViewUrls[] = 'viewUserGroup_view';
@@ -364,23 +372,27 @@ class Usergroups extends Survey_Common_Action
                     list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('You can not add or remove the group owner from the group.')));
                 } else {
                     $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
-
+                    $sFlashType = ''; $sFlashMessage = '';
                     switch ($action) {
                         case 'add' :
                             if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User added.')));
+                                $sFlashType = 'success'; $sFlashMessage = gT('User added.');
                             } else {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to add user.').'<br />'.gT('User already exists in the group.')));
+                                $sFlashType = 'error'; $sFlashMessage = gT('Failed to add user.').'<br />'.gT('User already exists in the group.');
                             }
                             break;
                         case 'remove' :
                             if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid))) {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User removed.')));
+                                $sFlashType = 'success'; $sFlashMessage = gT('User removed.');
                             } else {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.')));
+                                $sFlashType = 'error'; $sFlashMessage = gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.');
                             }
                             break;
                     }
+                    if (!empty($sFlashType) && !empty($sFlashMessage)) {
+                        Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
+                    }
+                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
             } else {
                 list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('User not found.')));
@@ -396,12 +408,12 @@ class Usergroups extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

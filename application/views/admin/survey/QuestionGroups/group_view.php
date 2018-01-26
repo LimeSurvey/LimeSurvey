@@ -13,15 +13,15 @@
             <tr ><td ><strong>
                         <?php eT("Title"); ?>:</strong></td>
                 <td>
-                    <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td>
+                    <?php echo flattenText($oQuestionGroup->questionGroupL10ns[$oQuestionGroup->survey->language]->group_name); ?> (<?php echo $grow['gid']; ?>)</td>
             </tr>
             <tr>
                 <td><strong>
                     <?php eT("Description:"); ?></strong>
                 </td>
                 <td>
-                    <?php if (trim($grow['description'])!='') {
-                            templatereplace($grow['description']);
+                    <?php if (trim(flattenText($oQuestionGroup->questionGroupL10ns[$oQuestionGroup->survey->language]->description))!='') {
+                            templatereplace(flattenText($oQuestionGroup->questionGroupL10ns[$oQuestionGroup->survey->language]->description));
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                     } ?>
                 </td>

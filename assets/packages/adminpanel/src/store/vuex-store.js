@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist'
+import VuexPersistence from 'vuex-persist';
 import VueLocalStorage from 'vue-localstorage';
 
 Vue.use(VueLocalStorage);
@@ -19,7 +19,6 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
@@ -34,6 +33,7 @@ const getAppState = function (userid) {
         lastQuestionOpen: false,
         lastQuestionGroupOpen: false,
         questionGroupOpenArray: [],
+        questiongroups: [],
         collapsedmenus: null,
         sidemenus: null,
         topmenus: null,
@@ -83,9 +83,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;
@@ -138,8 +135,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });

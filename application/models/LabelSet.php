@@ -65,24 +65,8 @@ class LabelSet extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order'=>'language ASC, sortorder ASC')
+            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order'=>'sortorder ASC')
         );
-    }
-
-    /**
-     * @param mixed|bool $condition
-     * @return static[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'="'.$value.'"');
-            }
-        }
-
-        return $this->findAll($criteria);
     }
 
     /**
@@ -91,6 +75,27 @@ class LabelSet extends LSActiveRecord
     public function getLID()
     {
         return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
+    }
+    
+    /**
+     * Recursively deletes a label set including labels and localizations
+     * 
+     * @param integer $id The label set ID
+     */
+    public function deleteLabelSet($id)
+    {
+        $arLabelSet = $this->findByPk($id);
+        if (empty($arLabelSet)) {
+            return false;
+        }
+        foreach ($arLabelSet->labels as $arLabel) {
+            foreach ($arLabel->labelL10ns as $arLabelL10n) {
+                $arLabelL10n->delete();    
+            }
+            $arLabel->delete();
+        }
+        $arLabelSet->delete();
+        return true;
     }
 
     public function insertRecords($data)

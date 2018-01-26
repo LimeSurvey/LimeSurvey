@@ -33,14 +33,14 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
                 return !$this->errorCode;
             }
-            
+
             if ($sOneTimePassword != '' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword) == $user->one_time_pw) {
                 $user->one_time_pw = '';
                 $user->save();
                 $this->id = $user->uid;
                 $this->user = $user;
                 $this->errorCode = self::ERROR_NONE;
-            } elseif ($user->checkPassword($this->password)) {
+            } elseif (!$user->checkPassword($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
                 $this->id = $user->uid;
@@ -48,18 +48,18 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_NONE;
             }
         } elseif (Yii::app()->getConfig("auth_webserver") === true && (isset($_SERVER['PHP_AUTH_USER']) || isset($_SERVER['LOGON_USER']) || isset($_SERVER['REMOTE_USER']))) {
-// normal login through webserver authentication        
+// normal login through webserver authentication
             if (isset($_SERVER['PHP_AUTH_USER'])) {
                 $sUser = $_SERVER['PHP_AUTH_USER'];
             } elseif (isset($_SERVER['REMOTE_USER'])) {
                 $sUser = $_SERVER['REMOTE_USER'];
             } else {
                 $sUser = $_SERVER['LOGON_USER'];
-            }            
-            if (strpos($sUser, "\\") !== false) {
-                $sUser = (string)substr($sUser, strrpos($sUser, "\\") + 1);
             }
-            
+            if (strpos($sUser, "\\") !== false) {
+                $sUser = (string) substr($sUser, strrpos($sUser, "\\") + 1);
+            }
+
             $aUserMappings = Yii::app()->getConfig("auth_webserver_user_map");
             if (isset($aUserMappings[$sUser])) {
                 $sUser = $aUserMappings[$sUser];
@@ -73,16 +73,16 @@ class UserIdentity extends CUserIdentity
                     // describing the defaukt profile for this user
                     $aUserProfile = hook_get_auth_webserver_profile($sUser);
                 } elseif (Yii::app()->getConfig("auth_webserver_autocreate_user")) {
-                    $aUserProfile = Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
+                    $aUserProfile = Yii::app()->getConfig("auth_webserver_autocreate_profile");
                 }
             } else {
                 $this->id = $oUser->uid;
                 $this->user = $oUser;
                 $this->errorCode = self::ERROR_NONE;
             }
-            
-            
-            
+
+
+
             if (Yii::app()->getConfig("auth_webserver_autocreate_user") && isset($aUserProfile) && is_null($oUser)) {
 // user doesn't exist but auto-create user is set
                 $oUser = new User;
@@ -105,8 +105,8 @@ class UserIdentity extends CUserIdentity
 
                     // read again user from newly created entry
                     $this->id = $oUser->uid;
-                    $this->user = $oUser;                    
-                    $this->errorCode = self::ERROR_NONE;                    
+                    $this->user = $oUser;
+                    $this->errorCode = self::ERROR_NONE;
                 } else {
                     $this->errorCode = self::ERROR_USERNAME_INVALID;
                 }

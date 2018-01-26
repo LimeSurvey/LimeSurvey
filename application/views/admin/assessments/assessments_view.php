@@ -25,7 +25,8 @@ LSYii_ClientScript::POS_BEGIN
               <?php echo $asessementNotActivated['message']; ?>
             </div>
           </div>
-          </form>
+        </div>
+          
         <?php
         } else {
         ?>
@@ -81,7 +82,7 @@ LSYii_ClientScript::POS_BEGIN
                             'baselang' => $baselang,
                             'gid' => $gid,
                             'action' => $action,
-                            'groups' => $groups
+                            'groups' => isset($groups) ? $groups : []
                         ]
                     ); 
                 ?>

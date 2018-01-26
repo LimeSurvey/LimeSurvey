@@ -359,6 +359,127 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 }
 
+function getStandardsReplacementFields($thissurvey)
+{
+    $_surveyid = Yii::app()->getConfig('surveyID');
+
+    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
+
+    Yii::app()->loadHelper('surveytranslator');
+
+    if (isset($thissurvey['sid'])) {
+        $surveyid = $thissurvey['sid'];
+    }
+
+    if (isset($thissurvey['anonymized'])) {
+        $anonymized = ($thissurvey['anonymized'] == "Y");
+    }
+
+    // surveyformat
+    if (isset($thissurvey['format'])) {
+        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
+    } else {
+        $surveyformat = "";
+    }
+
+    if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat != "allinone") {
+        $surveyformat .= " page-odd";
+    }
+
+    if (isset($thissurvey['questionindex']) && $thissurvey['questionindex'] > 0 && $surveyformat != "allinone" && (isset(Yii::app()->session['step']) && Yii::app()->session['step'] > 0)) {
+        $surveyformat .= " withindex";
+    }
+
+    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == "Y") {
+        $surveyformat .= " showprogress";
+    }
+
+    if (isset($thissurvey['showqnumcode'])) {
+        $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
+    }
+
+    // real survey contact
+    if (isset($thissurvey['admin']) && $thissurvey['admin'] != "") {
+        $surveycontact = sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['admin'], encodeEmail($thissurvey['adminemail']));
+    } elseif (Yii::app()->getConfig("siteadminname")) {
+        $surveycontact = sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), encodeEmail(Yii::app()->getConfig("siteadminemail")));
+    } else {
+        $surveycontact = "";
+    }
+
+    global $token;
+    if (isset($token)) {
+        $_token = $token;
+    } elseif (isset($clienttoken)) {
+        $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
+    } else {
+        $_token = '';
+    }
+
+    // Expiry
+    if (isset($thissurvey['expiry'])) {
+        $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d");
+        $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+    } else {
+        $_dateoutput = '-';
+    }
+
+    $_linkreplace = '';
+
+    if (isset(Yii::app()->session['datestamp'])) {
+        $_datestamp = Yii::app()->session['datestamp'];
+    } else {
+        $_datestamp = '-';
+    }
+
+    if (!empty($thissurvey['aAssessments'])) {
+        $_assessment_current_total = $thissurvey['aAssessments']['total'];
+    } else {
+        $_assessment_current_total = '';
+    }
+
+
+    // Set the array of replacement variables here - don't include curly braces
+    $coreReplacements = array();
+    $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
+    $coreReplacements['DATESTAMP'] = $_datestamp;
+    $coreReplacements['EXPIRY'] = $_dateoutput;
+    $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
+    $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
+    $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
+
+    $coreReplacements['LANG'] = App()->language;
+    $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : ''; // global
+    $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : ''; // global
+    $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : ''; // global
+    $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : ''; // global
+    $coreReplacements['PRIVACYHEADING'] = '';
+    $coreReplacements['PRIVACYMESSAGE'] = '';
+    /* Another solution to remove index from global */
+    //~ $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
+    //~ $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
+    /* indexItems is static but not rendering, seem better to call it here ? */
+    $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
+    $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
+    $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
+    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
+    $coreReplacements['SURVEYCONTACT'] = $surveycontact;
+    $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
+    $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : ''; // global
+    $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
+    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
+    $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
+    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : ''); // Silently replace TOKEN by empty string
+    $coreReplacements['URL'] = $_linkreplace;
+    $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
+    $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
+    $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
+    
+    return $coreReplacements;
+}
+
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)

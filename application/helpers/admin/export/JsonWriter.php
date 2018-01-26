@@ -25,7 +25,7 @@ class JsonWriter extends Writer
             echo $sStartOutput;
         } elseif ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
-            if ($this->file!==false) {
+            if ($this->file !== false) {
                 fwrite($this->file, $sStartOutput);
             } else {
                 safeDie('Could not open JSON file');

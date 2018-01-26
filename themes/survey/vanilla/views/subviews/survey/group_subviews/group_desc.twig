@@ -18,9 +18,11 @@
     NOTE: see views/subviews/survey/group.twig comments for more infos
 #}
 
-{% if aGroup.description != '' %}
-    <!-- Group description -->
-    <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
-        {{ aGroup.description }}
-    </div>
+{% if aGroup.showgroupinfo == 'D' or aGroup.showgroupinfo == 'B' %}
+    {% if aGroup.description != '' %}
+        <!-- Group description -->
+        <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
+            {{ aGroup.description }}
+        </div>
+    {% endif %}
 {% endif %}

@@ -146,7 +146,7 @@ class Template extends LSActiveRecord
     public static function templateNameFilter($sTemplateName)
     {
         // If the names has already been filtered, we skip the process
-        if (!empty(self::$aNamesFiltered[$sTemplateName])){
+        if (!empty(self::$aNamesFiltered[$sTemplateName])) {
             return self::$aNamesFiltered[$sTemplateName];
         }
 
@@ -156,7 +156,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && ( is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') || is_file( Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml') )) {
+        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -167,19 +167,93 @@ class Template extends LSActiveRecord
         }
 
         /* If we're here, then the default survey theme is not installed and must be changed */
-        $aTemplateList = self::getTemplateList();
-        $sTemplateName = key($aTemplateList);
-        if (!empty($sTemplateName)){
+        $aTemplateList = self::model()->search()->getData();
+        $i = 0;
+        while ($sTemplateName == $sRequestedTemplate) {
+            if (!empty($aTemplateList[$i])) {
+                $sTemplateName = $aTemplateList[$i]->name;
+            } else {
+                throw new Exception('Could not find a working installed template');
+            }
+            $i++;
+        }
+
+        if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
             Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return $sTemplateName;
-        }else{
+        } else {
             throw new Exception('No survey theme installed !!!!');
         }
     }
 
+    /**
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplate()
+    {
+        // Check that extended template is installed.
+        $this->checkTemplateExtends();
+
+        // A template should not extend it self.
+        $this->checkExtendsItSelf();
+
+        return true;
+    }
+
+    /**
+     * Throws exception if any of the extended templates are not installed; otherwise
+     * returns true.
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplateExtends()
+    {
+        if (!empty($this->extends)) {
+            $oRTemplate = self::model()->findByPk($this->extends);
+            if (empty($oRTemplate)) {
+                throw new Exception(
+                    sprintf(
+                        'Extended template "%s" is not installed.',
+                        $this->extends
+                    )
+                );
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return boolean
+     * @throws Exception if name equals extends.
+     */
+    public function checkExtendsItSelf()
+    {
+        if ($this->name == $this->extends) {
+            throw new Exception(
+                sprintf(
+                    'Error: The template %s extends it self',
+                    $this->name
+                )
+            );
+        }
+        return true;
+    }
+
+    /**
+     * Check if a given Template has a valid XML File
+     * @TODO: check api version
+     *
+     * @param string $sTemplateFolder the template forder name where to look for the XML
+     * @return boolean
+     */
+    public static function checkTemplateXML($sTemplateFolder)
+    {
+        return (is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml') || is_file(Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml'));
+    }
 
     /**
      * @param string $sTemplateName
@@ -449,7 +523,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array(getGlobalSetting('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
+        $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
         return $standardTemplates;
     }
 

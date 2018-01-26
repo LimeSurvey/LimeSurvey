@@ -166,14 +166,14 @@ class SurveyDynamic extends LSActiveRecord
         $alias = $this->getTableAlias();
 
         $newCriteria->join = "LEFT JOIN ".self::$survey->tokensTableName." survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the token table
+        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
 
     /**
-     * Return criteria updated with the ones needed for including results from the token table
+     * Return criteria updated with the ones needed for including results from the survey participants table
      *
      * @param string $condition
      * @return CDbCriteria
@@ -201,7 +201,7 @@ class SurveyDynamic extends LSActiveRecord
         $aTokenFields = Yii::app()->db->schema->getTable(self::$survey->tokensTableName)->getColumnNames();
         $aTokenFields = array_diff($aTokenFields, array('token'));
 
-        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the token table
+        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participants table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -352,7 +352,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         // Upload question
-        if ($oFieldMap->type == '|' && strpos($oFieldMap->fieldname, 'filecount') === false) {
+        if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
 
             $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
@@ -612,7 +612,7 @@ class SurveyDynamic extends LSActiveRecord
             '*',
         );
 
-        // Join the token table and filter tokens if needed
+        // Join the survey participants table and filter tokens if needed
         if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }

@@ -323,7 +323,7 @@ class ParticipantShare extends LSActiveRecord
     {
         $ownerid = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
         // CHeck if share already exists
-        $arShare = self::findByPk(array('participant_id'=>$data['participant_id'], 'share_uid'=>$data['share_uid']));
+        $arShare = $this->findByPk(array('participant_id'=>$data['participant_id'], 'share_uid'=>$data['share_uid']));
         if ($ownerid['owner_uid'] == $data['share_uid']) {
             return;
         }
@@ -331,7 +331,7 @@ class ParticipantShare extends LSActiveRecord
 // A check to ensure that the participant is not added to it's owner
             Yii::app()->db->createCommand()->insert('{{participant_shares}}', $data);
         } else {
-            self::updateShare($data);
+            $this->updateShare($data);
         }
     }
 

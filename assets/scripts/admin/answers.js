@@ -18,11 +18,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         var scale_id = $(e.relatedTarget).data('scale-id');
         var table_id = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
 
-        $('#btnqainsert').unbind('click').on('click', function () {
+        $('#btnqainsert').off('click').on('click', function () {
             quickaddlabels(scale_id, 'add', table_id);
         });
 
-        $('#btnqareplace').unbind('click').on('click', function () {
+        $('#btnqareplace').off('click').on('click', function () {
             quickaddlabels(scale_id, 'replace', table_id);
         });
     });
@@ -39,14 +39,20 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     updaterowproperties();
 
 
-    $(document).on("click", '.btnaddanswer', addinput);
-    $(document).on("click", '.btndelanswer', deleteinput);
-    $(document).on("click", '.btnlsbrowser', lsbrowser );
+    $('.btnaddanswer').on("click.answeroptions", addinput);
+    $('.btndelanswer').on("click.answeroptions", deleteinput);
+    $('.btnlsbrowser').on("click.answeroptions", lsbrowser );
 });
 
-function deleteinput()
-{
+function rebindClickHandler(){
+    $('.btnaddanswer').off("click.answeroptions").on("click.answeroptions", addinput);
+    $('.btndelanswer').off("click.answeroptions").on("click.answeroptions", deleteinput);
+    $('.btnlsbrowser').off("click.answeroptions").on("click.answeroptions", lsbrowser );
+}
 
+function deleteinput(e)
+{
+    e.preventDefault();
     // 1.) Check if there is at least one answe
 
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
@@ -149,11 +155,12 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 /**
  * add input : the ajax way
  */
-function addinput()
+function addinput(e)
 {
+    e.preventDefault();
       var $that              = $(this),                               // The "add" button
-        $currentRow            = $that.parents('.row-container'),   // The row containing the "add" button
-        $currentTable          = $that.parents('.answertable'),
+        $currentRow            = $that.closest('.row-container'),   // The row containing the "add" button
+        $currentTable          = $that.closest('.answertable'),
         $commonId              = $currentRow.data('common-id'),     // The common id of this row in the other languages
         $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         url                   = $elDatas.data('url'),              // Url for the request
@@ -176,9 +183,9 @@ function addinput()
         'gid':                  $elDatas.data('gid'),
         'qid':                  $elDatas.data('qid'),
         'codes':                $codes,
-        'scale_id':             $(this).data('scale-id'),
+        'scale_id':             $(this).find('i').data('scale-id'),
         'type':                 'answer',
-        'position':             $(this).data('position'),
+        'position':             $(this).find('i').data('position'),
         'languages':            $languages,
         'assessmentvisible':    $elDatas.data('assessmentvisible') == 1,
     };
@@ -206,7 +213,7 @@ function addinput()
             });
 
             $('#answercount_'+$scaleId).val($position+2);
-
+            rebindClickHandler();
         },
         error :  function(html, statut){
             console.ls.log(statut);
@@ -399,14 +406,15 @@ function areCodesUnique(sNewValue)
     }
 }
 
-function lsbrowser()
+function lsbrowser(e)
 {
+    e.preventDefault();
     scale_id=removechars($(this).attr('id'));
     surveyid=$('input[name=sid]').val();
 
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
         var x=0;
-        $("#labelsets").removeOption(/.*/);
+        // $("#labelsets").removeOption(/.*/);
         for (x in json)
             {
             $('#labelsets').addOption(json[x][0],json[x][1]);
@@ -673,12 +681,12 @@ function transferlabels()
                 }
                 $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
                 // Unbind any previous events
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-                $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
+                $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
                 // Bind events again
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions', addinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.answeroptions', deleteinput);
                 $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
                     if ($(this).val()==newansweroption_text)
                         {
@@ -807,11 +815,11 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
         $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-        $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
+        $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions',addinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.answeroptions',deleteinput);
     }
 
 for (var x in languages)

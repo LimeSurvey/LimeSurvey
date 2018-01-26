@@ -83,6 +83,7 @@ $internalConfig = array(
         'application.core.*',
         'application.core.db.*',
         'application.models.*',
+        'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
         'bootstrap.helpers.*',
@@ -108,7 +109,9 @@ $internalConfig = array(
         'clientScript'=>array(
             'packages' => array_merge(
                 require('third_party.php'),
-                require('packages.php')
+                require('packages.php'),
+                require('questiontypes.php'),
+                require('fonts.php')
             ),
             'class' => 'application.core.LSYii_ClientScript'
         ),
@@ -241,22 +244,24 @@ $internalConfig = array(
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
+                'ngT'                      => 'ngT',
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
-                't'     => 'eT',
+                't'     => 'gT',
                 'gT'    => 'gT',
             ),
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date', 'format'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
+                    'LSCaptcha'                          =>  array("renderOut")
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
@@ -266,7 +271,7 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'createUrl', 'json_decode'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createUrl', 'json_decode'),
             ),
 
         ),

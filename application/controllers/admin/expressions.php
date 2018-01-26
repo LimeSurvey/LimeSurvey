@@ -85,7 +85,7 @@ class Expressions extends Survey_Common_Action
         $language = Yii::app()->request->getParam('lang', null); 
         
         if ($language !== null) {
-                    $language = sanitize_languagecode($language);
+            $language = sanitize_languagecode($language);
         }
 
         $aData['sid'] = $sid;
@@ -264,14 +264,14 @@ class Expressions extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         // $aData['display']['header']=true;
         // $aData['display']['menu_bars'] = true;
         // $aData['display']['footer']= true;
         header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
 /* End of file expressions.php */

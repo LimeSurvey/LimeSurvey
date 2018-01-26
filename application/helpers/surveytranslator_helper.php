@@ -508,21 +508,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fa']['dateformat'] = 6;
     $supportedLanguages['fa']['radixpoint'] = 0;
 
-    // Papiamento (Aruba)
-    $supportedLanguages['pap-AW']['description'] = gT('Papiamento (Aruba)');
-    $supportedLanguages['pap-AW']['nativedescription'] = 'Papiamento';
-    $supportedLanguages['pap-AW']['rtl'] = false;
-    $supportedLanguages['pap-AW']['dateformat'] = 2;
-    $supportedLanguages['pap-AW']['radixpoint'] = 1;
-    $supportedLanguages['pap-AW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
-
     // Papiamento (Curacao and Bonaire)
-    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao and Bonaire)');
+    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao & Bonaire)');
     $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
     $supportedLanguages['pap-CW']['rtl'] = false;
     $supportedLanguages['pap-CW']['dateformat'] = 2;
     $supportedLanguages['pap-CW']['radixpoint'] = 1;
-    $supportedLanguages['pap-CW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
+    $supportedLanguages['pap-CW']['cldr'] = 'en'; // Fix me - Yii does not provide Papiamento support, yet
 
     // Polish
     $supportedLanguages['pl']['description'] = gT('Polish');
@@ -683,8 +675,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     //Ukrainian
     $supportedLanguages['uk']['description'] = gT('Ukrainian');
-    $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
-        $supportedLanguages['uk']['rtl'] = false;
+    $supportedLanguages['uk']['nativedescription'] = '&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430;';
+    $supportedLanguages['uk']['rtl'] = false;
     $supportedLanguages['uk']['dateformat'] = 1;
     $supportedLanguages['uk']['radixpoint'] = 1;
 
@@ -965,7 +957,7 @@ function getLanguageDetails($codetosearch)
     /**
      * This functions translates LimeSurvey specific locale code to a matching datetimepicker locale
      *
-     * @param mixed $sLocale LimeSurvey locale code
+     * @param string $sLocale LimeSurvey locale code
      */
 function convertLStoDateTimePickerLocale($sLocale)
 {

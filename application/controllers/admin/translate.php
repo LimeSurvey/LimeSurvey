@@ -140,7 +140,6 @@ class translate extends Survey_Common_Action
         $aData['baselang'] = $baselang;
         $aData['baselangdesc'] = $baselangdesc;
         $aData['tolangdesc'] = $tolangdesc;
-
         //This is for the tab navbar
         $aData['amTypeOptions'] = array_map(array($this, 'setupTranslateFields'), $tab_names);
         $aViewUrls['translateformheader_view'][] = $aData;
@@ -177,7 +176,8 @@ class translate extends Survey_Common_Action
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 
-            for ($j = 0; $j < count($resultbase); $j++) {
+            $countResultBase = count($resultbase);
+            for ($j = 0; $j < $countResultBase; $j++) {
                 $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
                 
@@ -324,10 +324,10 @@ class translate extends Survey_Common_Action
     private function _getLanguageList($iSurveyID, $tolang)
     {
         $language_list = "";
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
 
-
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
         $language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
@@ -346,7 +346,7 @@ class translate extends Survey_Common_Action
                                 'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
                             )
                         );
-        if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1) {
+        if (count($oSurvey->additionalLanguages) > 1) {
             $selected = (!isset($tolang)) ? "selected" : "";
 
             $language_list .= CHtml::tag(
@@ -739,7 +739,7 @@ class translate extends Survey_Common_Action
                     case 'emailregistrationbody':
                     case 'email_confirm':
                     case 'email_confirmbody':
-                        return SurveyLanguageSetting::model()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
+                        return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
                         return QuestionGroup::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
@@ -810,7 +810,7 @@ class translate extends Survey_Common_Action
 
         $translateoutput = "<table class='table table-striped'>";
             $translateoutput .= '<thead>';
-            $threeRows =  ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
+            $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
             $translateoutput .= $threeRows ? '<th class="col-md-2 text-strong">'.gT('Question code / ID')."</th>" : '';
             $translateoutput .= '<th class="'.($threeRows ? "col-sm-5 text-strong" : "col-sm-6").'" >'.$baselangdesc."</th>";
             $translateoutput .= '<th class="'.($threeRows ? "col-sm-5 text-strong" : "col-sm-6").'" >'.$tolangdesc."</th>";
@@ -851,10 +851,10 @@ class translate extends Survey_Common_Action
             }
             if ($type == 'question_help' || $type == 'question') {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= "<td class='col-sm-2'>". htmlspecialchars($rowfrom->title)." ({$rowfrom->qid}) </td>";
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->title)." ({$rowfrom->qid}) </td>";
             } else if ($type == 'subquestion') {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= "<td class='col-sm-2'>".  htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid}) </td>";
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid}) </td>";
             }
 
             $translateoutput .= "<td class='_from_ col-sm-5' id='".$type."_from_".$i."'>"
@@ -1045,9 +1045,9 @@ class translate extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'translate', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'translate', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

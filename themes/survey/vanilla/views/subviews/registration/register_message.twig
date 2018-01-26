@@ -14,9 +14,14 @@
     If there is a message on the registration page, like "Survey has not started, or Register now! here it is displayed
 
 #}
-{% if sStartDate %}
-  <p {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</p>
+
+{% if registerSuccess %}
+    <p {{ aSurveyInfo.attr.registermessageb }} >{{ "Thank you for registering You will receive an email shortly" | t }}</p>
 {% else %}
-  <p  {{ aSurveyInfo.attr.registermessageb }} >{{ gT("You may register for this survey if you wish to take part.") }}</p>
+    {% if sStartDate %}
+    <p {{ aSurveyInfo.attr.registermessagea }} > {{ "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey." | t }}</p>
+    {% else %}
+    <p  {{ aSurveyInfo.attr.registermessageb }} >{{ "You may register for this survey if you wish to take part." | t }}</p>
+    {% endif %}
+    <p  {{ aSurveyInfo.attr.registermessagec }} >{{ "Enter your details below, and an email containing the link to participate in this survey will be sent immediately." | t }}</p>
 {% endif %}
-<p  {{ aSurveyInfo.attr.registermessagec }} >{{ gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.") }}</p>

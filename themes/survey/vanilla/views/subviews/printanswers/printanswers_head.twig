@@ -36,12 +36,12 @@
         <div class="row">
             <div class="col-sm-6">
                 {{ C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') }}
-                    {{ gT("Export this responses as PDF:") }} <button class="btn btn-default" type="submit">{{ gT("PDF export") }}</button>
+                    {{ "Export this responses as PDF:" | t }} <button class="btn btn-default" type="submit">{{ "PDF export" | t }}</button>
                 {{ C.Html.endForm }}
             </div>
             <div class="col-sm-6">
                 {{ C.Html.form(aSurveyInfo.printAnswersHeadFormQueXMLUrl, 'post') }}
-                    {{ gT("Export this responses as PDF:") }} <button class="btn btn-default" type="submit">{{ gT("queXMLPDF export") }}</button>
+                    {{ "Export this responses as PDF:" | t }} <button class="btn btn-default" type="submit">{{ "queXMLPDF export" | t }}</button>
                 {{ C.Html.endForm }}
             </div>
         </div>

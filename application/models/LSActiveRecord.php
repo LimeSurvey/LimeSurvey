@@ -85,7 +85,7 @@ class LSActiveRecord extends CActiveRecord
      * Finds all active records satisfying the specified condition but returns them as array
      *
      * See {@link find()} for detailed explanation about $condition and $params.
-     * @param mixed $condition query condition or criteria.
+     * @param CDbCriteria $condition query condition or criteria.
      * @param array $params parameters to be bound to an SQL statement.
      * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
      */
@@ -183,7 +183,7 @@ class LSActiveRecord extends CActiveRecord
      * See {@link find()} for detailed explanation about $condition and $params.
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
      * An attribute value can be an array which will be used to generate an IN condition.
-     * @param mixed $condition query condition or criteria.
+     * @param string $condition query condition or criteria.
      * @param array $params parameters to be bound to an SQL statement.
      * @return integer number of rows affected by the execution.
      */

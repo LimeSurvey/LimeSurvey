@@ -25,7 +25,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     
     public function init()
     {
-        
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -60,7 +59,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && isset($_SERVER[$serverKey])) {
             $sUser = $_SERVER[$serverKey];
-            
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
                 if (strpos($sUser, "\\") !== false) {
@@ -71,7 +69,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                     $sUser = substr($sUser, 0, strrpos($sUser, "@"));
                 }
             }
-            
             $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) {
                 $sUser = $aUserMappings[$sUser];
@@ -80,7 +77,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             if ($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user')) {
                 $this->setUsername($sUser);
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
-            } elseif ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
+                return;
+            }
+            if ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
                 throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
             }
         }
@@ -107,7 +106,8 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            if (Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid)) {
+            if (Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_webserver', ":uid"=>$user->uid))) {
+// Don't use Permission::model()->hasGlobalPermission : it's update the plugins event (and remove user/pass from event)
                 $this->setAuthSuccess($oUser);
                 return;
             } else {
@@ -127,8 +127,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             $oUser->email = $aUserProfile['email'];
 
             if ($oUser->save()) {
-                $permission = new Permission;
-                $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                Permission::setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
                 Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
 
                 // read again user from newly created entry

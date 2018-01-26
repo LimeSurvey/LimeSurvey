@@ -1,0 +1,26 @@
+{#
+/**
+ * 5 point choice Html : item row
+ *
+ * @var $name
+ * @var $value
+ * @var $id
+ * @var $labelText
+ * @var $itemExtraClass
+ * @var $checkedState
+ * @var $checkconditionFunction
+ */
+#}
+
+<!-- item_row -->
+<li id="javatbd{{name}}{{value}}" class="form-group answer-item radio-item {{itemExtraClass}}">
+    <input
+        type="radio"
+        name="{{name}}"
+        id="answer{{id}}"
+        value="{{value}}"
+        {{checkedState}}
+    />
+    <label for="answer{{id}}" class="control-label radio-label">{{labelText}}</label>
+</li>
+<!-- end of item_row -->

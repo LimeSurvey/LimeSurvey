@@ -51,7 +51,7 @@ class index extends CAction
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         if (is_null($thissurvey) && !is_null($surveyid)) {
-                    $thissurvey = getSurveyInfo($surveyid);
+            $thissurvey = getSurveyInfo($surveyid);
         }
 
         // unused vars in this method (used in methods using compacted method vars)
@@ -81,8 +81,8 @@ class index extends CAction
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif (Survey::model()->findByPk($surveyid)) {
-            $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
+        } elseif ($oSurvey) {
+            $sDisplayLanguage = $oSurvey->language;
         } else {
             $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         }
@@ -377,7 +377,7 @@ class index extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
                 $captcha        = Yii::app()->getController()->createAction('captcha');
                 $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -413,7 +413,7 @@ class index extends CAction
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
 
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
+            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }
@@ -425,7 +425,7 @@ class index extends CAction
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
-            $thissurvey['include_content'] = 'load.twig';
+            $thissurvey['include_content'] = 'load';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
@@ -637,8 +637,9 @@ class index extends CAction
 
     private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
+        $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
+        if ($oSurvey) {
+            $baselang = $oSurvey->language;
         } elseif (!empty($mvSurveyIdOrBaseLang)) {
             $baselang = $mvSurveyIdOrBaseLang;
         } else {

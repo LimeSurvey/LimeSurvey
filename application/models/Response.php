@@ -44,7 +44,7 @@
         public function getFiles()
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$survey->language));
+            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => Question::QT_VERTICAL_FILE_UPLOAD));
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;

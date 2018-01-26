@@ -3,14 +3,15 @@
 # Use this script file if you have a Travis docker image setup on your
 # local system, as described here: https://docs.travis-ci.com/user/common-build-problems/#Troubleshooting-Locally-in-a-Docker-Image
 #
+# After docker has been installed, run the following commands:
 # docker run --name travis-debug -dit travisci/ci-garnet:packer-1512502276-986baf0 /sbin/init
 # docker exec -it travis-debug bash -l
 # su - travis
-# git clone --depth=50 --branch=develop https://github.com/LimeSurvey/LimeSurvey.git LimeSurvey/LimeSurvey
+# git clone --depth=1 --branch=master https://github.com/LimeSurvey/LimeSurvey.git LimeSurvey/LimeSurvey
 # cd LimeSurvey/LimeSurvey
 # chmod +x tests/data/travis/travis_setup.sh
 # ./tests/data/travis/travis_setup.sh
-# phpunit
+# DOMAIN=localhost phpunit
 
 phpenv global 7.0 2>/dev/null
 phpenv global 7.0
@@ -28,6 +29,7 @@ chmod -R 776 tests/tmp
 chmod -R 776 tests/tmp/runtime
 php application/commands/console.php install admin password TravisLS no@email.com verbose
 cp application/config/config-sample-mysql.php application/config/config.php
+sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
 sudo apt-get update > /dev/null
 sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs firefox

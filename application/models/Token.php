@@ -101,7 +101,7 @@ abstract class Token extends Dynamic
     /**
      * @param integer $surveyId
      * @param array $extraFields
-     * @return mixed
+     * @return CDbTableSchema
      */
     public static function createTable($surveyId, array $extraFields = array())
     {
@@ -142,15 +142,15 @@ abstract class Token extends Dynamic
         }
 
         // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
-        foreach ($tokenattributefieldnames as $attrname=>$attrdetails) {
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        foreach ($oSurvey->tokenAttributes as $attrname=>$attrdetails) {
             if (!isset($fields[$attrname])) {
                 $fields[$attrname] = 'text';
             }
         }
 
         $db = \Yii::app()->db;
-        $sTableName = "{{tokens_{$surveyId}}}";
+        $sTableName = $oSurvey->tokensTableName;
 
         $db->createCommand()->createTable($sTableName, $fields);
 
@@ -166,7 +166,7 @@ abstract class Token extends Dynamic
 
     /**
      * @param string $token
-     * @return array|mixed|null
+     * @return Token
      */
     public function findByToken($token)
     {
@@ -198,7 +198,7 @@ abstract class Token extends Dynamic
      * Creates a random token string without special characters
      *
      * @param integer $iTokenLength
-     * @return mixed
+     * @return string
      */
     public static function generateRandomToken($iTokenLength)
     {

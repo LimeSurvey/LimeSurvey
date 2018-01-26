@@ -49,21 +49,28 @@ class Answer extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'code', 'language', 'scale_id');
+        return 'aid';
     }
+
+
+    public function defaultScope()
+    {
+        return array('order'=>'sortorder');
+    }    
 
     /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
         return array(
-            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
-            'questions' => array(self::HAS_ONE, 'Question', '',
-                'on' => "$alias.qid = questions.qid",
+            'question' => array(self::BELONGS_TO, 'Question', '',
+                'on' => "$alias.qid = question.qid",
             ),
-            'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
-                'on' => 'questions.gid = groups.gid'
+            'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'questions',
+                'on' => 'questions.gid = group.gid'
             ),
+            'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
+            
         );
     }
 
@@ -73,20 +80,17 @@ class Answer extends LSActiveRecord
         return array(
             array('qid', 'numerical', 'integerOnly'=>true),
             array('code', 'length', 'min' => 1, 'max'=>5),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             // Unicity of key
             array(
                 'code', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                    'condition' => 'language=:language AND qid=:qid AND scale_id=:scale_id',
+                    'condition' => 'qid=:qid AND scale_id=:scale_id',
                     'params' => array(
-                        ':language' => $this->language,
                         ':qid' => $this->qid,
                         ':scale_id' => $this->scale_id
                     )
                 ),
                 'message' => gT('Answer codes must be unique by question.')
             ),
-            array('answer', 'LSYii_Validators'),
             array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -116,7 +120,7 @@ class Answer extends LSActiveRecord
      * @param string $code
      * @param string $sLanguage
      * @param integer $iScaleID
-     * @return array
+     * @return string|null The answer text
      */
     public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID = 0)
     {
@@ -129,16 +133,11 @@ class Answer extends LSActiveRecord
             // We have a hit :)
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
-            $answerCache[$qid][$code][$sLanguage][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
-            ->select('answer')
-            ->from(self::tableName())
-            ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
-            ->bindParam(":qid", $qid, PDO::PARAM_INT)
-            ->bindParam(":code", $code, PDO::PARAM_STR)
-            ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
-                        ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-            ->query()->readAll();
-
+            $aAnswer = Answer::model()->findByAttributes(array('qid'=>$qid, 'code'=>$code, 'scale_id'=>$iScaleID));
+            if (is_null($aAnswer)) {
+                return null;
+            }
+            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerL10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }
@@ -151,9 +150,9 @@ class Answer extends LSActiveRecord
     public function oldNewInsertansTags($newsid, $oldsid)
     {
         $criteria = new CDbCriteria;
-        $criteria->compare('questions.sid', $newsid);
-        $criteria->compare('answer', '{INSERTANS::'.$oldsid.'X');
-        return $this->with('questions')->findAll($criteria);
+        $criteria->compare('question.sid', $newsid);
+        $criteria->with = ['answerL10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
+        return $this->findAll($criteria);
     }
 
     /**
@@ -168,7 +167,7 @@ class Answer extends LSActiveRecord
 
     /**
      * @param array $data
-     * @return bool
+     * @return boolean|null
      */
     public function insertRecords($data)
     {
@@ -188,12 +187,11 @@ class Answer extends LSActiveRecord
      * @static
      * @access public
      * @param int $qid
-     * @param string $lang
      * @return void
      */
-    public static function updateSortOrder($qid, $lang)
+    public static function updateSortOrder($qid)
     {
-        $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
+        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder asc'));
         $position = 0;
 
         foreach ($data as $row) {
@@ -220,28 +218,16 @@ class Answer extends LSActiveRecord
         return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order = false)
-    {
-        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != false) {
-            $command->order($order);
-        }
-        return $command->query();
-    }
-
     /**
      * @param string $fields
      * @param string $orderby
      * @param mixed $condition
      * @return array
      */
-    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Yii::app()->db->createCommand()
-            ->select($fields)
-            ->from(self::tableName())
-            ->where($condition)
-            ->order($orderby)
-            ->queryAll();
+        return Answer::model()->findAll($condition);
     }
+    
+    
 }

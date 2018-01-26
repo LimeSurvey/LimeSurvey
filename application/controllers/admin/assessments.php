@@ -35,36 +35,36 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
-            $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $languages = $oSurvey->allLanguages;
+            $surveyLanguage = $oSurvey->language;
 
             Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}";
 
-            array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
 
             if ($sAction == "assessmentadd") {
-                            $this->_add($iSurveyID);
+                $this->_add($iSurveyID);
             }
 
             if ($sAction == "assessmentupdate") {
-                            $this->_update($iSurveyID);
+                $this->_update($iSurveyID);
             }
 
             if ($sAction == "assessmentopenedit") {
-                            $this->_edit($iSurveyID);
+                $this->_edit($iSurveyID);
             }
 
             if ($sAction == "assessmentdelete") {
-                            $this->_delete($iSurveyID, $_POST['id']);
+                $this->_delete($iSurveyID, $_POST['id']);
             }
 
             if ($sAction == "asessementactivate") {
-                            $this->_activateAsessement($iSurveyID);
+                $this->_activateAsessement($iSurveyID);
             }
 
 
@@ -80,10 +80,10 @@ class Assessments extends Survey_Common_Action
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param array|string $aViewUrls View url(s)
+     * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['sidemenu']['state'] = false;
         $iSurveyID = $aData['surveyid'];
@@ -94,7 +94,7 @@ class Assessments extends Survey_Common_Action
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid'] = null;
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     private function _prepareDataArray(&$aData, $collectEdit = false)
@@ -185,14 +185,13 @@ class Assessments extends Survey_Common_Action
 
     private function _collectGroupData($iSurveyID, &$aData = array())
     {
-        //$aData = array();
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
-            $groupId = $group->attributes['gid'];
-            $groupName = $group->attributes['group_name'];
+            $groupId = $group->gid;                        
+            $groupName = $group->questionGroupL10ns[$oSurvey->language]->group_name;
             $aData['groups'][$groupId] = $groupName;
         }
-        return $aData;
     }
 
     private function _collectEditData(array $aData)
@@ -233,6 +232,7 @@ class Assessments extends Survey_Common_Action
                 }
             }
         }
+        App()->getController()->refresh();
     }
 
     /**

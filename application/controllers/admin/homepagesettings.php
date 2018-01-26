@@ -52,7 +52,7 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
         }
 
-        $model = new Boxes;
+        $model = new Box;
         if (isset($_POST['Boxes'])) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'), 'error');
@@ -153,7 +153,7 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
 
-        $dataProvider = new CActiveDataProvider('Boxes');
+        $dataProvider = new CActiveDataProvider('Box');
         $aData = array(
             'dataProvider'=>$dataProvider,
             'bShowLogo'=>(getGlobalSetting('show_logo') == "show"),
@@ -172,7 +172,7 @@ class homepagesettings extends Survey_Common_Action
      */
     public function admin()
     {
-        $model = new Boxes('search');
+        $model = new Box('search');
         $model->unsetAttributes(); // clear any default values
         if (isset($_GET['Boxes'])) {
                     $model->attributes = $_GET['Boxes'];
@@ -187,12 +187,12 @@ class homepagesettings extends Survey_Common_Action
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Boxes the loaded model
+     * @return Box the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Boxes::model()->findByPk($id);
+        $model = Box::model()->findByPk($id);
         if ($model === null) {
                     throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -304,7 +304,7 @@ class homepagesettings extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
 
             // We delete all the old boxes, and reinsert new ones
-            Boxes::model()->deleteAll();
+            Box::model()->deleteAll();
 
             // Then we recreate them
             $oDB = Yii::app()->db;
@@ -373,7 +373,7 @@ class homepagesettings extends Survey_Common_Action
 
     /**
      * Performs the AJAX validation.
-     * @param Boxes $model the model to be validated
+     * @param Box $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
@@ -387,13 +387,13 @@ class homepagesettings extends Survey_Common_Action
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
+     * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'homepagesettings.js');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }

@@ -1,5 +1,5 @@
-<div class="<?php echo $sizeClass; ?> ls-flex-column" style="padding:15px; height: 200px;" >
-    <div class="panel panel-primary panel-clickable selector__<?=str_replace(' ', '_', strtolower($title))?>" 
+<div class="<?php echo $sizeClass; ?> ls-flex-column ls-panelboxes-panelbox" >
+    <div class="panel panel-primary panel-clickable ls-panelboxes-panelbox-inner selector__<?=str_replace(' ', '_', strtolower($title))?>" 
         id="panel-<?php echo $position; ?>"
          data-url="<?php echo $url; ?>"<?php if ($external) {
         echo ' data-target="_blank"';

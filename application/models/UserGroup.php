@@ -61,37 +61,9 @@ class UserGroup extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            // TODO remove Users... see Louis' comment
-            'Users' => array(self::HAS_MANY, 'User', 'uid'), // Louis: This one is just wrong. Don't know if it used anywhere so I let it for now. See below for the correct relation. Just for information, this wrong relation return the user having a uid equal to the currect gid. (eg: if the current group object has gid=2, this wrong relation will return the user having uid=2). So if it used anywhere, it's probably buggy.
             'users' => array(self::MANY_MANY, 'User', '{{user_in_groups}}(ugid, uid)'), // Louis: this is the correct relation
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
         );
-    }
-
-
-    /**
-     * @param mixed|bool $condition
-     * @return mixed
-     * TODO should be removed and replaced by yii's options
-     */
-    public function getAllRecords($condition = false)
-    {
-        $this->connection = Yii::app()->db;
-        if ($condition != false) {
-            $where_clause = array("WHERE");
-
-            foreach ($condition as $key=>$val) {
-                $where_clause[] = $key.'=\''.$val.'\'';
-            }
-
-            $where_string = implode(' AND ', $where_clause);
-        }
-
-        $query = 'SELECT * FROM '.$this->tableName().' '.$where_string;
-
-        $data = $this->connection->createCommand($query)->query()->resultAll();
-
-        return $data;
     }
 
     public function insertRecords($data)
@@ -260,10 +232,61 @@ class UserGroup extends LSActiveRecord
         return (int) UserInGroup::model()->countByAttributes(['ugid'=>$this->ugid]);
     }
 
+
+    public function getColumns()
+    {
+        return array(
+            array(
+                'header' => gT('User group ID'),
+                'name' => 'usergroup_id',
+                'value'=>'$data->ugid',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+
+            array(
+                'header' => gT('Name'),
+                'name' => 'name',
+                'value'=>'$data->name',
+                'htmlOptions' => array('class' => 'col-md-2'),
+            ),
+
+            array(
+                'header' => gT('Description'),
+                'name' => 'description',
+                'value'=> '$data->description',
+                'type' => 'LongText',
+                'htmlOptions' => array('class' => 'col-md-5'),
+            ),
+
+            array(
+                'header' => gT('Owner'),
+                'name' => 'owner',
+                'value'=> '$data->owner->users_name',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+
+            array(
+                'header' => gT('Members'),
+                'name' => 'members',
+                'value'=> '$data->countUsers',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+            
+            array(
+                'header'=>'',
+                'name'=>'actions',
+                'type'=>'raw',
+                'value'=>'',
+                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+            ),                            
+
+        );
+    }
+
     /**
      * @return string
      */
-    public function getbuttons()
+    public function getButtons()
     {
 
         // View users
@@ -283,8 +306,7 @@ class UserGroup extends LSActiveRecord
 
         // Delete user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $url = Yii::app()->createUrl("admin/usergroups/sa/delete/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="fa fa-trash text-warning"></span></a>';
+            $button .= ' <span data-toggle="tooltip" title="'.gT('Delete user group').'"><button class="btn btn-default list-btn action__delete-group" data-placement="left" href="#delete-modal" data-toggle="modal" data-ugid="'.$this->ugid.'" role="button"><i class="fa fa-trash text-warning"></i></button></span>';
         }
 
         return $button;

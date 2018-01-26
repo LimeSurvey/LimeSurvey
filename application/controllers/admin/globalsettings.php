@@ -230,7 +230,7 @@ class GlobalSettings extends Survey_Common_Action
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList())) {
+            if (array_key_exists($sTemplate, Template::getTemplateList())) {
 // Filter template name
                 setGlobalSetting('defaulttheme', $sTemplate);
             }
@@ -382,9 +382,9 @@ class GlobalSettings extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'globalsettings.js');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

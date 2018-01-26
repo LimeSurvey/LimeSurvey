@@ -41,9 +41,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
-    $(document).on('click', '.btnaddanswer', add_label);
-    $(document).on('click', '.btndelanswer', del_label);
-    $(document).on('keyup change', '.codeval,.assessmentval', sync_label);
+    $('.btnaddanswer').on('click', add_label);
+    $('.btndelanswer').on('click', del_label);
+    $('.codeval').on('keyup change', sync_label);
+    $('.assessmentval').on('keyup change', sync_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -199,6 +200,7 @@ function sort_complete(event, ui){
 
 function sync_label(event)
 {
+    event.preventDefault();
     var sRowID = $(event.target).parent().parent().attr('id');
     aRowInfo=sRowID.split('_');// first is row, second langage and last the row number
     $(".ui-tabs-panel").each(function(divindex,divelement){
@@ -285,7 +287,7 @@ function add_label(event)
 
 
 function del_label(event){
-
+    event.preventDefault();
     var $sRowID = $(event.target).parent().parent().attr('id');
 
     $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
@@ -326,14 +328,14 @@ function createNewLabelTR(alternate,first){
         + "</td><td>"
         + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
 
-    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
-    "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<span class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
+    x = x + "<td><div class='input-group'><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    "<span class='input-group-addon'><a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
+    "<span class=\"btn btn-default btn-xs fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
     "<span style=\"display: none;\" class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
-    "</a></td>";
+    "</a></span></div></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ fa fa-trash  text-warning\"></span></td>";
+        x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button></td>";
 
     x = x + "</tr>";
 

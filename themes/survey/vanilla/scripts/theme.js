@@ -98,12 +98,13 @@ var ThemeScripts = function(){
         });
     }
 
+    /*
     var initLanguageChanger = function(selectorItem, selectorGlobalForm){
         $(selectorItem).on('change',function() {
             var lang = $(this).val();
             logObject.log(lang, 'changed');
-            // If there are no form : we can't use it */
-            /* No form, not targeturl : just see what happen */
+            // If there are no form : we can't use it
+            // No form, not targeturl : just see what happen
             var target = window.location.href;
             $("<form>", {
                 "class":'ls-js-hidden',
@@ -113,6 +114,7 @@ var ThemeScripts = function(){
             }).appendTo('body').submit();
         });
     };
+    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -121,8 +123,6 @@ var ThemeScripts = function(){
             /* The limesurvey form exist in document, move select and button inside and click */
             $(selectorGlobalForm+" [name='lang']").remove();                        // Remove existing lang selector
             $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
-            $('#changlangButton').clone().appendTo($(selectorGlobalForm)).click();
-
         });
     };
 
@@ -174,6 +174,19 @@ var ThemeScripts = function(){
                 $('.navbar-right').hide();
             }
 
+            //Survey list container
+            if($('#surveys-list-container').length > 0){
+                var footerHeight = $('#surveyListFooter').outerHeight();
+                var headerHeight = 2*$('#navbar').outerHeight();
+                var bodyHeight = $(document).height()-(footerHeight+headerHeight);
+                console.log({
+                    footerHeight : footerHeight,
+                    headerHeight : headerHeight,
+                    bodyHeight : bodyHeight
+                });
+                $('#surveys-list-container').css('min-height', bodyHeight+'px');
+            }
+
             // Survey list footer
             if($('#surveyListFooter').length>0)
             {
@@ -184,6 +197,9 @@ var ThemeScripts = function(){
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
+
+            // Bind language changer onclick event.
+            activateLanguageChanger();
         });
 
         /**
@@ -193,6 +209,7 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
+        fixBodyPadding();
     };
 
     var initUserForms = function(){
@@ -216,7 +233,6 @@ var ThemeScripts = function(){
         fixBodyPadding : fixBodyPadding,
         hideQuestionWithRelevanceSubQuestion : window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart : hideEmptyPart,
-        initLanguageChanger: initLanguageChanger,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger,
         log: logObject
     }

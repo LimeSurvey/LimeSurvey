@@ -59,10 +59,10 @@
             // Set the language for dispay
             if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
                 $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
-            } elseif (Survey::model()->findByPk($iSurveyID)) {
+            } elseif ($survey) {
                 // survey exist
             {
-                $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                $sLanguage = $survey->language;
             }
             } else {
                 $iSurveyID = 0;
@@ -130,7 +130,7 @@
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
 
             if (empty($sExportType)) {
-                $aData['aSurveyInfo']['include_content'] = 'printanswers.twig';
+                $aData['aSurveyInfo']['include_content'] = 'printanswers';
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
             } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
@@ -149,7 +149,7 @@
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
                 $aData['aSurveyInfo']['printPdf'] = 1;
-                $aData['aSurveyInfo']['include_content'] = 'printanswers.twig';
+                $aData['aSurveyInfo']['include_content'] = 'printanswers';
                 $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, true);
                 Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
                 $oPDF->writeHTML($html, true, false, true, false, '');

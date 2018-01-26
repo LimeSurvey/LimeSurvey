@@ -68,7 +68,7 @@ class saved extends Survey_Common_Action
      * @param string[] $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['surveyid'] = $iSurveyId = $aData['iSurveyId'];
@@ -77,7 +77,7 @@ class saved extends Survey_Common_Action
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         $aData['menu']['close'] = true;
         $aData['menu']['edition'] = false;
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

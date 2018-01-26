@@ -141,12 +141,6 @@ class ConsoleShim {
         this.log(args);
     }
 
-    err() {
-        this.error.apply(this,arguments);
-    }
-    debug() {
-        this.trace.apply(this,arguments);
-    }
 
     warn() {
         const args = this._insertParamToArguments(arguments);

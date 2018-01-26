@@ -37,7 +37,7 @@
                         'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
-                                'pageSize',
+                                'pageSizeTokenView',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
@@ -45,7 +45,7 @@
                         'columns' => $model->attributesForGrid,
                         'ajaxUpdate'=>'token-grid',
                         'ajaxType'=>'POST',
-                        'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
+                        'afterAjaxUpdate' => 'onUpdateTokenGrid'
                     ));
                 ?>
             </div>
@@ -53,6 +53,9 @@
 
         <?php 
         // To update rows per page via ajax 
+        App()->getClientScript()->registerScript("Tokens:neccesaryVars", "
+        var postUrl = '".App()->createUrl('admin/tokens/sa/prepExportToCPDB/sid/'.$_GET['surveyid'])."';
+        ", LSYii_ClientScript::POS_BEGIN);         
         App()->getClientScript()->registerScript("Tokens:updateRowsPerPage", "
             if($('token-grid').length > 0){
                 reinstallParticipantsFilterDatePicker();

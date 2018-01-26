@@ -111,6 +111,7 @@ class NotificationController extends Survey_Common_Action
      * @param int|null $surveyId
      * @param bool $showLoader If true, show spinning loader instead of messages (fetch them using ajax)
      * @return string HTML
+     * @throws CException
      */
     public static function getMenuWidget($surveyId = null, $showLoader = false)
     {
@@ -127,7 +128,7 @@ class NotificationController extends Survey_Common_Action
         $params = array(
             'sa' => 'clearAllNotifications',
         );
-        if ($surveyId!==null) {
+        if ($surveyId !== null) {
             $params['surveyId'] = $surveyId;
         }
         $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', $params);

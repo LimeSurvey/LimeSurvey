@@ -207,16 +207,6 @@ var ConsoleShim = function () {
             this.log(args);
         }
     }, {
-        key: 'err',
-        value: function err() {
-            this.error.apply(this, arguments);
-        }
-    }, {
-        key: 'debug',
-        value: function debug() {
-            this.trace.apply(this, arguments);
-        }
-    }, {
         key: 'warn',
         value: function warn() {
             var args = this._insertParamToArguments(arguments);

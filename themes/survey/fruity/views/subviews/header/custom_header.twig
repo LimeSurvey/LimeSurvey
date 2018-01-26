@@ -68,23 +68,49 @@
     {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
         .checkbox-item input[type="checkbox"]:checked + label::after{
             animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
-            animation-duration: {{ aSurveyInfo.options.checkboxanimationduration  }}s;
+            animation-duration: {{ aSurveyInfo.options.checkboxanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .checkbox-item input[type="checkbox"] + label::after{
+            display: none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animateradio == "on" ) %}
         .radio-item input[type="radio"]:checked + label::after{
             animation-name: {{ aSurveyInfo.options.radioanimation  }};
-            animation-duration: {{ aSurveyInfo.options.radioanimationduration  }}s;
+            animation-duration: {{ aSurveyInfo.options.radioanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .radio-item input[type="radio"] + label::after{
+            display:none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animatequestion == "on" ) %}
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
-            animation-duration: {{ aSurveyInfo.options.questionanimationduration  }}s; 
+            animation-duration: {{ aSurveyInfo.options.questionanimationduration }}ms; 
             animation-fill-mode: both;
         }
     {% endif %}
@@ -92,7 +118,7 @@
     {% if (aSurveyInfo.options.animatealert == "on" ) %}
         .question-container {
             animation-name: {{ aSurveyInfo.options.alertanimation  }};
-            animation-duration: {{ aSurveyInfo.options.alertanimationduration  }}s;
+            animation-duration: {{ aSurveyInfo.options.alertanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}
@@ -100,7 +126,7 @@
     {% if (aSurveyInfo.options.animatebody == "on" ) %}
         #outerframeContainer {
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
-            animation-duration: {{ aSurveyInfo.options.bodyanimationduration  }}s;
+            animation-duration: {{ aSurveyInfo.options.bodyanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}

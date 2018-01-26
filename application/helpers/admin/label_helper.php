@@ -17,6 +17,9 @@
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnGlobal
 
+/**
+ * @param integer $lid
+ */
 function updateset($lid)
 {
 
@@ -58,40 +61,29 @@ function updateset($lid)
     }
 
     // If languages are removed, delete labels for these languages
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('lid' => $lid));
-    $langcriteria = new CDbCriteria();
-    foreach ($dellangidsarray as $dellangid) {
-            $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
-    }
-    $criteria->mergeWith($langcriteria);
-
     if (!empty($dellangidsarray)) {
-            Label::model()->deleteAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->addColumnCondition(array('lid' => $lid));
+        $langcriteria = new CDbCriteria();
+        foreach ($dellangidsarray as $sDeleteLanguage) {
+            $langcriteria->addColumnCondition(array('labelL10ns.language' => $sDeleteLanguage), 'OR');
+        }
+        $criteria->mergeWith($langcriteria);
+debugbreak();
+        $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
+        foreach ($aLabels as $aLabel) {
+            foreach ($aLabel->labelL10ns as $aLabelL10ns) {
+                $aLabelL10ns->delete();
+            }
+        } 
     }
+    
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
     $labelset->languages = implode(' ', $newlanidarray);
     $labelset->save();
 }
-
-/**
-* Deletes a label set alog with its labels
-*
-* @param mixed $lid Label ID
-* @return boolean Returns always true
-*/
-function deletelabelset($lid)
-{
-    $query = "DELETE FROM {{labels}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
-    $query = "DELETE FROM {{labelsets}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
-    return true;
-}
-
-
 
 function insertlabelset()
 {
@@ -109,6 +101,9 @@ function insertlabelset()
     }
 }
 
+/**
+ * @param null|integer $lid
+ */
 function modlabelsetanswers($lid)
 {
 
@@ -128,31 +123,32 @@ function modlabelsetanswers($lid)
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc()) {
-        $data = json_decode(stripslashes($sPostData));
+        $data = json_decode(stripslashes($sPostData), true);
     } else {
-        $data = json_decode($sPostData);
+        $data = json_decode($sPostData, true);
     }
 
     if ($ajax) {
             $lid = insertlabelset();
     }
     $aErrors = array();
-    if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'})) {
+    if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
 
-        $query = "DELETE FROM {{labels}} WHERE lid = '$lid'";
-
-        Yii::app()->db->createCommand($query)->execute();
-
-        foreach ($data->{'codelist'} as $index=>$codeid) {
+        // First delete all labels without corresponding code
+        $aLabels = Label::model()->findAllByAttributes(['lid'=>$lid]);
+        foreach ($aLabels as $aLabel) {
+//            if {}
+        }
+        debugbreak();
+        foreach ($data['codelist'] as $index=>$codeid) {
 
             $codeObj = $data->$codeid;
 
 
-            $actualcode = $codeObj->{'code'};
-            //$codeid = dbQuoteAll($codeid,true);
+            $actualcode = $codeObj['code'];
 
-            $assessmentvalue = (int) ($codeObj->{'assessmentvalue'});
-            foreach ($data->{'langs'} as $lang) {
+            $assessmentvalue = (int) ($codeObj['assessmentvalue']);
+            foreach ($data['langs'] as $lang) {
 
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;

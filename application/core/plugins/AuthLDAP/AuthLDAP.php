@@ -262,7 +262,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $rescount = ldap_count_entries($ldapconn, $dnsearchres);
             if ($rescount == 1) {
                 $userentry = ldap_get_entries($ldapconn, $dnsearchres);
-                $new_email = flattenText($userentry[0][$mailattribute][0]);
+                $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
                 $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
                 break;
             }
@@ -288,14 +288,13 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         } else {
             $parentID = 1;
         }
-        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return null;
         }
-
         Permission::model()->setGlobalPermission($iNewUID, 'auth_ldap');
 
         $oEvent->set('newUserID', $iNewUID);
@@ -422,7 +421,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'AuthLDAP') {
             return;
         }
-
+        /* unsubscribe from beforeHasPermission, else updating event */
+        $this->unsubscribe('beforeHasPermission');
         // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
@@ -444,8 +444,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($user !== null) {
             //If user cannot login via LDAP: setAuthFailure
             if (($user->uid == 1 && !$this->get('allowInitialUser'))
-                ||
-                !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
+                || !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
             ) {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
                 return;

@@ -16,116 +16,13 @@ if (!defined('BASEPATH')) {
 */
 
 /**
- *
- * @param string $sql
- * @param array|bool $inputarr
- * @param boolean $silent
- * @return bool|CDbDataReader
- * @throws Exception
- */
-function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
-{
-    $error = '';
-    try {
-        if ($inputarr) {
-            $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
-        } else {
-            $dataset = Yii::app()->db->createCommand($sql)->query();
-
-        }
-    } catch (CDbException $e) {
-        $error = $e->getMessage();
-        $dataset = false;
-    }
-
-    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
-        // Exception is better than safeDie, because you can see the backtrace.
-        throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
-    }
-    return $dataset;
-}
-
-
-/**
- * @param string $sql
- */
-function dbQueryOrFalse($sql)
-{
-    try {
-        $dataset = Yii::app()->db->createCommand($sql)->query();
-    } catch (CDbException $e) {
-        $dataset = false;
-    }
-    return $dataset;
-}
-
-
-/**
- * @param string $sql
- * @return bool|CDbDataReader
- */
-function dbSelectLimitAssoc($sql, $numrows = 0, $offset = 0, $inputarr = false, $dieonerror = true)
-{
-    $query = Yii::app()->db->createCommand($sql);
-    if ($numrows) {
-        if ($offset) {
-            $query->limit($numrows, $offset);
-        } else {
-            $query->limit($numrows, 0);
-        }
-    }
-    if ($inputarr) {
-        $query->bindValues($inputarr); //Checked
-    }
-    try {
-        $dataset = $query->query();
-    } catch (CDbException $e) {
-        $dataset = false;
-    }
-    if (!$dataset && $dieonerror) {
-        safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);
-    }
-    return $dataset;
-}
-
-
-/**
- * This functions quotes fieldnames accordingly
- *
- * @param mixed $id Fieldname to be quoted
- * @return mixed|string
- */
-function dbQuoteID($id)
-{
-    switch (Yii::app()->db->getDriverName()) {
-        case "mysqli" :
-        case "mysql" :
-            return "`".$id."`";
-        case "dblib":
-        case "mssql" :
-        case "sqlsrv" :
-            return "[".$id."]";
-        case "pgsql":
-            return "\"".$id."\"";
-        default:
-            return $id;
-    }
-}
-
-/**
- * Return the random function to use in ORDER BY sql statements
+ * Return the database-specific random function to use in ORDER BY sql statements
  *
  * @return string
  */
 function dbRandom()
 {
     $driver = Yii::app()->db->getDriverName();
-
-    // Looked up supported db-types in InstallerConfigForm.php
-    // Use below statement to find them
-    //$configForm = new InstallerConfigForm();
-    //$dbTypes    = $configForm->db_names; //Supported types are in this array
-
     switch ($driver) {
         case 'dblib':
         case 'mssql':
@@ -154,7 +51,7 @@ function dbRandom()
 
 /**
  *  Return a sql statement for finding LIKE named tables
- *  Be aware that you have to escape underscor chars by using a backslash
+ *  Be aware that you have to escape underscore chars by using a backslash
  * otherwise you might get table names returned you don't want
  *
  * @param mixed $table

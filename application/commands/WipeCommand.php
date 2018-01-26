@@ -56,6 +56,8 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{templates}}";
             Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "truncate table {{template_configuration}}";
+            Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{participants}}";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{participant_attribute_names}}";
@@ -93,6 +95,13 @@ class WipeCommand extends CConsoleCommand
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
             Yii::app()->db->createCommand($actquery)->execute();
 
+            foreach (LsDefaultDataSets::getTemplatesData() as $template) {
+                Yii::app()->db->createCommand()->insert("{{templates}}", $template);
+            }
+            foreach (LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
+                Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
+            }
+
             $surveyidresult = dbGetTablesLike("tokens%");
             foreach ($surveyidresult as $sv) {
                 Yii::app()->db->createCommand("drop table ".$sv)->execute();
@@ -113,6 +122,8 @@ class WipeCommand extends CConsoleCommand
 
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
             SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
+            SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false);
+            SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
         } else {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
