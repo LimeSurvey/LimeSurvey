@@ -434,10 +434,12 @@ function getStandardsReplacementFields($thissurvey)
         $_datestamp = '-';
     }
 
+    $_assessment_current_total = '';
     if (!empty($thissurvey['aAssessments'])){
-        $_assessment_current_total = $thissurvey['aAssessments']['total'];
-    }else{
-        $_assessment_current_total = '';
+        if (!empty($thissurvey['aAssessments']['total'])){
+            $_assessment_current_total = $thissurvey['aAssessments']['total'];
+        }
+
     }
 
 
@@ -476,7 +478,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
-    
+
     return $coreReplacements;
 }
 

@@ -75,7 +75,6 @@ class SurveyRuntimeHelper
     // Boolean helpers
     private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
 
-
     // Group
     private $gid;
     private $groupname;
@@ -219,7 +218,7 @@ class SurveyRuntimeHelper
                                         $upload_file = true;
                     }
                 } //end iteration
-            } 
+            }
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
@@ -1145,6 +1144,18 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
+
+             $aStandardsReplacementFields = array();
+             if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                 // process string anyway so that it can be pretty-printed
+                 $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+
+                 $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+
+             }
+
+             $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+
 
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
