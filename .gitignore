@@ -70,6 +70,7 @@ chromedriver
 
 # Some global "temporary files" (see
 *~
+*.map
 ehthumbs.db
 Thumbs.db
 
