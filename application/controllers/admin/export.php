@@ -1288,7 +1288,7 @@ class export extends Survey_Common_Action
 
     /**
      * Generate an TSV (tab-separated value) file for the survey structure
-     * @param type $surveyid
+     * @param integer $surveyid
      */
     private function _exporttsv($surveyid)
     {

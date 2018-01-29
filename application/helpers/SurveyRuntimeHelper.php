@@ -1139,7 +1139,7 @@ class SurveyRuntimeHelper
             $blocks = array();
 
             foreach ($event->getAllContent() as $blockData) {
-                /* @var $blockData PluginEventContent */
+                /* @var $blockData \LimeSurvey\PluginManager\PluginEventContent */
                 $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 

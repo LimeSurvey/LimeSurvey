@@ -3054,7 +3054,7 @@ class userstatistics_helper
                 $linefeed = "<br />\n";
                 break;
             default:
-                throw new \CInvalidArgumentException('Unknown output type: '.$outputType);
+                throw new \Exception('Unknown output type: '.$outputType);
                 break;
         }
 

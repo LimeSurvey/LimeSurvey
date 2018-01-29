@@ -6,6 +6,8 @@
 */
 require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 
+use LimeSurvey\PluginManager\LimesurveyApi;
+
 class ConsoleApplication extends CConsoleApplication
 {
     protected $config = array();
