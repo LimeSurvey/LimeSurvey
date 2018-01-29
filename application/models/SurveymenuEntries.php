@@ -71,7 +71,7 @@ class SurveymenuEntries extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'menu' => array(self::BELONGS_TO, 'Surveymenu', 'menu_id', 'together' => true),
-            'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
         );
     }
 
