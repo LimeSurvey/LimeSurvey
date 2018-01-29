@@ -43,6 +43,33 @@ class SurveyActivatorTest extends TestBaseClass
         $this->assertTrue($result['status']==='OK');
     }
 
+    public function testParticipantsTableCreated(){
+        $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithTimingsID.'.lss';
+        parent::importSurvey($file);
+        $activator = new \SurveyActivator(self::$testSurvey);
+        $result = $activator->activate();
+        $table = Yii::app()->db->schema->getTable(self::$testSurvey->responsesTableName);
+        $this->assertNotEmpty($table);
+    }
+
+    public function testTimingsTableCreated(){
+        $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithTimingsID.'.lss';
+        parent::importSurvey($file);
+        $activator = new \SurveyActivator(self::$testSurvey);
+        $result = $activator->activate();
+        $table = Yii::app()->db->schema->getTable(self::$testSurvey->timingsTableName);
+        $this->assertNotEmpty($table);
+    }
+
+    public function testTimingsTableNotCreated(){
+        $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithoutTimingsID.'.lss';
+        parent::importSurvey($file);
+        $activator = new \SurveyActivator(self::$testSurvey);
+        $result = $activator->activate();
+        $table = Yii::app()->db->schema->getTable(self::$testSurvey->timingsTableName);
+        $this->assertEmpty($table);
+    }
+
     public function testActivateWithoutTimings(){
         $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithoutTimingsID.'.lss';
         parent::importSurvey($file);
