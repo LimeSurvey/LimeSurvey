@@ -1711,11 +1711,19 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     if ($insertdata) {
                         XSSFilterArray($insertdata);
                     }
+                    $questionAttribute = new QuestionAttribute();
+                    $questionAttribute->attributes = $insertdata;
+                    if(!$questionAttribute->save()){
+                        safeDie(gT("Error").": Failed to insert data[7]<br />");
+                    }
 
-                    $result = QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[7]<br />");
                 }
             } else {
-                $result = QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[8]<br />");
+                $questionAttribute = new QuestionAttribute();
+                $questionAttribute->attributes = $insertdata;
+                if(!$questionAttribute->save()){
+                    safeDie(gT("Error").": Failed to insert data[8]<br />");
+                }
             }
 
             $results['question_attributes']++;
@@ -2727,19 +2735,17 @@ function TSVImportSurvey($sFullFilePath)
                             break;
                         default:
                             if ($key != '' && $val != '') {
-                                $insertdata = array();
-                                $insertdata['qid'] = $qid;
+                                $questionAttribute = new QuestionAttribute();
+                                $questionAttribute->qid = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
                                 $aAttributeList[$qtype] = questionHelper::getQuestionAttributesSettings($qtype);
                                 if ($aAttributeList[$qtype][$key]['i18n']) {
-                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                                } else {
-                                    $insertdata['language'] = null;
+                                    $questionAttribute->language = (isset($row['language']) ? $row['language'] : $baselang);
                                 }
-                                $insertdata['attribute'] = $key;
-                                $insertdata['value'] = $val;
-                                $result = QuestionAttribute::model()->insertRecords($insertdata); //
-                                if (!$result) {
+                                $questionAttribute->attribute = $key;
+                                $questionAttribute->value = $val;
+
+                                if (!$questionAttribute->save()) {
                                     $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert question attribute").". ".gT("Text file row number ").$rownumber." ({$key})";
                                     break;
                                 }
