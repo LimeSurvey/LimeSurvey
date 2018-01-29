@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
 
 /**
  * This file contains package definition for third party libraries.

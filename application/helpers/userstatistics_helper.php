@@ -1903,7 +1903,7 @@ class userstatistics_helper
                 $i = 0;
 
                 while (isset($gdata[$i])) {
-                    if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
+                    if (isset($showaggregated_indice_table[$i]) &&          $showaggregated_indice_table[$i] == "aggregated") {
 // do nothing, we don't rewrite aggregated results
                         // or at least I don't know how !!! (lemeur)
                     } else {
