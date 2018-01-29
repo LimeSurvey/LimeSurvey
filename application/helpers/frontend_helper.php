@@ -1255,7 +1255,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
             $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled'])) ? $aEnterTokenData['bCaptchaEnabled'] : '';
-            if($aForm['bCaptchaEnabled']) {
+            if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
             // Rendering layout_user_forms.twig

@@ -137,10 +137,10 @@ class Tutorial extends LSActiveRecord
         ));
     }
 
-    public function findByName($tutorialName){
+    public function findByName($tutorialName) {
         $defaultTutorials = LsDefaultDataSets::getTutorialData();
-        if(array_key_exists($tutorialName, $defaultTutorials)){
-            $oTutorial =  new Tutorial();
+        if (array_key_exists($tutorialName, $defaultTutorials)) {
+            $oTutorial = new Tutorial();
             $oTutorial->setAttributes($defaultTutorials[$tutorialName]);
             return $oTutorial;
         }
@@ -151,7 +151,7 @@ class Tutorial extends LSActiveRecord
     {
         $aDefaultTutorials = LsDefaultDataSets::getTutorialData();
         $result = [];
-        foreach( $aDefaultTutorials as $aDefaultTutorial){
+        foreach ($aDefaultTutorials as $aDefaultTutorial) {
             $oTutorial = new Tutorial();
             $oTutorial->setAttributes($aDefaultTutorial);
             $result[] = $oTutorial;
@@ -162,7 +162,7 @@ class Tutorial extends LSActiveRecord
     public function getActiveTutorials()
     {
         $aTutorials = self::model()->findAll('active=1');
-        if(!empty($aTutorials)){
+        if (!empty($aTutorials)) {
             return array_merge($aTutorials, $this->getDefaultTutorials());
         }
         
@@ -186,7 +186,7 @@ class Tutorial extends LSActiveRecord
     {
         $aSteps = [];
         
-        if ($this->tid === null) { 
+        if ($this->tid === null) {
             $defaultEntries = LsDefaultDataSets::getTutorialEntryData();
             $this->tid = $tutorialName;
             foreach ($defaultEntries[$tutorialName] as $aTutorialMapEntry) {

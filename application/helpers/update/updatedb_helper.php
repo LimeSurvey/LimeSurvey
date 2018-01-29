@@ -835,9 +835,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (empty($vanillaConf)) {
                 $vanillaConfData = [
                     'template_name'     =>  'vanilla',
-                    'sid'               =>  NULL,
-                    'gsid'              =>  NULL,
-                    'uid'               =>  NULL,
+                    'sid'               =>  null,
+                    'gsid'              =>  null,
+                    'uid'               =>  null,
                     'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
                     'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
@@ -846,8 +846,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'cssframework_css'  => '{}',
                     'cssframework_js'   => '',
                     'packages_to_load'  => '{"add":["pjax","font-noto"]}',
-                    'packages_ltr'      => NULL,
-                    'packages_rtl'      => NULL
+                    'packages_ltr'      => null,
+                    'packages_rtl'      => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
             }
@@ -888,9 +888,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             } else {
                 $fruityConfData = [
                     'template_name'     =>  'fruity',
-                    'sid'               =>  NULL,
-                    'gsid'              =>  NULL,
-                    'uid'               =>  NULL,
+                    'sid'               =>  null,
+                    'gsid'              =>  null,
+                    'uid'               =>  null,
                     'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                     'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
@@ -899,8 +899,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'cssframework_css'  => '{}',
                     'cssframework_js'   => '',
                     'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
-                    'packages_ltr'      => NULL,
-                    'packages_rtl'      => NULL
+                    'packages_ltr'      => null,
+                    'packages_rtl'      => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $fruityConfData);
             }
@@ -928,9 +928,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             } else {
                 $bootswatchConfData = [
                     'template_name'     =>  'bootswatch',
-                    'sid'               =>  NULL,
-                    'gsid'              =>  NULL,
-                    'uid'               =>  NULL,
+                    'sid'               =>  null,
+                    'gsid'              =>  null,
+                    'uid'               =>  null,
                     'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
                     'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
@@ -939,8 +939,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
                     'cssframework_js'   => '',
                     'packages_to_load'  => '{"add":["pjax","font-noto"]}',
-                    'packages_ltr'      => NULL,
-                    'packages_rtl'      => NULL
+                    'packages_ltr'      => null,
+                    'packages_rtl'      => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
             }
@@ -977,7 +977,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'<p>'
             .htmlspecialchars($e->getMessage())
             .'</p><br />'
-            . sprintf(gT('File %s, line %s.'),$file,$trace[1]['line'])
+            . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
         return false;
     }
@@ -1271,7 +1271,7 @@ function createSurveyMenuTable(CDbConnection $oDB)
     $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
     $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
 
-    foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+    foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
     }
 

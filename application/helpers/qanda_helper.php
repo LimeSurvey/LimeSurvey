@@ -778,7 +778,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = array();
 
-    $aRows = array();;
+    $aRows = array(); ;
     for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {

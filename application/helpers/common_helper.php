@@ -181,7 +181,7 @@ function getSurveyList($bReturnArray = false)
             ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes,$result->languagesettings[$result->language]->attributes);
+            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
         }
         
         usort($surveynames, function($a, $b)
@@ -3055,7 +3055,7 @@ function stripJavaScript($sContent)
 function showJavaScript($sContent)
 {
     $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
-        function($matches){
+        function($matches) {
             return htmlspecialchars($matches[0]);
         }, $sContent);
     return $text;
@@ -3435,7 +3435,7 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, function($a,$b) {return strlen($a) < strlen($b);});
+    uksort($fieldnames, function($a, $b) {return strlen($a) < strlen($b); });
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;
