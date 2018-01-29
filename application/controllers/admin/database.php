@@ -794,45 +794,45 @@ class database extends Survey_Common_Action
             foreach ($languagelist as $langname) {
                 if ($langname) {
                     $data = array();
-                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, NULL);
-                    $sURL = Yii::app()->request->getPost('url_'.$langname, NULL);
-                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, NULL);
-                    $description = Yii::app()->request->getPost('description_'.$langname, NULL);
-                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, NULL);
-                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, NULL);
-                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, NULL);
-                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, NULL);
+                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, null);
+                    $sURL = Yii::app()->request->getPost('url_'.$langname, null);
+                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, null);
+                    $description = Yii::app()->request->getPost('description_'.$langname, null);
+                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, null);
+                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, null);
+                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
+                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
                     
-                    if ($short_title !== NULL) {
+                    if ($short_title !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
                     }
-                    if ($description !== NULL) {
+                    if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $description = $this->oFixCKeditor->fixCKeditor($description);
                         $data['surveyls_description'] = $description;
                     }
-                    if ($welcome !== NULL) {
+                    if ($welcome !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $welcome = $this->oFixCKeditor->fixCKeditor($welcome);
                         $data['surveyls_welcometext'] = $welcome;
                     }
-                    if ($endtext !== NULL) {
+                    if ($endtext !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
                         $data['surveyls_endtext'] = $endtext;
                     }
-                    if ($sURL !== NULL) {
+                    if ($sURL !== null) {
                         $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
                     }
-                    if ($sURLDescription !== NULL) {
+                    if ($sURLDescription !== null) {
                         $data['surveyls_urldescription'] = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
                     }
-                    if ($dateformat !== NULL) {
+                    if ($dateformat !== null) {
                         $data['surveyls_dateformat'] = $dateformat;
                     }
-                    if ($numberformat !== NULL) {
+                    if ($numberformat !== null) {
                         $data['surveyls_numberformat'] = $numberformat;
                     }
 
@@ -1281,8 +1281,8 @@ class database extends Survey_Common_Action
                     if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
                         $aSQIDMappings = [];
                         foreach ($oOldQuestion->subquestions as $qr1) {
-                            $arQuestion=new Question();
-                            $arQuestion->attributes=$qr1->attributes;
+                            $arQuestion = new Question();
+                            $arQuestion->attributes = $qr1->attributes;
                             $arQuestion->parent_qid = $this->iQuestionID;
                             $oldqid = '';
                             if (isset($aSQIDMappings[$qr1->qid])) {

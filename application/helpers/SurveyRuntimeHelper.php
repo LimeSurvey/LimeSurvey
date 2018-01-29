@@ -147,7 +147,7 @@ class SurveyRuntimeHelper
             }
 
             $upload_file = false;
-            if(isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
+            if (isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
                 foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
                     ++$qnumber;
                     $ia[9] = $qnumber; // incremental question count;
@@ -1145,16 +1145,16 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
-             $aStandardsReplacementFields = array();
-             if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
-                 // process string anyway so that it can be pretty-printed
-                 $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+                $aStandardsReplacementFields = array();
+                if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                    // process string anyway so that it can be pretty-printed
+                    $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
 
-                 $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
 
-             }
+                }
 
-             $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
 
 
 

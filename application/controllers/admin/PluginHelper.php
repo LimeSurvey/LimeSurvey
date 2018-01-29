@@ -22,10 +22,10 @@ class PluginHelper extends Survey_Common_Action
         $aData['title_bar']['title'] = "";
         $aData['surveybar']['buttons']['view'] = false;
         $aData['activated'] = null;
-        if($surveyid) {
+        if ($surveyid) {
             $surveyid = sanitize_int($surveyid);
             $oSurvey = Survey::model()->findByPk($surveyid);
-            if($oSurvey) {
+            if ($oSurvey) {
                 $aData['surveybar']['buttons']['view'] = true;
                 $aData['title_bar']['title'] = viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title)." (".gT("ID").":".$surveyid.")";
                 $aData['activated'] = $oSurvey->active;
