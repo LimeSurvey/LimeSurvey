@@ -1748,8 +1748,15 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                             XSSFilterArray($insertdata);
             }
+
+            $defaultValue = new DefaultValue();
+            $defaultValue->attributes = $insertdata;
+
             // now translate any links
-            $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
+            if (!$defaultValue->save()) {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            }
+
             $results['defaultvalues']++;
         }
     }
@@ -1901,7 +1908,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result = QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
+            $quotaLanguageSetting = new QuotaLanguageSetting();
+            $quotaLanguageSetting->attributes = $insertdata;
+            if (!$quotaLanguageSetting->save()) {
+                safeDie(gT("Error").": Failed to insert data<br />");
+            }
             $results['quotals']++;
         }
     }
@@ -1922,7 +1933,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['targetqid'] = $aQIDReplacements[(int) $insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result = SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error").": Failed to insert data[14]<br />");
+            $surveyUrlParameter = new SurveyURLParameter();
+            $surveyUrlParameter->attributes = $insertdata;
+            if(!$surveyUrlParameter->save()){
+                safeDie(gT("Error").": Failed to insert data[14]<br />");
+            }
             $results['survey_url_parameters']++;
         }
     }
@@ -2663,7 +2678,10 @@ function TSVImportSurvey($sFullFilePath)
                 } else {
                     $insertdata['group_order'] = $gseq;
                 }
-                $newgid = QuestionGroup::model()->insertRecords($insertdata);
+
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+                $newgid = $questionGroup->save();
                 if (!$newgid) {
                     $results['error'][] = gT("Error")." : ".gT("Failed to insert group").". ".gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
@@ -2765,8 +2783,11 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['qid'] = $qid;
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['defaultvalue'] = $row['default'];
-                    $result = DefaultValue::model()->insertRecords($insertdata);
-                    if (!$result) {
+
+                    $defaultValue = new DefaultValue();
+                    $defaultValue->attributes = $insertdata;
+
+                    if (!$defaultValue->save()) {
                         $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                         break;
                     }
@@ -2789,8 +2810,10 @@ function TSVImportSurvey($sFullFilePath)
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
-                            $result = DefaultValue::model()->insertRecords($insertdata);
-                            if (!$result) {
+
+                            $defaultValue = new DefaultValue();
+                            $defaultValue->attributes = $insertdata;
+                            if (!$defaultValue->save()) {
                                 $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                                 break;
                             }
@@ -2845,8 +2868,11 @@ function TSVImportSurvey($sFullFilePath)
                         $insertdata['scale_id'] = $scale_id;
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
-                        $result = DefaultValue::model()->insertRecords($insertdata);
-                        if (!$result) {
+
+                        $defaultValue = new DefaultValue();
+                        $defaultValue->attributes = $insertdata;
+
+                        if (!$defaultValue->save()) {
                             $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                             break;
                         }

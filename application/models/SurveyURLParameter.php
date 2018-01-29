@@ -83,6 +83,7 @@ class SurveyURLParameter extends LSActiveRecord
     /**
      * @param array $aData
      * @return mixed
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
      */
     public function insertRecord($aData)
     {
