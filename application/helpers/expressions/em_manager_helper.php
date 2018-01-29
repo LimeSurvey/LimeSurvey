@@ -8018,6 +8018,9 @@
 
         }
 
+        /**
+         * @param array $vars
+         */
         public static function setTempVars($vars)
         {
             $LEM =& LimeExpressionManager::singleton();
