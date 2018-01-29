@@ -419,10 +419,10 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid, $language)
     {
-        $query = "SELECT questions.*, groups.group_name, groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as groups"
-            ." WHERE groups.gid=questions.gid"
-            ." AND groups.language=:language1"
+        $query = "SELECT questions.*, question_groups.group_name, question_groups.group_order"
+            ." FROM {{questions}} as questions, {{groups}} as question_groups"
+            ." WHERE question_groups.gid=questions.gid"
+            ." AND question_groups.language=:language1"
             ." AND questions.language=:language2"
             ." AND questions.parent_qid=0"
             ." AND questions.sid=:sid";

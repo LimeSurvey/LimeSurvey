@@ -1542,12 +1542,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
+    ." FROM {{questions}} as questions, {{groups}} as question_groups"
+    ." WHERE questions.gid=question_groups.gid AND "
     ." questions.sid=$surveyid AND "
     ." questions.language='{$sLanguage}' AND "
     ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    ." question_groups.language='{$sLanguage}' ";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
