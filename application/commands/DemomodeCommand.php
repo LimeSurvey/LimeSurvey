@@ -92,7 +92,8 @@ class DemomodeCommand extends CConsoleCommand
         }
     }
 
-    private function _resetFiles() {
+    private function _resetFiles()
+    {
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
@@ -112,7 +113,7 @@ class DemomodeCommand extends CConsoleCommand
         $aSamplesurveys = scandir($documentationSurveyPath);
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
-            $result = NULL;
+            $result = null;
             $result = XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
             if (in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])) {
                 $surveysToActivate[] = $result['newsid'];
