@@ -289,6 +289,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
+            // FIXME undefined function getQuestionAttributeValues
             $qidattributes = getQuestionAttributeValues($field["qid"]);
         }
 

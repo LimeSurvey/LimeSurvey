@@ -254,7 +254,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
-     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * @return mixed On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
     public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
     {

@@ -69,7 +69,8 @@ function updateset($lid)
             $langcriteria->addColumnCondition(array('labelL10ns.language' => $sDeleteLanguage), 'OR');
         }
         $criteria->mergeWith($langcriteria);
-debugbreak();
+        // FIXME undefined function
+        debugbreak();
         $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
         foreach ($aLabels as $aLabel) {
             foreach ($aLabel->labelL10ns as $aLabelL10ns) {
@@ -139,6 +140,7 @@ function modlabelsetanswers($lid)
         foreach ($aLabels as $aLabel) {
 //            if {}
         }
+        // FIXME undefined function
         debugbreak();
         foreach ($data['codelist'] as $index=>$codeid) {
 

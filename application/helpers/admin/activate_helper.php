@@ -64,6 +64,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
             SET cqid=$iNewQID,
             cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
             WHERE cqid=$iQuestionID";
+            // FIXME undefined function db_execute_assosc()
             db_execute_assosc($sQuery);
         }
     }
