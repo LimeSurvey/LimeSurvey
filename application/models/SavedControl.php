@@ -85,11 +85,6 @@ class SavedControl extends LSActiveRecord
         return $record->deleteAll($criteria);
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
     public function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data);
