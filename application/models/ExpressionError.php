@@ -58,6 +58,7 @@ class ExpressionError extends LSActiveRecord
     /**
      * @param array $data
      * @return mixed
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
