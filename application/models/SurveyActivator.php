@@ -218,7 +218,7 @@ class SurveyActivator
     protected function prepareTimingsTable() {
         $timingsfieldmap = createTimingsFieldMap($this->survey->primaryKey, "full", false, false, $this->survey->language);
         $aTimingTableDefinition = array();
-        $aTimingTableDefinition['id'] = $this->tableDefinition;
+        $aTimingTableDefinition['id'] = $this->tableDefinition['id'];
         foreach ($timingsfieldmap as $field=>$fielddata) {
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
@@ -373,7 +373,7 @@ class SurveyActivator
                 Yii::app()->db->createCommand()->createTable($sTableName, $this->timingsTableDefinition);
                 Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
             } catch (\Exception $e) {
-                return false;
+                throw $e;
             }
 
         }
