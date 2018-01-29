@@ -129,7 +129,6 @@ class database extends Survey_Common_Action
             $this->actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID);
         }
 
-
         //$this->getController()->redirect(array("/admin"), "refresh");
     }
 
@@ -865,27 +864,32 @@ class database extends Survey_Common_Action
             Yii::app()->loadHelper('surveytranslator');
             $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
             Yii::app()->loadLibrary('Date_Time_Converter');
+
+            $unfilteredStartdate = App()->request->getPost('startdate', null);
             $startdate = $this->_filterEmptyFields($oSurvey, 'startdate');
-            if (trim($startdate) == "") {
-                $startdate = null;
+            if ($unfilteredStartdate === null) {
+                // Not submitted.
+            } elseif (trim($unfilteredStartdate) == "") {
+                $oSurvey->startdate = "";
             } else {
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i');
                 $startdate = $datetimeobj->convert("Y-m-d H:i:s");
+                $oSurvey->startdate = $startdate;
             }
+
+            $unfilteredExpires = App()->request->getPost('expires', null);
             $expires = $this->_filterEmptyFields($oSurvey, 'expires');
-            if (trim($expires) == "") {
-                $expires = null;
+            if ($unfilteredExpires === null) {
+                // Not submitted.
+            } elseif (trim($unfilteredExpires) == "") {
+                // Must not convert if empty.
+                $oSurvey->expires = "";
             } else {
-                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i');
                 $expires = $datetimeobj->convert("Y-m-d H:i:s");
+                $oSurvey->expires = $expires;
             }
-
-            //$oSurvey, $fieldArray, $newValue
-            $oSurvey->expires = $expires;
-            $oSurvey->startdate = $startdate;
-
-
 
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
 
