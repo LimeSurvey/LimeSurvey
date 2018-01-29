@@ -61,6 +61,17 @@ class SurveyActivatorTest extends TestBaseClass
         $this->assertNotEmpty($table);
     }
 
+    public function testCreateTokenTable(){
+        $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithTimingsID.'.lss';
+        parent::importSurvey($file);
+        $activator = new \SurveyActivator(self::$testSurvey);
+        $result = $activator->activate();
+        \Token::createTable(self::$surveyId);
+        $table = Yii::app()->db->schema->getTable(self::$testSurvey->tokensTableName);
+        $this->assertNotEmpty($table);
+    }
+
+
     public function testTimingsTableNotCreated(){
         $file = self::$surveysFolder.DIRECTORY_SEPARATOR.'limesurvey_survey_'.self::$surveyWithoutTimingsID.'.lss';
         parent::importSurvey($file);
