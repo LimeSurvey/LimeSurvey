@@ -2853,8 +2853,10 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['assessment_value'] = (int) (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
-                $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
-                if (!$result) {
+                $answer = new Answer();
+                $answer->attributes = $insertdata;
+
+                if (!$answer->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Could not insert answer").". ".gT("Text file row number ").$rownumber;
                 }
                 $results['answers']++;

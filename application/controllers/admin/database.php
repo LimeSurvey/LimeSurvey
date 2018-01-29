@@ -1321,15 +1321,12 @@ class database extends Survey_Common_Action
                         $r1 = Answer::model()->getAnswers((int) returnGlobal('oldqid'));
                         $aAnswerOptions = $r1->readAll();
                         foreach ($aAnswerOptions as $qr1) {
-                            Answer::model()->insertRecords(array(
-                                'qid' => $this->iQuestionID,
-                                'code' => $qr1['code'],
-                                'answer' => $qr1['answer'],
-                                'assessment_value' => $qr1['assessment_value'],
-                                'sortorder' => $qr1['sortorder'],
-                                'language' => $qr1['language'],
-                                'scale_id' => $qr1['scale_id']
-                            ));
+                            $newAnswer = new Answer();
+                            $newAnswer->attributes = $qr1;
+                            $newAnswer->qid = $this->iQuestionID;
+                            if(!$newAnswer->save()){
+                                Yii::log(\CVarDumper::dumpAsString($newAnswer->getErrors()), 'warning', __METHOD__);
+                            }
                         }
                     }
 

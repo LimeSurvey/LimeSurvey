@@ -104,6 +104,11 @@ class Quota extends LSActiveRecord
         );
     }
 
+    /**
+     * @param $data
+     * @return bool|int
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     function insertRecords($data)
     {
         $quota = new self;
