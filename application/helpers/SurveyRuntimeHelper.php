@@ -304,9 +304,10 @@ class SurveyRuntimeHelper
             $gid              = $gl['gid'];
             $aGroup           = array();
             $groupname        = $gl['group_name'];
+            // TODO: Add standard replacement fields to group name and description?
+            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
             $groupdescription = $gl['description'];
-
-
+            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
 
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
@@ -1769,7 +1770,7 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-
+                $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }
     }
