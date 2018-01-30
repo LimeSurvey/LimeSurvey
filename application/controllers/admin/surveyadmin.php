@@ -517,12 +517,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
-            // TODO: Called by Ajax, no point redirecting?
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
-        }
-
         $survey    = Survey::model()->findByPk($iSurveyID);
         $menus = $survey->getSurveyMenus($position);
         return Yii::app()->getController()->renderPartial(
