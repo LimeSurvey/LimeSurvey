@@ -182,6 +182,10 @@ class Survey extends LSActiveRecord
             $this->googleanalyticsapikeysetting = "G";
         }
 
+        $this->allowprev = getGlobalSetting('survey_allowprev');
+        $this->showxquestions = getGlobalSetting('survey_showxquestions');
+        $this->tokenanswerspersistence = getGlobalSetting('survey_tokenanswerspersistence');
+        $this->sendconfirmation = getGlobalSetting('survey_sendconfirmation');
 
         $this->template = Template::templateNameFilter(getGlobalSetting('defaulttheme'));
         $validator = new LSYii_Validators;
