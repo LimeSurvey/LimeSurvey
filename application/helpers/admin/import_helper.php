@@ -84,7 +84,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             unset($insertdata['language']);
         }
         if (!isset($aGIDReplacements[$oldgid])) {
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            $questionGroup = new QuestionGroup();
+            $questionGroup->attributes = $insertdata;
+            if(!$questionGroup->save()){
+                safeDie(gT("Error").": Failed to insert data [3]<br />");
+            }
+
+            $newgid = $questionGroup->gid;
+
             $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
             $results['groups']++;
         }
@@ -1332,7 +1339,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($insertdata['language']);
             }
             if (!isset($aGIDReplacements[$oldgid])) {
-                $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+                $questionGroup->sid = $iNewSID;
+                if(!$questionGroup->save()){
+                    safeDie(gT("Error").": Failed to insert data [3]<br />");
+                }
+
+                $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
             }
@@ -2663,11 +2677,14 @@ function TSVImportSurvey($sFullFilePath)
                 } else {
                     $insertdata['group_order'] = $gseq;
                 }
-                $newgid = QuestionGroup::model()->insertRecords($insertdata);
-                if (!$newgid) {
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+
+                if (!$questionGroup->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Failed to insert group").". ".gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
+                $newgid = $questionGroup->gid;
                 if (!isset($ginfo[$sGroupseq])) {
                     $results['groups']++;
                     $gid = $newgid;
