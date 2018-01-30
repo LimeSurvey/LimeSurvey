@@ -100,6 +100,9 @@ $config['survey_showxquestions'] = 'Y';
 $config['survey_tokenanswerspersistence'] = 'N';
 $config['survey_sendconfirmation'] = 'Y';
 
+// Question default settings
+$config['question_mandatory'] = 'N';
+
 // Experimental parameters, only change if you know what you're doing
 //
 // filterout_incomplete_answers
