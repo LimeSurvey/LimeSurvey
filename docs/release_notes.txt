@@ -35,6 +35,35 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.1.0 (build 180124) to 3.1.1 (build 180130) Jan 30, 2018
+-Fixed issue #13206: Unable to update advanced question setting after activation (markusfluer)
+-Fixed issue #12451: Problem when user exports to PDF (Carsten Schmitz)
+-Fixed issue #12815: Error after multiple question deleting (markusfluer)
+-Fixed issue #12990: Exporting non-response participants very slow - fix by DeveloperChris (Carsten Schmitz)
+-Fixed issue #13010: MySQL 8 reserved word used as table alias in query (Olle Haerstedt)
+-Fixed issue #13104: A lot of white space below answer list (LouisGac)
+-Fixed issue #13116: Can't edit survey list (LouisGac)
+-Fixed issue #13185: Rendering issue when adding new questions (Preview) (markusfluer)
+-Fixed issue #13219: Stars / Slider don't work anymore in 1-5 Single Choice Question since 3.0.5 (markusfluer)
+-Fixed issue #13225: VVImport not showing a result screen (Carsten Schmitz)
+-Fixed issue #13235: Copying Array question results in error (Carsten Schmitz)
+-Fixed issue #13239: Extended fruity variations cannot be changed in survey, only in admin theme editor (LouisGac)
+-Fixed issue #13241: Error when upgrading from 2.x and using MSSQL (Carsten Schmitz)
+-Fixed issue #13255: Problems with saving expiration date and start date (Olle Haerstedt)
+-Fixed issue #13258: Class 'Users' not found when changing menu entry permissions (Olle Haerstedt)
+-Fixed issue #13259: Clear templates database cache after update (Olle Haerstedt)
+-Fixed issue #13180: Variables don't work in END_URL (LouisGac)
+-Fixed issue: Slider not working on new Firefox (Markus flür
+-Fixed issue: Group ordering doesn't work (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han 
+#Updated translation: Hungarian by kkd 
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+
 Changes from 3.0.5 (build 180118) to 3.1.0 (build 180124) Jan 24, 2018
 -New feature #12240: Validation settings for "array by column" question type (Denis Chenu)
 -New feature: Add em_validation_q to list of choice (dropdown and radio) (Denis Chenu)
