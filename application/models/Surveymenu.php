@@ -61,7 +61,7 @@ class Surveymenu extends LSActiveRecord
         return array(
             'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id'),
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'user' => array(self::BELONGS_TO, 'User', 'uid'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'parent' => array(self::BELONGS_TO, 'Surveymenu', 'parent_id'),
         );
     }
@@ -333,9 +333,7 @@ class Surveymenu extends LSActiveRecord
          */
     public function restoreDefaults()
     {
-        $sOldLanguage = App()->language;
-        App()->setLanguage('en');
-        
+       
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
@@ -350,8 +348,6 @@ class Surveymenu extends LSActiveRecord
             App()->setLanguage($sOldLanguage);
             return false;
         }
-
-        App()->setLanguage($sOldLanguage);
         return true;
     }
 

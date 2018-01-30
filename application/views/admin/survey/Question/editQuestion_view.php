@@ -145,13 +145,13 @@ echo viewHelper::getViewTestTag('addQuestion');
                             <div class="panel-body">
                                 <!-- Question selector start -->
                                 <div  class="form-group">
+                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                     <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
                                         </label>
-                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">

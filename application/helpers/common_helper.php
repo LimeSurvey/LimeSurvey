@@ -181,7 +181,7 @@ function getSurveyList($bReturnArray = false)
             ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes,$result->languagesettings[$result->language]->attributes);
+            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
         }
         
         usort($surveynames, function($a, $b)
@@ -909,16 +909,13 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-    $sOldLanguage = App()->language;
-    App()->setLanguage($sLanguage);
-    
+
     $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode);
     
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
     }
-    
-    App()->setLanguage($sOldLanguage);
+
     return $aDefaultTexts;
 }
 
@@ -1545,12 +1542,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
+    ." FROM {{questions}} as questions, {{groups}} as question_groups"
+    ." WHERE questions.gid=question_groups.gid AND "
     ." questions.sid=$surveyid AND "
     ." questions.language='{$sLanguage}' AND "
     ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    ." question_groups.language='{$sLanguage}' ";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
@@ -2595,6 +2592,9 @@ function incompleteAnsFilterState()
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
+    if (!extension_loaded('gd')) {
+        return false;
+    }
     switch ($screen) {
         case 'registrationscreen':
             if ($captchamode == 'A' ||
@@ -3055,7 +3055,7 @@ function stripJavaScript($sContent)
 function showJavaScript($sContent)
 {
     $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
-        function($matches){
+        function($matches) {
             return htmlspecialchars($matches[0]);
         }, $sContent);
     return $text;
@@ -3435,7 +3435,7 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, function($a,$b) {return strlen($a) < strlen($b);});
+    uksort($fieldnames, function($a, $b) {return strlen($a) < strlen($b); });
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;

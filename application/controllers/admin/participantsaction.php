@@ -187,11 +187,10 @@ $url .= "_view"; });
         $outputarray[0] = $fields; //fields written to output array
 
 
-        foreach ($aAttributeIDs as $value)
-        {
+        foreach ($aAttributeIDs as $value) {
             $oAttributeName = ParticipantAttributeName::model()->findByPk($value);
 
-            if(!$oAttributeName) {
+            if (!$oAttributeName) {
                 continue;
             }
 

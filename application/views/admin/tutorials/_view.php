@@ -1,6 +1,6 @@
 <?php
 /* @var $this TutorialsController */
-/* @var $data Tutorials */
+/* @var $data Tutorial */
 ?>
 
 <div class="view">

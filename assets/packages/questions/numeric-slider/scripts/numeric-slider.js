@@ -61,9 +61,9 @@ var LSSlider = function (options) {
             elementObject.val(displayValue); // We parse it to the element
             
             if (debugMode > 0) {
-                console.log('sliderDebug started dragging', elementObject);
-                console.log('sliderDebug current value', currentValue);
-                console.log('sliderDebug current display value', displayValue);
+                console.ls.log('sliderDebug started dragging', elementObject);
+                console.ls.log('sliderDebug current value', currentValue);
+                console.ls.log('sliderDebug current display value', displayValue);
             }
 
             triggerChanges();
@@ -77,9 +77,9 @@ var LSSlider = function (options) {
             elementObject.val( displayValue );
 
             if (debugMode > 0) {
-                console.log('sliderDebug stopped dragging', elementObject);
-                console.log('sliderDebug new value', event.value);
-                console.log('sliderDebug new value', displayValue);
+                console.ls.log('sliderDebug stopped dragging', elementObject);
+                console.ls.log('sliderDebug new value', event.value);
+                console.ls.log('sliderDebug new value', displayValue);
             }
             triggerChanges();
 
@@ -94,7 +94,7 @@ var LSSlider = function (options) {
         triggerChanges = function () {
             ExprMgr_process_relevance_and_tailoring('keyup', elementName, 'change');
             if (debugMode > 0) {
-                console.log('sliderDebug triggered change', elementObject);
+                console.ls.log('sliderDebug triggered change', elementObject);
             }
         },
 
@@ -128,16 +128,20 @@ var LSSlider = function (options) {
         },
         createSlider = function () {
             if (custom_handle != null) {
-                document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
+               var customStyleSheet = $('<style></style>');
+               customStyleSheet.attr('type','text/css');
+               customStyleSheet.text('#' + elementObject.attr('id') + ' .slider-handle.custom::before { content: "' + custom_handle + '" }');
+               customStyleSheet.appendTo('body');
+                // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
 
             sliderObject = new Slider(elementObject[0], createSliderSettings());
             triggerChanges();
 
             if (debugMode > 0) {
-                console.log('sliderDebug slider created', sliderObject);
-                console.log('sliderDebug slider settings', sliderSettings);
-                console.log('sliderDebug slider node', elementObject);
+                console.ls.log('sliderDebug slider created', sliderObject);
+                console.ls.log('sliderDebug slider settings', sliderSettings);
+                console.ls.log('sliderDebug slider node', elementObject);
             }
 
             bindResetAction();

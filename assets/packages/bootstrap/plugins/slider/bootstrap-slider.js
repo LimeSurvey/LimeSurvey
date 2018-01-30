@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  9.7.0              
+                      VERSION  10.0.0              
 ========================================================= */
 "use strict";
 
@@ -296,6 +296,9 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 					var min = this.options.min === 0 ? 0 : Math.log(this.options.min);
 					var max = Math.log(this.options.max);
 					var value = Math.exp(min + (max - min) * percentage / 100);
+					if (Math.round(value) === this.options.max) {
+						return this.options.max;
+					}
 					value = this.options.min + Math.round((value - this.options.min) / this.options.step) * this.options.step;
 					/* Rounding to the nearest step could exceed the min or
       * max, so clip to those values. */
@@ -460,12 +463,12 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 				/* Create highlight range elements */
 				this.rangeHighlightElements = [];
-				if (Array.isArray(this.options.rangeHighlights) && this.options.rangeHighlights.length > 0) {
-					for (var j = 0; j < this.options.rangeHighlights.length; j++) {
-
+				var rangeHighlightsOpts = this.options.rangeHighlights;
+				if (Array.isArray(rangeHighlightsOpts) && rangeHighlightsOpts.length > 0) {
+					for (var j = 0; j < rangeHighlightsOpts.length; j++) {
 						var rangeHighlightElement = document.createElement("div");
-						rangeHighlightElement.className = "slider-rangeHighlight slider-selection";
-
+						var customClassString = rangeHighlightsOpts[j].class || "";
+						rangeHighlightElement.className = "slider-rangeHighlight slider-selection " + customClassString;
 						this.rangeHighlightElements.push(rangeHighlightElement);
 						sliderTrack.appendChild(rangeHighlightElement);
 					}
@@ -634,9 +637,6 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 					this._removeProperty(tooltip, 'left');
 					this._removeProperty(tooltip, 'right');
 					this._removeProperty(tooltip, 'top');
-					this._removeProperty(tooltip, 'margin-left');
-					this._removeProperty(tooltip, 'margin-right');
-					this._removeProperty(tooltip, 'margin-top');
 
 					this._removeClass(tooltip, 'right');
 					this._removeClass(tooltip, 'left');
@@ -826,7 +826,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				step: 1,
 				precision: 0,
 				orientation: 'horizontal',
-				value: 5,
+				value: null,
 				range: false,
 				selection: 'before',
 				tooltip: 'show',
@@ -860,7 +860,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			},
 
 			getValue: function getValue() {
-				if (this.options.range) {
+				if (this.options.range || this._state.value === null) {
 					return this._state.value;
 				} else {
 					return this._state.value[0];
@@ -869,7 +869,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 			setValue: function setValue(val, triggerSlideEvent, triggerChangeEvent) {
 				if (!val) {
-					val = 0;
+					val = null;
 				}
 				var oldValue = this.getValue();
 				this._state.value = this._validateInputValue(val);
@@ -1113,11 +1113,6 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				this._setText(this.tooltipInner, formattedTooltipVal);
 
 				this.tooltip.style[this.stylePos] = positionPercentages[0] + "%";
-				if (this.options.orientation === 'vertical') {
-					this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetHeight / 2 + "px");
-				} else {
-					this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetWidth / 2 + "px");
-				}
 
 				function getPositionPercentages(state, reversed) {
 					if (reversed) {
@@ -1287,12 +1282,6 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 					this._setText(this.tooltipInner, formattedTooltipVal);
 					this.tooltip.style[this.stylePos] = (positionPercentages[1] + positionPercentages[0]) / 2 + "%";
 
-					if (this.options.orientation === 'vertical') {
-						this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetHeight / 2 + "px");
-					} else {
-						this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetWidth / 2 + "px");
-					}
-
 					var innerTooltipMinText = this.options.formatter(this._state.value[0]);
 					this._setText(this.tooltipInner_min, innerTooltipMinText);
 
@@ -1301,29 +1290,12 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 					this.tooltip_min.style[this.stylePos] = positionPercentages[0] + "%";
 
-					if (this.options.orientation === 'vertical') {
-						this._css(this.tooltip_min, "margin-" + this.stylePos, -this.tooltip_min.offsetHeight / 2 + "px");
-					} else {
-						this._css(this.tooltip_min, "margin-" + this.stylePos, -this.tooltip_min.offsetWidth / 2 + "px");
-					}
-
 					this.tooltip_max.style[this.stylePos] = positionPercentages[1] + "%";
-
-					if (this.options.orientation === 'vertical') {
-						this._css(this.tooltip_max, "margin-" + this.stylePos, -this.tooltip_max.offsetHeight / 2 + "px");
-					} else {
-						this._css(this.tooltip_max, "margin-" + this.stylePos, -this.tooltip_max.offsetWidth / 2 + "px");
-					}
 				} else {
 					formattedTooltipVal = this.options.formatter(this._state.value[0]);
 					this._setText(this.tooltipInner, formattedTooltipVal);
 
 					this.tooltip.style[this.stylePos] = positionPercentages[0] + "%";
-					if (this.options.orientation === 'vertical') {
-						this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetHeight / 2 + "px");
-					} else {
-						this._css(this.tooltip, "margin-" + this.stylePos, -this.tooltip.offsetWidth / 2 + "px");
-					}
 				}
 
 				if (this.options.orientation === 'vertical') {
@@ -1415,6 +1387,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				}
 			},
 			_mousedown: function _mousedown(ev) {
+                console.ls.log('BootstrapSliderEvent', 'mousedown',ev);
 				if (!this._state.enabled) {
 					return false;
 				}
@@ -1477,6 +1450,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				return true;
 			},
 			_touchstart: function _touchstart(ev) {
+                console.ls.log('BootstrapSliderEvent','touchstart',ev);
 				if (ev.changedTouches === undefined) {
 					this._mousedown(ev);
 					return;
@@ -1525,10 +1499,18 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 						dir = -dir;
 					}
 				}
-
+				if (this._state.value === null) {
+					this._state.value[0] = this._state.min;
+					this._state.value[1] = this._state.max;
+				}
 				var val = this._state.value[handleIdx] + dir * this.options.step;
+				var percentage = val / this.options.max * 100;
+				this._state.keyCtrl = handleIdx;
 				if (this.options.range) {
-					val = [!handleIdx ? val : this._state.value[0], handleIdx ? val : this._state.value[1]];
+					this._adjustPercentageForRangeSliders(percentage);
+					var val1 = !this._state.keyCtrl ? val : this._state.value[0];
+					var val2 = this._state.keyCtrl ? val : this._state.value[1];
+					val = [val1, val2];
 				}
 
 				this._trigger('slideStart', val);
@@ -1540,6 +1522,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				this._layout();
 
 				this._pauseEvent(ev);
+				delete this._state.keyCtrl;
 
 				return false;
 			},
@@ -1554,6 +1537,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				ev.returnValue = false;
 			},
 			_mousemove: function _mousemove(ev) {
+                console.ls.log('BootstrapSliderEvent', 'mousemove',ev);
 				if (!this._state.enabled) {
 					return false;
 				}
@@ -1569,6 +1553,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				return false;
 			},
 			_touchmove: function _touchmove(ev) {
+                console.ls.log('BootstrapSliderEvent','touchmove',ev);
 				if (ev.changedTouches === undefined) {
 					return;
 				}
@@ -1600,6 +1585,14 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 					} else if (this._state.dragged === 1 && this._applyToFixedAndParseFloat(this._state.percentage[0], precision) > percentageWithAdjustedPrecision) {
 						this._state.percentage[1] = this._state.percentage[0];
 						this._state.dragged = 0;
+					} else if (this._state.keyCtrl === 0 && this._state.value[1] / this.options.max * 100 < percentage) {
+						this._state.percentage[0] = this._state.percentage[1];
+						this._state.keyCtrl = 1;
+						this.handle2.focus();
+					} else if (this._state.keyCtrl === 1 && this._state.value[0] / this.options.max * 100 > percentage) {
+						this._state.percentage[1] = this._state.percentage[0];
+						this._state.keyCtrl = 0;
+						this.handle1.focus();
 					}
 				}
 			},
@@ -1673,6 +1666,9 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
 			},
 			_applyToFixedAndParseFloat: function _applyToFixedAndParseFloat(num, toFixedInput) {
+				if (num === null) {
+					return null;
+				}
 				var truncatedNum = num.toFixed(toFixedInput);
 				return parseFloat(truncatedNum);
 			},
@@ -1709,6 +1705,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				} else if (Array.isArray(val)) {
 					this._validateArray(val);
 					return val;
+				} else if (val === null) {
+					return null;
 				} else {
 					throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(val));
 				}
@@ -1716,7 +1714,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			_validateArray: function _validateArray(val) {
 				for (var i = 0; i < val.length; i++) {
 					var input = val[i];
-					if (typeof input !== 'number') {
+					if (typeof input !== 'number' && input !== null) {
 						throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(input));
 					}
 				}
@@ -1863,26 +1861,24 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 		/*********************************
   		Attach to global namespace
   	*********************************/
-		if ($) {
-			(function () {
-				var autoRegisterNamespace = void 0;
+		if ($ && $.fn) {
+			var autoRegisterNamespace = void 0;
 
-				if (!$.fn.slider) {
-					$.bridget(NAMESPACE_MAIN, Slider);
-					autoRegisterNamespace = NAMESPACE_MAIN;
-				} else {
-					if (windowIsDefined) {
-						window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
-					}
-					autoRegisterNamespace = NAMESPACE_ALTERNATE;
+			if (!$.fn.slider) {
+				$.bridget(NAMESPACE_MAIN, Slider);
+				autoRegisterNamespace = NAMESPACE_MAIN;
+			} else {
+				if (windowIsDefined) {
+					window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
 				}
-				$.bridget(NAMESPACE_ALTERNATE, Slider);
+				autoRegisterNamespace = NAMESPACE_ALTERNATE;
+			}
+			$.bridget(NAMESPACE_ALTERNATE, Slider);
 
-				// Auto-Register data-provide="slider" Elements
-				$(function () {
-					$("input[data-provide=slider]")[autoRegisterNamespace]();
-				});
-			})();
+			// Auto-Register data-provide="slider" Elements
+			$(function () {
+				$("input[data-provide=slider]")[autoRegisterNamespace]();
+			});
 		}
 	})($);
 

@@ -26,6 +26,8 @@ var AjaxSubmitObject = function () {
     var move = "";
 
     var startLoadingBar = function () {
+        //Scroll to the top of the page
+        window.scrollTo(0, 0);
         $('#ajax_loading_indicator').css('display','block').find('#ajax_loading_indicator_bar').css({
             'width': '20%',
             'display': 'block'

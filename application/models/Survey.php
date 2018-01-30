@@ -303,7 +303,7 @@ class Survey extends LSActiveRecord
     }
 
 
-  /*  public function defaultScope()
+    /*  public function defaultScope()
     {
         return array('order'=> $this->getTableAlias().'.sid');
     }    */
@@ -397,11 +397,11 @@ class Survey extends LSActiveRecord
      */
     public function afterFindSurvey()
     {
-        $event =  new PluginEvent('afterFindSurvey');
+        $event = new PluginEvent('afterFindSurvey');
         $event->set('surveyid', $this->sid);
         App()->getPluginManager()->dispatchEvent($event);
         // set the attributes we allow to be fixed
-        $allowedAttributes = array( 'template', 'usecookie', 'allowprev',
+        $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
         foreach ($allowedAttributes as $attribute) {
@@ -661,7 +661,7 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
-    private function __useTranslationForSurveymenu(&$entryData){
+    private function __useTranslationForSurveymenu(&$entryData) {
         $entryData['title']             = gT($entryData['title']);
         $entryData['menu_title']        = gT($entryData['menu_title']);
         $entryData['menu_description']  = gT($entryData['menu_description']);

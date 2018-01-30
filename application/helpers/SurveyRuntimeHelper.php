@@ -75,7 +75,6 @@ class SurveyRuntimeHelper
     // Boolean helpers
     private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
 
-
     // Group
     private $gid;
     private $groupname;
@@ -148,7 +147,7 @@ class SurveyRuntimeHelper
             }
 
             $upload_file = false;
-            if(isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
+            if (isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
                 foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
                     ++$qnumber;
                     $ia[9] = $qnumber; // incremental question count;
@@ -219,7 +218,7 @@ class SurveyRuntimeHelper
                                         $upload_file = true;
                     }
                 } //end iteration
-            } 
+            }
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
@@ -464,7 +463,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->aMoveResult['message'];
         }
 
-        $this->aSurveyInfo['include_content'] = 'main.twig';
+        $this->aSurveyInfo['include_content'] = 'main';
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
 
@@ -968,7 +967,7 @@ class SurveyRuntimeHelper
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
 
-                $this->aSurveyInfo['include_content'] = 'save.twig';
+                $this->aSurveyInfo['include_content'] = 'save';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -1008,7 +1007,7 @@ class SurveyRuntimeHelper
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
-                $this->aSurveyInfo['include_content'] = 'save.twig';
+                $this->aSurveyInfo['include_content'] = 'save';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             }
 
@@ -1067,7 +1066,7 @@ class SurveyRuntimeHelper
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
                 $this->completed = $completed;
 
-                $this->aSurveyInfo['include_content'] = 'submit_preview.twig';
+                $this->aSurveyInfo['include_content'] = 'submit_preview';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
 
@@ -1146,6 +1145,18 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
+                $aStandardsReplacementFields = array();
+                if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                    // process string anyway so that it can be pretty-printed
+                    $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+
+                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+
+                }
+
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+
+
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -1167,7 +1178,7 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
             }
-            $this->aSurveyInfo['include_content'] = 'submit.twig';
+            $this->aSurveyInfo['include_content'] = 'submit';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
@@ -1493,7 +1504,7 @@ class SurveyRuntimeHelper
             $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->iSurveyid", $restartparam);
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
-            $this->aSurveyInfo['include_content'] = 'clearall.twig';
+            $this->aSurveyInfo['include_content'] = 'clearall';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }

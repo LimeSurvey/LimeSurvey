@@ -33,6 +33,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter'=>$model,
+                    'emptyText'=>gT('No attributes found.'),
                     'htmlOptions' => array('class'=> 'table-responsive'),
                     'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
                     'itemsCssClass' => 'table table-responsive table-striped',

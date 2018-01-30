@@ -174,6 +174,19 @@ var ThemeScripts = function(){
                 $('.navbar-right').hide();
             }
 
+            //Survey list container
+            if($('#surveys-list-container').length > 0){
+                var footerHeight = $('#surveyListFooter').outerHeight();
+                var headerHeight = 2*$('#navbar').outerHeight();
+                var bodyHeight = $(document).height()-(footerHeight+headerHeight);
+                console.log({
+                    footerHeight : footerHeight,
+                    headerHeight : headerHeight,
+                    bodyHeight : bodyHeight
+                });
+                $('#surveys-list-container').css('min-height', bodyHeight+'px');
+            }
+
             // Survey list footer
             if($('#surveyListFooter').length>0)
             {

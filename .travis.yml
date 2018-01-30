@@ -17,13 +17,12 @@ before_script:
     - phpenv config-rm xdebug.ini
     # Install LimeSurvey.
     - phpunit --version
+    - mysql --version
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
     - composer install
       #- composer install
-    - mkdir upload/themes
-    - mkdir upload/themes/survey
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.

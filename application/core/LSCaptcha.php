@@ -11,21 +11,21 @@
 class LSCaptcha extends CCaptcha
 {
 
-    public function renderOut(){
+    public function renderOut() {
         $html = $this->renderImage();
         return $html;
     }
 
     /**
-	 * Renders the CAPTCHA image.
-	 */
-	protected function renderImage()
-	{
-		if(!isset($this->imageOptions['id']))
-			$this->imageOptions['id']=$this->getId();
+     * Renders the CAPTCHA image.
+     */
+    protected function renderImage()
+    {
+        if(!isset($this->imageOptions['id']))
+            $this->imageOptions['id']=$this->getId();
 
-		$url=$this->getController()->createUrl($this->captchaAction,array('v'=>uniqid()));
-		$alt=isset($this->imageOptions['alt'])?$this->imageOptions['alt']:'';
-		return CHtml::image($url,$alt,$this->imageOptions);
-	}
+        $url=$this->getController()->createUrl($this->captchaAction,array('v'=>uniqid()));
+        $alt=isset($this->imageOptions['alt'])?$this->imageOptions['alt']:'';
+        return CHtml::image($url,$alt,$this->imageOptions);
+    }
 }

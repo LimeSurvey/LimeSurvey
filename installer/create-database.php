@@ -732,14 +732,10 @@ function createDatabase($oDB){
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
-        foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
-            $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
-        }
-
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
             'tid' => 'int NOT NULL',
-            'uid' => 'int DEFAULT NULL',
+            'uid' => 'int NOT NULL',
             'taken' => 'int DEFAULT 1',
         ));
 
@@ -767,14 +763,6 @@ function createDatabase($oDB){
                 'settings' => 'text'
             ]
         );
-       
-
-        foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
-            $teid =  $tutorialEntry['teid'];
-            unset($tutorialEntry['teid']);
-            $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
-            $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
-        }
 
         //user_in_groups
         $oDB->createCommand()->createTable('{{user_in_groups}}', array(
