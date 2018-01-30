@@ -53,7 +53,9 @@ class InstallCommand extends CConsoleCommand
             switch ($this->connection->driverName) {
                 case 'mysql':
                 case 'mysqli':
+                    $this->setMySQLDefaultEngine(InstallerConfigForm::ENGINE_TYPE_MYISAM);
                     $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+
                     break;
                 case 'pgsql':
                 case 'dblib':
@@ -175,6 +177,17 @@ class InstallCommand extends CConsoleCommand
         $this->connection->active = true;
     }
 
+    /**
+     * @throws CDbException
+     */
+    private function setMySQLDefaultEngine($dbEngine){
+        if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
+    }
     /**
      * @param string $msg
      * @return void
