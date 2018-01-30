@@ -76,4 +76,5 @@ script:
     - DOMAIN=localhost phpunit
 after_script:
     - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "Show  variables like '%innodb_file%';"
     - mysql -uroot -e "Show  table status;" limesurvey
