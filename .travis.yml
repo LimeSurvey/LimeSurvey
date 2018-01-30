@@ -27,7 +27,15 @@ before_script:
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+
+
+    - mysql -uroot -e "Show  variables like '%large%';" limesurvey
+    - mysql -uroot -proot -e "SET @@global.innodb_large_prefix = 1;" limesurvey
+    - mysql -uroot -e "Show  variables like '%large%';" limesurvey
+
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
+    - mysql -uroot -e "Show  table status;" limesurvey
+
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
     - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php

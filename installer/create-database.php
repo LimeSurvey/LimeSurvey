@@ -630,7 +630,7 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
 
-        $oDB->createCommand()->createIndex('{{idx1_surveys_languagesettings}}', '{{surveys_languagesettings}}', 'surveyls_title', false);
+        $oDB->createCommand()->createIndex('idx1', '{{surveys_languagesettings}}', 'surveyls_title', false);
 
 
         // survey_links
