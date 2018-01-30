@@ -94,6 +94,15 @@ $config['showpopups']         = 1; // Show popup messages if mandatory or condit
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
+// Survey default settings
+$config['survey_allowprev'] = 'N';
+$config['survey_showxquestions'] = 'Y';
+$config['survey_tokenanswerspersistence'] = 'N';
+$config['survey_sendconfirmation'] = 'Y';
+
+// Question default settings
+$config['question_mandatory'] = 'N';
+
 // Experimental parameters, only change if you know what you're doing
 //
 // filterout_incomplete_answers

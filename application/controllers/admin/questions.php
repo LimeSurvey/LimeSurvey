@@ -1039,7 +1039,7 @@ class questions extends Survey_Common_Action
         $eqrow['lid1'] = 0;
         $eqrow['gid'] = null;
         $eqrow['other'] = 'N';
-        $eqrow['mandatory'] = 'N';
+        $eqrow['mandatory'] = getGlobalSetting('question_mandatory');
         $eqrow['preg'] = '';
         $eqrow['relevance'] = 1;
         $eqrow['group_name'] = '';
