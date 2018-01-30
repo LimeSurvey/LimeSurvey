@@ -679,10 +679,11 @@ class Survey extends LSActiveRecord
             foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
-                if (
-                    (!empty($entry['permission']) && !empty($entry['permission_grade'])
-                    && !Permission::model()->hasSurveyPermission($this->sid, $entry['permission'], $entry['permission_grade']))
-                ) {continue; }
+                if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
+                    && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
+                ) {
+                    continue;
+                }
 
                 // Check if a specific user owns this menu.
                 if (!empty($aEntry['user_id'])) {
