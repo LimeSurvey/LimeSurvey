@@ -31,6 +31,9 @@ before_script:
 
     - mysql -uroot -e "Show  variables like '%large%';"
     - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
+    - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
+    - mysql -uroot -e "SET @@global.innodb_file_max =  Barracuda;"
+
     - mysql -uroot -e "Show  variables like '%large%';"
 
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
