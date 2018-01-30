@@ -29,9 +29,9 @@ before_script:
     - chmod -R 777 tests/tmp
 
 
-    - mysql -uroot -e "Show  variables like '%large%';" limesurvey
-    - mysql -uroot -proot -e "SET @@global.innodb_large_prefix = 1;" limesurvey
-    - mysql -uroot -e "Show  variables like '%large%';" limesurvey
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -proot -e "SET @@global.innodb_large_prefix = 1;"
+    - mysql -uroot -e "Show  variables like '%large%';"
 
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - mysql -uroot -e "Show  table status;" limesurvey
