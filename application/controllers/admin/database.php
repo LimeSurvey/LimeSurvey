@@ -1441,7 +1441,8 @@ class database extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
         LimeExpressionManager::SetDirtyFlag();
         $oEM =& LimeExpressionManager::singleton();
-        LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true,$debugLevel=0);
+        LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
+        LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
         
     }
 }
