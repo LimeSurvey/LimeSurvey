@@ -2,6 +2,8 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $surveybar
+ * @param $surveyid
  */
 
 ?>
@@ -45,8 +47,9 @@
                 $paramArray = array();
                 $paramArray["surveyid"] = $surveyid;
 
-                if (isset($gid) && !empty($gid)) 
+                if (isset($gid) && !empty($gid)) {
                     $paramArray["gid"] = $gid;
+                }
 
                 $saveAndNewLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
             ?>
@@ -57,24 +60,4 @@
             </a>
         <?php endif; ?>
     <?php endif; ?>
-        <?php /*
-        <!-- Save and close -->
-        <?php if(isset($surveybar['saveandclosebutton'])):?>
-            <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
-                <span class="fa fa-saved"></span>
-                <?php eT("Save and close");?>
-            </a>
-        <?php endif; ?>
-    */ ?>
-
-    <?php /*
-    <!-- Close -->
-    <?php if(isset($surveybar['closebutton']['url'])):?>
-        <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
-            <span class="fa fa-close"></span>
-            <?php eT("Close");?>
-        </a>
-    <?php endif;?>
-    */ ?>
-
 </div>

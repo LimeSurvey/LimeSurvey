@@ -21,7 +21,14 @@
             <div class="col-md-8 col-xs-6">
         <?php endif; ?>
 
-        <?php App()->getController()->renderPartial('/admin/survey/surveybar_addgroupquestion'); ?>
+        <?php App()->getController()->renderPartial(
+            '/admin/survey/surveybar_addgroupquestion',
+            [
+                'surveybar'      => $surveybar,
+                'oSurvey'        => $oSurvey,
+                'surveyHasGroup' => isset($surveyHasGroup) ? $surveyHasGroup : false
+            ]
+        ); ?>
 
         <!-- Left buttons for survey summary -->
         <?php if (isset($surveybar['buttons']['view'])):?>
@@ -32,7 +39,9 @@
                     'oSurvey'       => $oSurvey,
                     'canactivate'   => $canactivate,
                     'surveycontent' => $surveycontent,
-                    'icontext'      => $icontext
+                    'icontext'      => $icontext,
+                    'expired'       => $expired,
+                    'notstarted'    => $notstarted
                 ]
             ); ?>
 
@@ -43,13 +52,13 @@
                         '/admin/survey/surveybar_tools',
                         [
                             'surveydelete'           => $surveydelete,
-                            'surveyid'               => $surveyid,
                             'oSurvey'                => $oSurvey,
                             'surveytranslate'        => $surveytranslate,
                             'hasadditionallanguages' => $hasadditionallanguages,
                             'conditionscount'        => $conditionscount,
                             'surveycontentread'      => $surveycontentread,
-                            'onelanguage'            => $onelanguage
+                            'onelanguage'            => $onelanguage,
+                            'extraToolsMenuItems'    => $extraToolsMenuItems
                         ]
                     );
                 ?>
@@ -60,9 +69,8 @@
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_displayexport',
                     [
-                        'surveyexport'  => $surveyexport,
-                        'surveyid'      => $surveyid,
                         'respstatsread' => $respstatsread,
+                        'surveyexport'  => $surveyexport,
                         'oSurvey'       => $oSurvey,
                         'onelanguage'   => $onelanguage
                     ]
@@ -130,7 +138,13 @@
         <?php endif; ?>
     </div>
 
-        <!-- right action buttons -->
-        <?php App()->getController()->renderPartial('/admin/survey/surveybar_rightactionbuttons'); ?>
+    <!-- right action buttons -->
+    <?php App()->getController()->renderPartial(
+        '/admin/survey/surveybar_rightactionbuttons',
+        [
+            'surveybar'      => $surveybar,
+            'surveyid'       => $oSurvey->sid
+        ]
+    ); ?>
     </div>
 </div>

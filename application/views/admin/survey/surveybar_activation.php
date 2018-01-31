@@ -2,6 +2,12 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $oSurvey
+ * @param $canactivate
+ * @param $expired
+ * @param $notstarted
+ * @param $surveycontent
+ * @param $icontext
  */
 
 ?>

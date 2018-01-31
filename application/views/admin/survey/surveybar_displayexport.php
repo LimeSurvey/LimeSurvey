@@ -2,6 +2,10 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $respstatsread
+ * @param $surveyexport
+ * @param $oSurvey
+ * @param $onelanguage
  */
 
 ?>
@@ -22,7 +26,7 @@
 
         <!-- Survey structure -->
         <li>
-            <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid"); ?>' >
+            <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$oSurvey->sid"); ?>' >
                 <span class="icon-export" ></span>
                 <?php eT("Survey structure (.lss)"); ?>
             </a>
@@ -33,7 +37,7 @@
 
                 <!-- Survey archive -->
                 <li>
-                    <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$surveyid"); ?>' >
+                    <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$oSurvey->sid"); ?>' >
                         <span class="icon-export" ></span>
                         <?php eT("Survey archive (.lsa)"); ?>
                     </a>
@@ -51,7 +55,7 @@
 
         <!-- queXML -->
         <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid"); ?>' >
+          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$oSurvey->sid"); ?>' >
               <span class="icon-export" ></span>
               <?php eT("queXML format (*.xml)"); ?>
           </a>
@@ -59,7 +63,7 @@
 
         <!-- queXMLPDF -->
         <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/quexml/surveyid/$surveyid"); ?>' >
+          <a href='<?php echo $this->createUrl("admin/export/sa/quexml/surveyid/$oSurvey->sid"); ?>' >
               <span class="icon-export" ></span>
               <?php eT("queXML PDF export"); ?>
           </a>
@@ -68,7 +72,7 @@
 
         <!-- Tab-separated-values -->
         <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid"); ?>' >
+          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$oSurvey->sid"); ?>' >
               <span class="icon-export" ></span>
               <?php eT("Tab-separated-values format (*.txt)"); ?>
           </a>
@@ -76,17 +80,17 @@
 
         <!-- Survey printable version  -->
         <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid"); ?>' >
+          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$oSurvey->sid"); ?>' >
               <span class="icon-export" ></span>
               <?php eT("Printable survey (*.html)"); ?>
           </a>
         </li>
 
-        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')): ?>
+        <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'read')): ?>
             <?php if ($onelanguage):?>
                 <!-- Printable version -->
                 <li>
-                    <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid"); ?>' >
+                    <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$oSurvey->sid"); ?>' >
                         <span class="fa fa-print"></span>
                         <?php eT("Printable survey"); ?>
                     </a>
@@ -97,7 +101,7 @@
                 <li class="dropdown-header"><?php eT("Printable version"); ?></li>
                 <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                     <li>
-                        <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang"); ?>'>
+                        <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
                             <span class="fa fa-print"></span>
                             <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                         </a>

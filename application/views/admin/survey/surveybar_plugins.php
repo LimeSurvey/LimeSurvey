@@ -2,6 +2,7 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $beforeSurveyBarRender
  */
 
 ?>

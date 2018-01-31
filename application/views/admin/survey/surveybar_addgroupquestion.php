@@ -2,6 +2,9 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $surveybar
+ * @param $oSurvey
+ * @param $surveyHasGroup
  */
 
 ?>
@@ -15,12 +18,12 @@
                 <?php eT("Add new group"); ?>
             </button>
         </span>
-    <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')): ?>
-        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>" role="button">
+    <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
+        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$oSurvey->sid"); ?>" role="button">
             <span class="icon-add"></span>
             <?php eT("Add new group"); ?>
         </a>
-        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$surveyid"); ?>" role="button">
+        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$oSurvey->sid"); ?>" role="button">
 
             <span class="icon-import"></span>
             <?php eT("Import a group"); ?>
@@ -37,7 +40,7 @@
                 <?php eT("Add new question"); ?>
             </button>
         </span>
-    <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')): ?>
+    <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
         <?php if (!$surveyHasGroup): ?>
             <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                 <button type="button" class="btn btn-default btntooltip" disabled="disabled">
@@ -46,15 +49,15 @@
                 </button>
             </span>
         <?php else :?>
-        <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid);
-?>' role="button">
-            <span class="icon-add"></span>
-            <?php eT("Add new question"); ?>
-        </a>
-        <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview/surveyid/".$surveyid); ?>' role="button">
-            <span class="icon-import"></span>
-            <?php eT("Import a question"); ?>
-        </a>
+            <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid);
+    ?>' role="button">
+                <span class="icon-add"></span>
+                <?php eT("Add new question"); ?>
+            </a>
+            <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview/surveyid/".$oSurvey->sid); ?>' role="button">
+                <span class="icon-import"></span>
+                <?php eT("Import a question"); ?>
+            </a>
         <?php endif; ?>
     <?php endif; ?>
 <?php endif; ?>

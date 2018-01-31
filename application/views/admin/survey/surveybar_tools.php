@@ -2,6 +2,14 @@
 
 /**
  * Subview of surveybar_view.
+ * @param $surveydelete
+ * @param $surveytranslate
+ * @param $hasadditionallanguages
+ * @param $oSurvey
+ * @param $conditionscount
+ * @param $onelanguage
+ * @param $surveycontentread
+ * @param $extraToolsMenuItems
  */
 
 ?>
@@ -20,7 +28,7 @@
 
               <!-- Delete survey -->
               <li>
-                  <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
+                  <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$oSurvey->sid}"); ?>">
                     <span class="fa fa-trash" ></span>
                     <?php eT("Delete survey"); ?>
                   </a>
@@ -34,7 +42,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}"); ?>">
+                        <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
@@ -52,12 +60,12 @@
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')): ?>
+        <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')): ?>
               <li>
                 <?php if ($conditionscount > 0):?>
 
                       <!-- condition -->
-                      <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
+                      <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="icon-resetsurveylogic" ></span>
                         <?php eT("Reset conditions"); ?>
                       </a>
@@ -100,7 +108,7 @@
 
                 <!-- Survey logic file -->
                 <li>
-                    <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/"); ?>' >
+                    <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
                         <span class="icon-expressionmanagercheck" ></span>
                         <?php eT("Survey logic file"); ?>
                     </a>
@@ -116,7 +124,7 @@
                     <!-- Languages -->
 
                     <li>
-                        <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang"); ?>'>
+                        <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
                                <span class="icon-expressionmanagercheck" ></span>
                                <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                            </a>
@@ -134,7 +142,7 @@
 
             <!-- Straight -->
             <li>
-                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
+                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/straight"); ?>">
                 <span class="icon-resetsurveylogic" ></span>
                 <?php eT("Straight"); ?>
                 </a>
@@ -142,7 +150,7 @@
 
             <!-- By question group -->
             <li>
-            <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
+            <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
                 <span class="icon-resetsurveylogic" ></span>
                 <?php eT("By question group"); ?>
             </a>
