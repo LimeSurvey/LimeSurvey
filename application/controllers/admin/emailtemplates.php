@@ -33,6 +33,11 @@ class emailtemplates extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
 
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyId));
+        }
+
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
