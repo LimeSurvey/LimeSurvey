@@ -86,19 +86,20 @@ function updateset($lid)
     $labelset->save();
 }
 
+/**
+ * @return LabelSet
+ */
 function insertlabelset()
 {
     $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
+    $labelSet = new LabelSet();
 
-    $data = array(
-        'label_name' => $postlabel_name,
-        'languages' => sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))))
-    );
-    $result = LabelSet::model()->insertRecords($data);
-    if (!$result) {
+    $labelSet->label_name = $postlabel_name;
+    $labelSet->languages = sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
+    if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     } else {
-        return $result;
+        return $labelSet;
     }
 }
 
