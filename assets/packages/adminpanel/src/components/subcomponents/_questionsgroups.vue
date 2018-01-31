@@ -28,7 +28,7 @@ export default {
             return _.orderBy(this.$store.state.questiongroups,(a)=>{return parseInt((a.group_order || 999999)) }, ['asc']);
         },
         createQuestionAllowed(){
-            return (this.$store.state.questiongroups.length > 0);
+            return (this.$store.state.questiongroups.length > 0 && (createQuestionLink!=undefined && createQuestionLink.length>1));
         },
         itemWidth(){
             return (parseInt(this.$store.state.sidebarwidth)-95)+'px';
