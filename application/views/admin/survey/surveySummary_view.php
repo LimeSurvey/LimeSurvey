@@ -218,7 +218,7 @@ $surveyid = $oSurvey->sid;
                                     <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
                                     <?php
                                 } else {
-                                    echo $templatename;
+                                    echo isset($templatename) ? $templatename : '';
                                 }
                             } else {
                                 $errorMessage = sprintf(
