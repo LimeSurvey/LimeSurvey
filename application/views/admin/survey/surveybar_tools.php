@@ -132,7 +132,7 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         <?php endif; ?>
-        <?php if (!$oSurvey->isActive): ?>
+        <?php if (!$oSurvey->isActive && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')): ?>
             <li role="separator" class="divider"></li>
 
             <!-- Regenerate question codes -->
