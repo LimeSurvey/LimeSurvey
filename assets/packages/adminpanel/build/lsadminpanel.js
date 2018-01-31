@@ -37052,7 +37052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, ['asc']);
         },
         createQuestionAllowed() {
-            return this.$store.state.questiongroups.length > 0 && createQuestionLink != undefined && createQuestionLink.length > 1;
+            return this.$store.state.questiongroups.length > 0 && this.createQuestionLink != undefined && this.createQuestionLink.length > 1;
         },
         itemWidth() {
             return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
