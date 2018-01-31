@@ -215,7 +215,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'ajaxUpdate'    => 'responses-grid',
                         'ajaxType'      => 'POST',
                         'afterAjaxUpdate'=>'LS.resp.bindScrollWrapper',
-                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',

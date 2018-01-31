@@ -105,10 +105,9 @@
                 </question>
 
                 <surveylist>
-                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="content">./subviews/content/survey_list.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -188,7 +187,7 @@
                     <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
                     <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
                 </printanswers>
-                
+
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>

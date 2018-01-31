@@ -2,6 +2,8 @@
 /**
 * This class handles all methods of the RemoteControl 2 API
 */
+use LimeSurvey\PluginManager\PluginEvent;
+
 class remotecontrol_handle
 {
     /**
@@ -35,15 +37,17 @@ class remotecontrol_handle
      * @access public
      * @param string $username
      * @param string $password
+     * @param string $plugin to be used
      * @return string|array
      */
-    public function get_session_key($username, $password)
+    public function get_session_key($username, $password, $plugin = 'Authdb')
     {
         $username = (string) $username;
         $password = (string) $password;
-        if ($this->_doLogin($username, $password)) {
+        $loginResult = $this->_doLogin($username, $password, $plugin);
+        if ($loginResult === true) {
             $this->_jumpStartSession($username);
-            $sSessionKey = randomChars(32);
+            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
@@ -51,9 +55,12 @@ class remotecontrol_handle
             $session->data = $username;
             $session->save();
             return $sSessionKey;
+
+        }
+        if (is_string($loginResult)) {
+            return array('status' => $loginResult);
         }
         return array('status' => 'Invalid user name or password');
-
     }
 
     /**
@@ -2969,16 +2976,27 @@ class remotecontrol_handle
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
-     * @return bool
+     * @param string $sPlugin plugin to be used
+     * @return bool|string
      */
-    protected function _doLogin($sUsername, $sPassword)
+    protected function _doLogin($sUsername, $sPassword, $sPlugin)
     {
-        $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
-
+        /* @var $identity LSUserIdentity */
+        $identity = new LSUserIdentity($sUsername, $sPassword);
+        $identity->setPlugin($sPlugin);
+        $event = new PluginEvent('remoteControlLogin');
+        $event->set('plugin', $sPlugin);
+        $event->set('username', $sUsername);
+        $event->set('password', $sPassword);
+        App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
+            if($identity->errorMessage) {
+                // don't return an empty string
+                return $identity->errorMessage;
+            }
             return false;
         } else {
-                    return true;
+            return true;
         }
     }
 
@@ -3027,7 +3045,7 @@ class remotecontrol_handle
         $oResult = Session::model()->findByPk($sSessionKey);
 
         if (is_null($oResult)) {
-                    return false;
+            return false;
         } else {
             $this->_jumpStartSession($oResult->data);
             return true;

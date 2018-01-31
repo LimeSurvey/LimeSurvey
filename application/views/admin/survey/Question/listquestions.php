@@ -147,7 +147,7 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                                 'columns' => $columns,
                                 'ajaxUpdate' => true,
-                                'afterAjaxUpdate' => 'bindPageSizeChange'
+                                'afterAjaxUpdate' => "bindPageSizeChange"
                             ));
                             ?>
                         </div>
@@ -178,12 +178,12 @@
 
 <!-- To update rows per page via ajax -->
 <?php App()->getClientScript()->registerScript("ListQuestions-pagination", "
-        var bindPageSizeChange = function(){
+        function bindPageSizeChange(){
             $('#pageSize').on('change', function(){
-                $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
+                $('#question-grid').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
             });
             $(document).trigger('actions-updated');            
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
     
-<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange();", LSYii_ClientScript::POS_POSTSCRIPT); ?>

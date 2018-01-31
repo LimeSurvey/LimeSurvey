@@ -822,16 +822,16 @@ function do_5pointchoice($ia)
     if ($aQuestionAttributes['slider_rating'] == 1) {
         $slider_rating = 1;
         Yii::app()->getClientScript()->registerPackage('question-5pointchoice-star');
+        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
+    }
+    
+    if ($aQuestionAttributes['slider_rating'] == 2) {
+        $slider_rating = 2;
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
         Yii::app()->getClientScript()->registerScript('doRatingSlider_'.$ia[0], "
             var doRatingSlider_".$ia[1]."= new getRatingSlider('".$ia[0]."');
             doRatingSlider_".$ia[1]."();
         ", LSYii_ClientScript::POS_POSTSCRIPT);
-    }
-
-    if ($aQuestionAttributes['slider_rating'] == 2) {
-        $slider_rating = 2;
-        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
-        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
 

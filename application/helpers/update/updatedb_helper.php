@@ -1107,6 +1107,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
     Yii::app()->db->schema->getTable('{{surveys}}', true);
+    Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 

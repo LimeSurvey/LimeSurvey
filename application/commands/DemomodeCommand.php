@@ -84,10 +84,10 @@ class DemomodeCommand extends CConsoleCommand
         }
 
         // At last reset the basic themes       
-        foreach (LsDefaultDataSets::getTemplatesData() as $template) {
+        foreach ($templateData = LsDefaultDataSets::getTemplatesData() as $template) {
             Yii::app()->db->createCommand()->insert("{{templates}}", $template);
         }
-        foreach (LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
+        foreach ($templateConfigurationData = LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
             Yii::app()->db->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
         }
     }

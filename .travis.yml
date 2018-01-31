@@ -17,6 +17,7 @@ before_script:
     - phpenv config-rm xdebug.ini
     # Install LimeSurvey.
     - phpunit --version
+    - mysql --version
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party

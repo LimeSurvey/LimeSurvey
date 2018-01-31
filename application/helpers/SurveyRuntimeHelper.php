@@ -75,7 +75,6 @@ class SurveyRuntimeHelper
     // Boolean helpers
     private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
 
-
     // Group
     private $gid;
     private $groupname;
@@ -219,7 +218,7 @@ class SurveyRuntimeHelper
                                         $upload_file = true;
                     }
                 } //end iteration
-            } 
+            }
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
@@ -305,9 +304,10 @@ class SurveyRuntimeHelper
             $gid              = $gl['gid'];
             $aGroup           = array();
             $groupname        = $gl['group_name'];
+            // TODO: Add standard replacement fields to group name and description?
+            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
             $groupdescription = $gl['description'];
-
-
+            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
 
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
@@ -1146,6 +1146,18 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
+                $aStandardsReplacementFields = array();
+                if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                    // process string anyway so that it can be pretty-printed
+                    $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+
+                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+
+                }
+
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+
+
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -1758,7 +1770,7 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-
+                $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }
     }
