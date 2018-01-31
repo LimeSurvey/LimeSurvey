@@ -372,8 +372,8 @@
                                 </a>
                                 </li>
                                 <?php endif; ?>
-                            <?php endif; ?>
-                        </ul>
+                            </ul>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
 
