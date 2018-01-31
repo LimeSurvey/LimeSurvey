@@ -200,6 +200,9 @@ var ThemeScripts = function(){
 
             // Bind language changer onclick event.
             activateLanguageChanger();
+            
+            //Fix the navigation overflow
+            fixBodyPadding();
         });
 
         /**
@@ -209,7 +212,7 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
-        fixBodyPadding();
+        
     };
 
     var initUserForms = function(){
