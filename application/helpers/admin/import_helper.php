@@ -1871,6 +1871,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     if (isset($xml->quota_members)) {
 
         foreach ($xml->quota_members->rows->row as $row) {
+            $quotaMember = new QuotaMember();
             $insertdata = array();
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
@@ -1882,7 +1883,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $result = QuotaMember::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[13]<br />");
+            $quotaMember->attributes = $insertdata;
+            if(!$quotaMember->save()){
+                safeDie(gT("Error").": Failed to insert data[13]<br />");
+            }
             $results['quotamembers']++;
         }
     }
