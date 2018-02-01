@@ -798,7 +798,7 @@ function createDatabase($oDB){
             'full_name' => "string(50) NOT NULL",
             'parent_id' => "integer NOT NULL",
             'lang' => "string(20)",
-            'email' => "string(192)",
+            'email' => "string(191)",
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",
