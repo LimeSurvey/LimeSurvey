@@ -616,7 +616,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
-            'surveyls_title' => "string(200) NOT NULL",
+            'surveyls_title' => "string(191) NOT NULL",
             'surveyls_description' => "TEXT NULL",
             'surveyls_welcometext' => "TEXT NULL",
             'surveyls_endtext' => "TEXT NULL",
