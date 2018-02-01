@@ -1111,8 +1111,6 @@
                 $type = $qinfo['type'];
                 $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs']) > 0);
                 $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
-
-
                 if (isset($qattr['value_range_allows_missing']) && $qattr['value_range_allows_missing'] == '1')
                 {
                     $value_range_allows_missing = true;
@@ -3007,7 +3005,7 @@
                                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                                 case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                                 case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-								case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
@@ -3053,6 +3051,7 @@
                         }
                     }
                     // No subqs or false subqs (L and !)
+                    // 'other' are not included in `this` varName
                     if (empty($sq_names)) {
                         if ($this->sgqaNaming) {
                             $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['sgqa'], $em_validation_q) . ')';
@@ -4158,7 +4157,31 @@
                             break;
                     }
                 }
-
+                if(!isset($q2subqInfo[$questionNum])) {
+                    /* Single question without subquestion */
+                    /* Do same than single text question type : subqs is array with only THIS question */
+                    /* Case with Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER_DROPDOWN.Question::QT_I_LANGUAGE.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION */
+                    $q2subqInfo[$questionNum] = array(
+                        'qid' => $questionNum,
+                        'qseq' => $questionSeq,
+                        'gseq' => $groupSeq,
+                        'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'mandatory'=>$mandatory,
+                        'varName' => $varName,
+                        'type' => $type,
+                        'fieldname' => $sgqa,
+                        'preg' => null,
+                        'rootVarName' => $fielddata['title'],
+                    );
+                    if($type != "X") { // We can add it for X (text display), but think it's more clean without, current usage are only to replace this in em_validation_q
+                        $q2subqInfo[$questionNum]['subqs'][] = array(
+                            'rowdivid' => null,
+                            'varName' => $varName,
+                            'jsVarName_on' => $jsVarName_on,
+                            'jsVarName' => $jsVarName,
+                        );
+                    }
+                }
                 $ansList = '';
                 if (isset($ansArray) && !is_null($ansArray)) {
                     $answers = array();
