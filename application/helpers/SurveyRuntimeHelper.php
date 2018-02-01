@@ -60,7 +60,7 @@ class SurveyRuntimeHelper
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
-    private $backpopup              = false; // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
+    private $backpopup              = false; // "Please use the survey  navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
     private $popup                  = false; // savedcontrol, mandatory_popup
     private $notvalidated; // question validation error
 
@@ -749,7 +749,7 @@ class SurveyRuntimeHelper
                 $this->LEMskipReprocessing = true;
                 $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
-                $this->backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
+                $this->backpopup           = gT("Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
             }
         }
     }
