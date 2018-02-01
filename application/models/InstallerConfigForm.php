@@ -173,16 +173,4 @@ class InstallerConfigForm extends CFormModel
         return in_array($this->dbtype,[self::DB_TYPE_MSSQL, self::DB_TYPE_DBLIB, self::DB_TYPE_SQLSRV]);
     }
 
-    /**
-     * @throws CDbException
-     */
-    public function setMySQLDefaultEngine(){
-        if(!empty($this->db) && $this->db->driverName == 'mysql'){
-            $this->db
-                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $this->dbengine)))
-                ->execute();
-        }
-
-    }
-
 }

@@ -259,9 +259,8 @@ class InstallerController extends CController
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
                 $bDBExists = $this->dbTest($aDbConfig, $aData);
                 if ($this->_dbConnect($aDbConfig, $aData)) {
+                    Yii::app()->session['dbengine'] = $oModel->dbengine;
                     $bDBConnectionWorks = true;
-                    $oModel->db =$this->connection;
-                    $oModel->setMySQLDefaultEngine();
 
                 } else {
                     $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
@@ -411,6 +410,7 @@ class InstallerController extends CController
         // unset database name for connection, since we want to create it and it doesn't already exists
         $aDbConfig['sDatabaseName'] = '';
         $this->_dbConnect($aDbConfig, $aData);
+
 
         $aData['adminoutputForm'] = '';
         // Yii doesn't have a method to create a database
@@ -1209,8 +1209,9 @@ class InstallerController extends CController
         $sDatabasePwd = Yii::app()->session['dbpwd'];
         $sDatabasePrefix = Yii::app()->session['dbprefix'];
         $sDatabaseLocation = Yii::app()->session['dblocation'];
+        $sDatabaseEngine = Yii::app()->session['dbengine'];
 
-        return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser');
+        return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser','sDatabaseEngine');
     }
 
     /**
@@ -1238,8 +1239,12 @@ class InstallerController extends CController
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
+            $this->setMySQLDefaultEngine();
+
+
             return true;
         } catch (Exception $e) {
+            throw $e;
             return false;
         }
     }
@@ -1316,6 +1321,17 @@ class InstallerController extends CController
             if (!extension_loaded($extension)) {
                 safeDie('You\'re missing default PHP extension '.$extension);
             }
+        }
+
+    }
+    /**
+     * @throws CDbException
+     */
+    private function setMySQLDefaultEngine(){
+        if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', Yii::app()->session['dbengine'])))
+                ->execute();
         }
 
     }
