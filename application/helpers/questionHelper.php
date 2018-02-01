@@ -291,7 +291,9 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer …)
+            // Part (for Expression Manager) : subqs (or hacked subqs : TUO…) + False subqs (subqs is answer) + no real subsq (subqs is the question …).
+            // Not done : 1 (array dual scale : EM subquestion code broken ( todo : fix it ))
+            "types"=>":;ABCDEFHKMNOPQRSTU1"."L!"."5GIXY*", 
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -301,7 +303,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q_tip"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with subqs (in EM) and without
+            "types"=>":;ABCDEFHKMNOPQRSTU1"."L!"."5GIXY*",
             'category'=>gT('Logic'),
             'sortorder'=>210,
             'inputtype'=>'textarea',
@@ -521,7 +523,7 @@ class questionHelper
         );
 
         self::$attributes['hidden'] = array(
-            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*', /* Outdated : W and Z : no ? */
             'category'=>gT('Display'),
             'sortorder'=>101,
             'inputtype'=>'switch',
