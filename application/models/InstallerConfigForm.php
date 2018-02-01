@@ -18,6 +18,7 @@
 /**
  * Class InstallerConfigForm
  * @property array $dbEngines the MySQL database engines as [value=>'label']
+ * @property boolean $isMysql whether the db type is mysql or mysqli
  */
 class InstallerConfigForm extends CFormModel
 {
@@ -109,6 +110,8 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
+            array('dbengine', 'in', 'range' => array_keys(self::getDbEngines()), 'on' => 'database'),
+            array('dbengine', 'validateDBEngine', 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
@@ -131,7 +134,15 @@ class InstallerConfigForm extends CFormModel
             'dbengine' => Yii::t('app','MySQL databse engine type'),
         );
     }
+    public function validateDBEngine($attribute,$params)
+    {
+        if($this->isMysql
+            && ($this->dbengine === null or !in_array($this->dbengine,self::getDbEngines())) ){
 
+            $this->addError($attribute, Yii::t('app','The database engine type must be set for MySQL'));
+        }
+
+    }
 
     /**
      * @return array
@@ -141,5 +152,9 @@ class InstallerConfigForm extends CFormModel
             self::ENGINE_TYPE_MYISAM => Yii::t('app','MyISAM'),
             self::ENGINE_TYPE_INNODB => Yii::t('app','InnoDB'),
         ];
+    }
+
+    public function getIsMysql(){
+        return in_array($this->dbtype,[self::DB_TYPE_MYSQL,self::DB_TYPE_MYSQLI]);
     }
 }
