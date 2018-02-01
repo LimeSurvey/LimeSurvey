@@ -947,6 +947,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>345], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         //Reset Surveymenues and tutorials to fix translation issues
         if ($iOldDBVersion < 346) {
             $oTransaction = $oDB->beginTransaction();
@@ -958,6 +959,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Correct permission for survey menu email template (surveylocale, not assessments).
+         */
+        if ($iOldDBVersion < 347) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    'permission' => 'surveylocale',
+                ],
+                'name=\'emailtemplates\''
+            );
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>347], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

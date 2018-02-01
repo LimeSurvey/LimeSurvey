@@ -60,7 +60,7 @@ class SurveyRuntimeHelper
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
-    private $backpopup              = false; // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
+    private $backpopup              = false; // "Please use the survey  navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
     private $popup                  = false; // savedcontrol, mandatory_popup
     private $notvalidated; // question validation error
 
@@ -304,9 +304,10 @@ class SurveyRuntimeHelper
             $gid              = $gl['gid'];
             $aGroup           = array();
             $groupname        = $gl['group_name'];
+            // TODO: Add standard replacement fields to group name and description?
+            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
             $groupdescription = $gl['description'];
-
-
+            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
 
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
@@ -748,7 +749,7 @@ class SurveyRuntimeHelper
                 $this->LEMskipReprocessing = true;
                 $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
-                $this->backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
+                $this->backpopup           = gT("Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
             }
         }
     }
@@ -1769,7 +1770,7 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-
+                $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }
     }

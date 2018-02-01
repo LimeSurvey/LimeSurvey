@@ -50,7 +50,7 @@ var ThemeScripts = function(){
      */
     var fixBodyPadding = function fixBodyPadding(){
         /* The 60 px is fixed in template.css */
-        $("body").css("padding-top",$(".navbar-fixed-top").height()+"px")
+        $("body").css("padding-top", Math.round($(".navbar-fixed-top").height()) +"px");
     }
     /**
      * Set suffix/prefix clone for little screen (at top)
@@ -187,6 +187,15 @@ var ThemeScripts = function(){
                 $('#surveys-list-container').css('min-height', bodyHeight+'px');
             }
 
+            // Captcha action
+            if($('#reloadCaptcha').length>0)
+            {
+                $('#reloadCaptcha').on('click', function(e){
+                    e.preventDefault();
+                    window.location.reload();
+                })
+            }
+
             // Survey list footer
             if($('#surveyListFooter').length>0)
             {
@@ -200,6 +209,9 @@ var ThemeScripts = function(){
 
             // Bind language changer onclick event.
             activateLanguageChanger();
+            
+            //Fix the navigation overflow
+            fixBodyPadding();
         });
 
         /**
@@ -209,7 +221,7 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
-        fixBodyPadding();
+        
     };
 
     var initUserForms = function(){
