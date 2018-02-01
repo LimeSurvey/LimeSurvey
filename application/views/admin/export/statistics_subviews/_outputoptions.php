@@ -7,7 +7,7 @@
                 <div class='form-group col-md-6'>
                     <label for='showtextinline' class="col-lg-8 control-label" ><?php eT("Show text responses inline:") ?></label>
                     <div class='col-lg-4'>
-                        <?php $sShowtextinline = (int) Yii::app()->request->getPost('showtextinline');?>
+                        <?php $sShowtextinline = (int) Yii::app()->request->getPost('showtextinline', Yii::app()->getConfig('statistics_showtextinline'));?>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', 
                         array('name' => 'showtextinline', 'id'=>'showtextinline', 'value'=>$sShowtextinline, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                     </div>
@@ -16,7 +16,7 @@
                 <div class='form-group col-md-6'>
                     <label for='usegraph'  class="col-lg-8 control-label" ><?php eT("Show graphs:"); ?></label>
                     <div class='col-lg-4'>
-                        <?php $sUsegraph = (int) Yii::app()->request->getPost('usegraph');?>
+                        <?php $sUsegraph = (int) Yii::app()->request->getPost('usegraph', Yii::app()->getConfig('statistics_usegraph'));?>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', 
                         array('name' => 'usegraph', 'id'=>'usegraph', 'value'=>$sUsegraph, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                     </div>

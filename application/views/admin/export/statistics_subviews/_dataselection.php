@@ -28,7 +28,7 @@
             </div>
 
             <div class='form-group col-sm-6'>
-                <?php $sNoncompleted = (int) Yii::app()->request->getPost('noncompleted');?>
+                <?php $sNoncompleted = (int) Yii::app()->request->getPost('noncompleted', Yii::app()->getConfig('statistics_noncompleted'));?>
                 <label class="col-lg-8 control-label" id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions:"); ?></label>
                 <div class='col-lg-4'>
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', 
