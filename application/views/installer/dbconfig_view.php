@@ -1,8 +1,30 @@
 <?php
 /**
  * @var InstallerConfigForm $model
+ * @var string $title
+ * @var string $descp
  */
+
+Yii::app()->clientScript->registerScript('orgType', "
+$( document ).ready(function() {
+    checkDbType();
+});
+$('#InstallerConfigForm_dbtype').change(function(){
+    checkDbType();
+});
+
+function checkDbType(){
+    if($('#InstallerConfigForm_dbtype').val() == '".InstallerConfigForm::DB_TYPE_MYSQL."') {
+        $('#InstallerConfigForm_dbengine_row').show();
+    } else if($('#InstallerConfigForm_dbtype').val() == '".InstallerConfigForm::DB_TYPE_MYSQLI."') {
+        $('#InstallerConfigForm_dbengine_row').show();
+    } else {
+        $('#InstallerConfigForm_dbengine_row').hide();
+    }
+}
+");
 ?>
+
 <div class="row">
     <div class="col-md-4">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
@@ -28,6 +50,12 @@
                     'description' => gT("The type of your database management system")
                 );
                 $rows[] = array(
+                    'id'=>'InstallerConfigForm_dbengine_row',
+                    'label' => CHtml::activeLabelEx($model, 'dbengine'),
+                    'control' => CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt'=>gT("Select"), 'autocomplete'=>'off', 'class' => 'form-control')),
+                    'description' => '',
+                );
+                $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dblocation'),
                     'control' => CHtml::activeTextField($model, 'dblocation',array('class' => 'form-control')),
                     'description' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.').' '.gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431')
@@ -48,20 +76,14 @@
                     'description' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation.")
                 );
                 $rows[] = array(
-                    'label' => CHtml::activeLabelEx($model, 'dbengine'),
-                    'control' => CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('autocomplete'=>'off', 'class' => 'form-control')),
-                    'description' => '',
-                );
-
-                $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbprefix'),
                     'control' => CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_','autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.')
                 );
 
-            foreach ($rows as $row)
-            {
-                echo CHtml::openTag('div', array('class' => 'form-group'));
+            foreach ($rows as $row) {
+                $idTag = (empty($row['id']) ? [] : ['id'=>$row['id']]);
+                echo CHtml::openTag('div', array_merge(array('class' => 'form-group'),$idTag));
                 echo $row['label'];
                 echo CHtml::tag('div', array('class' => 'controls'), $row['control'] . CHtml::tag('p', array('class' => 'help-block'), $row['description']));
                 echo CHtml::closeTag('div');

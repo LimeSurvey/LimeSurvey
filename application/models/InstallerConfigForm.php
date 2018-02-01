@@ -24,6 +24,13 @@ class InstallerConfigForm extends CFormModel
     const ENGINE_TYPE_MYISAM = 'MyISAM';
     const ENGINE_TYPE_INNODB = 'InnoDB';
 
+    const DB_TYPE_MYSQL = 'mysql';
+    const DB_TYPE_MYSQLI = 'mysqli';
+    const DB_TYPE_SQLSRV = 'sqlsrv';
+    const DB_TYPE_MSSQL = 'mssql';
+    const DB_TYPE_DBLIB = 'dblib';
+    const DB_TYPE_PGSQL = 'pgsql';
+
     // Database
     /** @var string $dbtype */
     public $dbtype;
@@ -39,17 +46,16 @@ class InstallerConfigForm extends CFormModel
     public $dbprefix = 'lime_';
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
-
     /** @var array $supported_db_types */
     public $supported_db_types = array();
     /** @var array $db_names */
     public $db_names = array(
-        'mysql' => 'MySQL',
-        'mysqli' => 'MySQL (newer driver)',
-        'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
-        'mssql' => 'Microsoft SQL Server (mssql)',
-        'dblib' => 'Microsoft SQL Server (dblib)',
-        'pgsql' => 'PostgreSQL',
+        self::DB_TYPE_MYSQL => 'MySQL',
+        self::DB_TYPE_MYSQLI => 'MySQL (newer driver)',
+        self::DB_TYPE_SQLSRV => 'Microsoft SQL Server (sqlsrv)',
+        self::DB_TYPE_MSSQL => 'Microsoft SQL Server (mssql)',
+        self::DB_TYPE_DBLIB => 'Microsoft SQL Server (dblib)',
+        self::DB_TYPE_PGSQL => 'PostgreSQL',
     );
 
     // Optional
@@ -84,6 +90,7 @@ class InstallerConfigForm extends CFormModel
                 $this->supported_db_types[$driver] = $this->db_names[$driver];
             }
         }
+        $this->supported_db_types = $this->db_names;
 
         asort($this->supported_db_types);
 
