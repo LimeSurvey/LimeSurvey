@@ -15,7 +15,7 @@ class MysqlSchema extends CMysqlSchema
     public function createTable($table, $columns, $options = null)
     {
         if (empty($options)) {
-            $options = 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+            $options = 'DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
         }
 
         // Below copied from parent.
