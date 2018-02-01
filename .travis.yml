@@ -32,7 +32,8 @@ before_script:
     - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
     - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
     - mysql -uroot -e "SET @@global.innodb_file_format_max =  Barracuda;"
-    - mysql -uroot -e "SET @@global.innodb_default_row_format =  DYNAMIC;"
+    - mysql -uroot -e "SET @@global.row_format=DEFAULT;"
+    - mysql -uroot -e "SET @@global.innodb_default_row_format=DYNAMIC;"
 
     - mysql -uroot -e "Show  variables like '%large%';"
     - mysql -uroot -e "Show  variables like '%innodb_file%';"
