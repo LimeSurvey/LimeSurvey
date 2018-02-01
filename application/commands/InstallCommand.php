@@ -103,6 +103,15 @@ class InstallCommand extends CConsoleCommand
         $this->output('Creating database...');
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
         $this->connection = App()->db;
+
+        $dbEngine = InstallerConfigForm::ENGINE_TYPE_MYISAM;
+
+        if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
