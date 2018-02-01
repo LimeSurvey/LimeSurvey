@@ -121,7 +121,6 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public function testCompareUpgradeAndFreshInstall()
     {
-        $this->markTestSkipped();
         $connection = self::$testHelper->updateDbFromVersion(258);
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 258);
