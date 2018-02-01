@@ -1240,6 +1240,9 @@ class InstallerController extends CController
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
+            if($sDatabaseEngine === InstallerConfigForm::ENGINE_TYPE_INNODB){
+                $sDatabaseEngine = $sDatabaseEngine. ' ROW_FORMAT=DYNAMIC ';
+            }
             $this->setMySQLDefaultEngine($sDatabaseEngine);
 
 
