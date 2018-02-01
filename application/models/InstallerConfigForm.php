@@ -17,6 +17,9 @@
 
 class InstallerConfigForm extends CFormModel
 {
+    const ENGINE_TYPE_MYISAM = 'MyISAM';
+    const ENGINE_TYPE_INNODB = 'InnoDB';
+
     // Database
     /** @var string $dbtype */
     public $dbtype;
@@ -30,6 +33,9 @@ class InstallerConfigForm extends CFormModel
     public $dbpwd;
     /** @var string $dbprefix */
     public $dbprefix = 'lime_';
+
+    /** @var string $dbengine Database Engine type if DB type is MySQL */
+    public $dbengine;
 
     /** @var array $supported_db_types */
     public $supported_db_types = array();
@@ -106,12 +112,13 @@ class InstallerConfigForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'dbtype' => 'Database type',
-            'dblocation' => 'Database location',
-            'dbname' => 'Database name',
-            'dbuser' => 'Database user',
-            'dbpwd' => 'Database password',
-            'dbprefix' => 'Table prefix',
+            'dbtype' => Yii::t('app','Database type'),
+            'dblocation' => Yii::t('app','Database location'),
+            'dbname' => Yii::t('app','Database name'),
+            'dbuser' => Yii::t('app','Database user'),
+            'dbpwd' => Yii::t('app','Database password'),
+            'dbprefix' => Yii::t('app','Table prefix'),
+            'dbengine' => Yii::t('app','MySQL databse engine type'),
         );
     }
 }

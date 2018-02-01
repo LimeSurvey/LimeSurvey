@@ -42,6 +42,11 @@
                     'control' => CHtml::activeTextField($model, 'dbname', array('required' => 'required','autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation.")
                 );
+                $rows[] = array(
+                    'label' => CHtml::activeLabelEx($model, 'dbengine', array('class' => 'control-label ', 'label' => gT("Database default engine"))),
+                    'control' => CHtml::activeTextField($model, 'dbengine', array('required' => 'required','autocomplete'=>'off', 'class' => 'form-control')),
+                    'description' => gT("")
+                );
 
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbprefix', array('class' => 'control-label ', 'label' => gT("Table prefix"))),
