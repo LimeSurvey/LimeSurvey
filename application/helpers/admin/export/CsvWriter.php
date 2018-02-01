@@ -27,7 +27,7 @@ class CsvWriter extends Writer
     function __construct()
     {
         $this->output = '';
-        $this->separator = ',';
+        $this->separator = ';';
         $this->hasOutputHeader = false;
     }
 
@@ -39,6 +39,7 @@ class CsvWriter extends Writer
         
         if ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
+            fwrite($this->file,"\xEF\xBB\xBF"); // Write UTF-8 Byte Order Mark (BOM)
         }
         
     }
@@ -60,7 +61,7 @@ class CsvWriter extends Writer
                     $index++;
                 }
                 //Output the header...once and only once.
-                $sRecord .= implode($this->separator, $headers).PHP_EOL;
+                $sRecord .= implode($this->separator, $headers)."\r\n";
             }
             $this->hasOutputHeader = true;
         }
@@ -70,7 +71,7 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord .= implode($this->separator, $values).PHP_EOL;
+        $sRecord .= implode($this->separator, $values)."\r\n";
         if ($oOptions->output == 'display') {
             echo $sRecord; 
             $this->output = '';
