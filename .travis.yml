@@ -34,6 +34,7 @@ before_script:
     - mysql -uroot -e "SET @@global.innodb_file_format_max =  Barracuda;"
 
     - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "Show  variables like '%innodb_file%';"
 
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
