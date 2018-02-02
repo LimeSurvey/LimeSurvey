@@ -567,6 +567,10 @@ class database extends Survey_Common_Action
 
         $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute) {
+            /* Readonly attribute : disable save */
+            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+                continue;
+            }
             if ($validAttribute['i18n']) {
                 /* Delete invalid language : not needed but cleaner */
                 $langCriteria = new CDbCriteria;
@@ -577,7 +581,7 @@ class database extends Survey_Common_Action
                 /* delete IS NULL too*/
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                 foreach ($aLanguages as $sLanguage) {
-// TODO sanitise XSS
+                    // TODO sanitise XSS
                     $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
                     $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
                     if ($iInsertCount > 0) {
