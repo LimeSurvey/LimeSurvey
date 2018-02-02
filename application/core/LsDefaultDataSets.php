@@ -406,7 +406,7 @@ class LsDefaultDataSets
                 'teid' => 5,
                 'ordering' => 5,
                 'title' => gT('Create a sample question and question group'),
-                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create it."),
+                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create them."),
                 'settings' => json_encode(array(
                     'element' => '.bootstrap-switch-id-createsample',
                     'path' => ['/admin/survey/sa/newsurvey'],
