@@ -34,7 +34,7 @@
             type="text"
             name="<?php echo $name; ?>"
             id="answer<?php echo $name;?>"
-            value="<?php echo $dispVal; ?>"
+            value="<?php echo viewHelper::getPublicDisplayTextValue($value); ?>"
             <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
             <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
             aria-labelledby="ls-question-text-<?php echo $basename; ?>"

@@ -3095,12 +3095,10 @@ function do_shortfreetext($ia)
         $dispVal = "";
 
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
-            $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
             if ($aQuestionAttributes['numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
-            $dispVal = htmlspecialchars($dispVal);
         }
 
         $answer .= doRender('/survey/questions/answer/shortfreetext/textarea/item', array(
@@ -3266,21 +3264,20 @@ function do_shortfreetext($ia)
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     } else {
         //no question attribute set, use common input text field
-        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        if ($aQuestionAttributes['numbers_only'] == 1) {
-            $dispVal = str_replace('.', $sSeparator, $dispVal);
+        $value = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        if ($aQuestionAttributes['numbers_only']) {
+            $value = str_replace('.', $sSeparator, $dispVal);
         }
-        $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
-
         $itemDatas = array(
+            'value' => $value,
+            'name'=>$ia[1],
             'extraclass'=>$extraclass,
             'coreClass'=> $coreClass,
-            'name'=>$ia[1],
             'basename'               => $ia[1],
             'prefix'=>$prefix,
             'suffix'=>$suffix,
             'kpclass'=>$kpclass,
-            'dispVal'=>$dispVal,
+            'dispVal'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
             'maxlength'=>$maxlength,
             'inputsize'              => $inputsize,
             'withColumn'             => $withColumn
@@ -3364,7 +3361,7 @@ function do_longfreetext($ia)
         $inputsize = null;
     }
 
-    $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) ?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) : '';
+    $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] : '';
 
     $answer = doRender('/survey/questions/answer/longfreetext/answer', array(
         'extraclass'             => $extraclass,
@@ -3437,7 +3434,7 @@ function do_hugefreetext($ia)
 
     $dispVal = "";
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
-        $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     }
 
     $itemDatas = array(

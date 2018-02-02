@@ -28,7 +28,7 @@
         <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
         <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
         aria-labelledby="ls-question-text-<?php echo $basename; ?>"
-    ><?php echo $dispVal;?></textarea>
+    ><?php echo viewHelper::getPublicDisplayTextValue($dispVal);?></textarea>
 <?php if($withColumn): ?>
     </div>
 </div>
