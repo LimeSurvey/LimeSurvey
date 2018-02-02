@@ -146,7 +146,8 @@ echo viewHelper::getViewTestTag('addQuestion');
                                 <!-- Question selector start -->
                                 <div  class="form-group">
                                     <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                    <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
+
+                                    <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -166,7 +167,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                                                 <i class="fa fa-folder-open"></i>                                       
                                             </button>
                                         </div>
-                                    <?php elseif($activated !== "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+                                    <?php elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
                                         <label class=" control-label" for="question_type" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -184,7 +185,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                                             } 
                                             ?>
                                         </select> 
-                                    <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+                                    <?php elseif($activated == "Y") : ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                                 eT("Question type:");
