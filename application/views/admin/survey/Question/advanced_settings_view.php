@@ -36,7 +36,7 @@ $categoryNum=0;
     <div class="form-group">
     <!-- Form Group -->
         <!-- Label -->
-        <label class=" control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class="col-sm-12 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
@@ -46,10 +46,10 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                if ( $aAttribute['readonly'] || (isset($aAttribute['readonly_when_active']) && $bIsActive) )
+                if (( $aAttribute['readonly'] || (isset($aAttribute['readonly_when_active']) && $aAttribute['readonly_when_active'] == 'Y')) && $bIsActive ) 
                 {
                     // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
-                    echo "<div class='form-control-static'>".\CHtml::encode($aAttribute['value'])."</div>";
+                    echo "<input type='text' class='form-control' disabled value='".\CHtml::encode($aAttribute['value'])."' />";
                 }
                 else
                 {
