@@ -1119,11 +1119,6 @@ class SurveyRuntimeHelper
                 $_SESSION[$this->LEMsessid]['finished'] = true;
                 $_SESSION[$this->LEMsessid]['sid']      = $this->iSurveyid;
 
-                if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                    //Automatically redirect the page to the "url" setting for the survey
-                    header("Location: {$this->aSurveyInfo['surveyls_url']}");
-                }
-
             }
 
             $redata['completed'] = $this->completed;
@@ -1147,18 +1142,22 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
-                $aStandardsReplacementFields = array();
-                if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
-                    // process string anyway so that it can be pretty-printed
-                    $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $aStandardsReplacementFields = array();
+            if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                // process string anyway so that it can be pretty-printed
+                $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
 
-                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+                $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
 
-                }
+            }
 
-                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
 
 
+            if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
+                //Automatically redirect the page to the "url" setting for the survey
+                header("Location: {$this->aSurveyInfo['surveyls_url']}");
+            }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {

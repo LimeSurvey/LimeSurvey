@@ -164,7 +164,7 @@ class database extends Survey_Common_Action
                 DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
             }
         }
-        $surveyid = $iSurveyID;
+        $surveyid = $this->iSurveyID;
         updateFieldArray();
     }
 
