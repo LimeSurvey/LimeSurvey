@@ -570,7 +570,7 @@ class index extends CAction
         }
 
         // Preview action : Preview right already tested before
-        if ($previewmode === true) {
+        if ($previewmode == 'previewgroup' || $previewmode == 'previewquestion') {
 
             // Unset all SESSION: be sure to have the last version
             unset($_SESSION['fieldmap-'.$surveyid.App()->language]); // Needed by createFieldMap: else fieldmap can be outdated
@@ -594,11 +594,11 @@ class index extends CAction
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
-        try {
+        // try {
             $tmp->run($surveyid, $redata);
-        } catch (WrongTemplateVersionException $ex) {
-            echo $ex->getMessage();
-        }
+        // } catch (WrongTemplateVersionException $ex) {
+        //     echo $ex->getMessage();
+        // }
 
         if (App()->request->getPost('saveall')) {
             App()->clientScript->registerScript("saveflashmessage", "alert('".gT("Your responses were successfully saved.", "js")."');", CClientScript::POS_READY);

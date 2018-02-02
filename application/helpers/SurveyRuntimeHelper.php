@@ -112,6 +112,7 @@ class SurveyRuntimeHelper
             $this->setNotAnsweredAndNotValidated();
 
         } else {
+            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
             $this->setPreview();
         }
 
@@ -668,7 +669,7 @@ class SurveyRuntimeHelper
     {
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if (!isset($_SESSION[$this->LEMsessid]['step']) || ($this->previewquestion || $this->previewgrp) ) {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
             $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
