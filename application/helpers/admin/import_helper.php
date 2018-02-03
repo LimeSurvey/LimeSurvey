@@ -2136,7 +2136,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                         }
                     }
 
-                    SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
+                    SurveyDynamic::model($iSurveyID)->insertRecord($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
                     $results['responses']++;
                 }
             }

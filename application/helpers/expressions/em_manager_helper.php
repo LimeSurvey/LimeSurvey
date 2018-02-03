@@ -5452,7 +5452,7 @@
                 SurveyDynamic::sid($this->sid);
                 $oSurvey = new SurveyDynamic;
 
-                $iNewID = $oSurvey->insertRecords($sdata);
+                $iNewID = $oSurvey->insertRecord($sdata);
                 if ($iNewID)    // Checked
                 {
                     $srid = $iNewID;

@@ -2571,7 +2571,7 @@ class remotecontrol_handle
             $survey_dynamic = new SurveyDynamic;
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
-            $result_id = $survey_dynamic->insertRecords($aResponseData);
+            $result_id = $survey_dynamic->insertRecord($aResponseData);
 
             if ($result_id) {
                 // FIXME $sToken is undefined!!

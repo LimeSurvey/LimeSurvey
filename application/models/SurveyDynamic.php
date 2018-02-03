@@ -105,9 +105,9 @@ class SurveyDynamic extends LSActiveRecord
      *
      * @access public
      * @param array $data
-     * @return boolean
+     * @return boolean |integer record ID if successfully saved
      */
-    public function insertRecords($data)
+    public function insertRecord($data)
     {
         $record = new self;
         foreach ($data as $k => $v) {
