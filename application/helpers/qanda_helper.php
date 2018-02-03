@@ -3264,9 +3264,9 @@ function do_shortfreetext($ia)
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     } else {
         //no question attribute set, use common input text field
-        $value = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         if ($aQuestionAttributes['numbers_only']) {
-            $value = str_replace('.', $sSeparator, $dispVal);
+            $dispVal = str_replace('.', $sSeparator, $dispVal);
         }
         $itemDatas = array(
             'value' => $value,
@@ -3277,7 +3277,7 @@ function do_shortfreetext($ia)
             'prefix'=>$prefix,
             'suffix'=>$suffix,
             'kpclass'=>$kpclass,
-            'dispVal'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'dispVal'=>$dispVal,
             'maxlength'=>$maxlength,
             'inputsize'              => $inputsize,
             'withColumn'             => $withColumn
