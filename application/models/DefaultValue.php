@@ -72,7 +72,7 @@ class DefaultValue extends LSActiveRecord
     {
         return array(
             array('qid', 'required'),
-            array('qid', 'numerical', 'integerOnly'=>true),
+            array('qid,scale_id', 'numerical', 'integerOnly'=>true),
             array('qid', 'unique', 'criteria'=>array(
                     'condition'=>'specialtype=:specialtype and scale_id=:scale_id and sqid=:sqid and language=:language',
                     'params'=>array(
@@ -83,21 +83,24 @@ class DefaultValue extends LSActiveRecord
                     )
                 ),
                 'message'=>'{attribute} "{value}" is already in use.'),
+            ['language,specialtype','length','min' => 2,'max'=>20],
+            ['defaultvalue','safe'],
         );
     }
 
     /**
      * @param $data
      * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
         $oRecord = new self;
         foreach ($data as $k => $v) {
-                    $oRecord->$k = $v;
+            $oRecord->$k = $v;
         }
         if ($oRecord->validate()) {
-                    return $oRecord->save();
+            return $oRecord->save();
         }
         tracevar($oRecord->getErrors());
     }

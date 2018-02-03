@@ -145,14 +145,16 @@ class database extends Survey_Common_Action
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
         if ($defaultvalue == '') {
-// Remove the default value if it is empty
+            // Remove the default value if it is empty
             DefaultValue::model()->deleteByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
         } else {
             $arDefaultValue = DefaultValue::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
 
             if (is_null($arDefaultValue)) {
                 $data = array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
-                DefaultValue::model()->insertRecords($data);
+                $defaultvalue = new DefaultValue();
+                $defaultvalue->attributes = $data;
+                $defaultvalue->save();
             } else {
                 DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
             }
