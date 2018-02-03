@@ -9,7 +9,6 @@ class Authdb extends AuthPluginBase
 
     public function init()
     {
-
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -17,6 +16,8 @@ class Authdb extends AuthPluginBase
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
+        $this->subscribe('remoteControlLogin');
+
         $this->subscribe('newUserSession');
         $this->subscribe('beforeDeactivate');
         // Now register for the core exports

@@ -125,12 +125,12 @@ var prepare = function(){
                             $(item).val((inheritPossible ? 'inherit' : 1000));
                         }
                     }
-                    
+
                     //disabled items should be inherit or false
                     if($(item).prop('disabled')){
                         $(item).val((inheritPossible ? 'inherit' : false));
                     }
-                    
+
                     newOptionObject[$(item).attr('name')] = $(item).val();
 
                 });
@@ -173,7 +173,7 @@ var prepare = function(){
                     $(this).val('inherit');
                 }
             }
-            //write to option object 
+            //write to option object
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -210,12 +210,18 @@ var prepare = function(){
         if($('#simple_edit_font').length>0){
             optionObject.font = optionObject.font || 'inherit';
 
-            var currentPackageLoad = JSON.parse($('#TemplateConfiguration_packages_to_load').val()),
-                currentFontPackage = currentPackageLoad.add.reduce(function(coll, it){ 
-                    return coll = /^font-/.test(it) ? it : coll; 
-                },'font-inherit'),
-                currentFont  = optionObject.font;
-                
+            var tcptlVal = $('#TemplateConfiguration_packages_to_load').val();
+            if (tcptlVal === 'inherit' ){
+                var currentPackageLoad = 'inherit' ;
+            }else{
+                var currentPackageLoad = JSON.parse(tcptlVal),
+                    currentFontPackage = currentPackageLoad.add.reduce(function(coll, it){
+                        return coll = /^font-/.test(it) ? it : coll;
+                    },'font-inherit'),
+                    currentFont  = optionObject.font;
+            }
+
+
 
             if( currentFont !== 'inherit' ){
                 $('#simple_edit_font').val(currentFont);
@@ -232,7 +238,7 @@ var prepare = function(){
                         return !(/^font-/.test(val));
                     });
                     var selectedFontPackage = $(this).find('option:selected').data('font-package');
-                    var formatedPackageName = "font-"+selectedFontPackage;                  
+                    var formatedPackageName = "font-"+selectedFontPackage;
                     currentPackageLoad.add.push(formatedPackageName);
                     optionObject.font =  $(this).val();
                     writeToOptionsField(optionObject);

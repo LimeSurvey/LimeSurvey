@@ -389,7 +389,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminpanel
      *
-     * @param type $surveyid
+     * @param integer $surveyid
      * @return void
      */
     public function updateOrder($surveyid)
@@ -422,7 +422,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminpanel
      *
-     * @param type $surveyid
+     * @param integer $surveyid
      * @return void
      */
     public function updateOrderWithQuestions($surveyid)
