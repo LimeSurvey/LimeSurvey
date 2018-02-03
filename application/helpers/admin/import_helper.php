@@ -1713,7 +1713,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     }
                     $questionAttribute = new QuestionAttribute();
                     $questionAttribute->attributes = $insertdata;
-                    if(!$questionAttribute->save()){
+                    if (!$questionAttribute->save()) {
                         safeDie(gT("Error").": Failed to insert data[7]<br />");
                     }
 
@@ -1721,7 +1721,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 $questionAttribute = new QuestionAttribute();
                 $questionAttribute->attributes = $insertdata;
-                if(!$questionAttribute->save()){
+                if (!$questionAttribute->save()) {
                     safeDie(gT("Error").": Failed to insert data[8]<br />");
                 }
             }
@@ -1884,7 +1884,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['id']);
             // now translate any links
             $quotaMember->attributes = $insertdata;
-            if(!$quotaMember->save()){
+            if (!$quotaMember->save()) {
                 safeDie(gT("Error").": Failed to insert data[13]<br />");
             }
             $results['quotamembers']++;
@@ -1901,7 +1901,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result = QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
+            $quotaLanguagesSetting = new QuotaLanguageSetting();
+            $quotaLanguagesSetting->attributes = $insertdata;
+            if (!$quotaLanguagesSetting->save()) {
+                safeDie(gT("Error").": Failed to insert data<br />");
+            }
             $results['quotals']++;
         }
     }

@@ -1151,11 +1151,11 @@ class SurveyRuntimeHelper
                     // process string anyway so that it can be pretty-printed
                     $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
 
-                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString($this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
 
                 }
 
-                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
 
 
