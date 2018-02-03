@@ -89,15 +89,16 @@ class DefaultValue extends LSActiveRecord
     /**
      * @param $data
      * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
         $oRecord = new self;
         foreach ($data as $k => $v) {
-                    $oRecord->$k = $v;
+            $oRecord->$k = $v;
         }
         if ($oRecord->validate()) {
-                    return $oRecord->save();
+            return $oRecord->save();
         }
         tracevar($oRecord->getErrors());
     }

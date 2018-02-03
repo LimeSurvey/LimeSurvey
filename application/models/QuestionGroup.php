@@ -106,6 +106,7 @@ class QuestionGroup extends LSActiveRecord
      *
      * @param array $data
      * @return bool|int
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
