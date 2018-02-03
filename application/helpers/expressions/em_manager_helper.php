@@ -5473,7 +5473,7 @@
                     'id'=>$srid,
                     'interviewtime'=>0
                     );
-                    $oSurveyTimings->insertRecords($tdata);
+                    $oSurveyTimings->insertRecord($tdata);
                 }
             }
             if (count($updatedValues) > 0 || $finished)

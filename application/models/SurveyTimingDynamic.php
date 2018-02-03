@@ -133,7 +133,7 @@ class SurveyTimingDynamic extends LSActiveRecord
      * @param array $data
      * @return bool|mixed|null
      */
-    public function insertRecords($data)
+    public function insertRecord($data)
     {
         $record = new self;
         foreach ($data as $k=>$v) {

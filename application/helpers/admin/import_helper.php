@@ -2466,7 +2466,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             $insertdata[$key] = (string) $value;
         }
 
-        SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[17]<br />");
+        SurveyTimingDynamic::model($iSurveyID)->insertRecord($insertdata) or safeDie(gT("Error").": Failed to insert data[17]<br />");
 
         $results['responses']++;
     }
