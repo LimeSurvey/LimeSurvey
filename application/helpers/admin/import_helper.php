@@ -1763,7 +1763,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                             XSSFilterArray($insertdata);
             }
             // now translate any links
-            $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
+            $defaultValue = new DefaultValue();
+            $defaultValue->attributes = $insertdata;
+            if (!$defaultValue->save()) {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            }
             $results['defaultvalues']++;
         }
     }
