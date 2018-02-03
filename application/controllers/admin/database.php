@@ -1303,7 +1303,7 @@ class database extends Survey_Common_Action
                             $newAnswer = new Answer();
                             $newAnswer->attributes = $qr1;
                             $newAnswer->qid = $this->iQuestionID;
-                            if(!$newAnswer->save()){
+                            if (!$newAnswer->save()) {
                                 Yii::log(\CVarDumper::dumpAsString($newAnswer->getErrors()), 'warning', __METHOD__);
                             }
                         }
