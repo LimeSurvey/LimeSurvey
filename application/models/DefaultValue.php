@@ -89,7 +89,6 @@ class DefaultValue extends LSActiveRecord
     /**
      * @param $data
      * @return bool
-     * @deprecated at 2018-01-30 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
