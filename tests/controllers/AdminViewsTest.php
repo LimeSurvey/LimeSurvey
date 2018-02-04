@@ -87,6 +87,7 @@ class AdminViewsTest extends TestBaseClassView
             if(isset($view['activate']) && $view['activate'] ){
                 $activator = new \SurveyActivator(self::$testSurvey);
                 $activator->activate();
+                \Token::createTable(self::$surveyId);
             }
 
         } elseif (empty(self::$surveyId)) {

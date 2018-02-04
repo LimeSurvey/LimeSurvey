@@ -56,7 +56,7 @@ return [
     ['exportSpss', ['route'=>'export/sa/exportspss/sid/{SID}']],
     ['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
     ['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
-    //['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
+    ['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
 
 
 ];
