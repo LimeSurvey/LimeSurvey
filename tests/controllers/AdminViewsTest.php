@@ -84,6 +84,11 @@ class AdminViewsTest extends TestBaseClassView
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
 
+            if(isset($view['activate']) && $view['activate'] ){
+                $activator = new \SurveyActivator(self::$testSurvey);
+                $activator->activate();
+            }
+
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).

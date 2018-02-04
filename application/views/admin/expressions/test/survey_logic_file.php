@@ -5,6 +5,9 @@
 
  $gid = isset($gid) ? $gid : NULL;
  $qid = isset($qid) ? $qid : NULL;
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyLogicFile');
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
