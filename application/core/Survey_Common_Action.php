@@ -1059,7 +1059,7 @@ class Survey_Common_Action extends CAction
                 $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add questions")."]</span>";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
             }
         }
         $aData['hints'] = $surveysummary2;
