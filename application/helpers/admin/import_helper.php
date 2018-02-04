@@ -1768,13 +1768,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                             XSSFilterArray($insertdata);
             }
-            // now translate any links
-            $defaultValue = new DefaultValue();
-            $defaultValue->attributes = $insertdata;
-            if (!$defaultValue->save()) {
-                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            $defaultValue = DefaultValue::model()->findByAttributes(array('sqid'=>$insertdata['sqid'], 'qid'=>$insertdata['qid'], 'specialtype'=>$insertdata['specialtype'], 'scale_id'=>$insertdata['scale_id']));
+            if($defaultValue == null && 1===2){
+                // now translate any links
+                $defaultValue = new DefaultValue();
+                $defaultValue->attributes = $insertdata;
+                if (!$defaultValue->save()) {
+                    safeDie(gT("Error").": Failed to insert data[9]<br />");
+                }
+                $results['defaultvalues']++;
             }
-            $results['defaultvalues']++;
         }
     }
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);

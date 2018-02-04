@@ -53,7 +53,7 @@ class DefaultValue extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
+        return array('qid', 'specialtype', 'scale_id', 'sqid');
     }
 
     /** @inheritdoc */

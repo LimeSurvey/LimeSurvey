@@ -262,7 +262,19 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+    ),
+
+    'surveysummary' => array(
+        'devBaseUrl' => 'assets/packages/surveysummary/',
+        'basePath' => 'core.surveysummary',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'surveysummary.js',
         ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',
