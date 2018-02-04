@@ -694,6 +694,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
+        $surveyActivator = new SurveyActivator($survey);
 
         Yii::app()->user->setState('sql_'.$iSurveyID, ''); // If user has set some filters for responses from statistics on a previous activation, it must be wiped out
         $aData = array();
@@ -724,7 +725,6 @@ class SurveyAdmin extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         } else {
-            $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             if (!is_null($survey)) {
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
                 $survey->datestamp = Yii::app()->request->getPost('datestamp');
@@ -735,7 +735,8 @@ class SurveyAdmin extends Survey_Common_Action
                 Survey::model()->resetCache(); // Make sure the saved values will be picked up
             }
 
-            $aResult = activateSurvey($iSurveyID);
+            $aResult = $surveyActivator->activate();
+
             $aViewUrls = array();
             if ((isset($aResult['error']) && $aResult['error'] == 'plugin')
                 || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])) {

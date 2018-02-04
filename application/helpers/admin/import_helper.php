@@ -1079,7 +1079,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 }
                 // Activate the survey
                 Yii::app()->loadHelper("admin/activate");
-                activateSurvey($aImportResults['newsid']);
+                $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                $surveyActivator = new SurveyActivator($survey);
+                $surveyActivator->activate();
                 unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                 break;
             }
@@ -1371,7 +1373,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             // now translate any links
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-            $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+
+            if (isset($insertdata['description'])) {
+                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            }
+
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             } else {
