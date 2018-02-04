@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{gT("Publication and access settings")}}:</strong>
+        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('admin/survey/sa/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
+            <i class="fa fa-cogs"></i>
+        </a>
+    </div>
+    <ul class="list-group">
+        <!-- Start date/time -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Start date/time:")}}
+                </div>
+                <div class="col-8">
+                    {{startdate}}
+                </div>
+            </div>
+        </li>
+        <!-- Expiration date/time -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Expiration date/time:")}}
+                </div>
+                <div class="col-8">
+                    {{expdate}}
+                </div>
+            </div>
+        </li>
+        <!-- Publicly available -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Listed publicly:")}}
+                </div>
+                <div class="col-8">
+                    {{oSurvey.listpublic == 'y' ? gT('Yes') : gT('No')}}
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

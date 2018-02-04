@@ -1,0 +1,71 @@
+<div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <strong> {{"Share your survey" | t }} </strong>
+            </div>
+            <!-- List group -->
+            <ul class="list-group">
+                <!-- Base language -->
+                <li class="list-group-item" id="adminpanel__surveysummary--mainLanguageLink">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ 'Base language' | t }}):
+                        </div>
+                        <div class="col-8">
+                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                            <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
+                        </div>
+                    </div>
+                </li>
+                <!-- Additional languages  -->
+                {% for langname in aAdditionalLanguages %}
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{ getLanguageNameFromCode(langname, false) ~ ":" }}
+                        </div>
+                        <div class="col-8">
+                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                             <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+
+                <!-- End URL -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{"End URL:" | t}}
+                        </div>
+                        <div class="col-8">
+                                {{endurl}}
+                        </div>
+                    </div>
+                </li>
+                <!-- Number of questions/groups -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{"Number of questions/groups:" | t}}
+                        </div>
+                        <div class="col-8">
+                            {{ sumcount3 ~ "/" ~ sumcount2 }}
+                        </div>
+                    </div>
+                </li>
+                <!-- Number of questions/groups -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{"Sharing panel:" | t}}
+                        </div>
+                        <div class="col-8">
+                            <button class="btn btn-default selector_openSharePanel" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
+                                {{"Open sharing panel" | t}}
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>

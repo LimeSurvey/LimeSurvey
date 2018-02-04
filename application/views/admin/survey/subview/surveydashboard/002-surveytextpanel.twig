@@ -1,0 +1,53 @@
+<!-- Survey's texts -->
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <strong>{{gT("Text elements:")}}</strong>
+        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{'Survey text elements' | t}}" href="{{ createUrl('admin/survey/sa/rendersidemenulink', {'subaction': 'surveytexts', 'surveyid' : surveyid}) }}">
+            <i class="fa fa-cogs"></i>
+        </a>
+    </div>
+    <!-- List group -->
+    <ul class="list-group">
+            <!-- Description -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Description:")}}
+                </div>
+                <div class="col-8">
+                        {% if oSurvey.currentLanguageSettings.surveyls_description != '' %}
+                            {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_description)}}
+                        {% endif %}
+                </div>
+            </div>
+        </li>
+        <!-- Welcome -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Welcome:")}}
+                </div>
+                <div class="col-8">
+                        {% if oSurvey.currentLanguageSettings.surveyls_welcometext != '' %}
+                            {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_welcometext)}}
+                        {% endif %}
+                </div>
+            </div>
+        </li>
+
+        <!-- End message -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("End message:")}}
+                </div>
+                <div class="col-8">
+                    {% if oSurvey.currentLanguageSettings.surveyls_endtext != '' %}
+                        {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_endtext)}}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
