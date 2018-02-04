@@ -19,8 +19,6 @@ return [
     ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
-    // FIXME these FAIL !!
-    //['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
 
     ['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
@@ -38,28 +36,27 @@ return [
     // going deeper -------------------------------------
     // --------------------------------------------------
 
-    //['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],  // TODO
-
-    // FIXME these FAIL !!
-    //['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
-    //['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
-
-    // this seems to be a special case, opens in another tab
-    //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
-
-    // FIXME these views need an activated survey
-    //['dataEntryView', ['route'=>'dataentry/sa/view/surveyid/{SID}']],
-    //['statisticsIndex', ['route'=>'statistics/sa/index/surveyid/{SID}']],
-    //['exportResults', ['route'=>'export/sa/exportresults/surveyid/{SID}']],
-    //['exportSpss', ['route'=>'export/sa/exportspss/sid/{SID}']],
-
-
-
     // adding elements to survey
     ['addQuestion', ['route'=>'questions/sa/newquestion/surveyid/{SID}']],
     ['addQuestionGroup', ['route'=>'questiongroups/sa/add/surveyid/{SID}']],
     ['importQuestionGroup', ['route'=>'questiongroups/sa/importview/surveyid/{SID}']],
     ['addQuota', ['route'=>'quotas/sa/newquota/surveyid/{SID}']],
+
+    ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
+
+
+    // this seems to be a special case, opens in another tab
+    //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
+
+
+    // Below are views need an activated survey
+    ['dataEntryView', ['route'=>'dataentry/sa/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true]],
+    ['statisticsIndex', ['route'=>'statistics/sa/index/surveyid/{SID}']],
+    ['exportResults', ['route'=>'export/sa/exportresults/surveyid/{SID}']],
+    ['exportSpss', ['route'=>'export/sa/exportspss/sid/{SID}']],
+    ['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
+    ['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
+    ['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
 
 
 ];

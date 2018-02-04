@@ -200,7 +200,7 @@ class Survey extends LSActiveRecord
     /** @inheritdoc */
     public function delete()
     {
-        return $this->deleteSurvey($this->sid);
+        return $this->deleteSurvey($this->sid,true);
     }
 
 
