@@ -16,12 +16,11 @@ return [
     // Survey main menu
     ['surveyGeneralSettings', ['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}']],
     ['surveyTexts', ['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}']],
-    //['surveyThemeOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],  // TODO
+    ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
     // FIXME these FAIL !!
     //['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
-    //['surveyPublicationOptions', ['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}']],
 
     ['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
@@ -29,9 +28,10 @@ return [
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
     ['surveyAssessments', ['route'=>'assessments/sa/index/surveyid/{SID}']],
     ['surveyNotificationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}']],
+    ['surveyPublicationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/publication/surveyid/{SID}']],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
     ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
-    //['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],  // TODO
+    ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
 
 
 
