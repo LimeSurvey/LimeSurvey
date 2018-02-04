@@ -1,4 +1,7 @@
 <?php
+
+namespace ls\tests\controllers;
+
 /**
  *  LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,15 +13,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
-/**
- * Created by PhpStorm.
- * User: tonis_o
- * Date: 26.01.18
- * Time: 18:55
- */
-
-namespace ls\tests\controllers;
 
 
 use ls\tests\TestBaseClass;
@@ -94,7 +88,7 @@ class SurveyActivatorTest extends TestBaseClass
         parent::importSurvey($file);
         $activator = new \SurveyActivator(self::$testSurvey);
         $result = $activator->activate();
-        $folder = Yii::app()->getConfig('uploaddir')."/surveys/".self::$surveyId."/files";
+        $folder = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.self::$surveyId.DIRECTORY_SEPARATOR."files";
         $this->assertTrue(file_exists($folder));
     }
 }
