@@ -37,7 +37,8 @@ class SurveyActivator
      * @return array
      * @throws CException
      */
-    public function activate() {
+    public function activate()
+    {
 
         $this->event = new PluginEvent('beforeSurveyActivate');
         $this->event->set('surveyId', $this->survey->primaryKey);
@@ -215,7 +216,8 @@ class SurveyActivator
     /**
      * @return void
      */
-    protected function prepareTimingsTable() {
+    protected function prepareTimingsTable()
+    {
         $timingsfieldmap = createTimingsFieldMap($this->survey->primaryKey, "full", false, false, $this->survey->language);
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $this->tableDefinition['id'];
@@ -230,7 +232,8 @@ class SurveyActivator
     /**
      * @return void
      */
-    protected function prepareCollation() {
+    protected function prepareCollation()
+    {
         // Specify case sensitive collations for the token
         $this->collation = '';
         if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
@@ -245,7 +248,8 @@ class SurveyActivator
     /**
      * @return void
      */
-    protected function prepareSimulateQuery() {
+    protected function prepareSimulateQuery()
+    {
         if ($this->isSimulation) {
             $tempTrim = trim($this->tableDefinition);
             $brackets = strpos($tempTrim, "(");
@@ -264,7 +268,8 @@ class SurveyActivator
     /**
      * @return void
      */
-    protected function prepareResponsesTable() {
+    protected function prepareResponsesTable()
+    {
         $this->prepareCollation();
         //Check for any additional fields for this survey and create necessary fields (token and datestamp)
         $this->survey->fixInvalidQuestions();
@@ -311,7 +316,8 @@ class SurveyActivator
     /**
      * @return boolean
      */
-    protected function showEventMessages() {
+    protected function showEventMessages()
+    {
         $success = $this->event->get('success');
         $message = $this->event->get('message');
 
@@ -330,7 +336,8 @@ class SurveyActivator
      * @throws CDbException
      * @throws CException
      */
-    protected function createParticipantsTableKeys() {
+    protected function createParticipantsTableKeys()
+    {
         $iAutoNumberStart = Yii::app()->db->createCommand()
             ->select('autonumber_start')
             ->from(Survey::model()->tableName())
@@ -365,7 +372,8 @@ class SurveyActivator
     /**
      * @return boolean
      */
-    protected function createTimingsTable() {
+    protected function createTimingsTable()
+    {
         if ($this->survey->isSaveTimings) {
             $this->prepareTimingsTable();
             $sTableName = $this->survey->timingsTableName;
@@ -384,7 +392,8 @@ class SurveyActivator
     /**
      * @return bool
      */
-    protected function createSurveyDirectory() {
+    protected function createSurveyDirectory()
+    {
         $iSurveyID = $this->survey->primaryKey;
         // create the survey directory where the uploaded files can be saved
         if ($this->createSurveyDir) {
