@@ -268,8 +268,12 @@ return array(
         'devBaseUrl' => 'assets/packages/surveysummary/',
         'basePath' => 'core.surveysummary',
         'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'surveysummary.css'
+        ),
         'js' => array(
             'surveysummary.js',
+            'qrcode.js'
         ),
         'depends' => array(
             'adminbasics',
