@@ -1,71 +1,159 @@
 <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <strong> {{"Share your survey" | t }} </strong>
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <strong> {{"Share your survey" | t }} </strong>
+    </div>
+    <!-- List group -->
+    <ul class="list-group">
+        <!-- Base language -->
+        <li class="list-group-item" id="adminpanel__surveysummary--mainLanguageLink">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ 'Base language' | t }}):
+                </div>
+                <div class="col-8">
+                    {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                    <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
+                </div>
             </div>
-            <!-- List group -->
-            <ul class="list-group">
-                <!-- Base language -->
-                <li class="list-group-item" id="adminpanel__surveysummary--mainLanguageLink">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ 'Base language' | t }}):
-                        </div>
-                        <div class="col-8">
-                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
-                            <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
-                        </div>
-                    </div>
-                </li>
-                <!-- Additional languages  -->
-                {% for langname in aAdditionalLanguages %}
-                <li class="list-group-item">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            {{ getLanguageNameFromCode(langname, false) ~ ":" }}
-                        </div>
-                        <div class="col-8">
-                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
-                             <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
+        </li>
+        <!-- Additional languages  -->
+        {% for langname in aAdditionalLanguages %}
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{ getLanguageNameFromCode(langname, false) ~ ":" }}
+                </div>
+                <div class="col-8">
+                    {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                        <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
 
-                <!-- End URL -->
-                <li class="list-group-item">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            {{"End URL:" | t}}
-                        </div>
-                        <div class="col-8">
-                                {{endurl}}
-                        </div>
+        <!-- End URL -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{"End URL:" | t}}
+                </div>
+                <div class="col-8">
+                        {{endurl}}
+                </div>
+            </div>
+        </li>
+        <!-- Number of questions/groups -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{"Number of questions/groups:" | t}}
+                </div>
+                <div class="col-8">
+                    {{ sumcount3 ~ "/" ~ sumcount2 }}
+                </div>
+            </div>
+        </li>
+        <!-- Sharing panel -->
+        {% if oSurvey.active == 'Y' %}
+            <li class="list-group-item">
+                <div class="ls-flex-row col-12">
+                    <div class="col-4">
+                        {{"Sharing panel:" | t}}
                     </div>
-                </li>
-                <!-- Number of questions/groups -->
-                <li class="list-group-item">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            {{"Number of questions/groups:" | t}}
-                        </div>
-                        <div class="col-8">
-                            {{ sumcount3 ~ "/" ~ sumcount2 }}
-                        </div>
+                    <div class="col-8">
+                        <button class="btn btn-default selector_openSharePanel" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
+                            {{"Open sharing panel" | t}}
+                        </button>
                     </div>
-                </li>
-                <!-- Number of questions/groups -->
-                <li class="list-group-item">
-                    <div class="ls-flex-row col-12">
-                        <div class="col-4">
-                            {{"Sharing panel:" | t}}
-                        </div>
-                        <div class="col-8">
-                            <button class="btn btn-default selector_openSharePanel" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
-                                {{"Open sharing panel" | t}}
-                            </button>
-                        </div>
+                </div>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+{% if oSurvey.active == 'Y' %}
+    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog"> 
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{"Share survey" | t}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <ul class="list-group">
+                            <li class="list-group-heading">
+                                <div class="col-12">
+                                    {{"Share QR-code:" | t}}
+                                </div>
+                            </li>
+                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                            <li class="list-group-item">
+                                <div class="ls-flex-row col-12">
+                                    <div class="col-4">
+                                        {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                    </div>
+                                    <div class="col-8">
+                                    </div>
+                                </div>
+                            </li>
+                            {% for langname in aAdditionalLanguages %}
+                                {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                                <li class="list-group-item">
+                                    <div class="ls-flex-row col-12">
+                                        <div class="col-4">
+                                            {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                        </div>
+                                        <div class="col-8">
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                </li>
-            </ul>
+                    <div class="row">
+                        <ul class="list-group">
+                            <li class="list-group-heading">
+                                <div class="col-12">
+                                    {{ gT("Share on Facebook:") }}
+                                    <button class="btn btn-xs btn-warning pull-right" id="selector_activateFacebookSharing">{{"Activate" | t}}</button>
+                                </div>
+                            </li>
+                            {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                            <li class="list-group-item">
+                                <div class="ls-flex-row col-12">
+                                    <div class="col-4">
+                                        {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                    </div>
+                                    <div class="col-8">
+                                        <button class="btn btn-disabled selector_fb_share_disabled">{{'Disabled'|t}}</button>
+                                        <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=small&mobile_iframe=true&appId=1321262851319939&width=103&height=20" width="103" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                    </div>
+                                </div>
+                            </li>
+                            {% for langname in aAdditionalLanguages %}
+                                {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                                <li class="list-group-item">
+                                    <div class="ls-flex-row col-12">
+                                        <div class="col-4">
+                                            {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                        </div>
+                                        <div class="col-8">
+                                            <button class="btn btn-disabled selector_fb_share_disabled">{{'Disabled'|t}}</button>
+                                            <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=small&mobile_iframe=true&appId=1321262851319939&width=103&height=20" width="103" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{gT("Close")}}</button>
+                </div>
+            </div>
         </div>
+    </div>
+
+{% endif %}

@@ -39,7 +39,7 @@ function createDatabase($oDB){
             'answer' =>  "text NOT NULL",
             'language' =>  "string(20) NOT NULL"
         ));        
-        $oDB->createCommand()->createIndex('{{answer_l10ns_idx}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+        $oDB->createCommand()->createIndex('{{answer_l10ns_idx}}', '{{answer_l10ns}}', ['aid', 'language'], false);
 
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
@@ -98,7 +98,7 @@ function createDatabase($oDB){
             'defaultvalue' =>  "text",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
+        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid'], false);
 
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(
@@ -140,7 +140,7 @@ function createDatabase($oDB){
             'description' =>  "text",
             'language' =>  "string(20) NOT NULL"
         ));        
-        $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], true);
+        $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], false);
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
@@ -333,7 +333,7 @@ function createDatabase($oDB){
             'language' =>  "string(20) NOT NULL"
         ));        
 
-        $oDB->createCommand()->createIndex('{{idx1_question_ls}}', '{{question_l10ns}}', ['qid', 'language'], true);
+        $oDB->createCommand()->createIndex('{{idx1_question_ls}}', '{{question_l10ns}}', ['qid', 'language'], false);
 
 
 

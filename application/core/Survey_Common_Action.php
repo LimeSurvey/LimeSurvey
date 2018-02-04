@@ -1083,6 +1083,9 @@ class Survey_Common_Action extends CAction
         }
         $aData['quickactionstate'] = $quickactionState !== null ? intval($quickactionState) : 1;
         $aData['subviewData'] = $aData;
+
+        Yii::app()->getClientScript()->registerPackage('surveysummary');
+
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
