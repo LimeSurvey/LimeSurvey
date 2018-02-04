@@ -129,7 +129,6 @@ class database extends Survey_Common_Action
             $this->actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID);
         }
 
-
         //$this->getController()->redirect(array("/admin"), "refresh");
     }
 
@@ -146,14 +145,16 @@ class database extends Survey_Common_Action
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
         if ($defaultvalue == '') {
-// Remove the default value if it is empty
+            // Remove the default value if it is empty
             DefaultValue::model()->deleteByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
         } else {
             $arDefaultValue = DefaultValue::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
 
             if (is_null($arDefaultValue)) {
                 $data = array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
-                DefaultValue::model()->insertRecords($data);
+                $defaultvalue = new DefaultValue();
+                $defaultvalue->attributes = $data;
+                $defaultvalue->save();
             } else {
                 DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
             }
@@ -228,6 +229,7 @@ class database extends Survey_Common_Action
             }
         }
         Yii::app()->session['flashmessage'] = gT("Default value settings were successfully saved.");
+        //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
@@ -330,6 +332,7 @@ class database extends Survey_Common_Action
         } else {
             Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
         }
+        //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
@@ -504,7 +507,8 @@ class database extends Survey_Common_Action
                 Yii::app()->session['flashmessage'] = gT("Subquestions were successfully saved.");
             }
         }
-        //$action='editsubquestions';
+        
+        //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
@@ -756,46 +760,15 @@ class database extends Survey_Common_Action
                 // Remove old subquestion scales
                 Question::model()->deleteAllByAttributes(array('parent_qid' => $this->iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
                 if (!isset($bOnError) || !$bOnError) {
-// This really a quick hack and need a better system
+                    // This really a quick hack and need a better system
                     Yii::app()->setFlashMessage(gT("Question was successfully saved."));
                 }
-                //                    }
-                //                    else
-                //                    {
-                //
-                //                        // There are conditions constraints: alert the user
-                //                        $errormsg="";
-                //                        if (!is_null($array_result['notAbove']))
-                //                        {
-                //                            $errormsg.=gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                //                            . " " . $array_result['notAbove'][0][0] . " " . gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                //                            . gT("See conditions:")."\\n";
-                //
-                //                            foreach ($array_result['notAbove'] as $notAboveCond)
-                //                            {
-                //                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
-                //                            }
-                //
-                //                        }
-                //                        if (!is_null($array_result['notBelow']))
-                //                        {
-                //                            $errormsg.=gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                //                            . " " . $array_result['notBelow'][0][0] . " " . gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                //                            . gT("See conditions:")."\\n";
-                //
-                //                            foreach ($array_result['notBelow'] as $notBelowCond)
-                //                            {
-                //                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
-                //                            }
-                //                        }
-                //
-                //                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-                //                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
-                //                    }
             } else {
                 Yii::app()->setFlashMessage(gT("Question could not be updated"), 'error');
             }
         }
+        //This is SUPER important! Recalculating the Expression Manager state!
+        LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 
         $closeAfterSave = Yii::app()->request->getPost('close-after-save') === 'true';
@@ -897,27 +870,32 @@ class database extends Survey_Common_Action
             Yii::app()->loadHelper('surveytranslator');
             $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
             Yii::app()->loadLibrary('Date_Time_Converter');
+
+            $unfilteredStartdate = App()->request->getPost('startdate', null);
             $startdate = $this->_filterEmptyFields($oSurvey, 'startdate');
-            if (trim($startdate) == "") {
-                $startdate = null;
+            if ($unfilteredStartdate === null) {
+                // Not submitted.
+            } elseif (trim($unfilteredStartdate) == "") {
+                $oSurvey->startdate = "";
             } else {
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i');
                 $startdate = $datetimeobj->convert("Y-m-d H:i:s");
+                $oSurvey->startdate = $startdate;
             }
+
+            $unfilteredExpires = App()->request->getPost('expires', null);
             $expires = $this->_filterEmptyFields($oSurvey, 'expires');
-            if (trim($expires) == "") {
-                $expires = null;
+            if ($unfilteredExpires === null) {
+                // Not submitted.
+            } elseif (trim($unfilteredExpires) == "") {
+                // Must not convert if empty.
+                $oSurvey->expires = "";
             } else {
-                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i');
                 $expires = $datetimeobj->convert("Y-m-d H:i:s");
+                $oSurvey->expires = $expires;
             }
-
-            //$oSurvey, $fieldArray, $newValue
-            $oSurvey->expires = $expires;
-            $oSurvey->startdate = $startdate;
-
-
 
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
 
@@ -1016,7 +994,8 @@ class database extends Survey_Common_Action
                 $param->save();
             }
         }
-
+        //This is SUPER important! Recalculating the Expression Manager state!
+        LimeExpressionManager::SetDirtyFlag();
         if (Yii::app()->request->getPost('responsejson', 0) == 1) {
 
             $updatedFields = $this->updatedFields;
@@ -1124,6 +1103,8 @@ class database extends Survey_Common_Action
         cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
         fixLanguageConsistency($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
 
+        //This is SUPER important! Recalculating the Expression Manager state!
+        LimeExpressionManager::SetDirtyFlag();
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
@@ -1321,15 +1302,12 @@ class database extends Survey_Common_Action
                         $r1 = Answer::model()->getAnswers((int) returnGlobal('oldqid'));
                         $aAnswerOptions = $r1->readAll();
                         foreach ($aAnswerOptions as $qr1) {
-                            Answer::model()->insertRecords(array(
-                                'qid' => $this->iQuestionID,
-                                'code' => $qr1['code'],
-                                'answer' => $qr1['answer'],
-                                'assessment_value' => $qr1['assessment_value'],
-                                'sortorder' => $qr1['sortorder'],
-                                'language' => $qr1['language'],
-                                'scale_id' => $qr1['scale_id']
-                            ));
+                            $newAnswer = new Answer();
+                            $newAnswer->attributes = $qr1;
+                            $newAnswer->qid = $this->iQuestionID;
+                            if (!$newAnswer->save()) {
+                                Yii::log(\CVarDumper::dumpAsString($newAnswer->getErrors()), 'warning', __METHOD__);
+                            }
                         }
                     }
 
@@ -1424,7 +1402,7 @@ class database extends Survey_Common_Action
             }
 
         }
-
+        //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         if (Yii::app()->request->getPost('saveandnew', '') != '') {

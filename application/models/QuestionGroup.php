@@ -82,7 +82,6 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * @param integer $sid
-     * @param string $lang
      * @param int $position
      */
     public function updateGroupOrder($sid, $position = 0)
@@ -107,6 +106,7 @@ class QuestionGroup extends LSActiveRecord
      *
      * @param array $data
      * @return bool|int
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
@@ -311,9 +311,9 @@ class QuestionGroup extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-/* And for multi lingual, when add a new language ? */
+            $survey = Survey::model()->findByPk($this->sid);
+            if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
+                /* And for multi lingual, when add a new language ? */
                 $this->addError('gid', gT("You can not add a group if survey is active."));
                 return false;
             }

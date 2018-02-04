@@ -1,6 +1,9 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
+
+
 /**
  * Core packages , no third_party
  * sees third_party.php for third party package

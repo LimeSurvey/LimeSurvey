@@ -168,6 +168,8 @@ class Answer extends LSActiveRecord
     /**
      * @param array $data
      * @return boolean|null
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     *
      */
     public function insertRecords($data)
     {
@@ -179,6 +181,7 @@ class Answer extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
+        return null;
     }
 
     /**

@@ -32,6 +32,7 @@ class LSYii_ClientScript extends CClientScript
 {
 
     const POS_POSTSCRIPT = 5;
+    const POS_PREBEGIN = 6;
     /**
      * cssFiles is protected on CClientScript. It can be useful to access it for debugin purpose
      * @return array
@@ -448,6 +449,18 @@ class LSYii_ClientScript extends CClientScript
     {
         $html = '';
 
+        if (isset($this->scriptFiles[self::POS_PREBEGIN])) {
+            foreach ($this->scriptFiles[self::POS_PREBEGIN] as $scriptFileUrl=>$scriptFileValue) {
+                if (is_array($scriptFileValue)) {
+                                    $html .= CHtml::scriptFile($scriptFileUrl, $scriptFileValue)."\n";
+                } else {
+                                    $html .= CHtml::scriptFile($scriptFileUrl)."\n";
+                }
+            }
+        }
+        if (isset($this->scripts[self::POS_PREBEGIN])) {
+            $html .= $this->renderScriptBatch($this->scripts[self::POS_PREBEGIN]);
+        }
         if (isset($this->scriptFiles[self::POS_BEGIN])) {
             foreach ($this->scriptFiles[self::POS_BEGIN] as $scriptFileUrl=>$scriptFileValue) {
                 if (is_array($scriptFileValue)) {

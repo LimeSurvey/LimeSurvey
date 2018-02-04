@@ -166,7 +166,8 @@ class InstallCommand extends CConsoleCommand
     }
 
 
-    private function prepareCharset() {
+    private function prepareCharset()
+    {
         $this->connection->charset = 'utf8';
         switch ($this->connection->driverName) {
             case 'mysql':
@@ -184,7 +185,8 @@ class InstallCommand extends CConsoleCommand
 
     }
 
-    private function createUser($data) {
+    private function createUser($data)
+    {
         $this->output('Creating admin user...');
         $this->connection->createCommand()->insert(
             $this->connection->tablePrefix.'users',
@@ -199,7 +201,8 @@ class InstallCommand extends CConsoleCommand
         );
     }
 
-    private function createPermissions() {
+    private function createPermissions()
+    {
         $this->output('Creating permissions ...');
         $this->connection->createCommand()->insert(
             $this->connection->tablePrefix.'permissions',

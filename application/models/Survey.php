@@ -261,6 +261,7 @@ class Survey extends LSActiveRecord
         } else {
             self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
+        return null;
 
     }
 
@@ -282,7 +283,9 @@ class Survey extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var Survey $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -680,10 +683,20 @@ class Survey extends LSActiveRecord
             foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
-                if (
-                    (!empty($entry['permission']) && !empty($entry['permission_grade'])
-                    && !Permission::model()->hasSurveyPermission($this->sid, $entry['permission'], $entry['permission_grade']))
-                ) {continue; }
+                if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
+                    && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
+                ) {
+                    continue;
+                }
+
+                // Check if a specific user owns this menu.
+                if (!empty($aEntry['user_id'])) {
+                    $userId = Yii::app()->session['loginID'];
+                    if ($userId != $aEntry['user_id']) {
+                        continue;
+                    }
+                }
+
                 //parse the render part of the data attribute
                 $oDataAttribute = new SurveymenuEntryData();
                 $oDataAttribute->apply($menuEntry, $this->sid);
@@ -910,19 +923,21 @@ class Survey extends LSActiveRecord
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
+        /** @var self $model */
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
             } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
+                $model = parent::findByPk($pk, $condition, $params);
+                if (!is_null($model)) {
+                    $this->findByPkCache[$pk] = $model;
                 }
-                return $result;
+                return $model;
             }
         }
 
-        return parent::findByPk($pk, $condition, $params);
+        $model = parent::findByPk($pk, $condition, $params);
+        return $model;
     }
 
     /**

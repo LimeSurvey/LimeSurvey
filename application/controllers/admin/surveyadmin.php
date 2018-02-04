@@ -457,15 +457,8 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
-        }
-
         $survey    = Survey::model()->findByPk($iSurveyID);
-        $baselang  = $survey->language;
         $menus = $survey->getSurveyMenus($position);
-        $userSettings = [];
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(

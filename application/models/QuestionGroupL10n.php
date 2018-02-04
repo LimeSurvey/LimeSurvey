@@ -38,7 +38,7 @@ class QuestionGroupL10n extends LSActiveRecord
 
     /**
      * @inheritdoc
-     * @return SurveyLanguageSetting
+     * @return self
      */
     public static function model($class = __CLASS__)
     {

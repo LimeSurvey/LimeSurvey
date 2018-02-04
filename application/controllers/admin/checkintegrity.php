@@ -357,7 +357,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
-     * @returns Array with all found issues.
+     * @returns array with all found issues.
      */
     protected function _checkintegrity()
     {

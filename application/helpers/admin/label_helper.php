@@ -69,7 +69,8 @@ function updateset($lid)
             $langcriteria->addColumnCondition(array('labelL10ns.language' => $sDeleteLanguage), 'OR');
         }
         $criteria->mergeWith($langcriteria);
-debugbreak();
+        // FIXME undefined function
+        debugbreak();
         $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
         foreach ($aLabels as $aLabel) {
             foreach ($aLabel->labelL10ns as $aLabelL10ns) {
@@ -85,19 +86,20 @@ debugbreak();
     $labelset->save();
 }
 
+/**
+ * @return LabelSet
+ */
 function insertlabelset()
 {
     $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
+    $labelSet = new LabelSet();
 
-    $data = array(
-        'label_name' => $postlabel_name,
-        'languages' => sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))))
-    );
-    $result = LabelSet::model()->insertRecords($data);
-    if (!$result) {
+    $labelSet->label_name = $postlabel_name;
+    $labelSet->languages = sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
+    if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     } else {
-        return $result;
+        return $labelSet;
     }
 }
 
@@ -139,6 +141,7 @@ function modlabelsetanswers($lid)
         foreach ($aLabels as $aLabel) {
 //            if {}
         }
+        // FIXME undefined function
         debugbreak();
         foreach ($data['codelist'] as $index=>$codeid) {
 

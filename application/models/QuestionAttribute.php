@@ -256,6 +256,11 @@ class QuestionAttribute extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     public static function insertRecords($data)
     {
         $attrib = new self;

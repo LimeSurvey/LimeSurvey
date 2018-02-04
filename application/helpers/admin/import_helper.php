@@ -84,7 +84,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             unset($insertdata['language']);
         }
         if (!isset($aGIDReplacements[$oldgid])) {
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            $questionGroup = new QuestionGroup();
+            $questionGroup->attributes = $insertdata;
+            if(!$questionGroup->save()){
+                safeDie(gT("Error").": Failed to insert data [3]<br />");
+            }
+
+            $newgid = $questionGroup->gid;
+
             $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
             $results['groups']++;
         }
@@ -1334,7 +1341,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($insertdata['language']);
             }
             if (!isset($aGIDReplacements[$oldgid])) {
-                $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+                $questionGroup->sid = $iNewSID;
+                if(!$questionGroup->save()){
+                    safeDie(gT("Error").": Failed to insert data [3]<br />");
+                }
+
+                $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
             }
@@ -1717,11 +1731,19 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     if ($insertdata) {
                         XSSFilterArray($insertdata);
                     }
+                    $questionAttribute = new QuestionAttribute();
+                    $questionAttribute->attributes = $insertdata;
+                    if (!$questionAttribute->save()) {
+                        safeDie(gT("Error").": Failed to insert data[7]<br />");
+                    }
 
-                    $result = QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[7]<br />");
                 }
             } else {
-                $result = QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[8]<br />");
+                $questionAttribute = new QuestionAttribute();
+                $questionAttribute->attributes = $insertdata;
+                if (!$questionAttribute->save()) {
+                    safeDie(gT("Error").": Failed to insert data[8]<br />");
+                }
             }
 
             $results['question_attributes']++;
@@ -1740,14 +1762,18 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-// remap the subquestion id   
+                // remap the subquestion id
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
             }
             if ($insertdata) {
                             XSSFilterArray($insertdata);
             }
             // now translate any links
-            $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
+            $defaultValue = new DefaultValue();
+            $defaultValue->attributes = $insertdata;
+            if (!$defaultValue->save()) {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            }
             $results['defaultvalues']++;
         }
     }
@@ -1869,6 +1895,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     if (isset($xml->quota_members)) {
 
         foreach ($xml->quota_members->rows->row as $row) {
+            $quotaMember = new QuotaMember();
             $insertdata = array();
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
@@ -1880,7 +1907,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $result = QuotaMember::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[13]<br />");
+            $quotaMember->attributes = $insertdata;
+            if (!$quotaMember->save()) {
+                safeDie(gT("Error").": Failed to insert data[13]<br />");
+            }
             $results['quotamembers']++;
         }
     }
@@ -1895,7 +1925,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result = QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
+            $quotaLanguagesSetting = new QuotaLanguageSetting();
+            $quotaLanguagesSetting->attributes = $insertdata;
+            if (!$quotaLanguagesSetting->save()) {
+                safeDie(gT("Error").": Failed to insert data<br />");
+            }
             $results['quotals']++;
         }
     }
@@ -2657,11 +2691,14 @@ function TSVImportSurvey($sFullFilePath)
                 } else {
                     $insertdata['group_order'] = $gseq;
                 }
-                $newgid = QuestionGroup::model()->insertRecords($insertdata);
-                if (!$newgid) {
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+
+                if (!$questionGroup->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Failed to insert group").". ".gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
+                $newgid = $questionGroup->gid;
                 if (!isset($ginfo[$sGroupseq])) {
                     $results['groups']++;
                     $gid = $newgid;
@@ -2733,19 +2770,17 @@ function TSVImportSurvey($sFullFilePath)
                             break;
                         default:
                             if ($key != '' && $val != '') {
-                                $insertdata = array();
-                                $insertdata['qid'] = $qid;
+                                $questionAttribute = new QuestionAttribute();
+                                $questionAttribute->qid = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
                                 $aAttributeList[$qtype] = questionHelper::getQuestionAttributesSettings($qtype);
                                 if ($aAttributeList[$qtype][$key]['i18n']) {
-                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                                } else {
-                                    $insertdata['language'] = null;
+                                    $questionAttribute->language = (isset($row['language']) ? $row['language'] : $baselang);
                                 }
-                                $insertdata['attribute'] = $key;
-                                $insertdata['value'] = $val;
-                                $result = QuestionAttribute::model()->insertRecords($insertdata); //
-                                if (!$result) {
+                                $questionAttribute->attribute = $key;
+                                $questionAttribute->value = $val;
+
+                                if (!$questionAttribute->save()) {
                                     $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert question attribute").". ".gT("Text file row number ").$rownumber." ({$key})";
                                     break;
                                 }
@@ -2761,8 +2796,9 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['qid'] = $qid;
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['defaultvalue'] = $row['default'];
-                    $result = DefaultValue::model()->insertRecords($insertdata);
-                    if (!$result) {
+                    $defaultValue = new DefaultValue();
+                    $defaultValue->attributes = $insertdata;
+                    if (!$defaultValue->save()) {
                         $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                         break;
                     }
@@ -2785,8 +2821,9 @@ function TSVImportSurvey($sFullFilePath)
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
-                            $result = DefaultValue::model()->insertRecords($insertdata);
-                            if (!$result) {
+                            $defaultValue = new DefaultValue();
+                            $defaultValue->attributes = $insertdata;
+                            if (!$defaultValue->save()) {
                                 $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                                 break;
                             }
@@ -2841,8 +2878,9 @@ function TSVImportSurvey($sFullFilePath)
                         $insertdata['scale_id'] = $scale_id;
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
-                        $result = DefaultValue::model()->insertRecords($insertdata);
-                        if (!$result) {
+                        $defaultValue = new DefaultValue();
+                        $defaultValue->attributes = $insertdata;
+                        if (!$defaultValue->save()) {
                             $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                             break;
                         }
@@ -2859,8 +2897,10 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['assessment_value'] = (int) (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
-                $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
-                if (!$result) {
+                $answer = new Answer();
+                $answer->attributes = $insertdata;
+
+                if (!$answer->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Could not insert answer").". ".gT("Text file row number ").$rownumber;
                 }
                 $results['answers']++;

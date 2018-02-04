@@ -1514,6 +1514,7 @@ function doAssessment($surveyid)
                         //Multiflexi choice  - result is the assessment attribute value
                     {
                         if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
+                            // FIXME undefined function getQuestionAttributeValues
                             $aAttributes = getQuestionAttributeValues($field['qid']);
                     }
                             $assessmentValue = (int) $aAttributes['assessment_value'];
@@ -1796,7 +1797,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $blocks = array();
 
     foreach ($event->getAllContent() as $blockData) {
-        /* @var $blockData PluginEventContent */
+        /* @var $blockData \LimeSurvey\PluginManager\PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
 

@@ -76,11 +76,12 @@ class LabelSet extends LSActiveRecord
     {
         return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
     }
-    
+
     /**
      * Recursively deletes a label set including labels and localizations
-     * 
+     *
      * @param integer $id The label set ID
+     * @return bool
      */
     public function deleteLabelSet($id)
     {
@@ -98,6 +99,11 @@ class LabelSet extends LSActiveRecord
         return true;
     }
 
+    /**
+     * @param $data
+     * @return bool|int
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         $lblset = new self;

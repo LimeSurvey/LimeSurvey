@@ -66,6 +66,11 @@ class UserGroup extends LSActiveRecord
         );
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         return $this->db->insert('user_groups', $data);
