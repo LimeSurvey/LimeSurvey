@@ -67,6 +67,7 @@
                     <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                         {{ renderCaptcha().renderOut() }}
+                        <a href="#" class="btn btn-sm btn-default" id="reloadCaptcha" title="{{ "Reload captcha" | t }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                 <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-sm-5' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
@@ -79,7 +80,7 @@
 
         <div class='{{ aSurveyInfo.class.maincolformdivc }} form-group ' {{ aSurveyInfo.attr.maincolformdivc }}>
             <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
-                <button class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                <button type="submit" class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
                     {{ "Continue" | t }}
                 </button>
             </div>

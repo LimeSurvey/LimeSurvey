@@ -184,10 +184,16 @@
                             </td>
                             <td>
                                 <?php
-                                    if ($aAdvancedSetting['i18n']==false)
-                                        echo htmlspecialchars($aAdvancedSetting['value']);
-                                    else
-                                        echo htmlspecialchars($aAdvancedSetting[$baselang]['value'])
+                                    if (isset($aAdvancedSetting['expression']) && $aAdvancedSetting['expression']==2){
+                                        LimeExpressionManager::ProcessString('{' . $aAdvancedSetting['value'] . '}', $qid);
+                                        echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                    } else {
+                                        if ($aAdvancedSetting['i18n']==false){
+                                            echo htmlspecialchars($aAdvancedSetting['value']);
+                                        } else {
+                                            echo htmlspecialchars($aAdvancedSetting[$baselang]['value']);
+                                        }
+                                    }
                                 ?>
                             </td>
                         </tr>

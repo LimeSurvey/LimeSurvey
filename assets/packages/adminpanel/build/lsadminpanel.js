@@ -37052,7 +37052,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, ['asc']);
         },
         createQuestionAllowed() {
-            return this.$store.state.questiongroups.length > 0;
+            return this.$store.state.questiongroups.length > 0 && this.createQuestionLink != undefined && this.createQuestionLink.length > 1;
+        },
+        createAllowance() {
+            let createGroupAllowed = this.createQuestionGroupLink != undefined && this.createQuestionGroupLink.length > 1 ? 'g' : '';
+            let createQuestionAllowed = this.createQuestionAllowed ? 'q' : '';
+            return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
             return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
@@ -37204,7 +37209,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "questionexplorer"
     }
-  }, [_c('div', {
+  }, [(_vm.createAllowance != '') ? _c('div', {
     staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar"
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-primary pjax",
@@ -37222,7 +37227,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "ls-flex-row ls-space padding all-0"
   }, [_c('ul', {
     staticClass: "list-group col-12",

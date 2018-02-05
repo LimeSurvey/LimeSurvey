@@ -389,7 +389,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }

@@ -721,7 +721,6 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode=$previewmode;
-            //$_SESSION[$LEM->sessid]['previewmode']=$previewmode;
         }
 
         /**

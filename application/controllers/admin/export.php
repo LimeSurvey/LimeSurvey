@@ -970,7 +970,7 @@ class export extends Survey_Common_Action
             unlink($sLSTFileName);
         }
 
-        if (isset($survey->hasTimingsTable)) {
+        if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
             getXMLDataSingleTable($iSurveyID, 'survey_'.$iSurveyID.'_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_'.$iSurveyID.'_timings.lsi');
             unlink($sLSIFileName);

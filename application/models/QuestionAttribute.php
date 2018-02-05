@@ -227,6 +227,7 @@ class QuestionAttribute extends LSActiveRecord
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach ($aAttributeNames as $aAttribute) {
+                $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {

@@ -33,6 +33,12 @@ class database extends Survey_Common_Action
      */
     private $iQuestionID;
 
+    /**
+     * @var integer Survey id
+     */
+    private $iSurveyID;
+
+
     private $updateableFields = [
                 'owner_id' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'admin' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -98,7 +104,7 @@ class database extends Survey_Common_Action
     public function index()
     {
         $sAction = Yii::app()->request->getPost('action');
-        $iSurveyID = (isset($_POST['sid'])) ? (int) $_POST['sid'] : (int) returnGlobal('sid');
+        $this->iSurveyID = (isset($_POST['sid'])) ? (int) $_POST['sid'] : (int) returnGlobal('sid');
 
         $this->iQuestionGroupID = (int) returnGlobal('gid');
         $this->iQuestionID = (int) returnGlobal('qid');
@@ -107,27 +113,28 @@ class database extends Survey_Common_Action
         $this->oFixCKeditor->fixCKeditor = true;
         $this->oFixCKeditor->xssfilter = false;
 
-        if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $this->actionUpdateDefaultValues($iSurveyID);
+        if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
+            $this->actionUpdateDefaultValues($this->iSurveyID);
         }
-        if ($sAction == "updateansweroptions" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $this->actionUpdateAnswerOptions($iSurveyID);
+        if ($sAction == "updateansweroptions" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
+            $this->actionUpdateAnswerOptions($this->iSurveyID);
         }
-        if ($sAction == "updatesubquestions" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $this->actionSubQuestions($iSurveyID);
+        if ($sAction == "updatesubquestions" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
+            $this->actionSubQuestions($this->iSurveyID);
         }
-        if (in_array($sAction, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-            $this->actionInsertCopyQuestion($iSurveyID);
+        if (in_array($sAction, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'create')) {
+            $this->actionInsertCopyQuestion($this->iSurveyID);
         }
-        if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $this->actionUpdateQuestion($iSurveyID);
+        if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
+            $this->actionUpdateQuestion($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
-            $this->actionUpdateSurveyLocaleSettings($iSurveyID);
+        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+            $this->actionUpdateSurveyLocaleSettings($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings_generalsettings") && (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
-            $this->actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID);
+        if (($sAction == "updatesurveylocalesettings_generalsettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+            $this->actionUpdateSurveyLocaleSettingsGeneralSettings($this->iSurveyID);
         }
+
 
         //$this->getController()->redirect(array("/admin"), "refresh");
     }
@@ -159,6 +166,8 @@ class database extends Survey_Common_Action
                 DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
             }
         }
+        $surveyid = $this->iSurveyID;
+        updateFieldArray();
     }
 
     /**
@@ -326,14 +335,16 @@ class database extends Survey_Common_Action
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }
 
+        //This is SUPER important! Recalculating the Expression Manager state!
+        LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        $this->_resetEM();
+
         if (!Yii::app()->request->getPost('bFullPOST')) {
             Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
         } else {
             Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
         }
-        //This is SUPER important! Recalculating the Expression Manager state!
-        LimeExpressionManager::SetDirtyFlag();
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
@@ -499,7 +510,11 @@ class database extends Survey_Common_Action
             }
         }
 
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID); // Do it only if there are no error ?
+        //This is SUPER important! Recalculating the Expression Manager state!
+        LimeExpressionManager::SetDirtyFlag();
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID); 
+        $this->_resetEM();
+        
         if (!isset($aErrors) || !count($aErrors)) {
             if (!Yii::app()->request->getPost('bFullPOST')) {
                 Yii::app()->session['flashmessage'] = gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
@@ -508,8 +523,6 @@ class database extends Survey_Common_Action
             }
         }
         
-        //This is SUPER important! Recalculating the Expression Manager state!
-        LimeExpressionManager::SetDirtyFlag();
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
@@ -559,6 +572,10 @@ class database extends Survey_Common_Action
 
         $aLanguages = $oSurvey->allLanguages;
         foreach ($validAttributes as $validAttribute) {
+            /* Readonly attribute : disable save */
+            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+                continue;
+            }
             if ($validAttribute['i18n']) {
                 /* Delete invalid language : not needed but cleaner */
                 $langCriteria = new CDbCriteria;
@@ -569,7 +586,7 @@ class database extends Survey_Common_Action
                 /* delete IS NULL too*/
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                 foreach ($aLanguages as $sLanguage) {
-// TODO sanitise XSS
+                    // TODO sanitise XSS
                     $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
                     $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
                     if ($iInsertCount > 0) {
@@ -770,6 +787,7 @@ class database extends Survey_Common_Action
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        $this->_resetEM();
 
         $closeAfterSave = Yii::app()->request->getPost('close-after-save') === 'true';
 
@@ -996,6 +1014,8 @@ class database extends Survey_Common_Action
         }
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
+        $this->_resetEM();
+
         if (Yii::app()->request->getPost('responsejson', 0) == 1) {
 
             $updatedFields = $this->updatedFields;
@@ -1105,6 +1125,8 @@ class database extends Survey_Common_Action
 
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
+        $this->_resetEM();
+        
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
@@ -1396,6 +1418,10 @@ class database extends Survey_Common_Action
                     }
 
                 }
+
+                LimeExpressionManager::SetDirtyFlag();
+                LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+                $this->_resetEM();
                 Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
                 Yii::app()->session['flashmessage'] = gT("Question was successfully added.");
 
@@ -1412,4 +1438,18 @@ class database extends Survey_Common_Action
         $this->getController()->redirect($redirectLink);
     }
 
+    private function _resetEM(){
+        $oSurvey = Survey::model()->findByPk($this->iSurveyID);
+        LimeExpressionManager::SetDirtyFlag();
+        $oEM =& LimeExpressionManager::singleton();
+        LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
+        LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
+        LimeExpressionManager::StartProcessingPage(true,true); 
+        $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
+        foreach ($aGrouplist as $iGID => $aGroup) {
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+        LimeExpressionManager::FinishProcessingPage();
+    }
 }
