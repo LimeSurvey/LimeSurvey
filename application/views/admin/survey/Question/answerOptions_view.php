@@ -170,14 +170,14 @@
                                                     'first'             => $first,
                                                     'assessmentvisible' => $assessmentvisible,
                                                     'scale_id'          => $scale_id,
-                                                    'title'             => $row->code,
+                                                    'title'             => CHtml::encode($row->code),
                                                     'surveyid'          => $surveyid,
                                                     'gid'               => $gid,
                                                     'qid'               => $qid,
                                                     'language'          => $anslang,
-                                                    'assessment_value'  => $row->assessment_value,
+                                                    'assessment_value'  => CHtml::encode($row->assessment_value),
                                                     'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answerL10ns[$anslang]->answer,
+                                                    'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
                                                     'oldCode'   => true,
                                                 ));?>
 

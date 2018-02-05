@@ -68,7 +68,7 @@ class AnswerL10n extends LSActiveRecord
     public function rules()
     {
         return [
-            ['aid,language,answer','required'],
+            ['aid,language','required'],
             ['aid','numerical','integerOnly'=>true],
             ['answer', 'LSYii_Validators'],
             ['language', 'length', 'min' => 2, 'max'=>20], // in array languages ?
