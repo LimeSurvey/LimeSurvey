@@ -59,7 +59,7 @@
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
             <div class='{{ aSurveyInfo.class.registerformcaptcha }} form-group row ' {{ aSurveyInfo.attr.registerformcaptcha }}>
-                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ "Please enter the letters you see:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
+                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ "Please solve the following equation:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
                 <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                         <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
