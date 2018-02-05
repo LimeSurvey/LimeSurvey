@@ -1445,7 +1445,7 @@ class database extends Survey_Common_Action
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
         LimeExpressionManager::StartProcessingPage(true,true); 
-        $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
+        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);
             LimeExpressionManager::FinishProcessingGroup();

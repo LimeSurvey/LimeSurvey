@@ -1132,7 +1132,7 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
+        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;

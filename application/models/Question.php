@@ -756,10 +756,7 @@ class Question extends LSActiveRecord
      */
     public function getAllGroups()
     {
-        return QuestionGroup::model()->findAll("sid=:sid",
-            array(':sid'=>$this->sid)
-        );
-        //return QuestionGroup::model()->getGroups($this->sid);
+        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
     }
 
     public function getbuttons()
