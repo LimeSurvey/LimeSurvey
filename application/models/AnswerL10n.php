@@ -17,9 +17,11 @@
 /**
  * Class SurveyLanguageSetting
  *
- * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
- * @property string $question Question dieplay text. The actual question.
- * @property string $help Question help-text for display
+ * @property int $id primary key
+ * @property int $aid Answer Id
+ * @property string $answer The answer text
+ * @property string $language language code
+ *
  */
 class AnswerL10n extends LSActiveRecord
 {
@@ -57,7 +59,7 @@ class AnswerL10n extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
+            //'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
         );
     }
 
@@ -65,10 +67,12 @@ class AnswerL10n extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
-        return array(
-            array('answer', 'LSYii_Validators'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
-        );
+        return [
+            ['aid,language,answer','required'],
+            ['aid','numerical','integerOnly'=>true],
+            ['answer', 'LSYii_Validators'],
+            ['language', 'length', 'min' => 2, 'max'=>20], // in array languages ?
+        ];
     }
 
 }
