@@ -1089,24 +1089,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
             $oTransaction->commit();
         }   
-
-        if ($iOldDBVersion < 351) {
-            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->dropIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}');
-            $oDB->createCommand()->dropIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}');
-            $oDB->createCommand()->dropIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}');
-            $oDB->createCommand()->dropIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}');
-            $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}');
-            $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], false);
-            $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', [ 'gid', 'language'], false);
-            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], false);
-            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], false);
-            $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid'], false);
-
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>351), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
             
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
