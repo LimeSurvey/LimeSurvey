@@ -90,13 +90,20 @@ class AdminViewsTest extends TestBaseClassView
                 \Token::createTable(self::$surveyId);
             }
 
+
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).
             $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
             self::importSurvey($surveyFile);
         }
-
+        if (isset($view['questionType'])) {
+            $question = self::$testSurvey->findQuestionByType($view['questionType']);
+            if(empty($question)){
+                throw new \Exception('Question not found',__METHOD__);
+            }
+            $view['route'] = ReplaceFields($view['route'], ['{QID}'=> $question->qid,'{GID}'=> $question->gid]);
+        }
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }

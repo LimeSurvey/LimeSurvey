@@ -44,6 +44,7 @@ return [
 
     ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
 
+    ['editAnswerOptions', ['route'=>'questions/sa/answeroptions/surveyid/{SID}/gid/{GID}/qid/{QID}','questionType'=>Question::QT_Z_LIST_RADIO_FLEXIBLE]],
 
     // this seems to be a special case, opens in another tab
     //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
