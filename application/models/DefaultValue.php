@@ -72,7 +72,7 @@ class DefaultValue extends LSActiveRecord
     {
         return array(
             array('qid', 'required'),
-            array('qid,scale_id', 'numerical', 'integerOnly'=>true),
+            array('qid,sqid,scale_id', 'numerical', 'integerOnly'=>true),
             array('qid', 'unique', 'criteria'=>array(
                     'condition'=>'specialtype=:specialtype and scale_id=:scale_id and sqid=:sqid and language=:language',
                     'params'=>array(

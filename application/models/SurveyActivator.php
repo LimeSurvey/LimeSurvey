@@ -183,7 +183,7 @@ class SurveyActivator
                      */
 
                     $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'], 'language'=>$this->survey->language)
+                        array('qid' => $aRow['qid'])
                     );
                     $oQuestionAttribute = QuestionAttribute::model()->find(
                         "qid = :qid AND attribute = 'max_subquestions'",
