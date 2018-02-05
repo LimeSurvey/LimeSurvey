@@ -59,7 +59,7 @@ class AnswerL10n extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            //'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
+            'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
         );
     }
 
