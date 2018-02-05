@@ -122,23 +122,6 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * @param int $surveyid
-     * @return array
-     */
-    public function getGroups($surveyid)
-    {
-        $language = Survey::model()->findByPk($surveyid)->language;
-        return Yii::app()->db->createCommand()
-            ->select(array('gid', 'group_name'))
-            ->from($this->tableName())
-            ->where(array('and', 'sid=:surveyid', 'language=:language'))
-            ->order('group_order asc')
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
-            ->query()->readAll();
-    }
-
-    /**
      * @param integer $groupId
      * @param integer $surveyId
      * @return int|null
