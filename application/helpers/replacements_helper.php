@@ -433,13 +433,9 @@ function getStandardsReplacementFields($thissurvey)
     } else {
         $_datestamp = '-';
     }
-
     $_assessment_current_total = '';
     if (!empty($thissurvey['aAssessments'])) {
-        if (!empty($thissurvey['aAssessments']['total'])) {
-            $_assessment_current_total = $thissurvey['aAssessments']['total'];
-        }
-
+        $_assessment_current_total = $thissurvey['aAssessments']['total'];
     }
 
 

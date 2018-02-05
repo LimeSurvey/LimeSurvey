@@ -1,6 +1,6 @@
 <?php
 /* @var $this BoxesController */
-/* @var $model Boxes */
+/* @var $model Box */
 /* @var $form CActiveForm */
 /* @var $icons_length interger */
 /* @var $icons array */

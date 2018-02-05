@@ -16,12 +16,12 @@ class PluginManager extends \CApplicationComponent
     public $api;
     /**
      * Array mapping guids to question object class names.
-     * @var type
+     * @var array
      */
     protected $guidToQuestion = array();
 
     /**
-     * @var ?
+     * @var array
      */
     protected $plugins = array();
 
@@ -79,7 +79,7 @@ class PluginManager extends \CApplicationComponent
     /**
      * Return the status of plugin (true/active or false/desactive)
      *
-     * @param sPluginName Plugin name
+     * @param string sPluginName Plugin name
      * @return boolean
      */
     public function isPluginActive($sPluginName)
@@ -97,6 +97,7 @@ class PluginManager extends \CApplicationComponent
      * Returns the storage instance of type $storageClass.
      * If needed initializes the storage object.
      * @param string $storageClass
+     * @return mixed
      */
     public function getStore($storageClass)
     {

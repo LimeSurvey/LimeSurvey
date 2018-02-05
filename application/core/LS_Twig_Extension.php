@@ -229,6 +229,11 @@ class LS_Twig_Extension extends Twig_Extension
         return App()->getController()->createUrl($url, $params);
     }
 
+    public static function createAbsoluteUrl($url, $params = array())
+    {
+        return App()->getController()->createAbsoluteUrl($url, $params);
+    }
+
     /**
      * @param string $sRessource
      */
@@ -279,12 +284,42 @@ class LS_Twig_Extension extends Twig_Extension
         return $sUrlImgAsset;
     }
 
+
+    /**
+     * Get the parsed output of the expression manger for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getExpressionManagerOutput($sInString){
+        templatereplace(flattenText($sInString));
+        return LimeExpressionManager::GetLastPrettyPrintExpression();
+    }
+
+    /**
+     * Checks for a permission on render
+     *
+     * @param String $permission
+     * @param String $permissionGrade
+     * @param Integer|NULL $iSurveyId (default null)
+     * 
+     * @return Boolean
+     */
+    public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
+
+        if($iSurveyId === null){
+            return Permission::model()->hasGlobalPermission($permission,$permissionGrade);
+        }
+        return Permission::model()->hasSurveyPermission($iSurveyId,$permission,$permissionGrade);
+
+    }
+
     /**
      * @param string $sRessource
      */
     public static function getTemplateForRessource($sRessource)
     {
-        $oRTemplate = Template::model()->getInstance();
+        $oRTemplate = Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
 
@@ -351,7 +386,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterScriptForAjax()
     {
-        $oTemplate            = Template::model()->getInstance();
+        $oTemplate            = Template::getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
         self::unregisterPackage('template-core');

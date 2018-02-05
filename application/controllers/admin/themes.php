@@ -449,7 +449,7 @@ class themes extends Survey_Common_Action
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".returnGlobal('copydir');
 
-                if (isStandardTemplate(returnGlobal('newname'))) {
+                if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
@@ -857,7 +857,7 @@ class themes extends Survey_Common_Action
         if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages)) {
             $sLanguageCode = Yii::app()->session['adminlang'];
         }
-        $aAllTemplates = getTemplateList();
+        $aAllTemplates = Template::getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
             $templatename = getGlobalSetting('defaulttheme');
         }

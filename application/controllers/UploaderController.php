@@ -12,6 +12,8 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
+ * @TODO: Fix this stuff into proper views soon.
+ * And by soon I mean yesterday
  */
 
 class UploaderController extends SurveyController
@@ -21,7 +23,7 @@ class UploaderController extends SurveyController
         $surveyid = Yii::app()->session['LEMsid'];
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey) {
-                    throw new CHttpException(400);
+            throw new CHttpException(400);
         }
 
         $sLanguage = isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang'] : "";
@@ -246,16 +248,12 @@ class UploaderController extends SurveyController
         }
 
         $meta = '';
-        App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        // App()->getClientScript()->registerPackage('jqueryui');
+        // App()->getClientScript()->registerPackage('jquery-superfish');
         $sNeededScriptVar = '
-            var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
-            var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
-            var surveyid = "'.$surveyid.'";
-            var fieldname = "'.$sFieldName.'";
-            var questgrppreview  = '.$sPreview.';
-            csrfToken = '.ls_json_encode(Yii::app()->request->csrfToken).';
-            showpopups="'.Yii::app()->getConfig("showpopups").'";
+            var uploadurl = uploadurl || "'.$this->createUrl('/uploader/index/mode/upload/').'";
+            var imageurl = imageurl || "'.Yii::app()->getConfig('imageurl').'/";
+            var surveyid = surveyid || "'.$surveyid.'";
         ';
         $sLangScriptVar = "
                 uploadLang = {
@@ -275,28 +273,29 @@ class UploaderController extends SurveyController
                     };
         ";
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
-        $oEvent = new PluginEvent('beforeSurveyPage');
-        $oEvent->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $event->get('template');
-        }
-        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
-        $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
-        App()->clientScript->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_HEAD);
-        App()->clientScript->registerScript('sLangScriptVar', $sLangScriptVar, CClientScript::POS_HEAD);
-        $oTemplate = Template::model()->getInstance('', $surveyid);
-        Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
+        // $oEvent = new PluginEvent('beforeSurveyPage');
+        // $oEvent->set('surveyId', $surveyid);
+        // App()->getPluginManager()->dispatchEvent($oEvent);
+        // if (!is_null($oEvent->get('template'))) {
+        //     $aSurveyInfo['templatedir'] = $event->get('template');
+        // }
+        // $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
+        // $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
+        // $oTemplate = Template::model()->getInstance('', $surveyid);
+        // Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
+        
+        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
+        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
+        // App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
+        // App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
-        App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
-        App()->bootstrap->register();
+        // App()->bootstrap->register();
 
-        $header = getHeader($meta);
+        // $header = getHeader($meta);
 
-        echo $header;
+        // echo $header;
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
@@ -304,34 +303,36 @@ class UploaderController extends SurveyController
         $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize'] = floor(min($qidattributes['max_filesize'] * 1024, getMaximumFileUploadSize()) / 1024);
-        $body = '</head><body class="uploader">
-            <div class="model-container clearfix">
-                <div id="notice" class="text-center"></div>
-                <input type="hidden" id="ia"                value="'.$fn.'" />
-                <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
-                <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
-                <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
-                <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
-                <input type="hidden" id="preview"                   value="'.Yii::app()->session['preview'].'" />
-                <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
-                <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
-                <input type="hidden" id="'.$fn.'_licount"           value="0" />
-                <input type="hidden" id="'.$fn.'_filecount"         value="0" />
 
-                <!-- The upload button -->
-                <div class="upload-div">
-                    <button id="button1" class="btn btn-default" type="button" >'.gT("Select file").'</button>
-                </div>
+        $aData = [
+            'fn' => $fn,
+            'qid' => $qid,
+            'minfiles' => $minfiles,
+            'maxfiles' => $maxfiles,
+            'qidattributes' => $qidattributes
+        ];
 
-                <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."), $qidattributes['allowed_filetypes'], $qidattributes['max_filesize']).'</p>
-                <div class="uploadstatus" id="uploadstatus"></div>
-
-                <!-- The list of uploaded files -->
-            </div>
-            </body>
+        $body = '<body class="uploader">';
+        $scripts = "<script>\n
+            ".$sNeededScriptVar."\n\n
+            ". $sLangScriptVar."\n\n
+            uploadModalObjects = uploadModalObjects || {};
+            uploadModalObjects[".$fn."] = new uploadHandler(  "
+                . $qid.", {"
+                . "sFieldName : '".$sFieldName."', "
+                . "sPreview : '".$sPreview."', "
+                . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
+                . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
+                . "});
+        </script>";
+        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        $body .= $container.$scripts;
+        $body .= '</body>
         </html>';
-        App()->getClientScript()->render($body);
-        echo $body;
+        // App()->getClientScript()->render($body);
+        // echo $body;
+        echo $container;
+        echo $scripts;
 
 
     }

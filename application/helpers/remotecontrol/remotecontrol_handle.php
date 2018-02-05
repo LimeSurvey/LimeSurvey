@@ -261,7 +261,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
-     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * @return mixed On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
     public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
     {
@@ -403,7 +403,7 @@ class remotecontrol_handle
                 $aBasicAttributes = $oSurvey->getAttributes();
                 $aResult = array();
 
-                if ($oSurvey->active == 'Y') {
+                if ($oSurvey->isActive) {
                     // remove all fields that may not be changed when a survey is active
                     unset($aSurveyData['anonymized']);
                     unset($aSurveyData['datestamp']);
@@ -461,7 +461,8 @@ class remotecontrol_handle
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
                 Yii::app()->loadHelper('admin/activate');
-                $aActivateResults = activateSurvey($iSurveyID);
+                $surveyActivator = new SurveyActivator($oSurvey);
+                $aActivateResults = $surveyActivator->activate();
                 if (isset($aActivateResults['error'])) {
                     return array('status' => 'Error: '.$aActivateResults['error']);
                 } else {
@@ -597,8 +598,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
         }
         $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey)) {
+        if (is_null($survey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
         if (!in_array($sType, array('day', 'hour'))) {
@@ -986,7 +986,7 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid survey ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
+                if ($oSurvey->isActive) {
                                     return array('status' => 'Error:Survey is active and not editable');
                 }
 
@@ -1035,8 +1035,8 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid group ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
@@ -1047,7 +1047,7 @@ class remotecontrol_handle
                 $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
 
                 if ($iGroupsDeleted === 1) {
-                    fixSortOrderGroups($iSurveyID);
+                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
                     return (int) $iGroupID;
                 } else {
                                     return array('status' => 'Group deletion failed');
@@ -1083,8 +1083,8 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 if (!in_array($sImportDataType, array('csv', 'lsg'))) {
@@ -1263,7 +1263,7 @@ class remotecontrol_handle
                     try {
                         // save the change to database - one by one to allow for validation to work
                         $bSaveResult = $oGroup->save();
-                        fixSortOrderGroups($oGroup->sid);
+                        QuestionGroup::model()->updateGroupOrder($oGroup->sid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset failed values
                         if (!$bSaveResult) {
@@ -1309,8 +1309,8 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Survey is active and not editable');
                 }
                 $iGroupID = $oQuestion['gid'];
 
@@ -1376,8 +1376,8 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is Active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is Active and not editable');
                 }
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
@@ -2626,11 +2626,11 @@ class remotecontrol_handle
         if (is_null($oSurvey)) {
             return 'Error: Invalid survey ID';
         }
-        if ($oSurvey->getAttribute('active') !== 'Y') {
+        if (!$oSurvey->isActive) {
             return 'Error: Survey is not active.';
         }
 
-        if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
+        if (!$oSurvey->isAllowEditAfterCompletion) {
             return 'Error: Survey does not allow edit after completion.';
         }
 
@@ -2991,7 +2991,7 @@ class remotecontrol_handle
         $event->set('password', $sPassword);
         App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
-            if($identity->errorMessage) {
+            if ($identity->errorMessage) {
                 // don't return an empty string
                 return $identity->errorMessage;
             }

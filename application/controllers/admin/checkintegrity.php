@@ -357,7 +357,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
-     * @returns Array with all found issues.
+     * @returns array with all found issues.
      */
     protected function _checkintegrity()
     {
@@ -458,7 +458,7 @@ class CheckIntegrity extends Survey_Common_Action
         $aDelete = array();
         foreach ($aConditions as $condition) {
             if ($condition['cqid'] != 0) {
-// skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
+                // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
                     if (Question::model()->hasErrors()) {
@@ -686,8 +686,6 @@ class CheckIntegrity extends Survey_Common_Action
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
         $aOldSIDs = array_unique($aOldSIDs);
-        //$sQuery = 'SELECT sid FROM {{surveys}} ORDER BY sid';
-        //$oResult = dbExecuteAssoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
         $surveys = Survey::model()->findAll();
         if (Survey::model()->hasErrors()) {
             safeDie(join('<br>', Survey::model()->getErrors()));

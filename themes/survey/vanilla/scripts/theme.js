@@ -135,8 +135,6 @@ var ThemeScripts = function(){
          */
         $(document).on('ready pjax:scriptcomplete',function()
         {
-
-
             /* Uncomment below if you want to use the focusFirst function */
             //focusFirst();
             /* Some function are launched in endpage.pstpl */
@@ -221,7 +219,36 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
-        
+        var onkeyEventInput = function(e){
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code==13 && e.ctrlKey != true) {
+                e.preventDefault();
+                if($(this).closest('.question-container').hasClass('multiple-short-txt')){
+                    if($(this).closest('.question-item').next('.question-item').length > 0) {
+                        $(this).closest('.question-item').next('.question-item').find('input, textarea').first().focus();
+                        return;
+                    }
+                }
+                $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            }
+        };
+
+        var onkeyEventTextarea = function(e){
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code==13 && e.altKey == true) {
+                e.preventDefault();
+                if($(this).closest('.question-container').hasClass('multiple-short-txt')){
+                    if($(this).closest('.question-item').next('.question-item').length > 0) {
+                        $(this).closest('.question-item').next('.question-item').find('input, textarea').first().focus();
+                        return;
+                    }
+                }
+                $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            }
+        };
+
+        $(document).on('keydown', '.answer-container input', onkeyEventInput);
+        $(document).on('keydown', '.answer-container textarea', onkeyEventTextarea);
     };
 
     var initUserForms = function(){

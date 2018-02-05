@@ -92,6 +92,11 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         $settings = new self;

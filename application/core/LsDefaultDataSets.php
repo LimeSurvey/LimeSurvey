@@ -9,7 +9,7 @@ class LsDefaultDataSets
     {
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+        $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
         $basicMenues = [
             [1,null,1,'overview', gT('Survey overview','unescaped'),gT('Overview','unescaped'),gT('Open the general survey overview','unescaped'),'list','fontawesome','','admin/survey/sa/view','','','','','','','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,null,2,'generalsettings', gT('General survey settings','unescaped'),gT('General settings','unescaped'),gT('Open general survey settings','unescaped'),'gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',null,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
@@ -46,7 +46,7 @@ class LsDefaultDataSets
         ];
         $returnArray = [];
         
-        foreach($basicMenues as $basicMenu) {
+        foreach ($basicMenues as $basicMenu) {
             $returnArray[] = array_combine($headerArray, $basicMenu);
         }
         App()->setLanguage($sOldLanguage);
@@ -133,9 +133,9 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = array_combine($headerArray, [null,null,null,0,0,'mainmenu',gT('Survey menu'),'side',gT('Main survey menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
-        $returnArray[] = array_combine($headerArray, [null,null,null,0,0,'quickmenu',gT('Quick menu'),'collapsed',gT('Quick menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
-        $returnArray[] = array_combine($headerArray, [1,null,null,0,1,'pluginmenu',gT('Plugin menu'),'side',gT('Plugin menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
+        $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', gT('Survey menu'), 'side', gT('Main survey menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
+        $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', gT('Quick menu'), 'collapsed', gT('Quick menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
+        $returnArray[] = array_combine($headerArray, [1, null, null, 0, 1, 'pluginmenu', gT('Plugin menu'), 'side', gT('Plugin menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
         App()->setLanguage($sOldLanguage);
 
         return $returnArray;
@@ -342,7 +342,7 @@ class LsDefaultDataSets
 
     public static function getTutorialEntryData()
     {
-        $returnArray =[];
+        $returnArray = [];
         $returnArray['firstStartTour'] = array(
             array(
                 'teid' => 1,
@@ -406,7 +406,7 @@ class LsDefaultDataSets
                 'teid' => 5,
                 'ordering' => 5,
                 'title' => gT('Create a sample question and question group'),
-                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create it."),
+                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create them."),
                 'settings' => json_encode(array(
                     'element' => '.bootstrap-switch-id-createsample',
                     'path' => ['/admin/survey/sa/newsurvey'],

@@ -52,18 +52,6 @@ class SavedControl extends LSActiveRecord
         return parent::model($class);
     }
 
-
-    public function getAllRecords($condition = false)
-    {
-        if ($condition != false) {
-            $this->db->where($condition);
-        }
-
-        $data = $this->db->get('saved_control');
-
-        return $data;
-    }
-
     /**
      * @param int $sid
      * @return mixed
@@ -97,6 +85,11 @@ class SavedControl extends LSActiveRecord
         return $record->deleteAll($criteria);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data);

@@ -656,14 +656,22 @@ protected function resetSurveyLogic($iSurveyID)
 /**
 * Add a new condition
 * @todo Better way than to extract $args
-* @params $args
+* @param array $args
 * @return void
 */
 protected function insertCondition(array $args)
 {
     // Extract p_scenario, p_cquestions, ...
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $p_scenario */
+    /** @var string $p_cqid */
+    /** @var string $p_method */
+    /** @var array $p_canswers */
+    /** @var CHttpRequest $request */
+    /** @var string $editSourceTab */
     extract($args);
-    
+
     if (isset($p_cquestions) && $p_cquestions != '') {
         $conditionCfieldname = $p_cquestions;
     } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
@@ -760,6 +768,18 @@ protected function insertCondition(array $args)
 protected function insertConditionAjax($args)
 {
     // Extract scenario, cquestions, ...
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $scenario */
+    /** @var string $cqid */
+    /** @var string $method */
+    /** @var array $p_canswers */
+    /** @var string $editSourceTab */
+    /** @var string $editTargetTab */
+    /** @var string $ConditionConst */
+    /** @var string $prevQuestionSGQA */
+    /** @var string $tokenAttr */
+    /** @var string $ConditionRegexp */
     extract($args);
     
     if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
@@ -913,6 +933,15 @@ protected function getQuickAddData(LSHttpRequest $request)
 */
 protected function updateCondition(array $args)
 {
+    /** @var integer $qid */
+    /** @var integer $gid */
+    /** @var string $p_scenario */
+    /** @var string $p_cqid */
+    /** @var string $p_cid */
+    /** @var string $p_method */
+    /** @var array $p_canswers */
+    /** @var CHttpRequest $request */
+    /** @var string $editSourceTab */
     extract($args);
     
     if (isset($p_cquestions) && $p_cquestions != '') {
@@ -992,6 +1021,7 @@ protected function updateCondition(array $args)
 */
 protected function renumberScenarios(array $args)
 {
+    /** @var string $p_cid */
     extract($args);
     
     $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
@@ -1097,6 +1127,11 @@ protected function copyConditions(array $args)
 */
 protected function applySubaction($p_subaction, array $args)
 {
+    /** @var string $p_cid */
+    /** @var string $qid */
+    /** @var string $gid */
+    /** @var string $p_newscenarionum */
+    /** @var string $p_scenario */
     extract($args);
     switch ($p_subaction) {
         // Insert new condition
@@ -1210,23 +1245,18 @@ protected function getPostRows(array $postquestionlist)
 {
     $postrows = array();
     foreach ($postquestionlist as $pq) {
-        $result = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => $this->language)
-        ),
-        ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+        $aoQuestions = Question::model()->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
         
-        foreach ($result as $myrows) {
+        foreach ($aoQuestions as $oQuestion) {
             $postrows[] = array(
-            "qid"        =>    $myrows['qid'],
-            "sid"        =>    $myrows['sid'],
-            "gid"        =>    $myrows['gid'],
-            "question"    =>    $myrows['question'],
-            "type"        =>    $myrows['type'],
-            "mandatory"    =>    $myrows['mandatory'],
-            "other"        =>    $myrows['other'],
-            "title"        =>    $myrows['title']
+            "qid"        =>    $oQuestion['qid'],
+            "sid"        =>    $oQuestion['sid'],
+            "gid"        =>    $oQuestion['gid'],
+            "question"    =>    $oQuestion->questionL10ns[$this->language]->question,
+            "type"        =>    $oQuestion['type'],
+            "mandatory"    =>    $oQuestion['mandatory'],
+            "other"        =>    $oQuestion['other'],
+            "title"        =>    $oQuestion['title']
             );
         }
     }
@@ -1239,12 +1269,8 @@ protected function getPostRows(array $postquestionlist)
 */
 protected function getQuestionTitleAndText($qid)
 {
-    $question = Question::model()->with('groups')->findByAttributes(array(
-    'qid' => $qid,
-    'parent_qid' => 0,
-    'language' => $this->language
-    ));
-    return array($question['title'], $question['question']);
+    $oQuestion = Question::model()->findByPk($qid);
+    return array($oQuestion->title, $oQuestion->questionL10ns[$this->language]->question);
 }
 
 /**
@@ -1262,19 +1288,15 @@ protected function getSurveyIsAnonymized()
 */
 protected function getQuestionRows()
 {
-    $qresult = Question::model()->with(array(
-    'groups' => array(
-    'condition' => 'groups.language = :lang',
-    'params' => array(':lang' => $this->language)
-    )))->findAllByAttributes(array(
-    'parent_qid' => 0,
-    'sid' => $this->iSurveyID,
-    'language' => $this->language)
+    $qresult = Question::model()->findAllByAttributes(array(
+        'parent_qid' => 0,
+        'sid' => $this->iSurveyID)
     );
-    
+
+    //'language' => $this->language    
     $qrows = array();
     foreach ($qresult as $k => $v) {
-        $qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
+        $qrows[$k] = array_merge($v->attributes, $v->group->attributes);
     }
     
     // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
@@ -1388,7 +1410,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 
             } //foreach
             
-        } elseif ($rows['type'] == ":" || $rows['type'] == ";") {
+        } elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
             // Multiflexi
             // Get the Y-Axis
             $fquery = "SELECT sq.*, q.other"
@@ -1433,7 +1455,6 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $shortquestion = $rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question'])."][".strip_tags($val)."] ".flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, "", gT("No answer"));
                     }
                 }
             }
@@ -1478,7 +1499,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
                 }
             } //foreach
-        } elseif ($rows['type'] == "K" || $rows['type'] == "Q") {
+        } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
             //Multi shorttext/numerical
             $aresult = Question::model()->findAllByAttributes(array(
             "parent_qid" => $rows['qid'],
@@ -1496,7 +1517,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 }
                 
             } //foreach
-        } elseif ($rows['type'] == "R") {
+        } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
             //Answer Ranking
             $aresult = Answer::model()->findAllByAttributes(
             array(
@@ -1524,36 +1545,36 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer"));
                 }
             }
-            unset($quicky);
+                unset($quicky);
             // End if type R
-        } elseif ($rows['type'] == "M" || $rows['type'] == "P") {
+        } elseif ($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
             
-            $shortanswer = " [".gT("Group of checkboxes")."]";
-            $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
-            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
-            
-            $aresult = Question::model()->findAllByAttributes(array(
-            "parent_qid" => $rows['qid'],
-            "language" => $this->language
-            ), array('order' => 'question_order desc'));
-            
+                $shortanswer = " [".gT("Group of checkboxes")."]";
+                $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+
+                $aresult = Question::model()->findAllByAttributes(array(
+                    "parent_qid" => $rows['qid'],
+                    "language" => $this->language
+                ), array('order' => 'question_order desc'));
+
             foreach ($aresult as $arows) {
-                $theanswer = $arows['question'];
+                    $theanswer = $arows['question'];
                 $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
-                
+
                 $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
-                $shortanswer .= "[".gT("Single checkbox")."]";
+                    $shortanswer .= "[".gT("Single checkbox")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
                 $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', gT("checked"));
                 $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
-            }
+                }
             
         } else {
             $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
         
             switch ($rows['type']) {
-                case "Y": // Y/N/NA
+                case Question::QT_Y_YES_NO_RADIO: // Y/N/NA
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                     // Only Show No-Answer if question is not mandatory
@@ -1561,7 +1582,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
-                case "G": //Gender
+                case Question::QT_G_GENDER_DROPDOWN: //Gender
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
                     // Only Show No-Answer if question is not mandatory
@@ -1569,7 +1590,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
-                case "5": // 5 choice
+                case Question::QT_5_POINT_CHOICE: // 5 choice
                     for ($i = 1; $i <= 5; $i++) {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
                     }
@@ -1577,8 +1598,8 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     if ($rows['mandatory'] != 'Y') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
-                break;
-                case "N": // Simple Numerical questions
+                    break;
+                case Question::QT_N_NUMERICAL: // Simple Numerical questions
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
@@ -1596,17 +1617,19 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $theanswer = $arows['answer'];
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                     }
-
-                    if ($rows['type'] == "D") {
+                    if ($rows['type'] == Question::QT_D_DATE) {
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y') {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
-                    } elseif ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I") {
+                    } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
+                        $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
+                        $rows['type'] != Question::QT_I_LANGUAGE) {
                         // For dropdown questions
                         // optinnaly add the 'Other' answer
-                        if (($rows['type'] == "L" || $rows['type'] == "!")
-                            && $rows['other'] == "Y") {
+                        if (($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                            $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
+                            $rows['other'] == "Y") {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
                         }
                         
@@ -1622,12 +1645,14 @@ protected function getCAnswersAndCQuestions(array $theserows)
     return array($cquestions, $canswers);
     }
 
-/**
-* @param int $qid
-* @param int $gid
-* @param array $conditionsList
-* @return string html
-*/
+    /**
+     * @param int $qid
+     * @param int $gid
+     * @param array $conditionsList
+     * @param array $pquestions
+     * @return string html
+     * @throws CException
+     */
 protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
 {
     App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
@@ -1660,10 +1685,21 @@ protected function getCopyForm($qid, $gid, array $conditionsList, array $pquesti
 * Get html for add/edit condition form
 * @param array $args
 * @return string
-* //FIXME a lot of broken things here!! is this used at all?
 */
 protected function getEditConditionForm(array $args)
 {
+    /** @var array $cquestions */
+    /** @var string $p_cquestions */
+    /** @var array $p_canswers */
+    /** @var string $subaction */
+    /** @var integer $iSurveyID */
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var integer $qcount */
+    /** @var string $p_csrctoken */
+    /** @var string $p_prevquestionsgqa */
+    /** @var string $method */
+    /** @var string $scenariocount */
     extract($args);
     $result = '';
     
@@ -1731,6 +1767,14 @@ protected function getEditConditionForm(array $args)
 */
 protected function getQuickAddConditionForm(array $args)
 {
+    /** @var integer $iSurveyID */
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var string $subaction */
+    /** @var string $method */
+    /** @var string $p_csrctoken */
+    /** @var string $p_prevquestionsgqa */
+    /** @var array $cquestions */
     extract($args);
     $data = array(
     'subaction'     => $subaction,
@@ -1933,6 +1977,10 @@ protected function getEditTargetTab()
 */
 protected function getQuestionNavOptions($theserows, $postrows, $args)
 {
+    /** @var integer $gid */
+    /** @var integer $qid */
+    /** @var string $questiontitle */
+    /** @var string $sCurrentFullQuestionText */
     extract($args);
     
     $theserows2 = array();

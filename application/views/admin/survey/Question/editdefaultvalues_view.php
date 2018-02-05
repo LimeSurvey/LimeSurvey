@@ -81,15 +81,15 @@
                                                 <?php
                                                     switch($questionrow['type'])
                                                     {
-                                                        case 'L':
-                                                        case 'M':
-                                                        case 'O':
-                                                        case 'P':
-                                                        case '!':
+                                                        case Question::QT_L_LIST_DROPDOWN:
+                                                        case Question::QT_M_MULTIPLE_CHOICE:
+                                                        case Question::QT_O_LIST_WITH_COMMENT:
+                                                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                                                        case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                                             $inputStyle='enum';
                                                             break;
-                                                        case 'K':
-                                                        case 'Q':
+                                                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                                                        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                                                             $inputStyle='text';
                                                             break;
                                                     }
@@ -151,7 +151,7 @@
                                              );
                                             $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', array('widgetOptions'=>$widgetOptions));
                                             ?>
-                                            <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
+                                            <?php if ($questionrow['type'] != Question::QT_Y_YES_NO_RADIO): //temporary solution - until everything is move to widgets?>
                                                 <div class="form-group">
                                                     <label class="col-sm-12 control-label"for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                                         <?php eT("Default value:")?>

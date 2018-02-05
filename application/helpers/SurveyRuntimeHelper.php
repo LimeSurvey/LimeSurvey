@@ -112,6 +112,7 @@ class SurveyRuntimeHelper
             $this->setNotAnsweredAndNotValidated();
 
         } else {
+            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
             $this->setPreview();
         }
 
@@ -668,7 +669,7 @@ class SurveyRuntimeHelper
     {
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if (!isset($_SESSION[$this->LEMsessid]['step']) || ($this->previewquestion || $this->previewgrp) ) {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
             $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
@@ -1118,11 +1119,6 @@ class SurveyRuntimeHelper
                 $_SESSION[$this->LEMsessid]['finished'] = true;
                 $_SESSION[$this->LEMsessid]['sid']      = $this->iSurveyid;
 
-                if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                    //Automatically redirect the page to the "url" setting for the survey
-                    header("Location: {$this->aSurveyInfo['surveyls_url']}");
-                }
-
             }
 
             $redata['completed'] = $this->completed;
@@ -1139,25 +1135,29 @@ class SurveyRuntimeHelper
             $blocks = array();
 
             foreach ($event->getAllContent() as $blockData) {
-                /* @var $blockData PluginEventContent */
+                /* @var $blockData \LimeSurvey\PluginManager\PluginEventContent */
                 $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
-                $aStandardsReplacementFields = array();
-                if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
-                    // process string anyway so that it can be pretty-printed
-                    $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $aStandardsReplacementFields = array();
+            if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
+                // process string anyway so that it can be pretty-printed
+                $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
 
-                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
+                    $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString($this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
 
                 }
 
-                $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
 
+            if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
+                //Automatically redirect the page to the "url" setting for the survey
+                header("Location: {$this->aSurveyInfo['surveyls_url']}");
+            }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -1217,8 +1217,8 @@ class SurveyRuntimeHelper
     /**
      * setJavascriptVar
      *
-     * @return @void
-     * @param integer $iSurveyId : the survey id for the script
+     * @return void
+     * @param mixed $iSurveyId : the survey id for the script
      */
     public function setJavascriptVar($iSurveyId = '')
     {

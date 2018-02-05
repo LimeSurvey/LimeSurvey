@@ -531,12 +531,12 @@ class Survey_Common_Action extends CAction
 
                 //Show Question Details
                 //Count answer-options for this question
-                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid, 'language' => $baselang));
+                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
                 //Count sub-questions for this question
-                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
-                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
                 if (is_null($qrrow)) {
                     return;
                 }
@@ -551,7 +551,7 @@ class Survey_Common_Action extends CAction
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
-                $aData['qtypes'] = getQuestionTypeList('', 'array');
+                $aData['qtypes'] = Question::typeList();
                 $aData['action'] = $action;
                 $aData['surveyid'] = $iSurveyID;
                 $aData['qid'] = $qid;
@@ -608,17 +608,12 @@ class Survey_Common_Action extends CAction
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
-            $baselang = $oSurvey->language;
 
-            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
+            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
 
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
-                )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
-            // $surveyinfo = $sumresult1->attributes;
-            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            // $surveyinfo = array_map('flattenText', $surveyinfo);
-            //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+                )->findByPk($surveyid); 
             $aData['activated'] = $activated = $sumresult1->active;
 
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -664,7 +659,7 @@ class Survey_Common_Action extends CAction
 
             // ACTIVATE SURVEY BUTTON
 
-            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $oSurvey->language);
+            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
 
             $sumcount3 = Question::model()->countByAttributes($condition); //Checked
 
@@ -838,19 +833,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language), array('order'=>'group_order ASC'));
-            if (count($aGroups)) {
-                foreach ($aGroups as $group) {
-                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
-
-                    foreach ($group->aQuestions as $question) {
-                        if (is_object($question)) {
-                            $question->question = viewHelper::flatEllipsizeText($question->question, true, 60, '[...]', 0.5);
-                        }
-                    }
-                }
-            }
-
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID), array('order'=>'group_order ASC'));
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
@@ -930,7 +913,6 @@ class Survey_Common_Action extends CAction
         if (isset($aData['display']['menu_bars']['listquestions'])) {
             $iSurveyID = $aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
-            $baselang = $oSurvey->language;
 
             // The DataProvider will be build from the Question model, search method
             $model = new Question('search');
@@ -952,7 +934,6 @@ class Survey_Common_Action extends CAction
 
             // We filter the current survey id
             $model->sid = $iSurveyID;
-            $model->language = $baselang;
 
             $aData['model'] = $model;
 
@@ -971,62 +952,59 @@ class Survey_Common_Action extends CAction
         $aSurveyInfo = getSurveyInfo($iSurveyID);
         /** @var Survey $oSurvey */
         $oSurvey = $aData['oSurvey'];
-        $baselang = $aSurveyInfo['language'];
         $activated = $aSurveyInfo['active'];
 
-        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
-
+        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-        $sumcount2 = QuestionGroup::model()->countByAttributes($condition); //Checked
+        $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
-        $surveysummary2 = "";
+        $surveysummary2 = [];
         if ($aSurveyInfo['anonymized'] != "N") {
-            $surveysummary2 .= gT("Responses to this survey are anonymized.")."<br />";
+            $surveysummary2[] = gT("Responses to this survey are anonymized.");
         } else {
-            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.")."<br />";
+            $surveysummary2[] = gT("Responses to this survey are NOT anonymized.");
         }
         if ($aSurveyInfo['format'] == "S") {
-            $surveysummary2 .= gT("It is presented question by question.")."<br />";
+            $surveysummary2[] = gT("It is presented question by question.");
         } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2 .= gT("It is presented group by group.")."<br />";
+            $surveysummary2[] = gT("It is presented group by group.");
         } else {
-            $surveysummary2 .= gT("It is presented on one single page.")."<br />";
+            $surveysummary2[] = gT("It is presented on one single page.");
         }
         if ($aSurveyInfo['questionindex'] > 0) {
             if ($aSurveyInfo['format'] == 'A') {
-                $surveysummary2 .= gT("No question index will be shown with this format.")."<br />";
+                $surveysummary2[] = gT("No question index will be shown with this format.");
             } elseif ($aSurveyInfo['questionindex'] == 1) {
-                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.")."<br />";
+                $surveysummary2[] = gT("A question index will be shown; participants will be able to jump between viewed questions.");
             } elseif ($aSurveyInfo['questionindex'] == 2) {
-                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.")."<br />";
+                $surveysummary2[] = gT("A full question index will be shown; participants will be able to jump between relevant questions.");
             }
         }
         if ($oSurvey->isDateStamp) {
-            $surveysummary2 .= gT("Responses will be date stamped.")."<br />";
+            $surveysummary2[] = gT("Responses will be date stamped.");
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2 .= gT("IP Addresses will be logged")."<br />";
+            $surveysummary2[] = gT("IP Addresses will be logged");
         }
         if ($oSurvey->isRefUrl) {
-            $surveysummary2 .= gT("Referrer URL will be saved.")."<br />";
+            $surveysummary2[] = gT("Referrer URL will be saved.");
         }
         if ($oSurvey->isUseCookie) {
-            $surveysummary2 .= gT("It uses cookies for access control.")."<br />";
+            $surveysummary2[] = gT("It uses cookies for access control.");
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2 .= gT("If tokens are used, the public may register for this survey")."<br />";
+            $surveysummary2[] = gT("If tokens are used, the public may register for this survey");
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
-            $surveysummary2 .= gT("Participants can save partially finished surveys")."<br />\n";
+            $surveysummary2[] = gT("Participants can save partially finished surveys");
         }
         if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2 .= gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
+            $surveysummary2[] = gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto']);
         }
         if ($oSurvey->emailresponseto != '') {
-            $surveysummary2 .= gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
+            $surveysummary2[] = gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto']);
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1074,14 +1052,14 @@ class Survey_Common_Action extends CAction
             $aData['surveydb'] = Yii::app()->db->tablePrefix."survey_".$iSurveyID;
         }
 
-        $aData['warnings'] = "";
+        $aData['warnings'] = [];
         if ($activated == "N" && $sumcount3 == 0) {
-            $aData['warnings'] = gT("Survey cannot be activated yet.")."<br />\n";
+            $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span><br />";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add questions")."]</span><br />";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -1105,6 +1083,9 @@ class Survey_Common_Action extends CAction
         }
         $aData['quickactionstate'] = $quickactionState !== null ? intval($quickactionState) : 1;
         $aData['subviewData'] = $aData;
+
+        Yii::app()->getClientScript()->registerPackage('surveysummary');
+
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,

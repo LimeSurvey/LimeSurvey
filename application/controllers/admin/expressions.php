@@ -85,7 +85,7 @@ class Expressions extends Survey_Common_Action
         $language = Yii::app()->request->getParam('lang', null); 
         
         if ($language !== null) {
-                    $language = sanitize_languagecode($language);
+            $language = sanitize_languagecode($language);
         }
 
         $aData['sid'] = $sid;

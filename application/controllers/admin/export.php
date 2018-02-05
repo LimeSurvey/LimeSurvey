@@ -782,8 +782,14 @@ class export extends Survey_Common_Action
         buildXMLFromQuery($xml, $lsquery, 'labelsets');
 
         // Labels
-        $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {{labels}} WHERE lid=".implode(' or lid=', $lids);
+        $lquery = "SELECT id, lid, code, sortorder, assessment_value FROM {{labels}} WHERE lid=".implode(' or lid=', $lids);
         buildXMLFromQuery($xml, $lquery, 'labels');
+
+        // Labels localization
+        $lquery = "SELECT ls.id, label_id, title, language FROM {{label_l10ns}} ls
+        join {{labels}} l on l.id=label_id WHERE lid=".implode(' or lid=', $lids);
+        buildXMLFromQuery($xml, $lquery, 'label_l10ns');
+
         $xml->endElement(); // close columns
         $xml->endDocument();
         Yii::app()->end();
@@ -964,7 +970,7 @@ class export extends Survey_Common_Action
             unlink($sLSTFileName);
         }
 
-        if (isset($survey->hasTimingsTable)) {
+        if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
             getXMLDataSingleTable($iSurveyID, 'survey_'.$iSurveyID.'_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_'.$iSurveyID.'_timings.lsi');
             unlink($sLSIFileName);
@@ -1282,7 +1288,7 @@ class export extends Survey_Common_Action
 
     /**
      * Generate an TSV (tab-separated value) file for the survey structure
-     * @param type $surveyid
+     * @param integer $surveyid
      */
     private function _exporttsv($surveyid)
     {

@@ -118,7 +118,7 @@ class UserAction extends Survey_Common_Action
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
                 // add new user to userlist
-                $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
+                $sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
                 $srow = count($sresult);
 
                 // send Mail
@@ -696,7 +696,7 @@ class UserAction extends Survey_Common_Action
 
     private function _refreshtemplates()
     {
-        $template_a = getTemplateList();
+        $template_a = Template::getTemplateList();
         foreach ($template_a as $tp => $fullpath) {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)

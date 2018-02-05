@@ -89,7 +89,7 @@ class CompileAssetsCommand extends CConsoleCommand
         } else {
             $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
         }
-    
+
         $live_output     = "";
         $complete_output = "";
     

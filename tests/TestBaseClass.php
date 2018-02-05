@@ -54,7 +54,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            self::assertTrue(false, 'Found no survey file ' . $fileName);
+            throw new \Exception(sprintf('Survey file %s not found',$surveyFile));
         }
 
         $translateLinksFields = false;
@@ -69,7 +69,7 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            self::assertTrue(false, 'Could not import survey file ' . $fileName);
+            throw new \Exception(sprintf('Failed to import survey file %s',$surveyFile));
         }
     }
 

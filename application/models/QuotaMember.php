@@ -80,6 +80,9 @@ class QuotaMember extends LSActiveRecord
         return 'id';
     }
 
+    /**
+     * @return array
+     */
     public function getMemberInfo()
     {
         $sFieldName = null;
@@ -128,10 +131,16 @@ class QuotaMember extends LSActiveRecord
                 'fieldname' => $sFieldName,
             );
         }
+        return [];
 
 
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         $members = new self;

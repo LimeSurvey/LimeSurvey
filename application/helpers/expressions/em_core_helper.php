@@ -406,7 +406,7 @@ class ExpressionManager
                 break;
             case '*':
                 if ($bBothNumeric) {
-                    $result = array(($arg1[0] * $arg2[0]), $token[1], 'NUMBER');
+                    $result = array((doubleVal($arg1[0]) * doubleVal($arg2[0])), $token[1], 'NUMBER');
                 } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
@@ -1466,7 +1466,7 @@ class ExpressionManager
                 ++$errIndex;
             }
         }
-        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
+        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
         }
@@ -2167,7 +2167,8 @@ class ExpressionManager
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j = 0; $j < count($aInitTokens); ++$j) {
+        $countInitTokens = count($aInitTokens);
+        for ($j = 0; $j < $countInitTokens; ++$j) {
             for ($i = 0; $i < count($this->RDP_CategorizeTokensRegex); ++$i) {
                 $sToken = $aInitTokens[$j][0];
                 if (preg_match($this->RDP_CategorizeTokensRegex[$i], $sToken)) {

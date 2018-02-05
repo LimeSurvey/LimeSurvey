@@ -108,10 +108,10 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column])) {
 
-                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null) {
-// For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
+                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null) {
+                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
                         // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
                         // This is especially important for the deletenonvalue feature,
                         // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
@@ -245,7 +245,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
             $fields = explode("|", $_POST['fieldnames']);
 
             foreach ($fields as $field) {
-                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
+                if ($fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
                     $validation = QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
@@ -984,7 +984,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
 
     // First find all groups and their groups IDS
     $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
+    $criteria->addColumnCondition(array('sid' => $surveyid));
     $criteria->addCondition("randomization_group != ''");
 
     $oData = QuestionGroup::model()->findAll($criteria);
@@ -1061,17 +1061,15 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
     $randomGroups = array();
 
     // Find all defined randomization groups through question attribute values
-    // TODO: move the sql queries to a model
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+        //Previous query: $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and CAST(value as varchar(255)) <>'' and sid={$surveyid}");
     } else {
-        $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
+        //Previous query: $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
+        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
     }
-
-    $rgresult = dbExecuteAssoc($rgquery);
-
-    foreach ($rgresult->readAll() as $rgrow) {
-        $randomGroups[$rgrow['value']][] = $rgrow['qid']; // Get the question IDs for each randomization group
+    foreach ($rgresult as $rgrow) {
+        $randomGroups[$rgrow->questionAttributes['random_group']->value][] = $rgrow['qid']; // Get the question IDs for each randomization group
     }
 
     // If we have randomization groups set, then lets cycle through each group and
@@ -1246,9 +1244,7 @@ function getRenderWay($renderToken, $renderCaptcha)
 function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
 {
     switch ($renderWay) {
-
         case "main": //Token required, maybe Captcha required
-
             // Datas for the form
             $aForm                    = array();
             $aForm['sType']           = ($scenarios['tokenRequired']) ? 'token' : 'captcha';
@@ -1258,12 +1254,15 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
+            $oSurvey = Survey::model()->findByPk($surveyid);
             // Rendering layout_user_forms.twig
+            $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
             $thissurvey['include_content']  = 'userforms';
             
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1392,7 +1391,7 @@ function getNavigatorDatas()
     }
 
     // Previous ?
-    if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
+    if ($thissurvey['format'] != Question::QT_A_ARRAY_5_CHOICE_QUESTIONS && ($thissurvey['allowprev'] != "N")
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')
@@ -1469,7 +1468,6 @@ function getNavigatorDatas()
  */
 function doAssessment($surveyid)
 {
-
     $survey = Survey::model()->findByPk($surveyid);
     $baselang = $survey->language;
     if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
@@ -1481,149 +1479,137 @@ function doAssessment($surveyid)
         $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
 
-    $query = "SELECT * FROM {{assessments}}
-        WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
-        ORDER BY scope, id";
+    $aAssessmentCount = Assessment::model()->count("sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'");
+    if ($aAssessmentCount > 0) {
 
-    if ($result = dbExecuteAssoc($query)) {
-        $aResultSet = $result->readAll();
+        foreach ($aResultSet as $row) {
 
-        if (count($aResultSet) > 0) {
-
-            foreach ($aResultSet as $row) {
-
-                if ($row['scope'] == "G") {
-                    $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
-                        "min"     => $row['minimum'],
-                        "max"     => $row['maximum'],
-                        "message" => $row['message']
-                    );
-                } else {
-                    $assessment['total'][] = array("name"=>$row['name'],
-                        "min"     => $row['minimum'],
-                        "max"     => $row['maximum'],
-                        "message" => $row['message']
-                    );
-                }
+            if ($row['scope'] == "G") {
+                $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
+                    "min"     => $row['minimum'],
+                    "max"     => $row['maximum'],
+                    "message" => $row['message']
+                );
+            } else {
+                $assessment['total'][] = array("name"=>$row['name'],
+                    "min"     => $row['minimum'],
+                    "max"     => $row['maximum'],
+                    "message" => $row['message']
+                );
             }
-            $fieldmap = createFieldMap($survey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
-            $i        = 0;
-            $total    = 0;
-            $groups   = array();
+        }
+        $fieldmap = createFieldMap($survey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $i        = 0;
+        $total    = 0;
+        $groups   = array();
+
+        foreach ($fieldmap as $field) {
+
+            // Init Assessment Value
+            $assessmentValue = null;
+
+            if (in_array($field['type'], array(Question::QT_1_ARRAY_MULTISCALE, Question::QT_F_ARRAY_FLEXIBLE_ROW, Question::QT_H_ARRAY_FLEXIBLE_COLUMN, Question::QT_Z_LIST_RADIO_FLEXIBLE, Question::QT_L_LIST_DROPDOWN, Question::QT_EXCLAMATION_LIST_DROPDOWN, Question::QT_M_MULTIPLE_CHOICE, Question::QT_O_LIST_WITH_COMMENT, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS))) {
+                $fieldmap[$field['fieldname']]['assessment_value'] = 0;
+                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                    if (($field['type'] == Question::QT_M_MULTIPLE_CHOICE) || ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
+                        //Multiflexi choice  - result is the assessment attribute value
+                    {
+                        if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
+                            // FIXME undefined function getQuestionAttributeValues
+                            $aAttributes = getQuestionAttributeValues($field['qid']);
+                    }
+                            $assessmentValue = (int) $aAttributes['assessment_value'];
+                        }
+                    } else {
+                            // Single choice question
+                        $usrow = Answer::findByAttributes(['qid'=>$field['qid'], 'code'=>$_SESSION['survey_'.$surveyid][$field['fieldname']]]);
+                        if (!empty($usrow)) {
+                            $assessmentValue = $usrow->assessment_value;
+                        //    $total              = $total+$usrow['assessment_value'];
+                        }
+                    }
+
+                    $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
+                }
+                $groups[] = $field['gid'];
+            }
+
+            // If this is a question (and not a survey field, like ID), save asessment value
+            if ($field['qid'] > 0) {
+                /**
+                 * Allow Plugin to update assessment value
+                 */
+                // Prepare Event Info
+                $event = new PluginEvent('afterSurveyQuestionAssessment');
+                $event->set('surveyId', $surveyid);
+                $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                $event->set('gid', $field['gid']);
+                $event->set('qid', $field['qid']);
+
+                if (array_key_exists('sqid', $field)) {
+
+                    $event->set('sqid', $field['sqid']);
+                }
+
+                if (array_key_exists('aid', $field)) {
+
+                    $event->set('aid', $field['aid']);
+                }
+
+                $event->set('assessmentValue', $assessmentValue);
+
+                if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                    $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                }
+
+                // Dispatch Event and Get new assessment value
+                App()->getPluginManager()->dispatchEvent($event);
+                $updatedAssessmentValue = $event->get('assessmentValue', $assessmentValue);
+
+                /**
+                 * Save assessment value on the response
+                 */
+                $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
+                $total = $total + $updatedAssessmentValue;
+            }
+
+            $i++;
+        }
+
+        $groups = array_unique($groups);
+
+        foreach ($groups as $group) {
+            $grouptotal = 0;
 
             foreach ($fieldmap as $field) {
+                if ($field['gid'] == $group && isset($field['assessment_value'])) {
 
-                // Init Assessment Value
-                $assessmentValue = null;
-
-                if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
-
-                    $fieldmap[$field['fieldname']]['assessment_value'] = 0;
-
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-
-                        //Multiflexi choice  - result is the assessment attribute value
-                        if (($field['type'] == "M") || ($field['type'] == "P")) {
-                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
-
-                                $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
-                                $assessmentValue = (int) $aAttributes['assessment_value'];
-                            }
-                        } else {
-                                // Single choice question
-                            $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                            $usresult = dbExecuteAssoc($usquery); //Checked
-
-                            if ($usresult) {
-                                $usrow              = $usresult->read();
-                                $assessmentValue    = $usrow['assessment_value'];
-                            //    $total              = $total+$usrow['assessment_value'];
-                            }
-                        }
-
-                        $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
+                    if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                        $grouptotal = $grouptotal + $field['assessment_value'];
                     }
-                    $groups[] = $field['gid'];
                 }
-
-                // If this is a question (and not a survey field, like ID), save asessment value
-                if ($field['qid'] > 0) {
-                    /**
-                     * Allow Plugin to update assessment value
-                     */
-                    // Prepare Event Info
-                    $event = new PluginEvent('afterSurveyQuestionAssessment');
-                    $event->set('surveyId', $surveyid);
-                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
-                    $event->set('gid', $field['gid']);
-                    $event->set('qid', $field['qid']);
-
-                    if (array_key_exists('sqid', $field)) {
-
-                        $event->set('sqid', $field['sqid']);
-                    }
-
-                    if (array_key_exists('aid', $field)) {
-
-                        $event->set('aid', $field['aid']);
-                    }
-
-                    $event->set('assessmentValue', $assessmentValue);
-
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-                        $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                    }
-
-                    // Dispatch Event and Get new assessment value
-                    App()->getPluginManager()->dispatchEvent($event);
-                    $updatedAssessmentValue = $event->get('assessmentValue', $assessmentValue);
-
-                    /**
-                     * Save assessment value on the response
-                     */
-                    $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
-                    $total = $total + $updatedAssessmentValue;
-                }
-
-                $i++;
             }
 
-            $groups = array_unique($groups);
-
-            foreach ($groups as $group) {
-                $grouptotal = 0;
-
-                foreach ($fieldmap as $field) {
-                    if ($field['gid'] == $group && isset($field['assessment_value'])) {
-
-                        if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-                            $grouptotal = $grouptotal + $field['assessment_value'];
-                        }
-                    }
-                }
-
-                $subtotal[$group] = $grouptotal;
-            }
+            $subtotal[$group] = $grouptotal;
         }
-        $assessment['subtotal']['show'] = false;
-
-        if (isset($subtotal) && is_array($subtotal)) {
-            $assessment['subtotal']['show']  = true;
-            $assessment['subtotal']['datas'] = $subtotal;
-        }
-
-        $assessment['total']['show'] = false;
-
-        if (isset($assessment['total'])) {
-            $assessment['total']['show'] = true;
-        }
-
-        $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
-        $assessment['total_score']    = (isset($total)) ? $total : '';
-        //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
-        return array('show'=>true, 'datas' => $assessment);
-
     }
+    $assessment['subtotal']['show'] = false;
+
+    if (isset($subtotal) && is_array($subtotal)) {
+        $assessment['subtotal']['show']  = true;
+        $assessment['subtotal']['datas'] = $subtotal;
+    }
+
+    $assessment['total']['show'] = false;
+
+    if (isset($assessment['total'])) {
+        $assessment['total']['show'] = true;
+    }
+
+    $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
+    $assessment['total_score']    = (isset($total)) ? $total : '';
+    //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+    return array('show'=>true, 'datas' => $assessment);
 }
 
 
@@ -1638,16 +1624,13 @@ function UpdateGroupList($surveyid, $language)
 
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
 
-    // TODO: replace by group model method
-    $query     = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result    = dbExecuteAssoc($query) or safeDie("Couldn't get group list<br />$query<br />"); //Checked
+    $result = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
     $groupList = array();
-
-    foreach ($result->readAll() as $row) {
+    foreach ($result as $row) {
         $group = array(
             'gid'         => $row['gid'],
-            'group_name'  => $row['group_name'],
-            'description' =>  $row['description']);
+            'group_name'  => $row->questionGroupL10ns[$language]->group_name,
+            'description' =>  $row->questionGroupL10ns[$language]->description);
         $groupList[] = $group;
         $gidList[$row['gid']] = $group;
     }
@@ -1682,11 +1665,10 @@ function updateFieldArray()
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) {
         foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value) {
             $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if ($usrow) {
-                $questionarray[2] = $usrow['title'];
-                $questionarray[3] = $usrow['question'];
+            $arQuestion = Question::model()->findByPk($questionarray[0]);
+            if (!empty($arQuestion)) {
+                $questionarray[2] = $arQuestion->title;
+                $questionarray[3] = $arQuestion->questionL10ns[$_SESSION['survey_'.$surveyid]['s_lang']]->question;
             }
             unset($questionarray);
         }
@@ -1816,7 +1798,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $blocks = array();
 
     foreach ($event->getAllContent() as $blockData) {
-        /* @var $blockData PluginEventContent */
+        /* @var $blockData \LimeSurvey\PluginManager\PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
 
@@ -2092,6 +2074,7 @@ function getSideBodyClass($sideMenustate = false)
         throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }
 
+    //@TODO something unfinished here?
     return ""; $class;
 
 }

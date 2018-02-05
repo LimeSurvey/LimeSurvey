@@ -31,7 +31,8 @@ class DemomodeCommand extends CConsoleCommand
 
     }
 
-    private function _resetDatabase() {
+    private function _resetDatabase()
+    {
         Yii::import('application.helpers.common_helper', true);
         Yii::import('application.helpers.database_helper', true);
 
@@ -91,7 +92,8 @@ class DemomodeCommand extends CConsoleCommand
         }
     }
 
-    private function _resetFiles() {
+    private function _resetFiles()
+    {
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
@@ -101,27 +103,60 @@ class DemomodeCommand extends CConsoleCommand
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
-    private function _createDemo() {
+    private function _createDemo()
+    {
         Yii::app()->loadHelper('admin/import');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/replacements_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_manager_helper.php');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_core_helper.php');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/admin/activate_helper.php');
         
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR;
         $aSamplesurveys = scandir($documentationSurveyPath);
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
-            $result = NULL;
-            $result = XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
+            $result = null;
+            //Try catch for console application to be able to import surveys
+            
+            $result = @ XMLImportSurvey($documentationSurveyPath.$sSamplesurvey);
+
             if (in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])) {
                 $surveysToActivate[] = $result['newsid'];
             }
         }
-        require_once(__DIR__.'/../helpers/admin/activate_helper.php');
-        array_map('activateSurvey', $surveysToActivate);
+
+        array_map([$this,'activateSurvey'], $surveysToActivate);
     }
 
-}
 
+    /**
+     * Activate an existing survey
+     *
+     * Return the result of the activation
+     * Failure status : Invalid Survey ID, Activation Error, Invalid session key, No permission
+     *
+     * @access public
+     * @param int $iSurveyID ID of the Survey to be activated
+     * @return array in case of success result of the activation
+     */
+    public function activateSurvey($iSurveyID){
+            
+        $iSurveyID = (int) $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+
+        $surveyActivator = new SurveyActivator($oSurvey);
+        $aActivateResults = $surveyActivator->activate();
+        if (isset($aActivateResults['error'])) {
+            return array('status' => 'Error: '.$aActivateResults['error']);
+        } else {
+            return $aActivateResults;
+        }    
+    }
+}
 
 function SureRemoveDir($dir, $DeleteMe)
 {

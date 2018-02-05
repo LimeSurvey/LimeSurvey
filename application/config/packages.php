@@ -1,6 +1,9 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
+
+
 /**
  * Core packages , no third_party
  * sees third_party.php for third party package
@@ -259,7 +262,23 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+    ),
+
+    'surveysummary' => array(
+        'devBaseUrl' => 'assets/packages/surveysummary/',
+        'basePath' => 'core.surveysummary',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'surveysummary.css'
         ),
+        'js' => array(
+            'surveysummary.js',
+            'qrcode.js'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',
