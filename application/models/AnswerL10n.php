@@ -59,7 +59,7 @@ class AnswerL10n extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
+            //'question' => array(self::BELONGS_TO, 'answer', '', 'on' => "$alias.aid = answer.aid"),
         );
     }
 
@@ -68,7 +68,7 @@ class AnswerL10n extends LSActiveRecord
     public function rules()
     {
         return [
-            ['aid,language,answer','required'],
+            //['aid,language,answer','required'],
             ['aid','numerical','integerOnly'=>true],
             ['answer', 'LSYii_Validators'],
             ['language', 'length', 'min' => 2, 'max'=>20], // in array languages ?

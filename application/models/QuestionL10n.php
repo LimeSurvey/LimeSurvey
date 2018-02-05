@@ -54,7 +54,7 @@ class QuestionL10n extends LSActiveRecord
     {
         return array(
             // FIXME this conflicts with the attribute "question"
-            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
+            //'question' => array(self::BELONGS_TO, 'Question', 'qid'),
         );
     }
     
@@ -73,7 +73,7 @@ class QuestionL10n extends LSActiveRecord
     public function rules()
     {
         return array(
-            ['qid,language,question','required'],
+            //['qid,language,question','required'],
             ['qid','numerical','integerOnly'=>true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
