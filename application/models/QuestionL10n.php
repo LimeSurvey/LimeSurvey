@@ -54,7 +54,7 @@ class QuestionL10n extends LSActiveRecord
     {
         return array(
             // FIXME this conflicts with the attribute "question"
-            //'question' => array(self::BELONGS_TO, 'Question', 'qid'),
+            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
         );
     }
     
