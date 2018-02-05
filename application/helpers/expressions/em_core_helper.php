@@ -1466,7 +1466,7 @@ class ExpressionManager
                 ++$errIndex;
             }
         }
-        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
+        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
         }
