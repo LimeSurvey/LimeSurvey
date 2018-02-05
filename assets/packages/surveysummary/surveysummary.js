@@ -18,5 +18,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
             colorDark : "#000000",
             colorLight : "#ffffff",
         });
+        $(this).css('display','none');
     })
 });
