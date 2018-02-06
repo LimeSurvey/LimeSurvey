@@ -218,6 +218,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
+    $aDuplicateQIDs = array();
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
