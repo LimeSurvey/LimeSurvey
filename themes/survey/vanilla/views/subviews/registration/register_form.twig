@@ -63,7 +63,7 @@
                 <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                         <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
-                            {{ renderCaptcha }}
+                            {{ renderCaptcha().renderOut() }}
                         </div>
                         <input class='{{ aSurveyInfo.class.registerformcaptchainput }} form-control' {{ aSurveyInfo.attr.registerformcaptchainput }} >
                     </div>
