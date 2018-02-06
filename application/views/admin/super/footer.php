@@ -3,6 +3,19 @@
  * Footer view
  * Inserted in all pages
  */
+$systemInfos = [
+    gT('LimeSurvey version') => Yii::app()->getConfig('versionnumber'),
+    gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
+    gT('Operating system') => php_uname(),
+    gT('PHP version') => phpversion(),
+    gT('Webserver name') => $_SERVER['SERVER_NAME'],
+    gT('Webserver software') => $_SERVER['SERVER_SOFTWARE'],
+    gT('Webserver info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
+    gT('Database driver') => Yii::app()->db->driverName,
+    gT('Database version') => Yii::app()->db->clientVersion,
+    gT('Database serverinfo') => Yii::app()->db->serverInfo,
+    gT('Database serverversion') => Yii::app()->db->serverVersion
+];
 ?>
 <!-- Footer -->
 <footer class='footer'>
@@ -25,7 +38,14 @@
 
             <!-- Lime survey website -->
             <div class="col-xs-12 col-sm-4 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
+                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'><?=gT('LimeSurvey')?></a><br />
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?> 
+                    <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
+                <?php } ?>
+                <?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                    </a> 
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -33,6 +53,38 @@
 <div id="bottomScripts">
     <###end###>
 </div>
+
+<!-- Modal for system information -->
+
+<div id="modalSystemInformation" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="h3 modal-title"><?php eT("System information"); ?></div>
+            </div>
+            <div class="modal-body">
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                    <h4><?=gT("Your system configuration:")?></h4>
+                    <ul class="list-group">
+                        <?php foreach($systemInfos as $name => $systemInfo){ ?>
+                            <li class="list-group-item">
+                                <div class="ls-flex-row">
+                                    <div class="col-4"><?=$name?></div>
+                                    <div class="col-8"><?=$systemInfo?></div>
+                                </div>
+                            </li>   
+                        <?php } ?>
+                    </ul>
+                <?php } else { ?>
+                    <h4><?=gT("To get the system information, please contact your Administrator")?></h4>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal for confirmation -->
 <?php
 /**

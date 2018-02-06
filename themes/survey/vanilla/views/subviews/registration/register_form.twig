@@ -15,6 +15,7 @@
     This is the registration form for participant registration on a survey.
 
 #}
+
 <div class="{{ aSurveyInfo.class.registerform }} row" {{ aSurveyInfo.attr.registerform }}>
     {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
@@ -59,11 +60,13 @@
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
             <div class='{{ aSurveyInfo.class.registerformcaptcha }} form-group row ' {{ aSurveyInfo.attr.registerformcaptcha }}>
-                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ "Please enter the letters you see:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
+                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ "Please solve the following equation:" | t }} {{ include('./subviews/registration/required.twig') }}</label>
                 <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                         <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
-                            {{ renderCaptcha }}
+                            {{ renderCaptcha().renderOut() }}
+                            <!-- TODO: Problems with reload and name getting empty/not in POST. -->
+                            <a href="#" class="btn btn-sm btn-default" onclick="window.location.reload();" id="reloadCaptcha" title="{{ "Reload captcha" | t }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
                         </div>
                         <input class='{{ aSurveyInfo.class.registerformcaptchainput }} form-control' {{ aSurveyInfo.attr.registerformcaptchainput }} >
                     </div>

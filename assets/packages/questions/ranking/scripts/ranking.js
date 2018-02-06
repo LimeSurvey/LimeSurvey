@@ -31,6 +31,7 @@ var RankingQuestion = function (options) {
         $('#sortable-choice-' + questionId).sortable({
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
+            sort: false
         });
 
         $('#sortable-rank-' + questionId).sortable({

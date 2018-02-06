@@ -7,6 +7,24 @@
 echo viewHelper::getViewTestTag('addQuestion');
 
 ?>
+
+<?php
+$aQuestionTypeGroups = array();
+$aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+
+foreach ( $aQuestionTypeList as $key=> $questionType)
+{
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
+    {
+        $aQuestionTypeGroups[$htmlReadyGroup] = array(
+            'questionGroupName' => $questionType['group']
+        );
+    }
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+}
+?>
+
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
@@ -146,7 +164,8 @@ echo viewHelper::getViewTestTag('addQuestion');
                                 <!-- Question selector start -->
                                 <div  class="form-group">
                                     <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                    <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
+
+                                    <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -166,7 +185,7 @@ echo viewHelper::getViewTestTag('addQuestion');
                                                 <i class="fa fa-folder-open"></i>                                       
                                             </button>
                                         </div>
-                                    <?php elseif($activated !== "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+                                    <?php elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
                                         <label class=" control-label" for="question_type" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -174,17 +193,21 @@ echo viewHelper::getViewTestTag('addQuestion');
                                         </label>                                       
                                         <select id="question_type" name="type" class="form-control">
                                             <?php 
-                                            foreach(json_decode($ajaxDatas['qTypeOutput'],true) as $qtypekey => $qtype ) {
-                                                $selected = $eqrow['type'] == $qtypekey ? 'selected' : '';
-                                                if(YII_DEBUG) {
-                                                    echo sprintf("<option value='%s' %s>%s (%s)</option>", $qtypekey, $selected, $qtype['description'], $qtypekey);
-                                                } else {
-                                                    echo sprintf("<option value='%s' %s>%s</option>", $qtypekey, $selected, $qtype['description']);
+                                            foreach ($aQuestionTypeGroups as $sGroupHTMLConformString => $aQuestionTypeGroup) { 
+                                                echo sprintf("<optgroup label='%s'>", $aQuestionTypeGroup['questionGroupName']);
+                                                foreach ($aQuestionTypeGroup['questionTypes'] as $sQuestionTypeKey => $aQuestionType) {
+                                                    $selected = $eqrow['type'] == $sQuestionTypeKey ? 'selected' : '';
+                                                    if(YII_DEBUG) {
+                                                        echo sprintf("<option value='%s' %s>%s (%s)</option>", $sQuestionTypeKey, $selected, $aQuestionType['description'], $sQuestionTypeKey);
+                                                    } else {
+                                                        echo sprintf("<option value='%s' %s>%s</option>", $sQuestionTypeKey, $selected, $aQuestionType['description']);
+                                                    }
                                                 }
+                                                echo "</optgroup>"; 
                                             } 
                                             ?>
                                         </select> 
-                                    <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+                                    <?php elseif($activated == "Y") : ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                                 eT("Question type:");
@@ -302,22 +325,6 @@ echo viewHelper::getViewTestTag('addQuestion');
     </div>
 </div>
 
-<?php
-$aQuestionTypeGroups = array();
-$aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
-
-foreach ( $aQuestionTypeList as $key=> $questionType)
-{
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-    if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
-    {
-        $aQuestionTypeGroups[$htmlReadyGroup] = array(
-            'questionGroupName' => $questionType['group']
-        );
-    }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
-}
-?>
 
 <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">

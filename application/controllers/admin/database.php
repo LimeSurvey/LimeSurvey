@@ -135,8 +135,8 @@ class database extends Survey_Common_Action
             $this->actionUpdateSurveyLocaleSettingsGeneralSettings($this->iSurveyID);
         }
 
-
-        //$this->getController()->redirect(array("/admin"), "refresh");
+        Yii::app()->setFlashMessage(gT("Unknown action or no permission."), 'error');
+        $this->getController()->redirect(Yii::app()->request->urlReferrer);
     }
 
     /**
@@ -164,7 +164,7 @@ class database extends Survey_Common_Action
                 DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
             }
         }
-        $surveyid = $iSurveyID;
+        $surveyid = $this->iSurveyID;
         updateFieldArray();
     }
 
@@ -567,6 +567,10 @@ class database extends Survey_Common_Action
 
         $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute) {
+            /* Readonly attribute : disable save */
+            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+                continue;
+            }
             if ($validAttribute['i18n']) {
                 /* Delete invalid language : not needed but cleaner */
                 $langCriteria = new CDbCriteria;
@@ -577,7 +581,7 @@ class database extends Survey_Common_Action
                 /* delete IS NULL too*/
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                 foreach ($aLanguages as $sLanguage) {
-// TODO sanitise XSS
+                    // TODO sanitise XSS
                     $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
                     $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
                     if ($iInsertCount > 0) {
@@ -1443,6 +1447,12 @@ class database extends Survey_Common_Action
         $oEM =& LimeExpressionManager::singleton();
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        
+        LimeExpressionManager::StartProcessingPage(true,true); 
+        $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
+        foreach ($aGrouplist as $iGID => $aGroup) {
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+        LimeExpressionManager::FinishProcessingPage();
     }
 }

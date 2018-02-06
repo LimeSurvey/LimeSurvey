@@ -35,6 +35,34 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.1.1 (build 180130) to 3.2.0 (build 180206) Feb 06, 2018
+-New feature #13296: Systeminfos $this->view->assign Button (markusfluer)
+-New feature: Remote control login by plugin (Denis Chenu)
+-New feature: Installation from any config file possible (markusfluer)
+-Fixed issue #13185: Rendering issue when adding new questions (Preview) (markusfluer)
+-Fixed issue #13206: Unable to update Advanced question setting after activation (markusfluer)
+-Fixed issue #13234: Focus in text fields when pressing return (markusfluer)
+-Fixed issue #13236: Import LSS files from previous versions (markusfluer)
+-Fixed issue #13260: Expressions in question groups are not interpreted (Olle Haerstedt)
+-Fixed issue #13265: Survey menu assigned to specific user shows up for all users (Olle Haerstedt)
+-Fixed issue #13269: Tutorial - Create a sample question and question group (markusfluer)
+-Fixed issue #13272: Captcha does not show Continue button (markusfluer)
+-Fixed issue #13275: Export Survey as .lsa doesn't work - _timings not existing (markusfluer)
+-Fixed issue #13277: "Inactive survey message" for active survey (markusfluer)
+-Fixed issue #13279: Reference to 'LimeSurvey' in user message breaks Template principle (Carsten Schmitz)
+-Fixed issue #13280: Variables don't work in END_URL (markusfluer)
+-Fixed issue #13285: Can't view/edit question screen of any template (Olle Haerstedt)
+-Fixed issue #13286: Simple selector don't have optgroup (markusfluer)
+-Fixed issue #13290: Admin user with only read perm see "Update default" (Olle Haerstedt)
+-Fixed issue #13292: Google analytics script included even if GA is not set (Denis Chenu)
+-Fixed issue #13295: Better captcha instructions (Olle Haerstedt)
+-Fixed issue: Add question buttonshown even if not allowed (markusfluer)
+-Fixed issue: Beginer tutorial won't work withour correct permission (markusfluer)
+-Fixed issue: Better Excel compatibility for multiline response fields (Carsten Schmitz)
+-Fixed issue: Disable sorting in left box of ranking question (kw-private)
+-Fixed issue: Navigation bar overflowing survey welcome (markusfluer)
+-Fixed issue: question type selectior available in activated survey (markusfluer)
+
 Changes from 3.1.0 (build 180124) to 3.1.1 (build 180130) Jan 30, 2018
 -Fixed issue #13206: Unable to update advanced question setting after activation (markusfluer)
 -Fixed issue #12451: Problem when user exports to PDF (Carsten Schmitz)

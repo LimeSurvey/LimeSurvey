@@ -131,11 +131,12 @@ $aReplacementData=array();
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
-            <?php else: ?>
+            <?php elseif (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')): ?>
                 <a class="btn btn-default readonly btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
+                <?php // NB: Don't show delete button if user has no delete permission. ?>
             <?php endif; ?>
 
 
@@ -227,7 +228,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

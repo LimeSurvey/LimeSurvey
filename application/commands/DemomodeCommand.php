@@ -95,9 +95,9 @@ class DemomodeCommand extends CConsoleCommand
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
@@ -122,14 +122,13 @@ class DemomodeCommand extends CConsoleCommand
 
 }
 
-
-function SureRemoveDir($dir, $DeleteMe)
+function SureRemoveDir($dir, $DeleteMe, $excludes=[])
 {
     if (!$dh = @opendir($dir)) {
         return;
     }
     while (false !== ($obj = readdir($dh))) {
-        if ($obj == '.' || $obj == '..') {
+        if ($obj == '.' || $obj == '..' || in_array($obj, $excludes)) {
             continue;
         }
         if (!@unlink($dir.'/'.$obj)) {
