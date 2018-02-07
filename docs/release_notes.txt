@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.2.0 (build 180206) to 3.2.1 (build 180207) Feb 07, 2018
+-Fixed issue 13309: Sliders logging to console when not in debug mode. (markusfluer)
+-Fixed issue #13141: Filters or rows per page won't work on default page (Olle Haerstedt)
+-Fixed issue #13297: {TOKEN} field doesn't seem to be accessible in end of survey message (LouisGac)
+-Fixed issue #13299: In Conditions designer, after adding a condition, "Save and close" gives 404 Not found error (Olle Haerstedt)
+-Fixed issue #13301: Sliders given different widths within the same question (markusfluer)
+-Fixed issue #13305: Display Token Field on Welcome Screen don't work (LouisGac)
+-Fixed issue #13306: console.ls.error() doesn't log (markusfluer)
+-Fixed issue: Console installation from config file not working (Carsten Schmitz)
+-Fixed issue: Demomode command deleteing neccessary files (markusfluer)
+-Fixed issue: Missing captcha rendering on registration form (Olle Haerstedt)
+-Fixed issue: Language not fetch the correct way (LouisGac)
+
 Changes from 3.1.1 (build 180130) to 3.2.0 (build 180206) Feb 06, 2018
 -New feature #13296: Systeminfos $this->view->assign Button (markusfluer)
 -New feature: Remote control login by plugin (Denis Chenu)
