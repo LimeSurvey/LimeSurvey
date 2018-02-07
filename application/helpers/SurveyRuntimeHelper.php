@@ -1180,6 +1180,7 @@ class SurveyRuntimeHelper
      */
     private function processString($sString)
     {
+        $sProcessedString = '';
         if (strpos($sString, "{") !== false) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
