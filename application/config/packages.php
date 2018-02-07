@@ -168,6 +168,18 @@ return array(
             'build/lslog.js',
         )
     ),
+    'lshelp' => array(
+        'devBaseUrl' => 'assets/packages/lshelp/',
+        'basePath' => 'core.lshelp',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'build/lshelper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'adminbasics'
+        )
+    ),
     'panelboxes' => array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',

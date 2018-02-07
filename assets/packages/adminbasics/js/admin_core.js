@@ -276,29 +276,6 @@ function doToolTip()
     try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
     
     $('[data-toggle="tooltip"]').tooltip();
-
-    // ToolTip on menu
-    $(".sf-menu li").each(function() {
-        tipcontent=$(this).children("a").children("img").attr('alt');
-        if(tipcontent && tipcontent!=""){
-            $(this).qtip({
-                content: {
-                    text: tipcontent
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    my: 'bottom left',
-                    at: "top right"
-                }
-            });
-            $(this).children("a").children("img").removeAttr('title');
-        }
-    });
-
-
-
 }
 
 // If the length of the element's string is 0 then display helper message
