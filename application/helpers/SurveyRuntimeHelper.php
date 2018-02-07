@@ -1186,13 +1186,29 @@ class SurveyRuntimeHelper
 
 
     /**
+     * Check in a string if it uses expressions to replace them
+     * @param string $sString the string to evaluate
+     * @return string
+     */
+    private function processString($sString)
+    {
+        if (strpos($sString, "{") !== false) {
+            // process string anyway so that it can be pretty-printed
+            $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
+        }
+
+        return $sProcessedString;
+    }
+
+    /**
      * The run method fed $redata with using get_defined_var(). So it was very hard to move a piece of code from the run method to a new one.
      * To make it easier, private variables has been added to this class:
      * So when a piece of code changes a variable (a variable that originally was finally added to redata get_defined_var()), now, it also changes its private variable version.
      * Then, before performing the get_defined_var, the private variables are used to recreate those variables. So we can move piece of codes to sub methods.
      * setVarFromArgs($args) will set the original state of those private variables using the parameter $args passed to the run() method
      *
-     * @params array $args
+     * @param array $args
      */
     private function setVarFromArgs($args)
     {
