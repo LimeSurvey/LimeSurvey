@@ -27,7 +27,6 @@ var popoverTemplate = function popoverTemplate(replacements) {
 
 /* globals jQuery,ConsoleShim */
 var LimeHelper = function LimeHelper(action, options) {
-    var _this = this;
 
     var settings = {},
         getTemplates = {};
@@ -54,18 +53,18 @@ var LimeHelper = function LimeHelper(action, options) {
         return $.extend({}, defaults, options);
     },
         _addIcon = function _addIcon(element) {
-        $(element).append($(settings.helpIcon));
+        $(element).append('&nbsp;').append($(settings.helpIcon));
     },
         _createPopover = function _createPopover(element) {
 
-        var content = $(_this).data(settings.helpTextData);
+        var content = $(element).data(settings.helpTextData);
 
         if (content == '') {
-            content = $(_this).attr('title');
+            content = $(element).attr('title');
         }
 
-        if ($(_this).data(settings.helpLinkData)) {
-            content += getTemplates.moreTemplate($(_this).data(settings.helpLinkData));
+        if ($(element).data(settings.helpLinkData)) {
+            content += getTemplates.moreTemplate($(element).data(settings.helpLinkData));
         }
 
         var popoverObject = {
@@ -73,11 +72,11 @@ var LimeHelper = function LimeHelper(action, options) {
             html: true,
             template: getTemplates.basicTemplate(),
             trigger: (settings.onHover ? 'hover ' : '') + (settings.onClick ? 'click ' : '') + 'manual',
-            title: $(_this).data(settings.helpTextTitle) || ''
+            title: $(element).data(settings.helpTextTitle) || $(element).attr('title') || ''
         };
 
         logger.log("Popover object", popoverObject);
-        logger.log("This element", $(_this).data());
+        logger.log("This element", $(element).data());
         $(element).find('.selector__lshelp').popover(popoverObject);
     },
         _bindActions = function _bindActions(element) {
@@ -102,7 +101,7 @@ var LimeHelper = function LimeHelper(action, options) {
     //define public methods
     var init = function init() {
         settings = _parseOptions(options);
-        getTemplates = popoverTemplate();
+        getTemplates = popoverTemplate({ more: '' });
         elements.each(function (i, element) {
             _addIcon(element);
             _createPopover(element);

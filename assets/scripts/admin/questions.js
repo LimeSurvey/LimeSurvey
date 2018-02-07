@@ -181,7 +181,7 @@ function updatequestionattributes() {
         success: function (data) {
             $('.loader-advancedquestionsettings').before(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
-            $('label[data-help]').limeHelper('init', {onHover: false});
+            $('label[data-help]').limeHelper('init', {onHover: false, helpIcon: '<i class="fa fa-question-circle text-primary selector__lshelp lshelp-help-icon"></i>'});
             renderBootstrapSwitch();
         }
     });

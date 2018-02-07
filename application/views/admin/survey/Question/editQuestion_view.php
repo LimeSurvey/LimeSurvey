@@ -166,7 +166,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
 
                                     <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-helptitle="<?php eT("Question type");?>" data-help="<?=gT("Select the question type here.")?>">
+                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-help="<?=gT("Select the question type here.")?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
@@ -263,7 +263,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                 </div>
 
                                 <div class="form-group">
-                                    <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
+                                    <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>" data-gethelp='{ "title":"Get help", "text" : "More on relevance and the EM", "href":"https://manual.limesurvey.org/Expression_Manager" }' data-help="<?=gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")?>"><?php eT("Relevance equation:"); ?></label>
                                     <div class="">
                                         <div class="input-group">
                                             <div class="input-group-addon">{</div>

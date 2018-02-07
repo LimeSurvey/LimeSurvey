@@ -29,18 +29,18 @@ const LimeHelper = function(action, options){
             return $.extend({},defaults,options);
         },
         _addIcon = (element)=>{
-            $(element).append($(settings.helpIcon));
+            $(element).append('&nbsp;').append($(settings.helpIcon));
         },
         _createPopover = (element) => {
 
-            let content =  $(this).data(settings.helpTextData);
+            let content =  $(element).data(settings.helpTextData);
 
             if(content == '') {
-                content = $(this).attr('title');
+                content = $(element).attr('title');
             }
 
-            if($(this).data(settings.helpLinkData)) {
-                content += getTemplates.moreTemplate($(this).data(settings.helpLinkData));
+            if($(element).data(settings.helpLinkData)) {
+                content += getTemplates.moreTemplate($(element).data(settings.helpLinkData));
             }
 
             let popoverObject = {
@@ -48,11 +48,11 @@ const LimeHelper = function(action, options){
                 html: true,
                 template : getTemplates.basicTemplate(),
                 trigger : (settings.onHover ? 'hover ' : '') + (settings.onClick ? 'click ': '') + 'manual',
-                title: $(this).data(settings.helpTextTitle) || ''
+                title: $(element).data(settings.helpTextTitle) || $(element).attr('title') || ''
             };
 
             logger.log("Popover object", popoverObject);
-            logger.log("This element", $(this).data());
+            logger.log("This element", $(element).data());
             $(element).find('.selector__lshelp').popover(popoverObject);
         },
         _bindActions = (element)=>{
@@ -81,7 +81,7 @@ const LimeHelper = function(action, options){
     const 
         init = () => {
             settings = _parseOptions(options);
-            getTemplates = popoverTemplate();
+            getTemplates = popoverTemplate({more: ''});
             elements.each((i, element) => {
                 _addIcon(element);
                 _createPopover(element);
