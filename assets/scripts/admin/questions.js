@@ -181,7 +181,32 @@ function updatequestionattributes() {
         success: function (data) {
             $('.loader-advancedquestionsettings').before(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
-            $('label[data-help]').limeHelper('init', {onHover: false});
+            $('label[title]').qtip({
+                style: {
+                    name: 'cream',
+                    tip: true,
+                    color: '#111111',
+                    border: {
+                        width: 1,
+                        radius: 5,
+                        color: '#EADF95'
+                    }
+                },
+                position: {
+                    adjust: {
+                        screen: true,
+                        scroll: true
+                    },
+                    corner: {
+                        target: 'bottomRight'
+                    }
+                },
+                show: {
+                    effect: {
+                        length: 50
+                    }
+                }
+            });
             renderBootstrapSwitch();
         }
     });
