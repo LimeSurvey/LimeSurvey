@@ -932,10 +932,14 @@ class SurveyRuntimeHelper
      */
     private function displayFirstPageIfNeeded()
     {
-        // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-        // Previously we used to keep the session and redirect the user to the
-        // submit page.
-        if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
+        $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
+
+        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage ){
+            $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ; 
+        }
+
+        if ($bDisplayFirstPage) {
             $_SESSION[$this->LEMsessid]['test'] = time();
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
