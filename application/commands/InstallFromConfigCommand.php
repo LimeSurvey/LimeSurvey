@@ -42,7 +42,7 @@ class InstallFromConfigCommand extends CConsoleCommand
     {
         
         if (isset($aArguments) && isset($aArguments[0])) {
-            $readFromConfig = realpath(dirname(APPPATH).DIRECTORY_SEPARATOR.$aArguments[0]);
+            $readFromConfig = realpath($aArguments[0]);
             $this->configuration = include($readFromConfig);
             $this->dbConnectionArray = $this->configuration['components']['db'];
             
@@ -57,9 +57,10 @@ class InstallFromConfigCommand extends CConsoleCommand
             try {
                 $this->output('Connecting to database...');
                 $this->connection = App()->getDb();
-                $this->connection->connectionString = $dbConnectArray['connectionString'];
-                $this->connection->username = $dbConnectArray['username'];
-                $this->connection->password = $dbConnectArray['password'];                $this->connection->active = true;
+                $this->connection->connectionString = $this->dbConnectionArray['connectionString'];
+                $this->connection->username = $this->dbConnectionArray['username'];
+                $this->connection->password = $this->dbConnectionArray['password'];               
+                $this->connection->active = true;
                 $this->output('Using connection string '.$this->connection->connectionString);
             } catch (CDbException $e) {
                 $this->output('Could not connect to database: '.$e->getMessage());
@@ -96,12 +97,12 @@ class InstallFromConfigCommand extends CConsoleCommand
             $this->connection->createCommand()->insert(
                 $this->connection->tablePrefix.'users',
                 array(
-                    'users_name'=>$this->configuration['defaultuser'],
-                    'password'=>password_hash($this->configuration['defaultpass'], PASSWORD_DEFAULT),
+                    'users_name'=>$this->configuration['config']['defaultuser'],
+                    'password'=>$this->configuration['config']['defaultpass'],
                     'full_name'=>"",
                     'parent_id'=>0,
                     'lang'=>'auto',
-                    'email'=>$this->configuration['defaultemail']
+                    'email'=>$this->configuration['config']['siteadminemail']
                 )
             );
             $this->connection->createCommand()->insert(
@@ -123,7 +124,7 @@ class InstallFromConfigCommand extends CConsoleCommand
             return 0;
         } else {
             // TODO: a valid error process
-            echo "You have to set admin/password/full name and email address on the command line like this: php console.php install adminname mypassword fullname emailaddress [verbose]\n";
+            echo "You have to set the path to the config file as only parameter\n";
             return 1;
         }
     }
