@@ -67,6 +67,12 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label class=" control-label" for='bouncemailheader'><?php eT("Additional mail header:"); ?></label>
+    <div class="">
+        <input class="form-control" type='text' size='50' id='bouncemailheader' name='bouncemailheader' value="<?php echo htmlspecialchars(getGlobalSetting('bouncemailheader')); ?>" />
+    </div>
+</div>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>

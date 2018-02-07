@@ -250,6 +250,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
         setGlobalSetting('bounceencryption', Yii::app()->request->getPost('bounceencryption', 'off'));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
+        setGlobalSetting('bouncemailheader', strip_tags(returnGlobal('bouncemailheader')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
             setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));

@@ -666,6 +666,7 @@ $config['bounceaccounthost'] = '';
 $config['bounceaccounttype'] = 'off';
 $config['bounceencryption'] = 'off';
 $config['bounceaccountuser'] = '';
+$config['bouncemailheader'] = '';
 
 // Question selector
 $config['defaultquestionselectormode'] = 'default';

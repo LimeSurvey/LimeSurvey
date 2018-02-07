@@ -1373,8 +1373,14 @@ class tokens extends Survey_Common_Action
                                                         ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
                     $fieldsarray["{EXPIRY}"] = $aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: ".$iSurveyId,
-                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
+                    $customheaders = array(
+                        '1' => "X-surveyid: ".$iSurveyId,
+                        '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]
+                    );
+                    if (getGlobalSetting('bouncemailheader'))
+                    {
+                        $customheaders['3'] = getGlobalSetting('bouncemailheader');
+                    }
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];

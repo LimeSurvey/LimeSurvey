@@ -102,6 +102,10 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
 
         //mail headers
         $customheaders = array('1' => "X-surveyid: ".$iSurveyID, '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
+        if (getGlobalSetting('bouncemailheader'))
+        {
+            $customheaders['3'] = getGlobalSetting('bouncemailheader');
+        }
 
         global $maildebug;
 
