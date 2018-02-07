@@ -330,7 +330,7 @@ class SurveyRuntimeHelper
             $aGroup['name']        = $gl['group_name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid);
+            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
 
             // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
@@ -937,14 +937,6 @@ class SurveyRuntimeHelper
         // submit page.
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
             $_SESSION[$this->LEMsessid]['test'] = time();
-
-            // TODO: Find out why language is not fetched correctly the first time. Where is s_lang set?
-            $tmpSurveyInfo = getSurveyInfo(
-                $this->thissurvey['sid'],
-                $_SESSION['survey_'.$this->thissurvey['sid']]['s_lang']
-            );
-            $this->aSurveyInfo = array_merge($this->aSurveyInfo, $tmpSurveyInfo);
-
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
@@ -1311,7 +1303,7 @@ class SurveyRuntimeHelper
 
         /* QUESTION_CODE + QUESTION_NUMBER */
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId);
+        $aSurveyinfo = getSurveyInfo($iSurveyId, App()->getLanguage());
         // Check global setting to see if survey level setting should be applied
         if ($showqnumcode_global_ == 'choose') {
 // Use survey level settings
@@ -1713,7 +1705,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->LEMsessid = 'survey_'.$this->iSurveyid;
-        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid);
+        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid"=>$this->iSurveyid));
 
         // TODO: check this:
