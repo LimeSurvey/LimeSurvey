@@ -1090,7 +1090,8 @@ class SurveyRuntimeHelper
                 } else {
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
                 }
 
                 // Link to Print Answer Preview  **********
