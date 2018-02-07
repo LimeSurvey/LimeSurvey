@@ -21,7 +21,7 @@
         </p>
 
     <!-- CGridView -->
-    <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+    <?php $pageSizeTokenView=Yii::app()->user->getState('pageSizeTokenView',Yii::app()->params['defaultPageSize']);?>
 
         <!-- Todo : search boxes -->
 
@@ -38,7 +38,7 @@
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeTokenView',
-                                $pageSize,
+                                $pageSizeTokenView,
                                 Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
@@ -57,10 +57,10 @@
         var postUrl = '".App()->createUrl('admin/tokens/sa/prepExportToCPDB/sid/'.$_GET['surveyid'])."';
         ", LSYii_ClientScript::POS_BEGIN);         
         App()->getClientScript()->registerScript("Tokens:updateRowsPerPage", "
-            if($('token-grid').length > 0){
+            if($('#token-grid').length > 0){
                 reinstallParticipantsFilterDatePicker();
-                jQuery(document).on('change', '#pageSize', function(){
-                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSize: $(this).val() }});
+                jQuery(document).on('change', '#pageSizeTokenView', function(){
+                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSizeTokenView: $(this).val() }});
                 });
             }
             ", LSYii_ClientScript::POS_POSTSCRIPT); 

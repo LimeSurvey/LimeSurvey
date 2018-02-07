@@ -135,8 +135,8 @@ class database extends Survey_Common_Action
             $this->actionUpdateSurveyLocaleSettingsGeneralSettings($this->iSurveyID);
         }
 
-
-        //$this->getController()->redirect(array("/admin"), "refresh");
+        Yii::app()->setFlashMessage(gT("Unknown action or no permission."), 'error');
+        $this->getController()->redirect(Yii::app()->request->urlReferrer);
     }
 
     /**

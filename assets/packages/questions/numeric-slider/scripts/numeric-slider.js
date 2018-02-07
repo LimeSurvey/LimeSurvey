@@ -8,7 +8,7 @@ var LSSlider = function (options) {
     "use strict";
     var LSvar = window.LSvar || {};
     var debugMode = LSvar.debugMode || 0;
-    console.log(LSvar, debugMode);
+    console.ls.log(LSvar, debugMode);
 
     //contextual settings and constants
     var

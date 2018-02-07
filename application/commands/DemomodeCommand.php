@@ -97,9 +97,9 @@ class DemomodeCommand extends CConsoleCommand
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
@@ -125,46 +125,19 @@ class DemomodeCommand extends CConsoleCommand
                 $surveysToActivate[] = $result['newsid'];
             }
         }
-
-        array_map([$this,'activateSurvey'], $surveysToActivate);
-    }
-
-
-    /**
-     * Activate an existing survey
-     *
-     * Return the result of the activation
-     * Failure status : Invalid Survey ID, Activation Error, Invalid session key, No permission
-     *
-     * @access public
-     * @param int $iSurveyID ID of the Survey to be activated
-     * @return array in case of success result of the activation
-     */
-    public function activateSurvey($iSurveyID){
-            
-        $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
-        }
-
-        $surveyActivator = new SurveyActivator($oSurvey);
-        $aActivateResults = $surveyActivator->activate();
-        if (isset($aActivateResults['error'])) {
-            return array('status' => 'Error: '.$aActivateResults['error']);
-        } else {
-            return $aActivateResults;
+        require_once(__DIR__.'/../helpers/admin/activate_helper.php');
+        array_map('activateSurvey', $surveysToActivate);
         }    
-    }
+
 }
 
-function SureRemoveDir($dir, $DeleteMe)
+function SureRemoveDir($dir, $DeleteMe, $excludes=[])
 {
     if (!$dh = @opendir($dir)) {
         return;
     }
     while (false !== ($obj = readdir($dh))) {
-        if ($obj == '.' || $obj == '..') {
+        if ($obj == '.' || $obj == '..' || in_array($obj, $excludes)) {
             continue;
         }
         if (!@unlink($dir.'/'.$obj)) {
