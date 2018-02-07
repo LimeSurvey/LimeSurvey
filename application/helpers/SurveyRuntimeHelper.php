@@ -373,6 +373,7 @@ class SurveyRuntimeHelper
 
 
                     $aStandardsReplacementFields = array();
+                    $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
                     if (strpos($qa[0]['text'], "{") !== false) {
                         // process string anyway so that it can be pretty-printed
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
@@ -936,7 +937,7 @@ class SurveyRuntimeHelper
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage ){
             $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ; 
+            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
         }
 
         if ($bDisplayFirstPage) {
@@ -1137,7 +1138,7 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
-            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
 
