@@ -1373,8 +1373,6 @@ class tokens extends Survey_Common_Action
                                                         ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
                     $fieldsarray["{EXPIRY}"] = $aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: ".$iSurveyId,
-                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];
@@ -1447,6 +1445,14 @@ class tokens extends Survey_Common_Action
                         $to = $event->get('to');
                         $from = $event->get('from');
                         $bounce = $event->get('bounce');
+                        $pluginCustomHeaders = (array) $event->get('CustomHeaders', array());
+                        $customheaders = array_merge(
+                            array(
+                                "X-surveyid: " . $iSurveyId,
+                                "X-tokenid: " . $fieldsarray["{TOKEN}"]
+                            ),
+                            $pluginCustomHeaders
+                        );
                         if ($event->get('send', true) == false) {
                             // This is some ancient global used for error reporting instead of a return value from the actual mail function..
                             $maildebug = (string) $event->get('error', $maildebug);
