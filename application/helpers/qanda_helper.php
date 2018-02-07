@@ -2646,7 +2646,7 @@ function do_multiplenumeric($ia)
     }
 
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-
+    
     /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
 
@@ -2759,10 +2759,10 @@ function do_multiplenumeric($ia)
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = 10;
                     }
                     if (!empty($sliderright)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = $sliderWidth==10 ? 8 : 10 ;
                     }
                     $sliders   = true; // What is the usage ?
                 } else {
