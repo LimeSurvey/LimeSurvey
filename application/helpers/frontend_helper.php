@@ -473,8 +473,9 @@ function submittokens($quotaexit = false)
                 $to = $event->get('to');
                 $from = $event->get('from');
                 $bounce = $event->get('bounce');
+                $customheaders = (array) $event->get('customHeaders', array());
                 if ($event->get('send', true) != false) {
-                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments);
+                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments, $customheaders);
                 }
             }
         //   } else {

@@ -1445,7 +1445,7 @@ class tokens extends Survey_Common_Action
                         $to = $event->get('to');
                         $from = $event->get('from');
                         $bounce = $event->get('bounce');
-                        $pluginCustomHeaders = (array) $event->get('CustomHeaders', array());
+                        $pluginCustomHeaders = (array) $event->get('customHeaders', array());
                         $customheaders = array_merge(
                             array(
                                 "X-surveyid: " . $iSurveyId,
