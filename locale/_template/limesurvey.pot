@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-07 16:03:31+00:00\n"
+"POT-Creation-Date: 2018-02-08 14:27:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15765,11 +15765,11 @@ msgid "PHP version"
 msgstr ""
 
 #: application/views/admin/super/footer.php:11
-msgid "Webserver name"
+msgid "Web server name"
 msgstr ""
 
 #: application/views/admin/super/footer.php:12
-msgid "Webserver software"
+msgid "Web server software"
 msgstr ""
 
 #: application/views/admin/super/footer.php:13
@@ -15781,15 +15781,15 @@ msgid "Database driver"
 msgstr ""
 
 #: application/views/admin/super/footer.php:15
-msgid "Database version"
+msgid "Database driver version"
 msgstr ""
 
 #: application/views/admin/super/footer.php:16
-msgid "Database serverinfo"
+msgid "Database server info"
 msgstr ""
 
 #: application/views/admin/super/footer.php:17
-msgid "Database serverversion"
+msgid "Database server version"
 msgstr ""
 
 #: application/views/admin/super/footer.php:28
@@ -15813,7 +15813,7 @@ msgid "Your system configuration:"
 msgstr ""
 
 #: application/views/admin/super/footer.php:81
-msgid "To get the system information, please contact your Administrator"
+msgid "We are sorry but this information is only available to superadministrators."
 msgstr ""
 
 #: application/views/admin/super/footer.php:150
