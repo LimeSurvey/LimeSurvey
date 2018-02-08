@@ -29,7 +29,11 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
     public function tearDown()
     {
         if (self::$testSurvey) {
-            self::$testSurvey->delete();
+            $sid = self::$testSurvey->sid;
+            // TODO: Delete survey does not clear answer table?
+            self::$testHelper->deactivateSurvey($sid);
+            $result = self::$testSurvey->delete();
+            $this->assertTrue($result, 'Could delete survey ' . $sid);
             self::$testSurvey = null;
         }
     }
