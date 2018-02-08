@@ -762,7 +762,8 @@ function do_equation($ia)
         'basename'  => $ia[1],
         'sValue'    => $sValue,
         'sEquation' => $sEquation,
-        'coreClass' => 'ls-answers em_equation hidden'
+        'coreClass' => 'ls-answers answer-item hidden-item ',
+        'insideClass' => 'em_equation',
         ), true);
 
     $inputnames[] = $ia[1];

@@ -7190,7 +7190,7 @@
             $allJsVarsUsed = array();
             $rowdividList = array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
-            App()->getClientScript()->registerPackage('expressions');
+            App()->getClientScript()->registerPackage("expressions"); // Be sure to load, think we can remove ALL other call
             /* Call the function when trigerring event */
             App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
 
@@ -7623,7 +7623,7 @@
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                         // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
                         // This make same than flattenText to be same in JS and in PHP
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text()));\n";
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('change');\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
