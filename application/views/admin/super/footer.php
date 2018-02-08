@@ -8,13 +8,13 @@ $systemInfos = [
     gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
     gT('Operating system') => php_uname(),
     gT('PHP version') => phpversion(),
-    gT('Webserver name') => $_SERVER['SERVER_NAME'],
-    gT('Webserver software') => $_SERVER['SERVER_SOFTWARE'],
+    gT('Web server name') => $_SERVER['SERVER_NAME'],
+    gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
     gT('Webserver info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
     gT('Database driver') => Yii::app()->db->driverName,
-    gT('Database version') => Yii::app()->db->clientVersion,
-    gT('Database serverinfo') => Yii::app()->db->serverInfo,
-    gT('Database serverversion') => Yii::app()->db->serverVersion
+    gT('Database driver version') => Yii::app()->db->clientVersion,
+    gT('Database server info') => Yii::app()->db->serverInfo,
+    gT('Database server version') => Yii::app()->db->serverVersion
 ];
 ?>
 <!-- Footer -->
@@ -78,7 +78,7 @@ $systemInfos = [
                         <?php } ?>
                     </ul>
                 <?php } else { ?>
-                    <h4><?=gT("To get the system information, please contact your Administrator")?></h4>
+                    <h4><?=gT("We are sorry but this information is only available to superadministrators.")?></h4>
                 <?php } ?>
             </div>
         </div>
