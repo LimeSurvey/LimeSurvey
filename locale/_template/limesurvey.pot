@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-08 14:27:55+00:00\n"
+"POT-Creation-Date: 2018-02-08 15:03:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6439,7 +6439,6 @@ msgid "Online manual"
 msgstr ""
 
 #: application/extensions/AdminFooter/views/footer.php:6
-#: application/views/admin/super/footer.php:35
 msgid "Support this project - Donate to "
 msgstr ""
 
@@ -15796,8 +15795,8 @@ msgstr ""
 msgid "Limesurvey online manual"
 msgstr ""
 
-#: application/views/admin/super/footer.php:41
-msgid "LimeSurvey"
+#: application/views/admin/super/footer.php:35
+msgid "Support this project - Donate to %s!"
 msgstr ""
 
 #: application/views/admin/super/footer.php:43
