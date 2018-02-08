@@ -55,7 +55,6 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 
             // Submit
             $web->submit();
-            sleep(2);
 
             $query = "SELECT * FROM {{survey_$sid}}";
             $answers = $dbo->createCommand($query)->queryAll();
@@ -81,7 +80,79 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
      */
     public function testOnlyComment()
     {
-        
+        $web  = self::$webDriver;
+        list($sgqa, $subquestions) = $this->getSgqa();
+        $url = $this->getSurveyUrl();
+        $sid = self::$testSurvey->sid;
+        $dbo = \Yii::app()->getDb();
+
+        try {
+            self::$webDriver->get($url);
+
+            $web->answerTextQuestion($sgqa . 'SQ001comment', 'some comment');
+
+            $web->submit();
+
+            $query = "SELECT * FROM {{survey_$sid}}";
+            $answers = $dbo->createCommand($query)->queryAll();
+
+            $this->assertCount(1, $answers, 'Exactly one answer');
+            $this->assertEquals('Y', $answers[0][$sgqa . 'SQ001'], 'Checkbox is Y');
+            $this->assertEquals('some comment', $answers[0][$sgqa . 'SQ001comment'], 'No comment');
+
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot($web, 'MultipleChoiceMandatoryWithComment');
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL
+                .  'Screenshot taken.' . PHP_EOL
+                .  self::$testHelper->javaTrace($ex)
+            );
+        }
+    }
+
+    /**
+     * Test so that the mandatory warning pops up.
+     */
+    public function testAbuseMandatory()
+    {
+        $web  = self::$webDriver;
+        list($sgqa, $subquestions) = $this->getSgqa();
+        $url = $this->getSurveyUrl();
+        $sid = self::$testSurvey->sid;
+        $dbo = \Yii::app()->getDb();
+
+        try {
+            self::$webDriver->get($url);
+
+            // Write a comment.
+            $web->answerTextQuestion($sgqa . 'SQ001comment', 'some comment');
+
+            // Unclick "First".
+            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . 'SQ001'));
+            $label->click();
+
+            // Check so that comment is empty.
+            $commentField = $web->findElement(WebDriverBy::id('answer' . $sgqa . 'SQ001comment'));
+            $comment = $commentField->getText();
+            $this->assertEmpty($comment);
+
+            $web->submit();
+
+            // Get alert box.
+            $modal = $web->findElement(WebDriverBy::id('bootstrap-alert-box-modal'));
+            $warningMessage = $modal->getText();
+            $this->assertNotEmpty($warningMessage, 'There is a mandatory warning message');
+
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot($web, 'MultipleChoiceMandatoryWithComment');
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL
+                .  'Screenshot taken.' . PHP_EOL
+                .  self::$testHelper->javaTrace($ex)
+            );
+        }
     }
 
     /**
