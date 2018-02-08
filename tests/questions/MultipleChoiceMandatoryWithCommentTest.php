@@ -11,25 +11,60 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  */
 class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 {
+
     /**
-     * Test submit question without comment.
+     * Import and activate survey at every test.
      */
-    public function testNoComment()
+    public function setup()
     {
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_479717.lss';
         self::importSurvey($surveyFile);
         self::$testHelper->activateSurvey(self::$surveyId);
+    }
 
+    /**
+     * Delete test survey after every test.
+     */
+    public function tearDown()
+    {
+        if (self::$testSurvey) {
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
+        }
+    }
+    /**
+     * Test submit question without comment.
+     */
+    public function testNoComment()
+    {
         // To make writing shorter.
         $web  = self::$webDriver;
 
-        $sgqa = $this->getSgqa();
-        $url  = $this->getSurveyUrl();
+        list($sgqa, $subquestions) = $this->getSgqa();
+        $url = $this->getSurveyUrl();
+        $sid = self::$testSurvey->sid;
+        $dbo = \Yii::app()->getDb();
 
         try {
             self::$webDriver->get($url);
+
+            // Click "First"
+            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . 'SQ001'));
+            $label->click();
+
+            // Submit
+            $web->submit();
             sleep(2);
+
+            $query = "SELECT * FROM {{survey_$sid}}";
+            $answers = $dbo->createCommand($query)->queryAll();
+
+            $this->assertCount(1, $answers, 'Exactly one answer');
+            $this->assertEquals('Y', $answers[0][$sgqa . 'SQ001'], 'Checkbox is Y');
+            $this->assertEmpty($answers[0][$sgqa . 'SQ001comment'], 'No comment');
+
+            // Check db
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, 'MultipleChoiceMandatoryWithComment');
             $this->assertFalse(
@@ -39,7 +74,14 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
                 .  self::$testHelper->javaTrace($ex)
             );
         }
+    }
 
+    /**
+     * Never check the box, just write a comment. The box should check automatically.
+     */
+    public function testOnlyComment()
+    {
+        
     }
 
     /**
@@ -60,6 +102,6 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
             $subquestions[$subq->title] = $subq;
         }
         $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid;
-        return $sgqa;
+        return [$sgqa, $subquestions];
     }
 }
