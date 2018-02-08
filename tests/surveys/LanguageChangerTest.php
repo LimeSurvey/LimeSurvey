@@ -34,7 +34,7 @@ class LanguageChangerTest extends TestBaseClassWeb
         // To make writing shorter.
         $web = self::$webDriver;
         $sgqa = $this->getSgqa();
-        $url = $this->getSurveyUrl();
+        $url = $this->getSurveyUrl('pt');
 
         try {
             // Open survey.
@@ -107,23 +107,5 @@ class LanguageChangerTest extends TestBaseClassWeb
         }
         $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid;
         return $sgqa;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSurveyUrl()
-    {
-        $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        $url = $urlMan->createUrl(
-            'survey/index',
-            [
-                'sid' => self::$surveyId,
-                'newtest' => 'Y',
-                'lang' => 'pt'
-            ]
-        );
-        return $url;
     }
 }
