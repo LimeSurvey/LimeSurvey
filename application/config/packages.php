@@ -22,6 +22,17 @@ if (isset($_GET['isAjax'])) {
     return array();
 }
 return array(
+    /* expressions manager function and system */
+    'expressions'=>array(
+        'devBaseUrl'  => 'assets/packages/expressions/',
+        'basePath' => 'core.expressions',
+        'js'=>array(
+            'em_javascript.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
     /* For public template functionnality */
     'limesurvey-public'=>array(
         'devBaseUrl'  => 'assets/packages/limesurvey/',
@@ -34,6 +45,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'expressions',
             'fontawesome',
         )
     ),

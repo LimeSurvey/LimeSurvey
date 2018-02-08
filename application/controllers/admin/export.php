@@ -142,7 +142,6 @@ class export extends Survey_Common_Action
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'/expressions/em_javascript.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
