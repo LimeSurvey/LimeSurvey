@@ -13,13 +13,22 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 {
 
     /**
+     *
+     */
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        // Import survey.
+        $surveyFile =  'tests/data/surveys/limesurvey_survey_479717.lss';
+        self::importSurvey($surveyFile);
+    }
+
+    /**
      * Import and activate survey at every test.
      */
     public function setup()
     {
-        // Import survey.
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_479717.lss';
-        self::importSurvey($surveyFile);
         self::$testHelper->activateSurvey(self::$surveyId);
     }
 
@@ -28,14 +37,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
      */
     public function tearDown()
     {
-        if (self::$testSurvey) {
-            $sid = self::$testSurvey->sid;
-            // TODO: Delete survey does not clear answer table?
-            self::$testHelper->deactivateSurvey($sid);
-            $result = self::$testSurvey->delete();
-            $this->assertTrue($result, 'Could delete survey ' . $sid);
-            self::$testSurvey = null;
-        }
+        self::$testHelper->deactivateSurvey(self::$surveyId);
     }
     /**
      * Test submit question without comment.
