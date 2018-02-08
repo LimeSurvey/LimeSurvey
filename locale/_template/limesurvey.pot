@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-08 15:03:35+00:00\n"
+"POT-Creation-Date: 2018-02-08 15:08:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15772,7 +15772,7 @@ msgid "Web server software"
 msgstr ""
 
 #: application/views/admin/super/footer.php:13
-msgid "Webserver info"
+msgid "Web server info"
 msgstr ""
 
 #: application/views/admin/super/footer.php:14
