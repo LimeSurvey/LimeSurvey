@@ -93,7 +93,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
         $dbo = \Yii::app()->getDb();
 
         try {
-            self::$webDriver->get($url);
+            $web->get($url);
 
             $web->answerTextQuestion($sgqa . 'SQ001comment', 'some comment');
 
