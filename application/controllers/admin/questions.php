@@ -1014,7 +1014,7 @@ class questions extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
         $aData = [];
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
-        App()->getClientScript()->registerPackage('qTip2');
+        // App()->getClientScript()->registerPackage('qTip2');
         $survey = Survey::model()->findByPk($iSurveyID);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -1127,7 +1127,7 @@ class questions extends Survey_Common_Action
      */
     public function index($sa, $surveyid, $gid, $qid = null)
     {
-        App()->getClientScript()->registerPackage('qTip2');
+        App()->getClientScript()->registerPackage('lshelp');
         $action = $sa;
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

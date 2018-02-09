@@ -637,7 +637,6 @@ class themes extends Survey_Common_Action
                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
-
                     //$savefilename = $oEditedTemplate
                     if (!file_exists($oEditedTemplate->path.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile)) {
                         $oEditedTemplate->extendsFile($relativePathEditfile);
@@ -659,6 +658,11 @@ class themes extends Survey_Common_Action
 
                         $oEditedTemplate->actualizeLastUpdate();
 
+                        // If the file is an asset file, we refresh asset number
+                        if (in_array($relativePathEditfile, $cssfiles) || in_array($relativePathEditfile, $jsfiles)){
+                            SettingGlobal::increaseAssetsversionnumber();
+                        }
+
                         fclose($handle);
                     } else {
                         Yii::app()->user->setFlash('error', "The file $savefilename is not writable");
@@ -671,7 +675,7 @@ class themes extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
-        $this->getController()->redirect(array('admin/themes/', 'sa'=>'view', 'editfile'=>$relativePathEditfile, 'screenname'=>$screenname, 'templatename'=>$sTemplateName));
+        $this->getController()->redirect(array('admin/themes/', 'sa'=>'view', 'editfile'=>$relativePathEditfile, 'screenname'=>$screenname, 'templatename'=>$sTemplateName), true );
     }
 
     /**

@@ -330,7 +330,7 @@ class SurveyRuntimeHelper
             $aGroup['name']        = $gl['group_name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid);
+            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
 
             // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
@@ -373,6 +373,7 @@ class SurveyRuntimeHelper
 
 
                     $aStandardsReplacementFields = array();
+                    $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
                     if (strpos($qa[0]['text'], "{") !== false) {
                         // process string anyway so that it can be pretty-printed
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
@@ -932,19 +933,15 @@ class SurveyRuntimeHelper
      */
     private function displayFirstPageIfNeeded()
     {
-        // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-        // Previously we used to keep the session and redirect the user to the
-        // submit page.
-        if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
+        $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
+
+        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
+            $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
+        }
+
+        if ($bDisplayFirstPage) {
             $_SESSION[$this->LEMsessid]['test'] = time();
-
-            // TODO: Find out why language is not fetched correctly the first time. Where is s_lang set?
-            $tmpSurveyInfo = getSurveyInfo(
-                $this->thissurvey['sid'],
-                $_SESSION['survey_'.$this->thissurvey['sid']]['s_lang']
-            );
-            $this->aSurveyInfo = array_merge($this->aSurveyInfo, $tmpSurveyInfo);
-
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
@@ -1093,7 +1090,8 @@ class SurveyRuntimeHelper
                 } else {
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -1139,19 +1137,10 @@ class SurveyRuntimeHelper
                 $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
-            $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
+            $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
-
-            $aStandardsReplacementFields = array();
-            if (strpos($this->aSurveyInfo['surveyls_url'], "{") !== false) {
-                // process string anyway so that it can be pretty-printed
-                $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
-
-                $this->aSurveyInfo['surveyls_url'] = LimeExpressionManager::ProcessString( $this->aSurveyInfo['surveyls_url'], null, $aStandardsReplacementFields);
-
-            }
-
-            $this->aSurveyInfo['aCompleted']['sSurveylsUrl']  = $this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
+            $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
@@ -1186,13 +1175,31 @@ class SurveyRuntimeHelper
 
 
     /**
+     * Check in a string if it uses expressions to replace them
+     * @param string $sString the string to evaluate
+     * @return string
+     */
+    private function processString($sString)
+    {
+        if (strpos($sString, "{") !== false) {
+            // process string anyway so that it can be pretty-printed
+            $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
+        } else {
+            $sProcessedString = $sString;
+        }
+
+        return $sProcessedString;
+    }
+
+    /**
      * The run method fed $redata with using get_defined_var(). So it was very hard to move a piece of code from the run method to a new one.
      * To make it easier, private variables has been added to this class:
      * So when a piece of code changes a variable (a variable that originally was finally added to redata get_defined_var()), now, it also changes its private variable version.
      * Then, before performing the get_defined_var, the private variables are used to recreate those variables. So we can move piece of codes to sub methods.
      * setVarFromArgs($args) will set the original state of those private variables using the parameter $args passed to the run() method
      *
-     * @params array $args
+     * @param array $args
      */
     private function setVarFromArgs($args)
     {
@@ -1295,7 +1302,7 @@ class SurveyRuntimeHelper
 
         /* QUESTION_CODE + QUESTION_NUMBER */
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId);
+        $aSurveyinfo = getSurveyInfo($iSurveyId, App()->getLanguage());
         // Check global setting to see if survey level setting should be applied
         if ($showqnumcode_global_ == 'choose') {
 // Use survey level settings
@@ -1697,7 +1704,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->LEMsessid = 'survey_'.$this->iSurveyid;
-        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid);
+        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid"=>$this->iSurveyid));
 
         // TODO: check this:

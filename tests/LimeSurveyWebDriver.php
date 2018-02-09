@@ -84,4 +84,12 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $nextButton = $this->findElement(WebDriverBy::id('ls-button-submit'));
         $nextButton->click();
     }
+
+    /**
+     * Alias for next().
+     */
+    public function submit()
+    {
+        $this->next();
+    }
 }

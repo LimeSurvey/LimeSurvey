@@ -58,7 +58,6 @@
         <div id="general" class="tab-pane fade in active">
             <div class="ls-flex-column ls-space padding left-5 right-35 col-md-6">
             <!-- General -->
-            <div id="general" class="tab-pane fade in  active ">
                 <!-- ID,Completed  -->
                 <div class="form-group">
                 <!-- ID  -->
@@ -189,7 +188,6 @@
                 <div class="">
                 <?php if (isset($language)) {echo languageDropdownClean($surveyid, $language); } else {echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language); }?>
                 </div>
-            </div>
             </div>
         </div>
         <div class="ls-flex-column ls-space padding left-5 right-35 col-md-6">

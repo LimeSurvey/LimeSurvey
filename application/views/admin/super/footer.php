@@ -8,13 +8,13 @@ $systemInfos = [
     gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
     gT('Operating system') => php_uname(),
     gT('PHP version') => phpversion(),
-    gT('Webserver name') => $_SERVER['SERVER_NAME'],
-    gT('Webserver software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Webserver info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
+    gT('Web server name') => $_SERVER['SERVER_NAME'],
+    gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
+    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
     gT('Database driver') => Yii::app()->db->driverName,
-    gT('Database version') => Yii::app()->db->clientVersion,
-    gT('Database serverinfo') => Yii::app()->db->serverInfo,
-    gT('Database serverversion') => Yii::app()->db->serverVersion
+    gT('Database driver version') => Yii::app()->db->clientVersion,
+    gT('Database server info') => Yii::app()->db->serverInfo,
+    gT('Database server version') => Yii::app()->db->serverVersion
 ];
 ?>
 <!-- Footer -->
@@ -32,13 +32,13 @@ $systemInfos = [
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-sm-4 text-center"  >
                 <a href='http://donate.limesurvey.org' target="_blank">
-                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
+                    <img alt='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
             <div class="col-xs-12 col-sm-4 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'><?=gT('LimeSurvey')?></a><br />
+                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?> 
                     <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
                 <?php } ?>
@@ -78,7 +78,7 @@ $systemInfos = [
                         <?php } ?>
                     </ul>
                 <?php } else { ?>
-                    <h4><?=gT("To get the system information, please contact your Administrator")?></h4>
+                    <h4><?=gT("We are sorry but this information is only available to superadministrators.")?></h4>
                 <?php } ?>
             </div>
         </div>
