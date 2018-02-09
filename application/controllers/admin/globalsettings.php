@@ -53,6 +53,15 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    public function refreshAssets()
+    {
+        // Only people who can create or update themes should be allowed to refresh the assets
+        if (Permission::model()->hasGlobalPermission('templates', 'create')) {
+            SettingGlobal::increaseAssetsversionnumber();
+            $this->getController()->redirect(array("admin/globalsettings"));
+        }
+    }
+
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');

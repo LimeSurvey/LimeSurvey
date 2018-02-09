@@ -163,6 +163,19 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
     </div>
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
+
+        <!-- Refresh assets -->
+        <div class="row ls-space margin top-10">
+            <div class="form-group col-xs-12">
+                <label class="col-sm-12 text-left control-label" for='refreshassets'>
+                <?php eT("Refresh assets:"); ?> <small>(<?php echo  Yii::app()->getConfig("assetsversionnumber");?>)</small>
+                </label>
+                <div class="col-sm-12">
+                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" class="btn btn-success btn-large"><?php eT("Refresh assets");?></a>
+                </div>
+            </div>
+        </div>
+
         <!-- Default Editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
