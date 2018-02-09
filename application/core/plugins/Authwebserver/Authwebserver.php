@@ -106,7 +106,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            if (Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_webserver', ":uid"=>$user->uid))) { // Don't use Permission::model()->hasGlobalPermission : it's update the plugins event (and remove user/pass from event)
+            if (Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid)) {
                 $this->setAuthSuccess($oUser);
                 return;
             } else {
