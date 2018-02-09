@@ -86,7 +86,7 @@ class SettingGlobal extends LSActiveRecord
 
         foreach ($versionlines as $line) {
             if (strpos($line, 'assetsversionnumber') !== false) {
-                $line = '$config[\'assetsversionnumber\'] = '.$iAssetNumber.';'."\r\n";
+                $line = '$config[\'assetsversionnumber\'] = \''.$iAssetNumber.'\';'."\r\n";
             }
             fwrite($handle, $line);
         }
