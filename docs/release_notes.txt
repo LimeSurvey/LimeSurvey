@@ -35,6 +35,30 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 3.2.1 (build 180207) to 3.3.0 (build 180209) Feb 09, 2018
+-New feature: "Clear asset cache" button in global settings (LouisGac)
+-Fixed issue #13315: Make it possible to submit mandatory multiple choice with empty comment (Olle Haerstedt)
+-Fixed issue #13324: Limesurvey crash after activating webserver authentication plugin (Denis Chenu)
+-Fixed issue: Can't save token attributes that have no description (Olle Haerstedt)
+-Fixed issue: Custom css/js not loaded on extended themes (LouisGac)
+-Fixed issue: Welcome text and description not visible (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German by c_schmitz, StuartJKondziella
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Spain) by Dhel210, aesteban
+#Updated translation: Turkish by kayazeren
+
 Changes from 3.2.0 (build 180206) to 3.2.1 (build 180207) Feb 07, 2018
 -Fixed issue 13309: Sliders logging to console when not in debug mode. (markusfluer)
 -Fixed issue #13141: Filters or rows per page won't work on default page (Olle Haerstedt)
