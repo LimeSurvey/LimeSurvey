@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-09 12:50:10+00:00\n"
+"POT-Creation-Date: 2018-02-09 15:29:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,8 +27,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1486
 #: application/controllers/admin/questions.php:206
 #: application/controllers/admin/questions.php:229
-#: application/controllers/admin/themes.php:836
-#: application/controllers/admin/themes.php:1057
+#: application/controllers/admin/themes.php:840
+#: application/controllers/admin/themes.php:1061
 #: application/controllers/survey/index.php:152
 #: application/controllers/survey/index.php:179
 #: application/controllers/survey/index.php:296
@@ -50,13 +50,13 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:1447
 #: application/helpers/admin/import_helper.php:1462
 #: application/helpers/admin/import_helper.php:1483
-#: application/helpers/admin/import_helper.php:1675
-#: application/helpers/admin/import_helper.php:2006
-#: application/helpers/admin/import_helper.php:2175
-#: application/helpers/admin/import_helper.php:2229
-#: application/helpers/admin/import_helper.php:2273
-#: application/helpers/admin/import_helper.php:2392
-#: application/helpers/admin/import_helper.php:2431
+#: application/helpers/admin/import_helper.php:1677
+#: application/helpers/admin/import_helper.php:2008
+#: application/helpers/admin/import_helper.php:2177
+#: application/helpers/admin/import_helper.php:2231
+#: application/helpers/admin/import_helper.php:2275
+#: application/helpers/admin/import_helper.php:2394
+#: application/helpers/admin/import_helper.php:2433
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
 #: application/views/admin/error_view.php:3
@@ -91,7 +91,7 @@ msgid "Back"
 msgstr ""
 
 #: application/controllers/AdminController.php:74
-#: application/controllers/admin/tokens.php:2300
+#: application/controllers/admin/tokens.php:2301
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
@@ -115,7 +115,7 @@ msgid "Version"
 msgstr ""
 
 #: application/controllers/InstallerController.php:139
-#: application/controllers/admin/themes.php:829
+#: application/controllers/admin/themes.php:833
 #: application/views/admin/update/updater/_progress.php:11
 #: application/views/installer/sidebar_view.php:13
 msgid "Welcome"
@@ -440,16 +440,16 @@ msgstr ""
 #: application/controllers/admin/tokens.php:54
 #: application/controllers/admin/tokens.php:347
 #: application/controllers/admin/tokens.php:614
-#: application/controllers/admin/tokens.php:868
-#: application/controllers/admin/tokens.php:1012
-#: application/controllers/admin/tokens.php:1217
-#: application/controllers/admin/tokens.php:1552
-#: application/controllers/admin/tokens.php:1663
-#: application/controllers/admin/tokens.php:1906
-#: application/controllers/admin/tokens.php:2211
-#: application/controllers/admin/tokens.php:2355
-#: application/controllers/admin/tokens.php:2421
-#: application/controllers/admin/tokens.php:2535
+#: application/controllers/admin/tokens.php:869
+#: application/controllers/admin/tokens.php:1013
+#: application/controllers/admin/tokens.php:1218
+#: application/controllers/admin/tokens.php:1553
+#: application/controllers/admin/tokens.php:1664
+#: application/controllers/admin/tokens.php:1907
+#: application/controllers/admin/tokens.php:2212
+#: application/controllers/admin/tokens.php:2356
+#: application/controllers/admin/tokens.php:2422
+#: application/controllers/admin/tokens.php:2536
 #: application/controllers/admin/translate.php:84
 #: application/helpers/admin/statistics_helper.php:2362
 #: application/helpers/admin/statistics_helper.php:2374
@@ -484,7 +484,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:537
 #: application/controllers/admin/tokens.php:571
 #: application/controllers/admin/tokens.php:671
-#: application/controllers/admin/tokens.php:909
+#: application/controllers/admin/tokens.php:910
 msgid "%s cannot be left empty"
 msgstr ""
 
@@ -977,7 +977,7 @@ msgstr ""
 #: application/controllers/admin/themes.php:483
 #: application/controllers/admin/themes.php:528
 #: application/controllers/admin/themes.php:579
-#: application/controllers/admin/themes.php:671
+#: application/controllers/admin/themes.php:675
 #: application/controllers/admin/tokens.php:87
 #: application/controllers/admin/tokens.php:465
 #: application/controllers/admin/tokens.php:485
@@ -1086,19 +1086,19 @@ msgstr ""
 #: application/controllers/admin/tokens.php:602
 #: application/controllers/admin/tokens.php:722
 #: application/controllers/admin/tokens.php:725
-#: application/controllers/admin/tokens.php:819
-#: application/controllers/admin/tokens.php:855
-#: application/controllers/admin/tokens.php:999
-#: application/controllers/admin/tokens.php:1058
-#: application/controllers/admin/tokens.php:1101
-#: application/controllers/admin/tokens.php:1157
-#: application/controllers/admin/tokens.php:1207
-#: application/controllers/admin/tokens.php:1561
-#: application/controllers/admin/tokens.php:1653
-#: application/controllers/admin/tokens.php:1896
-#: application/controllers/admin/tokens.php:2199
-#: application/controllers/admin/tokens.php:2258
-#: application/controllers/admin/tokens.php:2316
+#: application/controllers/admin/tokens.php:820
+#: application/controllers/admin/tokens.php:856
+#: application/controllers/admin/tokens.php:1000
+#: application/controllers/admin/tokens.php:1059
+#: application/controllers/admin/tokens.php:1102
+#: application/controllers/admin/tokens.php:1158
+#: application/controllers/admin/tokens.php:1208
+#: application/controllers/admin/tokens.php:1562
+#: application/controllers/admin/tokens.php:1654
+#: application/controllers/admin/tokens.php:1897
+#: application/controllers/admin/tokens.php:2200
+#: application/controllers/admin/tokens.php:2259
+#: application/controllers/admin/tokens.php:2317
 #: application/controllers/admin/useraction.php:58
 #: application/controllers/admin/useraction.php:92
 #: application/controllers/admin/useraction.php:177
@@ -1144,7 +1144,7 @@ msgid "Add"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:125
-#: application/controllers/admin/themes.php:837
+#: application/controllers/admin/themes.php:841
 #: application/core/LsDefaultDataSets.php:24
 #: application/core/LsDefaultDataSets.php:37
 #: application/models/Permission.php:80
@@ -1496,12 +1496,12 @@ msgid "No answer"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:644
-#: application/controllers/admin/tokens.php:1529
+#: application/controllers/admin/tokens.php:1530
 #: application/controllers/admin/useraction.php:157
-#: application/helpers/admin/import_helper.php:2316
-#: application/helpers/admin/import_helper.php:2333
-#: application/helpers/admin/import_helper.php:2357
-#: application/helpers/admin/import_helper.php:2413
+#: application/helpers/admin/import_helper.php:2318
+#: application/helpers/admin/import_helper.php:2335
+#: application/helpers/admin/import_helper.php:2359
+#: application/helpers/admin/import_helper.php:2415
 #: application/views/admin/dataentry/import.php:33
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/Question/question_view.php:102
@@ -1584,7 +1584,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:921
 #: application/controllers/admin/printablesurvey.php:934
 #: application/controllers/admin/quotas.php:562
-#: application/controllers/admin/tokens.php:2221
+#: application/controllers/admin/tokens.php:2222
 #: application/core/Survey_Common_Action.php:1069
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:202
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:211
@@ -1748,7 +1748,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:923
 #: application/controllers/admin/printablesurvey.php:936
 #: application/controllers/admin/quotas.php:563
-#: application/controllers/admin/tokens.php:2223
+#: application/controllers/admin/tokens.php:2224
 #: application/core/Survey_Common_Action.php:1067
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:233
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:242
@@ -2275,8 +2275,8 @@ msgstr ""
 #: application/controllers/admin/quotas.php:252
 #: application/controllers/admin/responses.php:189
 #: application/controllers/admin/responses.php:190
-#: application/controllers/admin/themes.php:831
-#: application/controllers/admin/tokens.php:1586
+#: application/controllers/admin/themes.php:835
+#: application/controllers/admin/tokens.php:1587
 #: application/models/Token.php:77
 #: application/views/admin/quotas/viewquotas_view.php:83
 #: application/views/admin/token/exportdialog.php:17
@@ -2341,7 +2341,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1216
 #: application/controllers/admin/labels.php:222
-#: application/controllers/admin/themes.php:834
+#: application/controllers/admin/themes.php:838
 #: application/controllers/admin/usergroups.php:179
 #: application/helpers/admin/label_helper.php:131
 #: application/views/admin/assessments/assessments_edit.php:125
@@ -2580,20 +2580,20 @@ msgstr ""
 msgid "Survey logic file"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:148
+#: application/controllers/admin/globalsettings.php:157
 #: application/models/Response.php:140
 msgid "deleted"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:268
+#: application/controllers/admin/globalsettings.php:277
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:274
+#: application/controllers/admin/globalsettings.php:283
 msgid "Warning! Admin email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:319
+#: application/controllers/admin/globalsettings.php:328
 msgid "Global settings were saved."
 msgstr ""
 
@@ -2652,7 +2652,7 @@ msgstr ""
 #: application/controllers/admin/surveyadmin.php:1204
 #: application/controllers/admin/themes.php:129
 #: application/controllers/admin/themes.php:178
-#: application/controllers/admin/tokens.php:1934
+#: application/controllers/admin/tokens.php:1935
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
 
@@ -2960,7 +2960,7 @@ msgid "There are no unmapped attributes"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:81
-#: application/controllers/admin/themes.php:1041
+#: application/controllers/admin/themes.php:1045
 msgid "Please submit by %s"
 msgstr ""
 
@@ -2977,12 +2977,12 @@ msgid "Submit Your Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:136
-#: application/controllers/admin/themes.php:1042
+#: application/controllers/admin/themes.php:1046
 msgid "Thank you for completing this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:144
-#: application/controllers/admin/themes.php:1038
+#: application/controllers/admin/themes.php:1042
 msgid "Please fax your completed survey to:"
 msgstr ""
 
@@ -3076,7 +3076,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:544
-#: application/controllers/admin/themes.php:1015
+#: application/controllers/admin/themes.php:1019
 msgid "*"
 msgstr ""
 
@@ -3085,7 +3085,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:603
 #: application/controllers/admin/printablesurvey.php:653
 #: application/controllers/admin/printablesurvey.php:834
-#: application/controllers/admin/themes.php:1019
+#: application/controllers/admin/themes.php:1023
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -3506,7 +3506,7 @@ msgid "Group: "
 msgstr ""
 
 #: application/controllers/admin/responses.php:782
-#: application/controllers/admin/themes.php:830
+#: application/controllers/admin/themes.php:834
 #: application/helpers/admin/statistics_helper.php:4245
 #: application/views/admin/conditions/includes/form_editconditions_header.php:65
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:22
@@ -3819,8 +3819,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:391
 #: application/controllers/admin/surveypermission.php:573
 #: application/controllers/admin/surveypermission.php:671
-#: application/controllers/admin/tokens.php:2469
-#: application/controllers/admin/tokens.php:2512
+#: application/controllers/admin/tokens.php:2470
+#: application/controllers/admin/tokens.php:2513
 #: application/controllers/admin/useraction.php:790
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:76
@@ -4074,23 +4074,23 @@ msgstr ""
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:651
+#: application/controllers/admin/themes.php:650
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/themes.php:656
+#: application/controllers/admin/themes.php:655
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/themes.php:832
+#: application/controllers/admin/themes.php:836
 msgid "Clear all"
 msgstr ""
 
-#: application/controllers/admin/themes.php:833
+#: application/controllers/admin/themes.php:837
 msgid "Load"
 msgstr ""
 
-#: application/controllers/admin/themes.php:835
+#: application/controllers/admin/themes.php:839
 #: application/views/admin/super/welcome.php:121
 #: application/views/admin/survey/breadcrumb.php:12
 #: application/views/admin/survey/listSurveys_view.php:16
@@ -4098,106 +4098,106 @@ msgstr ""
 msgid "Survey list"
 msgstr ""
 
-#: application/controllers/admin/themes.php:838
+#: application/controllers/admin/themes.php:842
 #: application/views/admin/emailtemplates/email_language_tab.php:46
 msgid "Registration"
 msgstr ""
 
-#: application/controllers/admin/themes.php:839
+#: application/controllers/admin/themes.php:843
 msgid "Print answers"
 msgstr ""
 
-#: application/controllers/admin/themes.php:847
+#: application/controllers/admin/themes.php:851
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:876
+#: application/controllers/admin/themes.php:880
 msgid "Template Sample"
 msgstr ""
 
-#: application/controllers/admin/themes.php:878
+#: application/controllers/admin/themes.php:882
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
-#: application/controllers/admin/themes.php:879
+#: application/controllers/admin/themes.php:883
 msgid "But this one isn't."
 msgstr ""
 
-#: application/controllers/admin/themes.php:881
+#: application/controllers/admin/themes.php:885
 msgid "Welcome to this sample survey"
 msgstr ""
 
-#: application/controllers/admin/themes.php:882
+#: application/controllers/admin/themes.php:886
 msgid "You should have a great time doing this"
 msgstr ""
 
-#: application/controllers/admin/themes.php:889
+#: application/controllers/admin/themes.php:893
 msgid "Some URL description"
 msgstr ""
 
-#: application/controllers/admin/themes.php:896
+#: application/controllers/admin/themes.php:900
 msgid "Group 1: The first lot of questions"
 msgstr ""
 
-#: application/controllers/admin/themes.php:897
+#: application/controllers/admin/themes.php:901
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: application/controllers/admin/themes.php:918
-#: application/controllers/admin/themes.php:944
+#: application/controllers/admin/themes.php:922
+#: application/controllers/admin/themes.php:948
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/themes.php:920
+#: application/controllers/admin/themes.php:924
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/themes.php:929
+#: application/controllers/admin/themes.php:933
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/themes.php:954
+#: application/controllers/admin/themes.php:958
 msgid "Please explain something in detail:"
 msgstr ""
 
-#: application/controllers/admin/themes.php:999
+#: application/controllers/admin/themes.php:1003
 msgid "Welcome to the Assessment"
 msgstr ""
 
-#: application/controllers/admin/themes.php:999
+#: application/controllers/admin/themes.php:1003
 msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1026
+#: application/controllers/admin/themes.php:1030
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1027
+#: application/controllers/admin/themes.php:1031
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1039
+#: application/controllers/admin/themes.php:1043
 msgid "Submit your survey."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1043
+#: application/controllers/admin/themes.php:1047
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1058
+#: application/controllers/admin/themes.php:1062
 msgid "This is an error message example"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1121
+#: application/controllers/admin/themes.php:1125
 msgid "LimeSurvey 3.0 theme editor"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1125
+#: application/controllers/admin/themes.php:1129
 msgid "Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:81
-#: application/controllers/admin/tokens.php:1097
+#: application/controllers/admin/tokens.php:1098
 msgid "No survey participants table."
 msgstr ""
 
@@ -4242,68 +4242,68 @@ msgid "No participant table found for this survey!"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:688
-#: application/controllers/admin/tokens.php:799
+#: application/controllers/admin/tokens.php:800
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:779
+#: application/controllers/admin/tokens.php:780
 msgid "Notice: Field '%s' was left empty, even though it is a mandatory attribute."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:792
+#: application/controllers/admin/tokens.php:793
 msgid "The survey participant was successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:959
+#: application/controllers/admin/tokens.php:960
 msgid "New dummy participants were added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:965
+#: application/controllers/admin/tokens.php:966
 #: application/views/admin/token/addtokenpost.php:31
 msgid "Failed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:966
+#: application/controllers/admin/tokens.php:967
 msgid "Only %s new dummy participants were added after %s trials."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:967
+#: application/controllers/admin/tokens.php:968
 msgid "Try with a bigger token length."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:969
+#: application/controllers/admin/tokens.php:970
 #: application/views/admin/token/csvimportresult.php:150
 msgid "Browse participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1028
+#: application/controllers/admin/tokens.php:1029
 msgid "Attribute %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1041
+#: application/controllers/admin/tokens.php:1042
 msgid "(none)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1081
+#: application/controllers/admin/tokens.php:1082
 msgid "%s field(s) were successfully added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1120
+#: application/controllers/admin/tokens.php:1121
 msgid "Delete token attribute %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1121
+#: application/controllers/admin/tokens.php:1122
 msgid "If you remove this attribute, you will lose all information."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1125
+#: application/controllers/admin/tokens.php:1126
 #: application/views/admin/token/managetokenattributes.php:156
 msgid "Delete attribute"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1126
-#: application/controllers/admin/tokens.php:1535
-#: application/controllers/admin/tokens.php:2284
+#: application/controllers/admin/tokens.php:1127
+#: application/controllers/admin/tokens.php:1536
+#: application/controllers/admin/tokens.php:2285
 #: application/views/admin/conditions/deleteAllConditions.php:21
 #: application/views/admin/conditions/includes/conditions_scenario.php:42
 #: application/views/admin/dataentry/import.php:25
@@ -4353,53 +4353,53 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1139
+#: application/controllers/admin/tokens.php:1140
 msgid "Attribute %s was deleted."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1142
+#: application/controllers/admin/tokens.php:1143
 msgid "The selected attribute was invalid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1189
+#: application/controllers/admin/tokens.php:1190
 msgid "Token attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1393
+#: application/controllers/admin/tokens.php:1394
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1396
+#: application/controllers/admin/tokens.php:1397
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1462
+#: application/controllers/admin/tokens.php:1463
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1465
+#: application/controllers/admin/tokens.php:1466
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1510
+#: application/controllers/admin/tokens.php:1511
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1512
+#: application/controllers/admin/tokens.php:1513
 msgid "Not all emails were sent:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1514
+#: application/controllers/admin/tokens.php:1515
 msgid "Some entries had a validity date set which was not yet valid or not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1517
+#: application/controllers/admin/tokens.php:1518
 msgid "Some emails were not sent because the server did not accept the email(s) or some other error occured."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1520
-#: application/controllers/admin/tokens.php:2235
-#: application/controllers/admin/tokens.php:2239
+#: application/controllers/admin/tokens.php:1521
+#: application/controllers/admin/tokens.php:2236
+#: application/controllers/admin/tokens.php:2240
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -4408,54 +4408,54 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1530
+#: application/controllers/admin/tokens.php:1531
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1531
+#: application/controllers/admin/tokens.php:1532
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1532
+#: application/controllers/admin/tokens.php:1533
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1533
+#: application/controllers/admin/tokens.php:1534
 msgid "not having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1534
+#: application/controllers/admin/tokens.php:1535
 msgid "having a token"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1579
+#: application/controllers/admin/tokens.php:1580
 #: application/views/admin/token/exportdialog.php:111
 msgid "Export tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1586
+#: application/controllers/admin/tokens.php:1587
 #: application/views/admin/token/exportdialog.php:16
 msgid "All tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1586
+#: application/controllers/admin/tokens.php:1587
 #: application/views/admin/token/exportdialog.php:18
 msgid "Not completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1588
+#: application/controllers/admin/tokens.php:1589
 #: application/views/admin/token/exportdialog.php:19
 msgid "Not started"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1589
+#: application/controllers/admin/tokens.php:1590
 #: application/views/admin/token/exportdialog.php:20
 msgid "Started but not yet completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1593
-#: application/controllers/admin/tokens.php:1608
-#: application/controllers/admin/tokens.php:1617
+#: application/controllers/admin/tokens.php:1594
+#: application/controllers/admin/tokens.php:1609
+#: application/controllers/admin/tokens.php:1618
 #: application/models/Assessment.php:128
 #: application/views/admin/responses/listResponses_view.php:121
 #: application/views/admin/token/exportdialog.php:35
@@ -4464,163 +4464,163 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1601
+#: application/controllers/admin/tokens.php:1602
 #: application/views/admin/token/exportdialog.php:12
 msgid "Survey status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1606
+#: application/controllers/admin/tokens.php:1607
 #: application/views/admin/token/exportdialog.php:28
 msgid "Invitation status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1609
+#: application/controllers/admin/tokens.php:1610
 #: application/views/admin/token/exportdialog.php:36
 msgid "Invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1610
+#: application/controllers/admin/tokens.php:1611
 #: application/views/admin/token/exportdialog.php:37
 msgid "Not invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1615
+#: application/controllers/admin/tokens.php:1616
 #: application/views/admin/token/exportdialog.php:46
 msgid "Reminder status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1618
+#: application/controllers/admin/tokens.php:1619
 #: application/views/admin/token/exportdialog.php:54
 msgid "Reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1619
+#: application/controllers/admin/tokens.php:1620
 #: application/views/admin/token/exportdialog.php:55
 msgid "No reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1624
+#: application/controllers/admin/tokens.php:1625
 #: application/views/admin/token/exportdialog.php:64
 msgid "Filter by language:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1629
+#: application/controllers/admin/tokens.php:1630
 #: application/views/admin/token/exportdialog.php:78
 msgid "Filter by email address:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1630
+#: application/controllers/admin/tokens.php:1631
 #: application/views/admin/token/exportdialog.php:84
 msgid "Only export entries which contain this string in the email address."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1634
+#: application/controllers/admin/tokens.php:1635
 #: application/views/admin/token/exportdialog.php:94
 msgid "Delete exported participants:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1688
+#: application/controllers/admin/tokens.php:1689
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1869
+#: application/controllers/admin/tokens.php:1870
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1879
+#: application/controllers/admin/tokens.php:1880
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1936
+#: application/controllers/admin/tokens.php:1937
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1938
+#: application/controllers/admin/tokens.php:1939
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2033
+#: application/controllers/admin/tokens.php:2034
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2067
-#: application/controllers/admin/tokens.php:2087
+#: application/controllers/admin/tokens.php:2068
+#: application/controllers/admin/tokens.php:2088
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2074
+#: application/controllers/admin/tokens.php:2075
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2095
-#: application/controllers/admin/tokens.php:2101
+#: application/controllers/admin/tokens.php:2096
+#: application/controllers/admin/tokens.php:2102
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2127
+#: application/controllers/admin/tokens.php:2128
 msgid "Line %s : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2218
-#: application/controllers/admin/tokens.php:2242
+#: application/controllers/admin/tokens.php:2219
+#: application/controllers/admin/tokens.php:2243
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2219
+#: application/controllers/admin/tokens.php:2220
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2233
+#: application/controllers/admin/tokens.php:2234
 msgid "Only {n} token has been created.|Only {n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2234
+#: application/controllers/admin/tokens.php:2235
 msgid "Need {n} token.|Need {n} tokens."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2238
+#: application/controllers/admin/tokens.php:2239
 msgid "{n} token has been created.|{n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2278
-#: application/controllers/admin/tokens.php:2296
+#: application/controllers/admin/tokens.php:2279
+#: application/controllers/admin/tokens.php:2297
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2279
+#: application/controllers/admin/tokens.php:2280
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2279
+#: application/controllers/admin/tokens.php:2280
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2282
+#: application/controllers/admin/tokens.php:2283
 msgid "Delete table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2297
+#: application/controllers/admin/tokens.php:2298
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2297
+#: application/controllers/admin/tokens.php:2298
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2345
+#: application/controllers/admin/tokens.php:2346
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2445
+#: application/controllers/admin/tokens.php:2446
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2451
+#: application/controllers/admin/tokens.php:2452
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2466
+#: application/controllers/admin/tokens.php:2467
 #: application/core/LsDefaultDataSets.php:18
 #: application/views/admin/survey/breadcrumb.php:122
 #: application/views/admin/survey/surveybar_view.php:84
@@ -4628,15 +4628,15 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2467
+#: application/controllers/admin/tokens.php:2468
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2509
+#: application/controllers/admin/tokens.php:2510
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2510
+#: application/controllers/admin/tokens.php:2511
 msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -6459,8 +6459,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_dataselection.php:39
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:21
-#: application/views/admin/global_settings/_general.php:260
-#: application/views/admin/global_settings/_general.php:278
+#: application/views/admin/global_settings/_general.php:273
+#: application/views/admin/global_settings/_general.php:291
 #: application/views/admin/global_settings/_interfaces.php:38
 #: application/views/admin/global_settings/_presentation.php:87
 #: application/views/admin/global_settings/_presentation.php:102
@@ -6558,8 +6558,8 @@ msgstr ""
 #: application/views/admin/global_settings/_bounce.php:62
 #: application/views/admin/global_settings/_email.php:64
 #: application/views/admin/global_settings/_email.php:78
-#: application/views/admin/global_settings/_general.php:261
-#: application/views/admin/global_settings/_general.php:279
+#: application/views/admin/global_settings/_general.php:274
+#: application/views/admin/global_settings/_general.php:292
 #: application/views/admin/global_settings/_interfaces.php:16
 #: application/views/admin/global_settings/_interfaces.php:39
 #: application/views/admin/global_settings/_presentation.php:88
@@ -6914,8 +6914,8 @@ msgid "Partial"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:113
-#: application/views/admin/global_settings/_general.php:221
-#: application/views/admin/global_settings/_general.php:241
+#: application/views/admin/global_settings/_general.php:234
+#: application/views/admin/global_settings/_general.php:254
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:45
 #: application/views/admin/themes/templatesummary_view.php:263
 msgid "Full"
@@ -7240,96 +7240,96 @@ msgstr ""
 msgid "This is not a valid token data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1610
+#: application/helpers/admin/import_helper.php:1612
 msgid "Skipped tokens entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1644
+#: application/helpers/admin/import_helper.php:1646
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1739
+#: application/helpers/admin/import_helper.php:1741
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1789
+#: application/helpers/admin/import_helper.php:1791
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1801
+#: application/helpers/admin/import_helper.php:1803
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1944
+#: application/helpers/admin/import_helper.php:1946
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1946
+#: application/helpers/admin/import_helper.php:1948
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1949
+#: application/helpers/admin/import_helper.php:1951
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1953
+#: application/helpers/admin/import_helper.php:1955
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1956
+#: application/helpers/admin/import_helper.php:1958
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1959
+#: application/helpers/admin/import_helper.php:1961
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1977
+#: application/helpers/admin/import_helper.php:1979
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2145
+#: application/helpers/admin/import_helper.php:2147
 msgid "Error(s) when try to create survey"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2175
+#: application/helpers/admin/import_helper.php:2177
 msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2229
+#: application/helpers/admin/import_helper.php:2231
 msgid "Failed to insert group"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2229
-#: application/helpers/admin/import_helper.php:2273
-#: application/helpers/admin/import_helper.php:2316
-#: application/helpers/admin/import_helper.php:2333
-#: application/helpers/admin/import_helper.php:2357
-#: application/helpers/admin/import_helper.php:2392
-#: application/helpers/admin/import_helper.php:2413
-#: application/helpers/admin/import_helper.php:2431
+#: application/helpers/admin/import_helper.php:2231
+#: application/helpers/admin/import_helper.php:2275
+#: application/helpers/admin/import_helper.php:2318
+#: application/helpers/admin/import_helper.php:2335
+#: application/helpers/admin/import_helper.php:2359
+#: application/helpers/admin/import_helper.php:2394
+#: application/helpers/admin/import_helper.php:2415
+#: application/helpers/admin/import_helper.php:2433
 msgid "Text file row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2273
+#: application/helpers/admin/import_helper.php:2275
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2316
+#: application/helpers/admin/import_helper.php:2318
 msgid "Failed to insert question attribute"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2333
-#: application/helpers/admin/import_helper.php:2357
-#: application/helpers/admin/import_helper.php:2413
+#: application/helpers/admin/import_helper.php:2335
+#: application/helpers/admin/import_helper.php:2359
+#: application/helpers/admin/import_helper.php:2415
 msgid "Failed to insert default value"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2392
+#: application/helpers/admin/import_helper.php:2394
 msgid "Could not insert subquestion"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2431
+#: application/helpers/admin/import_helper.php:2433
 msgid "Could not insert answer"
 msgstr ""
 
@@ -13645,7 +13645,7 @@ msgstr ""
 
 #: application/views/admin/global_settings/_bounce.php:72
 #: application/views/admin/global_settings/_email.php:95
-#: application/views/admin/global_settings/_general.php:290
+#: application/views/admin/global_settings/_general.php:303
 #: application/views/admin/global_settings/_interfaces.php:45
 #: application/views/admin/global_settings/_language.php:71
 #: application/views/admin/global_settings/_presentation.php:179
@@ -13760,58 +13760,66 @@ msgstr ""
 msgid "Character set for file import/export:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:170
+#: application/views/admin/global_settings/_general.php:171
+msgid "Refresh assets:"
+msgstr ""
+
+#: application/views/admin/global_settings/_general.php:174
+msgid "Refresh assets"
+msgstr ""
+
+#: application/views/admin/global_settings/_general.php:183
 msgid "Default HTML editor mode:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:178
+#: application/views/admin/global_settings/_general.php:191
 msgid "Inline"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:179
+#: application/views/admin/global_settings/_general.php:192
 msgid "Popup"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:180
+#: application/views/admin/global_settings/_general.php:193
 msgid "HTML source"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:192
+#: application/views/admin/global_settings/_general.php:205
 msgid "Side-menu behaviour:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:200
+#: application/views/admin/global_settings/_general.php:213
 msgid "Adaptive"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:201
+#: application/views/admin/global_settings/_general.php:214
 msgid "Always open"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:202
+#: application/views/admin/global_settings/_general.php:215
 msgid "Always closed"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:213
+#: application/views/admin/global_settings/_general.php:226
 #: application/views/admin/user/personalsettings.php:159
 msgid "Question type selector:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:222
-#: application/views/admin/global_settings/_general.php:242
+#: application/views/admin/global_settings/_general.php:235
+#: application/views/admin/global_settings/_general.php:255
 msgid "Simple"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:233
+#: application/views/admin/global_settings/_general.php:246
 #: application/views/admin/themes/templateeditorbar_view.php:264
 msgid "Template editor:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:253
+#: application/views/admin/global_settings/_general.php:266
 msgid "JS-Debug mode [Backend]:"
 msgstr ""
 
-#: application/views/admin/global_settings/_general.php:271
+#: application/views/admin/global_settings/_general.php:284
 msgid "JS-Debug mode [Frontend]:"
 msgstr ""
 
