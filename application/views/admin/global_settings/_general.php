@@ -168,10 +168,10 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='refreshassets'>
-                <?php eT("Refresh assets:"); ?> <small>(<?php echo  Yii::app()->getConfig("assetsversionnumber");?>)</small>
+                <?php eT("Clear assets cache:"); ?> <small>(<?php echo  Yii::app()->getConfig("assetsversionnumber");?>)</small>
                 </label>
                 <div class="col-sm-12">
-                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" class="btn btn-success btn-large"><?php eT("Refresh assets");?></a>
+                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" class="btn btn-success btn-large"><?php eT("Clear now");?></a>
                 </div>
             </div>
         </div>
