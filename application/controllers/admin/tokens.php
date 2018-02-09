@@ -772,8 +772,9 @@ class tokens extends Survey_Common_Action
             $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken]);
             $sOutput = '';
             if (count($udresult) == 0) {
-                $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
-                foreach ($attrfieldnames as $attr_name => $desc) {
+                $thissurvey = getSurveyInfo($iSurveyId);
+                $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
+                foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
                     $value = $request->getPost($attr_name);
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                         $sOutput .= sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']).'<br>';
