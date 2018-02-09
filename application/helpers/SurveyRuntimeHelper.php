@@ -935,7 +935,7 @@ class SurveyRuntimeHelper
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
-        if ($bDisplayFirstPage) {
+        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
             $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
         }
