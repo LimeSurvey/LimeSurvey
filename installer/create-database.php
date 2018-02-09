@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param DbConnection $oDB
+ * @return bool
+ * @throws CHttpException
+ */
 function createDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation

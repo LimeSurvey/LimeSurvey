@@ -27,7 +27,18 @@ before_script:
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+
+
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
+    - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
+    - mysql -uroot -e "SET @@global.innodb_file_max =  Barracuda;"
+
+    - mysql -uroot -e "Show  variables like '%large%';"
+
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
+    - mysql -uroot -e "Show  table status;" limesurvey
+
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
     - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
@@ -66,3 +77,7 @@ before_script:
 
 script:
     - DOMAIN=localhost phpunit
+after_script:
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "Show  variables like '%innodb_file%';"
+    - mysql -uroot -e "Show  table status;" limesurvey
