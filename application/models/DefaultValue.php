@@ -83,8 +83,8 @@ class DefaultValue extends LSActiveRecord
                     )
                 ),
                 'message'=>'{attribute} "{value}" is already in use.'),
-            ['language,specialtype','length','min' => 2,'max'=>20],
-            ['defaultvalue','safe'],
+            ['language,specialtype', 'length', 'min' => 2, 'max'=>20],
+            ['defaultvalue', 'safe'],
         );
     }
 

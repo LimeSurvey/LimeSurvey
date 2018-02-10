@@ -86,7 +86,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         if (!isset($aGIDReplacements[$oldgid])) {
             $questionGroup = new QuestionGroup();
             $questionGroup->attributes = $insertdata;
-            if(!$questionGroup->save()){
+            if(!$questionGroup->save()) {
                 safeDie(gT("Error").": Failed to insert data [3]<br />");
             }
 
@@ -1344,7 +1344,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $questionGroup = new QuestionGroup();
                 $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
-                if(!$questionGroup->save()){
+                if(!$questionGroup->save()) {
                     safeDie(gT("Error").": Failed to insert data [3]<br />");
                 }
 
@@ -1770,7 +1770,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             
             // now translate any links
             $defaultValue = new DefaultValue();
-            $defaultValue->setAttributes($insertdata,false);
+            $defaultValue->setAttributes($insertdata, false);
             if (!$defaultValue->save()) {
                 safeDie(gT("Error").": Failed to insert data[9]<br />");
             }

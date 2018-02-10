@@ -35,7 +35,9 @@ class Assessment extends LSActiveRecord
         parent::init();
         if ($this->isNewRecord) {
             // default values
-            if (empty($this->scope)) $this->scope = '0';
+            if (empty($this->scope)) {
+                $this->scope = '0';
+            }
         }
     }
 

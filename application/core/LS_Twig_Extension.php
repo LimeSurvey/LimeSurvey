@@ -291,7 +291,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param String $sInString
      * @return String 
      */
-    public static function getExpressionManagerOutput($sInString){
+    public static function getExpressionManagerOutput($sInString) {
         templatereplace(flattenText($sInString));
         return LimeExpressionManager::GetLastPrettyPrintExpression();
     }
@@ -307,10 +307,10 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
 
-        if($iSurveyId === null){
-            return Permission::model()->hasGlobalPermission($permission,$permissionGrade);
+        if ($iSurveyId === null) {
+            return Permission::model()->hasGlobalPermission($permission, $permissionGrade);
         }
-        return Permission::model()->hasSurveyPermission($iSurveyId,$permission,$permissionGrade);
+        return Permission::model()->hasSurveyPermission($iSurveyId, $permission, $permissionGrade);
 
     }
 

@@ -129,7 +129,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "1" -> MULTI SCALE
 
     $survey = Survey::model()->findByPk($iSurveyID);
-    $oDB =  Yii::app()->db;
+    $oDB = Yii::app()->db;
 
     $chkquery = $oDB->createCommand()
         ->select(['q.qid', 'ls.question', 'gid', 'type'])
@@ -183,9 +183,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkquery = Yii::app()->db->createCommand()
         ->select(['q.qid', 'ls.question', 'gid']) 
         ->from('{{questions}} q')
-        ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
         ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
-        ->andWhere("sid=:sid",[':sid'=>$iSurveyID]) 
+        ->andWhere("sid=:sid", [':sid'=>$iSurveyID]) 
         ->andWhere("type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."')")
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
@@ -197,9 +197,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkquery = Yii::app()->db->createCommand()
     ->select(['q.qid', 'ls.question', 'gid'])
     ->from('{{questions}} q')
-    ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+    ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
     ->andWhere("(Select count(*) from {{answers}} a where a.qid=q.qid and scale_id=1)=0")
-    ->andWhere("sid=:sid",[':sid'=>$iSurveyID]) 
+    ->andWhere("sid=:sid", [':sid'=>$iSurveyID]) 
     ->andWhere("type='".Question::QT_1_ARRAY_MULTISCALE."'")
     ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
@@ -224,8 +224,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $conquery = Yii::app()->db->createCommand()
     ->select(['cndn.qid', 'cqid', 'ls.question', 'q.gid'])
     ->from('{{conditions}} cndn')
-    ->join('{{questions}} q','cndn.qid=q.qid')
-    ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+    ->join('{{questions}} q', 'cndn.qid=q.qid')
+    ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
     ->andWhere('q.sid=:sid', [':sid'=>$iSurveyID])
     ->andWhere('ls.language=:lngn', [':lngn'=>$survey->language])
     ->order('cndn.qid');
