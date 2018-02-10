@@ -44,14 +44,17 @@ return [
 
     ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
 
-    ['editAnswerOptions', ['route'=>'questions/sa/answeroptions/surveyid/{SID}/gid/{GID}/qid/{QID}','import_id'=>'496242','questionType'=>Question::QT_L_LIST_DROPDOWN]],
+    // open surveysummary again with new survey (triggers some needed session variables duh)
+    ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'496242']],
+    ['editAnswerOptions', ['route'=>'questions/sa/answeroptions/surveyid/{SID}/gid/{GID}/qid/{QID}','questionType'=>Question::QT_L_LIST_DROPDOWN]],
 
     // this seems to be a special case, opens in another tab
     //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
 
 
     // Below are views need an activated survey
-    ['dataEntryView', ['route'=>'dataentry/sa/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true]],
+    ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true]],
+    ['dataEntryView', ['route'=>'dataentry/sa/view/surveyid/{SID}']],
     ['statisticsIndex', ['route'=>'statistics/sa/index/surveyid/{SID}']],
     ['exportResults', ['route'=>'export/sa/exportresults/surveyid/{SID}']],
     ['exportSpss', ['route'=>'export/sa/exportspss/sid/{SID}']],

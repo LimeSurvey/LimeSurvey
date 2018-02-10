@@ -105,10 +105,6 @@ class AdminViewsTest extends TestBaseClassView
             $view['route'] = ReplaceFields($view['route'], ['{QID}'=> $question->qid,'{GID}'=> $question->gid,'{SID}'=> self::$testSurvey->primaryKey]);
 
         }
-        echo $_SESSION['LEMlang'].PHP_EOL;
-        echo $_SESSION['LEMsid'].PHP_EOL;
-        echo serialize(self::$testSurvey->allLanguages).PHP_EOL;
-        ob_flush();
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }

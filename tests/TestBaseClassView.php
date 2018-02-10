@@ -60,9 +60,6 @@ class TestBaseClassView extends TestBaseClassWeb
             );
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
-            echo $_SESSION['LEMlang'].PHP_EOL;
-            echo serialize(self::$testSurvey->allLanguages).PHP_EOL;
-            ob_flush();
             $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
