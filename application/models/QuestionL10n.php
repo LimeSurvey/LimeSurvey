@@ -73,8 +73,8 @@ class QuestionL10n extends LSActiveRecord
     public function rules()
     {
         return array(
-            ['qid,language','required'],
-            ['qid','numerical','integerOnly'=>true],
+            ['qid,language', 'required'],
+            ['qid', 'numerical', 'integerOnly'=>true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
