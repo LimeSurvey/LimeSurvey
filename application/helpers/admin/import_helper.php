@@ -1754,7 +1754,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     if (isset($xml->defaultvalues)) {
 
         $results['defaultvalues'] = 0;
-
         foreach ($xml->defaultvalues->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1766,15 +1765,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
             }
             if ($insertdata) {
-                            XSSFilterArray($insertdata);
+                XSSFilterArray($insertdata);
             }
+            
             // now translate any links
             $defaultValue = new DefaultValue();
-            $defaultValue->attributes = $insertdata;
+            $defaultValue->setAttributes($insertdata,false);
             if (!$defaultValue->save()) {
                 safeDie(gT("Error").": Failed to insert data[9]<br />");
             }
             $results['defaultvalues']++;
+            
         }
     }
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);

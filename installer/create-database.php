@@ -98,7 +98,7 @@ function createDatabase($oDB){
             'defaultvalue' =>  "text",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
+        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid'], true);
 
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(

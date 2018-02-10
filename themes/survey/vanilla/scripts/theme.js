@@ -50,7 +50,7 @@ var ThemeScripts = function(){
      */
     var fixBodyPadding = function fixBodyPadding(){
         /* The 60 px is fixed in template.css */
-        $("body").css("padding-top",$(".navbar-fixed-top").height()+"px")
+        $("body").css("padding-top", Math.round($(".navbar-fixed-top").height()) +"px");
     }
     /**
      * Set suffix/prefix clone for little screen (at top)
@@ -135,8 +135,6 @@ var ThemeScripts = function(){
          */
         $(document).on('ready pjax:scriptcomplete',function()
         {
-
-
             /* Uncomment below if you want to use the focusFirst function */
             //focusFirst();
             /* Some function are launched in endpage.pstpl */
@@ -187,6 +185,15 @@ var ThemeScripts = function(){
                 $('#surveys-list-container').css('min-height', bodyHeight+'px');
             }
 
+            // Captcha action
+            if($('#reloadCaptcha').length>0)
+            {
+                $('#reloadCaptcha').on('click', function(e){
+                    e.preventDefault();
+                    window.location.reload();
+                })
+            }
+
             // Survey list footer
             if($('#surveyListFooter').length>0)
             {
@@ -200,6 +207,9 @@ var ThemeScripts = function(){
 
             // Bind language changer onclick event.
             activateLanguageChanger();
+            
+            //Fix the navigation overflow
+            fixBodyPadding();
         });
 
         /**
@@ -209,7 +219,36 @@ var ThemeScripts = function(){
         $(window).resize(function () {
             fixBodyPadding();
         });
-        fixBodyPadding();
+        var onkeyEventInput = function(e){
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code==13 && e.ctrlKey != true) {
+                e.preventDefault();
+                if($(this).closest('.question-container').hasClass('multiple-short-txt')){
+                    if($(this).closest('.question-item').next('.question-item').length > 0) {
+                        $(this).closest('.question-item').next('.question-item').find('input, textarea').first().focus();
+                        return;
+                    }
+                }
+                $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            }
+        };
+
+        var onkeyEventTextarea = function(e){
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code==13 && e.altKey == true) {
+                e.preventDefault();
+                if($(this).closest('.question-container').hasClass('multiple-short-txt')){
+                    if($(this).closest('.question-item').next('.question-item').length > 0) {
+                        $(this).closest('.question-item').next('.question-item').find('input, textarea').first().focus();
+                        return;
+                    }
+                }
+                $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            }
+        };
+
+        $(document).on('keydown', '.answer-container input', onkeyEventInput);
+        $(document).on('keydown', '.answer-container textarea', onkeyEventTextarea);
     };
 
     var initUserForms = function(){

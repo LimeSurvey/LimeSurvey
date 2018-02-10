@@ -7,7 +7,7 @@
 <div class=''>
     <div class='form-group'>
         <div class='form-group captcha-item'>
-            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?></label>
+            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?></label>
             <div class='col-sm-7'>
                 <div class='ls-input-group'>
                     <div class='ls-input-group-extra captcha-widget' >

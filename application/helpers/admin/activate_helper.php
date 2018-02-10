@@ -129,62 +129,82 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "1" -> MULTI SCALE
 
     $survey = Survey::model()->findByPk($iSurveyID);
+    $oDB =  Yii::app()->db;
 
-    $chkquery = "SELECT q.qid, ls.question, gid, type FROM {{questions}} q
-                join {{question_l10ns}} ls on ls.qid=q.qid
-                WHERE sid={$iSurveyID} and parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = $oDB->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid', 'type'])
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+        ->where('sid=:sid and parent_qid=0', [':sid' => $iSurveyID]);
+
+    $chkresult = $chkquery->queryAll();
+
     foreach ($chkresult as $chkrow) {
         if ($qtypes[$chkrow['type']]['subquestions'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['subquestions']; $i++) {
-                $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} and scale_id={$i} ORDER BY question_order";
-                $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
-                $chacount = count($charesult);
+                $chaquery = Yii::app()->db->createCommand()
+                    ->select('COUNT(qid)')
+                    ->from('{{questions}}')
+                    ->where('parent_qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow->gid);
                 }
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
-                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i}";
-                $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
-                $chacount = count($charesult);
+                $chaquery = Yii::app()->db->createCommand()
+                    ->select('COUNT(aid)')
+                    ->from('{{answers}}')
+                    ->where('qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow->gid);
                 }
             }
         }
     }
+    unset($chkrow);
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} q
-    join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE sid={$iSurveyID} AND type = ''";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid'])
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+        ->where("sid=:sid AND type = ''", [':sid'=>$iSurveyID]);
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow->gid);
     }
 
 
-
-
     //Check that certain array question types have answers set
-    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
-    join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."') and q.parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid']) 
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+        ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
+        ->andWhere("sid=:sid",[':sid'=>$iSurveyID]) 
+        ->andWhere("type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."')")
+        ->andWhere("q.parent_qid=0");
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow->gid);
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    $chkquery = "SELECT q.qid, ls.question, gid FROM {{questions}} as q 
-    join {{question_l10ns}} ls on ls.qid=q.qid
-    WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='".Question::QT_1_ARRAY_MULTISCALE."' and q.parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+    ->select(['q.qid', 'ls.question', 'gid'])
+    ->from('{{questions}} q')
+    ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+    ->andWhere("(Select count(*) from {{answers}} a where a.qid=q.qid and scale_id=1)=0")
+    ->andWhere("sid=:sid",[':sid'=>$iSurveyID]) 
+    ->andWhere("type='".Question::QT_1_ARRAY_MULTISCALE."'")
+    ->andWhere("q.parent_qid=0");
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow->gid);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
@@ -201,15 +221,16 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     $qordercount = "";
     //1: Get each condition's question id
-    $conquery = "SELECT {{conditions}}.qid, cqid, ls.question, "
-    . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}},{{question_l10ns}} ls "
-    . "WHERE {{questions}}.sid={$iSurveyID} "
-    . "AND {{questions}}.qid={{questions}}.qid "
-    . "AND {{conditions}}.qid={{questions}}.qid "
-    . "AND ls.language='{$survey->language}'"
-    . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
-    $conresult = Yii::app()->db->createCommand($conquery)->query()->readAll();
+    $conquery = Yii::app()->db->createCommand()
+    ->select(['cndn.qid', 'cqid', 'ls.question', 'q.gid'])
+    ->from('{{conditions}} cndn')
+    ->join('{{questions}} q','cndn.qid=q.qid')
+    ->join('{{question_l10ns}} ls','ls.qid=q.qid')
+    ->andWhere('q.sid=:sid', [':sid'=>$iSurveyID])
+    ->andWhere('ls.language=:lngn', [':lngn'=>$survey->language])
+    ->order('cndn.qid');
+
+    $conresult = $conquery->queryAll();
     //2: Check each conditions cqid that it occurs later than the cqid
     foreach ($conresult as $conrow) {
         $cqidfound = 0;
@@ -232,10 +253,11 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
+    $aDuplicateQIDs = array();
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
-            $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }

@@ -97,16 +97,19 @@ class DemomodeCommand extends CConsoleCommand
         
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
-        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
     }
 
     private function _createDemo()
     {
         Yii::app()->loadHelper('admin/import');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/replacements_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_manager_helper.php');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/expressions/em_core_helper.php');
+        require_once(dirname(dirname(dirname(__FILE__))).'/application/helpers/admin/activate_helper.php');
         
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR;
@@ -114,25 +117,27 @@ class DemomodeCommand extends CConsoleCommand
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
             $result = null;
-            $result = XMLImportSurvey($documentationSurveyPath.$sSamplesurvey); 
+            //Try catch for console application to be able to import surveys
+            
+            $result = @ XMLImportSurvey($documentationSurveyPath.$sSamplesurvey);
+
             if (in_array($sSamplesurvey, ['ls205_sample_survey_multilingual.lss', 'ls205_randomization_group_test.lss', 'ls205_cascading_array_filter_exclude.lss'])) {
                 $surveysToActivate[] = $result['newsid'];
             }
         }
         require_once(__DIR__.'/../helpers/admin/activate_helper.php');
         array_map('activateSurvey', $surveysToActivate);
-    }
+        }    
 
 }
 
-
-function SureRemoveDir($dir, $DeleteMe)
+function SureRemoveDir($dir, $DeleteMe, $excludes=[])
 {
     if (!$dh = @opendir($dir)) {
         return;
     }
     while (false !== ($obj = readdir($dh))) {
-        if ($obj == '.' || $obj == '..') {
+        if ($obj == '.' || $obj == '..' || in_array($obj, $excludes)) {
             continue;
         }
         if (!@unlink($dir.'/'.$obj)) {

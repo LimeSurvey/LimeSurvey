@@ -28,7 +28,12 @@ export default {
             return _.orderBy(this.$store.state.questiongroups,(a)=>{return parseInt((a.group_order || 999999)) }, ['asc']);
         },
         createQuestionAllowed(){
-            return (this.$store.state.questiongroups.length > 0);
+            return (this.$store.state.questiongroups.length > 0 && (this.createQuestionLink!=undefined && this.createQuestionLink.length>1));
+        },
+        createAllowance (){
+            let createGroupAllowed = ( this.createQuestionGroupLink!=undefined && this.createQuestionGroupLink.length>1 ) ? 'g' : '';
+            let createQuestionAllowed = this.createQuestionAllowed ? 'q' : '';
+            return createGroupAllowed+createQuestionAllowed;
         },
         itemWidth(){
             return (parseInt(this.$store.state.sidebarwidth)-95)+'px';
@@ -171,7 +176,7 @@ export default {
 </script>
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5">
-        <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar">
+        <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" v-if="createAllowance != ''">
             <a id="adminpanel__sidebar--selectorCreateQuestionGroup" v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax">
                 <i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
             <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="createQuestionAllowed" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10 pjax">

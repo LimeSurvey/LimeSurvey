@@ -171,6 +171,18 @@ return array(
             'build/lslog.js',
         )
     ),
+    'lshelp' => array(
+        'devBaseUrl' => 'assets/packages/lshelp/',
+        'basePath' => 'core.lshelp',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'build/lshelper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'adminbasics'
+        )
+    ),
     'panelboxes' => array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',
@@ -262,7 +274,23 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+    ),
+
+    'surveysummary' => array(
+        'devBaseUrl' => 'assets/packages/surveysummary/',
+        'basePath' => 'core.surveysummary',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'surveysummary.css'
         ),
+        'js' => array(
+            'surveysummary.js',
+            'qrcode.js'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',

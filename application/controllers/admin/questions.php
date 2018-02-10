@@ -396,6 +396,10 @@ class questions extends Survey_Common_Action
         $aData['sidemenu']['explorer']['state'] = true;
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
+        $aData['hasUpdatePermission'] =
+            Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') ?
+            '' :
+            'disabled="disabled" readonly="readonly"';
 
         $this->_renderWrappedTemplate('survey/Question', 'editdefaultvalues_view', $aData);
     }
@@ -969,7 +973,7 @@ class questions extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
         $aData = [];
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
-        App()->getClientScript()->registerPackage('qTip2');
+        App()->getClientScript()->registerPackage('lshelp');
         $survey = Survey::model()->findByPk($iSurveyID);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -1073,7 +1077,7 @@ class questions extends Survey_Common_Action
      */
     public function index($sa, $surveyid, $gid, $qid = null)
     {
-        App()->getClientScript()->registerPackage('qTip2');
+        App()->getClientScript()->registerPackage('lshelp');
         $action = $sa;
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

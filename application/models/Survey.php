@@ -1803,7 +1803,7 @@ return $s->hasTokensTable; });
         );
         $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
             .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('`groups`.`gid` =`t`.`gid`', 'AND');
+        $criteria->addCondition('groups.gid = t.gid', 'AND');
         return $criteria;
     }
 

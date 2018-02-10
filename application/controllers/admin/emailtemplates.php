@@ -33,6 +33,11 @@ class emailtemplates extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
 
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'read')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyId));
+        }
+
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
@@ -71,7 +76,7 @@ class emailtemplates extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update')) {
                 unset($aData['surveybar']['savebutton']);
                 unset($aData['surveybar']['saveandclosebutton']);
             }

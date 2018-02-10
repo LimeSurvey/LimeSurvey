@@ -27,16 +27,14 @@ class CsvWriter extends Writer
     function __construct()
     {
         $this->output = '';
-        $this->separator = ',';
+        $this->separator = ';';
         $this->hasOutputHeader = false;
     }
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        
         $this->csvFilename = "results-survey".$survey->id.".csv";
-        
         if ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
         }
@@ -50,6 +48,9 @@ class CsvWriter extends Writer
             if ($oOptions->output == 'display') {
                 header("Content-Disposition: attachment; filename=".$this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
+                echo chr(239) . chr(187) . chr(191);
+            } else {
+                fwrite($this->file, chr(239) . chr(187) . chr(191)); // Write UTF-8 Byte Order Mark (BOM)
             }
             
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
@@ -60,7 +61,7 @@ class CsvWriter extends Writer
                     $index++;
                 }
                 //Output the header...once and only once.
-                $sRecord .= implode($this->separator, $headers).PHP_EOL;
+                $sRecord .= implode($this->separator, $headers)."\r\n";
             }
             $this->hasOutputHeader = true;
         }
@@ -70,7 +71,7 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord .= implode($this->separator, $values).PHP_EOL;
+        $sRecord .= implode($this->separator, $values)."\r\n";
         if ($oOptions->output == 'display') {
             echo $sRecord; 
             $this->output = '';
@@ -84,9 +85,9 @@ class CsvWriter extends Writer
     public function close()
     {
         // Output white line at the end, better for R import
-        echo "\n";
+        echo "\r\n";
         if (!is_null($this->file)) {
-            fwrite($this->file, "\n");
+            fwrite($this->file, "\r\n");
             fclose($this->file);
         }
     }
@@ -99,7 +100,7 @@ class CsvWriter extends Writer
      */
     protected function csvEscape($value)
     {
-        $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $value);
+        $sString = preg_replace(array('~\R~u'), array("\n"), $value);
         return '"'.str_replace('"', '""', $sString).'"';
     }
 }

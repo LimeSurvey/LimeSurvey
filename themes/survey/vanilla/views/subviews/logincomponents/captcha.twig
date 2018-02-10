@@ -47,7 +47,7 @@
 
                 <!-- Doesn't seems aria capable -->
                 <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-sm-4' {{ aSurveyInfo.attr.maincolformdivblabel }} >
-                    {{ "Please enter the letters you see:" | t }}
+                    {{ "Please solve the following equation" | t }}
                     <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
                     <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ "Mandatory" | t }} )
@@ -57,6 +57,7 @@
                     <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                         {{ renderCaptcha().renderOut() }}
+                        <a href="#" class="btn btn-sm btn-default" id="reloadCaptcha" title="{{ "Reload captcha" | t }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                 <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-sm-6' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
@@ -64,6 +65,13 @@
                 </div>
             </div>
 
+            <div class='{{ aSurveyInfo.class.maincolformdivc }} form-group ' {{ aSurveyInfo.attr.maincolformdivc }}>
+                <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                    <button class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                        {{ "Continue" | t }}
+                    </button>
+                </div>
+            </div>
         {% endblock %}
         </form>
     </div>

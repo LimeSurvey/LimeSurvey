@@ -406,7 +406,7 @@ class ExpressionManager
                 break;
             case '*':
                 if ($bBothNumeric) {
-                    $result = array(($arg1[0] * $arg2[0]), $token[1], 'NUMBER');
+                    $result = array((doubleVal($arg1[0]) * doubleVal($arg2[0])), $token[1], 'NUMBER');
                 } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
@@ -1466,7 +1466,7 @@ class ExpressionManager
                 ++$errIndex;
             }
         }
-        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
+        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
         }

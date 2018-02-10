@@ -34,6 +34,7 @@
                         <br />
                         <input
                             type="submit"
+                            class="btn btn-default btn-lg limebutton"
                             value="<?php eT("Initialise participant table"); ?>"
                             onclick="<?php echo $onclickAction;?>"
                             />
