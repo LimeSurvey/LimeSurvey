@@ -2043,8 +2043,6 @@ function XSSFilterArray(&$array)
 */
 function TSVImportSurvey($sFullFilePath)
 {
-
-
     $results = array();
     $results['error'] = false;
     $baselang = 'en'; // TODO set proper default
@@ -2145,6 +2143,10 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate'] = null;
     $surveyinfo['active'] = 'N';
     // unset($surveyinfo['datecreated']);
+
+    // Set survey group id to 1. Makes no sense to import it without the actual survey group.
+    $surveyinfo['gsid'] = 1;
+
     $newSurvey = Survey::model()->insertNewSurvey($surveyinfo); //or safeDie(gT("Error").": Failed to insert survey<br />");
 
     if (!$newSurvey->sid) {
