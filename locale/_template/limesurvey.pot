@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-09 15:29:23+00:00\n"
+"POT-Creation-Date: 2018-02-12 11:15:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13761,11 +13761,11 @@ msgid "Character set for file import/export:"
 msgstr ""
 
 #: application/views/admin/global_settings/_general.php:171
-msgid "Refresh assets:"
+msgid "Clear assets cache:"
 msgstr ""
 
 #: application/views/admin/global_settings/_general.php:174
-msgid "Refresh assets"
+msgid "Clear now"
 msgstr ""
 
 #: application/views/admin/global_settings/_general.php:183
