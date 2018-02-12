@@ -573,7 +573,7 @@ class database extends Survey_Common_Action
         $aLanguages = $oSurvey->allLanguages;
         foreach ($validAttributes as $validAttribute) {
             /* Readonly attribute : disable save */
-            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+            if ($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive())) {
                 continue;
             }
             if ($validAttribute['i18n']) {
@@ -1438,7 +1438,8 @@ class database extends Survey_Common_Action
         $this->getController()->redirect($redirectLink);
     }
 
-    private function _resetEM(){
+    private function _resetEM()
+    {
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
         LimeExpressionManager::SetDirtyFlag();
         $oEM =& LimeExpressionManager::singleton();
