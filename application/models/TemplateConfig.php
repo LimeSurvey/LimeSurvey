@@ -898,6 +898,13 @@ class TemplateConfig extends CActiveRecord
 
 
             if ($oNewTemplateConfiguration->save()) {
+
+                // Find all surveys using this theme (if reinstalling) and create an entry on db for them
+                $aSurveysUsingThisTeme  =  Survey::model()->findAll('template=:template', array(':template'=>$sTemplateName));
+                foreach ($aSurveysUsingThisTeme as $oSurvey) {
+                     TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
+                }
+
                 return true;
             } else {
                 throw new Exception($oNewTemplateConfiguration->getErrors());
