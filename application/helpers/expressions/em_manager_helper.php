@@ -8634,20 +8634,19 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         public function getGroupInfoForEM($surveyid,$sLanguage=NULL)
         {
-            if (is_null($sLanguage) && isset($_SESSION['LEMlang']))
-            {
+            $survey = Survey::model()->findByPk($surveyid);
+
+            if (is_null($sLanguage) && isset($_SESSION['LEMlang'])) {
                 $sLanguage = $_SESSION['LEMlang'];
+            } elseif(is_null($sLanguage)) {
+                $sLanguage=$survey->language;
             }
-            elseif(is_null($sLanguage))
-            {
-                $sLanguage=Survey::model()->findByPk($surveyid)->language;
-            }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
+            $oQuestionGroups=$survey->groups;
+
             $qinfo = array();
             $_order=0;
             $gid = array();
-            foreach ($oQuestionGroups as $oQuestionGroup)
-            {
+            foreach ($oQuestionGroups as $oQuestionGroup) {
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,

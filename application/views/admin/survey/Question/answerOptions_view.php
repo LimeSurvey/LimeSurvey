@@ -1,3 +1,7 @@
+<?php
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('editAnswerOptions');
+?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
@@ -170,14 +174,14 @@
                                                     'first'             => $first,
                                                     'assessmentvisible' => $assessmentvisible,
                                                     'scale_id'          => $scale_id,
-                                                    'title'             => $row->code,
+                                                    'title'             => CHtml::encode($row->code),
                                                     'surveyid'          => $surveyid,
                                                     'gid'               => $gid,
                                                     'qid'               => $qid,
                                                     'language'          => $anslang,
-                                                    'assessment_value'  => $row->assessment_value,
+                                                    'assessment_value'  => CHtml::encode($row->assessment_value),
                                                     'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answerL10ns[$anslang]->answer,
+                                                    'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
                                                     'oldCode'   => true,
                                                 ));?>
 

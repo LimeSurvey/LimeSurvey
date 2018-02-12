@@ -471,7 +471,6 @@ class questions extends Survey_Common_Action
 
         // Get languages select on survey.
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $anslangs = $oSurvey->additionalLanguages;
         $baselang = $oSurvey->language;
 
         $oQuestion = $qrow = Question::model()->findByPk($qid);
@@ -508,35 +507,23 @@ class questions extends Survey_Common_Action
 
         // Check that there are answers for every language supported by the survey
         for ($i = 0; $i < $scalecount; $i++) {
-            foreach ($anslangs as $language) {
-                $ans = new CDbCriteria;
-                $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$language'");
-                $iAnswerCount = Answer::model()->count($ans);
-
-                // Means that no record for the language exists in the answers table
-                if (empty($iAnswerCount)) {
-                    foreach (Answer::model()->findAllByAttributes(array(
-                    'qid' => $qid,
-                    'scale_id' => $i,
-                    'language' => $baselang
-                    )) as $answer) {
-                    
-                    $oAnswer = new Answer;
+            foreach ($oQuestion->answers as $oAnswer){
+                foreach ($oSurvey->allLanguages as $language) {
+                    if (!isset($oAnswer->answerL10ns[$language])) {
+                        $baseL10n = $oAnswer->answerL10ns[$oSurvey->language];
+                        $oAnswerL10n = new AnswerL10n();
+                        $oAnswerL10n->attributes = $baseL10n->attributes;
+                        $oAnswerL10n->language = $language;
+                        $oAnswerL10n->answer = "";
+                        $oAnswerL10n->save();
                     }
-                    $oAnswer->qid = $answer->qid;
-                    $oAnswer->code = $answer->code;
-                    $oAnswer->answer = $answer->answer;
-                    $oAnswer->language = $language;
-                    $oAnswer->sortorder = $answer->sortorder;
-                    $oAnswer->scale_id = $i;
-                    $oAnswer->assessment_value = (isset($answer->assessment_value) ? $answer->assessment_value : 0);
-                    $oAnswer->save();
+
                 }
+
             }
         }
 
-        // Makes an array with ALL the languages supported by the survey -> $anslangs
-        array_unshift($anslangs, $baselang);
+        $anslangs = $oSurvey->allLanguages;
 
         // Delete the answers in languages not supported by the survey
         $criteria = new CDbCriteria;

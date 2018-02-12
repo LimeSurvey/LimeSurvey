@@ -86,6 +86,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $allQuestions All survey questions including subquestions
+ * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
@@ -1755,6 +1757,40 @@ return $s->hasTokensTable; });
     }
 
     /**
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getBaseQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        $criteria->addColumnCondition(array(
+            'parent_qid' => 0,
+        ));
+
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    private function getSurveyQuestionsCriteria(){
+        $criteria = $this->getQuestionOrderCriteria();
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+        ));
+        return $criteria;
+    }
+
+    /**
      * Get the DB criteria to get questions as ordered in survey
      * @return CDbCriteria
      */
@@ -1846,5 +1882,20 @@ return $s->hasTokensTable; });
             ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
             ->queryRow();
         return $result !== false;
+    }
+
+
+    /**
+     * @param string $type Question->type
+     * @param bool $includeSubquestions
+     * @return Question
+     */
+    public function findQuestionByType($type, $includeSubquestions = false){
+        $criteria = $this->getSurveyQuestionsCriteria();
+        if ($includeSubquestions){
+            $criteria->addColumnCondition(['parent_qid' => 0]);
+        }
+        $criteria->addColumnCondition(['type'=>$type]);
+        return Question::model()->find($criteria);
     }
 }
