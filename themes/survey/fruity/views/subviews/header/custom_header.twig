@@ -110,13 +110,13 @@
     {% if (aSurveyInfo.options.animatequestion == "on" ) %}
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
-            animation-duration: {{ aSurveyInfo.options.questionanimationduration }}ms; 
+            animation-duration: {{ aSurveyInfo.options.questionanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animatealert == "on" ) %}
-        .question-container {
+        .alert {
             animation-name: {{ aSurveyInfo.options.alertanimation  }};
             animation-duration: {{ aSurveyInfo.options.alertanimationduration }}ms;
             animation-fill-mode: both;
