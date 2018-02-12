@@ -327,7 +327,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = $gl['group_name'];
+            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1, false, true, false);
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -1777,6 +1777,7 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
+                $this->groupname        = LimeExpressionManager::ProcessString($this->groupname, null, null, 3, 1, false, true, false);
                 $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }
