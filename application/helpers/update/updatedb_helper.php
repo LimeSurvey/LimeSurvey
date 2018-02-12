@@ -1087,6 +1087,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveyTimings350();
             
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
+
+            $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
+            $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
+
             $oTransaction->commit();
         }   
             
