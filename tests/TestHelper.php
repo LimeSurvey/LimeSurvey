@@ -123,7 +123,10 @@ class TestHelper extends TestCase
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();
-
+        // For Travis debugging.
+        if (isset($result['error'])) {
+            var_dump($result);
+        }
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 

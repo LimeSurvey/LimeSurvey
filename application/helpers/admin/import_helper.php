@@ -2058,7 +2058,9 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable($survey->tokensTableName, true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);
-        Yii::app()->loadHelper('update/updatedb');
+        if (!function_exists('db_upgrade_all')) {
+            Yii::app()->loadHelper('update/updatedb');
+        }
 
         foreach ($aFieldsToCreate as $sField) {
             if (strpos($sField, 'attribute') !== false) {

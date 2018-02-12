@@ -935,7 +935,7 @@ class SurveyRuntimeHelper
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
-        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage ){
+        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
             $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
         }
@@ -1090,7 +1090,8 @@ class SurveyRuntimeHelper
                 } else {
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -1180,11 +1181,12 @@ class SurveyRuntimeHelper
      */
     private function processString($sString)
     {
-        $sProcessedString = '';
         if (strpos($sString, "{") !== false) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
+        } else {
+            $sProcessedString = $sString;
         }
 
         return $sProcessedString;
