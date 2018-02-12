@@ -10,12 +10,36 @@ $systemInfos = [
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
     gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
-    gT('Database driver') => Yii::app()->db->driverName,
-    gT('Database driver version') => Yii::app()->db->clientVersion,
-    gT('Database server info') => Yii::app()->db->serverInfo,
-    gT('Database server version') => Yii::app()->db->serverVersion
+    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
 ];
+
+// MSSQL does not support some of these attributes, so much
+// catch possible PDO exception.
+
+try {
+    $systemInfos[gT('Database driver')] = Yii::app()->db->driverName;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database driver version')] = Yii::app()->db->clientVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver version')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server info')] = Yii::app()->db->serverInfo;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server info')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server version')] = Yii::app()->db->serverVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server version')] = $ex->getMessage();
+}
+
 ?>
 <!-- Footer -->
 <footer class='footer'>
