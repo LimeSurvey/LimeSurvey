@@ -1198,7 +1198,7 @@ class tokens extends Survey_Common_Action
      * @param string $tokenids Int list separated with |?
      * @return void
      */
-    public function email($iSurveyId, $tokenids = null)
+    public function email($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $aData = array();
@@ -1225,19 +1225,8 @@ class tokens extends Survey_Common_Action
             $aData['token_bar']['sendinvitationbutton'] = true; // Invitation button
         }
 
-        $aTokenIds = $tokenids;
-        if (empty($tokenids)) {
-            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
-        }
-        if (!empty($aTokenIds)) {
-            $aTokenIds = explode('|', $aTokenIds);
-            $aTokenIds = array_filter($aTokenIds);
-            $aTokenIds = array_map('sanitize_int', $aTokenIds);
-        }
-        $aTokenIds = array_unique(array_filter((array) $aTokenIds));
-
-        $sSubAction = Yii::app()->request->getParam('action', 'invite');
-        $sSubAction = !in_array($sSubAction, array('invite', 'remind')) ? 'invite' : $sSubAction;
+        $aTokenIds = $this->getTokenIds();
+        $sSubAction = $this->getSubAction();
         $bEmail = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
@@ -1277,29 +1266,7 @@ class tokens extends Survey_Common_Action
         $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
 
         if (!Yii::app()->request->getPost('ok')) {
-            // Fill empty email template by default text
-            foreach ($aSurveyLangs as $sSurveyLanguage) {
-                $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
-                $bDefaultIsNeeded = empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}"]) || empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}_subj"]);
-                if ($bDefaultIsNeeded) {
-                    $sNewlines = ($bHtml) ? 'html' : 'text'; // This broke included style for admin_detailed_notification
-                    $aDefaultTexts = templateDefaultTexts($sSurveyLanguage, 'unescaped', $sNewlines);
-                    if (empty($aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"])) {
-                        if ($sSubAction == 'invite') {
-                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["invitation"];
-                        } elseif ($sSubAction == 'remind') {
-                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["reminder"];
-                        }
-                    }
-                }
-            }
-            if (empty($aData['tokenids'])) {
-                $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
-                foreach ($aTokens as $aToken) {
-                    $aData['tokenids'][] = $aToken;
-                }
-            }
-            $this->_renderWrappedTemplate('token', array($sSubAction), $aData);
+            $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData, $sSubAction, $aTokenIds);
         } else {
             $SQLremindercountcondition = "";
             $SQLreminderdelaycondition = "";
@@ -2567,5 +2534,65 @@ class tokens extends Survey_Common_Action
         } else {
             return "emailstatus <> 'OptOut'";
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTokenIds()
+    {
+        $aTokenIds = Yii::app()->request->getPost('tokenids', false);
+        if (!empty($aTokenIds)) {
+            $aTokenIds = explode('|', $aTokenIds);
+            $aTokenIds = array_filter($aTokenIds);
+            $aTokenIds = array_map('sanitize_int', $aTokenIds);
+        }
+        $aTokenIds = array_unique(array_filter((array) $aTokenIds));
+        return $aTokenIds;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSubAction()
+    {
+        $sSubAction = Yii::app()->request->getParam('action', 'invite');
+        $sSubAction = !in_array($sSubAction, array('invite', 'remind')) ? 'invite' : $sSubAction;
+        return $sSubAction;
+    }
+
+    /**
+     * This method echos HTML and ends.
+     * @return void
+     */
+    protected function showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData, $sSubAction, $aTokenIds)
+    {
+        $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
+        $bHtml = (getEmailFormat($iSurveyId) == 'html');
+        $bEmail = $sSubAction == 'invite';
+
+        // Fill empty email template by default text
+        foreach ($aSurveyLangs as $sSurveyLanguage) {
+            $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
+            $bDefaultIsNeeded = empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}"]) || empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}_subj"]);
+            if ($bDefaultIsNeeded) {
+                $sNewlines = ($bHtml) ? 'html' : 'text'; // This broke included style for admin_detailed_notification
+                $aDefaultTexts = templateDefaultTexts($sSurveyLanguage, 'unescaped', $sNewlines);
+                if (empty($aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"])) {
+                    if ($sSubAction == 'invite') {
+                        $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["invitation"];
+                    } elseif ($sSubAction == 'remind') {
+                        $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["reminder"];
+                    }
+                }
+            }
+        }
+        if (empty($aData['tokenids'])) {
+            $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
+            foreach ($aTokens as $aToken) {
+                $aData['tokenids'][] = $aToken;
+            }
+        }
+        $this->_renderWrappedTemplate('token', array($sSubAction), $aData);
     }
 }
