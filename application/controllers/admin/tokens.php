@@ -2507,7 +2507,8 @@ class tokens extends Survey_Common_Action
      */
     protected function getSQLemailstatuscondition()
     {
-        if (Yii::app()->request->getPost('bypassbademails') == '1') {
+        $request = Yii::app()->request;
+        if ($request->getPost('bypassbademails') == '1') {
             return "emailstatus = 'OK'";
         } else {
             return "emailstatus <> 'OptOut'";
@@ -2521,9 +2522,9 @@ class tokens extends Survey_Common_Action
     {
         $condition = "";
         $request = Yii::app()->request;
-        if ($request->getPost('maxremindercount') &&
-            $request->getPost('maxremindercount') != '' &&
-            intval($request->getPost('maxremindercount')) != 0) {
+        if ($request->getPost('maxremindercount')
+            && $request->getPost('maxremindercount') != ''
+            && intval($request->getPost('maxremindercount')) != 0) {
             $condition = "remindercount < ".intval($request->getPost('maxremindercount'));
         }
         return $condition;
@@ -2538,9 +2539,9 @@ class tokens extends Survey_Common_Action
         $condition = "";
         $request = Yii::app()->request;
         if (!$bEmail) {
-            if ($request->getPost('minreminderdelay') &&
-                $request->getPost('minreminderdelay') != '' &&
-                intval($request->getPost('minreminderdelay')) != 0) {
+            if ($request->getPost('minreminderdelay')
+                && $request->getPost('minreminderdelay') != ''
+                && intval($request->getPost('minreminderdelay')) != 0) {
                 // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
                 $timeadjust = Yii::app()->getConfig("timeadjust");
                 $compareddate = dateShift(
