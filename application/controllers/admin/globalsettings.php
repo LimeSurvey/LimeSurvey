@@ -57,7 +57,7 @@ class GlobalSettings extends Survey_Common_Action
     {
         // Only people who can create or update themes should be allowed to refresh the assets
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
-            SettingGlobal::increaseAssetsversionnumber();
+            SettingGlobal::increaseCustomAssetsversionnumber();
             $this->getController()->redirect(array("admin/globalsettings"));
         }
     }
