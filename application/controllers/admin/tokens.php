@@ -1266,7 +1266,7 @@ class tokens extends Survey_Common_Action
         $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
 
         if (!Yii::app()->request->getPost('ok')) {
-            $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData, $sSubAction, $aTokenIds);
+            $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
             $SQLremindercountcondition = "";
             $SQLreminderdelaycondition = "";
@@ -2565,11 +2565,13 @@ class tokens extends Survey_Common_Action
      * This method echos HTML and ends.
      * @return void
      */
-    protected function showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData, $sSubAction, $aTokenIds)
+    protected function showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData)
     {
         $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
+        $sSubAction = $this->getSubAction();
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
         $bEmail = $sSubAction == 'invite';
+        $aTokenIds = $this->getTokenIds();
 
         // Fill empty email template by default text
         foreach ($aSurveyLangs as $sSurveyLanguage) {
