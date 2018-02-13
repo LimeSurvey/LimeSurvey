@@ -1261,6 +1261,7 @@ class tokens extends Survey_Common_Action
         $aData['ishtml'] = $bHtml;
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
+        // TODO: Rename 'ok' to something meaningful.
         if (!Yii::app()->request->getPost('ok')) {
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
@@ -1307,15 +1308,15 @@ class tokens extends Survey_Common_Action
                     $from = Yii::app()->request->getPost('from_'.$emrow['language']);
 
                     $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
+                        ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
                     $fieldsarray["{OPTINURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
+                        ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
+                        ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
                     $fieldsarray["{EXPIRY}"] = $aData['thissurvey']["expires"];
                     $customheaders = array('1' => "X-surveyid: ".$iSurveyId,
-                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
+                        '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];
