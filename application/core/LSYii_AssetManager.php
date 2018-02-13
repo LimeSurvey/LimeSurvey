@@ -34,7 +34,7 @@ class LSYii_AssetManager extends CAssetManager
         $assetsVersionNumber       = Yii::app()->getConfig('assetsversionnumber');
         $versionNumber             = Yii::app()->getConfig('versionnumber');
         $dbVersion                 = Yii::app()->getConfig('dbversionnumber');
-        $iCustomassetversionnumber = (function_exists('getGlobalSetting') ) ? getGlobalSetting('customassetversionnumber'):1; // When called from installer, getBobalSettings is not available
+        $iCustomassetversionnumber = (function_exists('getGlobalSetting') ) ? getGlobalSetting('customassetversionnumber'):1; // When called from installer, function getGlobalSetting() is not available
 
         if (empty($assetsVersionNumber)
             || empty($versionNumber)

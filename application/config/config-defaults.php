@@ -82,7 +82,7 @@ $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist 
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
-$config['customassetversionnumber']  = 1; // This setting specifys the default theme used for the 'public list' of surveys
+$config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2'; // File types allowed to be uploaded in the themes section.
 
