@@ -1286,9 +1286,9 @@ class tokens extends Survey_Common_Action
                     $aDefaultTexts = templateDefaultTexts($sSurveyLanguage, 'unescaped', $sNewlines);
                     if (empty($aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"])) {
                         if ($sSubAction == 'invite') {
-                                                    $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["invitation"];
+                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["invitation"];
                         } elseif ($sSubAction == 'remind') {
-                                                    $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["reminder"];
+                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"] = $aDefaultTexts["reminder"];
                         }
                     }
                 }
