@@ -1274,11 +1274,7 @@ class tokens extends Survey_Common_Action
         $aData['ishtml'] = $bHtml;
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
-        if (Yii::app()->request->getPost('bypassbademails') == '1') {
-            $SQLemailstatuscondition = "emailstatus = 'OK'";
-        } else {
-            $SQLemailstatuscondition = "emailstatus <> 'OptOut'";
-        }
+        $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
 
         if (!Yii::app()->request->getPost('ok')) {
             // Fill empty email template by default text
@@ -2561,4 +2557,15 @@ class tokens extends Survey_Common_Action
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
+    /**
+     * @return string
+     */
+    protected function getSQLemailstatuscondition()
+    {
+        if (Yii::app()->request->getPost('bypassbademails') == '1') {
+            return "emailstatus = 'OK'";
+        } else {
+            return "emailstatus <> 'OptOut'";
+        }
+    }
 }
