@@ -1210,7 +1210,7 @@ class tokens extends Survey_Common_Action
         }
 
         if (!$survey->hasTokensTable) {
-            // If no tokens table exists
+            // If no tokens table exists, redirect to create token page.
             $this->_newtokentable($iSurveyId);
         }
 
