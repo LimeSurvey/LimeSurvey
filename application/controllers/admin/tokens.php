@@ -1263,28 +1263,12 @@ class tokens extends Survey_Common_Action
         $aData['ishtml'] = $bHtml;
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
-        $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
-
         if (!Yii::app()->request->getPost('ok')) {
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
+            $SQLemailstatuscondition   = $this->getSQLemailstatuscondition();
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
-            $SQLreminderdelaycondition = "";
-
-            if (!$bEmail) {
-
-                if (Yii::app()->request->getPost('minreminderdelay') &&
-                Yii::app()->request->getPost('minreminderdelay') != '' &&
-                intval(Yii::app()->request->getPost('minreminderdelay')) != 0) {
-                    // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
-                    $compareddate = dateShift(
-                    date("Y-m-d H:i:s", time() - 86400 * intval(Yii::app()->request->getPost('minreminderdelay'))), "Y-m-d H:i", $timeadjust);
-                    $SQLreminderdelaycondition = " ( "
-                    . " (remindersent = 'N' AND sent < '".$compareddate."') "
-                    . " OR "
-                    . " (remindersent < '".$compareddate."'))";
-                }
-            }
+            $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bEmail);
 
             $ctresult = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
@@ -2543,6 +2527,37 @@ class tokens extends Survey_Common_Action
             $SQLremindercountcondition = "remindercount < ".intval(Yii::app()->request->getPost('maxremindercount'));
         }
         return $SQLremindercountcondition;
+    }
+
+    /**
+     * @param boolean $bEmail
+     * @return string SQL condition
+     */
+    protected function getSQLreminderdelaycondition($bEmail)
+    {
+        $SQLreminderdelaycondition = "";
+        $request = Yii::app()->request;
+        if (!$bEmail) {
+            if ($request->getPost('minreminderdelay') &&
+                $request->getPost('minreminderdelay') != '' &&
+                intval($request->getPost('minreminderdelay')) != 0) {
+                // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
+                $timeadjust = Yii::app()->getConfig("timeadjust");
+                $compareddate = dateShift(
+                    date(
+                        "Y-m-d H:i:s",
+                        time() - 86400 * intval($request->getPost('minreminderdelay'))
+                    ),
+                    "Y-m-d H:i",
+                    $timeadjust
+                );
+                $SQLreminderdelaycondition = " ( "
+                    . " (remindersent = 'N' AND sent < '".$compareddate."') "
+                    . " OR "
+                    . " (remindersent < '".$compareddate."'))";
+            }
+        }
+        return $SQLreminderdelaycondition;
     }
 
     /**
