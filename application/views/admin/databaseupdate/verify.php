@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <?php if ((int)GetGlobalSetting('DBVersion')<184) { ?>
+    <?php if ((int)GetGlobalSetting('DBVersion')<132) { ?>
             <div class="alert alert-danger" role="alert">
                 <strong><?php echo eT("Error:"); ?></strong> <?php eT("You will not be able to update because your previous LimeSurvey version is too old.");?>
                 <br>
