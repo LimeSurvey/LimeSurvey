@@ -2520,13 +2520,14 @@ class tokens extends Survey_Common_Action
      */
     protected function getSQLremindercountcondition()
     {
-        $SQLremindercountcondition = "";
-        if (Yii::app()->request->getPost('maxremindercount') &&
-            Yii::app()->request->getPost('maxremindercount') != '' &&
-            intval(Yii::app()->request->getPost('maxremindercount')) != 0) {
-            $SQLremindercountcondition = "remindercount < ".intval(Yii::app()->request->getPost('maxremindercount'));
+        $condition = "";
+        $request = Yii::app()->request;
+        if ($request->getPost('maxremindercount') &&
+            $request->getPost('maxremindercount') != '' &&
+            intval($request->getPost('maxremindercount')) != 0) {
+            $condition = "remindercount < ".intval($request->getPost('maxremindercount'));
         }
-        return $SQLremindercountcondition;
+        return $condition;
     }
 
     /**
@@ -2535,7 +2536,7 @@ class tokens extends Survey_Common_Action
      */
     protected function getSQLreminderdelaycondition($bEmail)
     {
-        $SQLreminderdelaycondition = "";
+        $condition = "";
         $request = Yii::app()->request;
         if (!$bEmail) {
             if ($request->getPost('minreminderdelay') &&
@@ -2551,13 +2552,13 @@ class tokens extends Survey_Common_Action
                     "Y-m-d H:i",
                     $timeadjust
                 );
-                $SQLreminderdelaycondition = " ( "
+                $condition = " ( "
                     . " (remindersent = 'N' AND sent < '".$compareddate."') "
                     . " OR "
                     . " (remindersent < '".$compareddate."'))";
             }
         }
-        return $SQLreminderdelaycondition;
+        return $condition;
     }
 
     /**
