@@ -1526,15 +1526,21 @@ class tokens extends Survey_Common_Action
             } else {
                 $aData['sidemenu']['state'] = false;
 
-                $this->_renderWrappedTemplate('token', array('message' => array(
-                'title' => gT("Warning"),
-                'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                . "<br/>&nbsp;<ul class='list-unstyled'><li>".gT("having a valid email address")."</li>"
-                . "<li>".gT("not having been sent an invitation already")."</li>"
-                . "<li>".gT("not having already completed the survey")."</li>"
-                . "<li>".gT("having a token")."</li></ul>"
-                . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Cancel").'</a></p>'
-                )), $aData);
+                $this->_renderWrappedTemplate(
+                    'token',
+                    array(
+                        'message' => array(
+                            'title' => gT("Warning"),
+                            'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
+                            . "<br/>&nbsp;<ul class='list-unstyled'><li>".gT("having a valid email address")."</li>"
+                            . "<li>".gT("not having been sent an invitation already")."</li>"
+                            . "<li>".gT("not having already completed the survey")."</li>"
+                            . "<li>".gT("having a token")."</li></ul>"
+                            . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Cancel").'</a></p>'
+                        )
+                    ),
+                    $aData
+                );
             }
         }
     }
