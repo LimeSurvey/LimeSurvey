@@ -1268,15 +1268,10 @@ class tokens extends Survey_Common_Action
         if (!Yii::app()->request->getPost('ok')) {
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
-            $SQLremindercountcondition = "";
+            $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = "";
 
             if (!$bEmail) {
-                if (Yii::app()->request->getPost('maxremindercount') &&
-                Yii::app()->request->getPost('maxremindercount') != '' &&
-                intval(Yii::app()->request->getPost('maxremindercount')) != 0) {
-                    $SQLremindercountcondition = "remindercount < ".intval(Yii::app()->request->getPost('maxremindercount'));
-                }
 
                 if (Yii::app()->request->getPost('minreminderdelay') &&
                 Yii::app()->request->getPost('minreminderdelay') != '' &&
@@ -2525,7 +2520,7 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-     * @return string
+     * @return string SQL condition
      */
     protected function getSQLemailstatuscondition()
     {
@@ -2534,6 +2529,20 @@ class tokens extends Survey_Common_Action
         } else {
             return "emailstatus <> 'OptOut'";
         }
+    }
+
+    /**
+     * @return string SQL condition
+     */
+    protected function getSQLremindercountcondition()
+    {
+        $SQLremindercountcondition = "";
+        if (Yii::app()->request->getPost('maxremindercount') &&
+            Yii::app()->request->getPost('maxremindercount') != '' &&
+            intval(Yii::app()->request->getPost('maxremindercount')) != 0) {
+            $SQLremindercountcondition = "remindercount < ".intval(Yii::app()->request->getPost('maxremindercount'));
+        }
+        return $SQLremindercountcondition;
     }
 
     /**
