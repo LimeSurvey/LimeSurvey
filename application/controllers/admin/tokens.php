@@ -1263,6 +1263,7 @@ class tokens extends Survey_Common_Action
 
         // TODO: Rename 'ok' to something meaningful.
         if (!Yii::app()->request->getPost('ok')) {
+            $this->clearEmailSessionCache($iSurveyId);
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
             $SQLemailstatuscondition   = $this->getSQLemailstatuscondition();
@@ -1289,6 +1290,18 @@ class tokens extends Survey_Common_Action
             $bSendError = false;
             if ($emcount > 0) {
                 foreach ($emresult as $emrow) {
+
+                    if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
+                        // The email has already been send this session, skip.
+                        // Happens if user reloads page or double clicks on "Send".
+                        if ($bEmail) {
+                            $tokenoutput .= sprintf(gT("Invitation %s skipped, already send"), $emrow['tid']) . "<br/>";
+                        } else {
+                            $tokenoutput .= sprintf(gT("Reminder %s skipped, already send"), $emrow['tid']) . "<br/>";
+                        }
+                        continue;
+                    }
+
                     $to = $fieldsarray = array();
                     $aEmailaddresses = preg_split("/(,|;)/", $emrow['email']);
                     foreach ($aEmailaddresses as $sEmailaddress) {
@@ -1409,6 +1422,10 @@ class tokens extends Survey_Common_Action
                                 $token->remindercount++;
                             }
                             $token->save();
+
+                            // Mark token email as send this session.
+                            // NB: This cache is cleared on form page for invitation/reminder.
+                            $_SESSION[$this->getEmailCacheName($iSurveyId)][$emrow['tid']] = 1;
 
                             //Update central participant survey_links
                             if (!empty($emrow['participant_id'])) {
@@ -2621,5 +2638,45 @@ class tokens extends Survey_Common_Action
             }
         }
         $this->_renderWrappedTemplate('token', array($sSubAction), $aData);
+    }
+
+    /**
+     * Reminders that are send are stored in session, so that they
+     * are not send twice by accident in case of an unpredicted page
+     * reload.
+     * @param int $iSurveyId
+     * @return void
+     */
+    protected function clearEmailSessionCache($iSurveyId)
+    {
+        $cacheName = $this->getEmailCacheName($iSurveyId);
+        unset($_SESSION[$cacheName]);
+    }
+
+    /**
+     * @param int $iSurveyId
+     * @return string Cache name, like survey_1234_email_cache
+     */
+    protected function getEmailCacheName($iSurveyId)
+    {
+        return sprintf(
+            'survey_%d_email_cache',
+            (int) $iSurveyId
+        );
+    }
+
+    /**
+     * Returns true if this $token is set in cache for $iSurveyId.
+     * Being set means the email has already been send.
+     * @param int $iSurveyId
+     * @param string $token
+     * $return boolean
+     */
+    protected function tokenIsSetInEmailCache($iSurveyId, $tid)
+    {
+        $cacheName = $this->getEmailCacheName($iSurveyId);
+        return isset($_SESSION[$cacheName])
+            && isset($_SESSION[$cacheName][$tid])
+            && $_SESSION[$cacheName][$tid] > 0;
     }
 }
