@@ -988,6 +988,7 @@ class themes extends Survey_Common_Action
                 // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = "\n";
+                $thissurvey['registration_view'] = 'register_form';
                 break;
 
             case 'completed':
