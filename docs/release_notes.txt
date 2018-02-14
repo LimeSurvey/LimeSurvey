@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.3.0 (build 180209) to 3.3.1 (build 180214) Feb 14, 2018
+-Fixed issue #13188: Date/Time question type - icon missing (Olle Haerstedt)
+-Fixed issue #13284: Breadcrumb group detail not using admin language (Olle Haerstedt)
+-Fixed issue #13326: Not possible to using placeholders in group titles (Olle Haerstedt)
+-Fixed issue #13329: Ajax mode should be off in database after installation/upgrade (Olle Haerstedt)
+-Fixed issue #13333: "Registration" and "Print answers" screens appear to (Olle Haerstedt)
+-Fixed issue #13334: PDOException after update to 3.3.0 (MSSQL) (Olle Haerstedt)
+-Fixed issue #13349: Theme editor jumps back to admin home page after every save of changes to theme files (Olle Haerstedt)
+-Fixed issue #13352: debug=2 broke all page with some server configuration (Denis Chenu)
+-Fixed issue: Alert animation applied to question container.... (LouisGac)
+-Fixed issue: Copy conditions doesn't work (Olle Haerstedt)
+-Fixed issue: No error message when failed to change password (LouisGac)
+-Fixed issue: Notice when launching a survey after reinstalling its theme (LouisGac)
 
 Changes from 3.2.1 (build 180207) to 3.3.0 (build 180209) Feb 09, 2018
 -New feature: "Clear asset cache" button in global settings (LouisGac)
