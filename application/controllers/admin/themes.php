@@ -918,6 +918,19 @@ class themes extends Survey_Common_Action
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
 
         switch ($screenname) {
+            case 'welcome':
+                // Show language changer.
+                $thissurvey['alanguageChanger']['show'] = true;
+                $thissurvey['alanguageChanger']['datas'] = [
+                    'sSelected' => 'en',
+                    //'withForm' => true,  // Set to true for no-js functionality.
+                    'aListLang' => [
+                        'en' => gT('English'),
+                        'de' => gT('German')
+                    ]
+                ];
+
+                break;
 
             case 'question':
                 $aReplacements = array(

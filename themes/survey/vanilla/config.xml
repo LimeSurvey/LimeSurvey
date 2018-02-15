@@ -128,6 +128,7 @@
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -215,7 +216,6 @@
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
                     <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
