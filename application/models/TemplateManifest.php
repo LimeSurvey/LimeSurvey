@@ -618,8 +618,6 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
-
-
         // If it is called from the template editor, a template name will be provided.
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
@@ -659,8 +657,11 @@ class TemplateManifest extends TemplateConfiguration
     {
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
+
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+
+
         return $this;
     }
 
@@ -739,12 +740,28 @@ class TemplateManifest extends TemplateConfiguration
      */
     protected function changeMotherConfiguration($sType, $aSettings)
     {
-        foreach ($aSettings as $key => $aSetting) {
-            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])) {
-                $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace']);
-                unset($aSettings[$key]);
+
+        if (is_object($this->oMotherTemplate)) {
+
+
+            // Check if each file exist in this template path
+            // If the file exists in local template, we can remove it from mother template package.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // (and leave it in moter template definition if it already exists.)
+            foreach ($aSettings as $key => $sFileName) {
+                if (file_exists($this->path.$sFileName)) {
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+
+                } else {
+                    // File doesn't exist locally, so it should be removed
+                    $key = array_search($sFileName, $aSettings);
+                    //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
+                    unset($aSettings[$key]);
+                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+                }
             }
         }
+
 
         return $aSettings;
     }
@@ -773,8 +790,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         if (isset($this->config->metadata->extends)) {
             $sMotherTemplateName   = (string) $this->config->metadata->extends;
-            $this->oMotherTemplate = new TemplateManifest;
-            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
+            if (!empty($sMotherTemplateName)){
+
+                $instance= Template::getTemplateConfiguration($sMotherTemplateName, null, null, true);
+                $instance->prepareTemplateRendering($sMotherTemplateName);
+                $this->oMotherTemplate = $instance; // $instance->prepareTemplateRendering($sMotherTemplateName, null);
+            }
+        
         }
     }
 

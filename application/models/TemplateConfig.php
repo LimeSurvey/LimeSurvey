@@ -330,6 +330,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
+
         if (!empty($this->aCssFrameworkReplacement)) {
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
@@ -923,15 +924,16 @@ class TemplateConfig extends CActiveRecord
         $oRTemplate = $this;
         $sTemplateNames = $this->sTemplateName;
 
-        while (!empty($oRTemplate->template->extends)) {
+        while (!empty($oRTemplate->oMotherTemplate)) {
 
-            $sTemplateNames .= ' '.$oRTemplate->template->extends;
+            $sTemplateNames .= ((App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG)) ? ' '.$oRTemplate->config->metadata->extends : ' '.$oRTemplate->template->extends;
             $oRTemplate      = $oRTemplate->oMotherTemplate;
             if (!($oRTemplate instanceof TemplateConfiguration)) {
                 // Throw alert: should not happen
                 break;
             }
         }
+
         return $sTemplateNames;
     }
 
@@ -1022,7 +1024,7 @@ class TemplateConfig extends CActiveRecord
     /*
     protected function getFilesToLoad($oTemplate, $sType)
     {
-    }  
+    }
     */
 
     /**
@@ -1056,6 +1058,6 @@ class TemplateConfig extends CActiveRecord
     }
     protected function setThisTemplate()
     {
-    } 
+    }
     */
 }
