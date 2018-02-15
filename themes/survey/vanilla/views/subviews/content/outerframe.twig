@@ -17,7 +17,6 @@
     So, to keep changes between ls-inherited templates as slighty as possible, we put it in a separated file
 
 #}
-{{dump(aSurveyInfo.options)}}
 <!-- outer frame container -->
 <div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container {% else %} container-fluid {% endif %} " id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
     {# Wich file to include for content is decided inside the layout #}
