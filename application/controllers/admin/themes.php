@@ -1087,6 +1087,19 @@ class themes extends Survey_Common_Action
                     ]
                 ];
 
+                // Show "Clear all".
+                $thissurvey['bShowClearAll'] = true;
+
+                // Show language changer.
+                $thissurvey['alanguageChanger']['show'] = true;
+                $thissurvey['alanguageChanger']['datas'] = [
+                    'sSelected' => 'en',
+                    'aListLang' => [
+                        'en' => gT('English'),
+                        'de' => gT('German')
+                    ]
+                ];
+
                 break;
 
             case 'error':
