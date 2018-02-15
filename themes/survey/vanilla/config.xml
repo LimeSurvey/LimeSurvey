@@ -210,6 +210,18 @@
                     <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
                 </printanswers>
 
+                <navigation>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                </navigation>
+
             </screens>
         </template_editor>
     </engine>

@@ -841,6 +841,8 @@ class themes extends Survey_Common_Action
         $screens['assessments']     = gT('Assessments', 'unescaped');
         $screens['register']        = gT('Registration', 'unescaped');
         $screens['printanswers']    = gT('Print answers', 'unescaped');
+        $screens['navigation']            = gT('Navigation', 'unescaped');
+        //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
@@ -1056,6 +1058,35 @@ class themes extends Survey_Common_Action
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 // $myoutput[] = "\n";
+                break;
+
+            case 'navigation':
+                // Show question index navigation.
+                $thissurvey['aQuestionIndex']['bShow'] = true;
+                $thissurvey['aQuestionIndex']['items'] = [
+                    [
+                        'text' => 'A question without step status styling'
+                    ],
+                    [
+                        'text' => 'This question is unanswered',
+                        'stepStatus' => [
+                            'index-item-unanswered' => true
+                        ]
+                    ],
+                    [
+                        'text' => 'This question has an error',
+                        'stepStatus' => [
+                            'index-item-error' => true
+                        ]
+                    ],
+                    [
+                        'text' => 'Current question is disabled',
+                        'stepStatus' => [
+                            'index-item-current' => true
+                        ]
+                    ]
+                ];
+
                 break;
 
             case 'error':
