@@ -819,6 +819,8 @@ p.return-to-survey{
 #index-menu ul.dropdown-menu {
     max-height: 50vh;
     overflow-y: scroll;
+}
+
 .text-break-pre{
     white-space: pre-line;
 }

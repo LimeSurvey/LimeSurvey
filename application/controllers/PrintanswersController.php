@@ -132,6 +132,7 @@
             if (empty($sExportType)) {
                 $aData['aSurveyInfo']['include_content'] = 'printanswers';
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
+
             } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
@@ -150,8 +151,8 @@
                 LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
                 $aData['aSurveyInfo']['printPdf'] = 1;
                 $aData['aSurveyInfo']['include_content'] = 'printanswers';
-                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, true);
                 Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
+                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
                 $oPDF->writeHTML($html, true, false, true, false, '');
 
                 header("Pragma: public");

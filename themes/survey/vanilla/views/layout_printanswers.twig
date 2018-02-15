@@ -1,0 +1,22 @@
+{% extends "layout_global.twig" %}
+
+{% block pjaxbegin %}
+ 
+{% endblock %}
+
+{% block body %}
+
+    {% block content %}
+        {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
+        {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block pjaxend %}
+
+{% endblock %}
+
+{% block themescripts %}
+
+{% endblock %}

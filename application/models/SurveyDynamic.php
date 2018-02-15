@@ -781,7 +781,7 @@ class SurveyDynamic extends LSActiveRecord
         $fieldname = $oQuestion->basicFieldName;
         
         //
-        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "T"])) {
+        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K"])) {
             $fieldname .= $oQuestion->title;
         }
         
