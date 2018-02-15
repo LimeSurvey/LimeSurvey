@@ -1295,9 +1295,9 @@ class tokens extends Survey_Common_Action
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
                         if ($bEmail) {
-                            $tokenoutput .= sprintf(gT("Invitation %s skipped, already send"), $emrow['tid']) . "<br/>";
+                            $tokenoutput .= sprintf(gT("Invitation %s skipped, already sent."), $emrow['tid']) . "<br/>";
                         } else {
-                            $tokenoutput .= sprintf(gT("Reminder %s skipped, already send"), $emrow['tid']) . "<br/>";
+                            $tokenoutput .= sprintf(gT("Reminder %s skipped, already sent."), $emrow['tid']) . "<br/>";
                         }
                         continue;
                     }

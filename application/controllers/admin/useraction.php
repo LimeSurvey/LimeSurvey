@@ -603,7 +603,7 @@ class UserAction extends Survey_Common_Action
             if ( Yii::app()->request->getPost('newpasswordshown') == "1"  ) {
 
                 if (Yii::app()->getConfig('demoMode')){
-                    Yii::app()->setFlashMessage(gT("You can't change password on demo."), 'error');
+                    Yii::app()->setFlashMessage(gT("You can't change password if demo mode is active."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
@@ -626,7 +626,7 @@ class UserAction extends Survey_Common_Action
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 //Now check if the old password matches the old password saved
                 } elseif( empty(trim($newPassword)) ) {
-                Yii::app()->setFlashMessage(gT("Password can't be empty"), 'error');
+                Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 } else {
                     // We can update
