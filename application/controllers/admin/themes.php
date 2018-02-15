@@ -1065,22 +1065,22 @@ class themes extends Survey_Common_Action
                 $thissurvey['aQuestionIndex']['bShow'] = true;
                 $thissurvey['aQuestionIndex']['items'] = [
                     [
-                        'text' => 'A question without step status styling'
+                        'text' => gT('A group without step status styling')
                     ],
                     [
-                        'text' => 'This question is unanswered',
+                        'text' => gT('This group is unanswered'),
                         'stepStatus' => [
                             'index-item-unanswered' => true
                         ]
                     ],
                     [
-                        'text' => 'This question has an error',
+                        'text' => gT('This group has an error'),
                         'stepStatus' => [
                             'index-item-error' => true
                         ]
                     ],
                     [
-                        'text' => 'Current question is disabled',
+                        'text' => gT('Current group is disabled'),
                         'stepStatus' => [
                             'index-item-current' => true
                         ]
