@@ -514,7 +514,7 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function beforeSave()
     {
-        switch(Yii::app()->db->driverName()) {
+        switch(Yii::app()->db->getDriverName()) {
             case 'sqlsrv':
             case 'mssql': // Deprecated ?
                 $this->one_time_pw = new CDbExpression("CONVERT(VARBINARY(MAX), :one_time_pw)", array(':one_time_pw' => $this->one_time_pw));
