@@ -166,7 +166,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
 
                                     <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-help="<?=gT("Select the question type here.")?>">
+                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-helptitle="<?php eT("Question type");?>" data-help="<?=gT("Select the question type here.")?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
