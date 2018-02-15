@@ -303,17 +303,33 @@ class QuestionGroup extends LSActiveRecord
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
-                $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
-                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                onclick="'.$confirm.'">
-                <i class="text-danger fa fa-trash"></i>
-                </a>';
+                $sDeleteUrl = Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid");
+                
+                $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
+                    .'<a class="btn btn-default" href="#" '
+                    .' data-href="'.$sDeleteUrl.'" '
+                    .' data-target="#confirmation-modal"'
+                    .' role="button"'
+                    .' data-toggle="modal"'
+                    .' data-message="'.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'"'
+                    .'>'
+                        .'<i class="fa fa-trash text-danger "></i>'
+                        .'<span class="sr-only">'.gT('Delete survey group').'</span>'
+                    .'</a>'
+                    .'</span>';
+
             } else {
-                $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'\'); return false;';
-                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                onclick="'.$alert.'">
-                <i class="text-danger fa fa-trash"></i>
-                </a>';
+                $button .= '<span data-toggle="tooltip" title="'.gT('Group cant be deleted, because of depending conditions').'">'
+                    .'<a class="btn btn-default" href="#" '
+                    .' class="disabled" disabled '
+                    .' role="button"'
+                    .' data-toggle="popover"'
+                    .' data-tooltip="true"'
+                    .' title="'.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'">'
+                        .'<i class="fa fa-trash text-muted "></i>'
+                        .'<span class="sr-only">'.gT('Delete survey group not possible').'</span>'
+                    .'</a>'
+                    .'</span>';
             }
         }
 
