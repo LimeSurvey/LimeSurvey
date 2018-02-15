@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-15 09:22:48+00:00\n"
+"POT-Creation-Date: 2018-02-15 09:29:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4366,11 +4366,11 @@ msgid "Token attribute descriptions were successfully updated."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1298
-msgid "Invitation %s skipped, already send"
+msgid "Invitation %s skipped, already sent."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1300
-msgid "Reminder %s skipped, already send"
+msgid "Reminder %s skipped, already sent."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1348
@@ -4942,7 +4942,7 @@ msgid "Error while updating template permissions."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:606
-msgid "You can't change password on demo."
+msgid "You can't change password if demo mode is active."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:616
@@ -4958,7 +4958,7 @@ msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:629
-msgid "Password can't be empty"
+msgid "The password can't be empty."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:652
