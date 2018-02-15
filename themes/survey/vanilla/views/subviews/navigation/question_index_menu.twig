@@ -71,7 +71,11 @@
                 <span class="{{ aSurveyInfo.class.indexmenusspan }} caret" {{ aSurveyInfo.attr.indexmenusspan }}></span>
             </a>
 
-            <ul class="{{ aSurveyInfo.class.indexmenussul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenussul }}>
+            <!-- TODO: Remove this when support is added -->
+            <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
+                <li>
+                    {{ "Question by question mode not yet supported." | t }}
+                </li>
 
             {% for group in aSurveyInfo.indexItems %}
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
