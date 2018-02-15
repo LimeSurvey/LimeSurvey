@@ -50,24 +50,24 @@ var ThemeScripts = function(){
      */
     var fixBodyPadding = function fixBodyPadding(){
         /* The 60 px is fixed in template.css */
-        $("body").css("padding-top", Math.round($(".navbar-fixed-top").height()) +"px");
-    }
+        $('body').css('padding-top', Math.round($('.navbar-fixed-top').height()) +'px');
+    };
     /**
      * Set suffix/prefix clone for little screen (at top)
      */
     var sliderSuffixClone = function sliderSuffixClone(){
-        $(".numeric-multi .slider-item .slider-right").each(function(){
-            if($(this).closest(".slider-item").find(".slider-left").length){
-                var colWidth="6";
+        $('.numeric-multi .slider-item .slider-right').each(function(){
+            if($(this).closest('.slider-item').find('.slider-left').length){
+                var colWidth='6';
             }else{
-                var colWidth="12";
+                var colWidth='12';
             }
-            $(this).clone().removeClass("col-xs-12").addClass("visible-xs-block col-xs-"+colWidth).prop("aria-hidden",true).insertBefore($(this).prev(".slider-container"));
-            $(this).addClass("hidden-xs");
-            $(this).closest(".slider-item").find(".slider-left").removeClass("col-xs-12").addClass("col-xs-6");
+            $(this).clone().removeClass('col-xs-12').addClass('visible-xs-block col-xs-'+colWidth).prop('aria-hidden',true).insertBefore($(this).prev('.slider-container'));
+            $(this).addClass('hidden-xs');
+            $(this).closest('.slider-item').find('.slider-left').removeClass('col-xs-12').addClass('col-xs-6');
         });
 
-    }
+    };
 
     /**
      * Hide some part if empty
@@ -76,27 +76,27 @@ var ThemeScripts = function(){
      */
     var hideEmptyPart = function hideEmptyPart()
     {
-        $(".question-help-container").each(function(){
-            if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
-                $(this).addClass("hidden");
+        $('.question-help-container').each(function(){
+            if($(this).text().trim()==''){/* Only if have only script tag inside or empty tag */
+                $(this).addClass('hidden');
             }
         });
-        $(".group-description").each(function(){
-            if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
-                $(this).addClass("hidden");
+        $('.group-description').each(function(){
+            if($(this).text().trim()==''){/* Only if have only script tag inside or empty tag */
+                $(this).addClass('hidden');
             }
         });
-        $(".question-help-container.hidden").on("html:updated",function(){
-            if($(this).text().trim()!=""){
-                $(this).removeClass("hidden");
+        $('.question-help-container.hidden').on('html:updated',function(){
+            if($(this).text().trim()!=''){
+                $(this).removeClass('hidden');
             }
         });
-        $(".question-help-container").on("html:updated",function(){ // .question-help-container:not(.hidden) don't work ?
-            if($(this).text().trim()==""){
-                $(this).addClass("hidden");
+        $('.question-help-container').on('html:updated',function(){ // .question-help-container:not(.hidden) don't work ?
+            if($(this).text().trim()==''){
+                $(this).addClass('hidden');
             }
         });
-    }
+    };
 
     /*
     var initLanguageChanger = function(selectorItem, selectorGlobalForm){
@@ -121,8 +121,8 @@ var ThemeScripts = function(){
         $(selectorItem).on('click', function(){
             var lang = $(this).data('limesurvey-lang');
             /* The limesurvey form exist in document, move select and button inside and click */
-            $(selectorGlobalForm+" [name='lang']").remove();                        // Remove existing lang selector
-            $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
+            $(selectorGlobalForm+' [name=\'lang\']').remove();                        // Remove existing lang selector
+            $('<input type=\'hidden\'>').attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
         });
     };
 
@@ -140,16 +140,16 @@ var ThemeScripts = function(){
             /* Some function are launched in endpage.pstpl */
             hideEmptyPart();
             // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
-            if(!$("#navbar li").length){
-                $("#navbar").remove();
-                $("[data-target='#navbar']").remove();
+            if(!$('#navbar li').length){
+                $('#navbar').remove();
+                $('[data-target=\'#navbar\']').remove();
             }
 
             // Scroll to first error - After user close modal -
-            if($(".input-error").length > 0 ||  $(".ls-em-error").length > 0 ) {
+            if($('.input-error').length > 0 ||  $('.ls-em-error').length > 0 ) {
                 $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
 
-                    $firstError = ($(".input-error").length > 0 ) ? $(".input-error").first() : $(".ls-em-error").first();
+                    $firstError = ($('.input-error').length > 0 ) ? $('.input-error').first() : $('.ls-em-error').first();
 
                     $pixToScroll = ( $firstError.offset().top - 100 );
                     $('html, body').animate({
@@ -167,7 +167,7 @@ var ThemeScripts = function(){
             });
 
             // Hide the menu buttons at the end of the Survey
-            if($(".hidemenubutton").length>0)
+            if($('.hidemenubutton').length>0)
             {
                 $('.navbar-right').hide();
             }
@@ -191,7 +191,7 @@ var ThemeScripts = function(){
                 $('#reloadCaptcha').on('click', function(e){
                     e.preventDefault();
                     window.location.reload();
-                })
+                });
             }
 
             // Survey list footer
@@ -202,8 +202,8 @@ var ThemeScripts = function(){
             }
 
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+                $('[data-toggle="tooltip"]').tooltip();
+            });
 
             // Bind language changer onclick event.
             activateLanguageChanger();
@@ -230,6 +230,8 @@ var ThemeScripts = function(){
                     }
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            } else if (code==13 && e.ctrlKey == true) {
+                $('.ls-move-btn').trigger('click');
             }
         };
 
@@ -244,6 +246,8 @@ var ThemeScripts = function(){
                     }
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
+            } else if (code==13 && e.ctrlKey == true) {
+                $('.ls-move-btn').trigger('click');
             }
         };
 
@@ -274,6 +278,6 @@ var ThemeScripts = function(){
         hideEmptyPart : hideEmptyPart,
         initTopMenuLanguageChanger: initTopMenuLanguageChanger,
         log: logObject
-    }
+    };
 
-}
+};
