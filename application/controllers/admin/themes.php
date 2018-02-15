@@ -1113,6 +1113,10 @@ class themes extends Survey_Common_Action
                     ]
                 ];
 
+                $thissurvey['aNavigator']['load'] = [
+                    'show' => "Y"
+                ];
+
                 break;
 
             case 'error':
