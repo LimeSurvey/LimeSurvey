@@ -841,7 +841,8 @@ class themes extends Survey_Common_Action
         $screens['assessments']     = gT('Assessments', 'unescaped');
         $screens['register']        = gT('Registration', 'unescaped');
         $screens['printanswers']    = gT('Print answers', 'unescaped');
-        $screens['navigation']            = gT('Navigation', 'unescaped');
+        $screens['pdf']             = gT('PDF', 'unescaped');
+        $screens['navigation']      = gT('Navigation', 'unescaped');
         //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
@@ -875,17 +876,24 @@ class themes extends Survey_Common_Action
         $siteadminname = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
+        // NB: Used by answer print PDF layout.
+        $print = [];
+
         // Set this so common.php doesn't throw notices about undefined variables
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
         $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['surveyls_title'] = $thissurvey['name'];
         $thissurvey['description'] =
         "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
         "<p>".gT("But this one isn't.")."<p>";
+        $thissurvey['surveyls_description'] = $thissurvey['description'];
         $thissurvey['welcome'] =
         "<p>".gT('Welcome to this sample survey')."<p>".
         "<p>".gT('You should have a great time doing this')."<p>";
+        $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
         $thissurvey['allowsave'] = "Y";
         $thissurvey['active'] = "Y";
         $thissurvey['tokenanswerspersistence'] = "Y";
@@ -901,8 +909,6 @@ class themes extends Survey_Common_Action
 
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
-
-        $printoutput = $this->getController()->renderPartial('/admin/themes/templateeditor_printoutput_view', array(), true);
 
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
@@ -1066,6 +1072,7 @@ class themes extends Survey_Common_Action
 
             case 'printanswers':
                 // $sLayoutFile = "TODO";
+                //$printoutput = $this->getController()->renderPartial('/admin/themes/templateeditor_printoutput_view', array(), true);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
@@ -1119,6 +1126,17 @@ class themes extends Survey_Common_Action
 
                 break;
 
+            case 'pdf':
+                $print['groups'] = [
+                    [
+                        'name' => gT('Question group name'),
+                        'description' => gT('Question group description'),
+                        'questions' => [
+                        ]
+                    ]
+                ];
+                break;
+
             case 'error':
                 $thissurvey['aError']['title'] = gT("Error");
                 $thissurvey['aError']['message'] = gT("This is an error message example");
@@ -1127,9 +1145,14 @@ class themes extends Survey_Common_Action
 
         // NOTE: Twig already render return error, no try catch needed
         $thissurvey['include_content'] = $sContentFile;
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor($sLayoutFile, array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-
-
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+            $sLayoutFile,
+            array(
+                'aSurveyInfo' =>$thissurvey,
+                'print'       => $print  // Only used for PDF print layout.
+            ),
+            $oEditedTemplate
+        );
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles, $jsfiles);

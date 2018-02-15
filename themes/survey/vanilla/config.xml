@@ -213,6 +213,10 @@
                     <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
                 </printanswers>
 
+                <pdf>
+                    <file type="view" role="layout">layout_print.twig</file>
+                </pdf>
+
                 <navigation>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
