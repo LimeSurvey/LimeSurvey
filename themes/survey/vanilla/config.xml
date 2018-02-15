@@ -183,6 +183,17 @@
                     <file type="js">./scripts/custom.js</file>
                 </load>
 
+                <save>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/save.twig</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
+                    <file type="css">./css/custom.css</file>
+                    <file type="js">./scripts/custom.js</file>
+                </save>
+
                 <register>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
@@ -199,16 +210,6 @@
                     <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
                 </printanswers>
 
-                <save>
-                    <file type="view" role="layout">layout_global.twig</file>
-                    <file type="view" role="subview">./subviews/content/mainrow.twig</file>
-                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="content">./subviews/content/save.twig</file>
-                    <file type="css">./css/theme.css</file>
-                    <file type="js">./scripts/theme.js</file>
-                    <file type="css">./css/custom.css</file>
-                    <file type="js">./scripts/custom.js</file>
-                </save>
             </screens>
         </template_editor>
     </engine>
