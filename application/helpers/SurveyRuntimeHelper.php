@@ -1099,7 +1099,8 @@ class SurveyRuntimeHelper
                 if ($this->aSurveyInfo['printanswers'] == 'Y') {
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show']  = true;
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sUrl']  = Yii::app()->getController()->createUrl("/printanswers/view", array('surveyid'=>$this->iSurveyid));
-                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = "Print your answers.";
+                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
+
                 }
 
                 // Link to Public statistics  **********
