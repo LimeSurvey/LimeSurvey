@@ -875,7 +875,7 @@
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>
-
+            {# Fruity variation #}
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
@@ -884,7 +884,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ "Select variation:" | t }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework'>
+                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>
                                         {{fruityOptions}}
                                     </select>
                                 </div>

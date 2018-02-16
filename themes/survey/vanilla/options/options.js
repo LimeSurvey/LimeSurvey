@@ -1,14 +1,8 @@
 
-var prepare = function(){
-
-
-    ////////////
-    // Interface
-
-    var deferred = $.Deferred();
-
-    //activate the bootstrap switch for checkboxes
-    $('.action_activate_bootstrapswitch').bootstrapSwitch();
+var ThemeOptions = function(){
+    "use strict";
+    //////////////////
+    // Define necessary globals
 
     // general_inherit_active is not present at global level
     // see: https://github.com/LimeSurvey/LimeSurvey/blob/1cbfa11b081f54763b28364472926b155efea5dc/themes/survey/vanilla/options/options.twig#L71
@@ -17,80 +11,163 @@ var prepare = function(){
     //get option Object from Template configuration options
     var optionObject = {"general_inherit" : 1}
 
+    //get the global form
+    var globalForm = $('.action_update_options_string_form');
+
+
+    /////////////////
+    // Define methods run on startup
+    
     // #TemplateConfiguration_options is the id of the Options field in advanced option
+    // getter for generalInherit
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
-
-    // action_update_options_string_form is the form containing the simple options
-    // So this function find the selectors in the forum, and pass their values to the advanced options
-    var updateFieldSettings = function(){
-        $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-            optionObject[$(item).attr('name')] = $(item).val();
-            if($(item).attr('type') == 'radio'){
-                optionObject[$(item).attr('name')] = $(item).prop('checked') ? 'on' : 'off';
-            }
-            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
-        });
+    
+    //parse the options as set in the advanced form
+    var parseOptionObject = function(){
+        // If no general inherit, then pass the value of the "Options" field in advanced option to the object optionObject
+        if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
+            try{
+                optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+            } catch(e){ console.ls ? console.ls.error('No valid option field!') : console.log('No valid option field!'); }
+        }
     };
-
-
-
-    //////////////////////////////////////
-    // Init: show and set simple options
-    // Advanced options ==> simple options
-
-    // First: we need to get the actual values of options to generate the state of the simple option page
 
     // Show/Hide fields on generalInherit
     // To hide a simple option on generalInherit: just add the class "action_hide_on_inherit" to the rows continaing it
-    if (generalInherit()){
-        $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
-        $('.action_hide_on_inherit').addClass('hidden');
-    } else {
-        $('#general_inherit_off').prop('checked',true).trigger('change').closest('label').addClass('active');
-    }
+    var startupGeneralInherit = function(){
+        
+        if(!inheritPossible) return false;
+        
+        if (generalInherit()){
+            $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
+            $('.action_hide_on_inherit').addClass('hidden');
+        } else {
+            $('#general_inherit_off').prop('checked',true).trigger('change').closest('label').addClass('active');
+        }
+    };
 
-    // If no general inherit, then pass the value of the "Options" field in advanced option to the object optionObject
-    if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
+    // So this function find the selectors in the forum, and pass their values to the advanced options
+    var updateFieldSettings = function(){
 
-        try{
-            optionObject = JSON.parse($('#TemplateConfiguration_options').val());
-        } catch(e){ console.ls ? console.ls.error('No valid option field!') : console.log('No valid option field!'); }
-    }
+        if($('#general_inherit_on').prop('checked')){
+            $('#TemplateConfiguration_options').val('inherit');
+            return;
+        }
 
-
-    // action_update_options_string_form is the form containing the simple options
-    if($('.action_update_options_string_form').length > 0 ){
-
-        // Update values in the form to the template options
-        // selector_option_value_field are the select dropdown (like variations and fonts)
-        $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-
-            // If general inherit, then the value of the dropdown is inherit, else it's the value defined in advanced options
-            var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
-
-            // If anything goes wrong (manual edit or anything else), we make sure it will have a correct value
-            if(itemValue == null || itemValue == undefined){
-                itemValue = inheritPossible ? 'inherit' : false;
-                optionObject[$(item).attr('name')] = itemValue;
+        globalForm.find('.selector_option_value_field').each(function(i,item){
+            //disabled items should be inherit or false
+            if($(item).prop('disabled')){
+                $(item).val((inheritPossible ? 'inherit' : false));
             }
+            
+            optionObject[$(item).attr('name')] = $(item).val();
+        });
 
-            $(item).val(itemValue);
-
-            // Image selectors are disabled on inherit
-            if($(item).hasClass('selector_image_selector')){
-                if($(item).val() == 'inherit'){
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
+        globalForm.find('.selector_option_radio_field ').each(function(i,item){
+            //disabled items should be inherit or false
+            if($(item).prop('disabled')){
+                $(item).val((inheritPossible ? 'inherit' : false));
+            }
+            
+            if($(item).attr('type') == 'radio'){
+                if($(item).prop('checked')){
+                    optionObject[$(item).attr('name')] = $(item).val();
                 }
             }
 
         });
 
+        var newOptionObject = $.extend(true, {}, optionObject);
+        delete newOptionObject.general_inherit;
+
+        $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
+    };
+    
+    ///////////////
+    // Utility Methods
+    // -- small utilities i.g. for images or similar, or very specialized functions
+    
+    //Disables image previews when the image selector is set to inherit
+    var disableImagePreviewIfneeded = function(item){
+        // Image selectors are disabled on inherit
+        if($(item).hasClass('selector_image_selector')){
+            if($(item).val() == 'inherit'){
+                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
+            } else {
+                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
+            }
+        }
+    };
+
+    //Parses the option value for an item
+    var parseOptionValue = function(item, fallbackValue){
+        fallbackValue = fallbackValue || false;
+        // If general inherit, then the value of the dropdown is inherit, else it's the value defined in advanced options
+        var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
+
+        // If anything goes wrong (manual edit or anything else), we make sure it will have a correct value
+        if(itemValue == null || itemValue == undefined){
+            itemValue = inheritPossible ? 'inherit' : fallbackValue;
+            optionObject[$(item).attr('name')] = itemValue;
+        }
+        return itemValue;
+    }
+    
+    //Set value and propagate to bootstrapSwitch
+    var setAndPropageteToSwitch = function(item){
+        $(item).prop('checked', true).trigger('change');
+        $(item).closest('label').addClass('active');
+    }
+
+
+    ///////////////
+    // Parser methods
+    // -- These methods will either parse through existing fields, or set existing fields to their correct values
+
+    // Update values in the form to the template options
+    // selector_option_value_field are the select dropdown (like variations and fonts)
+    var prepareSelectField = function(){
+        globalForm.find('.selector_option_value_field').each(function(i,item){
+            var itemValue = parseOptionValue(item);
+            $(item).val(itemValue);
+            disableImagePreviewIfneeded(item);
+        });
+    };
+    
+    // Generate the state of switches (On/Off/Inherit)
+    var parseParentSwitchFields = function(){
+        globalForm.find('.selector_option_radio_field').each(function(i,item){
+            
+            var itemValue = parseOptionValue(item, 'off');
+            
+            //if it is a radio selector, check it and propagate the change to bootstrapSwitch
+            if($(item).val() == itemValue){
+                setAndPropageteToSwitch(item);
+            }
+        });
+    };
+
+    var prepareFontField = function(){
+        var currentPackageObject = 'inherit';
+        optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
+        
+        if( optionObject.font !== 'inherit' ){
+            $('#simple_edit_font').val(optionObject.font);
+        }
+        updateFieldSettings();
+    };
+
+    ///////////////
+    // HotSwap methods
+    // -- These methods connect an input directly to the value in the optionsObject
+
+    // Disable dependent inputs when their parents are set to off, or inherit
+    var hotSwapParentRadioButtons = function(){
         // hotswapping the select fields to the radiobuttons
         // If an option is set to off, the attached selectors are disabled
         $('.selector_radio_childfield').each(function(i, selectorItem){
             $('input[name='+$(selectorItem).data('parent')+']').on('change', function(){
+
                 if($(this).val() == 'on' && $(this).prop('checked') == true){
                     $(selectorItem).prop('disabled', false);
                 } else {
@@ -100,87 +177,24 @@ var prepare = function(){
                 if($(selectorItem).hasClass('selector_image_selector')){
                     $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
                 }
+
             });
         });
+    };
 
-        // Generate the state of switches (On/Off/Inherit)
-        $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
-
-            // Inherit if global inherit, else set it to the value defined in advanced options
-            var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
-
-            // If anything goes wrong (manual edit or anything else), we make sure it will have a correct value
-            if(itemValue == null || itemValue == undefined){
-                itemValue = inheritPossible ? 'inherit' : 'off';
-                optionObject[$(item).attr('name')] = itemValue;
-            }
-
-            //if it is a radio selector, check it and propagate the change to bootstrapSwitch
-            if($(item).val() == itemValue){
-                $(item).prop('checked', true).trigger('change');
-                $(item).closest('label').addClass('active');
-            }
+    // hotswapping the fields
+    var hotSwapFields = function(){
+        
+        globalForm.find('.selector_option_value_field').on('change', function(evt){ 
+            updateFieldSettings(); 
+            disableImagePreviewIfneeded(this);
         });
 
-        // hotswapping the fields
-        $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+        globalForm.find('.selector_option_radio_field').on('change', updateFieldSettings);
 
-            if($(this).hasClass('selector_image_selector')){
-                if($(this).val() == 'inherit'){
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
-                }
-            }
-        });
+    };
 
-        // hotswapping the radio fields
-        $('.action_update_options_string_form').find('.selector_option_radio_field').on('change', function(evt){
-            $(this).prop('checked',true);
-        });
-
-    }
-
-
-    //////////////////////////////////////
-    // Run: update advanced options values
-    // simple options  ==> Advanced options
-
-
-
-    if($('.action_update_options_string_form').length > 0 ){
-
-        //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', function(evt){
-            evt.preventDefault();
-
-            if(generalInherit()){
-                $('#TemplateConfiguration_options').val('inherit');
-                $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
-            } else {
-
-                // newOptionObject collects all the values of the different simple options
-
-                var newOptionObject = {};
-
-                // Get values from select dropdown
-                $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-                    newOptionObject[$(item).attr('name')] = $(item).val();
-                });
-
-                // Get values from the radio fields
-                $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
-                    if($(item).prop('checked'))
-                        newOptionObject[$(item).attr('name')] = $(item).val();
-                });
-
-                //now write the newly created object to the correspondent field as a json string
-                $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
-                //and submit the form
-                $('#template-options-form').find('button[type=submit]').trigger('click');
-            }
-        });
-
+    var hotswapGeneralInherit = function(){
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function(evt){
             $('#TemplateConfiguration_options').val('inherit');
@@ -190,54 +204,89 @@ var prepare = function(){
             $('.action_hide_on_inherit').removeClass('hidden');
             updateFieldSettings();
         });
+    };
 
-        //hotswapping the fields
-        $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+    var hotswapFontField = function(){
+        $('#simple_edit_font').on('change', function(evt){
+            if($('#simple_edit_font').val() === 'inherit'){
+                $('#TemplateConfiguration_packages_to_load').val('inherit');
+            } else {
 
-            optionObject[$(this).attr('name')] = $(this).val();
-            if($(this).attr('type') == 'radio'){
-                optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
+                var currentPackageObject = $(this).data(inheritvalue);
+                var selectedFontPackage = $(this).find('option:selected');
+                var packageName         = selectedFontPackage.data('font-package');
+                var formatedPackageName = "font-"+packageName;
+
+                var filteredAdd = currentFontObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))})
+                filteredAdd.push(formatedPackageName);
+                currentPackageObject.add = filteredAdd
             }
-            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
-        });
-
-        //hotswapping the radio fields
-        $('.action_update_options_string_form').find('.selector_option_radio_field').on('change', function(evt){
-            optionObject[$(this).attr('name')] = $(this).val();
-            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
-        });
-
-
-        // Fonts
-        if($('#simple_edit_font').length>0){
-            var currentFontObject = 'inherit';
-            optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
-
-            if( optionObject.font !== 'inherit' ){
-                $('#simple_edit_font').val(optionObject.font);
-            }
-
-            $('#simple_edit_font').on('change', function(evt){
-                if($('#simple_edit_font').val() === 'inherit'){
-                    $('#TemplateConfiguration_packages_to_load').val('inherit');
-                } else {
-
-                    currentFontObject = {};
-                    var selectedFontPackage = $(this).find('option:selected');
-                    var packageName         = selectedFontPackage.data('font-package');
-                    var formatedPackageName = "font-"+packageName;
-
-
-                    currentFontObject.add = ["pjax", formatedPackageName ];
-
-                }
-                $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentFontObject));
-            })
-        }
+            $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
+        })
     }
 
-    setTimeout(function(){deferred.resolve()},650);
+    ///////////////
+    // Event methods
+    // -- These methods are triggered on events. Please see `bind´ method for more information
+    var onSaveButtonClickAction = function(evt){
+        evt.preventDefault();
+    
+        if(generalInherit()){
+            $('#TemplateConfiguration_options').val('inherit');
+            $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
+        } else {
+            //Create a copy of the inherent optionObject
+            var newOptionObject = $.extend(true, {}, optionObject);
+            newOptionObject.generalInherit = null;
 
+            //now write the newly created object to the correspondent field as a json string
+            $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
+            //and submit the form
+            $('#template-options-form').find('button[type=submit]').trigger('click');
+        }
+    };
+
+
+    ///////////////
+    // Instance methods
+    var bind = function(){
+        //if the save button is clicked write everything into the template option field and send the form
+        $('.action_update_options_string_button').on('click', onSaveButtonClickAction);
+
+        //Bind the hotwaps
+        hotSwapParentRadioButtons();
+        hotSwapFields();
+        hotswapGeneralInherit();
+        hotswapFontField();
+    };
+    
+    var run = function(){
+        parseOptionObject();
+
+        startupGeneralInherit();
+
+        prepareSelectField();
+        parseParentSwitchFields();
+        prepareFontField();
+
+        bind();
+    };
+
+    return run;
+    
+};
+
+var prepare = function(){
+
+    var deferred = $.Deferred();
+
+    //activate the bootstrap switch for checkboxes
+    $('.action_activate_bootstrapswitch').bootstrapSwitch();
+
+    var themeOptionStarter = new ThemeOptions();
+    themeOptionStarter();
+    
+    setTimeout(function(){deferred.resolve()},650);
     return deferred.promise();
 };
 
