@@ -1617,14 +1617,6 @@ class SurveyRuntimeHelper
 
         $aEnterErrors = array();
         $FlashError   = false;
-        // Scenario => Token required
-        if ($scenarios['tokenRequired'] && !$preview) {
-            //Test if token is valid
-            list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $this->aSurveyInfo, $aEnterTokenData, $clienttoken);
-            if (!empty($FlashError)) {
-                $aEnterErrors['token'] = $FlashError;
-            }
-        }
 
         // Scenario => Captcha required
         if ($scenarios['captchaRequired'] && !$preview) {
