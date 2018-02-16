@@ -36636,7 +36636,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             'questiongroups': [],
             'menues': [],
             '$store.state.isCollapsed': false,
-            'sideBarWidth': '315px',
+            'sideBarWidth': '315',
             'initialPos': { x: 0, y: 0 },
             'isMouseDown': false,
             'isMouseDownTimeOut': null,
@@ -36649,7 +36649,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         getSideBarWidth() {
-            return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
+            return this.$store.state.isCollapsed ? '98' : this.sideBarWidth;
         },
         sortedMenus() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.menues, a => {
@@ -36764,7 +36764,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
             this.$store.commit('changeIsCollapsed', this.$store.state.isCollapsed);
             if (this.$store.state.isCollapsed) {
-                this.sideBarWidth = '98px';
+                this.sideBarWidth = '98';
             } else {
                 this.sideBarWidth = this.$store.state.sidebarwidth;
             }
@@ -36780,7 +36780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.$store.state.isCollapsed = false;
                 if (parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
-                    this.$store.commit('changeSidebarwidth', '340px');
+                    this.$store.commit('changeSidebarwidth', '340');
                 } else {
                     this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 }
@@ -36873,7 +36873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.state.isCollapsed) {
-            this.sideBarWidth = '98px';
+            this.sideBarWidth = '98';
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
@@ -38076,7 +38076,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width",
     style: ({
-      width: _vm.sideBarWidth
+      'max-height': _vm.$store.state.inSurveyViewHeight,
+      width: _vm.$store.getters.sideBarSize
     }),
     attrs: {
       "id": "sidebar"
@@ -38203,9 +38204,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'min-height': _vm.calculateSideBarMenuHeight
     })
   })], 1)], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "resize-handle",
+    staticClass: "resize-handle ls-flex-column",
     style: ({
-      'height': _vm.$store.state.inSurveyViewHeight
+      'min-height': _vm.calculateSideBarMenuHeight
     })
   }, [_c('button', {
     directives: [{
@@ -39402,7 +39403,7 @@ const getAppState = function (userid) {
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: '380px',
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,
@@ -39426,9 +39427,14 @@ const getAppState = function (userid) {
         ],
         getters: {
             substractContainer: state => {
-                let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));
-                let collapsedBodyWidth = ($('#vue-app-main-container').width() - parseInt('98px'));
-                return (state.isCollapsed ? collapsedBodyWidth : bodyWidth) + 'px';
+                let bodyWidth = (1 - (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width()))*100;
+                let collapsedBodyWidth = (1 - (parseInt('98px')/$('#vue-app-main-container').width()))*100;
+                return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
+            },
+            sideBarSize : state => {
+                let sidebarWidth = (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width())*100;
+                let collapsedSidebarWidth = (parseInt(98)/$('#vue-app-main-container').width())*100;
+                return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
             }
         },
         mutations: {
