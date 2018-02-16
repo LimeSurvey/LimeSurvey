@@ -106,7 +106,7 @@ var QuestionFunctions = function () {
 
             updatequestionattributes();
             $('#question_type').on('change', updatequestionattributes);
-            if(selectormodeclass == 'default'){
+            if(selectormodeclass == 'default' || selectormodeclass == 'full'){
                 //bind advanced selector
                 $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
                 $('#selector__modal_select-question-type').on('show.bs.modal', function () {
