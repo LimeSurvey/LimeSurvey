@@ -516,6 +516,15 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Sets self::$instance to null;
+     * Needed for unit test.
+     */
+    public static function resetInstance()
+    {
+        self::$instance = null;
+    }
+
+    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception
