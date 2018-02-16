@@ -916,28 +916,6 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Get a string containing the name of the current template and all its parents
-     * Used to inject those names into body classes
-     */
-    public function getTemplateAndMotherNames()
-    {
-        $oRTemplate = $this;
-        $sTemplateNames = $this->sTemplateName;
-
-        while (!empty($oRTemplate->oMotherTemplate)) {
-
-            $sTemplateNames .= ((App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG)) ? ' '.$oRTemplate->config->metadata->extends : ' '.$oRTemplate->template->extends;
-            $oRTemplate      = $oRTemplate->oMotherTemplate;
-            if (!($oRTemplate instanceof TemplateConfiguration)) {
-                // Throw alert: should not happen
-                break;
-            }
-        }
-
-        return $sTemplateNames;
-    }
-
-    /**
      * Convert the values to a json.
      * It checks that the correct values is inserted.
      * @param array|object $oFiled the filed to convert

@@ -1026,4 +1026,24 @@ class TemplateConfiguration extends TemplateConfig
         return $sAttribute;
     }
 
+    /**
+     * @return string
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->oMotherTemplate)) {
+
+            $sTemplateNames .= ' ' . $oRTemplate->template->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+
+        return $sTemplateNames;
+    }
 }

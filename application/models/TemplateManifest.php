@@ -920,4 +920,24 @@ class TemplateManifest extends TemplateConfiguration
         return $aAssetsToRemove;
     }
 
+    /**
+     * @return string
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->oMotherTemplate)) {
+
+            $sTemplateNames .= ' ' . $oRTemplate->config->metadata->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+
+        return $sTemplateNames;
+    }
 }
