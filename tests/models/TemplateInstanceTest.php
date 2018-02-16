@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\WebDriverBy;
-
 /**
  * @group templateinstance
  */
