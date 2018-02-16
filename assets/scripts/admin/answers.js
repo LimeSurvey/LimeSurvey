@@ -414,10 +414,10 @@ function lsbrowser(e)
 
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
         var x=0;
-        // $("#labelsets").removeOption(/.*/);
+        $('#labelsets').find('option').remove();
         for (x in json)
             {
-            $('#labelsets').addOption(json[x][0],json[x][1]);
+            $("#labelsets").append($("<option></option>").attr("value", json[x][0]).text(json[x][1]));
             if (x==0){
                 remind=json[x][0];
             }
