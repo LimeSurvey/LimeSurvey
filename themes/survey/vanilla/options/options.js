@@ -208,11 +208,15 @@ var ThemeOptions = function(){
 
     var hotswapFontField = function(){
         $('#simple_edit_font').on('change', function(evt){
+            var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
+                ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
+                : $(this).data(inheritvalue);
+                
             if($('#simple_edit_font').val() === 'inherit'){
-                $('#TemplateConfiguration_packages_to_load').val('inherit');
-            } else {
 
-                var currentPackageObject = $(this).data(inheritvalue);
+                $('#TemplateConfiguration_packages_to_load').val('inherit');
+
+            } else {
                 var selectedFontPackage = $(this).find('option:selected');
                 var packageName         = selectedFontPackage.data('font-package');
                 var formatedPackageName = "font-"+packageName;
