@@ -150,7 +150,7 @@ class ExpressionCoreAux extends TestCase
                     return {value: $value};
                 }
             }
-            eval(fs.readFileSync('./assets/scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
+            eval(fs.readFileSync('./assets/packages/expressions/em_javascript.js', {encoding: 'utf8'}));
             LEMradix = ',';
             LEMmode = 'survey';
             LEMalias2varName = {
