@@ -214,7 +214,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load|json_encode}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>

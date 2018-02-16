@@ -632,7 +632,7 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptions();
         $oTemplate->setOptionInheritance();
 
-        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  json_encode($oTemplate->packages_to_load), 'files_css' => json_encode($oTemplate->files_css)));
+        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  $oTemplate->packages_to_load, 'files_css' => $oTemplate->files_css));
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }

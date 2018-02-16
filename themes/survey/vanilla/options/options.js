@@ -210,8 +210,8 @@ var ThemeOptions = function(){
         $('#simple_edit_font').on('change', function(evt){
             var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
                 ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
-                : $(this).data(inheritvalue);
-                
+                : $(this).data('inheritvalue');
+
             if($('#simple_edit_font').val() === 'inherit'){
 
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
@@ -224,8 +224,8 @@ var ThemeOptions = function(){
                 var filteredAdd = currentFontObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))})
                 filteredAdd.push(formatedPackageName);
                 currentPackageObject.add = filteredAdd
+                $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
             }
-            $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
         })
     }
 

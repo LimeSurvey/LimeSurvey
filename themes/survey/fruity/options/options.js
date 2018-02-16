@@ -238,10 +238,12 @@ var ThemeOptions = function(){
         $('#simple_edit_font').on('change', function(evt){
             var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
                 ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
-                : $(this).data(inheritvalue);
+                : $(this).data('inheritvalue');
 
             if($('#simple_edit_font').val() === 'inherit'){
+
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
+
             } else { 
 
                 var selectedFontPackage = $(this).find('option:selected');
@@ -251,8 +253,8 @@ var ThemeOptions = function(){
                 var filteredAdd = currentPackageObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))})
                 filteredAdd.push(formatedPackageName);
                 currentPackageObject.add = filteredAdd
+                $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
             }
-            $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));
         })
     }
 
@@ -285,8 +287,8 @@ var ThemeOptions = function(){
             } else {
                 var cssThemeToAdd = $('#simple_edit_add_css').val();
                 var currentThemeObject = $('#TemplateConfiguration_files_css').val() != 'inherit' 
-                    ? JSON.parse($('#TemplateConfiguration_files_css').val()) 
-                    : $(this).data(inheritvalue);             
+                    ? JSON.parse($('#TemplateConfiguration_files_css').val())
+                    : $(this).data('inheritvalue');
 
                 currentThemeObject.add = currentThemeObject.add.filter(function(item,i){return !(/^css\/variations\/.*$/.test(item));});
                 currentThemeObject.add.push(cssThemeToAdd);
