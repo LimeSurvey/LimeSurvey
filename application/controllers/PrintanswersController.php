@@ -131,7 +131,7 @@
 
             if (empty($sExportType)) {
                 $aData['aSurveyInfo']['include_content'] = 'printanswers';
-                Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
 
             } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
@@ -152,7 +152,9 @@
                 $aData['aSurveyInfo']['printPdf'] = 1;
                 $aData['aSurveyInfo']['include_content'] = 'printanswers';
                 Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
+
                 $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
+                $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
                 $oPDF->writeHTML($html, true, false, true, false, '');
 
                 header("Pragma: public");
