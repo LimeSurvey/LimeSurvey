@@ -77,7 +77,7 @@
 		<?php echo $form->hiddenField($model, 'id');?>
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton((empty($model->id) ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<?php echo TbHtml::submitButton((empty($model->id) ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT('Close');?></button>
 	</div>
 <?php $this->endWidget(); ?>

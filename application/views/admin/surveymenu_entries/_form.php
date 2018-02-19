@@ -164,7 +164,7 @@
 		
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	</div>
 
