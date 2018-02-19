@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-15 09:29:11+00:00\n"
+"POT-Creation-Date: 2018-02-19 13:55:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,7 +28,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:206
 #: application/controllers/admin/questions.php:229
 #: application/controllers/admin/themes.php:840
-#: application/controllers/admin/themes.php:1062
+#: application/controllers/admin/themes.php:1141
 #: application/controllers/survey/index.php:152
 #: application/controllers/survey/index.php:179
 #: application/controllers/survey/index.php:296
@@ -395,7 +395,7 @@ msgstr ""
 msgid "You are not allowed to print answers."
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:146
+#: application/controllers/PrintanswersController.php:147
 #: application/controllers/admin/PluginHelper.php:30
 #: application/controllers/admin/assessments.php:92
 #: application/controllers/admin/emailtemplates.php:74
@@ -628,8 +628,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:468
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/helpers/qanda_helper.php:2368
-#: application/models/Question.php:825 application/models/QuestionGroup.php:307
-#: application/models/QuestionGroup.php:313
+#: application/models/Question.php:825
 #: application/models/TemplateManifest.php:291
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
@@ -1043,6 +1042,7 @@ msgstr ""
 #: application/views/admin/survey/subview/import_ressources_modal.php:32
 #: application/views/admin/survey/subview/tabImport_view.php:61
 #: application/views/admin/surveymenu/_form.php:81
+#: application/views/admin/surveymenu_entries/_form.php:168
 #: application/views/admin/surveysgroups/index.php:12
 #: application/views/admin/surveysgroups/update.php:13
 #: application/views/admin/themeoptions/index.php:14
@@ -2368,6 +2368,8 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:36
 #: application/views/admin/survey/subview/addPanelIntegrationParameter_view.php:41
 #: application/views/admin/survey/surveybar_rightactionbuttons.php:22
+#: application/views/admin/surveymenu/_form.php:80
+#: application/views/admin/surveymenu_entries/_form.php:167
 #: application/views/admin/themeoptions/update.php:34
 #: application/views/admin/themeoptions/update.php:246
 #: application/views/admin/themes/templateeditorbar_view.php:208
@@ -2449,6 +2451,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:201
 #: application/models/Surveymenu.php:188
 #: application/models/SurveymenuEntries.php:187
+#: application/models/SurveysGroups.php:69
 #: application/models/SurveysGroups.php:101
 #: application/models/UserGroup.php:274
 #: application/views/admin/labels/labelsets_view.php:44
@@ -2960,7 +2963,7 @@ msgid "There are no unmapped attributes"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:81
-#: application/controllers/admin/themes.php:1046
+#: application/controllers/admin/themes.php:1067
 msgid "Please submit by %s"
 msgstr ""
 
@@ -2977,12 +2980,12 @@ msgid "Submit Your Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:136
-#: application/controllers/admin/themes.php:1047
+#: application/controllers/admin/themes.php:1068
 msgid "Thank you for completing this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:144
-#: application/controllers/admin/themes.php:1043
+#: application/controllers/admin/themes.php:1064
 msgid "Please fax your completed survey to:"
 msgstr ""
 
@@ -3076,7 +3079,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:544
-#: application/controllers/admin/themes.php:1020
+#: application/controllers/admin/themes.php:1041
 msgid "*"
 msgstr ""
 
@@ -3085,7 +3088,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:603
 #: application/controllers/admin/printablesurvey.php:653
 #: application/controllers/admin/printablesurvey.php:834
-#: application/controllers/admin/themes.php:1024
+#: application/controllers/admin/themes.php:1045
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -3883,6 +3886,8 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:465
 #: application/views/admin/survey/subview/tab_survey_view.php:29
+#: application/views/admin/surveymenu/_form.php:80
+#: application/views/admin/surveymenu_entries/_form.php:167
 #: application/views/admin/themeoptions/update.php:246
 #: application/views/admin/user/setuserpermissions.php:26
 msgid "Create"
@@ -4107,92 +4112,144 @@ msgstr ""
 msgid "Print answers"
 msgstr ""
 
-#: application/controllers/admin/themes.php:851
+#: application/controllers/admin/themes.php:844
+#: application/core/plugins/Authdb/Authdb.php:200
+#: application/views/admin/export/statistics_subviews/_outputformat.php:11
+msgid "PDF"
+msgstr ""
+
+#: application/controllers/admin/themes.php:845
+msgid "Navigation"
+msgstr ""
+
+#: application/controllers/admin/themes.php:854
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:880
+#: application/controllers/admin/themes.php:886
 msgid "Template Sample"
 msgstr ""
 
-#: application/controllers/admin/themes.php:882
+#: application/controllers/admin/themes.php:889
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
-#: application/controllers/admin/themes.php:883
+#: application/controllers/admin/themes.php:890
 msgid "But this one isn't."
 msgstr ""
 
-#: application/controllers/admin/themes.php:885
+#: application/controllers/admin/themes.php:893
 msgid "Welcome to this sample survey"
 msgstr ""
 
-#: application/controllers/admin/themes.php:886
+#: application/controllers/admin/themes.php:894
 msgid "You should have a great time doing this"
 msgstr ""
 
-#: application/controllers/admin/themes.php:893
+#: application/controllers/admin/themes.php:896
+#: application/helpers/replacements_helper.php:198
+msgid "There is 1 question in this survey"
+msgstr ""
+
+#: application/controllers/admin/themes.php:903
 msgid "Some URL description"
 msgstr ""
 
-#: application/controllers/admin/themes.php:900
+#: application/controllers/admin/themes.php:910
 msgid "Group 1: The first lot of questions"
 msgstr ""
 
-#: application/controllers/admin/themes.php:901
+#: application/controllers/admin/themes.php:911
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: application/controllers/admin/themes.php:922
-#: application/controllers/admin/themes.php:948
+#: application/controllers/admin/themes.php:934
+#: application/controllers/admin/themes.php:1118
+#: application/helpers/surveytranslator_helper.php:241
+msgid "English"
+msgstr ""
+
+#: application/controllers/admin/themes.php:935
+#: application/controllers/admin/themes.php:1119
+#: application/helpers/surveytranslator_helper.php:291
+#: application/views/admin/token/exportdialog.php:69
+msgid "German"
+msgstr ""
+
+#: application/controllers/admin/themes.php:943
+#: application/controllers/admin/themes.php:969
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/themes.php:924
+#: application/controllers/admin/themes.php:945
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/themes.php:933
+#: application/controllers/admin/themes.php:954
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/themes.php:958
+#: application/controllers/admin/themes.php:979
 msgid "Please explain something in detail:"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1004
+#: application/controllers/admin/themes.php:1025
 msgid "Welcome to the Assessment"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1004
+#: application/controllers/admin/themes.php:1025
 msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1031
+#: application/controllers/admin/themes.php:1052
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1032
+#: application/controllers/admin/themes.php:1053
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1044
+#: application/controllers/admin/themes.php:1065
 msgid "Submit your survey."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1048
+#: application/controllers/admin/themes.php:1069
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1063
+#: application/controllers/admin/themes.php:1088
+msgid "A group without step status styling"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1091
+msgid "This group is unanswered"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1097
+msgid "This group has an error"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1103
+msgid "Current group is disabled"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1132
+msgid "Question group name"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1133
+msgid "Question group description"
+msgstr ""
+
+#: application/controllers/admin/themes.php:1142
 msgid "This is an error message example"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1126
+#: application/controllers/admin/themes.php:1210
 msgid "LimeSurvey 3.0 theme editor"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1130
+#: application/controllers/admin/themes.php:1214
 msgid "Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
@@ -6334,11 +6391,6 @@ msgstr ""
 msgid "Microsoft Word"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:200
-#: application/views/admin/export/statistics_subviews/_outputformat.php:11
-msgid "PDF"
-msgstr ""
-
 #: application/core/plugins/Authdb/Authdb.php:203
 #: application/views/admin/export/statistics_subviews/_outputformat.php:8
 msgid "HTML"
@@ -6906,6 +6958,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:77
 #: application/models/Notification.php:163
+#: application/models/SurveysGroups.php:75
 msgid "Created"
 msgstr ""
 
@@ -10523,10 +10576,6 @@ msgstr ""
 msgid "There are no questions in this survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:198
-msgid "There is 1 question in this survey"
-msgstr ""
-
 #: application/helpers/replacements_helper.php:200
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
@@ -10687,10 +10736,6 @@ msgstr ""
 msgid "Dutch (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:241
-msgid "English"
-msgstr ""
-
 #: application/helpers/surveytranslator_helper.php:248
 msgid "Estonian"
 msgstr ""
@@ -10713,11 +10758,6 @@ msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:284
 msgid "Georgian"
-msgstr ""
-
-#: application/helpers/surveytranslator_helper.php:291
-#: application/views/admin/token/exportdialog.php:69
-msgid "German"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:298
@@ -11661,17 +11701,31 @@ msgstr ""
 msgid "Group summary"
 msgstr ""
 
-#: application/models/QuestionGroup.php:306
+#: application/models/QuestionGroup.php:308
+#: application/models/QuestionGroup.php:317
+#: application/models/SurveysGroups.php:233
+msgid "Delete survey group"
+msgstr ""
+
+#: application/models/QuestionGroup.php:314
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:113
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/QuestionGroup.php:312
+#: application/models/QuestionGroup.php:322
+msgid "Group cant be deleted, because of depending conditions"
+msgstr ""
+
+#: application/models/QuestionGroup.php:328
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:120
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr ""
 
-#: application/models/QuestionGroup.php:377
+#: application/models/QuestionGroup.php:330
+msgid "Delete survey group not possible"
+msgstr ""
+
+#: application/models/QuestionGroup.php:393
 msgid "You can not add a group if survey is active."
 msgstr ""
 
@@ -11826,6 +11880,7 @@ msgid "Bottom bar"
 msgstr ""
 
 #: application/models/Surveymenu.php:183
+#: application/models/SurveysGroups.php:74
 msgid "Parent"
 msgstr ""
 
@@ -11847,6 +11902,7 @@ msgid "Position"
 msgstr ""
 
 #: application/models/Surveymenu.php:191
+#: application/models/SurveysGroups.php:71
 #: application/models/SurveysGroups.php:119
 #: application/models/UserGroup.php:281
 #: application/views/admin/homepagesettings/index.php:121
@@ -11868,7 +11924,8 @@ msgid "Changed by"
 msgstr ""
 
 #: application/models/Surveymenu.php:195
-#: application/models/SurveymenuEntries.php:206 application/models/User.php:480
+#: application/models/SurveymenuEntries.php:206
+#: application/models/SurveysGroups.php:77 application/models/User.php:480
 msgid "Created by"
 msgstr ""
 
@@ -11965,6 +12022,22 @@ msgstr ""
 msgid "Edit this survey menu entry"
 msgstr ""
 
+#: application/models/SurveysGroups.php:68
+msgid "Gsid"
+msgstr ""
+
+#: application/models/SurveysGroups.php:72
+msgid "Sortorder"
+msgstr ""
+
+#: application/models/SurveysGroups.php:73
+msgid "Owner Uid"
+msgstr ""
+
+#: application/models/SurveysGroups.php:76
+msgid "Modified"
+msgstr ""
+
 #: application/models/SurveysGroups.php:92
 msgid "Survey group ID"
 msgstr ""
@@ -11989,11 +12062,7 @@ msgstr ""
 msgid "Do you want to continue?"
 msgstr ""
 
-#: application/models/SurveysGroups.php:233
-msgid "Delete survey group"
-msgstr ""
-
-#: application/models/Template.php:184
+#: application/models/Template.php:186
 msgid "Default survey theme %s is not installed. Now %s is the new default survey theme"
 msgstr ""
 
@@ -12031,11 +12100,11 @@ msgstr ""
 msgid "You cannot uninstall the default template."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:664
+#: application/models/TemplateConfiguration.php:666
 msgid "Error: Malformed JSON: Field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:787
+#: application/models/TemplateConfiguration.php:789
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
@@ -16049,10 +16118,6 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:211
 #: application/views/admin/survey/Question/listquestions.php:93
 msgid "Question type"
-msgstr ""
-
-#: application/views/admin/survey/Question/editQuestion_view.php:169
-msgid "Select the question type here."
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:234
