@@ -1060,6 +1060,16 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
                 }
 
+                // End text
+                if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = true;
+                } else {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = false;
+                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                }
+
                 $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
