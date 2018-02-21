@@ -1,0 +1,9 @@
+{
+    "name": "PHP test",
+    "description": "PHP test",
+    "scripts": {
+	"dokku": {
+	    "predeploy": "composer install;composer update"
+	}
+    }
+}
