@@ -269,7 +269,7 @@ class Usergroups extends Survey_Common_Action
                     }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
+                $eguquery = "SELECT * FROM {{user_in_groups}} AS a LEFT JOIN {{user_groups}} ug on a.ugid=ug.ugid INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE a.ugid = ".$ugid." ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
                 $aUserInGroupsResult = $eguresult->readAll();
                 $sCondition2 = "ugid = :ugid";
@@ -298,8 +298,8 @@ class Usergroups extends Survey_Common_Action
                     $userloop[$row]["userid"] = $egurow['uid'];
 
                     //	output users
-                    $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+                    $userloop[$row]["rowclass"] = $bgcc;                                                                                       
+                    if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $egurow['owner_id']==Yii::app()->session['loginID'])  {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
