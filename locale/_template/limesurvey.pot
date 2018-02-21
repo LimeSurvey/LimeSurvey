@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-21 14:29:32+00:00\n"
+"POT-Creation-Date: 2018-02-21 14:34:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3403,7 +3403,7 @@ msgstr ""
 #: application/models/Participant.php:232
 #: application/models/ParticipantShare.php:221 application/models/Token.php:78
 #: application/models/TokenDynamic.php:655
-#: application/views/admin/export/exportresults_view.php:388
+#: application/views/admin/export/exportresult_panels/_token-control.php:23
 #: application/views/admin/responses/listResponses_view.php:136
 #: application/views/admin/themes/templateeditor_register_view.php:3
 #: application/views/admin/token/dummytokenform.php:40
@@ -3415,7 +3415,7 @@ msgstr ""
 #: application/models/Participant.php:233
 #: application/models/ParticipantShare.php:216 application/models/Token.php:79
 #: application/models/TokenDynamic.php:663
-#: application/views/admin/export/exportresults_view.php:389
+#: application/views/admin/export/exportresult_panels/_token-control.php:26
 #: application/views/admin/responses/listResponses_view.php:147
 #: application/views/admin/themes/templateeditor_register_view.php:7
 #: application/views/admin/token/dummytokenform.php:48
@@ -5475,7 +5475,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:42
 #: application/models/Permission.php:92
-#: application/views/admin/export/exportresults_view.php:291
+#: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/responses/browsemenubar_view.php:26
 #: application/views/admin/survey/importSurvey_view.php:108
 #: application/views/admin/survey/surveybar_statistics.php:18
@@ -6527,9 +6527,9 @@ msgid "Unknown box ID!"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:332
-#: application/views/admin/export/exportresults_view.php:214
-#: application/views/admin/export/exportresults_view.php:230
-#: application/views/admin/export/exportresults_view.php:262
+#: application/views/admin/export/exportresult_panels/_headings.php:35
+#: application/views/admin/export/exportresult_panels/_headings.php:51
+#: application/views/admin/export/exportresult_panels/_headings.php:67
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:39
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -6622,9 +6622,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:451
 #: application/helpers/questionHelper.php:706
 #: application/helpers/questionHelper.php:1000
-#: application/views/admin/export/exportresults_view.php:215
-#: application/views/admin/export/exportresults_view.php:231
-#: application/views/admin/export/exportresults_view.php:263
+#: application/views/admin/export/exportresult_panels/_headings.php:36
+#: application/views/admin/export/exportresult_panels/_headings.php:52
+#: application/views/admin/export/exportresult_panels/_headings.php:68
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:40
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -7129,7 +7129,7 @@ msgid "Search"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:48
-#: application/views/admin/export/exportresults_view.php:132
+#: application/views/admin/export/exportresult_panels/_single-value.php:27
 #: application/views/admin/participants/attributeMapCSV_view.php:75
 #: application/views/admin/participants/attributeMapToken_view.php:99
 #: application/views/admin/participants/attributeMap_view.php:185
@@ -7924,7 +7924,7 @@ msgstr ""
 #: application/models/Participant.php:234
 #: application/models/ParticipantShare.php:226 application/models/Token.php:80
 #: application/models/TokenDynamic.php:671
-#: application/views/admin/export/exportresults_view.php:390
+#: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/saved/savedlist_view.php:22
 #: application/views/admin/themes/templateeditor_register_view.php:11
 msgid "Email address"
@@ -9857,7 +9857,7 @@ msgid "Rows"
 msgstr ""
 
 #: application/helpers/questionHelper.php:708
-#: application/views/admin/export/exportresults_view.php:346
+#: application/views/admin/export/exportresult_panels/_columns-control.php:5
 msgid "Columns"
 msgstr ""
 
@@ -12967,7 +12967,7 @@ msgid "Reset answers and token completed state"
 msgstr ""
 
 #: application/views/admin/dataentry/vvimport.php:17
-#: application/views/admin/export/exportresults_view.php:150
+#: application/views/admin/export/exportresult_panels/_general.php:5
 #: application/views/admin/globalSettings_view.php:21
 #: application/views/admin/survey/Question/massive_actions/_selector.php:34
 #: application/views/admin/token/massive_actions/_update.php:22
@@ -13189,6 +13189,130 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+#: application/views/admin/export/exportresult_panels/_columns-control.php:14
+msgid "Select columns:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_format.php:5
+#: application/views/admin/export/vv_view.php:71
+msgid "Format"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_format.php:12
+msgid "Export format:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:11
+msgid "Completion state:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:17
+#: application/views/admin/export/vv_view.php:38
+#: application/views/admin/responses/browseallheader_view.php:55
+msgid "Completed responses only"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:20
+#: application/views/admin/export/spss_view.php:21
+#: application/views/admin/export/statistics_subviews/_dataselection.php:14
+#: application/views/admin/export/statistics_user_view.php:31
+#: application/views/admin/export/vv_view.php:50
+#: application/views/admin/responses/browseallheader_view.php:54
+msgid "All responses"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:23
+#: application/views/admin/export/vv_view.php:60
+#: application/views/admin/responses/browseallheader_view.php:56
+msgid "Incomplete responses only"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:31
+msgid "Export language:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:5
+msgid "Headings"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:13
+msgid "Export questions as:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:28
+msgid "Convert spaces in question text to underscores:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:44
+msgid "Text abbreviated:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:60
+msgid "Use Expression Manager code:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:75
+msgid "Number of characters:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:84
+msgid "Code/text separator:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:5
+msgid "Range"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:12
+#: application/views/admin/token/invite.php:120
+#: application/views/admin/token/remind.php:135
+msgid "From:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:20
+msgid "to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:10
+msgid "Export responses as:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:16
+msgid "Answer codes"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:21
+msgid "Full answers"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:31
+msgid "Convert Y to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:38
+msgid "Convert N to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_single-value.php:12
+msgid "Selection"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_single-value.php:19
+msgid "Selected answers"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:8
+msgid "Token control"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:14
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:18
+msgid "Choose token fields:"
+msgstr ""
+
 #: application/views/admin/export/exportresults_view.php:12
 msgid "%s of %s columns selected"
 msgstr ""
@@ -13201,123 +13325,7 @@ msgstr ""
 msgid "Single response: ID %s"
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:37
-#: application/views/admin/export/vv_view.php:71
-msgid "Format"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:44
-msgid "Export format:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:64
-msgid "Range"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:72
-#: application/views/admin/token/invite.php:120
-#: application/views/admin/token/remind.php:135
-msgid "From:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:89
-msgid "to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:111
-msgid "Selection"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:125
-msgid "Selected answers"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:155
-msgid "Completion state:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:159
-#: application/views/admin/export/vv_view.php:38
-#: application/views/admin/responses/browseallheader_view.php:55
-msgid "Completed responses only"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:160
-#: application/views/admin/export/spss_view.php:21
-#: application/views/admin/export/statistics_subviews/_dataselection.php:14
-#: application/views/admin/export/statistics_user_view.php:31
-#: application/views/admin/export/vv_view.php:50
-#: application/views/admin/responses/browseallheader_view.php:54
-msgid "All responses"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:161
-#: application/views/admin/export/vv_view.php:60
-#: application/views/admin/responses/browseallheader_view.php:56
-msgid "Incomplete responses only"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:168
-msgid "Export language:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:181
-msgid "Headings"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:207
-msgid "Convert spaces in question text to underscores:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:223
-msgid "Text abbreviated:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:237
-msgid "Number of characters:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:255
-msgid "Use Expression Manager code:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:270
-msgid "Code/text separator:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:305
-msgid "Answer codes"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:317
-msgid "Full answers"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:326
-msgid "Convert Y to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:331
-msgid "Convert N to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:355
-msgid "Select columns:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:374
-msgid "Token control"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:380
-msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:384
-msgid "Choose token fields:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:407
+#: application/views/admin/export/exportresults_view.php:57
 #: application/views/admin/export/spss_view.php:86
 msgid "Export data"
 msgstr ""
