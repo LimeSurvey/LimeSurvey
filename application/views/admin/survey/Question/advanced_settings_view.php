@@ -36,7 +36,7 @@ $categoryNum=0;
     <div class="form-group">
     <!-- Form Group -->
         <!-- Label -->
-        <label class="col-sm-12 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class="control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
