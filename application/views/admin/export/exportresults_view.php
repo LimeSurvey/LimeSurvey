@@ -323,12 +323,12 @@ echo viewHelper::getViewTestTag('exportResults');
                                 <div class="form-group row">
                                     <div class='col-sm-6'>
                                         <?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                        echo CHTML::label(gT("Convert Y to:"),'converty');?>
+                                        echo ' '.CHTML::label(gT("Convert Y to:"),'converty');?>
                                         <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); ?>
                                     </div>
                                     <div class='col-sm-6'>
                                         <?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                        echo CHTML::label(gT("Convert N to:"),'convertn');?>
+                                        echo ' '.CHTML::label(gT("Convert N to:"),'convertn');?>
                                         <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1', 'class' => 'form-control')); ?>
                                     </div>
                                 </div>
