@@ -35,6 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.4.0 (build 180219) to 3.4.1 (build 180221) Feb 21, 2018
+-Fixed issue #13392: New token form set useleft to 1 (Denis Chenu)
+-Fixed issue #12786: Cannot delete users from owned user group (Carsten Schmitz)
+-Fixed issue #13160: Relevance based on array-dual-scale broken (Olle Haerstedt)
+-Fixed issue #13320: End message is not shown in preview (Olle Haerstedt)
+-Fixed issue #13331: Problem when printing the questions at the end of the survey (markusfluer)
+-Fixed issue #13339: IP address field always records 'invalid' (Carsten Schmitz)
+-Fixed issue #13370: When submitting an invalid token an error is displayed twice. (Johan)
+-Fixed issue #13373: Missing translation (markusfluer)
+-Fixed issue #13382: Inconsistent use of icons for adding/new (markusfluer)
+-Fixed issue #13385: Public PDF export show all question even if unrelevant (markusfluer)
+-Fixed issue #13388: qtip-content help text outside of window (markusfluer)
+-Fixed issue #13392: Token with useleft at 0 or less can take the survey (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: French (France) by b00z00, arnaud21
+#Updated translation: French (France) by c_schmitz, DenisChenu, arnaud21, yompyamper, b00z00
+#Updated translation: German (Informal) by markusfluer, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
 Changes from 3.3.1 (build 180214) to 3.4.0 (build 180219) Feb 19, 2018
 -New feature: Setting to force use of XML, for easy theme development (LouisGac)
 -Fixed issue #12975: Cannot use the twig split filter (tpartner)
