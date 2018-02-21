@@ -2347,13 +2347,12 @@ class tokens extends Survey_Common_Action
         }
         Yii::app()->loadHelper("surveytranslator");
 
-        if ($subaction == "edit") {
+        if ($iTokenId) {
             $aData['tokenid'] = $iTokenId;
-            $aData['tokendata'] = Token::model($iSurveyId)->findByPk($iTokenId);
+            $aData['tokendata'] = Token::model($iSurveyId)->findByPk($iTokenId)->getAttributes();
         } else {
-            $aData['completed'] = null;
-            $aData['sent'] = null;
-            $aData['remindersent'] = null;
+            $aData['tokenid'] = null;
+            $aData['tokendata'] = Token::create($iSurveyId)->getAttributes();
         }
 
         $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
