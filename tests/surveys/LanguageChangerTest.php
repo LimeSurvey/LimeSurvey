@@ -58,6 +58,8 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Change to English.
             $web->changeLanguage('en');
 
+            sleep(1);
+
             // Go to second question group.
             $web->next();
 
