@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('exportResults');
                         <?php if (empty(Yii::app()->session['responsesid'])): // If called from massive action, it will be filled the selected answers ?>
                             <?php $this->renderPartial('/admin/export/exportresult_panels/_range', ['SingleResponse' => $SingleResponse, 'min_datasets' => $min_datasets, 'max_datasets' => $max_datasets]); ?> 
                         <?php else: ?>
-                            <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse]); ?> 
+                            <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse, 'surveyid' => $surveyid]); ?> 
                         <?php endif;?>
                         
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_responses', ['surveyid' => $surveyid]); ?> 
