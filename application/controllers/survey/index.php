@@ -468,6 +468,8 @@ class index extends CAction
                     // This can not happen (TokenInstance must fix this)
                     if ($oToken->completed != 'N' && !empty($oToken->completed)) {
                         $sError = gT("This invitation has already been used.");
+                    } elseif ($oToken->usesleft < 1) {
+                        $sError = gT("This invitation has no uses left.");
                     } elseif (strtotime($now) < strtotime($oToken->validfrom)) {
                         $sError = gT("This invitation is not valid yet.");
                     } elseif (strtotime($now) > strtotime($oToken->validuntil)) {
