@@ -335,7 +335,7 @@ class questiongroups extends Survey_Common_Action
             }
 
             // Create groups in missing languages
-            while (list($key, $value) = each($grplangs)) {
+            foreach ($grplangs as $key => $value) {
                 if ($value != 'exists') {
                     $basesettings['language'] = $key;
                     $groupLS = new QuestionGroupL10n;

@@ -71,6 +71,18 @@ class SettingGlobal extends LSActiveRecord
 
     }
 
+    /**
+     * Increase the custom asset version number in DB
+     * This will force the refresh of the assets folders content
+     */
+    static public function increaseCustomAssetsversionnumber()
+    {
+        $iCustomassetversionnumber = getGlobalSetting('customassetversionnumber');
+        $iCustomassetversionnumber++;
+        setGlobalSetting('customassetversionnumber', $iCustomassetversionnumber);
+        return;
+    }
+
 
     /**
      * Increase the asset version number in version.php

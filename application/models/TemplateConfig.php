@@ -330,6 +330,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
+
         if (!empty($this->aCssFrameworkReplacement)) {
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
@@ -898,6 +899,13 @@ class TemplateConfig extends CActiveRecord
 
 
             if ($oNewTemplateConfiguration->save()) {
+
+                // Find all surveys using this theme (if reinstalling) and create an entry on db for them
+                $aSurveysUsingThisTeme  =  Survey::model()->findAll('template=:template', array(':template'=>$sTemplateName));
+                foreach ($aSurveysUsingThisTeme as $oSurvey) {
+                     TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
+                }
+
                 return true;
             } else {
                 throw new Exception($oNewTemplateConfiguration->getErrors());
@@ -905,27 +913,6 @@ class TemplateConfig extends CActiveRecord
         } else {
             throw new Exception($oNewTemplate->getErrors());
         }
-    }
-
-    /**
-     * Get a string containing the name of the current template and all its parents
-     * Used to inject those names into body classes
-     */
-    public function getTemplateAndMotherNames()
-    {
-        $oRTemplate = $this;
-        $sTemplateNames = $this->sTemplateName;
-
-        while (!empty($oRTemplate->template->extends)) {
-
-            $sTemplateNames .= ' '.$oRTemplate->template->extends;
-            $oRTemplate      = $oRTemplate->oMotherTemplate;
-            if (!($oRTemplate instanceof TemplateConfiguration)) {
-                // Throw alert: should not happen
-                break;
-            }
-        }
-        return $sTemplateNames;
     }
 
     /**
@@ -1015,7 +1002,7 @@ class TemplateConfig extends CActiveRecord
     /*
     protected function getFilesToLoad($oTemplate, $sType)
     {
-    }  
+    }
     */
 
     /**
@@ -1049,6 +1036,6 @@ class TemplateConfig extends CActiveRecord
     }
     protected function setThisTemplate()
     {
-    } 
+    }
     */
 }

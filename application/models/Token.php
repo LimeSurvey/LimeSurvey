@@ -24,7 +24,7 @@
  *
  * Scopes
  * @method Token incomplete() incomplete() Select only uncompleted tokens
- * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
+ * @method Token usable() usable() Select usable tokens: valid daterange and usesleft > 0
  *
  */
 
@@ -344,7 +344,7 @@ abstract class Token extends Dynamic
                 'condition' => "completed = 'N'"
             ),
             'usable' => array(
-                'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
+                'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now' AND usesleft > 0"
             ),
             'editable' => array(
                 'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"

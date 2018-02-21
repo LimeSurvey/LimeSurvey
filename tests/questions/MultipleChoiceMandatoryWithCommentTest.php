@@ -145,6 +145,9 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 
             $web->submit();
 
+            // Sleep so modal has time to fade in.
+            sleep(1);
+
             // Get alert box.
             $modal = $web->findElement(WebDriverBy::id('bootstrap-alert-box-modal'));
             $warningMessage = $modal->getText();

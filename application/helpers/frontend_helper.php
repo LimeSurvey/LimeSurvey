@@ -526,7 +526,7 @@ function sendSubmitNotifications($surveyid)
     $sResponseData = "";
 
     if (!empty($thissurvey['emailnotificationto'])) {
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", ReplaceFields($thissurvey['emailnotificationto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -541,7 +541,7 @@ function sendSubmitNotifications($surveyid)
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
         //Make an array of email addresses to send to
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailresponseto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", ReplaceFields($thissurvey['emailresponseto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {

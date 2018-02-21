@@ -780,8 +780,10 @@ class SurveyDynamic extends LSActiveRecord
 
         $fieldname = $oQuestion->basicFieldName;
         
-        //
-        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "T"])) {
+        //If question is of any Array-Type  or a subquestion
+        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K"]) 
+            || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) 
+        ) {
             $fieldname .= $oQuestion->title;
         }
         
@@ -812,7 +814,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         
-        if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
+        if ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1") {
             $tempFieldname = $fieldname.'#0';
             $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
             $tempFieldname = $fieldname.'#1';
@@ -830,8 +832,8 @@ class SurveyDynamic extends LSActiveRecord
         
         }
         
-        if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parent['type'], [";", ":"])) {
-            foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parent['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
+        if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])) {
+            foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
             }

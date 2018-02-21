@@ -1985,8 +1985,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     }
 
 
-    require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
-    $mail = new PHPMailer;
+    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
+    $mail = new PHPMailer\PHPMailer\PHPMailer;
     $mail->SMTPAutoTLS = false;
     if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
         $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
@@ -4422,27 +4422,22 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function returns the real IP address under all configurations
-*
+* This function tries to returns the 'real' IP address under all configurations
+* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
 */
 function getIPAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-//check ip from share internet
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['HTTP_CLIENT_IP'] && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)!==false)) {
+        //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-//to check ip is pass from proxy
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)!==false) {
+        //Check IP address passed from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)!==false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
-    } else {
-        $sIPAddress = '127.0.0.1';
     }
-    if (!filter_var($sIPAddress, FILTER_VALIDATE_IP)) {
-        return 'Invalid';
-    } else {
-        return $sIPAddress;
-    }
+    return $sIPAddress;
 }
 
 

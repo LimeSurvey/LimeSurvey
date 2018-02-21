@@ -315,9 +315,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
-            if (!empty($_SESSION['survey_'.$surveyid]['srid'])) {
-                $aDatas['aSurveyInfo']['bShowClearAll'] = !SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
+                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            } else {
+                $isCompleted = false;
             }
+
+            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);

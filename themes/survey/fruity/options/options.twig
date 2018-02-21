@@ -440,9 +440,11 @@
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -456,9 +458,11 @@
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -472,9 +476,11 @@
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -856,7 +862,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>
@@ -869,7 +875,7 @@
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>
-
+            {# Fruity variation #}
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
@@ -878,7 +884,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ "Select variation:" | t }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework'>
+                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>
                                         {{fruityOptions}}
                                     </select>
                                 </div>

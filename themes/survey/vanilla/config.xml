@@ -128,6 +128,7 @@
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -183,12 +184,6 @@
                     <file type="js">./scripts/custom.js</file>
                 </load>
 
-                <printanswers>
-                    <file type="view" role="layout">./subviews/content/printanswers.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
-                </printanswers>
-
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -199,6 +194,40 @@
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </save>
+
+                <register>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/register.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_error.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_head.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_message.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/required.twig</file>
+                </register>
+
+                <printanswers>
+                    <file type="view" role="layout">layout_printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
+                </printanswers>
+
+                <pdf>
+                    <file type="view" role="layout">layout_print.twig</file>
+                </pdf>
+
+                <navigation>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                </navigation>
+
             </screens>
         </template_editor>
     </engine>

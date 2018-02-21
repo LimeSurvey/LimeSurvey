@@ -10,12 +10,42 @@ $systemInfos = [
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
     gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL'],
-    gT('Database driver') => Yii::app()->db->driverName,
-    gT('Database driver version') => Yii::app()->db->clientVersion,
-    gT('Database server info') => Yii::app()->db->serverInfo,
-    gT('Database server version') => Yii::app()->db->serverVersion
+    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
 ];
+
+// MSSQL does not support some of these attributes, so much
+// catch possible PDO exception.
+
+try {
+    $systemInfos[gT('Database driver')] = Yii::app()->db->driverName;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database driver version')] = Yii::app()->db->clientVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver version')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server info')] = Yii::app()->db->serverInfo;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server info')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server version')] = Yii::app()->db->serverVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server version')] = $ex->getMessage();
+}
+
+/* Fix array to string , see #13352 */
+foreach($systemInfos as &$systemInfo) {
+    if(is_array($systemInfo)) {
+        $systemInfo = json_encode($systemInfo, JSON_PRETTY_PRINT);
+    }
+}
 ?>
 <!-- Footer -->
 <footer class='footer'>
@@ -66,13 +96,13 @@ $systemInfos = [
             </div>
             <div class="modal-body">
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
-                    <h4><?=gT("Your system configuration:")?></h4>
+                    <h4><?php eT("Your system configuration:")?></h4>
                     <ul class="list-group">
                         <?php foreach($systemInfos as $name => $systemInfo){ ?>
                             <li class="list-group-item">
                                 <div class="ls-flex-row">
-                                    <div class="col-4"><?=$name?></div>
-                                    <div class="col-8"><?=$systemInfo?></div>
+                                    <div class="col-4"><?php echo $name ?></div>
+                                    <div class="col-8"><?php echo $systemInfo ?></div>
                                 </div>
                             </li>   
                         <?php } ?>

@@ -84,10 +84,11 @@
 
         {# This used for the pjax system #}
         {% block pjaxbegin %}
-        <div id="beginScripts" class="script-container">
-            <###begin###>
-        </div>
+            <div id="beginScripts" class="script-container">
+                <###begin###>
+            </div>
         {% endblock %}       
+
         {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
         <article>
 
@@ -117,27 +118,30 @@
                 {# Bootstrap alert modal #}
                 {{ include('./subviews/messages/bootstrap_alert_modal.twig') }}
 
-            {# Basic ThemeScript options  #}
-            {{ registerScript("BasicThemeScripts", "
-            if(window.basicThemeScripts === undefined){ 
-                window.basicThemeScripts = new ThemeScripts(); 
-            } 
-            basicThemeScripts.initGlobal(); 
-            ", POS_END) }}
+                {# Basic ThemeScript options  #}
+                {{ registerScript("BasicThemeScripts", "
+                if(window.basicThemeScripts === undefined){ 
+                    window.basicThemeScripts = new ThemeScripts(); 
+                } 
+                basicThemeScripts.initGlobal(); 
+                ", POS_END) }}
 
             {% endblock %}
             </div>
 
         </article>
+
         {% block pjaxend %}
-        <div id="bottomScripts" class="script-container">
-            <###end###>
-        </div>
+            <div id="bottomScripts" class="script-container">
+                <###end###>
+            </div>
         {% endblock %}   
+
         {% block themescripts %}
-        <script>
-            window.basicThemeScripts.init();
-        </script>
+            <script>
+                window.basicThemeScripts.init();
+            </script>
         {% endblock %}
+        
     </body>
 </html>

@@ -23,7 +23,7 @@ const getAppState = function (userid) {
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: '380px',
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,
@@ -47,9 +47,14 @@ const getAppState = function (userid) {
         ],
         getters: {
             substractContainer: state => {
-                let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));
-                let collapsedBodyWidth = ($('#vue-app-main-container').width() - parseInt('98px'));
-                return (state.isCollapsed ? collapsedBodyWidth : bodyWidth) + 'px';
+                let bodyWidth = (1 - (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width()))*100;
+                let collapsedBodyWidth = (1 - (parseInt('98px')/$('#vue-app-main-container').width()))*100;
+                return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
+            },
+            sideBarSize : state => {
+                let sidebarWidth = (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width())*100;
+                let collapsedSidebarWidth = (parseInt(98)/$('#vue-app-main-container').width())*100;
+                return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
             }
         },
         mutations: {

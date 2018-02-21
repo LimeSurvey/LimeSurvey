@@ -31,9 +31,10 @@ class LSYii_AssetManager extends CAssetManager
      */
     protected function generatePath($file, $hashByName = false)
     {
-        $assetsVersionNumber = Yii::app()->getConfig('assetsversionnumber');
-        $versionNumber       = Yii::app()->getConfig('versionnumber');
-        $dbVersion           = Yii::app()->getConfig('dbversionnumber');
+        $assetsVersionNumber       = Yii::app()->getConfig('assetsversionnumber');
+        $versionNumber             = Yii::app()->getConfig('versionnumber');
+        $dbVersion                 = Yii::app()->getConfig('dbversionnumber');
+        $iCustomassetversionnumber = (function_exists('getGlobalSetting') ) ? getGlobalSetting('customassetversionnumber'):1; // When called from installer, function getGlobalSetting() is not available
 
         if (empty($assetsVersionNumber)
             || empty($versionNumber)
@@ -43,7 +44,7 @@ class LSYii_AssetManager extends CAssetManager
             );
         }
 
-        $lsVersion = $assetsVersionNumber.$versionNumber.$dbVersion;
+        $lsVersion = $assetsVersionNumber.$versionNumber.$dbVersion.$iCustomassetversionnumber;
 
         if (is_file($file)) {
             $pathForHashing = $hashByName ? dirname($file) : dirname($file).$lsVersion;

@@ -35,6 +35,59 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.3.1 (build 180214) to 3.4.0 (build 180219) Feb 19, 2018
+-New feature: Setting to force use of XML, for easy theme development (LouisGac)
+-Fixed issue #12975: Cannot use the twig split filter (tpartner)
+-Fixed issue #13057: When editing CPDB participant the owner is listed by user name instead of full name (Carsten Schmitz)
+-Fixed issue #13234: Focus in text fields when pressing return (markusfluer)
+-Fixed issue #13248: Missing translation (markusfluer)
+-Fixed issue #13378: Missing translation (markusfluer)
+-Fixed issue #13379: Missing translation (markusfluer)
+-Fixed issue #13369: Missing translation (markusfluer)
+-Fixed issue #13291: Next button not working under Edge. (markusfluer)
+-Fixed issue #13308: Old alert popup at delete group (markusfluer)
+-Fixed issue #13311: Survey logic view with massive empty space till the footer (markusfluer)
+-Fixed issue #13325: {ADMINEMAIL} not working as recipient in admin notification emails (Olle Haerstedt)
+-Fixed issue #13330: Admin GUI are not responsive (markusfluer)
+-Fixed issue #13335: Refresh button at global level reset to "inherit" (markusfluer)
+-Fixed issue #13346: Missing button for clear all answers (Olle Haerstedt)
+-Fixed issue #13353: Unable to update user (mssql related) (Denis Chenu)
+-Fixed issue #13355: Saving German survey title shows JSON output (markusfluer)
+-Fixed issue #13360: Print answers does not work / gives an error (markusfluer)
+-Fixed issue #13365: custom.css never gets loaded (markusfluer)
+-Fixed issue #13377: Button too small for label in edit menu entries (markusfluer)
+-Fixed issue: Long text question not correctly displayed in printanswers (markusfluer)
+-Fixed issue: Multiple export and printanswers issues fixed (markusfluer)
+-Fixed issue: Untranslated strings (Carsten Schmitz)
+-Fixed issue: Font and fruity theme packages not correctly saved (markusfluer)
+-Fixed issue: Question selector not working after change in global settings (markusfluer)
+-Fixed issue: Some options not loaded on uninheriting the parent theme (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by c_schmitz, Han 
+#Updated translation: Dutch by c_schmitz, Han 
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd 
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+
+Changes from 3.3.0 (build 180209) to 3.3.1 (build 180214) Feb 14, 2018
+-Fixed issue #13188: Date/Time question type - icon missing (Olle Haerstedt)
+-Fixed issue #13284: Breadcrumb group detail not using admin language (Olle Haerstedt)
+-Fixed issue #13326: Not possible to using placeholders in group titles (Olle Haerstedt)
+-Fixed issue #13329: Ajax mode should be off in database after installation/upgrade (Olle Haerstedt)
+-Fixed issue #13333: "Registration" and "Print answers" screens appear to (Olle Haerstedt)
+-Fixed issue #13334: PDOException after update to 3.3.0 (MSSQL) (Olle Haerstedt)
+-Fixed issue #13349: Theme editor jumps back to admin home page after every save of changes to theme files (Olle Haerstedt)
+-Fixed issue #13352: debug=2 broke all page with some server configuration (Denis Chenu)
+-Fixed issue: Alert animation applied to question container.... (LouisGac)
+-Fixed issue: Copy conditions doesn't work (Olle Haerstedt)
+-Fixed issue: No error message when failed to change password (LouisGac)
+-Fixed issue: Notice when launching a survey after reinstalling its theme (LouisGac)
 
 Changes from 3.2.1 (build 180207) to 3.3.0 (build 180209) Feb 09, 2018
 -New feature: "Clear asset cache" button in global settings (LouisGac)

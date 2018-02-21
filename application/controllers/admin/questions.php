@@ -1077,7 +1077,7 @@ class questions extends Survey_Common_Action
      */
     public function index($sa, $surveyid, $gid, $qid = null)
     {
-        App()->getClientScript()->registerPackage('lshelp');
+        App()->getClientScript()->registerPackage('qTip2');
         $action = $sa;
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

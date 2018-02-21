@@ -327,7 +327,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = $gl['group_name'];
+            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1, false, true, false);
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -1060,6 +1060,16 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
                 }
 
+                // End text
+                if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = true;
+                } else {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = false;
+                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                }
+
                 $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
@@ -1099,7 +1109,8 @@ class SurveyRuntimeHelper
                 if ($this->aSurveyInfo['printanswers'] == 'Y') {
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show']  = true;
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sUrl']  = Yii::app()->getController()->createUrl("/printanswers/view", array('surveyid'=>$this->iSurveyid));
-                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = "Print your answers.";
+                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
+
                 }
 
                 // Link to Public statistics  **********
@@ -1141,6 +1152,13 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
             $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
+
+            // TODO: Process string in url description?
+            if ($this->aSurveyInfo['surveyls_urldescription'] != "") {
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_urldescription'];
+            } else {
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_url'];
+            }
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
@@ -1777,6 +1795,7 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
+                $this->groupname        = LimeExpressionManager::ProcessString($this->groupname, null, null, 3, 1, false, true, false);
                 $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }

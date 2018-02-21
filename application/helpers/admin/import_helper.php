@@ -1189,9 +1189,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // Import surveys table ====================================================
     
     foreach ($xml->surveys->rows->row as $row) {
+
         $insertdata = array();
 
         foreach ($row as $key=>$value) {
+            // Set survey group id to 1. Makes no sense to import it without the actual survey group.
+            if ($key == 'gsid') {
+                $value = 1;
+            }
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
@@ -1257,7 +1262,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             return $results;
         }
     }
-
 
     // Import survey languagesettings table ===================================================================================
     foreach ($xml->surveys_languagesettings->rows->row as $row) {
@@ -2507,8 +2511,6 @@ function XSSFilterArray(&$array)
 */
 function TSVImportSurvey($sFullFilePath)
 {
-
-
     $results = array();
     $results['error'] = false;
     $baselang = 'en'; // TODO set proper default
@@ -2609,6 +2611,10 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate'] = null;
     $surveyinfo['active'] = 'N';
     // unset($surveyinfo['datecreated']);
+
+    // Set survey group id to 1. Makes no sense to import it without the actual survey group.
+    $surveyinfo['gsid'] = 1;
+
     $newSurvey = Survey::model()->insertNewSurvey($surveyinfo); //or safeDie(gT("Error").": Failed to insert survey<br />");
 
     if (!$newSurvey->sid) {
