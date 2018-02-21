@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-21 14:34:39+00:00\n"
+"POT-Creation-Date: 2018-02-21 14:37:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -459,6 +459,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1727
 #: application/models/Notification.php:158
 #: application/models/SurveymenuEntries.php:182
+#: application/models/SurveysGroups.php:68
 #: application/models/TokenDynamic.php:646
 #: application/views/admin/saved/savedlist_view.php:17
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:18
@@ -6965,7 +6966,6 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:77
 #: application/models/Notification.php:163
-#: application/models/SurveysGroups.php:75
 msgid "Created"
 msgstr ""
 
@@ -11292,6 +11292,7 @@ msgstr ""
 
 #: application/models/Participant.php:239 application/models/Surveymenu.php:194
 #: application/models/SurveymenuEntries.php:205
+#: application/models/SurveysGroups.php:75
 msgid "Created on"
 msgstr ""
 
@@ -11887,7 +11888,6 @@ msgid "Bottom bar"
 msgstr ""
 
 #: application/models/Surveymenu.php:183
-#: application/models/SurveysGroups.php:74
 msgid "Parent"
 msgstr ""
 
@@ -11994,6 +11994,7 @@ msgid "GET data method"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:203
+#: application/models/SurveysGroups.php:76
 msgid "Modified on"
 msgstr ""
 
@@ -12029,28 +12030,21 @@ msgstr ""
 msgid "Edit this survey menu entry"
 msgstr ""
 
-#: application/models/SurveysGroups.php:68
-msgid "Gsid"
-msgstr ""
-
 #: application/models/SurveysGroups.php:72
-msgid "Sortorder"
+msgid "Sort order"
 msgstr ""
 
 #: application/models/SurveysGroups.php:73
-msgid "Owner Uid"
+msgid "Owner UID"
 msgstr ""
 
-#: application/models/SurveysGroups.php:76
-msgid "Modified"
+#: application/models/SurveysGroups.php:74
+#: application/models/SurveysGroups.php:128
+msgid "Parent group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:92
 msgid "Survey group ID"
-msgstr ""
-
-#: application/models/SurveysGroups.php:128
-msgid "Parent group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:155
