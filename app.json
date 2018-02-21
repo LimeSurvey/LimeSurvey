@@ -1,4 +1,12 @@
 {
     "name": "Lime Survey",
-    "description": "Lime Survey"
+    "description": "Lime Survey",
+    "scripts":
+    {
+	"dokku":
+	{
+	    "predeploy": "mkdir /app/tmp/session"
+	}
+    }
+	
 }
