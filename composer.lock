@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd139555d3a4a403ccbe0296a9463a45",
+    "content-hash": "f18001ba076858737d4282588c2846f9",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -186,6 +186,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-mbstring": "*"
+    },
     "platform-dev": []
 }
