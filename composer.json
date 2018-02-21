@@ -29,7 +29,8 @@
 	},
 	"require": {
 	    "facebook/webdriver": "^1.4",
-	    "ext-mbstring": "*"
+	    "ext-mbstring": "*",
+	    "ext-memcached": "*"
 	},
     "config": {
         "vendor-dir": "third_party",
