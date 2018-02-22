@@ -301,7 +301,9 @@ class User extends LSActiveRecord
      */
     public function setPassword($sPassword, $save = false)
     {
-        $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        // NB: Different method in 2.06 vs 2.73/3.0.
+        $sPasswordHash  = hash('sha256', $sPassword);
+        $this->password = $sPasswordHash;
         if ($save) {
             $this->save();
         }

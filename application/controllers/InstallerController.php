@@ -627,12 +627,7 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
         // Backup the default, needed only for $sDefaultAdminPassword
-        //$sDefaultAdminUserName = $model->adminLoginName;
-        //$sDefaultAdminPassword = $model->adminLoginPwd;
-        //$sDefaultAdminRealName = $model->adminName;
-        //$sDefaultSiteName = $model->siteName;
-        //$sDefaultSiteLanguage = $model->surveylang;
-        //$sDefaultAdminEmail = $model->adminEmail;
+        $sDefaultAdminPassword = $model->adminLoginPwd;
         if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
