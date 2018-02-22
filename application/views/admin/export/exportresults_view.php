@@ -7,10 +7,11 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('exportResults');
 
+$scriptBegin = "var sMsgColumnCount = '".gT("%s of %s columns selected",'js')."';";
+App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin, LSYii_ClientScript::POS_BEGIN);
+
+
 ?>
-<script type="text/javascript">
-    var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
-</script>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
@@ -53,7 +54,6 @@ echo viewHelper::getViewTestTag('exportResults');
                 </div>
             </div>
         </div>
-    </div>
-    <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
-</form>
+        <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
+    </form>
 </div>
