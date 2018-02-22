@@ -292,4 +292,19 @@ class User extends LSActiveRecord
 			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
 		);
 	}
+
+    /**
+     * Set user password with hash
+     *
+     * @param string $sPassword The clear text password
+     * @return \User
+     */
+    public function setPassword($sPassword, $save = false)
+    {
+        $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        if ($save) {
+            $this->save();
+        }
+        return $this; // Return current object
+    }
 }
