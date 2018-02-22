@@ -100,10 +100,8 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH . 'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
+        if (file_exists(APPPATH.'config/config.php')) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
-            exit();
         }
     }
 
@@ -629,18 +627,17 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
         // Backup the default, needed only for $sDefaultAdminPassword
-        $sDefaultAdminUserName = $model->adminLoginName;
-        $sDefaultAdminPassword = $model->adminLoginPwd;
-        $sDefaultAdminRealName = $model->adminName;
-        $sDefaultSiteName = $model->siteName;
-        $sDefaultSiteLanguage = $model->surveylang;
-        $sDefaultAdminEmail = $model->adminEmail;
-        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
+        //$sDefaultAdminUserName = $model->adminLoginName;
+        //$sDefaultAdminPassword = $model->adminLoginPwd;
+        //$sDefaultAdminRealName = $model->adminName;
+        //$sDefaultSiteName = $model->siteName;
+        //$sDefaultSiteLanguage = $model->surveylang;
+        //$sDefaultAdminEmail = $model->adminEmail;
+        if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
             $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
-            if($model->validate()) {
+            if ($model->validate()) {
                 $sAdminUserName = $model->adminLoginName;
                 $sAdminPassword = $model->adminLoginPwd;
                 $sAdminRealName = $model->adminName;
@@ -673,7 +670,7 @@ class InstallerController extends CController {
                             $user = User::model()->findByPk(1);
                             if (empty($user)) {
                                 throw new Exception('There is an admin user, but not with id 1');
-                        }
+                            }
                         } else {
                             $user = new User;
 
@@ -705,37 +702,38 @@ class InstallerController extends CController {
                         $user->parent_id = 0;
                         $user->lang = $sSiteLanguage;
                         $user->email = $sAdminEmail;
-                        $result = $user->save();
+                        $user->save();
+
                         // only continue if we're error free otherwise setup is broken.
+                        Yii::app()->session['deletedirectories'] = true;
+
+                        $aData['title'] = gT("Success!");
+                        $aData['descp'] = gT("LimeSurvey has been installed successfully.");
+                        $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
+                        $aData['progressValue'] = 100;
+                        $aData['user'] = $sAdminUserName;
+                        if ($sDefaultAdminPassword == $sAdminPassword) {
+                            $aData['pwd'] = $sAdminPassword;
+                        } else {
+                            $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
+                        }
+
+                        $this->_writeConfigFile();
+
+                        $this->render('/installer/success_view', $aData);
+
+                        return;
+
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
                     }
-
-                    Yii::app()->session['deletedirectories'] = true;
-
-                    $aData['title'] = gT("Success!");
-                    $aData['descp'] = gT("LimeSurvey has been installed successfully.");
-                    $aData['classesForStep'] = array('off','off','off','off','off','off');
-                    $aData['progressValue'] = 100;
-                    $aData['user'] = $sAdminUserName;
-                    if($sDefaultAdminPassword==$sAdminPassword){
-                        $aData['pwd'] = $sAdminPassword;
-                    }else{
-                        $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
-                    }
-
-                    $this->render('/installer/success_view', $aData);
-                    return;
                 }
             } else {
                 // if passwords don't match, redirect to proper link.
                 Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT("Passwords don't match."));
                 $this->redirect(array('installer/optional'));
             }
-        } elseif(empty(Yii::app()->session['configFileWritten'])) {
-            $this->_writeConfigFile();
         }
-
         $this->render('/installer/optconfig_view', $aData);
     }
 
