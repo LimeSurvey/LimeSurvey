@@ -660,37 +660,17 @@ class InstallerController extends CController {
                     try {
 
                         if (User::model()->count() > 0) {
-                            //throw new Exception('Already admin in system');
-                            //safeDie('Fatal error: Already an admin user in the system.');
-                            $user = User::model()->findByPk(1);
-                            if (empty($user)) {
-                                throw new Exception('There is an admin user, but not with id 1');
-                            }
-                        } else {
-                            $user = new User;
-
-                            // Save permissions
-                            $permission = new Permission;
-                            $permission->entity_id = 0;
-                            $permission->entity = 'global';
-                            $permission->uid = $user->uid;
-                            $permission->permission = 'superadmin';
-                            $permission->read_p = 1;
-                            $permission->save();
-
-                            // Save  global settings
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
-                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
+                            safeDie('Fatal error: Already an admin user in the system.');
                         }
-                        // Save user
-                        // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
+
+                        $user = new User;
+
                         if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
                             $user->uid = 1;
                         }
+
+                        // Save user
+                        // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
                         $user->users_name = $sAdminUserName;
                         $user->setPassword($sAdminPassword);
                         $user->full_name = $sAdminRealName;
@@ -698,6 +678,23 @@ class InstallerController extends CController {
                         $user->lang = $sSiteLanguage;
                         $user->email = $sAdminEmail;
                         $user->save();
+
+                        // Save permissions
+                        $permission = new Permission;
+                        $permission->entity_id = 0;
+                        $permission->entity = 'global';
+                        $permission->uid = $user->uid;
+                        $permission->permission = 'superadmin';
+                        $permission->read_p = 1;
+                        $permission->save();
+
+                        // Save  global settings
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
 
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
