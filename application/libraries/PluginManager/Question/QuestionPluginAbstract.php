@@ -1,8 +1,9 @@
 <?php
-namespace ls\pluginmanager;
-abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin {
+namespace LimeSurvey\PluginManager;
+abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin
+{
            
-    public function registerEvents() 
+    public function registerEvents()
     {
         $this->subscribe('getAvailablePlugins');
     }
@@ -34,18 +35,16 @@ abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlu
         $question = new self($this->pluginManager, $this->id);
         $question->populate($data);
         
-        $question->isQuestion(true);    // Signal this is not the plugin, but a question object
+        $question->isQuestion(true); // Signal this is not the plugin, but a question object
         
         return $question;
     }
     
     public function populate($data)
     {
-        foreach ($data as $key => $value)
-        {
-            $setter='set'.ucfirst($key);
-            if(method_exists($this,$setter))
-            {
+        foreach ($data as $key => $value) {
+            $setter = 'set'.ucfirst($key);
+            if (method_exists($this, $setter)) {
                 $this->$setter($value);
             } else {
                 $this->$key = $value;

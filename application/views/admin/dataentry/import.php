@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var Survey $survey
+ * @var array $settings
+ */
+?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Import responses from a deactivated survey table"); ?></h3>
         <div class="row">
@@ -38,8 +44,7 @@
                             gT("Question is added to target (result is set to database default value).")
                         );
                         CHtml::openTag('ul');
-                        foreach ($list as $item)
-                        {
+                        foreach ($list as $item) {
                             echo CHtml::tag('li', array(), $item);
                         }
                         CHtml::closeTag('ul');
@@ -47,4 +52,6 @@
                     echo CHtml::closeTag('div');
 
                 ?>
-    </div></div></div>
+        </div>
+    </div>
+</div>

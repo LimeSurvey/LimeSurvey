@@ -40,7 +40,7 @@
                     'type'        => 'action',
                     'action'      => 'delete',
                     'url'         => App()->createUrl('/admin/questions/sa/deleteMultiple/'),
-                    'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+                    'iconClasses' => 'text-danger fa fa-trash',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -197,11 +197,11 @@
 <!--
     Some widgets in the modals need to be reloaded after grid update
 -->
-<script>
-$(document).ready(function() {
-
-    $('#question-grid').on('actions-updated', function(){
-        loadPositionWidget();
+<?php App()->getClientScript()->registerScript("ListQuestions-massiveAction-1", "
+    $(function(){
+        $('#question-grid').on('actions-updated', function(){
+            loadPositionWidget();
+        });
     });
-});
-</script>
+ ", LSYii_ClientScript::POS_END); ?>
+

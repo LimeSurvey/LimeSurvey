@@ -1,0 +1,6 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+<div class="col-md-8">
+    {{question.answervalue|escape}}
+</div>
+{% endblock %}

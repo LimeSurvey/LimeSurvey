@@ -16,7 +16,7 @@
     <p>
     <?php eT('The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.');?></p><p>
     <?php
-        $aopen  = '<a href="https://www.limesurvey.org/en/your-account/your-details" target="_blank">';
+        $aopen  = '<a href="https://www.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
         $aclose = '</a>';
     ?>
     <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
@@ -51,7 +51,7 @@
 </div>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#submitKeyForm').comfortUpdateNextStep({'step': 0});
 </script>

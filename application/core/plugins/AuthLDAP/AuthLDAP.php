@@ -1,5 +1,5 @@
 <?php
-class AuthLDAP extends ls\pluginmanager\AuthPluginBase
+class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';
 
@@ -116,11 +116,14 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         )
     );
 
-    public function init() {
+    public function init()
+    {
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('beforeActivate');
+        $this->subscribe('getGlobalBasePermissions');
+        $this->subscribe('beforeHasPermission');
         $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
@@ -131,11 +134,11 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Check availability of LDAP Apache Module
      *
-     * @return unknown_type
+     * @return void
      */
     public function beforeActivate()
     {
-        if (!function_exists("ldap_connect")){
+        if (!function_exists("ldap_connect")) {
             $event = $this->getEvent();
             $event->set('success', false);
             $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
@@ -143,9 +146,45 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     }
 
     /**
+     * Add AuthLDAP Permission to global Permission
+     * @return void
+     */
+    public function getGlobalBasePermissions()
+    {
+        $this->getEvent()->append('globalBasePermissions', array(
+            'auth_ldap' => array(
+                'create' => false,
+                'update' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Use LDAP authentication"),
+                'description' => gT("Use LDAP authentication"),
+                'img' => 'usergroup'
+            ),
+        ));
+    }
+
+    /**
+     * Validation of AuthPermission (for super-admin only)
+     * @return void
+     */
+    public function beforeHasPermission()
+    {
+        $oEvent = $this->getEvent();
+        if ($oEvent->get('sEntityName') != 'global' || $oEvent->get('sPermission') != 'auth_ldap' || $oEvent->get('sCRUD') != 'read') {
+            return;
+        }
+        $iUserId = Permission::getUserId($oEvent->get('iUserID'));
+        if ($iUserId == 1) {
+            $oEvent->set('bPermission', (bool) $this->get('allowInitialUser'));
+        }
+    }
+
+    /**
      * Create a LDAP user
      *
-     * @return unknown_type
+     * @return void
      */
     public function createNewUser()
     {
@@ -161,19 +200,17 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
      * Create a LDAP user
      *
      * @param string $new_user
-     * @return null|string New user ID
+     * @return null|integer New user ID
      */
     private function _createNewUser($new_user)
     {
         $oEvent = $this->getEvent();
 
         // Get configuration settings:
-        $ldapserver     = $this->get('server');
-        $ldapport       = $this->get('ldapport');
-        $ldapmode       = $this->get('ldapmode');
-        $searchuserattribute    = $this->get('searchuserattribute');
-        $extrauserfilter      = $this->get('extrauserfilter');
-        $usersearchbase   = $this->get('usersearchbase');
+        $ldapmode = $this->get('ldapmode');
+        $searchuserattribute = $this->get('searchuserattribute');
+        $extrauserfilter = $this->get('extrauserfilter');
+        $usersearchbase = $this->get('usersearchbase');
         $binddn         = $this->get('binddn');
         $bindpwd        = $this->get('bindpwd');
         $mailattribute = $this->get('mailattribute');
@@ -181,78 +218,67 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn))
-        {
-            $oEvent->set('errorCode',self::ERROR_LDAP_CONNECTION);
-            $oEvent->set('errorMessageTitle','');
-            $oEvent->set('errorMessageBody',$ldapconn['errorMessage']);
+        if (!is_resource($ldapconn)) {
+            $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
+            $oEvent->set('errorMessageTitle', '');
+            $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
             return null;
         }
 
-        if (empty($ldapmode) || $ldapmode=='simplebind')
-        {
-            $oEvent->set('errorCode',self::ERROR_LDAP_MODE);
-            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
-            $oEvent->set('errorMessageBody',gT("Simple bind LDAP configuration doesn't allow LDAP user creation"));
+        if (empty($ldapmode) || $ldapmode == 'simplebind') {
+            $oEvent->set('errorCode', self::ERROR_LDAP_MODE);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', gT("Simple bind LDAP configuration doesn't allow LDAP user creation"));
             return null;
         }
 
         // Search email address and full name
-        if (empty($binddn))
-        {
+        if (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
             $ldapbindsearch = @ldap_bind($ldapconn);
-        }
-       else
-        {
+        } else {
             // An account is defined to do the LDAP search, let's use it
             $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
         }
         if (!$ldapbindsearch) {
-            $oEvent->set('errorCode',self::ERROR_LDAP_NO_BIND);
-            $oEvent->set('errorMessageTitle',gT('Could not connect to LDAP server.'));
-            $oEvent->set('errorMessageBody',gT(ldap_error($ldapconn)));
+            $oEvent->set('errorCode', self::ERROR_LDAP_NO_BIND);
+            $oEvent->set('errorMessageTitle', gT('Could not connect to LDAP server.'));
+            $oEvent->set('errorMessageBody', gT(ldap_error($ldapconn)));
             ldap_close($ldapconn); // all done? close connection
             return null;
         }
         // Now prepare the search fitler
-        if ( $extrauserfilter != "")
-        {
+        if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$new_user)$extrauserfilter)";
-        }
-        else
-        {
+        } else {
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
         // Search for the user
         $userentry = false;
         // try each semicolon-separated search base in order
-        foreach(explode(";",$usersearchbase) as $usb)
-        {
-            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
-            $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+        foreach (explode(";", $usersearchbase) as $usb) {
+            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute, $fullnameattribute));
+            $rescount = ldap_count_entries($ldapconn, $dnsearchres);
             if ($rescount == 1) {
-                $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+                $userentry = ldap_get_entries($ldapconn, $dnsearchres);
                 $new_email = flattenText($userentry[0][$mailattribute][0]);
                 $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
                 break;
             }
         }
-        if(!$userentry)
-        {
-            $oEvent->set('errorCode',self::ERROR_LDAP_NO_SEARCH_RESULT);
-            $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));
-            $oEvent->set('errorMessageBody',gT('Verify username and try again'));
+        if (!$userentry) {
+            $oEvent->set('errorCode', self::ERROR_LDAP_NO_SEARCH_RESULT);
+            $oEvent->set('errorMessageTitle', gT('Username not found in LDAP server'));
+            $oEvent->set('errorMessageBody', gT('Verify username and try again'));
             ldap_close($ldapconn); // all done? close connection
             return null;
         }
 
-        if (!validateEmailAddress($new_email))
-        {
-            $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
-            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
-            $oEvent->set('errorMessageBody',gT("The email address is not valid."));
+        if (!validateEmailAddress($new_email)) {
+            $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', gT("The email address is not valid."));
             return null;
         }
         $new_pass = createPassword();
@@ -263,21 +289,20 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $parentID = 1;
         }
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
-        if (!$iNewUID)
-        {
-            $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
-            $oEvent->set('errorMessageTitle','');
-            $oEvent->set('errorMessageBody',gT("Failed to add user"));
+        if (!$iNewUID) {
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle', '');
+            $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return null;
         }
 
-        Permission::model()->setGlobalPermission($iNewUID,'auth_ldap');
+        Permission::model()->setGlobalPermission($iNewUID, 'auth_ldap');
 
-        $oEvent->set('newUserID',$iNewUID);
-        $oEvent->set('newPassword',$new_pass);
-        $oEvent->set('newEmail',$new_email);
-        $oEvent->set('newFullName',$new_full_name);
-        $oEvent->set('errorCode',self::ERROR_NONE);
+        $oEvent->set('newUserID', $iNewUID);
+        $oEvent->set('newPassword', $new_pass);
+        $oEvent->set('newEmail', $new_email);
+        $oEvent->set('newFullName', $new_full_name);
+        $oEvent->set('errorCode', self::ERROR_NONE);
         return $iNewUID;
     }
 
@@ -302,12 +327,11 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Try to connect
         $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
         if (false == $ldapconn) {
-            return array( "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') );
+            return array("errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection'));
         }
 
         // using LDAP version
-        if ($ldapver === null)
-        {
+        if ($ldapver === null) {
             // If the version hasn't been set, default = 2
             $ldapver = 2;
         }
@@ -315,13 +339,11 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
-        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0 )
-        {
+        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0) {
             // starting TLS secure layer
-            if(!ldap_start_tls($ldapconn))
-            {
+            if (!ldap_start_tls($ldapconn)) {
                 ldap_close($ldapconn); // all done? close connection
-                return array( "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) );
+                return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
             }
         }
 
@@ -339,17 +361,17 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     public function newLoginForm()
     {
         $this->getEvent()->getContent($this)
-        ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user','',array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
-        ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password','',array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
+        ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', '', array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))))
+        ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', '', array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))));
     }
 
     /**
-    * Modified getPluginSettings since we have a select box that autosubmits
-    * and we only want to show the relevant options.
-    *
-    * @param boolean $getValues
-    * @return array
-    */
+     * Modified getPluginSettings since we have a select box that autosubmits
+     * and we only want to show the relevant options.
+     *
+     * @param boolean $getValues
+     * @return array
+     */
     public function getPluginSettings($getValues = true)
     {
         $aPluginSettings = parent::getPluginSettings($getValues);
@@ -366,8 +388,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
 
-            if ($ldapver == '2' ) {
-               unset($aPluginSettings['ldaptls']);
+            if ($ldapver == '2') {
+                unset($aPluginSettings['ldaptls']);
             }
 
             if ($ldapmode == 'searchandbind') {
@@ -397,8 +419,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     {
         // Do nothing if this user is not AuthLDAP type
         $identity = $this->getEvent()->get('identity');
-        if ($identity->plugin != 'AuthLDAP')
-        {
+        if ($identity->plugin != 'AuthLDAP') {
             return;
         }
 
@@ -410,33 +431,28 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $autoCreateFlag = false;
         $user = $this->api->getUserByName($username);
         // No user found!
-        if ($user === null)
-        {
+        if ($user === null) {
             // If ldap mode is searchandbind and autocreation is enabled we can continue
-            if ($ldapmode=='searchandbind' && $this->get('autocreate', null, null, false) == true)
-            {
+            if ($ldapmode == 'searchandbind' && $this->get('autocreate', null, null, false) == true) {
                 $autoCreateFlag = true;
-            }
-            else
-            {
-              // If the user doesnt exist in the LS database, he can not login
-              $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
-              return;
+            } else {
+                // If the user doesnt exist in the LS database, he can not login
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+                return;
             }
         }
         if ($user !== null) {
             //If user cannot login via LDAP: setAuthFailure
-            if( ( $user->uid == 1 && !$this->get('allowInitialUser') )
+            if (($user->uid == 1 && !$this->get('allowInitialUser'))
                 ||
-                !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)
+                !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
             ) {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
                 return;
             }
         }
 
-        if (empty($password))
-        {
+        if (empty($password)) {
             // If password is null or blank reject login
             // This is necessary because in simple bind ldap server authenticates with blank password
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
@@ -444,43 +460,34 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
 
         // Get configuration settings:
-        $ldapserver 		= $this->get('server');
-        $ldapport   		= $this->get('ldapport');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
-        $searchuserattribute    = $this->get('searchuserattribute');
-        $extrauserfilter    	= $this->get('extrauserfilter');
-        $usersearchbase		= $this->get('usersearchbase');
-        $binddn     		= $this->get('binddn');
-        $bindpwd     		= $this->get('bindpwd');
+        $searchuserattribute = $this->get('searchuserattribute');
+        $extrauserfilter = $this->get('extrauserfilter');
+        $usersearchbase = $this->get('usersearchbase');
+        $binddn = $this->get('binddn');
+        $bindpwd = $this->get('bindpwd');
         $groupsearchbase        = $this->get('groupsearchbase');
         $groupsearchfilter      = $this->get('groupsearchfilter');
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn))
-        {
+        if (!is_resource($ldapconn)) {
             $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
             return;
         }
 
-        if (empty($ldapmode) || $ldapmode=='simplebind')
-        {
+        if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = @ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
-        }
-        else
-        {
+            $ldapbind = @ldap_bind($ldapconn, $prefix.$username.$suffix, $password);
+        } else {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
-            if (empty($binddn))
-            {
+            if (empty($binddn)) {
                 // There is no account defined to do the LDAP search,
                 // let's use anonymous bind instead
                 $ldapbindsearch = @ldap_bind($ldapconn);
-            }
-            else
-            {
+            } else {
                 // An account is defined to do the LDAP search, let's use it
                 $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
             }
@@ -490,24 +497,18 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 return;
             }
             // Now prepare the search fitler
-            if ( $extrauserfilter != "")
-            {
+            if ($extrauserfilter != "") {
                 $usersearchfilter = "(&($searchuserattribute=$username)$extrauserfilter)";
-            }
-            else
-            {
+            } else {
                 $usersearchfilter = "($searchuserattribute=$username)";
             }
             // Search for the user
             $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($searchuserattribute));
-            $rescount=ldap_count_entries($ldapconn,$dnsearchres);
-            if ($rescount == 1)
-            {
-                $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+            $rescount = ldap_count_entries($ldapconn, $dnsearchres);
+            if ($rescount == 1) {
+                $userentry = ldap_get_entries($ldapconn, $dnsearchres);
                 $userdn = $userentry[0]["dn"];
-            }
-            else
-            {
+            } else {
                 // if no entry or more than one entry returned
                 // then deny authentication
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
@@ -516,15 +517,13 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             }
 
             // If specifed, check group membership
-            if ($groupsearchbase != '' && $groupsearchfilter != '')
-            {
-                $keywords = array('$username','$userdn');
-                $substitutions = array($username,$userdn);
+            if ($groupsearchbase != '' && $groupsearchfilter != '') {
+                $keywords = array('$username', '$userdn');
+                $substitutions = array($username, $userdn);
                 $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
-                if ($grouprescount < 1)
-                {
+                if ($grouprescount < 1) {
                     $this->setAuthFailure(self::ERROR_USERNAME_INVALID,
                     gT('Valid username but not authorized by group restriction'));
                     ldap_close($ldapconn); // all done? close connection
@@ -546,15 +545,12 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         ldap_close($ldapconn); // all done? close connection
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
-        if ($autoCreateFlag)
-        {
-            if (($iNewUID = $this->_createNewUser($username)) && $this->get('automaticsurveycreation', null, null, false))
-            {
+        if ($autoCreateFlag) {
+            if (($iNewUID = $this->_createNewUser($username)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
-            if ($user === null)
-            {
+            if ($user === null) {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
                 return;
             }

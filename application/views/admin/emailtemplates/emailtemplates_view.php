@@ -1,46 +1,40 @@
 <?php
-    $surveyinfo = getSurveyInfo($surveyid);
-    $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'emailtemplates.js');
-    $oAdminTheme->registerCssFile( 'PUBLIC', 'popup-dialog.css' );
-    $count=0;
-?>
-<script type='text/javascript'>
-    var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
-    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
+/**
+ * General options
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 
-    var LS = LS || {};  // namespace
+$count=0;
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyEmailTemplates');
+
+
+App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
+var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';
+var sKCFinderLanguage='".sTranslateLangCode2CK(App()->language)."';
+
+var LS = LS || {};  // namespace
     LS.lang = LS.lang || {};  // object holding translations
-    LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
-    LS.lang['Edit relevance equation'] = '<?php echo eT("Edit relevance equation"); ?>';
+    LS.lang['Remove attachment'] = '".gT("Remove attachment")."';
+    LS.lang['Edit relevance equation'] = '".gT("Edit relevance equation")."';
+", LSYii_ClientScript::POS_BEGIN );
 
-    $(document).ready(function () {
-        $('button.add-attachment').click(function(e)
-        {
-            e.preventDefault();
-            var target = $(this).parent().parent().parent().find('table');
-            console.log("target = ");
-            console.log(target);
-            openKCFinder_singleFile(target);
-
-        });
-    });
-</script>
-
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("Edit email templates"))); ?>
+?>        
+        <div class="side-body <?php echo getSideBodyClass(false); ?>" style="max-height: 75vh;">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
 
-<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form-horizontal', 'id'=>'emailtemplates'));?>
+<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'', 'id'=>'emailtemplates'));?>
 
         <ul class="nav nav-tabs">
-            <?php foreach ($grplangs as $grouplang): ?>
+            <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
                 <li role="presentation" class="<?php if($count==0){ echo 'active'; $count++; }?>" >
                     <a data-toggle="tab" href='#tab-<?php echo $grouplang; ?>'><?php echo getLanguageNameFromCode($grouplang,false); ?>
-                        <?php if ($grouplang == Survey::model()->findByPk($surveyid)->language): ?>
+                        <?php if ($grouplang == $oSurvey->language): ?>
                             <?php echo ' ('.gT("Base language").')'; ?>
                             <?php endif; ?>
                     </a>
@@ -51,20 +45,17 @@
             <?php
                 $count = 0;
                 $active = 'active';
-                foreach ($grplangs as $key => $grouplang)
-                {
+                foreach ($oSurvey->allLanguages as $key => $grouplang) {
                     $bplang = $bplangs[$key];
                     $esrow = $attrib[$key];
                     $aDefaultTexts = $defaulttexts[$key];
-                    if ($ishtml == true)
-                    {
+                    if ($ishtml == true) {
                         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'],$ishtml);
                     }
 
-                    $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('surveyinfo', 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
+                    $this->renderPartial('/admin/emailtemplates/email_language_tab', compact( 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
 
-                    if($count == 0)
-                    {
+                    if($count == 0) {
                         $count++;
                         $active = '';
                     }
@@ -81,6 +72,20 @@
 
 </div>
 </div>
+</div>
+
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><?=gT("Choose file")?></h4>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="attachment-relevance-editor" class="modal fade">

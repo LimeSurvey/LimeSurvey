@@ -11,32 +11,31 @@ class UniqueNotification extends Notification
     /**
      * Whether or not this message should be marked as unread ('new') 
      * second time it's saved.
-     * @var boolean
+     * @var boolean $markAsNew
      */
     protected $markAsNew = true;
 
     /**
-     * Wheather or not the importance should be set to normal
+     * Whether or not the importance should be set to normal
      * second time it's saved.
-     * @var boolean
+     * @var boolean $setNormalImportance
      */
     protected $setNormalImportance = true;
 
     /**
      * As parent constructor but with markAsUndread
+     * @inheritdoc
      * @return UniqueNotification
      */
     public function __construct($options = null)
     {
         parent::__construct($options);
 
-        if (isset($options['markAsNew']))
-        {
+        if (isset($options['markAsNew'])) {
             $this->markAsNew = $options['markAsNew'];
         }
 
-        if (isset($options['setNormalImportance']))
-        {
+        if (isset($options['setNormalImportance'])) {
             $this->setNormalImportance = $options['setNormalImportance'];
         }
     }
@@ -44,33 +43,27 @@ class UniqueNotification extends Notification
     /**
      * Check for already existing notification and
      * update that. Importance will be set to normal.
-     * @param boolean $runValidation Yii
-     * @param ? $attributes Yii
+     * @inheritdoc
      * @return void
      */
     public function save($runValidation = true, $attributes = null)
     {
-        $toHash = $this->entity . $this->entity_id . $this->title . $this->message;
+        $toHash = $this->entity.$this->entity_id.$this->title.$this->message;
         $this->hash = hash('sha256', $toHash);
 
         $duplicate = self::model()->findByAttributes(array(
             'hash' => $this->hash
         ));
 
-        if (empty($duplicate))
-        {
+        if (empty($duplicate)) {
             parent::save($runValidation, $attributes);
-        }
-        else
-        {
+        } else {
 
-            if ($this->markAsNew)
-            {
+            if ($this->markAsNew) {
                 $duplicate->status = 'new';
             }
 
-            if ($this->setNormalImportance)
-            {
+            if ($this->setNormalImportance) {
                 $duplicate->importance = self::NORMAL_IMPORTANCE;
             }
 
@@ -78,17 +71,12 @@ class UniqueNotification extends Notification
         }
 
     }
-    /**
-     * Broadcast a unique message to all users
-     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
-     * @param array $options
-     * @param array $users
-     */
+
+    /** @inheritdoc */
     public static function broadcast(array $options, array $users = null)
     {
         // Get all users if no $users were given
-        if ($users === null)
-        {
+        if ($users === null) {
             $users = User::model()->findAll();
         }
 

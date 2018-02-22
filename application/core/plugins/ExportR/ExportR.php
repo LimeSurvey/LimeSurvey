@@ -1,12 +1,14 @@
 <?php
-class ExportR extends \ls\pluginmanager\PluginBase {
+class ExportR extends \LimeSurvey\PluginManager\PluginBase
+{
     
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: R-export';
     static protected $name = 'Export results to R';
     
-    public function init() {
+    public function init()
+    {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -21,7 +23,7 @@ class ExportR extends \ls\pluginmanager\PluginBase {
         $event = $this->getEvent();
         $type = $event->get('type');
         
-        switch ($type) {           
+        switch ($type) {
             case 'rsyntax':
                 $tooltip = CHtml::openTag('ol');
                 $tooltip .= CHtml::tag('li', array(), gT("Download the data and the syntax file."));
@@ -30,7 +32,7 @@ class ExportR extends \ls\pluginmanager\PluginBase {
                 $tooltip .= CHtml::closeTag('ol');
                 $tooltip .= CHtml::tag('br');
                 $tooltip .= gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.");
-                $event->set('tooltip',$tooltip);
+                $event->set('tooltip', $tooltip);
                 $event->set('label', gT("R (syntax file)"));
                 break;
             

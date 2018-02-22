@@ -1,0 +1,30 @@
+/*!
+ * Style for print template.css
+ *
+ * Copyright 2016 LimeSurvey <http://www.limesurvey.org>
+ * @license This file is part of LimeSurvey under GNU/GPL License v3 or later, see LICENSE.php
+ *
+ */
+
+.input-radio{
+display:inline-block;
+width:1.4em;
+height:1.4em;
+border:1px solid #000;
+border-radius:0.7em;
+margin:0.1em;
+position: relative;
+top:0.2em;
+}
+.input-checkbox{
+    display:inline-block;
+    width:1.4em;
+    height:1.4em;
+    border:1px solid #000;
+    margin:0 0.1em;
+    position: relative;
+    top:0.2em;
+}
+.form-control.print-control{border:1px solid #000;margin:0.1em;max-width:100%}
+.table{width:100%;table-layout:fixed}
+.print-control.input-other,.print-control.input-othercomment,.print-control.input-rank{display:inline-block}

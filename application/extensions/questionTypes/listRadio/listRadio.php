@@ -17,7 +17,7 @@ class listRadio extends CApplicationComponent
 
         $checkconditionFunction = "checkconditions";
 
-        $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
         $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
         $result = Yii::app()->db->createCommand($query)->query();

@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>
-                <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
+                <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                 <?php eT("Statistics"); ?>
             </h3>
         </div>

@@ -17,26 +17,25 @@
 
         public function run($sArgument)
         {
-            if (isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1]))
-            {
-                $iUserID=User::model()->getID($sArgument[0]);
-                if ($iUserID)
-                {
-                  User::model()->updatePassword($iUserID,$sArgument[1]);
-                  echo "Password for user {$sArgument[0]} was set.\n";
-                }
-                else
-                {
-                    echo "User {$sArgument[0]} not found.\n";
+            if (isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1])) {
+                $oUser = User::findByUsername($sArgument[0]);
+                if ($oUser) {
+                    $oUser->setPassword($sArgument[1]);
+                    if ($oUser->save()) {
+                        echo "Password for user {$sArgument[0]} was set.\n";
+                        return 0;
+                    } else {
+                        echo "An error happen when set password for user {$sArgument[0]}.\n";
+                        return 1;
+                    }
+                } else {
+                    echo "User ".$sArgument[0]." not found.\n";
+                    return 1;
                 }
 
-            }
-            else
-            {
+            } else {
                 //TODO: a valid error process
                 echo 'You have to set username and password on the command line like this: php console.php username password';
             }
         }
     }
-
-?>

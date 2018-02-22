@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var $this AdminController
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('dataEntryView');
+
+?>
+
 <!-- content_view.php -->
 
 <!-- explanation -->
@@ -50,7 +60,7 @@
 
             //DATE
             case "D":
-                //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
+                //                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
             <div class="col-sm-10 has-feedback">

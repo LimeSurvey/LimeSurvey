@@ -34,10 +34,10 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                 <th><?php eT('Answer');?></th>
                 <th class="text-right">
                     <?php echo CHtml::beginForm(array("admin/quotas/sa/new_answer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
-                    <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
-                    <?php echo CHtml::hiddenField('action','quotas');?>
-                    <?php echo CHtml::hiddenField('quota_id',$oQuota->getPrimaryKey());?>
-                    <?php echo CHtml::hiddenField('subaction','new_answer');?>
+                    <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey(), ['id'=> 'addForm_sid' ]);?>
+                    <?php echo CHtml::hiddenField('action','quotas', ['id'=> 'addForm_action' ]);?>
+                    <?php echo CHtml::hiddenField('quota_id',$oQuota->getPrimaryKey(), ['id'=> 'addForm_quota_id' ]);?>
+                    <?php echo CHtml::hiddenField('subaction','new_answer', ['id'=> 'addForm_subaction' ]);?>
                     <?php echo CHtml::submitButton(gT("Add answer"),array(
                         'name'=>'submit',
                         'class'=>'quota_new btn btn-default',
@@ -49,7 +49,9 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
         <tbody>
             <?php if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) && !empty($aQuotaItems[$oQuota->id])){ ?>
                 <?php foreach($aQuotaItems[$oQuota->id] as $aQuotaItem){
-                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array('oSurvey'=>$oSurvey,'oQuota'=>$oQuota,'data'=>$aQuotaItem));
+                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array(
+                        'oQuotaMember'=>$aQuotaItem['oQuotaMember'],
+                        'data'=>$aQuotaItem));
                 }?>
             <?php } else {?>
                 <tr><td class="text-danger" colspan="3"><?php eT("No answers have been set for this quota.");?></td></tr>

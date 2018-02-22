@@ -1,5 +1,5 @@
 <?php
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 use Yii;
 use Hash;
 Yii::import('application.helpers.Hash');
@@ -51,8 +51,7 @@ class PluginEvent
      */
     public function __construct($event, $sender = null)
     {
-        if (!is_null($sender) && is_object($sender))
-        {
+        if (!is_null($sender) && is_object($sender)) {
             $this->_sender = $sender;
         }
         
@@ -73,12 +72,9 @@ class PluginEvent
      */
     public function get($key = null, $default = null)
     {
-        if (!Hash::check($this->_parameters, $key))
-        {
+        if (!Hash::check($this->_parameters, $key)) {
             return $default;
-        }
-        else
-        {
+        } else {
             return Hash::get($this->_parameters, $key);
         }
     }
@@ -91,8 +87,7 @@ class PluginEvent
     public function getAllContent()
     {
         $output = array();
-        foreach($this->_content as $plugin => $content)
-        {
+        foreach ($this->_content as $plugin => $content) {
             /* @var $content PluginEventContent */
             if ($content->hasContent()) {
                 $output[$plugin] = $content; 
@@ -110,7 +105,9 @@ class PluginEvent
      * @param PluginBase|string $plugin The plugin we want content for or a string name
      * @return PluginEventContent
      */
-    public function getContent($plugin) {
+    public function getContent($plugin)
+    {
+        $pluginName = '';
         if (is_string($plugin)) {
             $pluginName = $plugin;
         } elseif ($plugin instanceof PluginBase) {
@@ -186,12 +183,9 @@ class PluginEvent
      */
     public function append($key, array $value)
     {
-        if (!Hash::check($this->_parameters, $key))
-        {
+        if (!Hash::check($this->_parameters, $key)) {
             $oldValue = array();
-        }
-        else
-        {
+        } else {
             $oldValue = Hash::get($this->_parameters, $key);
         }
 

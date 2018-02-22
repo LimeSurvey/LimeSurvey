@@ -1,15 +1,15 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></h4>
+    <div class="modal-title h4" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></div>
 </div>
-<div class="modal-body edit-participant-modal-body form-horizontal">
+<div class="modal-body edit-participant-modal-body ">
 <?php
     $form = $this->beginWidget(
         'bootstrap.widgets.TbActiveForm',
         array(
             'id' => 'editPartcipantActiveForm',
             'action' => array('admin/participants/sa/editParticipant'),
-            'htmlOptions' => array('class' => 'form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => 'form'), // for inset effect
         )
     );
 ?>
@@ -18,36 +18,36 @@
     <?php
         echo "<legend>".gT("Basic attributes")."</legend>";
         $baseControlGroupHtmlOptions = array(
-             'labelOptions'=> array('class'=> 'col-sm-4'),
-             'class' => 'col-sm-8',
+             'labelOptions'=> array('class'=> ''),
+             'class' => '',
              'required' => 'required'
         );
     ?>
         <div class='form-group'>
-            <label class='control-label col-sm-2'>
+            <label class='control-label '>
                 <?php eT('First name:'); ?>
             </label>
-            <div class='col-sm-4'>
+            <div class=''>
                 <input class='form-control' name='Participant[firstname]' value='<?php echo $model->firstname; ?>' />
             </div>
-            <label class='control-label col-sm-2'>
+            <label class='control-label '>
                 <?php eT('Last name:'); ?>
             </label>
-            <div class='col-sm-4'>
+            <div class=''>
                 <input class='form-control' name='Participant[lastname]' value='<?php echo $model->lastname; ?>' />
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label col-sm-2'>
+            <label class='control-label '>
                 <?php eT('E-mail:'); ?>
             </label>
-            <div class='col-sm-10'>
+            <div class='0'>
                 <input class='form-control' name='Participant[email]' value='<?php echo $model->email; ?>' />
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label col-sm-2'><?php eT("Blacklist user:"); ?></label>
-            <div class='col-sm-8'>
+            <label class='control-label '><?php eT("Blacklist user:"); ?></label>
+            <div class=''>
                 &nbsp;
                 <input name='Participant[blacklisted]' type='checkbox' <?php if ($model->blacklisted == 'Y'): echo ' checked="checked" '; endif; ?> data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus ls-bootstrap-switch' />
             </div>
@@ -56,8 +56,8 @@
         <!-- Change owner -->
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT("Owner:"); ?></label>
-                <div class='col-sm-4'>
+                <label class='control-label '><?php eT("Owner:"); ?></label>
+                <div class=''>
                 <select class='form-control' id='owner_uid' name='Participant[owner_uid]'>
 
                     <?php // When we add a new user, owner is default to current user ?>
@@ -75,7 +75,7 @@
 
                 </select>
                 </div>
-                <div class='col-sm-6'></div>
+                <div class=''></div>
             </div>
         <?php endif; ?>
 

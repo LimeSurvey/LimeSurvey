@@ -10,11 +10,11 @@
         <div class="row">
             <div class="col-lg-12 content-right">
                 <h3>Generate a logic file for the survey</h3>
-                <?php echo TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
+                <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="form-group">
-                        <label class="control-label" for="sid"> <?php echo gT('Survey ID (SID)')?></label>
+                        <label class="control-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
                         <select name="sid" id="sid" class="form-control">
-                            <?php echo getSurveyList()?>
+                            <?=getSurveyList()?>
                         </select>
                     </div>
                     <h4>Debug Log Level</h4>

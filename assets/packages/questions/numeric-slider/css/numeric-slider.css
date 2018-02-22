@@ -1,0 +1,42 @@
+/* This file is part of LimeSurvey - http://www.limesurvey.org */
+
+/* reset the width of slider horizontal */
+.slider.slider-horizontal {
+  width: 100%;
+}
+/* Use a transparent background-image (more easy for user to update background-color only */
+.slider-handle {
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+  background-image: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0.3)), color-stop(100%, rgba(255,255,255,0)));
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+  background-image: -o-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+  background-image: -ms-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+}
+/* FA for custom */
+.slider-handle.custom::before {
+font-family: FontAwesome;
+}
+/* Add some margin for the tooltip */
+/* same line */
+.slider-list .slider-container{margin-top:2em}
+@media (max-width: 768px) {
+.slider-list .slider-left,.slider-list .slider-right {text-align:center;}
+}
+@media (min-width: 769px) {
+.slider-list .slider-item .control-label{margin-top:2em}
+.slider-list .slider-left,.slider-list .slider-right {margin-top: 2em;}
+}
+
+ /* different line */
+.slider-list .slider-item .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
+.slider-list .slider-item .col-sm-12 .ls-input-group{margin-top:0.5em;margin-bottom: 2em;}
+/* reset button */
+.ls-input-group-reset{margin-top:1em}
+.btn-slider-reset{text-align:center;position:relative;}
+@media (min-width: 481px) {
+  .ls-input-group-reset{position:relative;margin-top:0}
+  .btn-slider-reset{top:-1em;margin-top:0}
+}

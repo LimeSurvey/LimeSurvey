@@ -14,7 +14,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('/admin/participants/sa/deleteParticipant/'),
-            'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+            'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
             'on-success'  => "(function(result) { LS.ajaxHelperOnSuccess(result); })",

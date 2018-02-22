@@ -10,20 +10,31 @@
 			"role" : "Developer"
 		}
 	],
-	"repositories": [
-	    {
-		"type": "vcs",
-		"url": "https://github.com/LimeSurvey/LimeSurvey"
-	    }
-	],
+	
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
 		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
 		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
 	},
-	"require" : {
-		"php" : ">=5.4.2"
+	"autoload": {
+		"psr-4": {
+			"LimeSurvey\\PluginManager\\": [
+				"application/libraries/PluginManager/",
+				"application/libraries/PluginManager/Storage"
+			],
+			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
+			"LimeSurvey\\Helpers\\": "application/helpers"
+		}
 	},
-	"minimum-stability" : "dev"
+	"require": {
+		"facebook/webdriver": "^1.4"
+	},
+    "config": {
+        "vendor-dir": "third_party",
+        "bin-dir": "third_party/bin"
+    },
+	"require-dev": {
+		"squizlabs/php_codesniffer": "2.*"
+	}
 }

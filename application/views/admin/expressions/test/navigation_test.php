@@ -1,4 +1,12 @@
 <?php
+/* @var $this AdminController */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('expressionsNavigationTest');
+?>
+
+
+<?php
 if (count($_POST) == 0) {
     
 
@@ -49,8 +57,8 @@ else {
 
     
 
-    $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
-    $surveyid = sanitize_int($surveyInfo[0]);
+    // $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
+    // $surveyid = sanitize_int($surveyInfo[0]);
     $assessments = ($surveyInfo[1] == 'Y');
     $surveyMode = sanitize_paranoid_string(Yii::app()->request->getParam('surveyMode'));
     $LEMdebugLevel = (

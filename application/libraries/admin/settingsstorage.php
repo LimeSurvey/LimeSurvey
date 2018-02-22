@@ -17,13 +17,11 @@ final class SettingsStorage extends ArrayObject
 
     public function __construct($params = array())
     {
-    	$defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
+        $defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
 
-        foreach ($defaults as $key => $val)
-        {
-            if (isset($params[$key]) && $params[$key] !== "")
-            {
-				$defaults[$key] = $params[$key];
+        foreach ($defaults as $key => $val) {
+            if (isset($params[$key]) && $params[$key] !== "") {
+                $defaults[$key] = $params[$key];
             }
         }
         extract($defaults);
@@ -33,7 +31,7 @@ final class SettingsStorage extends ArrayObject
 
     public static function getInstance()
     {
-        if( self::$_instance === NULL ) {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
         return self::$_instance;
@@ -64,14 +62,4 @@ final class SettingsStorage extends ArrayObject
         return self::$_instance->offsetExists($index);
     }
 
-    /**
-     * Workaround for http://bugs.php.net/bug.php?id=40442 (ZF-960).
-     */
-    public function offsetExists($index)
-    {
-        return array_key_exists($index, $this);
-    }
-
-
 }
-?>

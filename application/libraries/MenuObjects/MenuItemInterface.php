@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\menu;
+namespace LimeSurvey\Menu;
 
 /**
  * Interface descriptions here: https://manual.limesurvey.org/Extra_menus_event

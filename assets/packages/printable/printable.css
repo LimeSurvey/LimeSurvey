@@ -1,0 +1,95 @@
+/*
+    LimeSurvey
+
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Specific CSS for printing survey  ·._.·´¯)·._.·´¯)
+
+*/
+
+html,body {
+  margin: 0;
+  max-width: 100%;
+}
+html body{
+  text-align: left;
+  overflow: visible;
+  position: initial;
+  top: 0;
+  left: 0;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12pt;
+  margin: 0;
+  padding:0;
+}
+h1,h2,h3,h4 {
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+* {
+  page-break-after: auto;
+}
+.container{
+  width:100%
+}
+
+@page{
+  margin: 1cm 2cm 1cm 1cm;
+}
+.question-wrapper  {
+  border: 0.1em solid #aaa;
+  padding: 1em;
+  margin: 1em 0.5em;
+  clear: both;
+  page-break-inside: avoid;
+  page-break-before: auto;
+}
+.dir-ltr .question-code{margin-right:1em}
+.dir-rtl .question-code{margin-left:1em}
+.question-wrapper .h3{margin-top:0}
+.table-print-answers thead th{text-align:center;vertical-align:bottom}
+.table-print-answers tbody td{text-align:center;vertical-align:middle}
+
+/*!
+ * Style for print template.css
+ *
+ * Copyright 2016 LimeSurvey <http://www.limesurvey.org>
+ * @license This file is part of LimeSurvey under GNU/GPL License v3 or later, see LICENSE.php
+ *
+ */
+
+ .input-radio, .input-checkbox{
+   display:inline-block;
+ }
+ .input-radio:before {
+   content: '';
+    display:inline-block;
+    width:1.4em;
+    height:1.4em;
+    border:1px solid #000;
+    border-radius:0.7em;
+    margin:0.1em;    
+    position: relative;
+    top:0.4em;
+  }
+  .input-checkbox:before {
+    content: '';
+    display:inline-block;
+    width:1.4em;
+    height:1.4em;
+    border:1px solid #000;
+    margin:0 0.1em;
+    position: relative;
+    top:0.4em;
+  }
+  .form-control.print-control{border:1px solid #000;margin:0.1em;max-width:100%}
+  .table{width:100%;table-layout:fixed}
+  .print-control.input-other,.print-control.input-othercomment,.print-control.input-rank{display:inline-block}
+  

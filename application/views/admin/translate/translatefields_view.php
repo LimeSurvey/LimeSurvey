@@ -1,8 +1,8 @@
 <?php if (strlen(trim((string)$textfrom)) > 0) : ?>
     <?php if (extension_loaded('tidy')) : ?>
-        <?php echo tidy_repair_string($translateFields,array(),'utf8')?>
+        <?=tidy_repair_string($translateFields,array(),'utf8')?>
     <?php else:?>
-        <?php echo $translateFields;?>
+        <?=$translateFields;?>
     <?php endif;?>
 <?php else: ?>
     <input type='hidden' name='<?php echo $type; ?>_newvalue[<?php echo $i; ?>]' value='<?php echo $textto; ?>' />

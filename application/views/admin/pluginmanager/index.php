@@ -1,16 +1,20 @@
 <?php
 
 /**
-* Index view for plugin manager
-*
-* @since 2015-10-02
-* @author Olle Haerstedt
-*/
+ * Index view for plugin manager
+ * @var $this AdminController
+ *
+ * @since 2015-10-02
+ * @author Olle Haerstedt
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('pluginManager');
 
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
-<h3 class="pagetitle"><?php eT('Plugin manager'); ?></h3>
+<div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
 <div style="width: 75%; margin: auto;">
     <div id="ls_action_changestate_form_container">
     <?php
@@ -132,6 +136,10 @@
         ));
     ?>
 </div>
+<!-- 508 -->
+<a name="activate"></a>
+<a name="deactivate"></a>
+
 <input id="ls_action_changestate_type" type="hidden" name="type" value="" />
 <input id="ls_action_changestate_id" type="hidden" name="id" value="" />
 <?php echo CHtml::endForm(); ?>

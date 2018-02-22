@@ -80,7 +80,7 @@ class WhTimePicker extends CInputWidget
         TbArray::defaultValue('name', $name, $this->htmlOptions);
 
         echo '<div class="input-group">';
-        echo '<div class="input-group-addon"><span class="glyphicon glyphicon-time"></span></div>';
+        echo '<div class="input-group-addon"><span class="fa fa-time"></span></div>';
         if ($this->hasModel()) {
             echo CHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
         } else {

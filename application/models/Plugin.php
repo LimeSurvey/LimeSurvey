@@ -14,41 +14,32 @@
  */
 
 /**
- * Class Plugin
+ * This is the model class for table "{{plugins}}".
  *
- * @property integer $id primary key
+ * @property integer $id
  * @property string $name
  * @property integer $active
+ * @property string $version
+ *
  */
-class Plugin extends CActiveRecord {
+class Plugin extends CActiveRecord
+{
 
     /**
-     * @param type $className
+     * @inheritdoc
      * @return Plugin
      */
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
+    public static function model($className = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($className);
+        return $model;
     }
 
-    /**
-    * Returns the table's name
-    *
-    * @access public
-    * @return string
-    */
-    public function tableName() {
+    /** @inheritdoc */
+    public function tableName()
+    {
         return '{{plugins}}';
     }
 
-    /**
-    * Returns the validation rules for attributes.
-    * @return array[]
-    */
-    public function rules() {
-        return array(
-            array('name','length', 'max'=>255),
-            array('active','default', 'value'=>0),
-            array('active','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        );
-    }
 }

@@ -39,14 +39,14 @@
 
 </form>
 
-<script type="text/javascript">
+<?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript","
+
 function prepareCopyconditions() {
-    $("input:checked[name^='aConditionFromScenario']").each(function(i,val) {
+    $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
         var thecid = val.value;
         var theform = document.getElementById('copyconditions');
         addHiddenElement(theform,'copyconditionsfrom[]',thecid);
         return true;
     });
 }
-</script>
-
+", LSYii_ClientScript::POS_BEGIN);?>

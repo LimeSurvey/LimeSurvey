@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,53 +14,50 @@
  *
  */
 
+/**
+ * Class Answer
+ * @property integer $qid Question id
+ * @property string $code Answer code
+ * @property string $answer Answer text
+ * @property integer $sortorder Answer sort order
+ * @property integer $assessment_value
+ * @property string $language Language code
+ * @property integer $scale_id
+ *
+ * @property Question $questions
+ * @property Question $groups
+ */
 class Answer extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return Answer
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{answers}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'code','language','scale_id');
+        return array('qid', 'code', 'language', 'scale_id');
     }
 
-    /**
-     * Defines the relations for this model
-     *
-     * @access public
-     * @return array
-     */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
         return array(
+            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
             'questions' => array(self::HAS_ONE, 'Question', '',
                 'on' => "$alias.qid = questions.qid",
             ),
@@ -68,16 +67,13 @@ class Answer extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('qid','numerical', 'integerOnly'=>true),
-            array('code','length', 'min' => 1, 'max'=>5),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('qid', 'numerical', 'integerOnly'=>true),
+            array('code', 'length', 'min' => 1, 'max'=>5),
+            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             // Unicity of key
             array(
                 'code', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
@@ -90,15 +86,20 @@ class Answer extends LSActiveRecord
                 ),
                 'message' => gT('Answer codes must be unique by question.')
             ),
-            array('answer','LSYii_Validators'),
-            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('answer', 'LSYii_Validators'),
+            array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
         );
     }
 
-    function getAnswers($qid)
+    /**
+     * @param integer $qid
+     * @return CDbDataReader
+     */
+    public function getAnswers($qid)
     {
+        // TODO get via Question relations
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
@@ -111,13 +112,13 @@ class Answer extends LSActiveRecord
      * Return the key=>value answer for a given $qid
      *
      * @staticvar array $answerCache
-     * @param type $qid
+     * @param integer $qid
      * @param string $code
      * @param string $sLanguage
      * @param integer $iScaleID
      * @return array
      */
-    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
+    public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID = 0)
     {
         static $answerCache = array();
 
@@ -142,29 +143,43 @@ class Answer extends LSActiveRecord
         }
     }
 
-    public function oldNewInsertansTags($newsid,$oldsid)
+    /**
+     * @param integer $newsid
+     * @param integer $oldsid
+     * @return static[]
+     */
+    public function oldNewInsertansTags($newsid, $oldsid)
     {
-            $criteria = new CDbCriteria;
-            $criteria->compare('questions.sid',$newsid);
-            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-            return $this->with('questions')->findAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->compare('questions.sid', $newsid);
+        $criteria->compare('answer', '{INSERTANS::'.$oldsid.'X');
+        return $this->with('questions')->findAll($criteria);
     }
 
-    public function updateRecord($data, $condition=FALSE)
+    /**
+     * @param array $data
+     * @param bool|mixed $condition
+     * @return int
+     */
+    public function updateRecord($data, $condition = false)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
-    function insertRecords($data)
-    {    
+    /**
+     * @param array $data
+     * @return boolean|null
+     */
+    public function insertRecords($data)
+    {
         $oRecord = new self;
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;
         }
-        if($oRecord->validate()) {
+        if ($oRecord->validate()) {
             return $oRecord->save();
         }
-        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()),'warning','application.models.Answer.insertRecords');
+        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
     }
 
     /**
@@ -181,14 +196,19 @@ class Answer extends LSActiveRecord
         $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
         $position = 0;
 
-        foreach ($data as $row)
-        {
+        foreach ($data as $row) {
             $row->sortorder = $position++;
             $row->save();
         }
     }
 
-    public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
+    /**
+     * @param integer $surveyid
+     * @param string $lang
+     * @param bool $return_query
+     * @return array|CDbCommand
+     */
+    public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
         $query = Yii::app()->db->createCommand();
         $query->select("{{answers}}.*, {{questions}}.gid");
@@ -197,14 +217,13 @@ class Answer extends LSActiveRecord
         $query->order('qid, code, sortorder');
         $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
         $query->bindParams(":lang", $lang, PDO::PARAM_STR);
-        return ( $return_query ) ? $query->queryAll() : $query;
+        return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order=FALSE)
+    function getAllRecords($condition, $order = false)
     {
-        $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE)
-        {
+        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
+        if ($order != false) {
             $command->order($order);
         }
         return $command->query();
@@ -213,15 +232,16 @@ class Answer extends LSActiveRecord
     /**
      * @param string $fields
      * @param string $orderby
+     * @param mixed $condition
+     * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
         return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->order($orderby)
-        ->queryAll();
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition)
+            ->order($orderby)
+            ->queryAll();
     }
 }
-?>

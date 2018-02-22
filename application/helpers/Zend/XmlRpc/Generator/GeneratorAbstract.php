@@ -50,7 +50,7 @@ abstract class Zend_XmlRpc_Generator_GeneratorAbstract
      *
      * @param string $name XML tag name
      * @param string $value Optional value of the XML tag
-     * @return Zend_XmlRpc_Generator_Abstract Fluent interface
+     * @return self Fluent interface
      */
     public function openElement($name, $value = null)
     {
@@ -68,7 +68,7 @@ abstract class Zend_XmlRpc_Generator_GeneratorAbstract
      * Method marks the end of an XML element
      *
      * @param string $name XML tag name
-     * @return Zend_XmlRpc_Generator_Abstract Fluent interface
+     * @return self Fluent interface
      */
     public function closeElement($name)
     {

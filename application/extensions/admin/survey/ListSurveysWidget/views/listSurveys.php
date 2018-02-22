@@ -61,9 +61,16 @@
                         'name' => 'title',
                         'type' => 'raw',
                         'value'=>'CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
-                        'htmlOptions' => array('class' => 'col-md-4 has-link'),
-                        'header' => gT('Title'),
+                        'htmlOptions' => array('class' => 'col-md-2 has-link'),
                         'headerHtmlOptions'=>array('class' => 'col-md-4'),
+                    ),
+
+                    array(
+                        'header' => gT('Group'),
+                        'name' => 'group',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'col-md-2 has-link'),
                     ),
 
                     array(
@@ -122,7 +129,7 @@
                         'header' => gT('Closed group'),
                         'name' => 'uses_tokens',
                         'type' => 'raw',
-                        'value'=>'CHtml::link($data->hasTokens, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link($data->hasTokensTable ? gT("Yes"):gT("No"), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'has-link'),
                     ),
 
