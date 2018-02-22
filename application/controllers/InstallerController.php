@@ -128,10 +128,6 @@ class InstallerController extends CController
      */
     private function stepWelcome()
     {
-        // Destroy the session. Good to have when running installer multiple times (for testing).
-        Yii::app()->session->clear();
-        Yii::app()->session->destroy();
-
         if (!is_null(Yii::app()->request->getPost('installerLang'))) {
             Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
