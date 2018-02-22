@@ -128,6 +128,10 @@ class InstallerController extends CController
      */
     private function stepWelcome()
     {
+        // Destroy the session. Good to have when running installer multiple times (for testing).
+        Yii::app()->session->clear();
+        Yii::app()->session->destroy();
+
         if (!is_null(Yii::app()->request->getPost('installerLang'))) {
             Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
@@ -580,8 +584,13 @@ class InstallerController extends CController
 
                 // Flush query cache because Yii does not handle properly the new DB prefix
                 Yii::app()->cache->flush();
-                //config file is written, and we've a db in place
-                $this->connection = Yii::app()->db;
+
+                $aDbConfigArray = $this->_getDatabaseConfigArray();
+                $aDbConfigArray['class'] = '\CDbConnection';
+                \Yii::app()->setComponent('db', $aDbConfigArray, false);
+                $db = \Yii::app()->getDb();
+                $db->setActive(true);
+                $this->connection = $db;
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
@@ -625,7 +634,7 @@ class InstallerController extends CController
                         $user->parent_id = 0;
                         $user->lang = $sSiteLanguage;
                         $user->email = $sAdminEmail;
-                        $user->save();
+                        $result = $user->save();
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
 
@@ -1215,6 +1224,37 @@ class InstallerController extends CController
         $sDatabaseLocation = Yii::app()->session['dblocation'];
 
         return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser');
+    }
+
+    /**
+     * Use with \Yii::app()->setComponent() to set connection at runtime.
+     * @return array
+     */
+    private function _getDatabaseConfigArray()
+    {
+        $sDatabaseType = Yii::app()->session['dbtype'];
+        $sDatabasePort = Yii::app()->session['dbport'];
+        $sDatabaseName = Yii::app()->session['dbname'];
+        $sDatabaseUser = Yii::app()->session['dbuser'];
+        $sDatabasePwd = Yii::app()->session['dbpwd'];
+        $sDatabasePrefix = Yii::app()->session['dbprefix'];
+        $sDatabaseLocation = Yii::app()->session['dblocation'];
+
+        $sCharset = 'utf8';
+        if (in_array($sDatabaseType, array('mysql', 'mysqli'))) {
+            $sCharset = 'utf8mb4';
+        }
+
+        $db = array(
+            'connectionString' => "$sDatabaseType:host=$sDatabaseLocation;port=$sDatabasePort;dbname=$sDatabaseName;",
+            'emulatePrepare' => true,
+            'username' => $sDatabaseUser,
+            'password' => $sDatabasePwd,
+            'charset' => $sCharset,
+            'tablePrefix' => $sDatabasePrefix
+        );
+
+        return $db;
     }
 
     /**
