@@ -31,6 +31,6 @@
         <?php eT("Database settings"); ?>
     </li>
     <li class="<?php echo $classesForStep[5]; ?>">
-        <?php eT("Optional settings"); ?>
+        <?php eT("Administrator settings"); ?>
     </li>
 </ol>

@@ -620,11 +620,11 @@ class InstallerController extends CController {
     */
     private function stepOptionalConfiguration()
     {
-
+        $aData = [];
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
-        $aData['title'] = gT("Optional settings");
-        $aData['descp'] = gT("Optional settings to give you a head start");
-        $aData['classesForStep'] = array('off','off','off','off','off','on');
+        $aData['title'] = gT("Administrator settings");
+        $aData['descp'] = gT("Further settings for application administrator");
+        $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'on');
         $aData['progressValue'] = 80;
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
