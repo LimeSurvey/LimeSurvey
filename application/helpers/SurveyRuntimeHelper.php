@@ -1067,7 +1067,7 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                     //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
                 }
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -1101,7 +1101,7 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                     //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -1197,15 +1197,17 @@ class SurveyRuntimeHelper
      * @param string $sString the string to evaluate
      * @return string
      */
-    private function processString($sString)
+    private function processString($sString, $iRecursionLevel = 1)
     {
-        if (strpos($sString, "{") !== false) {
+        $sProcessedString = $sString;
+
+        if((strpos($sProcessedString, "{") !== false)){
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
-            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
-        } else {
-            $sProcessedString = $sString;
+            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields, $iRecursionLevel);
+            
         }
+
 
         return $sProcessedString;
     }
