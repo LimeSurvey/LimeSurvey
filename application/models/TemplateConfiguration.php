@@ -309,7 +309,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
-        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null ) {
+        if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         }
 
@@ -423,7 +423,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if ( ! is_object($this->template) || ( is_object($this->template) && ! Template::checkTemplateXML($this->template->folder) )) {
+            if (!is_object($this->template) || (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))) {
                 $this->bTemplateCheckResult = false;
             }
         }
@@ -511,7 +511,7 @@ class TemplateConfiguration extends TemplateConfig
             $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
         }
 
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/', array("templatename"=>$this->template_name));
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
 
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
@@ -522,6 +522,7 @@ class TemplateConfiguration extends TemplateConfig
             </a>";
 
             //
+
 
         $OptionLink = '';
 
@@ -535,10 +536,11 @@ class TemplateConfiguration extends TemplateConfig
                 </a>";
         }
 
-
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
-            data-href="'.$sUninstallUrl.'"
+            data-ajax-url="'.$sUninstallUrl.'"
+            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+            data-gridid = "yw0"
             data-target="#confirmation-modal"
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
@@ -563,7 +565,7 @@ class TemplateConfiguration extends TemplateConfig
                         class="btn btn-danger btn-block"
                         disabled
                         data-toggle="tooltip"
-                        title="' . gT('You cannot uninstall the default template.') . '"
+                        title="' . gT('You cannot uninstall the default template.').'"
                     >
                         <span class="icon-trash"></span>
                         '.gT('Uninstall').'
@@ -581,9 +583,8 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-
-
-        $oRTemplate = $this->prepareTemplateRendering($this->template->name);
+        $filteredName = Template::templateNameFilter($this->template->name);
+        $oRTemplate = $this->prepareTemplateRendering($filteredName);
 
         $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)) {
@@ -631,7 +632,9 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptions();
         $oTemplate->setOptionInheritance();
 
-        $renderArray['oParentOptions'] = (array) $oTemplate->oOptions;
+        //We add some extra values to the option page
+        //This is just a dirty hack, and somewhere in the future we will correct it
+        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  $oTemplate->packages_to_load, 'files_css' => $oTemplate->files_css));
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
@@ -714,6 +717,7 @@ class TemplateConfiguration extends TemplateConfig
                     $key = array_search($sFileName, $aSettings);
                     //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
                     unset($aSettings[$key]);
+                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
                     /* Old way todo
                         $oTemplate = $this->getTemplateForFile($sFileName, $this);
                         if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)) {
@@ -751,7 +755,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName   = $this->template->extends;
-            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName)->prepareTemplateRendering($sMotherTemplateName, null);
+            $instance = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
+            $instance->template->checkTemplate();
+            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
         }
     }
 
@@ -765,14 +771,24 @@ class TemplateConfiguration extends TemplateConfig
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
-                TemplateConfiguration::uninstall($this->template_name);
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
-                Yii::app()->getController()->redirect(array("admin/themeoptions"));
+                $this->uninstallIncorectTheme($this->template_name);
                 break;
             }
             $oRTemplate = $oMotherTemplate;
         }
         return $oRTemplate;
+    }
+
+    /**
+     * Uninstall a theme and, display error message, and redirect to theme list
+     * @param string $sTemplateName     
+     */
+    protected function uninstallIncorectTheme($sTemplateName)
+    {
+        TemplateConfiguration::uninstall($sTemplateName);
+        Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $sTemplateName), 'error');
+        Yii::app()->getController()->redirect(array("admin/themeoptions"));
+        Yii::app()->end();
     }
 
     /**
@@ -848,7 +864,13 @@ class TemplateConfiguration extends TemplateConfig
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
-                return $this->getParentConfiguration()->getOptionKey($key);
+                $oParentConfig = $this->getParentConfiguration();
+                if ($oParentConfig->id != $this->id){
+                    return $this->getParentConfiguration()->getOptionKey($key);
+                }else{
+                    $this->uninstallIncorectTheme($this->template_name);
+                }
+
             }
             return  $value;
         } else {
@@ -1006,4 +1028,24 @@ class TemplateConfiguration extends TemplateConfig
         return $sAttribute;
     }
 
+    /**
+     * @return string
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->oMotherTemplate)) {
+
+            $sTemplateNames .= ' ' . $oRTemplate->template->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+
+        return $sTemplateNames;
+    }
 }

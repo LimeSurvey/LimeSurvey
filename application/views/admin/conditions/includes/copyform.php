@@ -39,8 +39,7 @@
 
 </form>
 
-<?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript","
-
+<script>
 function prepareCopyconditions() {
     $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
         var thecid = val.value;
@@ -49,4 +48,4 @@ function prepareCopyconditions() {
         return true;
     });
 }
-", LSYii_ClientScript::POS_BEGIN);?>
+</script>

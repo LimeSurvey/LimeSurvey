@@ -3,6 +3,7 @@ class FormattingOptions
 {
     public $responseMinRecord;
     public $responseMaxRecord;
+    /** @var string $aResponses Comma separated values */
     public $aResponses;
 
     /**

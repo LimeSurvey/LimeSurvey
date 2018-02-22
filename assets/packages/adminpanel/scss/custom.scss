@@ -139,6 +139,22 @@
     .dragPointer{
         cursor: move;
     }
+    .question-question-list{
+        .question-question-list-item{
+            .question-question-list-item-link{
+                display: inline-flex;
+                flex-wrap: wrap;
+            }
+        }
+
+    }
+    .question_text_ellipsize{
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding-left: 2px;
+    }
 }
 
 .bigIcons {

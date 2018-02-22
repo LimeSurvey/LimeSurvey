@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist'
+import VuexPersistence from 'vuex-persist';
 import VueLocalStorage from 'vue-localstorage';
 
 Vue.use(VueLocalStorage);
@@ -19,12 +19,11 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: '380px',
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,
@@ -48,9 +47,14 @@ const getAppState = function (userid) {
         ],
         getters: {
             substractContainer: state => {
-                let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));
-                let collapsedBodyWidth = ($('#vue-app-main-container').width() - parseInt('98px'));
-                return (state.isCollapsed ? collapsedBodyWidth : bodyWidth) + 'px';
+                let bodyWidth = (1 - (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width()))*100;
+                let collapsedBodyWidth = (1 - (parseInt('98px')/$('#vue-app-main-container').width()))*100;
+                return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
+            },
+            sideBarSize : state => {
+                let sidebarWidth = (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width())*100;
+                let collapsedSidebarWidth = (parseInt(98)/$('#vue-app-main-container').width())*100;
+                return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
             }
         },
         mutations: {
@@ -84,9 +88,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;
@@ -139,8 +140,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });

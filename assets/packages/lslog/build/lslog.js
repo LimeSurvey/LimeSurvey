@@ -71,9 +71,9 @@ var ConsoleShim = function () {
         }
     }, {
         key: '_insertParamToArguments',
-        value: function _insertParamToArguments() {
+        value: function _insertParamToArguments(rawArgs) {
             if (this.param !== '') {
-                var args = Array.from(arguments);
+                var args = [].concat(_toConsumableArray(rawArgs));
                 args.unshift(this.param);
                 return args;
             }
@@ -131,9 +131,7 @@ var ConsoleShim = function () {
             }
             var args = this._insertParamToArguments(arguments);
             if (typeof console.group === 'function') {
-                var _console$log;
-
-                (_console$log = console.log).call.apply(_console$log, [console].concat(_toConsumableArray(args)));
+                console.log.apply(console, args);
                 return;
             }
             args.shift();
@@ -199,7 +197,7 @@ var ConsoleShim = function () {
         value: function error() {
             var args = this._insertParamToArguments(arguments);
             if (typeof console.error === 'function') {
-                console.error.apply(args);
+                console.error.apply(console, args);
                 return;
             }
 
@@ -211,7 +209,7 @@ var ConsoleShim = function () {
         value: function warn() {
             var args = this._insertParamToArguments(arguments);
             if (typeof console.warn === 'function') {
-                console.warn.apply(args);
+                console.warn.apply(console, args);
                 return;
             }
 

@@ -19,8 +19,8 @@ var onClickListAction =  function () {
     var $that          = $(this);                                                             // The clicked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
-    var $gridid        = $(this).closest('div.listActions').data('grid-id');
-    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
+    var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
+    var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
 
@@ -39,7 +39,7 @@ var onClickListAction =  function () {
     // TODO : Switch case "redirection (with 2 type; post or fill session)"
     if(actionType == "redirect")
     {
-        $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
+        $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
             'target': '_blank',
@@ -71,7 +71,7 @@ var onClickListAction =  function () {
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
-        var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
+        var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
     }
@@ -83,7 +83,7 @@ var onClickListAction =  function () {
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
         var func = eval(js);
-        var itemIds = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));
+        var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
         func(itemIds);
         return;
     }
@@ -113,7 +113,7 @@ var onClickListAction =  function () {
 
         if ($that.data('grid-reload') == "yes")
         {
-            $.fn.yiiGridView.update($gridid);                         // Update the surveys list
+            $gridid.yiiGridView('update');                         // Update the surveys list
             setTimeout(function(){
                 $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
         }
@@ -246,18 +246,24 @@ function prepareBsSwitchInteger($gridid){
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
-    var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
-    $('.date input').each(function(){
-        $(this).datetimepicker({
-            format: dateTimeFormat,
-            showClear: dateTimeSettings.showClear,
-            allowInputToggle: dateTimeSettings.allowInputToggle,
-        });
+    if (dateTimeSettings) {
+        var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
+        $('.date input').each(function(){
+            $(this).datetimepicker({
+                format: dateTimeFormat,
+                showClear: dateTimeSettings.showClear,
+                allowInputToggle: dateTimeSettings.allowInputToggle,
+            });
     });
-
+    }
 }
+
 // get user session datetimesettings
 function getDefaultDateTimePickerSettings() {
+    // TODO: Code below can't handle if installation is in a subfolder (not web root).
+    // The correct solution is to fetch datetime format from an <input> element.
+    return null;
+
     //Switch between path and get based routing
     if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
         var url = "/index.php?r=admin/survey&sa=datetimesettings";

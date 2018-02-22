@@ -32,7 +32,7 @@ class TestBaseClassWeb extends TestBaseClass
     public static $webPort = 4444;
 
     /**
-     * @var WebDriver $webDriver
+     * @var LimeSurveyWebDriver $webDriver
      */
     protected static $webDriver;
 
@@ -100,6 +100,24 @@ class TestBaseClassWeb extends TestBaseClass
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('admin/' . $view['route']);
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSurveyUrl($lang = 'en')
+    {
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            [
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => $lang
+            ]
+        );
         return $url;
     }
 

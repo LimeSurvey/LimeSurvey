@@ -190,23 +190,23 @@ class TokenDynamic extends LSActiveRecord
         }
 
         if ($SQLemailstatuscondition) {
-                    $command->addCondition($SQLemailstatuscondition);
+            $command->addCondition($SQLemailstatuscondition);
         }
 
         if ($SQLremindercountcondition) {
-                    $command->addCondition($SQLremindercountcondition);
+            $command->addCondition($SQLremindercountcondition);
         }
 
         if ($SQLreminderdelaycondition) {
-                    $command->addCondition($SQLreminderdelaycondition);
+            $command->addCondition($SQLreminderdelaycondition);
         }
 
         if ($aTokenIds) {
-                    $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
         }
 
         if ($iMaxEmails) {
-                    $command->limit = $iMaxEmails;
+            $command->limit = $iMaxEmails;
         }
 
         $command->order = 'tid';
@@ -877,7 +877,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function search()
     {
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSizeTokenView = Yii::app()->user->getState('pageSizeTokenView', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
         $sort->defaultOrder = 'tid ASC';
@@ -1006,7 +1006,7 @@ class TokenDynamic extends LSActiveRecord
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(
-                'pageSize'=>$pageSize,
+                'pageSize'=>$pageSizeTokenView,
             ),
         ));
 

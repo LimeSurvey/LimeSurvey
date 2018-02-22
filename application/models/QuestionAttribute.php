@@ -159,6 +159,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sLanguage restrict to this language (@todo : add it in qanda)
      * @return array|boolean
      * @throws CException
+     * @todo This function needs to be incorporated in the model because it creates a big number of additional queries. For exmaple the default value merging could be done in AfterFind.
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
@@ -172,6 +173,7 @@ class QuestionAttribute extends LSActiveRecord
         }
         $aQuestionAttributes = array();
         $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+
         if ($oQuestion) {
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
@@ -214,6 +216,7 @@ class QuestionAttribute extends LSActiveRecord
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach ($aAttributeNames as $aAttribute) {
+                $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {

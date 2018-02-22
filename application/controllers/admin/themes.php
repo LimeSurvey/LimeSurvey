@@ -637,7 +637,6 @@ class themes extends Survey_Common_Action
                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
-
                     //$savefilename = $oEditedTemplate
                     if (!file_exists($oEditedTemplate->path.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile)) {
                         $oEditedTemplate->extendsFile($relativePathEditfile);
@@ -659,6 +658,11 @@ class themes extends Survey_Common_Action
 
                         $oEditedTemplate->actualizeLastUpdate();
 
+                        // If the file is an asset file, we refresh asset number
+                        if (in_array($relativePathEditfile, $cssfiles) || in_array($relativePathEditfile, $jsfiles)){
+                            SettingGlobal::increaseAssetsversionnumber();
+                        }
+
                         fclose($handle);
                     } else {
                         Yii::app()->user->setFlash('error', "The file $savefilename is not writable");
@@ -671,7 +675,7 @@ class themes extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
-        $this->getController()->redirect(array('admin/themes/', 'sa'=>'view', 'editfile'=>$relativePathEditfile, 'screenname'=>$screenname, 'templatename'=>$sTemplateName));
+        $this->getController()->redirect(array('admin/themes/', 'sa'=>'view', 'editfile'=>$relativePathEditfile, 'screenname'=>$screenname, 'templatename'=>$sTemplateName), true );
     }
 
     /**
@@ -837,6 +841,9 @@ class themes extends Survey_Common_Action
         $screens['assessments']     = gT('Assessments', 'unescaped');
         $screens['register']        = gT('Registration', 'unescaped');
         $screens['printanswers']    = gT('Print answers', 'unescaped');
+        $screens['pdf']             = gT('PDF', 'unescaped');
+        $screens['navigation']      = gT('Navigation', 'unescaped');
+        //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
@@ -869,17 +876,24 @@ class themes extends Survey_Common_Action
         $siteadminname = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
+        // NB: Used by answer print PDF layout.
+        $print = [];
+
         // Set this so common.php doesn't throw notices about undefined variables
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
         $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['surveyls_title'] = $thissurvey['name'];
         $thissurvey['description'] =
         "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
         "<p>".gT("But this one isn't.")."<p>";
+        $thissurvey['surveyls_description'] = $thissurvey['description'];
         $thissurvey['welcome'] =
         "<p>".gT('Welcome to this sample survey')."<p>".
         "<p>".gT('You should have a great time doing this')."<p>";
+        $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
         $thissurvey['allowsave'] = "Y";
         $thissurvey['active'] = "Y";
         $thissurvey['tokenanswerspersistence'] = "Y";
@@ -896,8 +910,6 @@ class themes extends Survey_Common_Action
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
-        $printoutput = $this->getController()->renderPartial('/admin/themes/templateeditor_printoutput_view', array(), true);
-
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
@@ -912,6 +924,19 @@ class themes extends Survey_Common_Action
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
 
         switch ($screenname) {
+            case 'welcome':
+                // Show language changer.
+                $thissurvey['alanguageChanger']['show'] = true;
+                $thissurvey['alanguageChanger']['datas'] = [
+                    'sSelected' => 'en',
+                    //'withForm' => true,  // Set to true for no-js functionality.
+                    'aListLang' => [
+                        'en' => gT('English'),
+                        'de' => gT('German')
+                    ]
+                ];
+
+                break;
 
             case 'question':
                 $aReplacements = array(
@@ -984,6 +1009,7 @@ class themes extends Survey_Common_Action
                 // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = "\n";
+                $thissurvey['registration_view'] = 'register_form';
                 break;
 
             case 'completed':
@@ -1046,11 +1072,69 @@ class themes extends Survey_Common_Action
 
             case 'printanswers':
                 // $sLayoutFile = "TODO";
+                //$printoutput = $this->getController()->renderPartial('/admin/themes/templateeditor_printoutput_view', array(), true);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 // $myoutput[] = "\n";
+                break;
+
+            case 'navigation':
+                // Show question index navigation.
+                $thissurvey['aQuestionIndex']['bShow'] = true;
+                $thissurvey['aQuestionIndex']['items'] = [
+                    [
+                        'text' => gT('A group without step status styling')
+                    ],
+                    [
+                        'text' => gT('This group is unanswered'),
+                        'stepStatus' => [
+                            'index-item-unanswered' => true
+                        ]
+                    ],
+                    [
+                        'text' => gT('This group has an error'),
+                        'stepStatus' => [
+                            'index-item-error' => true
+                        ]
+                    ],
+                    [
+                        'text' => gT('Current group is disabled'),
+                        'stepStatus' => [
+                            'index-item-current' => true
+                        ]
+                    ]
+                ];
+
+                // Show "Clear all".
+                $thissurvey['bShowClearAll'] = true;
+
+                // Show language changer.
+                $thissurvey['alanguageChanger']['show'] = true;
+                $thissurvey['alanguageChanger']['datas'] = [
+                    'sSelected' => 'en',
+                    'aListLang' => [
+                        'en' => gT('English'),
+                        'de' => gT('German')
+                    ]
+                ];
+
+                $thissurvey['aNavigator']['load'] = [
+                    'show' => "Y"
+                ];
+
+                break;
+
+            case 'pdf':
+                $print['groups'] = [
+                    [
+                        'name' => gT('Question group name'),
+                        'description' => gT('Question group description'),
+                        'questions' => [
+                        ]
+                    ]
+                ];
                 break;
 
             case 'error':
@@ -1061,9 +1145,14 @@ class themes extends Survey_Common_Action
 
         // NOTE: Twig already render return error, no try catch needed
         $thissurvey['include_content'] = $sContentFile;
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor($sLayoutFile, array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-
-
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+            $sLayoutFile,
+            array(
+                'aSurveyInfo' =>$thissurvey,
+                'print'       => $print  // Only used for PDF print layout.
+            ),
+            $oEditedTemplate
+        );
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles, $jsfiles);

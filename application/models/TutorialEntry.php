@@ -11,7 +11,7 @@
  * @property string $settings
  *
  * The followings are the available model relations:
- * @property Tutorials $t
+ * @property Tutorial $t
  */
 class TutorialEntry extends LSActiveRecord
 {
@@ -105,7 +105,8 @@ class TutorialEntry extends LSActiveRecord
         return $model;
     }
 
-    public function getStepFromEntry() {
+    public function getStepFromEntry()
+    {
         $stepArray = json_decode($this->settings, true);
         $stepArray['content'] = gT($this->content, 'unescaped');
         $stepArray['title'] = gT($this->title, 'unescaped');

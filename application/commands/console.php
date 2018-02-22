@@ -25,6 +25,10 @@
     $sCurrentDir = dirname(__FILE__);
     $settings = require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config-defaults.php');
     $config = require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'internal.php');
+    $config['components']['session']['class'] = 'ConsoleHttpSession';
+    $config['components']['session']['cookieMode'] = 'none';
+    $config['components']['session']['cookieParams'] = [];
+    
     $core = dirname($sCurrentDir).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR;
     if (isset($config['config'])) {
         $settings = array_merge($settings, $config['config']);

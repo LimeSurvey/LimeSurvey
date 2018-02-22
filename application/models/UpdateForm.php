@@ -553,7 +553,6 @@ class UpdateForm extends CFormModel
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
             setGlobalSetting('AssetsVersion', $iAssetVersionNumber);
-            App()->getController()->redirect(array("admin/"));
         }
         return false;
     }

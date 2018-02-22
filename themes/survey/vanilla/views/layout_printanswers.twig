@@ -1,0 +1,18 @@
+{% extends 'layout_global.twig' %}
+
+{% if aSurveyInfo.printPdf != 1 %}
+    {% block pjaxbegin %}<div></div>{% endblock %}
+{% endif %}
+
+{% block body %}
+
+    {% block content %}
+        {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
+        {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block pjaxend %}<div></div>{% endblock %}  
+
+

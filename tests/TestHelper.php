@@ -121,6 +121,10 @@ class TestHelper extends TestCase
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
         $result = \activateSurvey($surveyId);
+        // For Travis debugging.
+        if (isset($result['error'])) {
+            var_dump($result);
+        }
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 
@@ -397,7 +401,7 @@ class TestHelper extends TestCase
                 // Open target="_blank" in new tab.
                 $profile->setPreference('browser.link.open_newwindow', 3);
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
-                $webDriver = RemoteWebDriver::create($host, $capabilities, 5000);
+                $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;
             } catch (WebDriverException $ex) {
                 $tries++;

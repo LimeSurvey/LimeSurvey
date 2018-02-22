@@ -25,7 +25,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     
     public function init()
     {
-        
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -60,7 +59,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && isset($_SERVER[$serverKey])) {
             $sUser = $_SERVER[$serverKey];
-            
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
                 if (strpos($sUser, "\\") !== false) {
@@ -71,7 +69,6 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                     $sUser = substr($sUser, 0, strrpos($sUser, "@"));
                 }
             }
-            
             $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) {
                 $sUser = $aUserMappings[$sUser];
@@ -80,7 +77,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             if ($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user')) {
                 $this->setUsername($sUser);
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
-            } elseif ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
+                return;
+            }
+            if ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
                 throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
             }
         }

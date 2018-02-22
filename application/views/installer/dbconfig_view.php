@@ -8,7 +8,8 @@
         <p><?php echo $descp; ?></p>
         <?php if (CHtml::errorSummary($model, null, null, array('class' => 'errors'))): ?>
             <div class='alert alert-danger'>
-                <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+                <?php echo CHtml::errorSummary($model, gT("Please fix the following input errors:"), null, array('class' => 'errors')); ?>
+                
             </div>
         <?php endif; ?>
             <hr/>

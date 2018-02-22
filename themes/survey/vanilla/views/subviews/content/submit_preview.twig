@@ -27,12 +27,19 @@
 
     <div class="{{ aSurveyInfo.class.previewsubmit }}" {{ aSurveyInfo.attr.previewsubmit }}>
         <div class='{{ aSurveyInfo.class.previewsubmittext }}' {{ aSurveyInfo.attr.previewsubmittext }}>
+            {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ "Thank you!" | t }}</p>
+                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ "Your survey responses have been recorded." | t }}</p>
+            {% else %}
+                {{ aSurveyInfo.aCompleted.sEndText }}
+            {% endif %}
+
             {# Assessments #}
             {% if (aSurveyInfo.aAssessments.show) %}
                 {{ include('./subviews/messages/assessments.twig') }}
             {% endif %}
 
-            <br />
+            <br /><br />
             {# TODO: rewrite this before master #}
             <strong >
                 <font size='2' color='red'>

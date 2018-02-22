@@ -55,7 +55,7 @@
         border:  1px solid #e6e6e6;
       {% endif %}
 
-      {% if (aSurveyInfo.options.questioncontainershadow == "on" ) %}
+      {% if (aSurveyInfo.options.questioncontainershadow == "on" and aSurveyInfo.options.questionborder == "on" ) %}
         box-shadow: 0 1px 2px rgba(0,0,0,.2);
       {% endif %}
     }
@@ -66,41 +66,102 @@
     }
 
     {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
+
+        {% if (aSurveyInfo.options.checkboxanimationduration < 1) %}
+            {% set checkboxanimationduration = 500 %}
+        {% else %}
+            {% set checkboxanimationduration = aSurveyInfo.options.checkboxanimationduration %}
+        {% endif %}
+
         .checkbox-item input[type="checkbox"]:checked + label::after{
             animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
-            animation-duration: {{ aSurveyInfo.options.checkboxanimationduration  }}s;
+            animation-duration: {{ checkboxanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .checkbox-item input[type="checkbox"] + label::after{
+            display: none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animateradio == "on" ) %}
+
+        {% if (aSurveyInfo.options.radioanimationduration < 1) %}
+            {% set radioanimationduration = 500 %}
+        {% else %}
+            {% set radioanimationduration = aSurveyInfo.options.radioanimationduration %}
+        {% endif %}
+
         .radio-item input[type="radio"]:checked + label::after{
             animation-name: {{ aSurveyInfo.options.radioanimation  }};
-            animation-duration: {{ aSurveyInfo.options.radioanimationduration  }}s;
+            animation-duration: {{ radioanimationduration }}ms;
             animation-fill-mode: both;
+            animation-iteration-count: 1;
+            display: inline-block;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
+        }
+        .radio-item input[type="radio"] + label::after{
+            display:none;
+            -webkit-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+            transform: none;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animatequestion == "on" ) %}
+
+        {% if (aSurveyInfo.options.questionanimationduration < 1) %}
+            {% set questionanimationduration = 500 %}
+        {% else %}
+            {% set questionanimationduration = aSurveyInfo.options.questionanimationduration %}
+        {% endif %}
+
         .question-container {
             animation-name: {{ aSurveyInfo.options.questionanimation  }};
-            animation-duration: {{ aSurveyInfo.options.questionanimationduration  }}s; 
+            animation-duration: {{ questionanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animatealert == "on" ) %}
-        .question-container {
+
+        {% if (aSurveyInfo.options.alertanimationduration < 1) %}
+            {% set alertanimationduration = 500 %}
+        {% else %}
+            {% set alertanimationduration = aSurveyInfo.options.alertanimationduration %}
+        {% endif %}
+
+        .alert {
             animation-name: {{ aSurveyInfo.options.alertanimation  }};
-            animation-duration: {{ aSurveyInfo.options.alertanimationduration  }}s;
+            animation-duration: {{ alertanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}
 
     {% if (aSurveyInfo.options.animatebody == "on" ) %}
+
+        {% if (aSurveyInfo.options.bodyanimationduration < 1) %}
+            {% set bodyanimationduration = 500 %}
+        {% else %}
+            {% set bodyanimationduration = aSurveyInfo.options.bodyanimationduration %}
+        {% endif %}
+
         #outerframeContainer {
             animation-name: {{ aSurveyInfo.options.bodyanimation  }};
-            animation-duration: {{ aSurveyInfo.options.bodyanimationduration  }}s;
+            animation-duration: {{ bodyanimationduration }}ms;
             animation-fill-mode: both;
         }
     {% endif %}

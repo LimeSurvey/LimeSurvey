@@ -29,7 +29,7 @@
     <?php } ?>
 <?php if($bCaptcha){ ?>
     <div class='form-group captcha-item'>
-        <label class='control-label col-sm-5' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+        <label class='control-label col-sm-5' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
         <div class='col-sm-7'>
             <div class='input-group'>
                 <div class='control-label captcha-widget' >

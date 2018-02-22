@@ -47,6 +47,11 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function update($id = 0)
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if ($id != 0) {
                     $model = $this->loadModel($id);
         } else {
@@ -102,6 +107,11 @@ class SurveymenuController extends Survey_Common_Action
     }
     public function batchEdit()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         $oBaseModel = Surveymenu::model();
@@ -157,6 +167,11 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function massDelete()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'delete')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+        
         if (Yii::app()->request->isPostRequest) {
             $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
             $success = [];
@@ -198,6 +213,11 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function delete()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'delete')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
             $success = false;
@@ -234,6 +254,11 @@ class SurveymenuController extends Survey_Common_Action
      */
     public function restore()
     {
+        if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {

@@ -721,7 +721,6 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode=$previewmode;
-            //$_SESSION[$LEM->sessid]['previewmode']=$previewmode;
         }
 
         /**
@@ -821,6 +820,9 @@
         {
             LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
             $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
+            if(!is_array($releqns)) {
+                return NULL;
+            }    
             $num = count($releqns);
             if ($num == 0) {
                 return NULL;
@@ -2974,23 +2976,22 @@
                     $em_validation_q_tip = '';
                 }
 
-
                 // em_validation_q - an EM validation equation that must be satisfied for the whole question.  Uses 'this' in the equation
                 if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
                 {
                     $em_validation_q = $qattr['em_validation_q'];
+                    $sq_names = array();
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
-                        $sq_names = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
-                            switch ($type)
-                            {
+                            switch ($type) {
                                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                                 case 'F': //ARRAY (Flexible) - Row Format
+                                case 'H': //ARRAY (Flexible) - Col Format
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case ';': //ARRAY (Multi Flexi) Text
@@ -3004,16 +3005,16 @@
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
                                 case 'D': //DATE
-                                    if ($this->sgqaNaming)
-                                    {
+                                    if ($this->sgqaNaming) {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',(string)substr($sq['jsVarName'],4), $em_validation_q) . ')';
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                     }
                                     break;
+                                case 'L':
+                                case '!':
                                 default:
+                                    // Nothing to do : no realsubq, set it after
                                     break;
                             }
                             if (!is_null($sq_name)) {
@@ -3033,6 +3034,21 @@
                             'qid' => $questionNum,
                             );
                         }
+                    }
+                    // No subqs or false subqs (L and !)
+                    if (empty($sq_names)) {
+                        if ($this->sgqaNaming) {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['sgqa'], $em_validation_q) . ')';
+                        } else {
+                            $eqn = '(' . preg_replace('/\bthis\b/',$qinfo['varName'], $em_validation_q) . ')';
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'em_validation_q',
+                            'class' => 'q_fn_validation',
+                            'eqn' => $eqn,
+                            'qid' => $questionNum,
+                        );
                     }
                 }
                 else
@@ -3880,7 +3896,6 @@
                     case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                     case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                     case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
                     case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
                     case 'M': //Multiple choice checkbox
                     case 'P': //Multiple choice with comments checkbox + text
@@ -3890,15 +3905,20 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H') {
-                            if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
-                                //                            $rowdivid = substr($sgqa,0,-7);
-                            }
-                            else {
-                                $sqsuffix = '_' . $fielddata['aid'];
-                                $rowdivid = $sgqa;
-                            }
+                        if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
+                            //                            $rowdivid = substr($sgqa,0,-7);
                         }
+                        else {
+                            $sqsuffix = '_' . $fielddata['aid'];
+                            $rowdivid = $sgqa;
+                        }
+                        break;
+                    case 'H': //ARRAY (Flexible) - Column Format
+                        $csuffix = $fielddata['aid'];
+                        $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                        $question = $fielddata['subquestion'];
+                        $sqsuffix = '_' . $fielddata['aid'];
+                        $rowdivid = $sgqa; // Really bad name here … because row are subquestion not row …
                         break;
                     case ':': //ARRAY (Multi Flexi) 1 to 10
                     case ';': //ARRAY (Multi Flexi) Text
@@ -4043,7 +4063,6 @@
                 if($hidden && $type!="*"){
                     $jsVarName_on = '';
                 }
-
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || $type == 'O'  || !is_null($preg)
                 || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
@@ -4137,7 +4156,6 @@
                     }
                     $ansList = ",'answers':{ " . implode(",",$answers) . "}";
                 }
-
                 // Set mappings of variable names to needed attributes
                 $varInfo_Code = array(
                 'jsName_on'=>$jsVarName_on,
@@ -4164,7 +4182,6 @@
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'onlynum'=>$onlynum,
                 );
-
                 $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
                 'grelevance'=>$grelevance,
@@ -5528,7 +5545,7 @@
                         $criteria->addCondition('srid=:srid');
                         $criteria->addCondition('sid=:sid');
                         $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
-                        $savedControl = SavedControl::model()->findAll($criteria);
+                        $savedControl = SavedControl::model()->find($criteria);
 
                         if($savedControl){
                             $savedControl->delete();
@@ -8526,7 +8543,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $aQuestionAttributesForEM=array();
             foreach($oQids as $oQid)
             {
-                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid);
+                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid, $lang);
                 // Change array lang to value
                 foreach($aAttributesValues as &$aAttributeValue)
                 {

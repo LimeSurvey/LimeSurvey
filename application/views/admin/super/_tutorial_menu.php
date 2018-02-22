@@ -1,5 +1,6 @@
 <?php
-    $aTutorials = Tutorials::model()->getActiveTutorials();
+    $aTutorials = Tutorial::model()->getActiveTutorials();
+    
 ?>
 
 <li class="dropdown">
@@ -10,11 +11,13 @@
     </a>
     <ul class="dropdown-menu " id="tutorials-dropdown">
         <?php foreach($aTutorials as $oTutorial) { ?>
-        <li>
-            <a href="#" onclick="window.tourLibrary.triggerTourStart('<?=$oTutorial->name?>')">
-                <i class="fa <?=gT($oTutorial->icon)?>"></i>&nbsp;<?=gT($oTutorial->title)?>
-            </a>
-        </li>
+            <?php if( Permission::model()->hasGlobalPermission($oTutorial->permission, $oTutorial->permission_grade)) { ?>
+                <li>
+                    <a href="#" onclick="window.tourLibrary.triggerTourStart('<?=$oTutorial->name?>')">
+                        <i class="fa <?=$oTutorial->icon?>"></i>&nbsp;<?=$oTutorial->title?>
+                    </a>
+                </li>
+            <?php } ?>
         <?php } ?>
     </ul>
 </li>

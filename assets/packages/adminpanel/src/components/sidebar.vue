@@ -29,7 +29,7 @@ export default {
             'questiongroups': [],
             'menues' : [],
             '$store.state.isCollapsed' : false,
-            'sideBarWidth': '315px',
+            'sideBarWidth': '315',
             'initialPos' : {x: 0, y: 0},
             'isMouseDown' : false,
             'isMouseDownTimeOut' : null,
@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         getSideBarWidth(){
-            return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
+            return this.$store.state.isCollapsed ? '98' : this.sideBarWidth;
         },
         sortedMenus() {
             return _.orderBy(this.menues,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);            
@@ -69,7 +69,7 @@ export default {
                 });
                 return {gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions}
             });
-            this.$log.debug("QuestionGroup order changed");
+            this.$log.trace("QuestionGroup order changed");
             this.post(this.updateOrderLink, {grouparray: onlyGroupsArray, surveyid: this.$store.surveyid}).then(
                 (result) => {self.$log.debug('questiongroups updated');},
                 (error) => {self.$log.error('questiongroups updating error!');}
@@ -157,7 +157,7 @@ export default {
             this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
             this.$store.commit('changeIsCollapsed',this.$store.state.isCollapsed);
             if(this.$store.state.isCollapsed){
-                this.sideBarWidth = '98px';
+                this.sideBarWidth = '98';
             } else {
                 this.sideBarWidth = this.$store.state.sidebarwidth;
             }
@@ -171,9 +171,9 @@ export default {
             if(this.isMouseDown){
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if(parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
+                if(parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
-                    this.$store.commit('changeSidebarwidth', '340px');
+                    this.$store.commit('changeSidebarwidth', '340');
                 } else {
                     this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 }
@@ -259,7 +259,7 @@ export default {
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen; 
         if(this.$store.state.isCollapsed){ 
-            this.sideBarWidth = '98px'; 
+            this.sideBarWidth = '98'; 
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
@@ -312,7 +312,7 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
@@ -348,10 +348,11 @@ export default {
                 </transition>
             </div>
         </div>
-        <div class="resize-handle" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
+        <div class="resize-handle ls-flex-column" :style="{'min-height': calculateSideBarMenuHeight}">
             <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
         </div>
     </div>
+    
 </template>
 <style lang="scss">
     

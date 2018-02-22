@@ -1,6 +1,6 @@
 var  doMultipleChoiceWithComments = function(qID,when)
 {
-  var question=$("#question"+qID+" .questions-list");
+  var question=$("#question"+qID+" .ls-answers");
   if (jQuery.inArray(when, ['checked','unchecked'])<0){when='checked'}
   if(!question) return;
 
@@ -18,7 +18,8 @@ var  doMultipleChoiceWithComments = function(qID,when)
     question.on('keyup focusout',':not(.other-item) input:text',function(event){
       var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
       if($(this)[0].value==""){
-        checkboxinput[0].checked=false;
+        // Do nothing in this case - if the question is mandatory, it should still be possible to
+        // submit a checked box without a comment.
       }else{
         checkboxinput[0].checked=true;
       }

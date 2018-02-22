@@ -60,7 +60,7 @@ class SurveyRuntimeHelper
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
-    private $backpopup              = false; // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
+    private $backpopup              = false; // "Please use the survey  navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
     private $popup                  = false; // savedcontrol, mandatory_popup
     private $notvalidated; // question validation error
 
@@ -74,7 +74,6 @@ class SurveyRuntimeHelper
 
     // Boolean helpers
     private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
-
 
     // Group
     private $gid;
@@ -113,6 +112,7 @@ class SurveyRuntimeHelper
             $this->setNotAnsweredAndNotValidated();
 
         } else {
+            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
             $this->setPreview();
         }
 
@@ -148,76 +148,78 @@ class SurveyRuntimeHelper
             }
 
             $upload_file = false;
-            foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
-                ++$qnumber;
-                $ia[9] = $qnumber; // incremental question count;
+            if (isset($_SESSION[$this->LEMsessid]['fieldarray'])) {
+                foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia) {
+                    ++$qnumber;
+                    $ia[9] = $qnumber; // incremental question count;
 
-                // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
+                    // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
+                    if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
 
-                    // In question by question mode, we only procceed current question
-                    if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
-                        continue;
-                    }
-
-                    // In group by group mode, we only procceed current group
-                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
-                        if (isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
-                            // This is a randomized survey, don't continue.
-                        } else {
+                        // In question by question mode, we only procceed current question
+                        if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
                             continue;
                         }
-                    }
 
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)) {
-                        continue;
-                    }
-
-                    //Get the answers/inputnames
-                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
-
-                    if ($plus_qanda) {
-                        $plus_qanda[] = $ia[4];
-                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-
-                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                        if (isset($ia[10])) {
-                                                    $plus_qanda['finalgroup'] = $ia[10];
-                        } else {
-                                                    $plus_qanda['finalgroup'] = $ia[5];
+                        // In group by group mode, we only procceed current group
+                        if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
+                            if (isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
+                                // This is a randomized survey, don't continue.
+                            } else {
+                                continue;
+                            }
                         }
 
-                        $qanda[] = $plus_qanda;
-                    }
-                    if ($plus_inputnames) {
-                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
+                        if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)) {
+                            continue;
+                        }
+
+                        //Get the answers/inputnames
+                        // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+                        // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                        list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+
+                        if ($plus_qanda) {
+                            $plus_qanda[] = $ia[4];
+                            $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+
+                            // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                            if (isset($ia[10])) {
+                                                        $plus_qanda['finalgroup'] = $ia[10];
+                            } else {
+                                                        $plus_qanda['finalgroup'] = $ia[5];
+                            }
+
+                            $qanda[] = $plus_qanda;
+                        }
+                        if ($plus_inputnames) {
+                            $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                        }
+
+                        //Display the "mandatory" popup if necessary
+                        // TMSW - get question-level error messages - don't call **_popup() directly
+                        if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
+                            list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
+                        }
+
+                        //Display the "validation" popup if necessary
+                        if ($okToShowErrors && !$this->aStepInfo['valid']) {
+                            list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
+                        }
+
+                        // Display the "file validation" popup if necessary
+                        if ($okToShowErrors && ($this->filenotvalidated !== false)) {
+                            list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $this->filenotvalidated);
+                        }
                     }
 
-                    //Display the "mandatory" popup if necessary
-                    // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
-                        list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
+                    if ($ia[4] == "|") {
+                                        $upload_file = true;
                     }
-
-                    //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$this->aStepInfo['valid']) {
-                        list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
-                    }
-
-                    // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && ($this->filenotvalidated !== false)) {
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $this->filenotvalidated);
-                    }
-                }
-
-                if ($ia[4] == "|") {
-                                    $upload_file = true;
-                }
-            } //end iteration
+                } //end iteration
+            }
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
@@ -227,7 +229,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
             } else {
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
-                $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
+                $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
             }
         }
 
@@ -303,9 +305,10 @@ class SurveyRuntimeHelper
             $gid              = $gl['gid'];
             $aGroup           = array();
             $groupname        = $gl['group_name'];
+            // TODO: Add standard replacement fields to group name and description?
+            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
             $groupdescription = $gl['description'];
-
-
+            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
 
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
@@ -324,10 +327,10 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = $gl['group_name'];
+            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1, false, true, false);
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid);
+            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
 
             // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
@@ -338,6 +341,7 @@ class SurveyRuntimeHelper
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
+            $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($redata['groupdescription']) != "" && $showgroupdesc_);
             $aGroup['description']      = $redata['groupdescription'];
 
@@ -367,11 +371,21 @@ class SurveyRuntimeHelper
                     $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                     //===================================================================
 
+
+                    $aStandardsReplacementFields = array();
+                    $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
+                    if (strpos($qa[0]['text'], "{") !== false) {
+                        // process string anyway so that it can be pretty-printed
+                        $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+                        $aStandardsReplacementFields['QID'] = $qid;
+                        $aStandardsReplacementFields['SGQ'] = $qa[7];
+                    }
+
                     // easier to understand for survey maker
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                     $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
@@ -452,10 +466,9 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->aMoveResult['message'];
         }
 
-        $this->aSurveyInfo['include_content'] = 'main.twig';
+        $this->aSurveyInfo['include_content'] = 'main';
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
     }
-
 
     public function getShowNumAndCode()
     {
@@ -657,7 +670,7 @@ class SurveyRuntimeHelper
     {
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
+        if (!isset($_SESSION[$this->LEMsessid]['step']) || ($this->previewquestion || $this->previewgrp) ) {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
             $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
@@ -738,7 +751,7 @@ class SurveyRuntimeHelper
                 $this->LEMskipReprocessing = true;
                 $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
-                $this->backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
+                $this->backpopup           = gT("Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
             }
         }
     }
@@ -772,13 +785,13 @@ class SurveyRuntimeHelper
     {
         if (isset($this->sMove)) {
             if (!in_array($this->sMove, array("clearall", "changelang", "saveall", "reload"))) {
-                            $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
+                $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             } else {
                 // Accepted $move without error
                 $_SESSION[$this->LEMsessid]['prevstep'] = $this->sMove;
             }
         } else {
-        //    $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
+            // $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
         }
         if (!isset($_SESSION[$this->LEMsessid]['prevstep'])) {
             $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['prevstep'] - 1; // this only happens on re-load
@@ -920,12 +933,15 @@ class SurveyRuntimeHelper
      */
     private function displayFirstPageIfNeeded()
     {
-        // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-        // Previously we used to keep the session and redirect the user to the
-        // submit page.
-        if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) {
-            $_SESSION[$this->LEMsessid]['test'] = time();
+        $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
+        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
+            $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
+        }
+
+        if ($bDisplayFirstPage) {
+            $_SESSION[$this->LEMsessid]['test'] = time();
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
@@ -950,7 +966,7 @@ class SurveyRuntimeHelper
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
 
-                $this->aSurveyInfo['include_content'] = 'save.twig';
+                $this->aSurveyInfo['include_content'] = 'save';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -990,7 +1006,7 @@ class SurveyRuntimeHelper
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
-                $this->aSurveyInfo['include_content'] = 'save.twig';
+                $this->aSurveyInfo['include_content'] = 'save';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             }
 
@@ -1044,12 +1060,22 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
                 }
 
+                // End text
+                if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = true;
+                } else {
+                    $this->aSurveyInfo['aCompleted']['showDefault'] = false;
+                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                }
+
                 $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
                 $completed = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, null, array(), true);
                 $this->completed = $completed;
 
-                $this->aSurveyInfo['include_content'] = 'submit_preview.twig';
+                $this->aSurveyInfo['include_content'] = 'submit_preview';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
 
@@ -1074,7 +1100,8 @@ class SurveyRuntimeHelper
                 } else {
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -1082,7 +1109,8 @@ class SurveyRuntimeHelper
                 if ($this->aSurveyInfo['printanswers'] == 'Y') {
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show']  = true;
                     $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sUrl']  = Yii::app()->getController()->createUrl("/printanswers/view", array('surveyid'=>$this->iSurveyid));
-                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = "Print your answers.";
+                    $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
+
                 }
 
                 // Link to Public statistics  **********
@@ -1099,11 +1127,6 @@ class SurveyRuntimeHelper
 
                 $_SESSION[$this->LEMsessid]['finished'] = true;
                 $_SESSION[$this->LEMsessid]['sid']      = $this->iSurveyid;
-
-                if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                    //Automatically redirect the page to the "url" setting for the survey
-                    header("Location: {$this->aSurveyInfo['surveyls_url']}");
-                }
 
             }
 
@@ -1125,9 +1148,23 @@ class SurveyRuntimeHelper
                 $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
-            $this->aSurveyInfo['aCompleted']['sPluginHTML'] = implode("\n", $blocks)."\n";
+            $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks)."\n";
+            $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
+            // TODO: Process string in url description?
+            if ($this->aSurveyInfo['surveyls_urldescription'] != "") {
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_urldescription'];
+            } else {
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescription'] = $this->aSurveyInfo['surveyls_url'];
+            }
+
+
+            if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
+                //Automatically redirect the page to the "url" setting for the survey
+                header("Location: {$this->aSurveyInfo['surveyls_url']}");
+            }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -1149,11 +1186,29 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
             }
-            $this->aSurveyInfo['include_content'] = 'submit.twig';
+            $this->aSurveyInfo['include_content'] = 'submit';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
 
+
+    /**
+     * Check in a string if it uses expressions to replace them
+     * @param string $sString the string to evaluate
+     * @return string
+     */
+    private function processString($sString)
+    {
+        if (strpos($sString, "{") !== false) {
+            // process string anyway so that it can be pretty-printed
+            $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
+        } else {
+            $sProcessedString = $sString;
+        }
+
+        return $sProcessedString;
+    }
 
     /**
      * The run method fed $redata with using get_defined_var(). So it was very hard to move a piece of code from the run method to a new one.
@@ -1162,7 +1217,7 @@ class SurveyRuntimeHelper
      * Then, before performing the get_defined_var, the private variables are used to recreate those variables. So we can move piece of codes to sub methods.
      * setVarFromArgs($args) will set the original state of those private variables using the parameter $args passed to the run() method
      *
-     * @params array $args
+     * @param array $args
      */
     private function setVarFromArgs($args)
     {
@@ -1265,7 +1320,7 @@ class SurveyRuntimeHelper
 
         /* QUESTION_CODE + QUESTION_NUMBER */
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId);
+        $aSurveyinfo = getSurveyInfo($iSurveyId, App()->getLanguage());
         // Check global setting to see if survey level setting should be applied
         if ($showqnumcode_global_ == 'choose') {
 // Use survey level settings
@@ -1475,7 +1530,7 @@ class SurveyRuntimeHelper
             $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->iSurveyid", $restartparam);
 
             $this->aSurveyInfo['surveyUrl'] = $restarturl;
-            $thissurvey['include_content'] = 'clearall.twig';
+            $this->aSurveyInfo['include_content'] = 'clearall';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }
     }
@@ -1579,14 +1634,6 @@ class SurveyRuntimeHelper
 
         $aEnterErrors = array();
         $FlashError   = false;
-        // Scenario => Token required
-        if ($scenarios['tokenRequired'] && !$preview) {
-            //Test if token is valid
-            list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $this->aSurveyInfo, $aEnterTokenData, $clienttoken);
-            if (!empty($FlashError)) {
-                $aEnterErrors['token'] = $FlashError;
-            }
-        }
 
         // Scenario => Captcha required
         if ($scenarios['captchaRequired'] && !$preview) {
@@ -1635,6 +1682,11 @@ class SurveyRuntimeHelper
         //$oTemplate->registerAssets();
     }
 
+    /**
+     * Set alanguageChanger.show to true if we need to show
+     * the language changer.
+     * @return void
+     */
     private function makeLanguageChanger()
     {
         $this->aSurveyInfo['alanguageChanger']['show'] = false;
@@ -1662,7 +1714,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->LEMsessid = 'survey_'.$this->iSurveyid;
-        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid);
+        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid"=>$this->iSurveyid));
 
         // TODO: check this:
@@ -1735,7 +1787,8 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-
+                $this->groupname        = LimeExpressionManager::ProcessString($this->groupname, null, null, 3, 1, false, true, false);
+                $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
             }
         }
     }

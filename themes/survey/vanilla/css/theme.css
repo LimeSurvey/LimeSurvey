@@ -124,6 +124,10 @@ body {
   margin-bottom: 2em ;
   padding-bottom: 2em ;
 }
+.question-container.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 
 .question-title-container {
   padding-top: 1em;
@@ -256,6 +260,14 @@ body {
     height: 60px;
 }
 
+@media (max-width: 768px){
+    #surveyListFooter {
+        padding-bottom: 40px;
+        padding-top: 5px;
+        margin-top: 5px;
+        height: 40px;
+    }
+}
 /**
  * Specific question part
  */
@@ -734,7 +746,9 @@ p.return-to-survey{
 #index-menu ul.dropdown-menu {
     max-height: 50vh;
     overflow-y: scroll;
-.text-break-pre{
+}
+    
+.text-break-pre {
     white-space: pre-line;
 }
 

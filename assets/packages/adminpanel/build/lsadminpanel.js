@@ -36373,13 +36373,14 @@ $(document).on('ready', function () {
             methods: {
                 controlWindowSize() {
                     const
-                        inSurveyOffset = 230,
+                        adminmenuHeight = $('body').find('nav').first().height(),
+                        footerHeight = $('body').find('footer').last().height(),
                         menuHeight = $('.menubar').outerHeight(),
-                        windowHeight = $('html').height(),
-                        inSurveyViewHeight = (windowHeight - inSurveyOffset),
-                        generalContainerHeight = inSurveyViewHeight - (menuHeight);
+                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                        windowHeight = window.innerHeight,
+                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+
                     this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-                    this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
                 }
             },
             created() {
@@ -36635,7 +36636,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             'questiongroups': [],
             'menues': [],
             '$store.state.isCollapsed': false,
-            'sideBarWidth': '315px',
+            'sideBarWidth': '315',
             'initialPos': { x: 0, y: 0 },
             'isMouseDown': false,
             'isMouseDownTimeOut': null,
@@ -36648,7 +36649,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         getSideBarWidth() {
-            return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
+            return this.$store.state.isCollapsed ? '98' : this.sideBarWidth;
         },
         sortedMenus() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.menues, a => {
@@ -36677,7 +36678,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 return { gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions };
             });
-            this.$log.debug("QuestionGroup order changed");
+            this.$log.trace("QuestionGroup order changed");
             this.post(this.updateOrderLink, { grouparray: onlyGroupsArray, surveyid: this.$store.surveyid }).then(result => {
                 self.$log.debug('questiongroups updated');
             }, error => {
@@ -36763,7 +36764,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
             this.$store.commit('changeIsCollapsed', this.$store.state.isCollapsed);
             if (this.$store.state.isCollapsed) {
-                this.sideBarWidth = '98px';
+                this.sideBarWidth = '98';
             } else {
                 this.sideBarWidth = this.$store.state.sidebarwidth;
             }
@@ -36777,9 +36778,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.isMouseDown) {
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if (parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
+                if (parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
-                    this.$store.commit('changeSidebarwidth', '340px');
+                    this.$store.commit('changeSidebarwidth', '340');
                 } else {
                     this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 }
@@ -36872,7 +36873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.state.isCollapsed) {
-            this.sideBarWidth = '98px';
+            this.sideBarWidth = '98';
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
@@ -37051,7 +37052,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, ['asc']);
         },
         createQuestionAllowed() {
-            return this.$store.state.questiongroups.length > 0;
+            return this.$store.state.questiongroups.length > 0 && this.createQuestionLink != undefined && this.createQuestionLink.length > 1;
+        },
+        createAllowance() {
+            let createGroupAllowed = this.createQuestionGroupLink != undefined && this.createQuestionGroupLink.length > 1 ? 'g' : '';
+            let createQuestionAllowed = this.createQuestionAllowed ? 'q' : '';
+            return createGroupAllowed + createQuestionAllowed;
+        },
+        itemWidth() {
+            return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
         }
     },
     methods: {
@@ -37111,9 +37120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
-            let event = new Event('pjax:load');
-            event.url = question.link;
-            window.dispatchEvent(event);
+            $(document).trigger('pjax:load', { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
@@ -37198,11 +37205,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column fill ls-ba",
+    staticClass: "ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5",
     attrs: {
       "id": "questionexplorer"
     }
-  }, [_c('div', {
+  }, [(_vm.createAllowance != '') ? _c('div', {
     staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar"
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-primary pjax",
@@ -37220,8 +37227,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group",
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "ls-flex-row ls-space padding all-0"
+  }, [_c('ul', {
+    staticClass: "list-group col-12",
     on: {
       "drop": function($event) {
         _vm.dropQuestionGroup($event, _vm.questiongroup)
@@ -37263,7 +37272,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.openQuestionGroup(questiongroup)
         }
       }
-    }, [_vm._v(" \n                    " + _vm._s(questiongroup.group_name) + " \n                    "), _c('span', {
+    }, [_c('span', {
+      staticClass: "question_text_ellipsize pull-left",
+      style: ({
+        'max-width': _vm.itemWidth
+      })
+    }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
     }, [_vm._v(_vm._s(questiongroup.questions.length))])]), _vm._v(" "), _c('i', {
       staticClass: "fa bigIcons",
@@ -37279,7 +37293,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "slide-fade-down"
       }
     }, [(_vm.isActive(questiongroup.gid)) ? _c('ul', {
-      staticClass: "list-group background-muted padding-left",
+      staticClass: "list-group background-muted padding-left question-question-list",
       on: {
         "drop": function($event) {
           _vm.dropQuestion($event, _vm.question)
@@ -37288,7 +37302,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
       return _c('li', {
         key: question.qid,
-        staticClass: "list-group-item ls-flex-row align-itmes-flex-between",
+        staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
         class: _vm.questionItemClasses(question),
         on: {
           "dragenter": function($event) {
@@ -37309,11 +37323,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-        staticClass: "col-12 pjax",
+        staticClass: "col-12 pjax question-question-list-item-link",
         attrs: {
           "href": question.link,
           "data-toggle": "tootltip",
-          "title": question.question
+          "title": question.question_flat
         },
         on: {
           "click": function($event) {
@@ -37321,9 +37335,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.openQuestion(question)
           }
         }
-      }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" " + _vm._s((_vm.$store.state.maximalSidebar ? question.question : question.name_short)) + " ")])])
+      }, [_c('span', {
+        staticClass: "question_text_ellipsize",
+        style: ({
+          width: _vm.itemWidth
+        })
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
     })) : _vm._e()])], 1)
-  }))])
+  }))])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -38057,7 +38076,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width",
     style: ({
-      width: _vm.sideBarWidth
+      'max-height': _vm.$store.state.inSurveyViewHeight,
+      width: _vm.$store.getters.sideBarSize
     }),
     attrs: {
       "id": "sidebar"
@@ -38184,9 +38204,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'min-height': _vm.calculateSideBarMenuHeight
     })
   })], 1)], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "resize-handle",
+    staticClass: "resize-handle ls-flex-column",
     style: ({
-      'height': _vm.$store.state.inSurveyViewHeight
+      'min-height': _vm.calculateSideBarMenuHeight
     })
   }, [_c('button', {
     directives: [{
@@ -39379,12 +39399,11 @@ const getAppState = function (userid) {
         language: '',
         maxHeight: 0,
         inSurveyViewHeight: 400,
-        generalContainerHeight: 380,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: '380px',
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,
@@ -39408,9 +39427,14 @@ const getAppState = function (userid) {
         ],
         getters: {
             substractContainer: state => {
-                let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));
-                let collapsedBodyWidth = ($('#vue-app-main-container').width() - parseInt('98px'));
-                return (state.isCollapsed ? collapsedBodyWidth : bodyWidth) + 'px';
+                let bodyWidth = (1 - (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width()))*100;
+                let collapsedBodyWidth = (1 - (parseInt('98px')/$('#vue-app-main-container').width()))*100;
+                return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
+            },
+            sideBarSize : state => {
+                let sidebarWidth = (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width())*100;
+                let collapsedSidebarWidth = (parseInt(98)/$('#vue-app-main-container').width())*100;
+                return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
             }
         },
         mutations: {
@@ -39444,9 +39468,6 @@ const getAppState = function (userid) {
             },
             changeSideBodyHeight(state, newHeight) {
                 state.sideBodyHeight = newHeight+'px' || '100%';
-            },
-            changeGeneralContainerHeight(state, newHeight) {
-                state.generalContainerHeight = newHeight;
             },
             changeCurrentUser(state, newUser) {
                 state.currentUser = newUser;
@@ -39499,8 +39520,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                let event = new Event('pjax:refresh');
-                window.dispatchEvent(event);                
+                $(document).trigger('pjax:refresh');           
             }
         }
     });

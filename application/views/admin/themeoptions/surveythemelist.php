@@ -4,6 +4,14 @@
 
         <?php $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->search(),
+            'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'pageSize',
+                    10,
+                    Yii::app()->params['pageSizeOptions'],
+                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                )
+            ),            
             'columns' => array(
                 array(
                     'header' => gT('Preview'),

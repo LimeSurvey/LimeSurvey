@@ -186,13 +186,17 @@ $url .= "_view"; });
 
         $outputarray[0] = $fields; //fields written to output array
 
+
         foreach ($aAttributeIDs as $value) {
-            if ($value == 0) {
+            $oAttributeName = ParticipantAttributeName::model()->findByPk($value);
+
+            if (!$oAttributeName) {
                 continue;
             }
+
             $fields[] = 'a'.$value;
-            $attributename = ParticipantAttributeName::model()->getAttributeNames($value);
-            $outputarray[0][] = $attributename[0]['attribute_name'];
+            $attributeNames = $oAttributeName->participant_attribute_names_lang;
+            $outputarray[0][] = (sizeof($attributeNames) > 0) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
 
         $fieldNeededKeys = array_fill_keys($fields, '');
@@ -226,7 +230,7 @@ $url .= "_view"; });
         $count = (int) Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         if ($count > 1) {
             return sprintf(gT("Export %s participants to CSV"), $count);
-        } else if($count == 1) {
+        } else if ($count == 1) {
             return gT("Export participant to CSV");
         } else {
             return $count;

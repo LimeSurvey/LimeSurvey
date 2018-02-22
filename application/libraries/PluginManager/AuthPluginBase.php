@@ -53,7 +53,7 @@ abstract class AuthPluginBase extends PluginBase
     }
 
     /**
-     * Set username and password
+     * Set username and password by post request
      *
      * @return null
      */
@@ -65,6 +65,18 @@ abstract class AuthPluginBase extends PluginBase
             $this->setUsername($request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
+    }
+
+    /**
+     * Set username and password by event
+     *
+     * @return null
+     */
+    public function remoteControlLogin()
+    {
+        $event = $this->getEvent();
+        $this->setUsername($event->get('username'));
+        $this->setPassword($event->get('password'));
     }
 
     /**

@@ -81,9 +81,10 @@ class Question extends LSActiveRecord
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
-            'parents' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
+            'parents' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid", "language" => "language")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language"))
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language")),
+            'answers' => array(self::HAS_MANY, 'Answer', array('qid'=>'qid', "language" => "language"))
         );
     }
 
@@ -419,10 +420,10 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid, $language)
     {
-        $query = "SELECT questions.*, groups.group_name, groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as groups"
-            ." WHERE groups.gid=questions.gid"
-            ." AND groups.language=:language1"
+        $query = "SELECT questions.*, question_groups.group_name, question_groups.group_order"
+            ." FROM {{questions}} as questions, {{groups}} as question_groups"
+            ." WHERE question_groups.gid=questions.gid"
+            ." AND question_groups.language=:language1"
             ." AND questions.language=:language2"
             ." AND questions.parent_qid=0"
             ." AND questions.sid=:sid";

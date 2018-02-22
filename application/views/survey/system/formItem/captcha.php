@@ -7,7 +7,7 @@ $inputgroupWidth=isset($inputgroupWidth) ? $inputgroupWidth : 7;
 
 ?>
 <div class='form-group captcha-item'>
-    <label class='control-label col-sm-5' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?></label>
+    <label class='control-label col-sm-5' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?></label>
     <div class='col-sm-7 load-survey-input input-cell'>
         <div class='input-group'>
             <div class='input-group-addon captcha-widget' >

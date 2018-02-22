@@ -12,23 +12,33 @@ $.fn.YesNoDate = function(options)
 {
     var that            = $(this);                                              // calling element
     that.onReadyMethod = function(){
-        var $elSwitch        = that.find('.YesNoDateSwitch').first();           // switch element (generated with YiiWheels widgets)
-        var $elDateContainer = that.find('.date-container').first();            // date time picker container (to show/hide)
-        var $elDate          = that.find('.YesNoDatePicker').first();           // date time picker element (generated with YiiWheels widgets)
-        var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+        var $elSwitch        = that.find('.YesNoDateSwitch').first(),           // switch element (generated with YiiWheels widgets)
+            $elDateContainer = that.find('.date-container').first(),            // date time picker container (to show/hide)
+            $elDate          = that.find('.YesNoDatePicker').first(),           // date time picker element (generated with YiiWheels widgets)
+            $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+
+        console.ls.log('tokenform', {
+            $elSwitch : $elSwitch,
+            $elDateContainer : $elDateContainer,
+            $elDate : $elDate,
+            $elHiddenInput : $elHiddenInput
+        });
 
         // The view is called without processing output (no javascript)
         // So we must apply js to widget elements
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
         $elDate.datetimepicker({locale: that.data('locale')});                  // Generate the date time picker
 
+        console.ls.log('$elSwitch', $elSwitch);
         // When user switch
-        $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
+        $elSwitch.on('switchChange.bootstrapSwitch', function(event, state)
         {
+            console.ls.log('$elSwitch', event, state);
             if (state==true)
             {
                 // Show date
                 $elDateContainer.show();
+                $elHiddenInput.attr('value', moment().format($elDateContainer.data('date-format')));
             }
             else
             {
@@ -39,12 +49,11 @@ $.fn.YesNoDate = function(options)
         });
 
         // When user change date
-        $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
+        $elDate.on('dp.change', function(e){
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     };
-    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
-    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
+    return that;
 }
 
 $.fn.YesNo = function(options)
@@ -57,7 +66,7 @@ $.fn.YesNo = function(options)
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
 
         // When user change date
-        $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
+        $elSwitch.on( 'switchChange.bootstrapSwitch', function(event, state)
         {
             if (state==true)
             {
@@ -72,8 +81,7 @@ $.fn.YesNo = function(options)
         })
 
     };
-    $(document).on('ready  pjax:scriptcomplete', that.onReadyMethod);
-    $(document).on(' pjax:scriptcomplete',that.onReadyMethod);
+    return that;
 }
 
 /**
@@ -167,11 +175,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     {
         $('#general').stickLabelOnLeft();
 
-        $('.yes-no-date-container').each(function(el){
+        $('.yes-no-date-container').each(function(i,el){
             $(this).YesNoDate();
         });
 
-        $('.yes-no-container').each(function(el){
+        $('.yes-no-container').each(function(i,el){
             $(this).YesNo();
         });
 
@@ -219,15 +227,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                 url: actionUrl,
                 method: "GET",
                 success: function(data){
-                    try{
-                        $.fn.yiiGridView.update('token-grid', {
-                            complete: function(s){
-                                $modal.modal('hide');
-                            } // Update the surveys list
-                        });
-                    } catch(e){
-                        if(e){console.ls.error(e); $modal.modal('hide');}
-                    }
+                    
+                    $('#token-grid').yiiGridView('update',{
+                        complete: function(s){
+                            $modal.modal('hide');
+                        } // Update the surveys list
+                    });
                 }
             });
         })
@@ -327,7 +332,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#searchbutton').click(function(){
 
     });
-
 });
 
 /**
@@ -363,12 +367,12 @@ var startEditToken = function(){
             */
 
             $('.yes-no-date-container').each(function(el){
-                $(this).YesNoDate();
+                $(this).YesNoDate().onReadyMethod();
             });
 
 
             $('.yes-no-container').each(function(el){
-                $(this).YesNo();
+                $(this).YesNo().onReadyMethod();
             });
 
             $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});

@@ -61,7 +61,7 @@ class Surveymenu extends LSActiveRecord
         return array(
             'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id'),
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'user' => array(self::BELONGS_TO, 'User', 'uid'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'parent' => array(self::BELONGS_TO, 'Surveymenu', 'parent_id'),
         );
     }
@@ -333,21 +333,21 @@ class Surveymenu extends LSActiveRecord
          */
     public function restoreDefaults()
     {
+       
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
 
-            $headerArray = ['parent_id', 'survey_id', 'user_id', 'ordering', 'level', 'name', 'title', 'position', 'description', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', 'Survey menu', 'side', 'Main survey menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', 'Quick menu', 'collapsed', 'Quick menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [1, NULL, NULL, 0, 1, 'pluginmenu', 'Plugin menu', 'side', 'Plugin menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
-            
+            $basicMenues = LsDefaultDataSets::getSurveyMenuData();
+            foreach ($basicMenues as $basicMenu) {
+                $oDB->createCommand()->insert("{{surveymenu}}", $basicMenu);
+            }
             $oTransaction->commit();
         } catch (Exception $e) {
+            App()->setLanguage($sOldLanguage);
             return false;
         }
-
         return true;
     }
 

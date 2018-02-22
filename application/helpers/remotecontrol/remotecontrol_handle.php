@@ -2,6 +2,8 @@
 /**
 * This class handles all methods of the RemoteControl 2 API
 */
+use LimeSurvey\PluginManager\PluginEvent;
+
 class remotecontrol_handle
 {
     /**
@@ -35,15 +37,17 @@ class remotecontrol_handle
      * @access public
      * @param string $username
      * @param string $password
+     * @param string $plugin to be used
      * @return string|array
      */
-    public function get_session_key($username, $password)
+    public function get_session_key($username, $password, $plugin = 'Authdb')
     {
         $username = (string) $username;
         $password = (string) $password;
-        if ($this->_doLogin($username, $password)) {
+        $loginResult = $this->_doLogin($username, $password, $plugin);
+        if ($loginResult === true) {
             $this->_jumpStartSession($username);
-            $sSessionKey = randomChars(32);
+            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
@@ -51,9 +55,12 @@ class remotecontrol_handle
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-        } else {
-                    return array('status' => 'Invalid user name or password');
+
         }
+        if (is_string($loginResult)) {
+            return array('status' => $loginResult);
+        }
+        return array('status' => 'Invalid user name or password');
     }
 
     /**
@@ -892,7 +899,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID  - ID of the Survey
      * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
-     * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
+     * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
     public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = null)
@@ -2906,7 +2913,7 @@ class remotecontrol_handle
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue('$sToken'));
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue("$sToken"));
         return new BigFile($sTempFile, true, 'base64');
 
     }
@@ -2970,16 +2977,27 @@ class remotecontrol_handle
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
-     * @return bool
+     * @param string $sPlugin plugin to be used
+     * @return bool|string
      */
-    protected function _doLogin($sUsername, $sPassword)
+    protected function _doLogin($sUsername, $sPassword, $sPlugin)
     {
-        $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
-
+        /* @var $identity LSUserIdentity */
+        $identity = new LSUserIdentity($sUsername, $sPassword);
+        $identity->setPlugin($sPlugin);
+        $event = new PluginEvent('remoteControlLogin');
+        $event->set('plugin', $sPlugin);
+        $event->set('username', $sUsername);
+        $event->set('password', $sPassword);
+        App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
+            if($identity->errorMessage) {
+                // don't return an empty string
+                return $identity->errorMessage;
+            }
             return false;
         } else {
-                    return true;
+            return true;
         }
     }
 
@@ -3005,11 +3023,10 @@ class remotecontrol_handle
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {
-                    Yii::app()->session[$k] = $v;
+            Yii::app()->session[$k] = $v;
         }
         Yii::app()->user->setId($aUserData['uid']);
 
-        $this->controller->_GetSessionUserRights($aUserData['uid']);
         return true;
     }
 
@@ -3029,7 +3046,7 @@ class remotecontrol_handle
         $oResult = Session::model()->findByPk($sSessionKey);
 
         if (is_null($oResult)) {
-                    return false;
+            return false;
         } else {
             $this->_jumpStartSession($oResult->data);
             return true;

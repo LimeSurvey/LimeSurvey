@@ -233,8 +233,9 @@ class themeoptions  extends Survey_Common_Action
 
     }
 
-    public function uninstall($templatename)
+    public function uninstall()
     {
+        $templatename = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (!Template::hasInheritance($templatename)) {
                 TemplateConfiguration::uninstall($templatename);
@@ -260,13 +261,14 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
-    public function getPreviewTag() {
-        $templatename = Yii::app()->request->getPost('templatename');        
+    public function getPreviewTag()
+    {
+        $templatename = Yii::app()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
         $previewTag = $oTemplate->getPreview();
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            ['data' => ['image' =>  $previewTag]], 
+            ['data' => ['image' =>  $previewTag]],
             false,
             false
         );

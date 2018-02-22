@@ -18,7 +18,7 @@ Yii::import('application.helpers.sanitize_helper', true);
 /**
  * Translation helper function
  * @param string $sToTranslate
- * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
  * @param string $sLanguage
  * @return mixed|string
  */
@@ -178,17 +178,10 @@ function getSurveyList($bReturnArray = false)
     if (is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
+            ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            if (!empty($result->defaultlanguage)) {
-                $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
-            } elseif (!($bCheckIntegrity)) {
-                $bCheckIntegrity = true;
-                Yii::app()->setFlashMessage(
-                    CHtml::link(gT("One or more surveys seem to be broken - please use the data integrity check tool to fix this."), array("admin/checkintegrity"))
-                    ,
-                    'error');
-            }
+            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
         }
         
         usort($surveynames, function($a, $b)
@@ -916,62 +909,13 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-    $sOldLanguage = App()->language;
-    App()->setLanguage($sLanguage);
-    $aDefaultTexts = array(
-    'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results", $mode),
-    'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}", $mode),
-    'admin_detailed_notification_css'=>'<style type="text/css">
-    .printouttable {
-    margin:1em auto;
-    }
-    .printouttable th {
-    text-align: center;
-    }
-    .printouttable td {
-    border-color: #ddf #ddf #ddf #ddf;
-    border-style: solid;
-    border-width: 1px;
-    padding:0.1em 1em 0.1em 0.5em;
-    }
 
-    .printouttable td:first-child {
-    font-weight: 700;
-    text-align: right;
-    padding-right: 5px;
-    padding-left: 5px;
-
-    }
-    .printouttable .printanswersquestion td{
-    background-color:#F7F8FF;
-    }
-
-    .printouttable .printanswersquestionhead td{
-    text-align: left;
-    background-color:#ddf;
-    }
-
-    .printouttable .printanswersgroup td{
-    text-align: center;
-    font-weight:bold;
-    padding-top:1em;
-    }
-    </style>',
-    'admin_notification_subject'=>gT("Response submission for survey {SURVEYNAME}", $mode),
-    'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}", $mode),
-    'confirmation_subject'=>gT("Confirmation of your participation in our survey"),
-    'confirmation'=>gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}", $mode),
-    'invitation_subject'=>gT("Invitation to participate in a survey", $mode),
-    'invitation'=>gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode)."\n\n".gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}", $mode),
-    'reminder_subject'=>gT("Reminder to participate in a survey", $mode),
-    'reminder'=>gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode),
-    'registration_subject'=>gT("Survey registration confirmation", $mode),
-    'registration'=>gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.", $mode)
-    );
+    $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode);
+    
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
     }
-    App()->setLanguage($sOldLanguage);
+
     return $aDefaultTexts;
 }
 
@@ -1598,12 +1542,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
+    ." FROM {{questions}} as questions, {{groups}} as question_groups"
+    ." WHERE questions.gid=question_groups.gid AND "
     ." questions.sid=$surveyid AND "
     ." questions.language='{$sLanguage}' AND "
     ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    ." question_groups.language='{$sLanguage}' ";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
     }
@@ -2261,8 +2205,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     }
 
 
-    require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
-    $mail = new PHPMailer;
+    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
+    $mail = new PHPMailer\PHPMailer\PHPMailer;
     $mail->SMTPAutoTLS = false;
     if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
         $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
@@ -2648,6 +2592,9 @@ function incompleteAnsFilterState()
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
+    if (!extension_loaded('gd')) {
+        return false;
+    }
     switch ($screen) {
         case 'registrationscreen':
             if ($captchamode == 'A' ||
@@ -3107,12 +3054,10 @@ function stripJavaScript($sContent)
 */
 function showJavaScript($sContent)
 {
-    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', create_function(
-            // single quotes are essential here,
-            // or alternative escape all $ as \$
-            '$matches',
-            'return htmlspecialchars($matches[0]);'
-        ), $sContent);
+    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
+        function($matches) {
+            return htmlspecialchars($matches[0]);
+        }, $sContent);
     return $text;
 }
 
@@ -3490,7 +3435,7 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
+    uksort($fieldnames, function($a, $b) {return strlen($a) < strlen($b); });
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;
@@ -4745,27 +4690,22 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function returns the real IP address under all configurations
-*
+* This function tries to returns the 'real' IP address under all configurations
+* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
 */
 function getIPAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-//check ip from share internet
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)!==false) {
+        //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-//to check ip is pass from proxy
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)!==false) {
+        //Check IP address passed from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)!==false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
-    } else {
-        $sIPAddress = '127.0.0.1';
     }
-    if (!filter_var($sIPAddress, FILTER_VALIDATE_IP)) {
-        return 'Invalid';
-    } else {
-        return $sIPAddress;
-    }
+    return $sIPAddress;
 }
 
 

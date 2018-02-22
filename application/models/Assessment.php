@@ -162,7 +162,8 @@ class Assessment extends LSActiveRecord
         $criteria->compare('maximum', $this->maximum);
         $criteria->compare('message', $this->message, true);
         
-        $criteria->group = 'id';
+        // TODO: Does not work with Postgres.
+        //$criteria->group = 'id';
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -180,6 +181,7 @@ class Assessment extends LSActiveRecord
         foreach ($data as $k => $v) {
                     $assessment->$k = $v;
         }
+        $assessment->scope = isset($assessment->scope) ? $assessment->scope : '0';
         $assessment->save();
 
         return $assessment;

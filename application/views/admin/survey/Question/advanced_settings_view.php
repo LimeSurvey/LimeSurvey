@@ -20,7 +20,7 @@ $categoryNum=0;
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                         <span class="fa fa-chevron-left"></span>
-			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
+                        <span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
                         <?php echo $aAttribute['category']; ?>
@@ -36,7 +36,7 @@ $categoryNum=0;
     <div class="form-group">
     <!-- Form Group -->
         <!-- Label -->
-        <label class=" control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class="control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
@@ -46,10 +46,10 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                if ( $aAttribute['readonly'] || (isset($aAttribute['readonly_when_active']) && $bIsActive) )
+                if ( $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive) )
                 {
                     // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
-                    echo "<div class='form-control-static'>".\CHtml::encode($aAttribute['value'])."</div>";
+                    echo "<input type='text' class='form-control' disabled value='".\CHtml::encode($aAttribute['value'])."' />";
                 }
                 else
                 {

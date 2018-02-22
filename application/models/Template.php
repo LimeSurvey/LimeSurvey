@@ -156,7 +156,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && ( self::checkTemplateXML($oTemplate->folder) )) {
+        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -167,17 +167,83 @@ class Template extends LSActiveRecord
         }
 
         /* If we're here, then the default survey theme is not installed and must be changed */
-        $aTemplateList = self::getTemplateList();
-        $sTemplateName = key($aTemplateList);
+        $aTemplateList = self::model()->search()->getData();
+        $i = 0;
+        while ($sTemplateName == $sRequestedTemplate) {
+            if (!empty($aTemplateList[$i])) {
+                $sTemplateName = $aTemplateList[$i]->name;
+            } else {
+                throw new Exception('Could not find a working installed template');
+            }
+            $i++;
+        }
+
         if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
-            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+            
+            if(method_exists(Yii::app(), 'setFlashMessage'))
+                Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+            
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return $sTemplateName;
         } else {
             throw new Exception('No survey theme installed !!!!');
         }
+    }
+
+    /**
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplate()
+    {
+        // Check that extended template is installed.
+        $this->checkTemplateExtends();
+
+        // A template should not extend it self.
+        $this->checkExtendsItSelf();
+
+        return true;
+    }
+
+    /**
+     * Throws exception if any of the extended templates are not installed; otherwise
+     * returns true.
+     * @return boolean
+     * @throws Exception if extended template is not installed.
+     */
+    public function checkTemplateExtends()
+    {
+        if (!empty($this->extends)) {
+            $oRTemplate = self::model()->findByPk($this->extends);
+            if (empty($oRTemplate)) {
+                throw new Exception(
+                    sprintf(
+                        'Extended template "%s" is not installed.',
+                        $this->extends
+                    )
+                );
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return boolean
+     * @throws Exception if name equals extends.
+     */
+    public function checkExtendsItSelf()
+    {
+        if ($this->name == $this->extends) {
+            throw new Exception(
+                sprintf(
+                    'Error: The template %s extends it self',
+                    $this->name
+                )
+            );
+        }
+        return true;
     }
 
     /**
@@ -189,7 +255,7 @@ class Template extends LSActiveRecord
      */
     public static function checkTemplateXML($sTemplateFolder)
     {
-        return ( is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml') || is_file( Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml'));
+        return (is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml') || is_file(Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$sTemplateFolder.DIRECTORY_SEPARATOR.'config.xml'));
     }
 
     /**
@@ -453,6 +519,15 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Sets self::$instance to null;
+     * Needed for unit test.
+     */
+    public static function resetInstance()
+    {
+        self::$instance = null;
+    }
+
+    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception
@@ -460,7 +535,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array(getGlobalSetting('defaulttheme'), 'vanilla', 'material', 'no_bootstrap', 'bootswatch', 'fruity', 'embedded');
+        $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
         return $standardTemplates;
     }
 

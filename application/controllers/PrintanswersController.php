@@ -130,8 +130,10 @@
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
 
             if (empty($sExportType)) {
-                $aData['aSurveyInfo']['include_content'] = 'printanswers.twig';
-                Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
+                Yii::app()->setLanguage($sLanguage);
+                $aData['aSurveyInfo']['include_content'] = 'printanswers';
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
+
             } else if ($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
@@ -149,9 +151,20 @@
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
                 $aData['aSurveyInfo']['printPdf'] = 1;
-                $aData['aSurveyInfo']['include_content'] = 'printanswers.twig';
-                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, true);
+                $aData['aSurveyInfo']['include_content'] = 'printanswers';
                 Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
+
+                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
+                //filter all scripts
+                $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+                //replace fontawesome icons
+                $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
+                $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
+                $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
+                $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
+                $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
+                $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+                
                 $oPDF->writeHTML($html, true, false, true, false, '');
 
                 header("Pragma: public");

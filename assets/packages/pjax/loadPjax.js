@@ -53,9 +53,9 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
         $('a.pjax').off('click');
         window.activePjax = null;
     },
-    triggerLoadUrl = function(e){        
+    triggerLoadUrl = function(e,data){      
         var currentPjax = singletonPjax();
-        currentPjax.loadUrl(e.url, singletonPjax().options);
+        currentPjax.loadUrl(data.url, singletonPjax().options);
     },
     reparseDocument = function(){
         var currentPjax = singletonPjax();
@@ -64,16 +64,15 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
 
 window.singletonPjax = singletonPjax;
 
+$(document).off('pjax:reload');
+$(document).off('pjax:create');
+$(document).off('pjax:refresh');
+$(document).off('pjax:load');
+$(document).off('pjax:unload');
 
-window.removeEventListener('pjax:reload', forceRefreshPjax);
-window.removeEventListener('pjax:create', singletonPjax);
-window.removeEventListener('pjax:refresh', reparseDocument);
-window.removeEventListener('pjax:load', triggerLoadUrl);
-window.removeEventListener('pjax:unload', unsetPjax);
-
-window.addEventListener('pjax:reload', forceRefreshPjax);
-window.addEventListener('pjax:create', singletonPjax);
-window.addEventListener('pjax:refresh', reparseDocument);
-window.addEventListener('pjax:load', triggerLoadUrl);
-window.addEventListener('pjax:unload', unsetPjax);
+$(document).on('pjax:reload', forceRefreshPjax);
+$(document).on('pjax:create', singletonPjax);
+$(document).on('pjax:refresh', reparseDocument);
+$(document).on('pjax:load', triggerLoadUrl);
+$(document).on('pjax:unload', unsetPjax);
 

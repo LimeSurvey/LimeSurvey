@@ -214,7 +214,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load|json_encode}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>
@@ -244,7 +244,7 @@
                         <label class="btn btn-default col-xs-8" for="upload_image_frontend">
                             <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
                             <i class="fa fa-upload ls-space margin right-10"></i>
-                            {{ gT("Upload") }}
+                            {{ "Upload" | t }}
                         </label>
                     </span>
 
@@ -264,7 +264,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" tabindex="-1" role="dialog" id="lightbox-modal">
     <div class="modal-dialog modal-lg" role="document">

@@ -590,16 +590,23 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
-            $oUserModel->lang = Yii::app()->request->getPost('lang');
-            $oUserModel->dateformat = Yii::app()->request->getPost('dateformat');
-            $oUserModel->htmleditormode = Yii::app()->request->getPost('htmleditormode');
-            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
-            $oUserModel->templateeditormode = Yii::app()->request->getPost('templateeditormode');
-            $oUserModel->full_name = Yii::app()->request->getPost('fullname');
-            $oUserModel->email = Yii::app()->request->getPost('email');
 
-            if (Yii::app()->request->getPost('password') != '' && !Yii::app()->getConfig('demoMode')) {
+            $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
+            $oUserModel->lang                 = Yii::app()->request->getPost('lang');
+            $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
+            $oUserModel->htmleditormode       = Yii::app()->request->getPost('htmleditormode');
+            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
+            $oUserModel->templateeditormode   = Yii::app()->request->getPost('templateeditormode');
+            $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
+            $oUserModel->email                = Yii::app()->request->getPost('email');
+
+            if ( Yii::app()->request->getPost('newpasswordshown') == "1"  ) {
+
+                if (Yii::app()->getConfig('demoMode')){
+                    Yii::app()->setFlashMessage(gT("You can't change password if demo mode is active."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+
                 $oldPassword = Yii::app()->request->getPost('oldpassword');
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
@@ -607,18 +614,26 @@ class UserAction extends Survey_Common_Action
                 if (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+
                 } elseif (trim($oldPassword) === trim($newPassword)) {
                     //First test if old and new password are identical => no need to save it (or ?)
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 } elseif (trim($newPassword) !== trim($repeatPassword)) {
                     //Then test the new password and the repeat password for identity
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 //Now check if the old password matches the old password saved
+                } elseif( empty(trim($newPassword)) ) {
+                Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
+                $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 } else {
                     // We can update
                     $oUserModel->setPassword($newPassword);
                 }
             }
+
             $uresult = $oUserModel->save();
             if ($uresult) {
                 if (Yii::app()->request->getPost('lang') == 'auto') {
@@ -705,7 +720,7 @@ class UserAction extends Survey_Common_Action
             if (count($result) == 0) {
                 $post = new Template;
                 $post->folder = $tp;
-                $post->creator = Yii::app()->session['loginID'];
+                $post->owner_id = Yii::app()->session['loginID'];
 
                 try {
                     $post->save();

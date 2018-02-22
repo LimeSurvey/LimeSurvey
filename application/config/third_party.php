@@ -153,15 +153,6 @@ return array(
         )
     ),
 
-    'fontawesome' => array(
-        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
-        'basePath' => 'fonts.font-src.fontawesome',
-        'css'=> array(
-            'css/font-awesome'.$minVersion.'.css',
-        ),
-    ),
-
     // jQuery UI
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
@@ -333,10 +324,10 @@ return array(
 
     // Moment.js use real simple dateTime modification
     'moment' => array(
+        'devBaseUrl' => 'third_party/moment',
         'basePath' => 'third_party.moment',
-        'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'moment-with-locales.min.js'
+            'moment-with-locales'.$minVersion.'.js'
         ),
         'depends' => array(
         )
@@ -351,13 +342,6 @@ return array(
         ),
     ),
 
-    'emoji' => array(
-        'basePath' => 'third_party.emojifont',
-        'css' => array(
-            'css/emoji.css',
-            'css/ss-emoji.css'
-        ),
-    ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
         'position' => CClientScript::POS_BEGIN,

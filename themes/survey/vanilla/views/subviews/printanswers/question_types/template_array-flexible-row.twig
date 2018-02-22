@@ -4,7 +4,7 @@
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
             <div class="col-md-4 text-right">
-                {{subquestion.answervalue}}
+                {{subquestion.answeroption.answer}} - {{subquestion.answervalue}}
             </div>
             <div class="col-md-8 text-left">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>

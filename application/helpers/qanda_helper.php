@@ -778,7 +778,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = array();
 
-    $sRows = "";
+    $aRows = array(); ;
     for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {
@@ -786,7 +786,7 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
 
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => $fp,
             'id'                     => $ia[1].$fp,
@@ -794,7 +794,7 @@ function do_5pointchoice($ia)
             'itemExtraClass'         => '',
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
-            ), true);
+            );
     }
 
     if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
@@ -803,7 +803,7 @@ function do_5pointchoice($ia)
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $checkedState = ' CHECKED ';
         }
-        $aData = array(
+        $aRows[] = array(
             'name'                   => $ia[1],
             'value'                  => "",
             'id'                     => $ia[1],
@@ -812,7 +812,6 @@ function do_5pointchoice($ia)
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         );
-        $sRows .= doRender('/survey/questions/answer/5pointchoice/rows/item_row', $aData, true);
 
     }
     $sessionValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
@@ -823,15 +822,17 @@ function do_5pointchoice($ia)
 
     if ($aQuestionAttributes['slider_rating'] == 1) {
         $slider_rating = 1;
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'star-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-star');
+        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
-
+    
     if ($aQuestionAttributes['slider_rating'] == 2) {
         $slider_rating = 2;
-        Yii::app()->getClientScript()->registerPackage('emoji');
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'slider-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
+        Yii::app()->getClientScript()->registerScript('doRatingSlider_'.$ia[0], "
+            var doRatingSlider_".$ia[1]."= new getRatingSlider('".$ia[0]."');
+            doRatingSlider_".$ia[1]."();
+        ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
 
@@ -841,7 +842,7 @@ function do_5pointchoice($ia)
         'name'          => $ia[1],
         'basename'      => $ia[1],
         'sessionValue'  => $sessionValue,
-        'sRows'         => $sRows,
+        'aRows'         => $aRows,
         'slider_rating' => $slider_rating,
 
         ), true);
@@ -2339,7 +2340,6 @@ function do_file_upload($ia)
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview = Yii::app()->request->getParam('action') == "previewgroup" || Yii::app()->request->getParam('action') == "previewquestion" || $thissurvey['active'] != "Y";
-
     if ($bPreview) {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 1; // Preview is launched from Question or group level
@@ -2350,7 +2350,6 @@ function do_file_upload($ia)
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
@@ -2376,7 +2375,6 @@ function do_file_upload($ia)
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
     // Modal dialog
     //$answer .= $uploadbutton;
-
     $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')])) {
         $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
@@ -2392,7 +2390,6 @@ function do_file_upload($ia)
         'basename' => $ia[1],
     );
     $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
-
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
     $(document).on("ready pjax:scriptcomplete", function(){
@@ -2404,58 +2401,46 @@ function do_file_upload($ia)
     displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);
     });
     </script>';
-
     $answer .= '<script type="text/javascript">
     $(".basic_'.$ia[1].'").change(function() {
     var i;
     var jsonstring = "[";
-
     for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
     {
     if ($("#'.$ia[1].'_"+i).val() == "")
     continue;
-
     filecount++;
     if (i != 1)
     jsonstring += ", ";
-
     if ($("#answer'.$ia[1].'_"+i).val() != "")
     jsonstring += "{ ';
-
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_title'])) {
             $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
     } else {
             $answer .= '\"title\":\"\",';
     }
-
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_comment'])) {
             $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
     } else {
             $answer .= '\"comment\":\"\",';
     }
-
     $answer .= '\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
     }
     jsonstring += "]";
-
     $("#'.$ia[1].'").val(jsonstring);
     $("#'.$ia[1].'_filecount").val(filecount);
     });
     </script>';
-
     $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
     $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
     $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
     $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
     $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
-
     $answer .= '
     <!-- Trigger the modal with a button -->
-
         <!-- Modal -->
         <div id="file-upload-modal-' . $ia[1].'" class="modal fade file-upload-modal" role="dialog">
             <div class="modal-dialog">
-
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header file-upload-modal-header">
@@ -2469,11 +2454,9 @@ function do_file_upload($ia)
                         <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes").'</button>
                     </div>
                 </div>
-
             </div>
         </div>
     ';
-
     $inputnames = array();
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";
@@ -2663,7 +2646,7 @@ function do_multiplenumeric($ia)
     }
 
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-
+    
     /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
 
@@ -2776,10 +2759,10 @@ function do_multiplenumeric($ia)
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = 10;
                     }
                     if (!empty($sliderright)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = $sliderWidth==10 ? 8 : 10 ;
                     }
                     $sliders   = true; // What is the usage ?
                 } else {

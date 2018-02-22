@@ -70,4 +70,59 @@ class SettingGlobal extends LSActiveRecord
         }
 
     }
+
+    /**
+     * Increase the custom asset version number in DB
+     * This will force the refresh of the assets folders content
+     */
+    static public function increaseCustomAssetsversionnumber()
+    {
+        $iCustomassetversionnumber = getGlobalSetting('customassetversionnumber');
+        $iCustomassetversionnumber++;
+        setGlobalSetting('customassetversionnumber', $iCustomassetversionnumber);
+        return;
+    }
+
+
+    /**
+     * Increase the asset version number in version.php
+     * This will force the refresh of the assets folders content
+     */
+    static public function increaseAssetsversionnumber()
+    {
+        @ini_set('auto_detect_line_endings', true);
+        $sRootdir      = Yii::app()->getConfig("rootdir");
+        $versionlines = file($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
+        $handle       = fopen($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
+        $iAssetNumber = self::generateAssetVersionNumber(Yii::app()->getConfig("assetsversionnumber"));
+
+        foreach ($versionlines as $line) {
+            if (strpos($line, 'assetsversionnumber') !== false) {
+                $line = '$config[\'assetsversionnumber\'] = \''.$iAssetNumber.'\';'."\r\n";
+            }
+            fwrite($handle, $line);
+        }
+        fclose($handle);
+        Yii::app()->setConfig("assetsversionnumber", $iAssetNumber);
+        return;
+    }
+
+    /**
+     * with comfortUpate, we increase the asset number by one.
+     * so to be sure that the asset number from comfortUpdate will be different from the one generated here, we index it by 100000
+     *
+     * @param int $iAssetNumber the current asset number
+     * @return int the new asset number
+     */
+    static public function generateAssetVersionNumber($iAssetNumber)
+    {
+        while ( $iAssetNumber == Yii::app()->getConfig("assetsversionnumber")) {
+            if ($iAssetNumber > 100000){
+                $iAssetNumber++;
+            }else{
+                $iAssetNumber = Yii::app()->getConfig("assetsversionnumber") + 100000;
+            }
+        }
+        return $iAssetNumber;
+    }
 }

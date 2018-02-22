@@ -238,12 +238,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Find which template should be used to render a given view
      * @param  string    $sView           the view (layout) to render
      * @param  Template  $oRTemplate    the template where the custom option page should be looked for
-     * @return Template
+     * @return Template|boolean
      */
     private function getTemplateForView($sView, $oRTemplate)
     {
         while (!file_exists($oRTemplate->viewPath.$sView)) {
-
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
@@ -283,9 +282,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
-            if (!empty($_SESSION['survey_'.$surveyid]['srid'])) {
-                $aDatas['aSurveyInfo']['bShowClearAll'] = !SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
+                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            } else {
+                $isCompleted = false;
             }
+
+            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);
