@@ -104,9 +104,8 @@ class InstallerController extends CController
      */
     private function _checkInstallation()
     {
-        if (file_exists(APPPATH.'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
+        if (file_exists(APPPATH.'config/config.php')) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
-            exit();
         }
     }
 
@@ -589,10 +588,33 @@ class InstallerController extends CController
                     try {
 
                         if (User::model()->count() > 0) {
-                            safeDie('Fatal error: Already an admin user in the system.');
+                            //throw new Exception('Already admin in system');
+                            //safeDie('Fatal error: Already an admin user in the system.');
+                            $user = User::model()->findByPk(1);
+                            if (empty($user)) {
+                                throw new Exception('There is an admin user, but not with id 1');
+                            }
+                        } else {
+                            $user = new User;
+
+                            // Save permissions
+                            $permission = new Permission;
+                            $permission->entity_id = 0;
+                            $permission->entity = 'global';
+                            $permission->uid = $user->uid;
+                            $permission->permission = 'superadmin';
+                            $permission->read_p = 1;
+                            $permission->save();
+
+                            // Save  global settings
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
                         }
                         // Save user
-                        $user = new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
                         if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
                             $user->uid = 1;
@@ -604,49 +626,35 @@ class InstallerController extends CController
                         $user->lang = $sSiteLanguage;
                         $user->email = $sAdminEmail;
                         $user->save();
-                        // Save permissions
-                        $permission = new Permission;
-                        $permission->entity_id = 0;
-                        $permission->entity = 'global';
-                        $permission->uid = $user->uid;
-                        $permission->permission = 'superadmin';
-                        $permission->read_p = 1;
-                        $permission->save();
-                        // Save  global settings
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
                         // only continue if we're error free otherwise setup is broken.
+                        Yii::app()->session['deletedirectories'] = true;
+
+                        $aData['title'] = gT("Success!");
+                        $aData['descp'] = gT("LimeSurvey has been installed successfully.");
+                        $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
+                        $aData['progressValue'] = 100;
+                        $aData['user'] = $sAdminUserName;
+                        if ($sDefaultAdminPassword == $sAdminPassword) {
+                            $aData['pwd'] = $sAdminPassword;
+                        } else {
+                            $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
+                        }
+
+                        $this->_writeConfigFile();
+
+                        $this->render('/installer/success_view', $aData);
+
+                        return;
+
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
                     }
 
-                    Yii::app()->session['deletedirectories'] = true;
-
-                    $aData['title'] = gT("Success!");
-                    $aData['descp'] = gT("LimeSurvey has been installed successfully.");
-                    $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
-                    $aData['progressValue'] = 100;
-                    $aData['user'] = $sAdminUserName;
-                    if ($sDefaultAdminPassword == $sAdminPassword) {
-                        $aData['pwd'] = $sAdminPassword;
-                    } else {
-                        $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
-                    }
-
-                    $this->render('/installer/success_view', $aData);
-                    return;
                 }
             } else {
                 unset($aData['confirmation']);
             }
-        } elseif (empty(Yii::app()->session['configFileWritten'])) {
-            $this->_writeConfigFile();
         }
-
         $this->render('/installer/optconfig_view', $aData);
     }
 
