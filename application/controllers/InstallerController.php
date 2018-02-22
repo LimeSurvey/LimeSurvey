@@ -125,6 +125,9 @@ class InstallerController extends CController {
     */
     private function stepWelcome()
     {
+        // Destroy the session. Good to have when running installer multiple times (for testing).
+        Yii::app()->session->clear();
+        Yii::app()->session->destroy();
 
         if (!is_null(Yii::app()->request->getPost('installerLang')))
         {
@@ -648,45 +651,57 @@ class InstallerController extends CController {
 
                 // Flush query cache because Yii does not handle properly the new DB prefix
                 Yii::app()->cache->flush();
-                //config file is written, and we've a db in place
-                $this->connection = Yii::app()->db;
+
+                $aDbConfigArray = $this->_getDatabaseConfigArray();
+                $aDbConfigArray['class'] = '\CDbConnection';
+                \Yii::app()->setComponent('db', $aDbConfigArray, false);
+                $db = \Yii::app()->getDb();
+                $db->setActive(true);
+                $this->connection = $db;
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $sPasswordHash=hash('sha256', $sAdminPassword);
                     try {
 
-                        if (User::model()->count()>0){
-                            die();
+                        if (User::model()->count() > 0) {
+                            //throw new Exception('Already admin in system');
+                            //safeDie('Fatal error: Already an admin user in the system.');
+                            $user = User::model()->findByPk(1);
+                            if (empty($user)) {
+                                throw new Exception('There is an admin user, but not with id 1');
+                        }
+                        } else {
+                            $user = new User;
+
+                            // Save permissions
+                            $permission = new Permission;
+                            $permission->entity_id = 0;
+                            $permission->entity = 'global';
+                            $permission->uid = $user->uid;
+                            $permission->permission = 'superadmin';
+                            $permission->read_p = 1;
+                            $permission->save();
+
+                            // Save  global settings
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
+                            $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
                         }
                         // Save user
-                        $user=new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
                         if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
-                            $user->uid=1;
+                            $user->uid = 1;
                         }
-                        $user->users_name=$sAdminUserName;
-                        $user->password=$sPasswordHash;
-                        $user->full_name=$sAdminRealName;
-                        $user->parent_id=0;
-                        $user->lang=$sSiteLanguage;
-                        $user->email=$sAdminEmail;
-                        $user->save();
-                        // Save permissions
-                        $permission=new Permission;
-                        $permission->entity_id=0;
-                        $permission->entity='global';
-                        $permission->uid=$user->uid;
-                        $permission->permission='superadmin';
-                        $permission->read_p=1;
-                        $permission->save();
-                        // Save  global settings
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
+                        $user->users_name = $sAdminUserName;
+                        $user->setPassword($sAdminPassword);
+                        $user->full_name = $sAdminRealName;
+                        $user->parent_id = 0;
+                        $user->lang = $sSiteLanguage;
+                        $user->email = $sAdminEmail;
+                        $result = $user->save();
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
@@ -1278,12 +1293,43 @@ class InstallerController extends CController {
     }
 
     /**
-    * Connect to the database
-    * @param array $aDbConfig : The config to be tested
-    * @param array $aData
-    * @return bool
-    */
-    function _dbConnect($aDbConfig = array(), $aData = array())
+     * Use with \Yii::app()->setComponent() to set connection at runtime.
+     * @return array
+     */
+    private function _getDatabaseConfigArray()
+    {
+        $sDatabaseType = Yii::app()->session['dbtype'];
+        $sDatabasePort = Yii::app()->session['dbport'];
+        $sDatabaseName = Yii::app()->session['dbname'];
+        $sDatabaseUser = Yii::app()->session['dbuser'];
+        $sDatabasePwd = Yii::app()->session['dbpwd'];
+        $sDatabasePrefix = Yii::app()->session['dbprefix'];
+        $sDatabaseLocation = Yii::app()->session['dblocation'];
+
+        $sCharset = 'utf8';
+        if (in_array($sDatabaseType, array('mysql', 'mysqli'))) {
+            $sCharset = 'utf8mb4';
+        }
+
+        $db = array(
+            'connectionString' => "$sDatabaseType:host=$sDatabaseLocation;port=$sDatabasePort;dbname=$sDatabaseName;",
+            'emulatePrepare' => true,
+            'username' => $sDatabaseUser,
+            'password' => $sDatabasePwd,
+            'charset' => $sCharset,
+            'tablePrefix' => $sDatabasePrefix
+        );
+
+        return $db;
+    }
+
+    /**
+     * Connect to the database
+     * @param array $aDbConfig : The config to be tested
+     * @param array $aData
+     * @return bool
+     */
+    private function _dbConnect($aDbConfig = array(), $aData = array())
     {
         $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
         extract($aDbConfig);
