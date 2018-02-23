@@ -167,16 +167,24 @@ class AdminTheme extends CFormModel
         // and it will add the directory prefix to the file name (css/ or js/ )
         // This last step is needed for the package (yii package use a single baseUrl / basePath for css and js files )
 
+        // Shorter writing.
+        $files = $this->config->files;
+
         // We check if RTL is needed
         if (getLanguageRTL(Yii::app()->language)) {
-            if (!isset($this->config->files->rtl)
-                || !isset($this->config->files->rtl->css)) {
+            if (!isset($files->rtl)
+                || !isset($files->rtl->css)) {
                 throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
             }
 
-            foreach ($this->config->files->rtl->css->filename as $cssfile) {
-                $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
+            if (is_array($files->rtl->css->filename)) {
+                foreach ($files->rtl->css->filename as $cssfile) {
+                    $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
+                }
+            } elseif (is_string($files->rtl->css->filename)) {
+                $aCssFiles[] = 'css/'.$files->rtl->css->filename;
             }
+
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->unregisterPackage('adminbasics');
@@ -184,14 +192,22 @@ class AdminTheme extends CFormModel
 
         } else {
             // Non-RTL style
-            foreach ($this->config->files->css->filename as $cssfile) {
-                $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the css files
+            if (is_array($files->css->filename)) {
+                foreach ($files->css->filename as $cssfile) {
+                    $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the css files
+                }
+            } elseif (is_string($files->css->filename)) {
+                $aCssFiles[] = 'css/'.$files->css->filename;
             }
         }
 
-        if (!empty($this->config->files->js->filename)) {
-            foreach ($this->config->files->js->filename as $jsfile) {
-                $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the RTL css files
+        if (!empty($files->js->filename)) {
+            if (is_array($files->js->filename)) {
+                foreach ($files->js->filename as $jsfile) {
+                    $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the js files
+                }
+            } elseif (is_string($files->js->filename)) {
+                    $aJsFiles[] = 'scripts/'.$files->js->filename;
             }
         }
 
