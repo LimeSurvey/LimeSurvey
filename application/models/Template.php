@@ -341,6 +341,10 @@ class Template extends LSActiveRecord
         $otherFiles = array();
         if (file_exists($filesDir) && $handle = opendir($filesDir)) {
             while (false !== ($file = readdir($handle))) {
+                // The file '..' can mess with open_basedir permissions.
+                if ($file == '..' || $file == '.') {
+                    continue;
+                }
                 if (!is_dir($file)) {
                     $otherFiles[] = array("name" => $file);
                 }
