@@ -36,6 +36,9 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.73.0 (build 171219) to 2.73.1 (build 171220) Feb 23, 2018
+Fixed issue: [security] Vulnerability in installer (found and reported by Nguyen Van Tien Thanh from Viettel Cyber Security Center, https://blog.yeuchimse.com )
+
 Changes from 2.72.6 (build 171206) to 2.73.0 (build 171219) Dec 19, 2017
 -Fixed issue #12997: PHP warning "mktime() expects" when calling survey logic file (Denis Chenu)
 -Fixed issue #13008: SPSS export invalid A0 for string (Denis Chenu)
