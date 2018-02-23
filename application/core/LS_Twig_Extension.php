@@ -424,5 +424,4 @@ class LS_Twig_Extension extends Twig_Extension
         }
     }
 
-
 }

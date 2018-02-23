@@ -250,6 +250,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                             data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"
+                            data-languages='<?php echo json_encode(Survey::model()->findByPk($surveyid)->getAllLanguages());?>'
                             data-gid="<?php echo $gid;?>"
                             data-qid="<?php echo $qid;?>"
                             data-scale-id="<?php echo $scale_id-1; // -1 : because it's incremented via <  ?>"

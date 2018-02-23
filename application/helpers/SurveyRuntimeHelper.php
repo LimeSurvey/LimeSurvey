@@ -396,24 +396,24 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                 }
-            $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
-            $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
+                $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
+                $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
 
-            if (!empty($qanda)) {
+                if (!empty($qanda)) {
 
-                if ($this->sSurveyMode == 'group') {
-                    $aGroup['show_last_group']   = true;
-                    $aGroup['lastgroup']         = $lastgroup;
+                    if ($this->sSurveyMode == 'group') {
+                        $aGroup['show_last_group']   = true;
+                        $aGroup['lastgroup']         = $lastgroup;
+                    }
+
+                    if ($this->sSurveyMode == 'question') {
+                        $aGroup['show_last_answer']   = true;
+                        $aGroup['lastanswer']         = $lastanswer;
+                    }
                 }
-
-                if ($this->sSurveyMode == 'question') {
-                    $aGroup['show_last_answer']   = true;
-                    $aGroup['lastanswer']         = $lastanswer;
-                }
+                Yii::app()->setConfig('gid', '');
+                $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
             }
-            Yii::app()->setConfig('gid', '');
-            $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
-        }
         }
 
         /**
@@ -574,11 +574,14 @@ class SurveyRuntimeHelper
 
             resetTimers();
 
+            // TODO: Why is $this->aSurveyInfo empty here?
+            $aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+            $this->aSurveyInfo = $aSurveyInfo;
+
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
-
 
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
             //don't use cookies if tokens are being used
@@ -1067,7 +1070,7 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                     //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
                 }
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -1101,7 +1104,7 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['aCompleted']['showDefault'] = false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                     //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext']);
+                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -1197,15 +1200,17 @@ class SurveyRuntimeHelper
      * @param string $sString the string to evaluate
      * @return string
      */
-    private function processString($sString)
+    private function processString($sString, $iRecursionLevel = 1)
     {
-        if (strpos($sString, "{") !== false) {
+        $sProcessedString = $sString;
+
+        if((strpos($sProcessedString, "{") !== false)){
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
-            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields);
-        } else {
-            $sProcessedString = $sString;
+            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields, $iRecursionLevel);
+            
         }
+
 
         return $sProcessedString;
     }
@@ -1634,14 +1639,6 @@ class SurveyRuntimeHelper
 
         $aEnterErrors = array();
         $FlashError   = false;
-        // Scenario => Token required
-        if ($scenarios['tokenRequired'] && !$preview) {
-            //Test if token is valid
-            list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $this->aSurveyInfo, $aEnterTokenData, $clienttoken);
-            if (!empty($FlashError)) {
-                $aEnterErrors['token'] = $FlashError;
-            }
-        }
 
         // Scenario => Captcha required
         if ($scenarios['captchaRequired'] && !$preview) {

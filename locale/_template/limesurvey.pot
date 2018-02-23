@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-02-19 13:55:05+00:00\n"
+"POT-Creation-Date: 2018-02-21 14:37:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -395,7 +395,7 @@ msgstr ""
 msgid "You are not allowed to print answers."
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:147
+#: application/controllers/PrintanswersController.php:148
 #: application/controllers/admin/PluginHelper.php:30
 #: application/controllers/admin/assessments.php:92
 #: application/controllers/admin/emailtemplates.php:74
@@ -448,8 +448,8 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1871
 #: application/controllers/admin/tokens.php:2176
 #: application/controllers/admin/tokens.php:2320
-#: application/controllers/admin/tokens.php:2386
-#: application/controllers/admin/tokens.php:2500
+#: application/controllers/admin/tokens.php:2385
+#: application/controllers/admin/tokens.php:2499
 #: application/controllers/admin/translate.php:84
 #: application/helpers/admin/statistics_helper.php:2362
 #: application/helpers/admin/statistics_helper.php:2374
@@ -459,6 +459,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1727
 #: application/models/Notification.php:158
 #: application/models/SurveymenuEntries.php:182
+#: application/models/SurveysGroups.php:68
 #: application/models/TokenDynamic.php:646
 #: application/views/admin/saved/savedlist_view.php:17
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:18
@@ -467,7 +468,7 @@ msgid "ID"
 msgstr ""
 
 #: application/controllers/RegisterController.php:165
-#: application/helpers/SurveyRuntimeHelper.php:1638
+#: application/helpers/SurveyRuntimeHelper.php:1647
 msgid "Your answer to the security question was not correct - please try again."
 msgstr ""
 
@@ -628,7 +629,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:468
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/helpers/qanda_helper.php:2368
-#: application/models/Question.php:825
+#: application/models/Question.php:826
 #: application/models/TemplateManifest.php:291
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
@@ -1011,6 +1012,8 @@ msgstr ""
 #: application/helpers/replacements_helper.php:479
 #: application/views/admin/assessments/assessments_delete.php:24
 #: application/views/admin/conditions/conditionshead_view.php:73
+#: application/views/admin/emailtemplates/email_language_template_tab.php:118
+#: application/views/admin/emailtemplates/email_language_template_tab.php:119
 #: application/views/admin/emailtemplates/emailtemplates_view.php:104
 #: application/views/admin/homepagesettings/index.php:21
 #: application/views/admin/labels/labelsetsbar_view.php:111
@@ -1603,8 +1606,8 @@ msgstr ""
 #: application/helpers/export_helper.php:343
 #: application/helpers/export_helper.php:1658
 #: application/helpers/export_helper.php:1679
-#: application/helpers/expressions/em_manager_helper.php:3666
-#: application/helpers/expressions/em_manager_helper.php:3670
+#: application/helpers/expressions/em_manager_helper.php:3669
+#: application/helpers/expressions/em_manager_helper.php:3673
 #: application/helpers/questionHelper.php:55
 #: application/helpers/questionHelper.php:173
 #: application/helpers/questionHelper.php:205
@@ -1703,12 +1706,12 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:193
 #: application/views/admin/token/massive_actions/_update.php:239
 #: application/views/admin/token/massive_actions/_update.php:249
-#: application/views/admin/token/tokenform.php:110
-#: application/views/admin/token/tokenform.php:128
-#: application/views/admin/token/tokenform.php:253
-#: application/views/admin/token/tokenform.php:270
-#: application/views/admin/token/tokenform.php:306
-#: application/views/admin/token/tokenform.php:316
+#: application/views/admin/token/tokenform.php:104
+#: application/views/admin/token/tokenform.php:122
+#: application/views/admin/token/tokenform.php:247
+#: application/views/admin/token/tokenform.php:264
+#: application/views/admin/token/tokenform.php:300
+#: application/views/admin/token/tokenform.php:310
 #: application/views/admin/usergroup/usergroups_view.php:143
 #: application/views/survey/frontpage/clearallForm/form.php:11
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/answer_row.php:43
@@ -1728,7 +1731,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1150
 #: application/helpers/export_helper.php:345
 #: application/helpers/export_helper.php:1679
-#: application/helpers/expressions/em_manager_helper.php:3672
+#: application/helpers/expressions/em_manager_helper.php:3675
 #: application/helpers/userstatistics_helper.php:1217
 #: application/views/admin/dataentry/content_view.php:711
 #: application/views/admin/export/statistics_subviews/_question.php:460
@@ -1762,8 +1765,8 @@ msgstr ""
 #: application/helpers/export_helper.php:344
 #: application/helpers/export_helper.php:1658
 #: application/helpers/export_helper.php:1679
-#: application/helpers/expressions/em_manager_helper.php:3667
-#: application/helpers/expressions/em_manager_helper.php:3671
+#: application/helpers/expressions/em_manager_helper.php:3670
+#: application/helpers/expressions/em_manager_helper.php:3674
 #: application/helpers/questionHelper.php:54
 #: application/helpers/questionHelper.php:172
 #: application/helpers/questionHelper.php:204
@@ -1861,12 +1864,12 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:194
 #: application/views/admin/token/massive_actions/_update.php:240
 #: application/views/admin/token/massive_actions/_update.php:250
-#: application/views/admin/token/tokenform.php:111
-#: application/views/admin/token/tokenform.php:129
-#: application/views/admin/token/tokenform.php:254
-#: application/views/admin/token/tokenform.php:271
-#: application/views/admin/token/tokenform.php:307
-#: application/views/admin/token/tokenform.php:317
+#: application/views/admin/token/tokenform.php:105
+#: application/views/admin/token/tokenform.php:123
+#: application/views/admin/token/tokenform.php:248
+#: application/views/admin/token/tokenform.php:265
+#: application/views/admin/token/tokenform.php:301
+#: application/views/admin/token/tokenform.php:311
 #: application/views/survey/frontpage/clearallForm/form.php:14
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/answer_row.php:71
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.php:11
@@ -1884,7 +1887,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1155
 #: application/helpers/export_helper.php:348
 #: application/helpers/export_helper.php:1684
-#: application/helpers/expressions/em_manager_helper.php:3675
+#: application/helpers/expressions/em_manager_helper.php:3678
 #: application/helpers/userstatistics_helper.php:1234
 #: application/views/admin/dataentry/content_view.php:735
 #: application/views/admin/export/statistics_subviews/_question.php:500
@@ -1902,7 +1905,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1157
 #: application/helpers/export_helper.php:349
 #: application/helpers/export_helper.php:1684
-#: application/helpers/expressions/em_manager_helper.php:3676
+#: application/helpers/expressions/em_manager_helper.php:3679
 #: application/helpers/userstatistics_helper.php:1235
 #: application/views/admin/dataentry/content_view.php:736
 #: application/views/admin/export/statistics_subviews/_question.php:505
@@ -1920,7 +1923,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1156
 #: application/helpers/export_helper.php:350
 #: application/helpers/export_helper.php:1684
-#: application/helpers/expressions/em_manager_helper.php:3677
+#: application/helpers/expressions/em_manager_helper.php:3680
 #: application/helpers/userstatistics_helper.php:1236
 #: application/views/admin/dataentry/content_view.php:737
 #: application/views/admin/export/statistics_subviews/_question.php:510
@@ -1965,7 +1968,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1142
 #: application/helpers/export_helper.php:335
 #: application/helpers/export_helper.php:1663
-#: application/helpers/expressions/em_manager_helper.php:3663
+#: application/helpers/expressions/em_manager_helper.php:3666
 #: application/helpers/userstatistics_helper.php:1330
 #: application/views/admin/dataentry/content_view.php:104
 #: application/views/admin/export/statistics_subviews/_question.php:293
@@ -1984,7 +1987,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1141
 #: application/helpers/export_helper.php:336
 #: application/helpers/export_helper.php:1663
-#: application/helpers/expressions/em_manager_helper.php:3662
+#: application/helpers/expressions/em_manager_helper.php:3665
 #: application/helpers/userstatistics_helper.php:1331
 #: application/views/admin/dataentry/content_view.php:105
 #: application/views/admin/export/statistics_subviews/_question.php:299
@@ -2277,7 +2280,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:190
 #: application/controllers/admin/themes.php:835
 #: application/controllers/admin/tokens.php:1551
-#: application/models/Token.php:77
+#: application/models/Token.php:88
 #: application/views/admin/quotas/viewquotas_view.php:83
 #: application/views/admin/token/exportdialog.php:17
 msgid "Completed"
@@ -2545,7 +2548,7 @@ msgid "Full question text"
 msgstr ""
 
 #: application/controllers/admin/export.php:234
-msgid "Question code and question text"
+msgid "Question code & question text"
 msgstr ""
 
 #: application/controllers/admin/export.php:583
@@ -2677,6 +2680,7 @@ msgstr ""
 
 #: application/controllers/admin/labels.php:316
 #: application/helpers/qanda_helper.php:2454
+#: application/views/admin/emailtemplates/email_language_template_tab.php:120
 #: application/views/admin/labels/_labelviewtabcontent_view.php:86
 #: application/views/admin/survey/Question/answerOptions_view.php:232
 #: application/views/admin/themes/templatesummary_view.php:136
@@ -3117,10 +3121,10 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:750
 #: application/extensions/questionTypes/listRadio/listRadio.php:64
-#: application/helpers/expressions/em_manager_helper.php:3387
-#: application/helpers/expressions/em_manager_helper.php:3399
-#: application/helpers/expressions/em_manager_helper.php:3797
-#: application/helpers/expressions/em_manager_helper.php:6483
+#: application/helpers/expressions/em_manager_helper.php:3390
+#: application/helpers/expressions/em_manager_helper.php:3402
+#: application/helpers/expressions/em_manager_helper.php:3800
+#: application/helpers/expressions/em_manager_helper.php:6486
 #: application/helpers/qanda_helper.php:1184
 #: application/helpers/qanda_helper.php:1414
 #: application/helpers/qanda_helper.php:1936
@@ -3390,7 +3394,7 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/admin/responses.php:184
-#: application/models/SurveyLink.php:233 application/models/Token.php:65
+#: application/models/SurveyLink.php:233 application/models/Token.php:76
 #: application/views/admin/token/massive_actions/_update_results.php:17
 msgid "Token ID"
 msgstr ""
@@ -3398,9 +3402,9 @@ msgstr ""
 #: application/controllers/admin/responses.php:185
 #: application/helpers/common_helper.php:2958
 #: application/models/Participant.php:232
-#: application/models/ParticipantShare.php:221 application/models/Token.php:67
+#: application/models/ParticipantShare.php:221 application/models/Token.php:78
 #: application/models/TokenDynamic.php:655
-#: application/views/admin/export/exportresults_view.php:388
+#: application/views/admin/export/exportresult_panels/_token-control.php:23
 #: application/views/admin/responses/listResponses_view.php:136
 #: application/views/admin/themes/templateeditor_register_view.php:3
 #: application/views/admin/token/dummytokenform.php:40
@@ -3410,9 +3414,9 @@ msgstr ""
 #: application/controllers/admin/responses.php:186
 #: application/helpers/common_helper.php:2963
 #: application/models/Participant.php:233
-#: application/models/ParticipantShare.php:216 application/models/Token.php:68
+#: application/models/ParticipantShare.php:216 application/models/Token.php:79
 #: application/models/TokenDynamic.php:663
-#: application/views/admin/export/exportresults_view.php:389
+#: application/views/admin/export/exportresult_panels/_token-control.php:26
 #: application/views/admin/responses/listResponses_view.php:147
 #: application/views/admin/themes/templateeditor_register_view.php:7
 #: application/views/admin/token/dummytokenform.php:48
@@ -3822,8 +3826,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:391
 #: application/controllers/admin/surveypermission.php:573
 #: application/controllers/admin/surveypermission.php:671
-#: application/controllers/admin/tokens.php:2434
-#: application/controllers/admin/tokens.php:2477
+#: application/controllers/admin/tokens.php:2433
+#: application/controllers/admin/tokens.php:2476
 #: application/controllers/admin/useraction.php:805
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:76
@@ -4676,16 +4680,16 @@ msgstr ""
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2410
+#: application/controllers/admin/tokens.php:2409
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2416
+#: application/controllers/admin/tokens.php:2415
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2431
+#: application/controllers/admin/tokens.php:2430
 #: application/core/LsDefaultDataSets.php:18
 #: application/views/admin/survey/breadcrumb.php:122
 #: application/views/admin/survey/surveybar_view.php:84
@@ -4693,15 +4697,15 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2432
+#: application/controllers/admin/tokens.php:2431
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2474
+#: application/controllers/admin/tokens.php:2473
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2475
+#: application/controllers/admin/tokens.php:2474
 msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -4763,7 +4767,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:434
-#: application/helpers/expressions/em_manager_helper.php:9323
+#: application/helpers/expressions/em_manager_helper.php:9326
 #: application/models/Boxes.php:56
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:60
@@ -4785,7 +4789,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:464
-#: application/helpers/expressions/em_manager_helper.php:9337
+#: application/helpers/expressions/em_manager_helper.php:9340
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:174
@@ -5149,7 +5153,7 @@ msgstr ""
 #: application/controllers/survey/index.php:299
 #: application/controllers/survey/index.php:321
 #: application/controllers/survey/index.php:345
-#: application/controllers/survey/index.php:482
+#: application/controllers/survey/index.php:484
 #: application/helpers/replacements_helper.php:149
 #: application/helpers/replacements_helper.php:151
 #: application/helpers/replacements_helper.php:403
@@ -5191,23 +5195,27 @@ msgid "This invitation has already been used."
 msgstr ""
 
 #: application/controllers/survey/index.php:472
-msgid "This invitation is not valid yet."
+msgid "This invitation has no uses left."
 msgstr ""
 
 #: application/controllers/survey/index.php:474
+msgid "This invitation is not valid yet."
+msgstr ""
+
+#: application/controllers/survey/index.php:476
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:477
-#: application/controllers/survey/index.php:498
+#: application/controllers/survey/index.php:479
+#: application/controllers/survey/index.php:500
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:481
+#: application/controllers/survey/index.php:483
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:604
+#: application/controllers/survey/index.php:606
 msgid "Your responses were successfully saved."
 msgstr ""
 
@@ -5468,7 +5476,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:42
 #: application/models/Permission.php:92
-#: application/views/admin/export/exportresults_view.php:291
+#: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/responses/browsemenubar_view.php:26
 #: application/views/admin/survey/importSurvey_view.php:108
 #: application/views/admin/survey/surveybar_statistics.php:18
@@ -6520,9 +6528,9 @@ msgid "Unknown box ID!"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:332
-#: application/views/admin/export/exportresults_view.php:214
-#: application/views/admin/export/exportresults_view.php:230
-#: application/views/admin/export/exportresults_view.php:262
+#: application/views/admin/export/exportresult_panels/_headings.php:35
+#: application/views/admin/export/exportresult_panels/_headings.php:51
+#: application/views/admin/export/exportresult_panels/_headings.php:67
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:39
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -6615,9 +6623,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:451
 #: application/helpers/questionHelper.php:706
 #: application/helpers/questionHelper.php:1000
-#: application/views/admin/export/exportresults_view.php:215
-#: application/views/admin/export/exportresults_view.php:231
-#: application/views/admin/export/exportresults_view.php:263
+#: application/views/admin/export/exportresult_panels/_headings.php:36
+#: application/views/admin/export/exportresult_panels/_headings.php:52
+#: application/views/admin/export/exportresult_panels/_headings.php:68
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:40
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -6958,7 +6966,6 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:77
 #: application/models/Notification.php:163
-#: application/models/SurveysGroups.php:75
 msgid "Created"
 msgstr ""
 
@@ -7122,7 +7129,7 @@ msgid "Search"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:48
-#: application/views/admin/export/exportresults_view.php:132
+#: application/views/admin/export/exportresult_panels/_single-value.php:27
 #: application/views/admin/participants/attributeMapCSV_view.php:75
 #: application/views/admin/participants/attributeMapToken_view.php:99
 #: application/views/admin/participants/attributeMap_view.php:185
@@ -7167,41 +7174,41 @@ msgstr ""
 msgid "Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1102
+#: application/helpers/SurveyRuntimeHelper.php:1112
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1451
+#: application/helpers/SurveyRuntimeHelper.php:1468
 #: application/helpers/qanda_helper.php:421
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1456
+#: application/helpers/SurveyRuntimeHelper.php:1473
 #: application/helpers/qanda_helper.php:443
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1461
+#: application/helpers/SurveyRuntimeHelper.php:1478
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1641
+#: application/helpers/SurveyRuntimeHelper.php:1650
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1742
+#: application/helpers/SurveyRuntimeHelper.php:1751
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1748
+#: application/helpers/SurveyRuntimeHelper.php:1757
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1772
+#: application/helpers/SurveyRuntimeHelper.php:1781
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1773
+#: application/helpers/SurveyRuntimeHelper.php:1782
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
@@ -7478,7 +7485,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:699
 #: application/helpers/userstatistics_helper.php:695
-#: application/models/Question.php:627
+#: application/models/Question.php:628
 msgid "Ranking"
 msgstr ""
 
@@ -7864,7 +7871,7 @@ msgid "Seed"
 msgstr ""
 
 #: application/helpers/common_helper.php:1446
-#: application/helpers/common_helper.php:2978 application/models/Token.php:71
+#: application/helpers/common_helper.php:2978 application/models/Token.php:82
 #: application/models/TokenDynamic.php:689
 #: application/views/admin/dataentry/caption_view.php:36
 #: application/views/admin/participants/attributeMap_view.php:158
@@ -7915,36 +7922,36 @@ msgstr ""
 
 #: application/helpers/common_helper.php:2968
 #: application/models/Participant.php:234
-#: application/models/ParticipantShare.php:226 application/models/Token.php:69
+#: application/models/ParticipantShare.php:226 application/models/Token.php:80
 #: application/models/TokenDynamic.php:671
-#: application/views/admin/export/exportresults_view.php:390
+#: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/saved/savedlist_view.php:22
 #: application/views/admin/themes/templateeditor_register_view.php:11
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2973 application/models/Token.php:70
+#: application/helpers/common_helper.php:2973 application/models/Token.php:81
 #: application/models/TokenDynamic.php:680
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2983 application/models/Token.php:72
+#: application/helpers/common_helper.php:2983 application/models/Token.php:83
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2988 application/models/Token.php:74
+#: application/helpers/common_helper.php:2988 application/models/Token.php:85
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2993 application/models/Token.php:75
+#: application/helpers/common_helper.php:2993 application/models/Token.php:86
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2998 application/models/Token.php:76
+#: application/helpers/common_helper.php:2998 application/models/Token.php:87
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:3003 application/models/Token.php:78
+#: application/helpers/common_helper.php:3003 application/models/Token.php:89
 #: application/models/TokenDynamic.php:740
 msgid "Uses left"
 msgstr ""
@@ -8526,272 +8533,272 @@ msgstr ""
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3164
+#: application/helpers/expressions/em_manager_helper.php:3167
 #: application/views/survey/questions/answer/language/answer.php:15
 msgid "Choose your language"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3169
+#: application/helpers/expressions/em_manager_helper.php:3172
 msgid "Choose one of the following answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3172
+#: application/helpers/expressions/em_manager_helper.php:3175
 msgid "Check any that apply"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3175
-#: application/helpers/expressions/em_manager_helper.php:3369
+#: application/helpers/expressions/em_manager_helper.php:3178
+#: application/helpers/expressions/em_manager_helper.php:3372
 #: application/views/admin/dataentry/content_view.php:508
 #: application/views/survey/questions/answer/arrays/multiflexi/rows/cells/answer_td.php:60
 #: application/views/survey/questions/answer/numerical/answer.php:39
 msgid "Only numbers may be entered in this field."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3178
-#: application/helpers/expressions/em_manager_helper.php:3218
-#: application/helpers/expressions/em_manager_helper.php:3373
+#: application/helpers/expressions/em_manager_helper.php:3181
+#: application/helpers/expressions/em_manager_helper.php:3221
+#: application/helpers/expressions/em_manager_helper.php:3376
 msgid "Only numbers may be entered in these fields."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3181
+#: application/helpers/expressions/em_manager_helper.php:3184
 msgid "All your answers must be different and you must rank in order."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3188
+#: application/helpers/expressions/em_manager_helper.php:3191
 msgid "Please complete all parts of the date."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3195
+#: application/helpers/expressions/em_manager_helper.php:3198
 msgid "Comment only when you choose an answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3198
+#: application/helpers/expressions/em_manager_helper.php:3201
 msgid "Comment only when you don't choose an answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3202
+#: application/helpers/expressions/em_manager_helper.php:3205
 msgid "Comment your answers."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3210
+#: application/helpers/expressions/em_manager_helper.php:3213
 msgid "The sum must equal %s."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3234
+#: application/helpers/expressions/em_manager_helper.php:3237
 msgid "Please fill in at least %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3235
+#: application/helpers/expressions/em_manager_helper.php:3238
 msgid "Please fill in at least one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3236
+#: application/helpers/expressions/em_manager_helper.php:3239
 msgid "Please fill in at most %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3237
-#: application/helpers/expressions/em_manager_helper.php:3238
+#: application/helpers/expressions/em_manager_helper.php:3240
+#: application/helpers/expressions/em_manager_helper.php:3241
 msgid "Please fill in at most one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3239
+#: application/helpers/expressions/em_manager_helper.php:3242
 msgid "Please fill in %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3240
+#: application/helpers/expressions/em_manager_helper.php:3243
 msgid "Please fill in from %s to %s answers."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3246
+#: application/helpers/expressions/em_manager_helper.php:3249
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3247
+#: application/helpers/expressions/em_manager_helper.php:3250
 msgid "Please select at least one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3248
+#: application/helpers/expressions/em_manager_helper.php:3251
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3249
+#: application/helpers/expressions/em_manager_helper.php:3252
 msgid "Please select at most one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3250
+#: application/helpers/expressions/em_manager_helper.php:3253
 msgid "Please select one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3251
+#: application/helpers/expressions/em_manager_helper.php:3254
 msgid "Please select %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3252
+#: application/helpers/expressions/em_manager_helper.php:3255
 msgid "Please select from %s to %s answers."
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:3273
-#: application/helpers/expressions/em_manager_helper.php:3310
-msgid "Each answer must be at least %s"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:3274
-#: application/helpers/expressions/em_manager_helper.php:3311
-msgid "Each answer must be at most %s"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:3275
-#: application/helpers/expressions/em_manager_helper.php:3312
-msgid "Each answer must be %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3276
 #: application/helpers/expressions/em_manager_helper.php:3313
+msgid "Each answer must be at least %s"
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:3277
+#: application/helpers/expressions/em_manager_helper.php:3314
+msgid "Each answer must be at most %s"
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:3278
+#: application/helpers/expressions/em_manager_helper.php:3315
+msgid "Each answer must be %s"
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:3279
+#: application/helpers/expressions/em_manager_helper.php:3316
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3281
+#: application/helpers/expressions/em_manager_helper.php:3284
 msgid "Your answer must be at least %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3282
+#: application/helpers/expressions/em_manager_helper.php:3285
 msgid "Your answer must be at most %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3283
+#: application/helpers/expressions/em_manager_helper.php:3286
 msgid "Your answer must be %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3284
+#: application/helpers/expressions/em_manager_helper.php:3287
 msgid "Your answer must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3298
+#: application/helpers/expressions/em_manager_helper.php:3301
 msgid "Answer must be greater or equal to %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3299
+#: application/helpers/expressions/em_manager_helper.php:3302
 msgid "Answer must be less or equal to %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3300
+#: application/helpers/expressions/em_manager_helper.php:3303
 msgid "Answer must be %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3301
+#: application/helpers/expressions/em_manager_helper.php:3304
 msgid "Answer must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3322
+#: application/helpers/expressions/em_manager_helper.php:3325
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3323
+#: application/helpers/expressions/em_manager_helper.php:3326
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3324
+#: application/helpers/expressions/em_manager_helper.php:3327
 msgid "The sum must equal %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3325
+#: application/helpers/expressions/em_manager_helper.php:3328
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3335
+#: application/helpers/expressions/em_manager_helper.php:3338
 msgid "Please upload at least %s files"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3336
+#: application/helpers/expressions/em_manager_helper.php:3339
 msgid "Please upload at least one file"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3337
+#: application/helpers/expressions/em_manager_helper.php:3340
 msgid "Please upload at most %s files"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3338
+#: application/helpers/expressions/em_manager_helper.php:3341
 msgid "Please upload at most one file"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3339
+#: application/helpers/expressions/em_manager_helper.php:3342
 msgid "Please upload one file"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3340
+#: application/helpers/expressions/em_manager_helper.php:3343
 msgid "Please upload %s files"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3341
+#: application/helpers/expressions/em_manager_helper.php:3344
 msgid "Please upload between %s and %s files"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3352
+#: application/helpers/expressions/em_manager_helper.php:3355
 msgid "Only an integer value may be entered in this field."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3356
+#: application/helpers/expressions/em_manager_helper.php:3359
 msgid "Only integer values may be entered in these fields."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3389
-#: application/helpers/expressions/em_manager_helper.php:6486
+#: application/helpers/expressions/em_manager_helper.php:3392
+#: application/helpers/expressions/em_manager_helper.php:6489
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3401
+#: application/helpers/expressions/em_manager_helper.php:3404
 msgid "Only numbers may be entered in '%s' accompanying text field."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3409
+#: application/helpers/expressions/em_manager_helper.php:3412
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5427
+#: application/helpers/expressions/em_manager_helper.php:5430
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5526
+#: application/helpers/expressions/em_manager_helper.php:5529
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6456
+#: application/helpers/expressions/em_manager_helper.php:6459
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6471
+#: application/helpers/expressions/em_manager_helper.php:6474
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6512
-#: application/helpers/expressions/em_manager_helper.php:6556
+#: application/helpers/expressions/em_manager_helper.php:6515
+#: application/helpers/expressions/em_manager_helper.php:6559
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6544
+#: application/helpers/expressions/em_manager_helper.php:6547
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6567
+#: application/helpers/expressions/em_manager_helper.php:6570
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9307
+#: application/helpers/expressions/em_manager_helper.php:9310
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9313
+#: application/helpers/expressions/em_manager_helper.php:9316
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9330
+#: application/helpers/expressions/em_manager_helper.php:9333
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:165
 #: application/views/admin/survey/surveySummary_view.php:140
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9344
+#: application/helpers/expressions/em_manager_helper.php:9347
 #: application/views/admin/survey/editLocalSettings_view.php:58
 #: application/views/admin/survey/subview/_create_survey_text.php:93
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:178
@@ -8799,24 +8806,24 @@ msgstr ""
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9350
+#: application/helpers/expressions/em_manager_helper.php:9353
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9351
+#: application/helpers/expressions/em_manager_helper.php:9354
 msgid "Relevance [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9352
+#: application/helpers/expressions/em_manager_helper.php:9355
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9411
-#: application/helpers/expressions/em_manager_helper.php:9717
+#: application/helpers/expressions/em_manager_helper.php:9414
+#: application/helpers/expressions/em_manager_helper.php:9720
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9435
+#: application/helpers/expressions/em_manager_helper.php:9438
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:57
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:61
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:83
@@ -8827,67 +8834,67 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9437
+#: application/helpers/expressions/em_manager_helper.php:9440
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9455
+#: application/helpers/expressions/em_manager_helper.php:9458
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9455
+#: application/helpers/expressions/em_manager_helper.php:9458
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9612
+#: application/helpers/expressions/em_manager_helper.php:9615
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9624
+#: application/helpers/expressions/em_manager_helper.php:9627
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9787
+#: application/helpers/expressions/em_manager_helper.php:9790
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9825
+#: application/helpers/expressions/em_manager_helper.php:9828
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9831
+#: application/helpers/expressions/em_manager_helper.php:9834
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9834
+#: application/helpers/expressions/em_manager_helper.php:9837
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9837
+#: application/helpers/expressions/em_manager_helper.php:9840
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10334
-#: application/helpers/expressions/em_manager_helper.php:10346
-#: application/helpers/expressions/em_manager_helper.php:10354
-#: application/helpers/expressions/em_manager_helper.php:10365
-#: application/helpers/expressions/em_manager_helper.php:10373
-#: application/helpers/expressions/em_manager_helper.php:10380
-#: application/helpers/expressions/em_manager_helper.php:10387
-#: application/helpers/expressions/em_manager_helper.php:10394
-#: application/helpers/expressions/em_manager_helper.php:10407
-#: application/helpers/expressions/em_manager_helper.php:10414
-#: application/helpers/expressions/em_manager_helper.php:10422
-#: application/helpers/expressions/em_manager_helper.php:10438
-#: application/helpers/expressions/em_manager_helper.php:10445
-#: application/helpers/expressions/em_manager_helper.php:10460
-#: application/helpers/expressions/em_manager_helper.php:10470
-#: application/helpers/expressions/em_manager_helper.php:10483
-#: application/helpers/expressions/em_manager_helper.php:10490
+#: application/helpers/expressions/em_manager_helper.php:10337
+#: application/helpers/expressions/em_manager_helper.php:10349
+#: application/helpers/expressions/em_manager_helper.php:10357
+#: application/helpers/expressions/em_manager_helper.php:10368
+#: application/helpers/expressions/em_manager_helper.php:10376
+#: application/helpers/expressions/em_manager_helper.php:10383
+#: application/helpers/expressions/em_manager_helper.php:10390
+#: application/helpers/expressions/em_manager_helper.php:10397
+#: application/helpers/expressions/em_manager_helper.php:10410
+#: application/helpers/expressions/em_manager_helper.php:10417
+#: application/helpers/expressions/em_manager_helper.php:10425
+#: application/helpers/expressions/em_manager_helper.php:10441
+#: application/helpers/expressions/em_manager_helper.php:10448
+#: application/helpers/expressions/em_manager_helper.php:10463
+#: application/helpers/expressions/em_manager_helper.php:10473
+#: application/helpers/expressions/em_manager_helper.php:10486
+#: application/helpers/expressions/em_manager_helper.php:10493
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10453
+#: application/helpers/expressions/em_manager_helper.php:10456
 msgid "This question only accept 30 digits including 10 decimals."
 msgstr ""
 
@@ -9479,7 +9486,7 @@ msgid "Final equation to set in database, defaults to question text."
 msgstr ""
 
 #: application/helpers/questionHelper.php:279
-#: application/models/Question.php:717
+#: application/models/Question.php:718
 msgid "Equation"
 msgstr ""
 
@@ -9850,7 +9857,7 @@ msgid "Rows"
 msgstr ""
 
 #: application/helpers/questionHelper.php:708
-#: application/views/admin/export/exportresults_view.php:346
+#: application/views/admin/export/exportresult_panels/_columns-control.php:5
 msgid "Columns"
 msgstr ""
 
@@ -11271,7 +11278,7 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: application/models/Participant.php:236 application/models/Token.php:73
+#: application/models/Participant.php:236 application/models/Token.php:84
 msgid "Blacklisted"
 msgstr ""
 
@@ -11285,6 +11292,7 @@ msgstr ""
 
 #: application/models/Participant.php:239 application/models/Surveymenu.php:194
 #: application/models/SurveymenuEntries.php:205
+#: application/models/SurveysGroups.php:75
 msgid "Created on"
 msgstr ""
 
@@ -11486,192 +11494,192 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Question.php:97
+#: application/models/Question.php:98
 msgid "Question code may not be empty."
 msgstr ""
 
-#: application/models/Question.php:127
+#: application/models/Question.php:128
 msgid "Subquestion codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:131 application/models/Question.php:137
+#: application/models/Question.php:132 application/models/Question.php:138
 msgid "'%s' can not be used if the 'Other' option for this question is activated."
 msgstr ""
 
-#: application/models/Question.php:156
+#: application/models/Question.php:157
 msgid "Question codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:160
+#: application/models/Question.php:161
 msgid "Question codes must start with a letter and may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:164
+#: application/models/Question.php:165
 msgid "'time' is a reserved word and can not be used for a subquestion."
 msgstr ""
 
-#: application/models/Question.php:167
+#: application/models/Question.php:168
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:465
+#: application/models/Question.php:466
 msgid "Array dual scale"
 msgstr ""
 
-#: application/models/Question.php:466 application/models/Question.php:484
-#: application/models/Question.php:493 application/models/Question.php:502
-#: application/models/Question.php:520 application/models/Question.php:529
-#: application/models/Question.php:547 application/models/Question.php:691
-#: application/models/Question.php:700
+#: application/models/Question.php:467 application/models/Question.php:485
+#: application/models/Question.php:494 application/models/Question.php:503
+#: application/models/Question.php:521 application/models/Question.php:530
+#: application/models/Question.php:548 application/models/Question.php:692
+#: application/models/Question.php:701
 msgid "Arrays"
 msgstr ""
 
-#: application/models/Question.php:474
+#: application/models/Question.php:475
 msgid "5 Point Choice"
 msgstr ""
 
-#: application/models/Question.php:475 application/models/Question.php:574
-#: application/models/Question.php:601 application/models/Question.php:682
+#: application/models/Question.php:476 application/models/Question.php:575
+#: application/models/Question.php:602 application/models/Question.php:683
 msgid "Single choice questions"
 msgstr ""
 
-#: application/models/Question.php:483
+#: application/models/Question.php:484
 msgid "Array (5 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:492
+#: application/models/Question.php:493
 msgid "Array (10 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:501
+#: application/models/Question.php:502
 msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
-#: application/models/Question.php:510
+#: application/models/Question.php:511
 msgid "Date/Time"
 msgstr ""
 
-#: application/models/Question.php:511 application/models/Question.php:538
-#: application/models/Question.php:556 application/models/Question.php:565
-#: application/models/Question.php:592 application/models/Question.php:628
-#: application/models/Question.php:664 application/models/Question.php:673
-#: application/models/Question.php:709 application/models/Question.php:718
+#: application/models/Question.php:512 application/models/Question.php:539
+#: application/models/Question.php:557 application/models/Question.php:566
+#: application/models/Question.php:593 application/models/Question.php:629
+#: application/models/Question.php:665 application/models/Question.php:674
+#: application/models/Question.php:710 application/models/Question.php:719
 msgid "Mask questions"
 msgstr ""
 
-#: application/models/Question.php:519
+#: application/models/Question.php:520
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
-#: application/models/Question.php:528
+#: application/models/Question.php:529
 msgid "Array"
 msgstr ""
 
-#: application/models/Question.php:537
+#: application/models/Question.php:538
 msgid "Gender"
 msgstr ""
 
-#: application/models/Question.php:546
+#: application/models/Question.php:547
 msgid "Array by column"
 msgstr ""
 
-#: application/models/Question.php:555
+#: application/models/Question.php:556
 msgid "Language Switch"
 msgstr ""
 
-#: application/models/Question.php:564
+#: application/models/Question.php:565
 msgid "Multiple Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:573
+#: application/models/Question.php:574
 msgid "List (Radio)"
 msgstr ""
 
-#: application/models/Question.php:582
+#: application/models/Question.php:583
 msgid "Multiple choice"
 msgstr ""
 
-#: application/models/Question.php:583 application/models/Question.php:610
+#: application/models/Question.php:584 application/models/Question.php:611
 msgid "Multiple choice questions"
 msgstr ""
 
-#: application/models/Question.php:591
+#: application/models/Question.php:592
 msgid "Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:600
+#: application/models/Question.php:601
 msgid "List with comment"
 msgstr ""
 
-#: application/models/Question.php:609
+#: application/models/Question.php:610
 msgid "Multiple choice with comments"
 msgstr ""
 
-#: application/models/Question.php:618
+#: application/models/Question.php:619
 msgid "Multiple Short Text"
 msgstr ""
 
-#: application/models/Question.php:619 application/models/Question.php:637
-#: application/models/Question.php:646 application/models/Question.php:655
+#: application/models/Question.php:620 application/models/Question.php:638
+#: application/models/Question.php:647 application/models/Question.php:656
 msgid "Text questions"
 msgstr ""
 
-#: application/models/Question.php:636
+#: application/models/Question.php:637
 msgid "Short Free Text"
 msgstr ""
 
-#: application/models/Question.php:645
+#: application/models/Question.php:646
 msgid "Long Free Text"
 msgstr ""
 
-#: application/models/Question.php:654
+#: application/models/Question.php:655
 msgid "Huge Free Text"
 msgstr ""
 
-#: application/models/Question.php:663
+#: application/models/Question.php:664
 msgid "Text display"
 msgstr ""
 
-#: application/models/Question.php:672
+#: application/models/Question.php:673
 msgid "Yes/No"
 msgstr ""
 
-#: application/models/Question.php:681
+#: application/models/Question.php:682
 msgid "List (Dropdown)"
 msgstr ""
 
-#: application/models/Question.php:690
+#: application/models/Question.php:691
 msgid "Array (Numbers)"
 msgstr ""
 
-#: application/models/Question.php:699
+#: application/models/Question.php:700
 msgid "Array (Texts)"
 msgstr ""
 
-#: application/models/Question.php:708
+#: application/models/Question.php:709
 msgid "File upload"
 msgstr ""
 
-#: application/models/Question.php:812
+#: application/models/Question.php:813
 #: application/views/admin/survey/Question/listquestions.php:166
 msgid "Question preview"
 msgstr ""
 
-#: application/models/Question.php:815
+#: application/models/Question.php:816
 #: application/views/admin/survey/Question/editQuestion_view.php:41
 msgid "Edit question"
 msgstr ""
 
-#: application/models/Question.php:819
+#: application/models/Question.php:820
 #: application/views/admin/survey/Question/question_view.php:2
 msgid "Question summary"
 msgstr ""
 
-#: application/models/Question.php:826
+#: application/models/Question.php:827
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:897 application/models/Question.php:908
+#: application/models/Question.php:898 application/models/Question.php:909
 msgid "Not relevant for this question type"
 msgstr ""
 
@@ -11880,7 +11888,6 @@ msgid "Bottom bar"
 msgstr ""
 
 #: application/models/Surveymenu.php:183
-#: application/models/SurveysGroups.php:74
 msgid "Parent"
 msgstr ""
 
@@ -11987,6 +11994,7 @@ msgid "GET data method"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:203
+#: application/models/SurveysGroups.php:76
 msgid "Modified on"
 msgstr ""
 
@@ -12022,28 +12030,21 @@ msgstr ""
 msgid "Edit this survey menu entry"
 msgstr ""
 
-#: application/models/SurveysGroups.php:68
-msgid "Gsid"
-msgstr ""
-
 #: application/models/SurveysGroups.php:72
-msgid "Sortorder"
+msgid "Sort order"
 msgstr ""
 
 #: application/models/SurveysGroups.php:73
-msgid "Owner Uid"
+msgid "Owner UID"
 msgstr ""
 
-#: application/models/SurveysGroups.php:76
-msgid "Modified"
+#: application/models/SurveysGroups.php:74
+#: application/models/SurveysGroups.php:128
+msgid "Parent group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:92
 msgid "Survey group ID"
-msgstr ""
-
-#: application/models/SurveysGroups.php:128
-msgid "Parent group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:155
@@ -12116,30 +12117,30 @@ msgstr ""
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
-#: application/models/Token.php:66
+#: application/models/Token.php:77
 msgid "Participant ID"
 msgstr ""
 
-#: application/models/Token.php:79 application/models/TokenDynamic.php:747
+#: application/models/Token.php:90 application/models/TokenDynamic.php:747
 #: application/views/admin/token/dummytokenform.php:80
 #: application/views/admin/token/massive_actions/_update.php:314
-#: application/views/admin/token/tokenform.php:377
+#: application/views/admin/token/tokenform.php:371
 msgid "Valid from"
 msgstr ""
 
-#: application/models/Token.php:80 application/models/TokenDynamic.php:755
+#: application/models/Token.php:91 application/models/TokenDynamic.php:755
 msgid "Valid until"
 msgstr ""
 
 #: application/models/TokenDynamic.php:705
 #: application/views/admin/token/massive_actions/_update.php:169
-#: application/views/admin/token/tokenform.php:219
+#: application/views/admin/token/tokenform.php:213
 msgid "Invitation sent?"
 msgstr ""
 
 #: application/models/TokenDynamic.php:714
 #: application/views/admin/token/massive_actions/_update.php:227
-#: application/views/admin/token/tokenform.php:292
+#: application/views/admin/token/tokenform.php:286
 msgid "Reminder sent?"
 msgstr ""
 
@@ -12149,7 +12150,7 @@ msgstr ""
 
 #: application/models/TokenDynamic.php:731
 #: application/views/admin/token/massive_actions/_update.php:53
-#: application/views/admin/token/tokenform.php:87
+#: application/views/admin/token/tokenform.php:81
 msgid "Completed?"
 msgstr ""
 
@@ -12819,7 +12820,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:69
 #: application/views/admin/token/massive_actions/_update.php:147
-#: application/views/admin/token/tokenform.php:198
+#: application/views/admin/token/tokenform.php:192
 #: application/views/admin/user/editusers.php:88
 #: application/views/admin/user/personalsettings.php:42
 msgid "Email:"
@@ -12960,11 +12961,11 @@ msgid "Reset answers and token completed state"
 msgstr ""
 
 #: application/views/admin/dataentry/vvimport.php:17
-#: application/views/admin/export/exportresults_view.php:150
+#: application/views/admin/export/exportresult_panels/_general.php:5
 #: application/views/admin/globalSettings_view.php:21
 #: application/views/admin/survey/Question/massive_actions/_selector.php:34
 #: application/views/admin/token/massive_actions/_update.php:22
-#: application/views/admin/token/tokenform.php:43
+#: application/views/admin/token/tokenform.php:37
 msgid "General"
 msgstr ""
 
@@ -13182,6 +13183,130 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+#: application/views/admin/export/exportresult_panels/_columns-control.php:14
+msgid "Select columns:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_format.php:5
+#: application/views/admin/export/vv_view.php:71
+msgid "Format"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_format.php:12
+msgid "Export format:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:11
+msgid "Completion state:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:17
+#: application/views/admin/export/vv_view.php:38
+#: application/views/admin/responses/browseallheader_view.php:55
+msgid "Completed responses only"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:20
+#: application/views/admin/export/spss_view.php:21
+#: application/views/admin/export/statistics_subviews/_dataselection.php:14
+#: application/views/admin/export/statistics_user_view.php:31
+#: application/views/admin/export/vv_view.php:50
+#: application/views/admin/responses/browseallheader_view.php:54
+msgid "All responses"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:23
+#: application/views/admin/export/vv_view.php:60
+#: application/views/admin/responses/browseallheader_view.php:56
+msgid "Incomplete responses only"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_general.php:31
+msgid "Export language:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:5
+msgid "Headings"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:13
+msgid "Export questions as:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:28
+msgid "Convert spaces in question text to underscores:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:44
+msgid "Text abbreviated:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:60
+msgid "Use Expression Manager code:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:75
+msgid "Number of characters:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:84
+msgid "Code/text separator:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:5
+msgid "Range"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:12
+#: application/views/admin/token/invite.php:120
+#: application/views/admin/token/remind.php:135
+msgid "From:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_range.php:20
+msgid "to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:10
+msgid "Export responses as:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:16
+msgid "Answer codes"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:21
+msgid "Full answers"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:31
+msgid "Convert Y to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_responses.php:38
+msgid "Convert N to:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_single-value.php:12
+msgid "Selection"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_single-value.php:19
+msgid "Selected answers"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:8
+msgid "Token control"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:14
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_token-control.php:18
+msgid "Choose token fields:"
+msgstr ""
+
 #: application/views/admin/export/exportresults_view.php:12
 msgid "%s of %s columns selected"
 msgstr ""
@@ -13194,123 +13319,7 @@ msgstr ""
 msgid "Single response: ID %s"
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:37
-#: application/views/admin/export/vv_view.php:71
-msgid "Format"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:44
-msgid "Export format:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:64
-msgid "Range"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:72
-#: application/views/admin/token/invite.php:120
-#: application/views/admin/token/remind.php:135
-msgid "From:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:89
-msgid "to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:111
-msgid "Selection"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:125
-msgid "Selected answers"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:155
-msgid "Completion state:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:159
-#: application/views/admin/export/vv_view.php:38
-#: application/views/admin/responses/browseallheader_view.php:55
-msgid "Completed responses only"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:160
-#: application/views/admin/export/spss_view.php:21
-#: application/views/admin/export/statistics_subviews/_dataselection.php:14
-#: application/views/admin/export/statistics_user_view.php:31
-#: application/views/admin/export/vv_view.php:50
-#: application/views/admin/responses/browseallheader_view.php:54
-msgid "All responses"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:161
-#: application/views/admin/export/vv_view.php:60
-#: application/views/admin/responses/browseallheader_view.php:56
-msgid "Incomplete responses only"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:168
-msgid "Export language:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:181
-msgid "Headings"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:207
-msgid "Convert spaces in question text to underscores:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:223
-msgid "Text abbreviated:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:237
-msgid "Number of characters:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:255
-msgid "Use Expression Manager code:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:270
-msgid "Code/text separator:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:305
-msgid "Answer codes"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:317
-msgid "Full answers"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:326
-msgid "Convert Y to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:331
-msgid "Convert N to:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:355
-msgid "Select columns:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:374
-msgid "Token control"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:380
-msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:384
-msgid "Choose token fields:"
-msgstr ""
-
-#: application/views/admin/export/exportresults_view.php:407
+#: application/views/admin/export/exportresults_view.php:57
 #: application/views/admin/export/spss_view.php:86
 msgid "Export data"
 msgstr ""
@@ -13385,7 +13394,7 @@ msgid "16 or up"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:45
-#: application/views/admin/token/tokenform.php:186
+#: application/views/admin/token/tokenform.php:180
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:15
 msgid "Language:"
 msgstr ""
@@ -14968,14 +14977,14 @@ msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:28
 #: application/views/admin/token/massive_actions/_update.php:120
-#: application/views/admin/token/tokenform.php:154
+#: application/views/admin/token/tokenform.php:148
 #: application/views/survey/frontpage/registerForm/form.php:4
 msgid "First name:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:34
 #: application/views/admin/token/massive_actions/_update.php:133
-#: application/views/admin/token/tokenform.php:162
+#: application/views/admin/token/tokenform.php:156
 #: application/views/survey/frontpage/registerForm/form.php:11
 msgid "Last name:"
 msgstr ""
@@ -18550,7 +18559,7 @@ msgid "Add another participant"
 msgstr ""
 
 #: application/views/admin/token/addtokenpost.php:30
-#: application/views/admin/token/tokenform.php:428
+#: application/views/admin/token/tokenform.php:422
 msgid "Add token entry"
 msgstr ""
 
@@ -18676,7 +18685,7 @@ msgid "Create dummy participants"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:18
-#: application/views/admin/token/tokenform.php:71
+#: application/views/admin/token/tokenform.php:65
 msgid "Auto"
 msgstr ""
 
@@ -18695,7 +18704,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:72
 #: application/views/admin/token/massive_actions/_update.php:300
-#: application/views/admin/token/tokenform.php:351
+#: application/views/admin/token/tokenform.php:345
 msgid "Uses left:"
 msgstr ""
 
@@ -18712,7 +18721,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:110
 #: application/views/admin/token/massive_actions/_update.php:340
-#: application/views/admin/token/tokenform.php:389
+#: application/views/admin/token/tokenform.php:383
 msgid "Until:"
 msgstr ""
 
@@ -18904,17 +18913,17 @@ msgid "Add participants to central database"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:29
-#: application/views/admin/token/tokenform.php:50
+#: application/views/admin/token/tokenform.php:44
 msgid "Additional attributes"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:155
-#: application/views/admin/token/tokenform.php:208
+#: application/views/admin/token/tokenform.php:202
 msgid "Email status:"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:286
-#: application/views/admin/token/tokenform.php:340
+#: application/views/admin/token/tokenform.php:334
 msgid "Reminder count:"
 msgstr ""
 
@@ -18999,20 +19008,20 @@ msgstr ""
 msgid "Bounce processing"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:19
+#: application/views/admin/token/tokenform.php:15
 msgid "Add survey participant"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:174
+#: application/views/admin/token/tokenform.php:168
 #: application/views/survey/frontpage/tokenForm/form.php:9
 msgid "Token:"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:179
+#: application/views/admin/token/tokenform.php:173
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:423
+#: application/views/admin/token/tokenform.php:417
 msgid "Update token entry"
 msgstr ""
 
@@ -19942,7 +19951,7 @@ msgid "Delete current user group"
 msgstr ""
 
 #: application/views/admin/usergroup/usergroups_view.php:11
-msgid "User groups list"
+msgid "User group list"
 msgstr ""
 
 #: application/views/admin/usergroup/usergroups_view.php:16

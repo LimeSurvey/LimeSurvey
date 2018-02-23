@@ -230,7 +230,7 @@ class export extends Survey_Common_Action
                 'code'=>array('label'=>gT("Question code"), 'help'=>null, 'checked'=>false),
                 'abbreviated'=>array('label'=>gT("Abbreviated question text"), 'help'=>null, 'checked'=>false),
                 'full'=>array('label'=>gT("Full question text"), 'help'=>null, 'checked'=>true),
-                'codetext'=>array('label'=>gT("Question code and question text"), 'help'=>null, 'checked'=>false),
+                'codetext'=>array('label'=>gT("Question code & question text"), 'help'=>null, 'checked'=>false),
             );
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
             $aLanguagesCode = Survey::model()->findByPk($iSurveyID)->getAllLanguages();

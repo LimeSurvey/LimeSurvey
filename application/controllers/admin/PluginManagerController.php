@@ -19,10 +19,12 @@ class PluginManagerController extends Survey_Common_Action
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function($installedPlugin)
-        {
+        $aInstalledNames    = array_map(
+            function ($installedPlugin) {
                 return $installedPlugin->name;
-            }, $aInstalledPlugins);
+            },
+            $aInstalledPlugins
+        );
 
         // Install newly discovered plugins.
         foreach ($aDiscoveredPlugins as $discoveredPlugin) {

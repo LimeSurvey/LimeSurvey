@@ -57,6 +57,7 @@ LS.resp =  {
         });
 
         reinstallResponsesFilterDatePicker();
+        bindListItemclick();
     },
 
     /**

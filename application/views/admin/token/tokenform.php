@@ -11,22 +11,16 @@
 
     if ($subaction == "edit") {
         eT("Edit survey participant");
-        foreach ($tokendata as $Key => $Value)
-        {
-            $$Key = $Value;
-        }
     } else {
         eT("Add survey participant");
-        $tokenid = "";
     }
 
     ?>
   </h3>
-<?php } else { ?>
-  <?php
-    foreach ($tokendata as $Key => $Value) {
-            $$Key = $Value;
-        }
+<?php } ?>
+<?php
+foreach ($tokendata as $Key => $Value) {
+    $$Key = $Value;
 }
 ?>
 
