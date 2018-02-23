@@ -1686,6 +1686,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
         }
     }
+    $oXMLReader->close();
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, false);
     if (Yii::app()->db->getDriverName() == 'pgsql') {
