@@ -383,7 +383,9 @@ class SurveyRuntimeHelper
 
                     // easier to understand for survey maker
                     $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
+                    $aGroup['aQuestions'][$qid]['gid']                  = $qinfo['info']['gid'];
                     $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
+                    $aGroup['aQuestions'][$qid]['type']                 = $qinfo['info']['type'];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
                     $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
@@ -395,6 +397,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
                 }
                 $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
                 $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
@@ -1806,4 +1809,68 @@ class SurveyRuntimeHelper
         }
     }
 
+    /**
+     * @param array $data Question data
+     * @return array Question data modified by plugin
+     */
+    protected function doBeforeQuestionRenderEvent($data)
+    {
+        $event = new PluginEvent('beforeQuestionRender');
+        // Some helper
+        $event->set('surveyId', $this->iSurveyid);
+        $event->set('type', $data['type']);
+        $event->set('code', $data['code']);
+        $event->set('qid', $data['qid']);
+        $event->set('gid', $data['gid']);
+        // User text
+        $event->set('text', $data['text']);
+        //$event->set('questionhelp', $aReplacement['QUESTIONHELP']);
+        // The classes
+        //$event->set('class', $aReplacement['QUESTION_CLASS']);
+        //$event->set('man_class', $aReplacement['QUESTION_MAN_CLASS']);
+        $event->set('input_error_class', $data['input_error_class']);
+        // LS core text
+        $event->set('answers', $data['answer']);
+        $event->set('help', $data['help']['text']);
+        $event->set('man_message', $data['man_message']);
+        $event->set('valid_message', $data['valid_message']);
+        $event->set('file_valid_message', $data['file_valid_message']);
+        // htmlOptions for container
+        //$event->set('aHtmlOptions', $aHtmlOptions);  // TODO
+
+        App()->getPluginManager()->dispatchEvent($event);
+
+        $data['text']                 = $event->get('text');
+        $data['mandatory']            = $event->get('mandatory',$data['mandatory']);
+        $data['input_error_class']    = $event->get('input_error_class');
+        $data['valid_message']        = $event->get('valid_message');
+        $data['file_valid_message']   = $event->get('file_valid_message');
+        $data['man_message']          = $event->get('man_message');
+        $data['answer']               = $event->get('answer');
+        $data['help']['text']         = $event->get('help');
+
+        /*
+        // User text
+        $aReplacement['QUESTION_TEXT'] = $event->get('text');
+        $aReplacement['QUESTIONHELP'] = $event->get('questionhelp');
+        $aReplacement['QUESTIONHELPPLAINTEXT']=strip_tags(addslashes($aReplacement['QUESTIONHELP']));
+        // The classes
+        $aReplacement['QUESTION_CLASS'] = $event->get('class');
+        $aReplacement['QUESTION_MAN_CLASS'] = $event->get('man_class');
+        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = 
+            // LS core text
+            $aReplacement['ANSWER'] = $event->get('answers');
+        $aReplacement['QUESTION_HELP'] = $event->get('help');
+        $aReplacement['QUESTION_MAN_MESSAGE'] = $event->get('man_message');
+        $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
+        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
+        $aReplacement['QUESTION_MANDATORY'] = 
+            // Always add id for QUESTION_ESSENTIALS afer take aHtmlOptions from event
+            $aHtmlOptions=$event->get('aHtmlOptions');
+        $aHtmlOptions['id']="question{$iQid}";
+        $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
+         */
+
+        return $data;
+    }
 }
