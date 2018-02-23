@@ -76,9 +76,7 @@
     ?>
     </fieldset>
         <div class="row navigator">
-            <div class="span3">
-                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
-            </div>
+            <div class="span3"></div>
             <div class="span3"></div>
             <div class="span3">
                 <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
