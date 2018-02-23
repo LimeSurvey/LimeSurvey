@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.6.6LTS (build 171111) to 2.6.7LTS (build 171208) Feb 23, 2018
+Fixed issue: [security] Vulnerability in installer (found and reported by Nguyen Van Tien Thanh from Viettel Cyber Security Center, https://blog.yeuchimse.com )
+
 Changes from 2.6.5LTS (build 171018) to 2.6.6LTS (build 171111) Nov 11, 2017
 Fixed issue: [Security] Possible XSS in Resume later function (found and reported by Robin Peraglie from RIPS Technologies www.ripstech.com )
 
