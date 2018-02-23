@@ -1246,13 +1246,12 @@ class Survey_Common_Action extends CAction
     protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
         if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
-                    $dir .= DIRECTORY_SEPARATOR;
+            $dir .= DIRECTORY_SEPARATOR;
         }
 
         do {
             $path = $dir.$prefix.mt_rand(0, 9999999);
-        }
-        while (!mkdir($path, $mode));
+        } while (!mkdir($path, $mode));
 
         return $path;
     }
