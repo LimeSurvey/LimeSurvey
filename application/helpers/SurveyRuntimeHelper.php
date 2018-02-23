@@ -396,24 +396,24 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                 }
-            $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
-            $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
+                $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
+                $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
 
-            if (!empty($qanda)) {
+                if (!empty($qanda)) {
 
-                if ($this->sSurveyMode == 'group') {
-                    $aGroup['show_last_group']   = true;
-                    $aGroup['lastgroup']         = $lastgroup;
+                    if ($this->sSurveyMode == 'group') {
+                        $aGroup['show_last_group']   = true;
+                        $aGroup['lastgroup']         = $lastgroup;
+                    }
+
+                    if ($this->sSurveyMode == 'question') {
+                        $aGroup['show_last_answer']   = true;
+                        $aGroup['lastanswer']         = $lastanswer;
+                    }
                 }
-
-                if ($this->sSurveyMode == 'question') {
-                    $aGroup['show_last_answer']   = true;
-                    $aGroup['lastanswer']         = $lastanswer;
-                }
+                Yii::app()->setConfig('gid', '');
+                $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
             }
-            Yii::app()->setConfig('gid', '');
-            $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
-        }
         }
 
         /**
