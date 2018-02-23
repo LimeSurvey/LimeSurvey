@@ -76,7 +76,6 @@
     ?>
         <div class="row navigator">
             <div class="col-md-4">
-                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
