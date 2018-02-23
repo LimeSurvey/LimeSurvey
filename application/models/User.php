@@ -527,4 +527,20 @@ class User extends LSActiveRecord
         ));
     }
 
+    /**
+     * Set user password with hash
+     *
+     * @param string $sPassword The clear text password
+     * @return \User
+     */
+    public function setPassword($sPassword, $save = false)
+    {
+        // NB: Different method in 2.73 vs 3.0.
+        $sPasswordHash  = hash('sha256', $sPassword);
+        $this->password = $sPasswordHash;
+        if ($save) {
+            $this->save();
+        }
+        return $this; // Return current object
+    }
 }
