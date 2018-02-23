@@ -574,11 +574,14 @@ class SurveyRuntimeHelper
 
             resetTimers();
 
+            // TODO: Why is $this->aSurveyInfo empty here?
+            $aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+            $this->aSurveyInfo = $aSurveyInfo;
+
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
-
 
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
             //don't use cookies if tokens are being used
