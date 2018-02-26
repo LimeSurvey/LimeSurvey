@@ -4,7 +4,6 @@
  * @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
  */
 
-
 var RankingQuestion = function (options) {
     "use strict";
     //Define option parameters
@@ -31,7 +30,13 @@ var RankingQuestion = function (options) {
         $('#sortable-choice-' + questionId).sortable({
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            sort: false
+            sort: false,
+            onMove: function(ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    //sortableAlert();
+                    return false;
+                }
+            }
         });
 
         $('#sortable-rank-' + questionId).sortable({
