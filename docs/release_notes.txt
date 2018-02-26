@@ -35,6 +35,14 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.4.1 (build 180221) to 3.4.2 (build 180223) Feb 23, 2018
+Fixed issue: [security] Vulnerability in installer (found and reported by Nguyen Van Tien Thanh from Viettel Cyber Security Center, https://blog.yeuchimse.com )
+-Fixed issue #13358: Usage of .question in end message broken (markusfluer)
+-Fixed issue #13384: Massive deleting responses not possible after modifying table filters in response table (markusfluer)
+-Fixed issue #13398:  Export responses by Token returns empty results (#1009) (Gabriel Jenik)
+-Fixed issue #13402: Export result not work (markusfluer)
+-Fixed issue: Invalid XML .lss file broke break page (500 error) (Denis Chenu)
+
 Changes from 3.4.0 (build 180219) to 3.4.1 (build 180221) Feb 21, 2018
 -Fixed issue #13392: New token form set useleft to 1 (Denis Chenu)
 -Fixed issue #12786: Cannot delete users from owned user group (Carsten Schmitz)

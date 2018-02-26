@@ -7,10 +7,11 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('exportResults');
 
+$scriptBegin = "var sMsgColumnCount = '".gT("%s of %s columns selected",'js')."';";
+App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin, LSYii_ClientScript::POS_BEGIN);
+
+
 ?>
-<script type="text/javascript">
-    var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
-</script>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
@@ -35,7 +36,7 @@ echo viewHelper::getViewTestTag('exportResults');
                         <?php if (empty(Yii::app()->session['responsesid'])): // If called from massive action, it will be filled the selected answers ?>
                             <?php $this->renderPartial('/admin/export/exportresult_panels/_range', ['SingleResponse' => $SingleResponse, 'min_datasets' => $min_datasets, 'max_datasets' => $max_datasets]); ?> 
                         <?php else: ?>
-                            <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse]); ?> 
+                            <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse, 'surveyid' => $surveyid]); ?> 
                         <?php endif;?>
                         
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_responses', ['surveyid' => $surveyid]); ?> 
@@ -47,13 +48,12 @@ echo viewHelper::getViewTestTag('exportResults');
                         
                         <!-- Token control -->
                         <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')): ?>
-                            <?php $this->renderPartial('/admin/export/exportresult_panels/_token-control', []); ?>   
+                            <?php $this->renderPartial('/admin/export/exportresult_panels/_token-control', ['surveyid' => $surveyid]); ?>
                         <?php endif;?>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
-</form>
+        <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
+    </form>
 </div>

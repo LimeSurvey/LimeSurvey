@@ -1299,19 +1299,21 @@ class SurveyAdmin extends Survey_Common_Action
                 }
             }
         }
-
-        $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-        LimeExpressionManager::SetDirtyFlag();
-        $oEM =& LimeExpressionManager::singleton();
-        @LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
-        @LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        @LimeExpressionManager::StartProcessingPage(true,true); 
-        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
-        foreach ($aGrouplist as $iGID => $aGroup) {
-            @LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
-            @LimeExpressionManager::FinishProcessingGroup();
+        if(!empty($aImportResults['newsid'])) {
+            $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
+            LimeExpressionManager::SetDirtyFlag();
+            $oEM =& LimeExpressionManager::singleton();
+            // Why this @ !
+            @LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
+            @LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
+            @LimeExpressionManager::StartProcessingPage(true,true); 
+            $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
+            foreach ($aGrouplist as $iGID => $aGroup) {
+                @LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
+                @LimeExpressionManager::FinishProcessingGroup();
+            }
+            @LimeExpressionManager::FinishProcessingPage();
         }
-        @LimeExpressionManager::FinishProcessingPage();
         
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
     }

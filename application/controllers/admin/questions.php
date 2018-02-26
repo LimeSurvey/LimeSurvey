@@ -866,7 +866,7 @@ class questions extends Survey_Common_Action
             $html[$language] = $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
             $first = false;
         }
-
+        header('Content-Type: application/json');
         echo json_encode($html);
     }
 
@@ -897,7 +897,7 @@ class questions extends Survey_Common_Action
     public function getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible = '')
     {
         // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
-        $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
+        $stringCodes = json_decode($codes,true); // All the codes of the displayed subquestions
 
         // TODO: calcul correct value
         $oldCode = false;
@@ -1692,39 +1692,41 @@ class questions extends Survey_Common_Action
      * @access public
      * @return void
      */
-    public function ajaxlabelsetdetails()
+    public function ajaxlabelsetdetails($lid)
     {
-        $lid = returnglobal('lid');
-        Yii::app()->loadHelper('surveytranslator');
 
-        $labelsetdata = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
+        $oLabelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
 
-        $labelsetlanguages = explode(' ', $labelsetdata->languages);
-        $resultdata = [];
-        foreach ($labelsetlanguages as $language) {
+        $aResult = [];
+        $aLanguages = [];
 
-            $criteria = new CDbCriteria;
-            $criteria->condition = 'lid=:lid and language=:language';
-            $criteria->params = array(':lid'=>$lid, ':language'=>$language);
-            $criteria->order = 'sortorder';
-            $labelsdata = Label::model()->findAll($criteria);
-            $i = 0;
-            $data = array();
-            foreach ($labelsdata as $labeldata) {
-                $data[$i]['lid'] = $labeldata->lid;
-                $data[$i]['code'] = $labeldata->code;
-                $data[$i]['title'] = $labeldata->title;
-                $data[$i]['sortorder'] = $labeldata->sortorder;
-                $data[$i]['assessment_value'] = $labeldata->assessment_value;
-                $data[$i]['language'] = $labeldata->language;
-                $i++;
-            }
-            $labels = $data;
-            //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
-            $resultdata[] = array($language=>array($labels, getLanguageNameFromCode($language, false)));
+        if($oLabelSet !== null) {
+            $aUsedLanguages = explode(' ', $oLabelSet->languages);
+        
+            foreach ($aUsedLanguages as $sLanguage) {
+                $aResult[$sLanguage] = $oLabelSet->attributes;
+                foreach ($oLabelSet->labels as $oLabel) {
+                    if($oLabel->language === $sLanguage)
+                        $aResult[$sLanguage]['labels'][] = $oLabel->attributes;
+                };
+                $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            };
         }
-        header('Content-type: application/json');
-        echo json_encode($resultdata);
+        
+        $resultdata = ['results' => $aResult, 'languages' => $aLanguages];
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success' => count($aResult) > 0,
+                    'results' => $aResult, 
+                    'languages' => $aLanguages
+                ],
+            ),
+            false,
+            false
+        );
     }
 
     /**
@@ -1733,24 +1735,36 @@ class questions extends Survey_Common_Action
      * @access public
      * @return void
      */
-    public function ajaxlabelsetpicker()
+    public function ajaxlabelsetpicker($sid, $match=0)
     {
-        $match = (int) returnglobal('match');
-        $surveyid = returnglobal('sid');
-        $survey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($sid);
 
+        $criteria = new CDbCriteria;
         $language = null;
-        if ($match == 1) {
-            $language = $survey->language;
+        if ($match === 1) {
+            $criteria->addCondition('languages LIKE :language');
+            $criteria->params = [':language' => '%'.$language.'%'];
         }
-
-        $resultdata = getlabelsets($language);
-        // Label set title really don't need HTML
-        foreach ($resultdata as &$aResult) {
-            $aResult = array_map('flattenText', $aResult);
+        
+        $resultdata = LabelSet::model()->findAll($criteria);
+        // $resultdata = [];
+        // create languagespecific array
+        $aResults = [];
+        foreach ($resultdata as &$oResult) {
+            $aResults[] = $oResult->attributes;
         }
-        header('Content-type: application/json');
-        echo ls_json_encode($resultdata);
+        
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success' => count($aResults) > 0,
+                    'labelsets'=> $aResults
+                ],
+            ),
+            false,
+            false
+        );
     }
 
     public function ajaxchecklabel()
