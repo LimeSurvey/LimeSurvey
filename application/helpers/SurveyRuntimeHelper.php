@@ -1331,10 +1331,10 @@ class SurveyRuntimeHelper
         $aSurveyinfo = getSurveyInfo($iSurveyId, App()->getLanguage());
         // Check global setting to see if survey level setting should be applied
         if ($showqnumcode_global_ == 'choose') {
-// Use survey level settings
+            // Use survey level settings
             $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
         } else {
-// Use global setting
+            // Use global setting
             $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
         }
 
@@ -1810,66 +1810,42 @@ class SurveyRuntimeHelper
     }
 
     /**
+     * Apply the plugin even beforeQuestionRender to
+     * question data.
+     *
+     * @see https://manual.limesurvey.org/BeforeQuestionRender
+     *
      * @param array $data Question data
      * @return array Question data modified by plugin
      */
     protected function doBeforeQuestionRenderEvent($data)
     {
         $event = new PluginEvent('beforeQuestionRender');
-        // Some helper
         $event->set('surveyId', $this->iSurveyid);
         $event->set('type', $data['type']);
         $event->set('code', $data['code']);
         $event->set('qid', $data['qid']);
         $event->set('gid', $data['gid']);
-        // User text
         $event->set('text', $data['text']);
-        //$event->set('questionhelp', $aReplacement['QUESTIONHELP']);
-        // The classes
-        //$event->set('class', $aReplacement['QUESTION_CLASS']);
-        //$event->set('man_class', $aReplacement['QUESTION_MAN_CLASS']);
         $event->set('input_error_class', $data['input_error_class']);
-        // LS core text
-        $event->set('answers', $data['answer']);
+        $event->set('answers', $data['answer']);  // NB: "answers" in plugin, "answer" in $data.
         $event->set('help', $data['help']['text']);
         $event->set('man_message', $data['man_message']);
         $event->set('valid_message', $data['valid_message']);
         $event->set('file_valid_message', $data['file_valid_message']);
-        // htmlOptions for container
         //$event->set('aHtmlOptions', $aHtmlOptions);  // TODO
 
         App()->getPluginManager()->dispatchEvent($event);
 
-        $data['text']                 = $event->get('text');
-        $data['mandatory']            = $event->get('mandatory',$data['mandatory']);
-        $data['input_error_class']    = $event->get('input_error_class');
-        $data['valid_message']        = $event->get('valid_message');
-        $data['file_valid_message']   = $event->get('file_valid_message');
-        $data['man_message']          = $event->get('man_message');
-        $data['answer']               = $event->get('answer');
-        $data['help']['text']         = $event->get('help');
-
-        /*
-        // User text
-        $aReplacement['QUESTION_TEXT'] = $event->get('text');
-        $aReplacement['QUESTIONHELP'] = $event->get('questionhelp');
-        $aReplacement['QUESTIONHELPPLAINTEXT']=strip_tags(addslashes($aReplacement['QUESTIONHELP']));
-        // The classes
-        $aReplacement['QUESTION_CLASS'] = $event->get('class');
-        $aReplacement['QUESTION_MAN_CLASS'] = $event->get('man_class');
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = 
-            // LS core text
-            $aReplacement['ANSWER'] = $event->get('answers');
-        $aReplacement['QUESTION_HELP'] = $event->get('help');
-        $aReplacement['QUESTION_MAN_MESSAGE'] = $event->get('man_message');
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
-        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
-        $aReplacement['QUESTION_MANDATORY'] = 
-            // Always add id for QUESTION_ESSENTIALS afer take aHtmlOptions from event
-            $aHtmlOptions=$event->get('aHtmlOptions');
-        $aHtmlOptions['id']="question{$iQid}";
-        $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
-         */
+        $data['text']               = $event->get('text');
+        $data['mandatory']          = $event->get('mandatory',$data['mandatory']);
+        $data['input_error_class']  = $event->get('input_error_class');
+        $data['valid_message']      = $event->get('valid_message');
+        $data['file_valid_message'] = $event->get('file_valid_message');
+        $data['man_message']        = $event->get('man_message');
+        $data['answer']             = $event->get('answers');
+        $data['help']['text']       = $event->get('help');
+        $data['help']['show']       = flattenText($data['help']['text'], true, true) != '';
 
         return $data;
     }
