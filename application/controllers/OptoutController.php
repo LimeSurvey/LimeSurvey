@@ -62,7 +62,7 @@ class OptoutController extends LSYii_Controller
             } else {
                 $sMessage = "<p>".gT('Please confirm that you want to opt out of this survey by clicking the button below.').'<br>'.gT("After confirmation you won't receive any invitations or reminders for this survey anymore.")."</p>";
                 $sMessage .= '<p><a href="'.Yii::app()->createUrl('optout/removetokens', array('surveyid'=>$iSurveyID, 'langcode'=> $sBaseLanguage, 'token' => $sToken)).'" class="btn btn-default btn-lg">'.gT("I confirm").'</a><p>';
-                $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
+                $this->renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
             }
 
 
@@ -112,12 +112,12 @@ class OptoutController extends LSYii_Controller
                     $oToken->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
                 } else {
-                    $sMessage = gT('You have been already removed from this survey.');
+                    $sMessage = gT('You have already been removed from this survey.');
                 }
             }
         }
 
-        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
+        $this->renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
     /**
@@ -178,7 +178,7 @@ class OptoutController extends LSYii_Controller
             }
         }
 
-        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
+        $this->renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
     /**
@@ -189,36 +189,22 @@ class OptoutController extends LSYii_Controller
      * @param int $iSurveyID
      * @return void
      */
-    private function _renderHtml($html, $aSurveyInfo, $iSurveyID)
+    private function renderHtml($html, $aSurveyInfo, $iSurveyID)
     {
-        sendCacheHeaders();
-        doHeader();
-        $aSupportData = array('thissurvey'=>$aSurveyInfo);
+        $survey = Survey::model()->findByPk($iSurveyID);
 
-        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-        if ($oTemplate->cssFramework == 'bootstrap') {
-            App()->bootstrap->register();
-        }
-        $thistpl = $oTemplate->pstplPath;
-        if ($oTemplate->cssFramework == 'bootstrap') {
-            App()->bootstrap->register();
-        }
-        App()->clientScript->registerPackage('survey-template');
-        ob_start(function($buffer, $phase)
-        {
-            App()->getClientScript()->render($buffer);
-            App()->getClientScript()->reset();
-            return $buffer;
-        });
+        $aSurveyInfo['include_content'] = 'optout';
+        $aSurveyInfo['optin_message'] = $html;
+        Template::model()->getInstance('', $iSurveyID);
 
-        echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'), array(), $aSupportData);
-
-        $aData['html'] = $html;
-        $aData['thistpl'] = $thistpl;
-        $this->renderPartial('/opt_view', $aData);
-        echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'), array(), $aSupportData);
-        doFooter();
-        ob_flush();
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_global.twig",
+            array(
+                'oSurvey'     => $survey,
+                'aSurveyInfo' => $aSurveyInfo
+            ),
+            false
+        );
+        Yii::app()->end();
     }
-
 }
