@@ -65,16 +65,16 @@ class SurveysGroups extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'gsid' => gT('ID'),
-            'name' => gT('Name'),
-            'title' => 'Title',
+            'gsid'        => gT('ID'),
+            'name'        => gT('Name'),
+            'title'       => gT('Title'),
             'description' => gT('Description'),
-            'sortorder' => gT('Sort order'),
-            'owner_uid' => gT('Owner UID'),
-            'parent_id' => gT('Parent group'),
-            'created' => gT('Created on'),
-            'modified' => gT('Modified on'),
-            'created_by' => gT('Created by'),
+            'sortorder'   => gT('Sort order'),
+            'owner_uid'   => gT('Owner UID'),
+            'parent_id'   => gT('Parent group'),
+            'created'     => gT('Created on'),
+            'modified'    => gT('Modified on'),
+            'created_by'  => gT('Created by'),
         );
     }
 

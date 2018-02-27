@@ -39,11 +39,21 @@
         /**
          * Get all files related to this response and (optionally) question ID.
          *
+         * @param int $qid
          * @return array
          */
-        public function getFiles()
+        public function getFiles($qid = null)
         {
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => Question::QT_VERTICAL_FILE_UPLOAD));
+            $survey = Survey::model()->findByPk($this->dynamicId);
+            $conditions = [
+                'sid' => $this->dynamicId,
+                'type' => Question::QT_VERTICAL_FILE_UPLOAD,
+                'language'=>$survey->language
+            ];
+            if ($qid !== null) {
+                $conditions['qid'] = $qid;
+            }
+            $questions = Question::model()->findAllByAttributes($conditions);
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;

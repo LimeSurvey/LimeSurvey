@@ -176,7 +176,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                     'htmlOptions' => ['class' => 'form '],
                                     'action' => $actionUrl
                                 )); ?>
-                                <p class="note">Fields with <span class="required">*</span> are required.</p>
+                                <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                                 <?php echo $form->errorSummary($model); ?>
 
 

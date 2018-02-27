@@ -2,17 +2,17 @@
 /* @var $this SurveymenuEntriesController */
 /* @var $model SurveymenuEntries */
 
-$this->breadcrumbs=array(
-	'Menu entries'=>array('index'),
-	'Create',
+$this->breadcrumbs = array(
+	gT('Menu entries') => array('index'),
+	gT('Create')
 );
 
-$this->menu=array(
-	array('label'=>'List meny entries', 'url'=>array('index')),
-	array('label'=>'Manage menu entries', 'url'=>array('admin')),
+$this->menu = array(
+	array('label'=>gT('List meny entries'), 'url'=>array('index')),
+	array('label'=>gT('Manage menu entries'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create SurveymenuEntries</h1>
+<h1><?php eT('Create SurveymenuEntries'); ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
