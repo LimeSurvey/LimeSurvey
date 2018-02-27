@@ -1117,7 +1117,7 @@ function quexml_get_lengthth($qid, $attribute, $default, $quexmllang = false)
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1")
+function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1",$comment=false)
 {
     global $dom;
     global $quexmllang;
@@ -1153,12 +1153,27 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
                 $category->appendChild($quexml_skipto);
             }
 
+            if ($comment) {
+                $contingentQuestion = $dom->createElement("contingentQuestion");
+                $length = $dom->createElement("length", 24);
+                $format = $dom->createElement("format", "longtext");
+                $text = $dom->createElement("text", gT("Comment"));
+
+                $contingentQuestion->appendChild($text);
+                $contingentQuestion->appendChild($length);
+                $contingentQuestion->appendChild($format);
+                $contingentQuestion->setAttribute("varName", $varname."_".QueXMLCleanUp($Row['title']).'comment');
+
+                quexml_set_default_value($contingentQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row['title'] . "comment");
+
+                $category->appendChild($contingentQuestion);
+            }
 
             $fixed->appendChild($category);
-
             $response->appendChild($fixed);
+
         } else {
-                    $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1619,9 +1634,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y");
                         break;
                     case "P": //Multiple choice with comments checkbox + text
-                        //Not yet implemented
-                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y");
-                        //no comments added
+                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y",true);
                         break;
                     case "Q": //MULTIPLE SHORT TEXT
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
