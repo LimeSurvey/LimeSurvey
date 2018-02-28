@@ -75,6 +75,9 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
+    /**
+     * @todo
+     */
     public function listsurveys()
     {
         Yii::app()->loadHelper('surveytranslator');
@@ -90,7 +93,9 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
-
+    /**
+     * @todo
+     */
     public function regenquestioncodes($iSurveyID, $sSubAction)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
@@ -138,7 +143,6 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * This function prepares the view for a new survey
-     *
      */
     public function newsurvey()
     {
@@ -181,7 +185,9 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
-    // TODO document me, please :)
+    /**
+     * @todo Document me
+     */
     public function fakebrowser()
     {
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', array());
@@ -189,7 +195,6 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * This function prepares the view for editing a survey
-     *
      */
     public function editsurveysettings($iSurveyID)
     {
@@ -325,6 +330,9 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+    /**
+     * @todo
+     */
     public function changetemplate($iSurveyID, $template)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
@@ -346,6 +354,9 @@ class SurveyAdmin extends Survey_Common_Action
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
     }
 
+    /**
+     * @todo
+     */
     public function togglequickaction()
     {
         $quickactionstate = (int) SettingsUser::getUserSettingValue('quickaction_state');
@@ -450,8 +461,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get questiongroup with containing questions
-     *
-     *
+     * @todo
      */
     public function getAjaxQuestionGroupArray($surveyid)
     {
@@ -519,8 +529,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get MenuItems with containing questions
-     *
-     *
+     * @todo
      */
     public function getAjaxMenuArray($surveyid, $position = '')
     {
@@ -937,7 +946,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function rendersidemenulink($iSurveyID, $subaction)
     {
-        $aViewUrls = $aData = $activePanels = [];
+        $aViewUrls = $aData = [];
         $menuaction = (string) $subaction;
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -949,8 +958,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         //@TODO add language checks here
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name'=>$menuaction));
-
-        $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -993,7 +1000,6 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Edit surveytexts and general settings
      */
-
     public function surveygeneralsettings($iSurveyID)
     {
         $aViewUrls = $aData = array();
@@ -1023,7 +1029,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
 
         $aTabTitles = $aTabContents = array();
-        foreach ($survey->allLanguages as $i => $sLang) {
+        foreach ($survey->allLanguages as $sLang) {
             // this one is created to get the right default texts fo each language
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('surveytranslator');
@@ -1047,9 +1053,7 @@ class SurveyAdmin extends Survey_Common_Action
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
         $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
-        //$aData['questions'] = $oResult;
         $aData['display']['menu_bars']['surveysummary'] = "surveygeneralsettings";
         $tempData = $aData;
 
@@ -1311,13 +1315,13 @@ class SurveyAdmin extends Survey_Common_Action
         if (!empty($aImportResults['newsid'])) {
             $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
             LimeExpressionManager::SetDirtyFlag();
-            $oEM = LimeExpressionManager::singleton();
+            LimeExpressionManager::singleton();
             // Why this @ !
             @LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
-            @LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-            @LimeExpressionManager::StartProcessingPage(true,true); 
+            @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+            @LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
-            foreach ($aGrouplist as $iGID => $aGroup) {
+            foreach ($aGrouplist as $aGroup) {
                 @LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
                 @LimeExpressionManager::FinishProcessingGroup();
             }
@@ -1366,7 +1370,6 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Called via ajax request from survey summary quick action "Show questions group by group"
-     *
      */
     public function changeFormat($iSurveyID, $format)
     {
@@ -1519,7 +1522,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_generalTabNewSurvey()
      * Load "General" tab of new survey screen.
-     * @return
+     * @return array
      */
     private function _generalTabNewSurvey()
     {
@@ -1563,6 +1566,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * @param integer $iSurveyID
+     * @return array
      */
     private function _getGeneralTemplateData($iSurveyID)
     {
@@ -1648,21 +1652,6 @@ class SurveyAdmin extends Survey_Common_Action
     private function _generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
-        return $aData;
-    }
-    /**
-     * survey::_generalTabEditSurvey()
-     * Load "General" tab of edit survey screen.
-     * @param Survey $survey
-     * @return mixed
-     */
-    private function _pluginTabSurvey($survey)
-    {
-        $aData = array();
-        $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
-        $beforeSurveySettings->set('survey', $survey->sid);
-        App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
         return $aData;
     }
 
@@ -1773,6 +1762,9 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @todo
+     */
     public function expire($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
@@ -1785,6 +1777,9 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
     }
 
+    /**
+     * @todo
+     */
     public function datetimesettings()
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'read')) {
@@ -1828,7 +1823,9 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults, 'successLabel'=>gT('OK')));
     }
 
-
+    /**
+     * @todo
+     */
     public function getUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
