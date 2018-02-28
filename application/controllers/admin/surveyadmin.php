@@ -1007,8 +1007,6 @@ class SurveyAdmin extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData['oSurvey'] = $survey;
 
-
-
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
@@ -1023,7 +1021,6 @@ class SurveyAdmin extends Survey_Common_Action
         //This method creates the text edition and the general settings
         $aData['panels'] = [];
 
-        ###
         Yii::app()->loadHelper("admin/htmleditor");
 
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
@@ -1076,7 +1073,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aViewUrls[] = 'editLocalSettings_main_view';
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
-
     }
 
     /**
