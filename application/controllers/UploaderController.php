@@ -37,7 +37,7 @@ class UploaderController extends SurveyController
         $sFileName = Yii::app()->request->getParam('filename', ''); // The file to delete fu_ or fu_tmp
         $sOriginalFileName = Yii::app()->request->getParam('name', ''); // Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
-        $sPreview = htmlspecialchars(Yii::app()->request->getParam('preview', 0));
+        $sPreview = (int) Yii::app()->request->getParam('preview', 0);
 
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
