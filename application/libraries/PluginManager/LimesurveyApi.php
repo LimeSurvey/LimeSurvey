@@ -186,7 +186,7 @@ use Template;
          */
         public function getResponse($surveyId, $responseId, $bMapQuestionCodes = true)
         {
-            $survey = Survey::model()->findByPk($surveyId);
+            $survey = \Survey::model()->findByPk($surveyId);
             $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
             if (!$bMapQuestionCodes) {
                 return $response;
