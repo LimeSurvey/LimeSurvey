@@ -274,7 +274,6 @@ function addinput(e)
     datas                 += '&position=',
     datas                 += '&languages='+$languages;
 
-
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
         type: "GET",
@@ -282,13 +281,11 @@ function addinput(e)
         data: datas,
         success: function(arrayofhtml) {
 
-            // arrayofhtml is a json string containing the different HTML row by language
+            // arrayofhtml is a json object containing the different HTML row by language
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
-            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
-
             // We insert each row for each language
-            $.each($arrayOfHtml, function(lang, htmlRow){
+            $.each(arrayofhtml, function(lang, htmlRow){
                 $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
                 $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
             });
