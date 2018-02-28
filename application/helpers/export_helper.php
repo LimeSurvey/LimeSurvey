@@ -1155,7 +1155,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 
             if ($comment) {
                 $contingentQuestion = $dom->createElement("contingentQuestion");
-                $length = $dom->createElement("length", 24);
+                $length = $dom->createElement("length", 10);
                 $format = $dom->createElement("format", "longtext");
                 $text = $dom->createElement("text", gT("Comment"));
 
