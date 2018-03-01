@@ -167,17 +167,14 @@ class themes extends Survey_Common_Action
                 );
 
             } else if ($action == 'templateupload') {
-                if (Yii::app()->getConfig('demoMode')) {
-                    Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
 
                 Yii::app()->loadLibrary('admin.pclzip');
 
-                if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                    Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
+                // Redirect back if demo mode is set.
+                $this->checkDemoMode();
+
+                // Redirect back at file size error.
+                $this->checkFileSizeError();
 
                 $zip = new PclZip($_FILES['the_file']['tmp_name']);
 
@@ -1229,5 +1226,36 @@ class themes extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Redirects if demo mode is set.
+     * @return void
+     */
+    protected function checkDemoMode()
+    {
+        if (Yii::app()->getConfig('demoMode')) {
+            Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+
+    }
+
+    /**
+     * Redirect if file size is too big.
+     * @return void
+     */
+    protected function checkFileSizeError()
+    {
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            Yii::app()->setFlashMessage(
+                sprintf(
+                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                    getMaximumFileUploadSize() / 1024 / 1024
+                ),
+                'error'
+            );
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
     }
 }
