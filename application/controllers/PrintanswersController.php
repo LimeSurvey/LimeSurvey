@@ -124,6 +124,16 @@ class PrintanswersController extends LSYii_Controller
         $oResponseRow = SurveyDynamic::model($iSurveyID);
         $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
         $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
+
+        // Remove all <script>...</script> content from result.
+        Yii::import('application.helpers.viewHelper');
+        foreach ($groupArray as &$group) {
+            $group['description'] = viewHelper::flatEllipsizeText($group['description'], true, 0);
+            foreach ($group['answerArray'] as &$answer) {
+                $answer['question'] = viewHelper::flatEllipsizeText($answer['question'], true, 0);
+            }
+        }
+
         $aData['aSurveyInfo'] = $aSurveyInfo;
         $aData['aSurveyInfo']['dateFormat'] = getDateFormatData(Yii::app()->session['dateformat']);
         $aData['aSurveyInfo']['groupArray'] = $groupArray;
