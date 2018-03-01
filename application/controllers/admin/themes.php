@@ -418,13 +418,13 @@ class themes extends Survey_Common_Action
             $filesdir        = $oEditedTemplate->filesPath;
             $sPostedFile     = App()->request->getPost('otherfile');
             $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
-            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false);
+            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false, false);
             $the_full_file_path = $filesdir.$sFileToDelete;
 
             if (@unlink($the_full_file_path)) {
-                Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), htmlspecialchars($sFileToDelete)));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
