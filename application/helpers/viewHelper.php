@@ -309,4 +309,14 @@ class viewHelper
         {
             return sprintf('<x-test id="action::%s"></x-test>', $name);
         }
+        /**
+         * Fix value to be shown using echo (not CHtml)
+         * @param string $value the value
+         * @return string
+         */
+        public static function getPublicDisplayTextValue($value) {
+            $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            $value = str_replace(array("{","}"),array("&#123;","&#125;"),$value);
+            return $value;
+        }
 }
