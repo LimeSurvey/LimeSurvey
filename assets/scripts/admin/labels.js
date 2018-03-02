@@ -239,11 +239,21 @@ function get_next_code(event) {
 function add_label(event) {
     var next_code = get_next_code(event);
     var html = createNewLabelTR(true,true);
+    var row_id;
 
     if (typeof(event)=="undefined") {
-        var row_id = -1;
+        row_id = -1;
     } else {
-        var row_id = ($(event.target).parent().parent().parent().children().index($(event.target).parent().parent()));
+        row_id = $(event.target)
+            .parent()
+            .parent()
+            .parent()
+            .children()
+            .index(
+                $(event.target)
+                    .parent()
+                    .parent()
+            );
     }
 
     var randomid = 'new' + Math.floor(Math.random()*1111111);
@@ -258,25 +268,22 @@ function add_label(event) {
     } else {
         $(event.target).parent().parent().after(html);
     }
-
     html = createNewLabelTR(true,false);
 
     html = str_replace("###assessmentval###",'0',html);
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
 
-    // Seems not to work
-    $(".not_first").each(function(index,element){
+    $(".not_first").each(function(index, element){
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
         if (row_id >= 0) {
             $($("tbody",element).children()[row_id]).after(temp_html);
         } else {
             $(".answertable tbody",$(element)).append(temp_html);
         }
-
     });
 
-    $("tr[id$='_"+randomid+"']").hide().fadeIn(1000);
+    $("tr[id$='_"+randomid+"']").hide().fadeIn(500);
 
     fix_highlighting();
 
