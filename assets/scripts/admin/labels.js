@@ -129,7 +129,7 @@ function quickaddfunction() {
                 event = {};
                 event.target = $(".btnaddanswer:last");
             } else {
-                var retcode = add_label();
+                retcode = add_label();
             }
         }
 
@@ -241,7 +241,7 @@ function add_label(event) {
     var html = createNewLabelTR(true,true);
     var row_id;
 
-    if (typeof(event)=="undefined") {
+    if (typeof(event) == "undefined") {
         row_id = -1;
     } else {
         row_id = $(event.target)
@@ -274,6 +274,7 @@ function add_label(event) {
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
 
+    // NB: Class "not_first" corresponds to all the language tabs that are not first...
     $(".not_first").each(function(index, element){
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
         if (row_id >= 0) {
