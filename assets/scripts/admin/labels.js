@@ -94,57 +94,57 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 function quickaddfunction() {
     var lsreplace = false;
     if ($(this).attr('id') == 'btnqareplace') {
-        lsreplace=true;
+        lsreplace = true;
     }
 
     if (lsreplace) {
         $(".answertable tbody>tr").remove();
     }
 
-    lsrows=$('#quickaddarea').val().split("\n");
-    var separatorchar="\t";
-    if (lsrows[0].indexOf("\t")==-1) {
-        separatorchar=';';
+    // NB: lsrows is all the lines from the quick add modal.
+    var lsrows = $('#quickaddarea').val().split("\n");
+
+    var separatorchar = "\t";
+    if (lsrows[0].indexOf("\t") == -1) {
+        separatorchar = ';';
     }
 
-    $(lsrows).each(function(index,element) {
-        code = undefined;
+    console.log('lsrows', lsrows);
+    $(lsrows).each(function(index, row) {
+        var code = undefined;
 
-        params = element.split(separatorchar);
-        k = 0;
+        var params = row.split(separatorchar);
+        var k = 0;
         if (params.length > $(".lslanguage").length){
             code = params[0].replace(/[^a-zA-Z 0-9]+/g,'').substr(0,5);
             k++;
         }
 
-        event = {};
+        var event = {};
         event.target = $(".btnaddanswer:last");
         var retcode = add_label(event);
 
-        if(lsreplace)
-        {
-            if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
+        if (lsreplace) {
+            if (index!=0|| (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)) {
                 event = {};
                 event.target = $(".btnaddanswer:last");
-
-            }
-            else{
+            } else {
                 var retcode = add_label();
             }
-
         }
 
         // seems always undefined
-        if (typeof(code)!="undefined") {
+        if (typeof(code) != "undefined") {
             $("#code_"+retcode).val(code);
         }
 
-        $(".lslanguage").each(function(i){
-            //console.ls.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
-            $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
-            if (typeof(code)!="undefined" && i > 0)
-            {
-                $("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
+        // TODO: What does this do?
+        $(".lslanguage").each(function(i) {
+            //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
+            //console.log('i', i);
+            $("input[name=title_" + $(this).val() + "_" + retcode + "]").val(params[k]);
+            if (typeof(code) != "undefined" && i > 0) {
+                $("#row_" + $(this).val() + "_" + retcode + " td:first").text(code);
             }
             k++;
         });
