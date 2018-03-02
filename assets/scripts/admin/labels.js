@@ -89,13 +89,39 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 });
 
 /**
- * @todo
+ * @param {array} lsrows
+ * @return {string} ';' or '\t'
  */
-function quickaddfunction() {
+function get_separator(lsrows) {
+    var separatorchar = "\t";
+    if (lsrows[0].indexOf("\t") == -1) {
+        separatorchar = ';';
+    }
+    return separatorchar;
+}
+
+/**
+ * Returns true if replace button is used (instead of add).
+ * @param {object} that
+ * @return {boolean}
+ */
+function get_replace(that) {
     var lsreplace = false;
-    if ($(this).attr('id') == 'btnqareplace') {
+    if ($(that).attr('id') == 'btnqareplace') {
         lsreplace = true;
     }
+    return lsreplace;
+}
+
+/**
+ * Use-cases to deal with:
+ * 1) User enters one part on each line, e.g. "label text one".
+ * 2) User enters two parts on each line, "L001; label text one".
+ * 3) User enters label code plus a part for each language, "L001; label text one; gesundheit".
+ * 4) User enters a language part too much (more parts than language tabs).
+ */
+function quickaddfunction() {
+    var lsreplace = get_replace(this);
 
     if (lsreplace) {
         $(".answertable tbody>tr").remove();
@@ -103,16 +129,15 @@ function quickaddfunction() {
 
     // NB: lsrows is all the lines from the quick add modal.
     var lsrows = $('#quickaddarea').val().split("\n");
-
-    var separatorchar = "\t";
-    if (lsrows[0].indexOf("\t") == -1) {
-        separatorchar = ';';
-    }
+    var separatorchar = get_separator(lsrows);
 
     console.log('lsrows', lsrows);
     $(lsrows).each(function(index, row) {
         var code = undefined;
-
+        // NB: params is the ';' or '\t' split parts of each line.
+        // E.g. line "a;s" will have params ["a", "s"].
+        // A line "L001;English text;Deutsch text" will put label code
+        // L001, and expect an English and a German language tab.
         var params = row.split(separatorchar);
         var k = 0;
         if (params.length > $(".lslanguage").length){
@@ -123,7 +148,9 @@ function quickaddfunction() {
         var event = {};
         event.target = $(".btnaddanswer:last");
         var retcode = add_label(event);
+        //var retcode = add_label();
 
+        /*
         if (lsreplace) {
             if (index!=0|| (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)) {
                 event = {};
@@ -132,23 +159,28 @@ function quickaddfunction() {
                 retcode = add_label();
             }
         }
+        */
 
-        // seems always undefined
+        /*
+        // TODO: Seems always undefined?
         if (typeof(code) != "undefined") {
             $("#code_"+retcode).val(code);
         }
+        */
 
         // TODO: What does this do?
         $(".lslanguage").each(function(i) {
             //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             //console.log('i', i);
             $("input[name=title_" + $(this).val() + "_" + retcode + "]").val(params[k]);
-            if (typeof(code) != "undefined" && i > 0) {
-                $("#row_" + $(this).val() + "_" + retcode + " td:first").text(code);
-            }
+            //if (typeof(code) != "undefined" && i > 0) {
+                //$("#row_" + $(this).val() + "_" + retcode + " td:first").text(code);
+            //}
             k++;
         });
     });
+
+    // Clear and hide modal.
     $("#quickaddarea").val('');
     $('#quickadd').modal('hide');
 }
@@ -215,6 +247,7 @@ function sync_label(event)
  */
 function get_next_code(event) {
     var next_code;
+
     if (event) {
         if ($(event.target).closest('tr').find('.codeval').size()>0) {
             next_code = getNextCode($(event.target).closest('tr').find('.codeval').val());
@@ -237,6 +270,7 @@ function get_next_code(event) {
  * @return {string} Random id.
  */
 function add_label(event) {
+    console.trace();
     var next_code = get_next_code(event);
     var html = createNewLabelTR(true,true);
     var row_id;
@@ -244,6 +278,7 @@ function add_label(event) {
     if (typeof(event) == "undefined") {
         row_id = -1;
     } else {
+        console.log('event.target', event.target);
         row_id = $(event.target)
             .parent()
             .parent()
@@ -263,11 +298,11 @@ function add_label(event) {
     html = str_replace("###next###",randomid,html);
     html = str_replace("###lang###",$("#lslanguagemain").val(),html);
 
-    if (typeof(event) == "undefined") {
+    //if (typeof(event) == "undefined") {
         $(".first tbody").append(html);
-    } else {
-        $(event.target).parent().parent().after(html);
-    }
+    //} else {
+        //$(event.target).parent().parent().after(html);
+    //}
     html = createNewLabelTR(true,false);
 
     html = str_replace("###assessmentval###",'0',html);
@@ -292,13 +327,14 @@ function add_label(event) {
 }
 
 /**
+ * Deletes a label row?
  * @param {object} event
  */
 function del_label(event) {
     event.preventDefault();
     var $sRowID = $(event.target).parent().parent().attr('id');
 
-    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    $aRowInfo = $sRowID.split('_');// first is row, second langage and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
 
