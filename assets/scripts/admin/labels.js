@@ -14,8 +14,8 @@
 var LS = LS || {  onDocumentReady: {} };
 
 /**
-* delete button
-*/
+ * delete button
+ */
 $(document).on('click','[data-action="deletelabelset"]',function(event){
     event.preventDefault();
     if(confirm($(this).data('confirm'))){
@@ -23,23 +23,19 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
     }
 });
 
-
 $(document).on('ready  pjax:scriptcomplete', function(){
     $('#btnDumpLabelSets').click(function(){
-        if ($('#labelsets > option:selected').size()==0)
-        {
+        if ($('#labelsets > option:selected').size()==0) {
             alert(strSelectLabelset);
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     });
 
-
-    if ($(".answertable tbody").children().length == 0)
+    if ($(".answertable tbody").children().length == 0) {
         add_label(undefined);
+    }
 
     $('.btnaddanswer').on('click', add_label);
     $('.btndelanswer').on('click', del_label);
@@ -54,7 +50,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
 
-    $("#mainform").submit(function(event,ui){
+    $("#mainform").submit(function(event,ui) {
 
         if (code_duplicates_check()==false) return false;
         var dataToSend = {};
@@ -92,24 +88,26 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     fix_highlighting();
 });
 
-function quickaddfunction(){
+/**
+ * @todo
+ */
+function quickaddfunction() {
     var lsreplace = false;
-    if ($(this).attr('id') == 'btnqareplace'){
+    if ($(this).attr('id') == 'btnqareplace') {
         lsreplace=true;
     }
 
-    if (lsreplace){
+    if (lsreplace) {
         $(".answertable tbody>tr").remove();
     }
 
     lsrows=$('#quickaddarea').val().split("\n");
     var separatorchar="\t";
-    if (lsrows[0].indexOf("\t")==-1){
+    if (lsrows[0].indexOf("\t")==-1) {
         separatorchar=';';
     }
 
-
-    $(lsrows).each(function(index,element){
+    $(lsrows).each(function(index,element) {
         code = undefined;
 
         params = element.split(separatorchar);
@@ -136,9 +134,6 @@ function quickaddfunction(){
 
         }
 
-
-
-
         // seems always undefined
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
@@ -153,14 +148,14 @@ function quickaddfunction(){
             }
             k++;
         });
-
-
     });
     $("#quickaddarea").val('');
     $('#quickadd').modal('hide');
 }
 
-
+/**
+ * @todo
+ */
 function check_onsubmit(element){
     var onsub = $(element).attr('onsubmit');
     var code = onsub.substr(6,onsub.length);
@@ -168,6 +163,9 @@ function check_onsubmit(element){
     return eval(code);
 }
 
+/**
+ * @todo
+ */
 function sort_complete(event, ui){
     var newposition = ($(ui.item).parent().children().index($(ui.item)));
     var item = ui.item;
@@ -175,8 +173,9 @@ function sort_complete(event, ui){
     var position = ui.position;
     var originalposition = ui.originalPosition;
 
-    if (originalposition.top > position.top) newposition = newposition - 1;
-
+    if (originalposition.top > position.top) {
+        newposition = newposition - 1;
+    }
 
     $(".not_first [name="+$(item).attr('name')+"]").each(function(index,element){
         var backup = "<tr id='row"+$(item).attr('name')+"'>"+$(element).html()+"</tr>";
@@ -193,7 +192,9 @@ function sort_complete(event, ui){
     fix_highlighting();
 }
 
-
+/**
+ * @todo
+ */
 function sync_label(event)
 {
     event.preventDefault();
@@ -206,30 +207,26 @@ function sync_label(event)
             $("#row_"+div_language+"_"+aRowInfo[2]+" td:nth-child(2)").text($("#assessmentvalue_"+aRowInfo[2]).val()); // Sync assessment value
         }
     });
-
 }
 
-
+/**
+ * @param {object} event
+ * @return {string} Random id.
+ */
 function add_label(event)
 {
-    if(event!=undefined)
-    {
-        if ($(event.target).closest('tr').find('.codeval').size()>0)
-        {
+    if(event!=undefined) {
+        if ($(event.target).closest('tr').find('.codeval').size()>0) {
             next_code=getNextCode($(event.target).closest('tr').find('.codeval').val());
-        }
-        else
-        {
+        } else {
             next_code='L001';
         }
 
-        while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(event.target).closest('tr').find('.codeval').val())
-        {
+        while ($('.answertable').find('input[value="'+next_code+'"]').length > 0
+                && next_code != $(event.target).closest('tr').find('.codeval').val()) {
             next_code=getNextCode(next_code);
         }
-    }
-    else
-    {
+    } else {
         next_code='L001';
     }
 
@@ -237,10 +234,11 @@ function add_label(event)
 
     var html = createNewLabelTR(true,true);
 
-    if (typeof(event)=="undefined")
+    if (typeof(event)=="undefined") {
         var row_id = -1;
-    else
+    } else {
         var row_id = ($(event.target).parent().parent().parent().children().index($(event.target).parent().parent()));
+    }
 
     var randomid = 'new' + Math.floor(Math.random()*1111111);
 
@@ -249,11 +247,11 @@ function add_label(event)
     html = str_replace("###next###",randomid,html);
     html = str_replace("###lang###",$("#lslanguagemain").val(),html);
 
-
-    if (typeof(event) == "undefined")
+    if (typeof(event) == "undefined") {
         $(".first tbody").append(html);
-    else
+    } else {
         $(event.target).parent().parent().after(html);
+    }
 
     html = createNewLabelTR(true,false);
 
@@ -264,11 +262,9 @@ function add_label(event)
     // Seems not to work
     $(".not_first").each(function(index,element){
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
-        if (row_id >= 0){
+        if (row_id >= 0) {
             $($("tbody",element).children()[row_id]).after(temp_html);
-        }
-        else
-        {
+        } else {
             $(".answertable tbody",$(element)).append(temp_html);
         }
 
@@ -281,8 +277,10 @@ function add_label(event)
     return randomid;
 }
 
-
-function del_label(event){
+/**
+ * @param {object} event
+ */
+function del_label(event) {
     event.preventDefault();
     var $sRowID = $(event.target).parent().parent().attr('id');
 
@@ -296,26 +294,35 @@ function del_label(event){
 
     fix_highlighting();
 
-    if ($(".answertable tbody").children().length == 0)
+    if ($(".answertable tbody").children().length == 0) {
         add_label(undefined);
-
+    }
 }
 
+/**
+ * @todo
+ */
 function fix_highlighting(){
     $("tbody tr").removeClass("highlight");
-
     $("tbody tr:even").addClass("highlight");
 }
 
-function createNewLabelTR(alternate,first){
+/**
+ * @param {boolean} alternate
+ * @param {boolean} first
+ * @return {string} HTML
+ */
+function createNewLabelTR(alternate, first) {
     x = "<tr class='labelDatas ";
-    if (alternate)
+    if (alternate) {
         x = x + "highlight";
+    }
+
     x = x + "' style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
 
-    if (!first)
+    if (!first) {
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
-    else
+    } else {
         x = x + "<td>"
         + "<span class='fa fa-bars bigIcons text-success'></span>"
         + "</td><td>"
@@ -323,6 +330,7 @@ function createNewLabelTR(alternate,first){
         + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
         + "</td><td>"
         + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
+    }
 
     x = x + "<td><div class='input-group'><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "<span class='input-group-addon'><a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
@@ -330,17 +338,23 @@ function createNewLabelTR(alternate,first){
     "<span style=\"display: none;\" class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
     "</a></span></div></td>";
 
-    if (first)
+    if (first) {
         x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button></td>";
+    }
 
     x = x + "</tr>";
 
     return x;
 }
 
-
-
-function str_replace (search, replace, subject, count) {
+/**
+ * @param {string} search
+ * @param {string} replace
+ * @param {string} subject
+ * @param {number} count
+ * @return ?
+ */
+function str_replace(search, replace, subject, count) {
     var i = 0, j = 0, temp = '', repl = '', sl = 0, fl = 0,
     f = [].concat(search),
     r = [].concat(replace),
@@ -360,63 +374,69 @@ function str_replace (search, replace, subject, count) {
             repl = ra ? (r[j] !== undefined ? r[j] : '') : r[0];
             s[i] = (temp).split(f[j]).join(repl);
             if (count && s[i] !== temp) {
-                this.window[count] += (temp.length-s[i].length)/f[j].length;}
+                this.window[count] += (temp.length-s[i].length)/f[j].length;
+            }
         }
     }
     return sa ? s : s[0];
 }
 
-
-
+/**
+ * @param {string} sourcecode
+ * @return ?
+ */
 function getNextCode(sourcecode)
 {
     i=1;
     found=true;
     foundnumber=-1;
-    while (i<=sourcecode.length && found)
-    {
+    while (i<=sourcecode.length && found) {
         found=is_numeric(sourcecode.substr(-i));
-        if (found)
-        {
+        if (found) {
             foundnumber=sourcecode.substr(-i);
             i++;
         }
     }
-    if (foundnumber==-1)
-    {
+
+    if (foundnumber==-1) {
         return(sourcecode);
-    }
-    else
-    {
+    } else {
         foundnumber++;
-        foundnumber=foundnumber+'';
-        result=sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
+        foundnumber = foundnumber+'';
+        result = sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
         return(result);
     }
 }
 
-function code_duplicates_check()
-{
-    var codearray=[];
-    $('.first input.codeval').each(function(){
+/**
+ * @return {boolean}
+ */
+function code_duplicates_check() {
+    var codearray = [];
+    $('.first input.codeval').each(function() {
         sValue=$.trim($(this).val());
         $(this).val(sValue);
         codearray.push(sValue);
     });
-    if ($.inArray('other', codearray)!=-1)
-    {
+
+    if ($.inArray('other', codearray)!=-1) {
         alert(otherisreserved);
         return false;
     }
-    if (arrHasDupes(codearray))
-    {
+
+    if (arrHasDupes(codearray)) {
         alert(duplicatelabelcode);
         return false;
     }
     return true;
 }
 
-
+/**
+ * @return {boolean}
+ */
 function is_numeric (mixed_var) {
-    return (typeof(mixed_var) === 'number' || typeof(mixed_var) === 'string') && mixed_var !== '' && !isNaN(mixed_var);
+    return (typeof(mixed_var) === 'number'
+            || typeof(mixed_var) === 'string') 
+        && mixed_var !== ''
+        && !isNaN(mixed_var);
 }
