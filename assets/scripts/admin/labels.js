@@ -51,12 +51,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         distance:2
     });
 
-
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
-
-
-
 
     $("#mainform").submit(function(event,ui){
 
