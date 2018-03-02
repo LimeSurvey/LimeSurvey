@@ -211,27 +211,33 @@ function sync_label(event)
 
 /**
  * @param {object} event
- * @return {string} Random id.
+ * @return {string} Next label code.
  */
-function add_label(event)
-{
-    if(event!=undefined) {
+function get_next_code(event) {
+    var next_code;
+    if (event) {
         if ($(event.target).closest('tr').find('.codeval').size()>0) {
-            next_code=getNextCode($(event.target).closest('tr').find('.codeval').val());
+            next_code = getNextCode($(event.target).closest('tr').find('.codeval').val());
         } else {
-            next_code='L001';
+            next_code = 'L001';
         }
 
         while ($('.answertable').find('input[value="'+next_code+'"]').length > 0
                 && next_code != $(event.target).closest('tr').find('.codeval').val()) {
-            next_code=getNextCode(next_code);
+            next_code = getNextCode(next_code);
         }
     } else {
         next_code='L001';
     }
+    return next_code;
+}
 
-    //console.ls.log('nextcode: '+next_code);
-
+/**
+ * @param {object} event
+ * @return {string} Random id.
+ */
+function add_label(event) {
+    var next_code = get_next_code(event);
     var html = createNewLabelTR(true,true);
 
     if (typeof(event)=="undefined") {
