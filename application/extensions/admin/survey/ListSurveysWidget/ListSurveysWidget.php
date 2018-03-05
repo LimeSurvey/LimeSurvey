@@ -30,8 +30,7 @@ class ListSurveysWidget extends CWidget
     {
 
         // Search
-        if (isset($_GET['Survey']['searched_value']))
-        {
+        if (isset($_GET['Survey']['searched_value'])){
             $this->model->searched_value = $_GET['Survey']['searched_value'];
         }
 
@@ -39,21 +38,18 @@ class ListSurveysWidget extends CWidget
         $this->model->gsid   = null;
 
         // Filter state
-        if (isset($_GET['active']) && !empty($_GET['active']))
-        {
+        if (isset($_GET['active']) && !empty($_GET['active'])){
             $this->model->active = $_GET['active'];
         }
 
         // Filter survey group
-        if (isset($_GET['gsid']) &&  !empty($_GET['gsid']))
-        {
+        if (isset($_GET['gsid']) &&  !empty($_GET['gsid'])){
             $this->model->gsid = $_GET['gsid'];
         }
 
 
         // Set number of page
-        if (isset($_GET['pageSize']))
-        {
+        if (isset($_GET['pageSize'])){
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
@@ -63,17 +59,13 @@ class ListSurveysWidget extends CWidget
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
-        if ($this->bRenderFooter)
-        {
+        if ($this->bRenderFooter){
             $this->template = "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\">$this->massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>";
-        }
-        else
-        {
+        }else{
             $this->template = "{items}";
         }
 
-        if ($this->bRenderSearchBox)
-        {
+        if ($this->bRenderSearchBox){
             $this->render('searchBox');
         }
 
