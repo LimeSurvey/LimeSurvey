@@ -137,3 +137,4 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     )
 });
+

@@ -46,7 +46,7 @@ class Assessments extends Survey_Common_Action
 
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
-
+            
             if ($sAction == "assessmentadd") {
                 $this->_add($iSurveyID);
             }
@@ -101,7 +101,7 @@ class Assessments extends Survey_Common_Action
      * @param boolean $collectEdit
      * @return array
      */
-    private function _prepareDataArray(&$aData, $collectEdit = false)
+    private function prepareDataArray(&$aData, $collectEdit = false)
     {
         $iSurveyID = $aData['surveyid'];
         
@@ -111,6 +111,8 @@ class Assessments extends Survey_Common_Action
         $oAssessments = Assessment::model();
         $oAssessments->sid = $iSurveyID;
         $this->_collectGroupData($iSurveyID, $aData);
+
+        $this->setSearchParams($oAssessments);
         
         $aData['model'] = $oAssessments;
         $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
@@ -129,6 +131,49 @@ class Assessments extends Survey_Common_Action
         $aData['subaction'] = gT("Assessments");
         $aData['gid'] = App()->request->getPost('gid', '');
         return $aData;
+    }
+
+    /**
+     * Set search params from Yii grid view.
+     * @param Assessment $oAssessments
+     * @return void
+     */
+    private function setSearchParams(Assessment $oAssessments)
+    {
+        /*
+        ["Assessment"]=>
+            array(5) {
+            ["scope"]=>
+                string(1) "T"
+                ["name"]=>
+                string(0) ""
+                ["minimum"]=>
+                string(0) ""
+                ["maximum"]=>
+                string(0) ""
+                ["message"]=>
+                string(0) ""
+            }
+         */
+        if (isset($_POST['Assessment']['scope'])) {
+            $oAssessments->scope = $_POST['Assessment']['scope'];
+        }
+
+        if (isset($_POST['Assessment']['name'])) {
+            $oAssessments->name = $_POST['Assessment']['name'];
+        }
+
+        if (isset($_POST['Assessment']['minimum'])) {
+            $oAssessments->minimum = $_POST['Assessment']['minimum'];
+        }
+
+        if (isset($_POST['Assessment']['maximum'])) {
+            $oAssessments->maximum = $_POST['Assessment']['maximum'];
+        }
+
+        if (isset($_POST['Assessment']['message'])) {
+            $oAssessments->message = $_POST['Assessment']['message'];
+        }
     }
 
     /**
@@ -170,7 +215,7 @@ class Assessments extends Survey_Common_Action
         
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $this->_prepareDataArray($aData);
+        $this->prepareDataArray($aData);
 
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
@@ -224,7 +269,7 @@ class Assessments extends Survey_Common_Action
     {
         $oAssessment = Assessment::model()->find("id=:id", array(':id' => App()->request->getParam('id')));
         if (!$oAssessment) {
-                    throw new CHttpException(500);
+            throw new CHttpException(500);
         }
         // 404 ?
 

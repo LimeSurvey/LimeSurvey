@@ -125,7 +125,7 @@ class Assessment extends LSActiveRecord
                 'name' => 'scope',
                 'value' => '$data->scope == "G" ? eT("Group") : eT("Total")',
                 'htmlOptions' => ['class' => 'col-sm-1'],
-                'filter' => TbHtml::dropDownList('assessment["scope"]', 'scope', ['' => gT('All'), 'T' => gT('Total'), 'G' => gT("Group")])
+                'filter' => TbHtml::dropDownList('Assessment[scope]', 'scope', ['' => gT('All'), 'T' => gT('Total'), 'G' => gT("Group")])
             ),
             array(
                 'name' => 'name',
@@ -165,9 +165,16 @@ class Assessment extends LSActiveRecord
         $criteria->compare('message', $this->message, true);
         $criteria->compare('language', $survey->language);
         
-        return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-        ));
+        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
+        return new CActiveDataProvider(
+            $this,
+            array(
+                'criteria'=>$criteria,
+                'pagination' => array(
+                    'pageSize' => $pageSize
+                )
+            )
+        );
     }
 
     /**
