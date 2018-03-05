@@ -151,6 +151,8 @@ class Assessment extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
+        $survey = Survey::model()->findByPk($this->sid);
+
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
@@ -161,7 +163,7 @@ class Assessment extends LSActiveRecord
         $criteria->compare('minimum', $this->minimum);
         $criteria->compare('maximum', $this->maximum);
         $criteria->compare('message', $this->message, true);
-        $criteria->compare('language', App()->language);
+        $criteria->compare('language', $survey->language);
         
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
