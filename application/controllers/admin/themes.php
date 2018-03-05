@@ -152,7 +152,6 @@ class themes extends Survey_Common_Action
                 $debug[] = $destdir;
                 $debug[] = $filename;
                 $debug[] = $fullfilepath;
-                echo '<pre>'; var_dump($fullfilepath); echo '</pre>';die;
                 if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 } else {
