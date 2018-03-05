@@ -36,6 +36,7 @@ class ListSurveysWidget extends CWidget
         }
 
         $this->model->active = null;
+        $this->model->gsid   = null;
 
         // Filter state
         if (isset($_GET['active']) && !empty($_GET['active']))
@@ -43,6 +44,11 @@ class ListSurveysWidget extends CWidget
             $this->model->active = $_GET['active'];
         }
 
+        // Filter survey group
+        if (isset($_GET['gsid']) &&  !empty($_GET['gsid']))
+        {
+            $this->model->gsid = $_GET['gsid'];
+        }
 
 
         // Set number of page

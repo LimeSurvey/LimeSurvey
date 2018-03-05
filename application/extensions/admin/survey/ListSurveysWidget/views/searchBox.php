@@ -44,6 +44,21 @@
                     <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Active but not yet started');?></option>
                 </select>
             </div>
+
+
+            <!-- select group -->
+            <div class="form-group">
+                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
+                    <select name="gsid" id='Survey_gsid' class="form-control">
+                        <option value=""><?php eT('(Any group)');?></option>
+                        <?php foreach( SurveysGroups::model()->findAll() as $group): ?>
+                            <option value="<?php echo $group->gsid;?>" <?php if( $group->gsid == $this->model->gsid){echo 'selected';} ?>>
+                                <?php echo flattenText($group->title);?>
+                            </option>
+                        <?php endforeach?>
+                    </select>
+            </div>
+
             <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
             <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('Reset');?></a>
 

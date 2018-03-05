@@ -339,6 +339,7 @@ class Survey extends LSActiveRecord
             array('bounce_email', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
             array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
