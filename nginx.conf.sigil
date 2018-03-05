@@ -1,0 +1,82 @@
+{{ if eq $.APP "www" }}
+
+server {
+  listen      [::]:80;
+  listen      80;
+  server_name  youngerlives.com;
+  rewrite ^(.*) https://www.youngerlives.com$1;
+}
+
+server {
+  listen      [::]:443 ssl spdy;
+  listen      443 ssl spdy;
+  server_name  youngerlives.com;
+
+  ssl_certificate     {{ .APP_SSL_PATH }}/server.crt;
+  ssl_certificate_key {{ .APP_SSL_PATH }}/server.key;
+
+  rewrite ^(.*) https://www.youngerlives.com$1;
+}
+
+server {
+  listen      [::]:80;
+  listen      80;
+  server_name  beta.youngerlives.com;
+  rewrite ^(.*) https://www.youngerlives.com$1;
+}
+
+server {
+  listen      [::]:443 ssl spdy;
+  listen      443 ssl spdy;
+  server_name  beta.youngerlives.com;
+
+  ssl_certificate     {{ .APP_SSL_PATH }}/server.crt;
+  ssl_certificate_key {{ .APP_SSL_PATH }}/server.key;
+
+  rewrite ^(.*) https://www.youngerlives.com$1;
+}
+
+{{ end }}
+
+server {
+  listen      [::]:80;
+  listen      80;
+  server_name {{ .NOSSL_SERVER_NAME }};
+
+  access_log  /var/log/nginx/{{ .APP }}-access.log;
+  error_log   /var/log/nginx/{{ .APP }}-error.log;
+  rewrite ^(.*) https://$host:443$1;
+}
+
+server {
+  listen      [::]:443 ssl spdy;
+  listen      443 ssl spdy;
+  {{ if .SSL_SERVER_NAME }}server_name {{ .SSL_SERVER_NAME }}; {{ end }}
+
+  access_log  /var/log/nginx/{{ .APP }}-access.log;
+  error_log   /var/log/nginx/{{ .APP }}-error.log;
+
+  ssl_certificate     {{ .APP_SSL_PATH }}/server.crt;
+  ssl_certificate_key {{ .APP_SSL_PATH }}/server.key;
+
+  keepalive_timeout   70;
+  add_header          Alternate-Protocol  443:npn-spdy/2;
+  location    / {
+    proxy_pass  http://{{ .APP }};
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Port $server_port;
+    proxy_set_header X-Request-Start $msec;
+  }
+  include {{ .DOKKU_ROOT }}/{{ .APP }}/nginx.conf.d/*.conf;
+}
+
+upstream {{ .APP }} {
+{{ range .DOKKU_APP_LISTENERS | split " " }}
+  server {{ . }};
+{{ end }}
+}
