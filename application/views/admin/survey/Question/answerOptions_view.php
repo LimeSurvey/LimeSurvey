@@ -202,7 +202,7 @@
                                         <br/>
                                     <?php endif;?>
 
-                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' data-scale-id="<?php echo $scale_id; ?>" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                                         <?php eT('Predefined label sets...'); ?>
                                     </button>
 

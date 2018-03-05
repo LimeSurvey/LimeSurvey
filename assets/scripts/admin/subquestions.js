@@ -38,13 +38,15 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         
     $('.btnaddanswer').on("click.subquestions", addinput);
     $('.btndelanswer').on("click.subquestions", deleteinput);
-    $('.btnlsbrowser').on("click.subquestions", lsbrowser );
+    $('#labelsetbrowserModal').on("shown.bs.modal.", lsbrowser );
+    $('#labelsetbrowserModal').on("hidden.bs.modal.", lsbrowser_destruct );
 
     //$('.btnaddanswer').click(addinput);
     //$('.btndelanswer').click(deleteinput);
     //$('.btnlsbrowser').click(lsbrowser);
-    $('#btnlsreplace').click(transferlabels);
-    $('#btnlsinsert').click(transferlabels);
+    $('#btnlsreplace').on('click', function(e){ e.preventDefault(); transferlabels('replace') });
+    $('#btnlsinsert').on('click', function(e){ e.preventDefault(); transferlabels('insert') });
+
 
 
     $('#quickaddModal').on('show.bs.modal', function(e) {
@@ -61,7 +63,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
     $('#labelsets').click(lspreview);
-    $('#languagefilter').click(lsbrowser);
+    //$('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getlabel);
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
@@ -75,7 +77,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 function rebindClickHandler(){
     $('.btnaddanswer').off("click.subquestions").on("click.subquestions", addinput);
     $('.btndelanswer').off("click.subquestions").on("click.subquestions", deleteinput);
-    $('.btnlsbrowser').off("click.subquestions").on("click.subquestions", lsbrowser );
 }
 /**
  * Bind relevance equation to expand on click (only once)
@@ -91,6 +92,27 @@ function bindExpandRelevanceEquation()
     });
 }
 
+function addInputPredefined(i){
+    var $elDatas = $('#add-input-javascript-datas');
+    var scale_id= $('#current_scale_id').val();
+    //We build the datas for the request
+    datas = {
+        'surveyid':             $elDatas.data('surveyid'),
+        'gid':                  $elDatas.data('gid'),
+        'codes':                JSON.stringify({'lbl_1':'eins'}),
+        'scale_id':             scale_id,
+        'position':             i,
+        'type':                 'subquestion',
+        'languages' :           JSON.stringify($elDatas.data('languages').join(';')),
+    };
+      // We get the HTML of the new row to insert
+     return $.ajax({
+        type: "GET",
+        contentType: 'json',
+        url: $elDatas.data('url'),
+        data: datas,
+    });
+}
 /**
  * @return {boolean} true if relevance equation field is expanded
  */
@@ -168,11 +190,8 @@ function deleteinput(e)
                 tablerow.remove();
             }
         }
-        if ($(tablerow).is('[id]'))
-        {
-            rowinfo=$(tablerow).attr('id').split('_');
-            $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
-        }
+        
+        deleteSubquestionrow($(tablerow));
     }
     else
     {
@@ -182,6 +201,13 @@ function deleteinput(e)
     updaterowproperties();
 }
 
+function deleteSubquestionrow(jQueryItem){
+    if ($(jQueryItem).is('[id]'))
+    {
+        rowinfo=$(jQueryItem).attr('id').split('_');
+        $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
+    }
+}
 
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
@@ -490,302 +516,181 @@ function code_duplicates_check()
     return cansubmit;
 }
 
+function lsbrowser_destruct(e){
+    $('#labelsets').select2('destroy');
+    $("#labelsetpreview").empty();
+}
+
 function lsbrowser(e)
 {
-    e.preventDefault();
-    scale_id=removechars($(this).attr('id'));
-    surveyid=$('input[name=sid]').val();
-    $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
-        var x=0;
-        // $("#labelsets").removeOption(/.*/);
-        for (x in json)
-        {
-            $('#labelsets').addOption(json[x][0],json[x][1]);
-            if (x==0){
-                remind=json[x][0];
+    var scale_id= $(e.relatedTarget).data('scale-id');
+    $('body').append('<input type="hidde" id="current_scale_id" value="'+scale_id+'" name="current_scale_id" />');
+    
+    $('#labelsets').select2();
+    $("#labelsetpreview").html('');
+    var surveyid=$('input[name=sid]').val();
+    $.ajax({
+        url: lspickurl,
+        data: {sid:surveyid, match:1},
+        success: function(jsonString){
+            console.ls.log("combined String", jsonString);
+            if (jsonString.success !== true) {
+                $("#labelsetpreview").html("<p class='alert'>"+strNoLabelSet+"</p>");
+                $('#btnlsreplace').addClass('disabled');
+                $('#btnlsinsert').addClass('disabled');
+                $('#btnlsreplace').attr('disabled','disabled');
+                $('#btnlsinsert').attr('disabled','disabled');
+            } else {
+                $('#labelsets').find('option').each(function(i,option){if($(option).attr('value')){ $(option).remove(); }});
+                console.ls.group('SelectParsing');
+                console.ls.log('allResults', jsonString.labelsets);
+                $.each(jsonString.labelsets, function(i,item){
+                    console.log('SelectItem', item);
+                    var newOption = $('<option value="'+item.lid+'">'+item.label_name+'</option>');
+                    console.ls.log('newOption', newOption);
+                    $('#labelsets').append(newOption).trigger('change');
+                });
+                console.ls.groupEnd('SelectParsing');
             }
         }
-        if ($('#labelsets > option').size()>0)
-        {
-            $('#labelsets').selectOptions(remind);
-            lspreview();
-            $('#btnlsreplace').removeClass('ui-state-disabled');
-            $('#btnlsinsert').removeClass('ui-state-disabled');
-            $('#btnlsreplace').removeProp('disabled');
-            $('#btnlsinsert').removeProp('disabled');
-        }
-        else
-        {
-            $("#labelsetpreview").html("<p class='alert alert-warning'>"+strNoLabelSet+"</p>");
-            $('#btnlsreplace').addClass('disabled');
-            $('#btnlsinsert').addClass('disabled');
-            $('#btnlsreplace').prop( "disabled", true );
-            $('#btnlsinsert').prop( "disabled", true );
-        }
+    });
+
+    $('#labelsets').on('change', function(){
+        lspreview($(this).val());
     });
 
 }
 
 // previews the labels in a label set after selecting it in the select box
-function lspreview()
-{
-    if ($('#labelsets > option').size()==0)
-    {
-        return;
-    }
+// previews the labels in a label set after selecting it in the select box
+function lspreview(lid)
+{    
+    var surveyid=$('input[name=sid]').val();
+    return $.ajax({
+        url: lsdetailurl,
+        data: {sid:surveyid, lid:lid},
+        cache: true,
+        success: function(json){
+            console.ls.log('lspreview', json);
+            if(json.languages == []){
+                console.ls.console.warn('NOTHING TO RENDER!', json);
+                return;
+            }
 
-    var lsid=$('#labelsets').val();
-    surveyid=$('input[name=sid]').val();
-    // check if this label set is already cached
-    if (!isset(labelcache[lsid]))
-    {
-        $.ajax({
-            url: lsdetailurl,
-            dataType: 'json',
-            data: {lid:lsid, sid:surveyid},
-            cache: true,
-            success: function(json){
-                //$("#labelsetpreview").tabs('destroy');
-                $("#labelsetpreview").empty();
-                var tabindex='<ul class="nav nav-tabs">';
-                var tabbody='<div class="tab-content">';
-                var count=0;
-                for ( x in json)
-                {
-                    language=json[x];
-                    for (y in language)
-                    {
-                        if(count==0)
-                        {
-                            active="active";
-                            bodyactive="in active";
-                            count++;
-                        }
-                        else
-                        {
-                            active = bodyactive = "";
-                        }
-
-                        tabindex=tabindex+
-                            '<li role="presentation" class="'+active+'">'+
-                            '   <a data-toggle="tab" href="#language_'+y+'">'+
-                                    language[y][1]+
-                            '   </a>'+
-                            '</li>';
-
-                        tabbody=tabbody+
-                                '<div id="language_'+y+'" class="tab-page tab-pane fade '+bodyactive+'">'+
-                                '   <table class="limetable">';
-                        lsrows=language[y][0];
-                        tablerows='';
-                        var highlight=true;
-                        for (z in lsrows)
-                        {
-                            highlight=!highlight;
-                            tabbody=tabbody+'<tbody><tr';
-                            if (highlight==true) {
-                                tabbody=tabbody+" class='highlight' ";
-                            }
-                            if (lsrows[z].title==null)
-                            {
-                                lsrows[z].title='';
-                            }
-                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
-                        }
-                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
-                    }
-                }
-                tabindex=tabindex+'</ul>';
-                tabbody=tabbody+'</div>';
-                $("#labelsetpreview").append(tabindex+tabbody);
-                labelcache[lsid]=tabindex+tabbody;
-        }}
-        );
-    }
-    else
-    {
-        $("#labelsetpreview").empty();
-        $("#labelsetpreview").append(labelcache[lsid]);
-    }
+            var $liTemplate = $('<li role="presentation"></li>'),
+                $aTemplate = $('<a data-toggle="tab"></a>'),
+                $tabTodyTemplate = $('<div></div>'),
+                $listTemplate = $('<div class="list-group selector_label-list"></div>');
+                $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+                $tabindex=$('<ul class="nav nav-tabs" role="tablist"></ul>'),
+                $tabbody=$('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>'),
+                count=0;
 
 
+            console.ls.group('LanguageParsing');
+            var i=0;
+            $.each(json.languages, function(language, languageName){
+                console.ls.log('Language', language, languageName);
+                var $linkItem = $aTemplate.clone();
+                var $bodyItem = $tabTodyTemplate.clone();
+                var $itemList = $listTemplate.clone();
+
+                var classLink = i===0 ? 'active' : '';
+                var classBody = i===0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+
+                $linkItem.addClass(classLink).attr('href', "#language_"+language ).text(languageName);
+                $liTemplate.clone().append($linkItem).appendTo($tabindex);
+                
+
+                $bodyItem.addClass(classBody).attr('id', 'language_'+language );
+                $tabbody.append($bodyItem);
+
+                console.ls.group('ParseLabelSet');                    
+                
+                var labelSet = json.results[language]
+                console.ls.log('LabelSet', labelSet);
+
+                var $itemList = $listTemplate.clone();
+
+                console.ls.group('ParseLabels');                    
+                $.each(labelSet.labels, function(i,label){
+                    console.ls.log('Label', i, label);                
+                    var $listItem = $listItemTemplate.clone();
+                    $listItem.append('<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">'+label.code+'</div>');
+                    $listItem.append('<div class="col-md-8">'+(label.title || '')+'</div>');
+                    $listItem.append('<div class="col-md-1"></div>');
+                    $listItem.attr('data-label', JSON.stringify(label));
+                    $itemList.append($listItem);
+
+                });
+                
+                console.ls.groupEnd('ParseLabels');
+                $bodyItem.append('<h4>'+labelSet.label_name+'</h4>');
+                $itemList.appendTo($bodyItem);
+                
+                console.ls.groupEnd('ParseLabelSet');
+            });
+            console.ls.groupEnd('LanguageParsing');
+            $("#labelsetpreview").empty();
+            $('<div></div>').append($tabindex).append($tabbody).appendTo($("#labelsetpreview"));
+            $tabindex.find('li').first().find('a').trigger('click');
+        }
+    });
 }
 
 
-function transferlabels()
+function transferlabels(type)
 {
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
+    var surveyid = $('input[name=sid]').val();
+    var languages = langs.split(';');
+    var labels = [];
+    var scale_id= $('#current_scale_id').val();
 
-    surveyid=$('input[name=sid]').val();
-
-    if ($(this).attr('id')=='btnlsreplace')
-    {
-        var lsreplace=true;
-
-    }
-    else
-    {
-        var lsreplace=false;
-    }
-
-    if (lsreplace)
-    {
-        $('.answertable:eq('+scale_id+') tbody tr').each(function()
-        {
-            aRowInfo=this.id.split('_');
-            $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
-        });
-    }
-
-    var lsid=$('#labelsets').val();
-    $.ajax({
-        url: lsdetailurl,
-        dataType: 'json',
-        data: {lid:lsid, sid:surveyid},
-        cache: true,
-        success: function(json){
-            languages=langs.split(';');
-            var x;
-            var defaultdata_labels = null;
-
-            for (x in languages)
-            {
-                lang_x_found_in_label=false;
-                var tablerows='';
-                var y;
-                for (y in json)
-                {
-                    language=json[y];
-                    var lsrows = new Array();
-                    //defaultdata=language[languages[0]][0];
-                    for (z in language)
-                    {
-                        if (z==languages[0])
-                        {
-                            defaultdata_labels=language[languages[0]];
-                        }
-                        if (z==languages[x])
-                        {
-                            lang_x_found_in_label = true;
-                            lsrows=language[z][0];
-                        }
-
-                        var k;
-                        for (k in lsrows)
-                        {
-                            var randomid='new'+Math.floor(Math.random()*111111);
-                            if (x==0)
-                            {
-                                tablerows=tablerows+
-                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
-                                '   <td>'+
-                                '       <span class="fa fa-bars bigIcons text-success"></span>'+
-                                '   </td>'+
-
-
-                                '   <td style="vertical-align: middle;">'+
-                                '       <input class="code form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" pattern="^[a-zA-Z0-9]*$" required="required" type="text" maxlength="20" size="20" value="'+htmlspecialchars(lsrows[k].code)+'" />'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '       <div class="">'+
-                                '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena fa fa-pencil text-success"></span>'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
-                                '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
-                                '   </td>'+
-                                '   <td>'+
-                                '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span> <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>'+
-                                '   </td>'+
-                                '</tr>';
-                            }
-                            else
-                            {
-                                tablerows=tablerows+
-                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'">'+
-                                '   <td>&nbsp;</td>'+
-                                '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
-
-                                '   <td style="vertical-align: middle;">'+
-                                '       <div class="">'+
-                                '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena fa fa-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
-                                '           </a>'+
-
-                                //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
-                                '       <span style="display: none" class="relevance">1</span>'+
-                                '   </td>'+
-                                '</tr>';
-                            }
-                        }
-                    }
-                }
-                if (lang_x_found_in_label === false)
-                {
-                    lsrows=defaultdata_labels[0];
-                    k=0;
-                    for (k in lsrows)
-                    {
-                        tablerows=tablerows+
-                        '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
-                        '   <td>&nbsp;</td>'+
-                        '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
-
-                        '   <td style="vertical-align: middle;">'+
-                        '       <div class="">'+
-                        '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                        '       </div>'+
-                        '   </td>'+
-
-                        '   <td>'+
-                        '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  fa fa-pencil text-success" ><span>'+
-                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                        '           </a>'+
-                        //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
-                        '       <span style="display: none" class="relevance">1</span>'+
-                        '   </td>'+
-                        '</tr>';
-                    }
-                }
-
-                $('#labelsetbrowserModal').modal('hide');
-                if (lsreplace)
-                {
-                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
-                }
-
-                $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
-                // Unbind any previous events
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.subquestions');
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.subquestions');
-                $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.subquestions',addinput);
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.subquestions',deleteinput);
-
+    addInputPredefined(1).then(function(result){
+        console.ls.log(result);
+        $.each(result, function(lng, row){
+            var $table = $('#answers_'+lng+'_'+scale_id);
+            
+            if(type == 'replace'){
+                $table.find('tbody').find('tr').each(function(i,tableRow){
+                    deleteSubquestionrow($(tableRow));
+                    $(tableRow).remove();
+                });
             }
-            /*$('#labelsetbrowser').dialog('close');*/
+            
+            $("#labelsetpreview").find('#language_'+lng).find('.selector_label-list').find('.selector_label-list-row').each(function(i,item){
+                try{
+                    var label = $(item).data('label');
+                    var $row = $(row)
+                    var $tr = $row.eq(4);
+                    var randId = 'new'+Math.floor(Math.random()*10000);
+
+                    $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/,randId));
+                    $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3-5}/,randId));
+
+                    $row.find('input').each(function(j,inputField){
+                        $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/,randId));
+                        $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/,randId));
+                    });
+                    
+                    $row.find('td.code-title').find('input[type=text]').length >0 ? $row.find('td.code-title').find('input[type=text]').val(label.code) : $row.find('td.code-title').text(label.code);
+                    $row.find('td.relevance-equation').find('input[type=text]').length >0 ? $row.find('td.relevance-equation').find('input[type=text]').val(1) : '';
+                    
+                    $row.find('td.code-title').find('input[type=text]').val(label.code);
+                    $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
+                    $table.find('tbody').append($row);
+                    
+                } catch(e) {console.ls.error(e);}
+
+            });
+
             $('.tab-page:first .answertable tbody').sortable('refresh');
             updaterowproperties();
-
-    }}
-    );
-
-
+            $('#labelsetbrowserModal').modal('hide');
+            $('#current_scale_id').remove();
+        });
+        var $lang_table = $('#answers_'+language+'_'+scale_id);
+    });
 }
 
 /**

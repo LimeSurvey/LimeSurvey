@@ -95,12 +95,14 @@ function deleteinput(e)
 
 function addInputPredefined(i){
     var $elDatas = $('#add-input-javascript-datas');
+    var scale_id= $('#current_scale_id').val();
+    
     //We build the datas for the request
     datas = {
         'surveyid':             $elDatas.data('surveyid'),
         'gid':                  $elDatas.data('gid'),
         'codes':                JSON.stringify({'lbl_1':'eins'}),
-        'scale_id':             0,
+        'scale_id':             scale_id,
         'position':             i,
         'type':                 'answer',
         'languages' :           JSON.stringify($elDatas.data('languages').join(';')),
@@ -431,6 +433,9 @@ function lsbrowser_destruct(e){
 
 function lsbrowser(e)
 {
+    var scale_id= $(e.relatedTarget).data('scale-id');
+    $('body').append('<input type="hidde" id="current_scale_id" value="'+scale_id+'" name="current_scale_id" />');
+
     $('#labelsets').select2();
     $("#labelsetpreview").html('');
     //    e.preventDefault();
@@ -552,32 +557,47 @@ function transferlabels(type)
     var surveyid = $('input[name=sid]').val();
     var languages = langs.split(';');
     var labels = [];
+    var scale_id= $('#current_scale_id').val();
 
     addInputPredefined(1).then(function(result){
         console.ls.log(result);
         $.each(result, function(lng, row){
-            var $table = $('#answers_'+lng+'_0');
+            var $table = $('#answers_'+lng+'_'+scale_id);
             
             if(type == 'replace'){
                 $table.find('tbody').empty();
             }
             
             $("#labelsetpreview").find('#language_'+lng).find('.selector_label-list').find('.selector_label-list-row').each(function(i,item){
-                var label = $(item).data('label');
-                var $row = $(row);
+                try{
+                    var label = $(item).data('label');
+                    var $row = $(row);
+                    var $row = $(row)
+                    var $tr = $row.eq(4);
+                    var randId = 'new'+Math.floor(Math.random()*10000);
+
+                    // $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/,randId));
+                    // $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3-5}/,randId));
+
+                    $row.find('input').each(function(j,inputField){
+                        $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/,randId));
+                        $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/,randId));
+                    });
                 
+                    $row.find('td.code-title').find('input[type=text]').length >0 ? $row.find('td.code-title').find('input[type=text]').val(label.code) : $row.find('td.code-title').text(label.code);
+                    $row.find('td.assessment-value').find('input[type=text]').length >0 ? $row.find('td.assessment-value').find('input[type=text]').val(label.assessment_value) : '';
                 
-                $row.find('td.code-title').find('input[type=text]').length >0 ? $row.find('td.code-title').find('input[type=text]').val(label.code) : $row.find('td.code-title').text(label.code);
-                $row.find('td.assessment-value').find('input[type=text]').length >0 ? $row.find('td.assessment-value').find('input[type=text]').val(label.assessment_value) : '';
-                
-                $row.find('td.code-title').find('input[type=text]').val(label.code);
-                $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
-                $table.find('tbody').append($row);
+                    $row.find('td.code-title').find('input[type=text]').val(label.code);
+                    $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
+                    $table.find('tbody').append($row);
+                    
+                } catch(e) {console.ls.error(e);}
             });
         
             $('.tab-page:first .answertable tbody').sortable('refresh');
             updaterowproperties();
             $('#labelsetbrowserModal').modal('hide');
+            $('#current_scale_id').remove();
         });
         var $lang_table = $('#answers_'+language+'_'+scale_id);
     });
