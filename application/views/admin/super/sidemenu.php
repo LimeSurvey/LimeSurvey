@@ -25,7 +25,7 @@
         $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
     }
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder", ["surveyid" =>  $surveyid]);
+    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
     $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
     if ($activated || !$createPermission) {
