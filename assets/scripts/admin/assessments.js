@@ -64,6 +64,14 @@ var bindAction = function(){
     });
 
     $('#selector__assessment-add-new').on('click.assessments', function(){
+
+        // Clear all fields.
+        $.each(CKEDITOR.instances, function(name, instance) {
+            instance.setData('');
+        });
+        $('#assessmentsform input').val('');
+        // TODO: Clear <select> and radio buttons?
+
         $('#assesements-edit-add').modal('show');
     });
 
