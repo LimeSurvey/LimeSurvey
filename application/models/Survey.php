@@ -1490,6 +1490,11 @@ class Survey extends LSActiveRecord
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
 
+        // Survey group filter
+        if (isset($this->gsid)) {
+            $criteria->compare("t.gsid", $this->gsid, false);
+        }
+
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
