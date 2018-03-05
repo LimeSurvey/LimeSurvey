@@ -48,25 +48,24 @@ class Assessments extends Survey_Common_Action
             Yii::app()->setConfig("assessmentlangs", $languages);
 
             if ($sAction == "assessmentadd") {
-                            $this->_add($iSurveyID);
+                $this->_add($iSurveyID);
             }
 
             if ($sAction == "assessmentupdate") {
-                            $this->_update($iSurveyID);
+                $this->_update($iSurveyID);
             }
 
             if ($sAction == "assessmentopenedit") {
-                            $this->_edit($iSurveyID);
+                $this->_edit($iSurveyID);
             }
 
             if ($sAction == "assessmentdelete") {
-                            $this->_delete($iSurveyID, $_POST['id']);
+                $this->_delete($iSurveyID, $_POST['id']);
             }
 
             if ($sAction == "asessementactivate") {
-                            $this->_activateAsessement($iSurveyID);
+                $this->_activateAsessement($iSurveyID);
             }
-
 
             $this->_showAssessments($iSurveyID, $sAction);
         } else {
