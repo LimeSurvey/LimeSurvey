@@ -416,16 +416,17 @@ class Template extends LSActiveRecord
     public static function getTemplateList()
     {
 
+
         $aTemplateList = array();
 
         $oTemplateList = TemplateConfiguration::model()->search();
         $oTemplateList->setPagination(false);
 
         foreach ($oTemplateList->getData() as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name] = $oTemplate->path;
+            $aTemplateList[$oTemplate->template_name] =  (isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
         }
-
         return $aTemplateList;
+
     }
 
     /**
