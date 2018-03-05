@@ -499,7 +499,7 @@ class themes extends Survey_Common_Action
 
                 if ($mkdirresult == 1) {
                     // We just copy the while directory structure, but only the xml file
-                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
+                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg'), 'newDirMode' => 0755, 'newFileMode' => 0644 ));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname);
                     TemplateManifest::importManifest($newname, ['extends' => $copydir]);
