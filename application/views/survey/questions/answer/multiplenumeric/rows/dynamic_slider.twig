@@ -17,7 +17,7 @@
                 {{ 'Remaining: ' | t }}
             </div>
             {% if prefix %}
-                <div class="prefix-text prefix hidden"><!-- Suffix prefix are not shown inline, but only in the slider: completely diofferent concept : set hidden -->
+                <div class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely diofferent concept : set hidden -->
                     {{ prefix }}
                 </div>
             {% endif %}
@@ -25,7 +25,7 @@
                 {{ '{'~sumRemainingEqn~'}' }}
             </div>
             {% if suffix %}
-                <div class="suffix-text suffix hidden">
+                <div class="suffix-text suffix">
                    {{ suffix }}
                 </div>
             {% endif %}
