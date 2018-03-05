@@ -45,8 +45,12 @@ var bindAction = function(){
                 $("#in_survey_common").css({cursor: ""});        
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
-                    if(!itemToChange.is('input[type=checkbox]') &&  !itemToChange.is('input[type=radio]')) {
-                        itemToChange.val(value).trigger('change');
+                    if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
+                        if (CKEDITOR.instances[key]) {
+                            CKEDITOR.instances[key].setData(value);
+                        } else {
+                            itemToChange.val(value).trigger('change');
+                        }
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }

@@ -163,9 +163,6 @@ class Assessment extends LSActiveRecord
         $criteria->compare('message', $this->message, true);
         $criteria->compare('language', App()->language);
         
-        // TODO: Does not work with Postgres.
-        //$criteria->group = 'id';
-
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
