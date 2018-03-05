@@ -1466,21 +1466,21 @@ function getNavigatorDatas()
 /**
  * Caculate assessement scores
  *
- * @param int $surveyid
+ * @param mixed $surveyid
+ * @return array
  */
 function doAssessment($surveyid)
 {
 
-    $returndataonly = true;
-    $baselang=Survey::model()->findByPk($surveyid)->language;
     $survey = Survey::model()->findByPk($surveyid);
-    if ($survey->assessments!="Y") {
+    $baselang = $survey->language;
+    if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
         return array('show'=>false);
     }
 
-    $total=0;
+    $total = 0;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
-        $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
+        $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
 
     $query = "SELECT * FROM {{assessments}}
@@ -1488,20 +1488,20 @@ function doAssessment($surveyid)
         ORDER BY scope, id";
 
     if ($result = dbExecuteAssoc($query)) {
-        $aResultSet=$result->readAll();
+        $aResultSet = $result->readAll();
 
         if (count($aResultSet) > 0) {
 
             foreach ($aResultSet as $row) {
 
                 if ($row['scope'] == "G") {
-                    $assessment['group'][$row['gid']][]=array("name"=>$row['name'],
+                    $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
                         "min"     => $row['minimum'],
                         "max"     => $row['maximum'],
                         "message" => $row['message']
                     );
                 } else {
-                    $assessment['total'][]=array( "name"=>$row['name'],
+                    $assessment['total'][] = array("name"=>$row['name'],
                         "min"     => $row['minimum'],
                         "max"     => $row['maximum'],
                         "message" => $row['message']
@@ -1515,6 +1515,9 @@ function doAssessment($surveyid)
 
             foreach ($fieldmap as $field) {
 
+                // Init Assessment Value
+                $assessmentValue = null;
+
                 if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
 
                     $fieldmap[$field['fieldname']]['assessment_value'] = 0;
@@ -1525,26 +1528,65 @@ function doAssessment($surveyid)
                         if (($field['type'] == "M") || ($field['type'] == "P")) {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
 
-                                $aAttributes                                       = getQuestionAttributeValues($field['qid']);
-                                $fieldmap[$field['fieldname']]['assessment_value'] = (int)$aAttributes['assessment_value'];
-                                $total                                             = $total+(int)$aAttributes['assessment_value'];
+                                $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
+                                $assessmentValue = (int) $aAttributes['assessment_value'];
                             }
                         } else {
-                              // Single choice question
-                            //$usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".$_SESSION['survey_'.$surveyid][$field['fieldname']];
-                            //$usresult = dbExecuteAssoc($usquery);          //Checked
+                                // Single choice question
                             $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                             $usresult = dbExecuteAssoc($usquery); //Checked
 
                             if ($usresult) {
-                                $usrow                                             = $usresult->read();
-                                $fieldmap[$field['fieldname']]['assessment_value'] = $usrow['assessment_value'];
-                                $total                                             = $total+$usrow['assessment_value'];
+                                $usrow              = $usresult->read();
+                                $assessmentValue    = $usrow['assessment_value'];
+                            //    $total              = $total+$usrow['assessment_value'];
                             }
                         }
+
+                        $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
                     }
                     $groups[] = $field['gid'];
                 }
+
+                // If this is a question (and not a survey field, like ID), save asessment value
+                if ($field['qid'] > 0) {
+                    /**
+                     * Allow Plugin to update assessment value
+                     */
+                    // Prepare Event Info
+                    $event = new PluginEvent('afterSurveyQuestionAssessment');
+                    $event->set('surveyId', $surveyid);
+                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                    $event->set('gid', $field['gid']);
+                    $event->set('qid', $field['qid']);
+
+                    if (array_key_exists('sqid', $field)) {
+
+                        $event->set('sqid', $field['sqid']);
+                    }
+
+                    if (array_key_exists('aid', $field)) {
+
+                        $event->set('aid', $field['aid']);
+                    }
+
+                    $event->set('assessmentValue', $assessmentValue);
+
+                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
+                        $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                    }
+
+                    // Dispatch Event and Get new assessment value
+                    App()->getPluginManager()->dispatchEvent($event);
+                    $updatedAssessmentValue = $event->get('assessmentValue', $assessmentValue);
+
+                    /**
+                     * Save assessment value on the response
+                     */
+                    $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
+                    $total = $total + $updatedAssessmentValue;
+                }
+
                 $i++;
             }
 
@@ -1557,7 +1599,7 @@ function doAssessment($surveyid)
                     if ($field['gid'] == $group && isset($field['assessment_value'])) {
 
                         if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
-                            $grouptotal = $grouptotal+$field['assessment_value'];
+                            $grouptotal = $grouptotal + $field['assessment_value'];
                         }
                     }
                 }
@@ -1565,82 +1607,34 @@ function doAssessment($surveyid)
                 $subtotal[$group] = $grouptotal;
             }
         }
-        $assessments                = "";
-        $assessment['subtotalshow'] = false;
+        $assessment['subtotal']['show'] = false;
 
         if (isset($subtotal) && is_array($subtotal)) {
-            $assessment['subtotal']['show'] = true;
-
-            foreach ($subtotal as $key => $val) {
-                if (isset($assessment['group'][$key])) {
-
-                    foreach ($assessment['group'][$key] as $assessed) {
-
-                        if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false) {
-                            $assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                            <table class='assessments'>
-                            <tr>
-                            <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
-                            </th>
-                            </tr>
-                            <tr>
-                            <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
-                            </td>
-                            </tr>
-                            </table><br />\n";
-                        }
-                    }
-                }
-            }
+            $assessment['subtotal']['show']  = true;
+            $assessment['subtotal']['datas'] = $subtotal;
         }
 
-        $assessment['totalshow'] = false;
+        $assessment['total']['show'] = false;
 
         if (isset($assessment['total'])) {
-
             $assessment['total']['show'] = true;
-            foreach ($assessment['total'] as $assessed) {
-
-                if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false) {
-
-                    $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                    <table class='assessments' align='center'>
-                    <tr>
-                    <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
-                    </th>
-                    </tr>
-                    <tr>
-                    <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
-                    </td>
-                    </tr>
-                    </table>\n";
-                }
-            }
         }
 
-        if ($returndataonly==true) {
-            $subtotal = (isset($subtotal))?$subtotal:'';
-            return array(
-                'show' => true,
-                'datas' => array(
-                    'total'=>$total,
-                    'assessment' => $assessment,
-                    'subtotal' => $subtotal,
-                    'show' => true
-                )
-            );
-        } else {
-            return $assessments;
-        }
+        $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
+        $assessment['total_score']    = (isset($total)) ? $total : '';
+        //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+        return array('show'=>true, 'datas' => $assessment);
+
     }
 }
 
+
 /**
- * Update SESSION VARIABLE: grouplist
- * A list of groups in this survey, ordered by group name.
- * @param string $language
- * @param integer $surveyid
- */
+* Update SESSION VARIABLE: grouplist
+* A list of groups in this survey, ordered by group name.
+* @param string $language
+* @param integer $surveyid
+*/
 function UpdateGroupList($surveyid, $language)
 {
 

@@ -19,7 +19,6 @@
 #}
 
 {% set aAssessments = aSurveyInfo.aAssessments.datas %}
-
 <!-- Assessments -->
 <table class="{{ aSurveyInfo.class.assessmenttable }} table" {{ aSurveyInfo.attr.assessmenttable }}>
 
@@ -33,11 +32,11 @@
     <!-- Results -->
     <tr>
         <td class="{{ aSurveyInfo.class.assessmentscontainer }}" {{ aSurveyInfo.attr.assessmentscontainer }} >
-            {% if aAssessments.subtotal %}
-                {% for key, val in aAssessments.subtotal %}
-                    {% if aAssessments.assessment.group %}
-                        {% if key in aAssessments.assessment.group | keys %}
-                            {% for assessed in aAssessments.assessment.group[key] %}
+            {% if aAssessments.subtotal.show %}
+                {% for key,val in aAssessments.subtotal %}
+                    {% if aAssessments.group %}
+                        {% if key in aAssessments.group | keys %}
+                            {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
                                 <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
                                     <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
