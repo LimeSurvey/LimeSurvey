@@ -86,7 +86,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
             </div>
         </div>
-        <?php if( !isset(Yii::app()->session->connectionID)): ?>
+        <?php if( isset(Yii::app()->session->connectionID) ): ?>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12" >
                 <label class="col-sm-12 text-left control-label" for='iSessionExpirationTime'>
