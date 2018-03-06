@@ -53,6 +53,7 @@
         /* get the same default value than qanda_helper */
         'minDate' => $mindate[0] == '{' ? '1900-01-01' : $mindate,
         'maxDate' => $maxdate[0] == '{' ? '2037-12-31' : $maxdate,
+        'sideBySide' =>  true
     );
     $jsonOptions=json_encode($aJsonOption);
     App()->getClientScript()->registerScript("doDatetimepicker_{$name}","jQuery('#answer{$name}_datetimepicker').datetimepicker({$jsonOptions});",LSYii_ClientScript::POS_POSTSCRIPT);
