@@ -12,8 +12,8 @@
 /**
  * Expression manager relevance system
  */
-.js .ls-hidden, .js .ls-irrelevant {display:none}/* 3 class , and don't hide without javascript*/
-.ls-irrelevant{}
+.js .ls-hidden{display:none}/* 3 class , and don't hide without javascript*/
+.ls-irrelevant{pointer-events: none;}
 .js .ls-disabled{opacity:0.4;}
 
 
