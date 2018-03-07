@@ -703,6 +703,12 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['privacyhead']      = ' ';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
+        $aClassAndAttributes['class']['privacydatasecmodalbody'] = '';
+        $aClassAndAttributes['class']['privacydatasectextbody'] = '';
+
+        $aClassAndAttributes['class']['privacydataseccheckbox'] = '';
+        $aClassAndAttributes['class']['privacydataseccheckboxlabel'] = '';
+
         $aClassAndAttributes['attr']['privacycontainer'] = $aClassAndAttributes['attr']['privacycol'] = $aClassAndAttributes['attr']['privacyhead'] = $aClassAndAttributes['attr']['privacybody'] = '';
 
         // Clearall Links

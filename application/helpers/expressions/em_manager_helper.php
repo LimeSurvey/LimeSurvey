@@ -9346,6 +9346,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
+                if ($aSurveyInfo['surveyls_datasecurity_notice'] != '')
+                {
+                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice'],0);
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                }
+                if ($aSurveyInfo['surveyls_datasecurity_notice_label'] != '')
+                {
+                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice_label'],0);
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                }
             }
 
             $out .= "<tr>
