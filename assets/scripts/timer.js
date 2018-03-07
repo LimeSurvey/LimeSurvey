@@ -4,177 +4,300 @@
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 
-/* disble an element after time expiry */
-function freezeFrame(elementid)
-{
-    $('#'+elementid).prop('readonly',true);
+var TimerConstructor = function(options){
+    "use strict";
+    /* ##### public methods ##### */
+
+    /** 
+     * Starts the timer
+     * Sts the interval to visualize the timer and the timeouts for the warnings.
+     */
+    var startTimer = function(){
+        if(timeLeft == 0){
+            finishTimer();
+            return;
+        }
+        _setTimerToLocalStorage(timeLeft);
+        _disableNavigation();
+        _setInterval();
+    },
+    /**
+     * Finishing action
+     * Unsets all timers and intervals and then triggers the defined action.
+     * Either redirect, invalidate or warn before redirect
+     */
+    finishTimer = function(){
+        timerLogger.log('Timer has ended or was ended');
+        _unsetInterval();
+        _enableNavigation();
+        _bindUnsetToSubmit();
+
+        switch(option.action)
+        {
+            case 3: //Just warn, don't move on
+                _showExpiredNotice();
+                _disableInput();
+                break;
+            case 2: //Just move on, no warning
+                _redirectOut();
+                break;
+            case 1: //fallthrough
+            default: //Warn and move on
+                _showExpiredNotice();
+                _warnBeforeRedirection();
+                break;
+        }
+    };
+
+    /* ##### private methods ##### */
+
+    /**
+     * Parses the options to default values if not set
+     * @param Object options 
+     * @return Object 
+     */
+    var _parseOptions = function(option) {
+        return {
+            questionid      : option.questionid      ||  null,
+            timer           : option.timer           ||  0,
+            action          : option.action          ||  1,
+            warning         : option.warning         ||  0,
+            warning2        : option.warning2        ||  0,
+            warninghide     : option.warninghide     ||  0,
+            warning2hide    : option.warning2hide    ||  0,
+            disabledElement : option.disabledElement ||  null,
+        }
+    },
+
+    /**
+     * Takes a duration in seconds and creates an object containing the duration in hours, minutes and seconds
+     * @param int seconds The duration in seconds
+     * @return Object Contains hours, minutes and seconds
+     */
+    _parseTimeToObject = function(secLeft, asStrings){
+        asStrings = asStrings || false;
+
+        var oDuration = moment.duration(secLeft, 'seconds');
+        var sHours   = String(oDuration.hours()),
+            sMinutes = String(oDuration.minutes()),
+            sSeconds = String(oDuration.seconds());
+
+        return {
+            hours   : asStrings ? (sHours.length == 1   ? '0'+sHours   : sHours) : parseInt(sHours),
+            minutes : asStrings ? (sMinutes.length == 1 ? '0'+sMinutes : sMinutes) : parseInt(sMinutes),
+            seconds : asStrings ? (sSeconds.length == 1 ? '0'+sSeconds : sSeconds) : parseInt(sSecond)
+        };
+    },
+
+    /**
+     * The actions done on each step and the trigger to the finishing action
+     */
+    _intervalStep = function(){
+        var currentTimeLeft = _getTimerFromLocalStorage();
+        currentTimeLeft = currentTimeLeft-1 ;
+        timerLogger.log('Interval emitted | seconds left:', currentTimeLeft);
+        if(currentTimeLeft <= 0){
+            finishTimer();
+        }
+        _checkForWarning(currentTimeLeft);
+        _setTimerToLocalStorage(currentTimeLeft);
+        _setTimer(currentTimeLeft);
+    },
+
+    /**
+     * Set the interval to update the timer visuals
+     */
+    _setInterval = function(){
+        _setTimer(option.timer);
+        intervalObject = setInterval(_intervalStep, 1000);
+    },
+
+    /**
+     * Unset the timer;
+     */
+    _unsetInterval = function(){
+        clearInterval(intervalObject);
+        intervalObject = null;
+    },
+
+    /**
+     * Sets the timer to the display element
+     */
+    _setTimer = function(currentTimeLeft){
+        var timeObject = _parseTimeToObject(currentTimeLeft, true);
+        $timerDisplayElement
+            .css({display: 'flex'})
+            .html($countDownMessageElement.html()+"&nbsp;&nbsp;<div class='ls-timer-time'>"+ timeObject.hours +':'+ timeObject.minutes +':'+ timeObject.seconds +"</div>");
+    },
+
+    /**
+     * Checks if a warning should be shown relative to the interval
+     * @param int currentTime The current amount of seconds gone
+     */
+    _checkForWarning = function(currentTime){
+        if(currentTime == option.warning){
+            _showWarning();
+        }
+        if(currentTime == option.warning2){
+            _showWarning2();
+        }
+    },
+    /**
+     * Shows the warning and fades it out after the set amount of time
+     */
+    _showWarning = function(){
+        timerLogger.log('Warning called!');
+        $warningDisplayElement.removeClass('hidden').css({opacity: 0}).animate({'opacity': 1}, 200);
+        setTimeout( function(){
+            timerLogger.log('Warning ended!');
+            $warningDisplayElement.animate({opacity: 0}, 200, function(){
+                $(this).addClass('hidden');
+            }) 
+        }, 1000*option.warninghide );
+    },
+
+    /**
+     * Shows the warning2 and fades it out after the set amount of time
+     */
+    _showWarning2 = function(){
+        timerLogger.log('Warning2 called!');
+        $warning2DisplayElement.removeClass('hidden').css({opacity: 0}).animate({'opacity': 1}, 200);
+        setTimeout(function(){
+            timerLogger.log('Warning2 ended!');
+            $warning2DisplayElement.animate({opacity: 0}, 200, function(){
+                $(this).addClass('hidden');
+            }) 
+        }, 1000*option.warning2hide );
+    },
+
+    /**
+     * Disables the navigation buttons if necessary
+     */
+    _disableNavigation = function(){
+        timerLogger.log('Disabling navigation');
+        $('.ls-move-previous-btn').each(function(){
+            $(this).prop('disabled',(disable_prev==1));
+        });
+        $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
+            $(this).prop('disabled',(disable_next==1));
+        });
+    },
+
+    /**
+     * Enables the navigation buttons
+     */
+    _enableNavigation = function(){
+        $('.ls-move-previous-btn').each(function(){
+            $(this).prop('disabled',false);
+        });
+        $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
+            $(this).prop('disabled',false);
+        });
+    },
+
+    /**
+     * Gets the current timer from the localStorage
+     */
+    _getTimerFromLocalStorage = function(){
+        return window.localStorage.getItem('limesurvey_timers_'+timersessionname);
+    },
+
+    /**
+     * Sets the current timer to localStorage
+     */
+    _setTimerToLocalStorage = function(timerValue){
+        window.localStorage.setItem('limesurvey_timers_'+timersessionname, timerValue);
+    },
+
+    /**
+     * Unsets the timer in localStorage
+     */
+    _unsetTimerInLocalStorage = function(){
+        window.localStorage.removeItem('limesurvey_timers_'+timersessionname);
+    },
+
+    /**
+     * Finalize Method to show a warning and then redirect
+     */
+    _warnBeforeRedirection = function(){
+        _disableInput();
+        setTimeout(_redirectOut, redirectWarnTime);
+    },
+
+    /**
+     * Finalize method to just diable the input
+     */
+    _disableInput = function(){
+        $toBeDisabledElement.prop('readonly',true);
+    },
+
+    /**
+     * Show the notice that the time is up and the input is expired
+     */
+    _showExpiredNotice = function(){
+        $timerExpiredElement.removeClass('hidden');
+    },
+
+    /**
+     * redirect to the next page
+     */
+    _redirectOut = function(){
+        $('.ls-move-btn').trigger('click');
+    },
+    /**
+     * Binds the reset of the localStorage as soon as the participant has submitted the form
+     */
+    _bindUnsetToSubmit = function(){
+        $('#limesurvey').on('submit', function(){
+            _unsetTimerInLocalStorage();
+        });
+    };
+
+    /* ##### define state and closure vars ##### */
+    var option = _parseOptions(options),
+        timerWarning  = null,
+        timerWarning2  = null,
+        timerLogger = new ConsoleShim('TIMER#'+options.questionid, !window.debugState.frontend),
+        intervalObject  = null,
+        warning = 0,
+        timersessionname='timer_question_'+option.questionid,
+        timeLeft = _getTimerFromLocalStorage() || option.timer,
+        disable_next = $("#disablenext-"+timersessionname).val(),
+        disable_prev = $("#disableprev-"+timersessionname).val(),
+        //jQuery Elements
+        $timerDisplayElement = $('#LS_question'+option.questionid+'_Timer'),
+        $timerExpiredElement = $('#question'+option.questionid+'_timer'),
+        $warningTimeDisplayElement = $('#LS_question'+option.questionid+'_Warning'),
+        $warningDisplayElement = $('#LS_question'+option.questionid+'_warning'),
+        $warning2TimeDisplayElement=$('#LS_question'+option.questionid+'_Warning_2'),
+        $warning2DisplayElement=$('#LS_question'+option.questionid+'_warning_2'),
+        $countDownMessageElement = $("#countdown-message-"+timersessionname),
+        redirectWarnTime=$('#message-delay-'+timersessionname).val(),
+        $toBeDisabledElement=$('#'+option.disabledElement);
+
+    timerLogger.log('Options set:', option);
+
+    return {
+        startTimer : startTimer,
+        finishTimer : finishTimer
+    };
 };
+
 
 function countdown(questionid,timer,action,warning,warning2,warninghide,warning2hide,disable)
 {
-    if(!timeleft) { var timeleft=timer;}
-    if(!warning) { var warning=0;}
-    if(!warning2) { var warning2=0;}
-    if(!warninghide) { var warninghide=0;}
-    if(!warning2hide) { var warning2hide=0;}
-
-    var timerdisplay='LS_question'+questionid+'_Timer';
-    var warningtimedisplay='LS_question'+questionid+'_Warning';
-    var warningdisplay='LS_question'+questionid+'_warning';
-    var warning2timedisplay='LS_question'+questionid+'_Warning_2';
-    var warning2display='LS_question'+questionid+'_warning_2';
-    var expireddisplay='question'+questionid+'_timer';
-    var timersessionname='timer_question_'+questionid;
-    //~ var action = $("#action-"+timersessionname).val();
-    var disable_next = $("#disablenext-"+timersessionname).val();
-    var disable_prev = $("#disableprev-"+timersessionname).val();
-
-    $('#'+timersessionname).val(timeleft);
-    timeleft--;
-    cookietimer=subcookiejar.fetch('limesurvey_timers',timersessionname);
-    if(cookietimer && cookietimer <= timeleft)
-    {
-        timeleft=cookietimer;
-    }
-    var timeleftobject=new Object();
-    subcookiejar.crumble('limesurvey_timers', timersessionname);
-    timeleftobject[timersessionname]=timeleft;
-    subcookiejar.bake('limesurvey_timers', timeleftobject, 7);
-
-    if(disable_next > 0){// $disable_next can be 1 or 0 (it's a select).
-
-        if(timeleft > disable_next)
+    window.timerObjectSpace = window.timerObjectSpace || {};
+    window.timerObjectSpace[questionid] = new TimerConstructor(
         {
-            $('.ls-move-previous-btn').each(function(){
-                $(this).prop('disabled',true);
-            });
+            questionid : questionid,
+            timer : timer,
+            action : action,
+            warning : warning,
+            warning2 : warning2,
+            warninghide : warninghide,
+            warning2hide : warning2hide,
+            disabledElement : disable
         }
-        else if (disable_next >= 1 && timeleft <= disable_next)
-        {
-            $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
-                $(this).prop('disabled',false);
-            });
-        }
-    }
-
-    if(disable_prev > 0){
-        if(timeleft > disable_prev)
-        {
-            $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
-                $(this).prop('disabled',true);
-            });
-        }
-        else if (disable_prev >= 1 && timeleft <= disable_prev)
-        {
-            $('.ls-move-previous-btn').each(function(){
-                $(this).prop('disabled',false);
-            });
-        }
-    }
-
-    if(warning > 0 && timeleft<=warning) {
-        var wsecs=warning%60;
-        if(wsecs<10) wsecs='0' + wsecs;
-        var WT1 = (warning - wsecs) / 60;
-        var wmins = WT1 % 60; if (wmins < 10) wmins = '0' + wmins;
-        var whours = (WT1 - wmins) / 60;
-        var dmins='';
-        var dhours='';
-        var dsecs='';
-        if (whours < 10) whours = '0' + whours;
-        if (whours > 0) dhours = whours + ' '+LSvar.lang.timer.hours+' ';
-        if (wmins > 0) dmins = wmins + ' '+LSvar.lang.timer.mins+' ';
-        if (wsecs > 0) dsecs = wsecs + ' '+LSvar.lang.timer.secs+' ';
-        $('#'+warningtimedisplay).html(dhours+dmins+dsecs);
-        $('#'+warningdisplay).removeClass("hidden");
-        if(warninghide > 0 ) {
-            setTimeout(function(){ $('#'+warningdisplay).addClass("hidden"); },warninghide*1000);
-        }
-        warning=0;
-    }
-
-    if(warning2 > 0 && timeleft<=warning2)
-    {
-        var w2secs=warning2%60;
-        if(wsecs<10) w2secs='0' + wsecs;
-        var W2T1 = (warning2 - w2secs) / 60;
-        var w2mins = W2T1 % 60; if (w2mins < 10) w2mins = '0' + w2mins;
-        var w2hours = (W2T1 - w2mins) / 60;
-        var d2mins='';
-        var d2hours='';
-        var d2secs='';
-        if (w2hours < 10) w2hours = '0' + w2hours;
-        if (w2hours > 0) d2hours = w2hours + ' '+LSvar.lang.timer.hours+' ';
-        if (w2mins > 0) d2mins = w2mins + ' '+LSvar.lang.timer.mins+' ';
-        if (w2secs > 0) d2secs = w2secs + ' '+LSvar.lang.timer.seconds+' ';
-        $('#'+warning2timedisplay).html(dhours+dmins+dsecs);
-        $('#'+warning2display).removeClass("hidden");
-        if(warning2hide > 0 )
-        {
-            setTimeout(function(){ $('#'+warning2display).addClass("hidden"); },warning2hide*1000);
-        }
-        warning2=0;
-    }
-    var secs = timeleft % 60;
-    if (secs < 10) secs = '0'+secs;
-    var T1 = (timeleft - secs) / 60;
-    var mins = T1 % 60; if (mins < 10) mins = '0'+mins;
-    var hours = (T1 - mins) / 60;
-    var d2hours='';
-    var d2mins='';
-    var d2secs='';
-    if (hours > 0) d2hours = hours + ' '+LSvar.lang.timer.hours;
-    if (mins > 0) d2mins = mins + ' '+LSvar.lang.timer.mins;
-    if (secs > 0) d2secs = secs + ' '+LSvar.lang.timer.seconds;
-    if (secs < 1) d2secs = '0' +  ' '+LSvar.lang.timer.seconds;
-    $('#'+timerdisplay).html($("#countdown-message-"+timersessionname).html()+"<div class='ls-timer-time'>"+ d2hours + d2mins + d2secs+"</div>");
-
-
-    if (timeleft>0)
-    {
-        var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
-        setTimeout(text,1000);
-    }
-    else
-    {
-        //Countdown is finished, now do action
-        switch(action)
-        {
-
-            case 2: //Just move on, no warning
-                $('.ls-move-previous-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                freezeFrame(disable);
-                subcookiejar.crumble('limesurvey_timers', timersessionname);
-                $('#defaultbtn').click();
-                break;
-            case 3: //Just warn, don't move on
-                $('#'+expireddisplay).removeClass("hidden");
-                $('.ls-move-previous-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                freezeFrame(disable);
-                $('#limesurvey').submit(function(){ subcookiejar.crumble('limesurvey_timers', timersessionname); });
-                break;
-            default: //Warn and move on
-                $('#'+expireddisplay).removeClass("hidden");
-                $('.ls-move-previous-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                $('.ls-move-next-btn,.ls-move-submit-btn').each(function(){
-                    $(this).prop('disabled',false);
-                });
-                freezeFrame(disable);
-                subcookiejar.crumble('limesurvey_timers', timersessionname);
-                setTimeout($('#defaultbtn').click(), $("#message-delay-"+timersessionname).val());
-                break;
-        }
-    }
+    );
+    window.timerObjectSpace[questionid].startTimer();
 }
