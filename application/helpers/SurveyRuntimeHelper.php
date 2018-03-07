@@ -934,22 +934,6 @@ class SurveyRuntimeHelper
         }
     }
 
-
-    private function replacePolicyLink($dataSecurityNoticeLabel) {
-        $STARTPOLICYLINK = "<a href='#data-security-modal-".$this->aSurveyInfo['sid']."' data-toggle='modal'>";
-        $ENDPOLICYLINK = "</a>";
-
-        if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
-            $dataSecurityNoticeLabel.= " {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
-        }
-
-        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel);
-
-        return $dataSecurityNoticeLabel;
-
-    }
-
     /**
      * Display the first page if needed
      */
@@ -958,12 +942,8 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
-            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
-            $this->aSurveyInfo['datasecurity_notice_label'] = $this->replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label']);
-            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
-
+            $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
         }
 
         if ($bDisplayFirstPage) {

@@ -66,7 +66,6 @@ class database extends Survey_Common_Action
                 'showqnumcode' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'shownoanswer' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'showwelcome' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showdatasecuritynotice' => ['type'=> '', 'default' => 0, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'allowprev' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'questionindex' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'nokeyboard' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -819,8 +818,6 @@ class database extends Survey_Common_Action
                     $description = Yii::app()->request->getPost('description_'.$langname, null);
                     $welcome = Yii::app()->request->getPost('welcome_'.$langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_'.$langname, null);
-                    $datasec = Yii::app()->request->getPost('datasec_'.$langname, null);
-                    $dataseclabel = Yii::app()->request->getPost('dataseclabel_'.$langname, null);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
                     
@@ -843,14 +840,6 @@ class database extends Survey_Common_Action
                         // Fix bug with FCKEditor saving strange BR types
                         $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
                         $data['surveyls_endtext'] = $endtext;
-                    }
-                    if ($datasec !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $datasec = $this->oFixCKeditor->fixCKeditor($datasec);
-                        $data['surveyls_datasecurity_notice'] = $datasec;
-                    }
-                    if ($dataseclabel !== null) {
-                        $data['surveyls_datasecurity_notice_label'] = $dataseclabel;
                     }
                     if ($sURL !== null) {
                         $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
@@ -943,7 +932,6 @@ class database extends Survey_Common_Action
             $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
             $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
-            $oSurvey->showdatasecuritynotice = $this->_filterEmptyFields($oSurvey, 'showdatasecuritynotice');
             $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
             $oSurvey->questionindex = (int) $this->_filterEmptyFields($oSurvey, 'questionindex');
             $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey, 'nokeyboard');
