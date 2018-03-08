@@ -515,8 +515,7 @@ class questions extends Survey_Common_Action
                     'scale_id' => $i,
                     'language' => $baselang
                     )) as $answer) {
-                    
-                    $oAnswer = new Answer;
+                        $oAnswer = new Answer;
                     }
                     $oAnswer->qid = $answer->qid;
                     $oAnswer->code = $answer->code;
