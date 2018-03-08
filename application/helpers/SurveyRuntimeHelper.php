@@ -944,13 +944,21 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
+            //Failsave to have a general standard value
+            if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
+                $this->aSurveyInfo['datasecurity_notice_label'] = gT("Please accept the data security policy");
+            }
+
+            if (empty($this->aSurveyInfo['datasecurity_error'])) {
+                $this->aSurveyInfo['datasecurity_error'] = gT("You have to accept the data security policy!");
+            }
+
             $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
             $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
             $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
-            $this->aSurveyInfo['datasecurity_error']       = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
+            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
             $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
             $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
-
         }
 
         if ($bDisplayFirstPage) {

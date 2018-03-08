@@ -1862,7 +1862,7 @@ return $s->hasTokensTable; });
         
 
         if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
-            $dataSecurityNoticeLabel.= " {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
+            $dataSecurityNoticeLabel.= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
         }
 
         $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
