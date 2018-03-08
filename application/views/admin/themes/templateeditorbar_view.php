@@ -131,7 +131,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 }
                 else
                 {
-                    $sMessage=gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/templates in order to enable this option.");
+                    $sMessage=gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
                 }
                 if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
