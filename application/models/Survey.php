@@ -1866,7 +1866,12 @@ return $s->hasTokensTable; });
         }
 
         $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel);
+        
+        $countEndLabel = 0;
+        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel, -1, $countEndLabel);
+        if($countEndLabel == 0){
+            $dataSecurityNoticeLabel .= '</a>';
+        } 
 
         return $dataSecurityNoticeLabel;
 
