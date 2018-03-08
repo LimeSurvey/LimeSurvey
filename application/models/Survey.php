@@ -344,6 +344,7 @@ class Survey extends LSActiveRecord
             array('bounce_email', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
             array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -1506,6 +1507,11 @@ class Survey extends LSActiveRecord
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
+
+        // Survey group filter
+        if (isset($this->gsid)) {
+            $criteria->compare("t.gsid", $this->gsid, false);
+        }
 
         // Active filter
         if (isset($this->active)) {

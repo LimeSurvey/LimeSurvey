@@ -1130,12 +1130,12 @@ class database extends Survey_Common_Action
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
-
         if ($oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         } else {
             Yii::app()->setFlashMessage(gT("Survey could not be updated."), "error");
         }
+        Yii::app()->end();
     }
 
     /**

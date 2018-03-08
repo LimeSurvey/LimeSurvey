@@ -77,6 +77,8 @@ function triggerEmRelevanceSubQuestion(){
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
+        $(this).find('input[disabled]').prop('checked', false).trigger('change');
+        console.ls.log($(this).find('input[disabled]'));
     });
 }
 

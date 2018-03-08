@@ -167,39 +167,29 @@ class themes extends Survey_Common_Action
                 );
 
             } else if ($action == 'templateupload') {
-                if (Yii::app()->getConfig('demoMode')) {
-                    Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
 
                 Yii::app()->loadLibrary('admin.pclzip');
 
-                if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                    Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
+                // Redirect back if demo mode is set.
+                $this->checkDemoMode();
 
-                $zip = new PclZip($_FILES['the_file']['tmp_name']);
+                // Redirect back at file size error.
+                $this->checkFileSizeError();
 
                 $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
                 $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
-                if (!is_writeable(dirname($destdir))) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
+                // Redirect back if $destdir is not writable OR if it already exists.
+                $this->checkDestDir($destdir, $sNewDirectoryName);
 
-                if (!is_dir($destdir)) {
-                    mkdir($destdir);
-                } else {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
+                // All OK if we're here.
+                mkdir($destdir);
 
                 $aImportedFilesInfo = array();
                 $aErrorFilesInfo = array();
 
                 if (is_file($_FILES['the_file']['tmp_name'])) {
+                    $zip = new PclZip($_FILES['the_file']['tmp_name']);
                     $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
 
                     if ($aExtractResult === 0) {
@@ -227,6 +217,7 @@ class themes extends Survey_Common_Action
                             rmdirr($destdir);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
                         }
+                        TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                     }
 
                     if (count($aImportedFilesInfo) == 0) {
@@ -418,13 +409,13 @@ class themes extends Survey_Common_Action
             $filesdir        = $oEditedTemplate->filesPath;
             $sPostedFile     = App()->request->getPost('otherfile');
             $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
-            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false);
+            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false, false);
             $the_full_file_path = $filesdir.$sFileToDelete;
 
             if (@unlink($the_full_file_path)) {
-                Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), htmlspecialchars($sFileToDelete)));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -508,7 +499,7 @@ class themes extends Survey_Common_Action
 
                 if ($mkdirresult == 1) {
                     // We just copy the while directory structure, but only the xml file
-                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
+                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg'), 'newDirMode' => 0755, 'newFileMode' => 0644 ));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname);
                     TemplateManifest::importManifest($newname, ['extends' => $copydir]);
@@ -1229,5 +1220,55 @@ class themes extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Redirects if demo mode is set.
+     * @return void
+     */
+    protected function checkDemoMode()
+    {
+        if (Yii::app()->getConfig('demoMode')) {
+            Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+
+    }
+
+    /**
+     * Redirect if file size is too big.
+     * @return void
+     */
+    protected function checkFileSizeError()
+    {
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            Yii::app()->setFlashMessage(
+                sprintf(
+                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                    getMaximumFileUploadSize() / 1024 / 1024
+                ),
+                'error'
+            );
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+    }
+
+    /**
+     * Redirect back if $destdir is not writable or already exists.
+     * @param string $destdir
+     * @param string $sNewDirectoryName
+     * @return void
+     */
+    protected function checkDestDir($destdir, $sNewDirectoryName)
+    {
+        if (!is_writeable(dirname($destdir))) {
+            Yii::app()->user->setFlash('error', sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+
+        if (is_dir($destdir)) {
+            Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
     }
 }

@@ -35,6 +35,65 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.4.3 (build 180227) to 3.4.4 (build 180305) March 5, 2018
+-Fixed issue #13246: Fix plugin in survey responses (Olle Haerstedt)
+-Fixed issue #13310: Cannot delete surveys in Survey list when debug is on (Olle Haerstedt)
+-Fixed issue #13356: Crash at optin and optout (Olle Haerstedt)
+-Fixed issue #13357: "Surveys in this group" is not filtering surveys (LouisGac)
+-Fixed issue #13367: Theme list in theme editor should only list installed themes (LouisGac)
+-Fixed issue #13396: Some files/folders not included in imported survey themes (Olle Haerstedt)
+-Fixed issue #13424: JavaScript is displayed in email notifications (Olle Haerstedt)
+-Fixed issue #13425: Cannot add subquestions and answer options with plus button (Olle Haerstedt)
+-Fixed issue #13426: No message displayed when saving general survey settings (Olle Haerstedt)
+-Fixed issue #13428: Reflected XSS in file uploader (Olle Haerstedt)
+-Fixed issue #13429: Multiple choice with comments not showing all (Olle Haerstedt)
+-Fixed issue #13433: Base string "List meny entries" incorrect (Olle Haerstedt)
+-Fixed issue: Can't delete uploaded theme files (Olle Haerstedt)
+-Fixed issue: Filter assessments (Olle Haerstedt)
+-Fixed issue: Import of predefined label sets was not working (markusfluer)
+-Fixed issue: Survey group filter on survey list (LouisGac)
+-Fixed issue: Twig tags macro and import are now supported (LouisGac)
+-New translation: Myanmar (Burmese) (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd 
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Myanmar by AlexEDGE1
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by femariso, marciojv, mauriciofurtado
+
+Changes from 3.4.2 (build 180223) to 3.4.3 (build 180227) Feb 27, 2018
+-Fixed issue #13338: DejaVu font missing (Olle Haerstedt)
+-Fixed issue #13389: Cannot add JavaScript file to custom admin theme (Olle Haerstedt)
+-Fixed issue #13400: Missing translations (Olle Haerstedt)
+-Fixed issue #13405: Failure of limiting the Ranking questions answers through drag and drop (Olle Haerstedt)
+-Fixed issue #13407: Plugin event beforeQuestionRender does not work (Olle Haerstedt)
+-Fixed issue #13409: Cookie to prevent repeated participation not working (Olle Haerstedt)
+-Fixed issue #13415: Column names in Ranking QT need to be switched (Olle Haerstedt)
+-Fixed issue #13420: Wrong file downloaded from "View Response ID" page (Olle Haerstedt)
+-Fixed issue: Label set problems for answer options (markusfluer)
+-Fixed issue: Missing creation date in user overview (Carsten Schmitz)
+-Fixed issue: SPSS export: Response data not properly quoted for Multiple choice 'Other' field (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: French (France) by b00z00, arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: Hungarian by suf, kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 3.4.1 (build 180221) to 3.4.2 (build 180223) Feb 23, 2018
 Fixed issue: [security] Vulnerability in installer (found and reported by Nguyen Van Tien Thanh from Viettel Cyber Security Center, https://blog.yeuchimse.com )
 -Fixed issue #13358: Usage of .question in end message broken (markusfluer)
@@ -58,11 +117,10 @@ Changes from 3.4.0 (build 180219) to 3.4.1 (build 180221) Feb 21, 2018
 -Fixed issue #13392: Token with useleft at 0 or less can take the survey (Olle Haerstedt)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Dutch (Informal) by Han
-#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Dutch (Informal) by Han
 #Updated translation: Dutch by Han
-#Updated translation: Dutch by c_schmitz, Han
 #Updated translation: French (France) by b00z00, arnaud21
-#Updated translation: French (France) by c_schmitz, DenisChenu, arnaud21, yompyamper, b00z00
+#Updated translation: French (France) by DenisChenu, arnaud21, yompyamper, b00z00
 #Updated translation: German (Informal) by markusfluer, c_schmitz
 #Updated translation: German by c_schmitz
 #Updated translation: Hungarian by kkd
@@ -102,8 +160,8 @@ Changes from 3.3.1 (build 180214) to 3.4.0 (build 180219) Feb 19, 2018
 -Fixed issue: Question selector not working after change in global settings (markusfluer)
 -Fixed issue: Some options not loaded on uninheriting the parent theme (markusfluer)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by c_schmitz, Han 
-#Updated translation: Dutch by c_schmitz, Han 
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han 
 #Updated translation: German (Informal) by c_schmitz
 #Updated translation: German by c_schmitz
 #Updated translation: Hungarian by kkd 

@@ -554,15 +554,16 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText = "\n\n";
         $oldgid = 0;
         $oldqid = 0;
+        Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname) {
             if (substr($sFieldname, 0, 4) == 'gid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n\n";
             } elseif (substr($sFieldname, 0, 4) == 'qid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n";
             } else {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".strip_tags("{$fname[0]} {$fname[1]}")."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0)."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }

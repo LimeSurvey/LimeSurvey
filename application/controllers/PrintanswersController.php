@@ -1,28 +1,31 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
-    /*
-    * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-    * All rights reserved.
-    * License: GNU/GPL License v2 or later, see LICENSE.php
-    * LimeSurvey is free software. This version may have been modified pursuant
-    * to the GNU General Public License, and as distributed it includes or
-    * is derivative of works licensed under the GNU General Public License or
-    * other free or open source software licenses.
-    * See COPYRIGHT.php for copyright notices and details.
-    *
-    */
 
-    /**
-     * printanswers
-     *
-     * @package LimeSurvey
-     * @copyright 2011
-     * @access public
-     */
-    class PrintanswersController extends LSYii_Controller
-    {
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ */
+
+/**
+ * printanswers
+ *
+ * @package LimeSurvey
+ * @copyright 2011
+ * @access public
+ */
+class PrintanswersController extends LSYii_Controller
+{
     /* @var string : Default layout when using render : leave at bare actually : just send content */
     public $layout = 'survey';
     /* @var string the template name to be used when using layout */
@@ -115,85 +118,95 @@
                 throw new CHttpException(401, gT('You are not allowed to print answers.'));
             }
 
-            //CHECK IF SURVEY IS ACTIVATED AND EXISTS
-            $sSurveyName = $aSurveyInfo['surveyls_title'];
-            $sAnonymized = $aSurveyInfo['anonymized'];
-            //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-            //SHOW HEADER
-            $oResponseRow = SurveyDynamic::model($iSurveyID);
-            $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
-            $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
-            $aData['aSurveyInfo'] = $aSurveyInfo;
-            $aData['aSurveyInfo']['dateFormat'] = getDateFormatData(Yii::app()->session['dateformat']);
-            $aData['aSurveyInfo']['groupArray'] = $groupArray;
-            $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
-            $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
+        //CHECK IF SURVEY IS ACTIVATED AND EXISTS
+        $sSurveyName = $aSurveyInfo['surveyls_title'];
+        $sAnonymized = $aSurveyInfo['anonymized'];
+        //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
+        //SHOW HEADER
+        $oResponseRow = SurveyDynamic::model($iSurveyID);
+        $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
+        $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
 
-            if (empty($sExportType)) {
-                Yii::app()->setLanguage($sLanguage);
-                $aData['aSurveyInfo']['include_content'] = 'printanswers';
-                Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
-
-            } else if ($sExportType == 'pdf') {
-                // Get images for TCPDF from template directory
-                define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
-
-                Yii::import('application.libraries.admin.pdf', true);
-                Yii::import('application.helpers.pdfHelper');
-                $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings(App()->language);
-
-                $oPDF = new pdf();
-                $oPDF->setCellMargins(1, 1, 1, 1);
-                $oPDF->setCellPaddings(1, 1, 1, 1);
-                $sDefaultHeaderString = $sSurveyName." (".gT("ID", 'unescaped').":".$iSurveyID.")";
-                $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
-                LimeExpressionManager::StartProcessingPage(true); // means that all variables are on the same page
-                // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-                LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
-                $aData['aSurveyInfo']['printPdf'] = 1;
-                $aData['aSurveyInfo']['include_content'] = 'printanswers';
-                Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
-
-                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
-                //filter all scripts
-                $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
-                //replace fontawesome icons
-                $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
-                $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
-                $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
-                $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
-                $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
-                $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
-                
-                $oPDF->writeHTML($html, true, false, true, false, '');
-
-                header("Pragma: public");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                $sExportFileName = sanitize_filename($sSurveyName);
-                $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf", "D");
-                LimeExpressionManager::FinishProcessingGroup();
-                LimeExpressionManager::FinishProcessingPage();
-            } else if ($sExportType == 'quexmlpdf') {
-
-                Yii::import("application.libraries.admin.quexmlpdf", true);
-
-                $quexmlpdf = new quexmlpdf();
-
-                // Setting the selected language for printout
-                App()->setLanguage($sLanguage);
-
-                $quexmlpdf->setLanguage($sLanguage);
-
-                set_time_limit(120);
-
-                Yii::app()->loadHelper('export');
-
-                $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID);
-
-                $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
-
-                $sExportFileName = sanitize_filename($sSurveyName);
-                $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf", 'D');
+        // Remove all <script>...</script> content from result.
+        Yii::import('application.helpers.viewHelper');
+        foreach ($groupArray as &$group) {
+            $group['description'] = viewHelper::flatEllipsizeText($group['description'], true, 0);
+            foreach ($group['answerArray'] as &$answer) {
+                $answer['question'] = viewHelper::flatEllipsizeText($answer['question'], true, 0);
             }
         }
+
+        $aData['aSurveyInfo'] = $aSurveyInfo;
+        $aData['aSurveyInfo']['dateFormat'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['aSurveyInfo']['groupArray'] = $groupArray;
+        $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
+        $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
+
+        if (empty($sExportType)) {
+            Yii::app()->setLanguage($sLanguage);
+            $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
+
+        } else if ($sExportType == 'pdf') {
+            // Get images for TCPDF from template directory
+            define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
+
+            Yii::import('application.libraries.admin.pdf', true);
+            Yii::import('application.helpers.pdfHelper');
+            $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings(App()->language);
+
+            $oPDF = new pdf();
+            $oPDF->setCellMargins(1, 1, 1, 1);
+            $oPDF->setCellPaddings(1, 1, 1, 1);
+            $sDefaultHeaderString = $sSurveyName." (".gT("ID", 'unescaped').":".$iSurveyID.")";
+            $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
+            LimeExpressionManager::StartProcessingPage(true); // means that all variables are on the same page
+            // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
+            LimeExpressionManager::StartProcessingGroup(1, ($aSurveyInfo['anonymized'] != "N"), $iSurveyID);
+            $aData['aSurveyInfo']['printPdf'] = 1;
+            $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
+
+            $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
+            //filter all scripts
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            //replace fontawesome icons
+            $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
+            $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
+            $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
+            $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
+            $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
+            $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+
+            $oPDF->writeHTML($html, true, false, true, false, '');
+
+            header("Pragma: public");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            $sExportFileName = sanitize_filename($sSurveyName);
+            $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf", "D");
+            LimeExpressionManager::FinishProcessingGroup();
+            LimeExpressionManager::FinishProcessingPage();
+        } else if ($sExportType == 'quexmlpdf') {
+
+            Yii::import("application.libraries.admin.quexmlpdf", true);
+
+            $quexmlpdf = new quexmlpdf();
+
+            // Setting the selected language for printout
+            App()->setLanguage($sLanguage);
+
+            $quexmlpdf->setLanguage($sLanguage);
+
+            set_time_limit(120);
+
+            Yii::app()->loadHelper('export');
+
+            $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID);
+
+            $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
+
+            $sExportFileName = sanitize_filename($sSurveyName);
+            $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf", 'D');
+        }
     }
+}

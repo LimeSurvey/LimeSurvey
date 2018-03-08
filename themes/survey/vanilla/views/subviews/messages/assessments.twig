@@ -33,7 +33,7 @@
     <tr>
         <td class="{{ aSurveyInfo.class.assessmentscontainer }}" {{ aSurveyInfo.attr.assessmentscontainer }} >
             {% if aAssessments.subtotal.show %}
-                {% for key,val in aAssessments.subtotal %}
+                {% for key,val in aAssessments.subtotal.datas %}
                     {% if aAssessments.group %}
                         {% if key in aAssessments.group | keys %}
                             {% for assessed in aAssessments.group[key] %}

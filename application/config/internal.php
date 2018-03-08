@@ -252,6 +252,7 @@ $internalConfig = array(
                 'createUrl'                  => 'LS_Twig_Extension::createUrl',
                 'createAbsoluteUrl'          => 'LS_Twig_Extension::createAbsoluteUrl',
                 'json_decode'                => 'LS_Twig_Extension::json_decode',
+                'json_encode'             => 'CJSON::encode',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -260,7 +261,7 @@ $internalConfig = array(
             ),
 
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include'),
+                'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include', 'macro', 'import'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date', 'format', 'nl2br', 'split', 'trim', 'json_encode', 'round', 'url_encode'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
@@ -276,7 +277,7 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'flattenText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'checkPermission', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'getLanguageNameFromCode', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'getExpressionManagerOutput', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createAbsoluteUrl', 'createUrl', 'json_decode'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'flattenText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'checkPermission', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'getLanguageNameFromCode', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'getExpressionManagerOutput', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createAbsoluteUrl', 'createUrl', 'json_decode', 'json_encode'),
             ),
 
         ),

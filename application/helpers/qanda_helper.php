@@ -1925,7 +1925,7 @@ function do_multiplechoice($ia)
     // General variables
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-    $inputnames             = []; // TODO : check if really used
+    $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
@@ -1933,15 +1933,11 @@ function do_multiplechoice($ia)
     // Question attribute variables
     $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
-    $iNbCols                = $aQuestionAttributes['display_columns']; // number of columns
-    if ($aQuestionAttributes['other_numbers_only'] == 1) {
-        $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator                 = $sSeparator['separator'];
-        $oth_checkconditionFunction = "fixnum_checkconditions";
-    } else {
-        $sSeparator = '.'; // TODO: Correct default?
-        $oth_checkconditionFunction = "checkconditions";
-    }
+    $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
+    $aSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator             = $aSeparator['separator'];
+    
+    $oth_checkconditionFunction = ($aQuestionAttributes['other_numbers_only'] == 1) ? "fixnum_checkconditions" : "checkconditions";
 
     //// Retrieving datas
 
@@ -1954,29 +1950,15 @@ function do_multiplechoice($ia)
     $anscount  = count($aQuestions);
     $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
-    //// Columns containing answer rows, set by user in question attribute
-    /// TODO : move to a dedicated function
-
-    // setting variables
-    $iRowCount        = 0;
-    $isOpen           = false; // Is a column opened
-
+    // First we calculate the width of each column
+    // Max number of column is 12 http://getbootstrap.com/css/#grid
+    $iColumnWidth = round(12 / $iNbCols);
+    $iColumnWidth = ($iColumnWidth >= 1) ? $iColumnWidth : 1;
+    $iColumnWidth = ($iColumnWidth <= 12) ? $iColumnWidth : 12;
+    $iMaxRowsByColumn = ceil($anscount / $iNbCols);
+    
     if ($iNbCols > 1) {
-        // Add a class on the wrapper
         $coreClass .= " multiple-list nbcol-{$iNbCols}";
-        // First we calculate the width of each column
-        // Max number of column is 12 http://getbootstrap.com/css/#grid
-        $iColumnWidth = round(12 / $iNbCols);
-        $iColumnWidth = ($iColumnWidth >= 1) ? $iColumnWidth : 1;
-        $iColumnWidth = ($iColumnWidth <= 12) ? $iColumnWidth : 12;
-
-        // Then, we calculate how many answer rows in each column
-        $iMaxRowsByColumn = ceil($anscount / $iNbCols);
-        $first = true; // The very first item will open a bootstrap row containing the columns
-    } else {
-        $iColumnWidth = 12;
-        $iMaxRowsByColumn = $anscount + 3; // No max
-        $first = true;
     }
 
     /// Generate answer rows
@@ -2001,23 +1983,11 @@ function do_multiplechoice($ia)
         $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
         $inputnames[]            = $myfname;
 
-        ////
-        // Open Column
-        // The column is opened if user set more than one column in question attribute
-        // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1) {
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array(
-                'iColumnWidth' => (isset($iColumnWidth)) ? $iColumnWidth : '',
-                'first'        => (isset($first)) ? $first : ''),
-                true);
-            $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            $first   = false; // The row containing the column has been opened at the first call.
-        }
 
         ////
         // Insert row
         // Display the answer row
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row', array(
+        $aRows[] = array(
             'name'                    => $ia[1], // field name
             'title'                   => $aQuestion['title'],
             'question'                => $aQuestion->questionL10ns[$sSurveyLang]->question,
@@ -2027,25 +1997,12 @@ function do_multiplechoice($ia)
             'myfname'                 => $myfname,
             'sValue'                  => $sValue,
             'relevanceClass'          => $relevanceClass,
-            ), true);
+            );
 
-        ////
-        // Close column
-        // The column is closed if the user set more than one column in question attribute
-        // and if the max answer rows by column is reached.
-        // If max answer rows by column is not reached while there is no more answer,
-        // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if ($iRowCount == $iMaxRowsByColumn) {
-            $last      = ($i == $anscount) ?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>$last), true);
-            $iRowCount = 0;
-            $isOpen    = false;
-        }
     }
 
     //==>  rows
     if ($other == 'Y') {
-        $iRowCount++;
         $myfname = $ia[1].'other';
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
@@ -2077,18 +2034,9 @@ function do_multiplechoice($ia)
         ++$anscount;
 
         ////
-        // Open Column
-        // The column is opened if user set more than one column in question attribute
-        // and if this is the first answer row (should never happen for 'other'),
-        // or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1) {
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
-        }
-
-        ////
         // Insert row
         // Display the answer row
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row_other', array(
+        $aRows[] = array(
             'myfname'                    => $myfname,
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
@@ -2097,33 +2045,25 @@ function do_multiplechoice($ia)
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
             'sValueHidden'               => $sValueHidden,
-            'relevanceClass'          => $relevanceClass,
-            ), true);
+            'relevanceClass'             => $relevanceClass,
+            'other'                      => true
+            );
 
-        ////
-        // Close column
-        // The column is closed if the user set more than one column in question attribute
-        // Other is always the last answer, so it's always closing the col and the bootstrap row containing the columns
-        $sRows    .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>true), true);
-        $isOpen    = false;
+
     }
 
-    ////
-    // Close column
-    // The column is closed if the user set more than one column in question attribute
-    // and if on column has been opened and not closed
-    // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if ($isOpen) {
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>true), true);
-    }
+  
 
     // ==> answer
     $answer = doRender('/survey/questions/answer/multiplechoice/answer', array(
-        'sRows'    => $sRows,
-        'name'     => $ia[1],
-        'basename' => $ia[1],
-        'anscount' => $anscount,
-        'coreClass'=> $coreClass,
+        'aRows'            => $aRows,
+        'name'             => $ia[1],
+        'basename'         => $ia[1],
+        'anscount'         => $anscount,
+        'iColumnWidth'     => $iColumnWidth,
+        'iMaxRowsByColumn' => $iMaxRowsByColumn,
+        'iNbCols'          => $iNbCols,
+        'coreClass'        => $coreClass,
         ), true);
 
     return array($answer, $inputnames);

@@ -45,8 +45,12 @@ var bindAction = function(){
                 $("#in_survey_common").css({cursor: ""});        
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
-                    if(!itemToChange.is('input[type=checkbox]') &&  !itemToChange.is('input[type=radio]')) {
-                        itemToChange.val(value).trigger('change');
+                    if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
+                        if (CKEDITOR.instances[key]) {
+                            CKEDITOR.instances[key].setData(value);
+                        } else {
+                            itemToChange.val(value).trigger('change');
+                        }
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }
@@ -60,6 +64,14 @@ var bindAction = function(){
     });
 
     $('#selector__assessment-add-new').on('click.assessments', function(){
+
+        // Clear all fields.
+        $.each(CKEDITOR.instances, function(name, instance) {
+            instance.setData('');
+        });
+        $('#assessmentsform input').val('');
+        // TODO: Clear <select> and radio buttons?
+
         $('#assesements-edit-add').modal('show');
     });
 
@@ -125,3 +137,4 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     )
 });
+

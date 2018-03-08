@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-sm-12">
                             <select id='labelsets' size='10' style='width:250px;'>
-                                <option><?=gT('--Select Label Set--')?></option>
+                                <option>--<?=gT('Select label set')?>--</option>
                             </select>
                         </div>
                         <div class="row">

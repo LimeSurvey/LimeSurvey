@@ -2188,7 +2188,9 @@ class statistics_helper
         $ColumnName_RM = array();
         $statisticsoutput_footer = "<script>";
 
-        $lbl = array();
+        $lbl       = array();
+        $tableXLS  = array();
+        $tablePDF2 = array();
         foreach ($outputs['alist'] as $al) {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
@@ -2331,7 +2333,6 @@ class statistics_helper
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
-                    $tablePDF2 = array();
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
 
                     foreach ($result2 as $row2) {
@@ -2341,7 +2342,6 @@ class statistics_helper
 
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
-                    $tableXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
 
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
@@ -2349,10 +2349,7 @@ class statistics_helper
                     foreach ($result2 as $row2) {
                         $tableXLS[] = array($row2['id'], $row2['value']);
                     }
-
                 }
-
-
             }
 
             /*

@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <hr class="col-sm-12" />
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-lg-6">
                 <!-- Description -->
                 <div class="form-group">
                     <label class=" control-label"  for="description_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-lg-6">
                 <!-- End URL -->
                 <div class="form-group">
                     <label class="control-label "><?php eT("End URL:"); ?></label>
@@ -110,7 +110,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-lg-6">
                 <!-- Welcome message -->
                 <div class="form-group">
                     <label class=" control-label" for='welcome_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
@@ -122,7 +122,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-lg-6">
                 <!-- End message -->
                 <div class="form-group">
                     <label class=" control-label" for='endtext_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
