@@ -1,6 +1,4 @@
-/**
-* New adminpanel
-*/
+/* New adminpanel */
 #sidebar {
   padding-top: 15px; }
   #sidebar .tabbutton.btn-primary {
@@ -53,7 +51,8 @@
     -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
     -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
     transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }
-  #sidebar .fade-enter, #sidebar .fade-leave-to {
+  #sidebar .fade-enter,
+  #sidebar .fade-leave-to {
     -moz-transform: translateY(10px);
     -webkit-transform: translateY(10px);
     -ms-transform: translateY(10px);
@@ -69,7 +68,8 @@
     -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
     -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
     transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }
-  #sidebar .slide-fade-enter, #sidebar .slide-fade-leave-to {
+  #sidebar .slide-fade-enter,
+  #sidebar .slide-fade-leave-to {
     -moz-transform: rotateY(90);
     -webkit-transform: rotateY(90);
     -ms-transform: rotateY(90);
@@ -89,7 +89,8 @@
     -webkit-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
     -ms-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
     transition: all 0.2s cubic-bezier(0, 1, 0.5, 1); }
-  #sidebar .slide-fade-down-enter, #sidebar .slide-fade-down-leave-to {
+  #sidebar .slide-fade-down-enter,
+  #sidebar .slide-fade-down-leave-to {
     -moz-transform: rotateY(45);
     -webkit-transform: rotateY(45);
     -ms-transform: rotateY(45);
@@ -224,6 +225,19 @@ ol.breadcrumb.title-bar-breadcrumb {
 
 .makeDisabledInputsTransparent input:disabled {
   color: transparent; }
+
+.btn-group .btn input[type=radio],
+.btn-group .btn input[type=checkbox] {
+  outline: none;
+  margin: 0;
+  padding: 0;
+  border: 0; }
+  .btn-group .btn input[type=radio]:after,
+  .btn-group .btn input[type=checkbox]:after {
+    display: none; }
+  .btn-group .btn input[type=radio]:before,
+  .btn-group .btn input[type=checkbox]:before {
+    display: none; }
 
 .ls-flex, .ls-flex-row, .ls-flex-column {
   display: -moz-flex;

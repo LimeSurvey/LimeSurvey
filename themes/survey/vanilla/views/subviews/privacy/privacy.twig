@@ -42,7 +42,7 @@
         {% endblock %}
         {% block datasecurity %}
             {% if (aSurveyInfo.showdatasecuritynotice == 1) %}
-                {{include('./subviews/privacy/privacy_simple.twig')}}
+                {{include('./subviews/privacy/privacy_text.twig')}}
             {% elseif (aSurveyInfo.showdatasecuritynotice == 2) %}
                 {{include( './subviews/privacy/privacy_modal.twig')}}
             {% endif %}

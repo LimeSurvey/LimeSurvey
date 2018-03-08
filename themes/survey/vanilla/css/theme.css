@@ -763,6 +763,17 @@ p.return-to-survey{
     font-size: 50%;
     vertical-align: top;
 }
+
+.limit-text-window {
+    max-height: 40rem;
+    max-height: 33vh;
+    padding: 15px 5px;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    border-left: none;
+    border-right: none;
+    outline: none;
 }
 
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/

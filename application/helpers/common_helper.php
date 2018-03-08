@@ -872,6 +872,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
             $thissurvey['description'] = $thissurvey['surveyls_description'];
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
             $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_datasecurity_notice_label'];
+            $thissurvey['datasecurity_error'] = empty($thissurvey['surveyls_datasecurity_error']) ? gT("You have to accept the data security policy!") : $thissurvey['surveyls_datasecurity_error'];
             $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_datasecurity_notice'];
             $thissurvey['templatedir'] = $thissurvey['template'];
             $thissurvey['adminname'] = $thissurvey['admin'];

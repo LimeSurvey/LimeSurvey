@@ -19,12 +19,12 @@
 <br/>
 <div class="row">
     <div class="col-sm-12">
-        <input class="{{ aSurveyInfo.class.privacydataseccheckbox }}" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
         <label for="datasecurity_accepted" class="control-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
+        &nbsp;<input required class="{{ aSurveyInfo.class.privacydataseccheckbox }}" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
     </div>
 </div>
 <div class="modal fade" id="data-security-modal-{{aSurveyInfo.sid}}">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
@@ -34,7 +34,8 @@
                 {{ aSurveyInfo.datasecurity_notice }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true);" data-dismiss="modal">{{gT("Accept")}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{gT("Close")}}</button>
             </div>
         </div>
     </div>

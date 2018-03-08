@@ -118,6 +118,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_welcometext', 'LSYii_Validators'),
             array('surveyls_endtext', 'LSYii_Validators'),
             array('surveyls_datasecurity_notice', 'LSYii_Validators'),
+            array('surveyls_datasecurity_error', 'LSYii_Validators'),
             array('surveyls_datasecurity_notice_label', 'LSYii_Validators'),
             array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
             array('surveyls_urldescription', 'LSYii_Validators'),

@@ -820,6 +820,7 @@ class database extends Survey_Common_Action
                     $welcome = Yii::app()->request->getPost('welcome_'.$langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_'.$langname, null);
                     $datasec = Yii::app()->request->getPost('datasec_'.$langname, null);
+                    $datasecerror = Yii::app()->request->getPost('datasecerror_'.$langname, null);
                     $dataseclabel = Yii::app()->request->getPost('dataseclabel_'.$langname, null);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
@@ -848,6 +849,11 @@ class database extends Survey_Common_Action
                         // Fix bug with FCKEditor saving strange BR types
                         $datasec = $this->oFixCKeditor->fixCKeditor($datasec);
                         $data['surveyls_datasecurity_notice'] = $datasec;
+                    }
+                    if ($datasecerror !== null) {
+                        // Fix bug with FCKEditor saving strange BR types
+                        $datasecerror = $this->oFixCKeditor->fixCKeditor($datasecerror);
+                        $data['surveyls_datasecurity_error'] = $datasecerror;
                     }
                     if ($dataseclabel !== null) {
                         $data['surveyls_datasecurity_notice_label'] = $dataseclabel;

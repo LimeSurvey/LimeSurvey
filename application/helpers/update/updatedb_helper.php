@@ -2201,6 +2201,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 348) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_notice', 'text');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_error', 'text');
             $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_notice_label', 'string(192)');
             $oDB->createCommand()->addColumn('{{surveys}}', 'showdatasecuritynotice', 'int DEFAULT 0');
 

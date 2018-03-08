@@ -1,0 +1,30 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Privacy with modal ·._.·´¯)·._.·´¯)
+
+    Show the privacy message and the data security message will be available in a modal
+
+#}
+
+<!-- Privacy message -->
+<br/>
+<div class="row">
+    <div class="limit-text-window {{ aSurveyInfo.class.privacydatasectextbody }}">
+        {{ aSurveyInfo.datasecurity_notice }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <label for="datasecurity_accepted" class="control-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
+        &nbsp;<input required class="{{ aSurveyInfo.class.privacydataseccheckbox }}" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
+    </div>
+</div>

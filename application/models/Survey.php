@@ -1849,4 +1849,26 @@ return $s->hasTokensTable; });
             ->queryRow();
         return $result !== false;
     }
+
+    public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId) {
+        
+        $STARTPOLICYLINK = "";
+        $ENDPOLICYLINK = "";
+        
+        if(self::model()->findByPk($surveyId)->showdatasecuritynotice == 2){
+            $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='modal'>";
+            $ENDPOLICYLINK = "</a>";
+        }
+        
+
+        if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
+            $dataSecurityNoticeLabel.= " {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
+        }
+
+        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
+        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel);
+
+        return $dataSecurityNoticeLabel;
+
+    }
 }
