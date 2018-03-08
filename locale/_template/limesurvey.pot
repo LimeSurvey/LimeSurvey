@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-08 09:39:51+00:00\n"
+"POT-Creation-Date: 2018-03-08 14:00:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -414,9 +414,9 @@ msgstr ""
 #: application/controllers/admin/questions.php:245
 #: application/controllers/admin/questions.php:385
 #: application/controllers/admin/questions.php:435
-#: application/controllers/admin/questions.php:650
-#: application/controllers/admin/questions.php:1020
-#: application/controllers/admin/questions.php:1152
+#: application/controllers/admin/questions.php:649
+#: application/controllers/admin/questions.php:1019
+#: application/controllers/admin/questions.php:1151
 #: application/controllers/admin/quotas.php:146
 #: application/controllers/admin/quotas.php:364
 #: application/controllers/admin/quotas.php:418
@@ -923,10 +923,10 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:402
 #: application/controllers/admin/questiongroups.php:531
 #: application/controllers/admin/questions.php:420
-#: application/controllers/admin/questions.php:634
-#: application/controllers/admin/questions.php:679
-#: application/controllers/admin/questions.php:1010
-#: application/controllers/admin/questions.php:1179
+#: application/controllers/admin/questions.php:633
+#: application/controllers/admin/questions.php:678
+#: application/controllers/admin/questions.php:1009
+#: application/controllers/admin/questions.php:1178
 #: application/controllers/admin/surveyadmin.php:150
 #: application/controllers/admin/surveyadmin.php:210
 #: application/controllers/admin/surveyadmin.php:471
@@ -3265,70 +3265,70 @@ msgstr ""
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/admin/questions.php:608
+#: application/controllers/admin/questions.php:607
 #: application/core/LsDefaultDataSets.php:789
 msgid "Edit answer options"
 msgstr ""
 
-#: application/controllers/admin/questions.php:844
+#: application/controllers/admin/questions.php:843
 #: application/core/LsDefaultDataSets.php:720
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1021
-#: application/controllers/admin/questions.php:1168
+#: application/controllers/admin/questions.php:1020
+#: application/controllers/admin/questions.php:1167
 #: application/views/admin/survey/Question/editQuestion_view.php:37
 msgid "Add a new question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1168
+#: application/controllers/admin/questions.php:1167
 #: application/views/admin/survey/Question/editQuestion_view.php:39
 #: application/views/admin/survey/Question/editQuestion_view.php:316
 msgid "Copy question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1381
+#: application/controllers/admin/questions.php:1380
 #: application/controllers/admin/surveyadmin.php:73
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1412
+#: application/controllers/admin/questions.php:1411
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1442
+#: application/controllers/admin/questions.php:1441
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1457
+#: application/controllers/admin/questions.php:1456
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1780
+#: application/controllers/admin/questions.php:1779
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1780
+#: application/controllers/admin/questions.php:1779
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1783
+#: application/controllers/admin/questions.php:1782
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1783
+#: application/controllers/admin/questions.php:1782
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1789
+#: application/controllers/admin/questions.php:1788
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1791
+#: application/controllers/admin/questions.php:1790
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1793
+#: application/controllers/admin/questions.php:1792
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:65
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:83
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:99
@@ -3336,7 +3336,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1864
+#: application/controllers/admin/questions.php:1863
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
