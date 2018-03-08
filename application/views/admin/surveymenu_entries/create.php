@@ -13,6 +13,6 @@ $this->menu = array(
 );
 ?>
 
-<h1><?php eT('Create SurveymenuEntries'); ?></h1>
+<h1><?php eT('Create survey menu entries'); ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
