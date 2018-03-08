@@ -203,7 +203,7 @@ $surveyid = $oSurvey->sid;
                                     $fullSurveyDataSecurityNoticeError = LimeExpressionManager::GetLastPrettyPrintExpression();
 
                                     $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
-                                        'widgetsJsName' => "security_notice",
+                                        'widgetsJsName' => "security_error",
                                         'textToDisplay' => $fullSurveyDataSecurityNoticeError
                                     ));
                             ?>

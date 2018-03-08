@@ -177,7 +177,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <?php
 App()->getClientScript()->registerScript(
     'popover_'.$aSurveyLanguageSettings['surveyls_language'], 
-    '$(dataseclabel_popover_'.$aSurveyLanguageSettings['surveyls_language'].').popover()', 
+    '$("dataseclabel_popover_'.$aSurveyLanguageSettings['surveyls_language'].'").popover()', 
     LSYii_ClientScript::POS_POSTSCRIPT 
 )
 ?>
