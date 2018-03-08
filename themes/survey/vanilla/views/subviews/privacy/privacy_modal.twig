@@ -34,7 +34,7 @@
                 {{ aSurveyInfo.datasecurity_notice }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true);" data-dismiss="modal">{{gT("Accept")}}</button>
+                <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-dismiss="modal">{{gT("Accept")}}</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{gT("Close")}}</button>
             </div>
         </div>

@@ -38,3 +38,10 @@
     {# Presents the navigator #}
     {{ include('./subviews/navigation/navigator.twig') }}
 </form> <!-- main form -->
+
+{{ registerScript("BasicFirstPageThemeScripts", "
+    if(window.basicThemeScripts === undefined){ 
+        window.basicThemeScripts = new ThemeScripts(); 
+    } 
+    basicThemeScripts.initWelcomePage(); 
+", 'POS_POSTSCRIPT') }}
