@@ -196,7 +196,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                             <?php endforeach; ?>
                         </ul>
                 <?php else: ?>
-                    <li><?php eT("No duplicated group sort order detected."); ?></li>
+                    <li><?php eT("No issues with question group order found."); ?></li>
                 <?php endif; ?>
 
                 <?php
