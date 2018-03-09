@@ -187,7 +187,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 } ?>
 
                 <?php if (isset($groupOrderDuplicates)): ?>
-                    <li><?php eT("The following surveys have duplicate group sort orders. Please go to each survey respectively and double check the organization of the survey."); ?>
+                    <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
                         <ul>
                             <?php foreach ($groupOrderDuplicates as $info): ?>
                             <li>
