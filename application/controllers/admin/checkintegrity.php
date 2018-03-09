@@ -824,29 +824,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check group sort order duplicates                              */
         /**********************************************************************/
-        $sQuery = "
-            SELECT 
-                sid,
-                COUNT(DISTINCT group_order) AS group_order,
-                COUNT(gid) AS gid
-            FROM
-                lime_groups
-            GROUP BY sid
-            HAVING group_order != gid";
-        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
-        if (!empty($result)) {
-            foreach ($result as &$survey) {
-                $survey['organizerLink'] = Yii::app()->getController()->createUrl(
-                    'admin/survey',
-                    [
-                        'sa' => 'organize',
-                        'surveyid' => $survey['sid'],
-                    ]
-                );
-            }
-            $aDelete['groupOrderDuplicates'] = $result;
-        }
-        unset($survey);  // &$survey escapes scope (lol php).
+        $aDelete['groupOrderDuplicates'] = $this->checkGroupOrderDuplicates();
 
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
@@ -870,6 +848,36 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         return $aDelete;
+    }
+
+    /**
+     * Check group order duplicates.
+     * @return array Result.
+     */
+    protected function checkGroupOrderDuplicates()
+    {
+        $sQuery = "
+            SELECT 
+                sid,
+                COUNT(DISTINCT group_order) AS group_order,
+                COUNT(gid) AS gid
+            FROM
+                lime_groups
+            GROUP BY sid
+            HAVING group_order != gid";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$survey) {
+                $survey['organizerLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'organize',
+                        'surveyid' => $survey['sid'],
+                    ]
+                );
+            }
+        }
+        return $result;
     }
 
     /**
