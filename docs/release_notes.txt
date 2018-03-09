@@ -35,6 +35,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) March 9, 2018
+
+ -Fixed issue #13461: Unable to start survey (markusfluer)
+ -Fixed issue #13204: Even with good settings : browse ressources show "You don't have Permission to browse this server" (markusfluer)
+ -Fixed issue #13268: Impossibilité de désactiver un questionnaire (markusfluer)
+ -Fixed issue #13366: Extending a theme creates world writable directories (LouisGac)
+ -Fixed issue #13371: missing translation (markusfluer)
+ -Fixed issue #13419: Re-ordering questions and groups using Structure drag & drop fails (markusfluer)
+ -Fixed issue #13436: missing translation (markusfluer)
+ -Fixed issue #13440: Quota, Postgress cant add (markusfluer)
+ -Fixed issue #13443: Logic error by using an Eclusive Option in a multiple choice question (markusfluer)
+ -Fixed issue #13444: Exclusive Option in Multiple Choice question makes not exclusive options invisible instead of non selectable (markusfluer)
+ -Fixed issue #13445: Out of Bound error when exporting marked responses from response list (Carsten Schmitz)
+ -Fixed issue #13446: Unable to see "simple plugin" (markusfluer)
+ -Fixed issue #13453: Small display issue in email global settings (Carsten Schmitz)
+ -Fixed issue: 13450: DateTimePicker interface design problem (markusfluer)
+ -Fixed issue: Installation broken (markusfluer)
+ -Fixed issue: Session lifetime setting visible in global settings even though it is only supported for DB sessions (Carsten Schmitz)
+ -Fixed issue: Slider left-/right labels not being set correctly (markusfluer)
+ -Fixed issue: Theme Editor Broken after #13357 fix (LouisGac)
+ -Fixed issue: automatic abbreviation in survey overview not working for data security error (markusfluer)
+ -Fixed issue: hyphens in translation string (markusfluer)
+ -Fixed issue: top bar touching survey (markusfluer)
+ -New feature: Added data security policy settings (markusfluer)
+ -New feature: Check for group sort order duplicates in data integrity check (Olle Haerstedt)
+ -New feature: Check question order during integrity check (Olle Haerstedt)
+ -New feature: Data security settings have to be accepted to take a survey (markusfluer)
+ -New feature: added a js based filter on the data security acceptance (markusfluer)
+ #Updated translation: Catalan by qualitatuvic
+ #Updated translation: Dutch (Informal) by Han
+ #Updated translation: Dutch by Han
+ #Updated translation: French (France) by b00z00
+ #Updated translation: German (Informal) by c_schmitz
+ #Updated translation: German by c_schmitz
+ #Updated translation: Hungarian by kkd
+ #Updated translation: Myanmar by AlexEDGE1
+ #Updated translation: Norwegian (Bokmål) by pmonstad
+ #Updated translation: Polish (Informal) by elissa
+ #Updated translation: Polish by elissa
+
 Changes from 3.4.3 (build 180227) to 3.4.4 (build 180305) March 5, 2018
 -Fixed issue #13246: Fix plugin in survey responses (Olle Haerstedt)
 -Fixed issue #13310: Cannot delete surveys in Survey list when debug is on (Olle Haerstedt)
