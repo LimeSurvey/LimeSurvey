@@ -174,7 +174,7 @@ class LsDefaultDataSets
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
-            'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+            'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
             'packages_ltr'      => null,
             'packages_rtl'      => null
         ];
@@ -206,7 +206,7 @@ class LsDefaultDataSets
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
-            'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+            'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
             'packages_ltr'      => null,
             'packages_rtl'      => null
         ];
