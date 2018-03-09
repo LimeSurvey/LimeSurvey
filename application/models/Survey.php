@@ -139,7 +139,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
- * @property bool $showdatasecuritynotice Show the security notice
+ * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
@@ -159,6 +159,8 @@ class Survey extends LSActiveRecord
 
 
     public $searched_value;
+    
+    public $showsurveypolicynotice = 0; 
 
 
     private $sSurveyUrl;
@@ -363,7 +365,7 @@ class Survey extends LSActiveRecord
             array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showdatasecuritynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
+            array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
             array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
             array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -1856,7 +1858,7 @@ return $s->hasTokensTable; });
         $STARTPOLICYLINK = "";
         $ENDPOLICYLINK = "";
         
-        if(self::model()->findByPk($surveyId)->showdatasecuritynotice == 2){
+        if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
             $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='modal'>";
             $ENDPOLICYLINK = "</a>";
         }

@@ -66,7 +66,7 @@ class database extends Survey_Common_Action
                 'showqnumcode' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'shownoanswer' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'showwelcome' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showdatasecuritynotice' => ['type'=> '', 'default' => 0, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showsurveypolicynotice' => ['type'=> '', 'default' => 0, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'allowprev' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'questionindex' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'nokeyboard' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -848,15 +848,15 @@ class database extends Survey_Common_Action
                     if ($datasec !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $datasec = $this->oFixCKeditor->fixCKeditor($datasec);
-                        $data['surveyls_datasecurity_notice'] = $datasec;
+                        $data['surveyls_policy_notice'] = $datasec;
                     }
                     if ($datasecerror !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $datasecerror = $this->oFixCKeditor->fixCKeditor($datasecerror);
-                        $data['surveyls_datasecurity_error'] = $datasecerror;
+                        $data['surveyls_policy_error'] = $datasecerror;
                     }
                     if ($dataseclabel !== null) {
-                        $data['surveyls_datasecurity_notice_label'] = $dataseclabel;
+                        $data['surveyls_policy_notice_label'] = $dataseclabel;
                     }
                     if ($sURL !== null) {
                         $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
@@ -949,7 +949,7 @@ class database extends Survey_Common_Action
             $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
             $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
-            $oSurvey->showdatasecuritynotice = $this->_filterEmptyFields($oSurvey, 'showdatasecuritynotice');
+            $oSurvey->showsurveypolicynotice = $this->_filterEmptyFields($oSurvey, 'showsurveypolicynotice');
             $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
             $oSurvey->questionindex = (int) $this->_filterEmptyFields($oSurvey, 'questionindex');
             $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey, 'nokeyboard');

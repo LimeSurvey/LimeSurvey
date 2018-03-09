@@ -2200,10 +2200,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 348) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_notice', 'text');
-            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_error', 'text');
-            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_datasecurity_notice_label', 'string(192)');
-            $oDB->createCommand()->addColumn('{{surveys}}', 'showdatasecuritynotice', 'int DEFAULT 0');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice', 'text');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_error', 'text');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice_label', 'string(192)');
+            $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'int DEFAULT 0');
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
             $oTransaction->commit();

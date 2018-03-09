@@ -9345,26 +9345,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_notice'] != '')
+                if ($aSurveyInfo['surveyls_policy_notice'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_error'] != '')
+                if ($aSurveyInfo['surveyls_policy_error'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_error'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_error'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_notice_label'] != '')
+                if ($aSurveyInfo['surveyls_policy_notice_label'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice_label'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
             }
 
