@@ -458,7 +458,7 @@ class CheckIntegrity extends Survey_Common_Action
         $aDelete = array();
         foreach ($aConditions as $condition) {
             if ($condition['cqid'] != 0) {
-// skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
+                // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
                     if (Question::model()->hasErrors()) {
@@ -820,6 +820,33 @@ class CheckIntegrity extends Survey_Common_Action
                 $aDelete['redundantsurveytables'] = $aOldSurveyTableAsk;
             }
         }
+
+        /**********************************************************************/
+        /*     Check group sort order duplicates                              */
+        /**********************************************************************/
+        $sQuery = "
+            SELECT 
+                sid,
+                COUNT(DISTINCT group_order) AS group_order,
+                COUNT(gid) AS gid
+            FROM
+                lime_groups
+            GROUP BY sid
+            HAVING group_order != gid";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$survey) {
+                $survey['organizerLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'organize',
+                        'surveyid' => $survey['sid'],
+                    ]
+                );
+            }
+            $aDelete['groupOrderDuplicates'] = $result;
+        }
+        unset($survey);  // &$survey escapes scope (lol php).
 
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */

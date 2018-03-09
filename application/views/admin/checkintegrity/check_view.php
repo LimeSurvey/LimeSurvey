@@ -186,6 +186,19 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
 
+                <?php if (isset($groupOrderDuplicates)): ?>
+                    <li><?php eT("The following surveys have duplicate group sort orders. Please go to each survey respectively and double check the organization of the survey."); ?>
+                        <ul>
+                            <?php foreach ($groupOrderDuplicates as $info): ?>
+                            <li>
+                                SID: <a href="<?php echo $info['organizerLink']; ?>"><?php echo $info['sid']; ?></a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                <?php else: ?>
+                    <li><?php eT("No duplicated group sort order detected."); ?></li>
+                <?php endif; ?>
+
                 <?php
                     if (isset($orphansurveytables))
                     {?>
