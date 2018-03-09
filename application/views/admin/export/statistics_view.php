@@ -136,4 +136,9 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12 content-left">
+            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?=gT('Export images')?></button>
+        </div>
+    </div>
 </div>
