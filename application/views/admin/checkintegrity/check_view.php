@@ -168,6 +168,24 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <li><?php eT("All questions meet consistency standards."); ?></li><?php
                 } ?>
 
+                <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)): ?>
+                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question respectively, check the question order and save it."); ?>
+                        <ul>
+                            <?php foreach ($questionOrderDuplicates as $info): ?>
+                            <li>
+                                SID: <a href="<?php echo $info['viewSurveyLink']; ?>"><?php echo $info['sid']; ?></a>
+                                GID: <?php echo $info['sid']; ?>
+                                QID: <?php echo $info['qid']; ?>
+                                <?php if ($info['parent_qid'] != 0): ?>
+                                    Parent QID: <a href="<?php echo $info['questionSummaryLink']; ?>"><?php echo $info['parent_qid']; ?></a>
+                                <?php endif; ?>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                <?php else: ?>
+                    <li><?php eT("No issues with question order found."); ?></li>
+                <?php endif; ?>
+
                 <?php
                     if (isset($groups))
                     {?>
