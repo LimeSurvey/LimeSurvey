@@ -715,10 +715,11 @@ class Survey extends LSActiveRecord
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "id" => $oSurveyMenuObject->id,
-                "title" => $oSurveyMenuObject->title,
+                "title" => gt($oSurveyMenuObject->title),
+                "name" => $oSurveyMenuObject->name,
                 "ordering" => $oSurveyMenuObject->ordering,
                 "level" => $oSurveyMenuObject->level,
-                "description" => $oSurveyMenuObject->description,
+                "description" => gT($oSurveyMenuObject->description),
                 "entries" => $entries,
                 "submenus" => $submenus
             ];
