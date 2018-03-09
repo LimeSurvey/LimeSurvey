@@ -969,7 +969,7 @@ class SurveyRuntimeHelper
     }
 
     private function checkForDataSecurityAccepted(){
-         if($this->param['thisstep'] === '0') {
+         if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showdatasecuritynotice>0) {
              $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
             //  if($data_security_accepted !== 'on' && ($this->aSurveyInfo['active'] == 'Y')){
              if($data_security_accepted !== 'on'){
