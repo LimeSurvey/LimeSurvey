@@ -186,7 +186,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
 
-                <?php if (isset($groupOrderDuplicates)): ?>
+                <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)): ?>
                     <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
                         <ul>
                             <?php foreach ($groupOrderDuplicates as $info): ?>
