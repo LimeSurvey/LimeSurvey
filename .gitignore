@@ -1,8 +1,6 @@
 
 # Never include config.php
 /application/config/config.php
-# ignore CAssetManager for debugging
-/framework/web/CAssetManager.php
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -20,23 +18,32 @@
 # upload directory : whole except the index.html and readme.txt
 /upload/*
 !/upload/index.html
+!/upload/admintheme/
 !/upload/admintheme/index.html
+!/upload/labels/
 !/upload/labels/index.html
 !/upload/labels/readme.txt
+!/upload/surveys/
 !/upload/surveys/index.html
 !/upload/surveys/readme.txt
+!/upload/templates/
 !/upload/templates/index.html
 !/upload/templates/readme.txt
+!/upload/themes/
 !/upload/themes/index.html
-!/upload/themes/readme.txt
+!/upload/themes/survey/
 !/upload/themes/survey/index.html
+!/upload/themes/question/
 !/upload/themes/question/readme.txt
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
 !/tmp/index.html
+!/tmp/assets/
 !/tmp/assets/index.html
+!/tmp/runtime/
 !/tmp/runtime/index.html
+!/tmp/upload/
 !/tmp/upload/index.html
 
 # ignore plugins directory by default except LS plugin
