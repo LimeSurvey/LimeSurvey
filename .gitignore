@@ -37,14 +37,9 @@
 !/upload/themes/question/readme.txt
 
 # tmp directory : whole except the index.html for directory create
-/tmp/*
-!/tmp/index.html
-!/tmp/assets/
-!/tmp/assets/index.html
-!/tmp/runtime/
-!/tmp/runtime/index.html
-!/tmp/upload/
-!/tmp/upload/index.html
+/tmp/assets/**/
+/tmp/runtime/cache/*.bin
+/tmp/runtime/plugin.log
 
 # ignore plugins directory by default except LS plugin
 # if you want to add a new distributed plugin : add the directory here
