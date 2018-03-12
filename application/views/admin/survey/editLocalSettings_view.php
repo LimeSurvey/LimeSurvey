@@ -148,7 +148,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     </div>
                 </div>
                 <!-- Data security message -->
-                <div class="form-group">s
+                <div class="form-group">
                     <label class=" control-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Data security message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
