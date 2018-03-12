@@ -1237,8 +1237,10 @@ class InstallerController extends CController
             $sCharset = 'utf8mb4';
         }
 
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+
         $db = array(
-            'connectionString' => "$sDatabaseType:host=$sDatabaseLocation;port=$sDatabasePort;dbname=$sDatabaseName;",
+            'connectionString' => $sDsn,
             'emulatePrepare' => true,
             'username' => $sDatabaseUser,
             'password' => $sDatabasePwd,
