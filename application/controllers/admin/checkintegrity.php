@@ -867,7 +867,7 @@ class CheckIntegrity extends Survey_Common_Action
                 COUNT(DISTINCT group_order) AS group_order,
                 COUNT(gid) AS gid
             FROM
-                lime_groups
+                {{groups}}
             GROUP BY sid
             HAVING group_order != gid";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -900,8 +900,8 @@ class CheckIntegrity extends Survey_Common_Action
                 q.parent_qid,
                 COUNT(DISTINCT q.question_order) AS question_order,
                 COUNT(q.qid) AS qid
-            FROM lime_questions q
-            JOIN lime_groups g ON q.gid = g.gid
+            FROM {{questions}} q
+            JOIN {{groups}} g ON q.gid = g.gid
             GROUP BY sid, gid, parent_qid
             HAVING question_order != qid;
             ";
