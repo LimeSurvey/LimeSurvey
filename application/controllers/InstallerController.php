@@ -1245,7 +1245,7 @@ class InstallerController extends CController
         if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
             $emulatePrepare = true;
         } else {
-            $emulatePrepare = false;
+            $emulatePrepare = null;
         }
 
         $db = array(
