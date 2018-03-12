@@ -23,7 +23,7 @@
                         <a href="#" class="list-group-item selector__select-question-type" id="selector__question-type-select-modal_question-type-<?php echo $aQuestionType['class']?>" data-question-type='<?php
                             echo json_encode([
                                 "key" => $sQuestionTypeKey,
-                                "title" => $aQuestionType['description']
+                                "title" => htmlentities($aQuestionType['description'])
                             ]);
                         ?>' >
                           <?php echo $aQuestionType['description']?>
