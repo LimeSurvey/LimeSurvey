@@ -35,8 +35,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) March 9, 2018
+Changes from 3.5.0 (build 180309) to 3.5.1 (build 180312) March 12, 2018
+-Fixed issue #12715: Behavior change for numericalmultiple Slider default value when 0 or null Upgraded PHP version (markusfluer)
+-Fixed issue #13247: Missing translation in beginner tour (markusfluer)
+-Fixed issue #13464: Invalid SQL in "mail_registered_participants" (Olle Haerstedt)
+-Fixed issue #13467: Untranslated last element in bread crumbs (markusfluer)
+-Fixed issue #13469: 'Check Data integrity' throws Internal server error (Olle Haerstedt)
+-Fixed issue: Cannot install on MSSQL server (Carsten Schmitz)
+-Fixed issue: Multiple inSurveyView height related problems (markusfluer)
 
+Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) March 9, 2018
  -Fixed issue #13461: Unable to start survey (markusfluer)
  -Fixed issue #13204: Even with good settings : browse ressources show "You don't have Permission to browse this server" (markusfluer)
  -Fixed issue #13268: Impossibilité de désactiver un questionnaire (markusfluer)
