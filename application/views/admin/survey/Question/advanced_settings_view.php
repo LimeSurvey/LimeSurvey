@@ -35,13 +35,18 @@ $categoryNum=0;
     <?php endif; ?>
     <div class="form-group">
     <!-- Form Group -->
+        <a class="btn btn-default btn-xs pull-right" data-toggle="collapse" href="#help<?php echo $aAttribute['name'];?>" aria-expanded="false" aria-controls="help<?php echo $aAttribute['name'];?>">
+            <span class="fa fa-info-circle "></span>
+            <span class="sr-only"><?php gT("Show help"); ?></span>
+        </a>
         <!-- Label -->
-        <label class="control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class="control-label" for='<?php echo $aAttribute['name'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
             ?>:
         </label>
+        <p class="help-block collapse" id="help<?php echo $aAttribute['name'];?>"><?php echo $aAttribute['help'];?></p>
 
         <!-- Input -->
         <div class="">
