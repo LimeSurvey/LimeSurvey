@@ -5415,9 +5415,9 @@
 
                 $sdata = array_filter($sdata);
                 SurveyDynamic::sid($this->sid);
-                $oSurvey = new SurveyDynamic;
+                $oSurveyDynamic = new SurveyDynamic;
 
-                $iNewID = $oSurvey->insertRecords($sdata);
+                $iNewID = $oSurveyDynamic->insertRecords($sdata);
                 if ($iNewID)    // Checked
                 {
                     $srid = $iNewID;
@@ -5510,15 +5510,15 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $oSurveyResponse = SurveyDynamic::model($this->sid)->findByAttributes(['id' => $_SESSION[$this->sessid]['srid']]);
-                    
+                    $oSurvey = Survey::model()->findByPk($this->sid);
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
-                    if($oSurveyResponse->lastpage != 1){
+                    if($oSurveyResponse->submitdate == null || $oSurvey->alloweditaftercompletion == 'Y'){
                         array_walk($setter, function($value, $key) use (&$oSurveyResponse) {
                             $oSurveyResponse->setAttribute($key, $value);
                         });
+                        $saveResult = $oSurveyResponse->save();
                     }
 
-                    $saveResult = $oSurveyResponse->save();
 
                     if ( !$saveResult || $oSurveyResponse == null)
                     {
