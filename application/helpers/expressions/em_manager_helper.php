@@ -5517,6 +5517,8 @@
                             $oSurveyResponse->setAttribute($key, $value);
                         });
                         $saveResult = $oSurveyResponse->save();
+                    } else {
+                        $saveResult = true;
                     }
 
 
@@ -5568,12 +5570,13 @@
                     }
                     else
                     {
-                        if ($finished && $oSurveyResponse->submitdate == null) {
+                        if ($finished && ($oSurveyResponse->submitdate == null || $oSurvey->alloweditaftercompletion == 'Y')) {
                             $dateFinished = $this->surveyOptions['datestamp'] 
                                 ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust'])
                                 : date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
 
                             $oSurveyResponse->setAttribute('submitdate',$dateFinished);
+                            $oSurveyResponse->save();
                         }
                     }
 
