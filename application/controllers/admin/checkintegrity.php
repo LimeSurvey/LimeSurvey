@@ -458,7 +458,7 @@ class CheckIntegrity extends Survey_Common_Action
         $aDelete = array();
         foreach ($aConditions as $condition) {
             if ($condition['cqid'] != 0) {
-// skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
+                // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
                     if (Question::model()->hasErrors()) {
@@ -822,6 +822,16 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /**********************************************************************/
+        /*     Check group sort order duplicates                              */
+        /**********************************************************************/
+        $aDelete['groupOrderDuplicates'] = $this->checkGroupOrderDuplicates();
+
+        /**********************************************************************/
+        /*     Check question sort order duplicates                           */
+        /**********************************************************************/
+        $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
+
+        /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
         //1: Get distinct list of survey_link survey ids, check if tokens
@@ -843,6 +853,82 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         return $aDelete;
+    }
+
+    /**
+     * Check group order duplicates.
+     * @return array
+     */
+    protected function checkGroupOrderDuplicates()
+    {
+        $sQuery = "
+            SELECT 
+                sid,
+                COUNT(DISTINCT group_order) AS group_order,
+                COUNT(gid) AS gid
+            FROM
+                {{groups}}
+            GROUP BY sid
+            HAVING group_order != gid";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$survey) {
+                $survey['organizerLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'organize',
+                        'surveyid' => $survey['sid'],
+                    ]
+                );
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Check question order duplicates.
+     * @return array
+     */
+    protected function checkQuestionOrderDuplicates()
+    {
+        $sQuery = "
+            SELECT
+                q.question_order,
+                q.qid,
+                q.gid,
+                q.sid,
+                q.parent_qid,
+                COUNT(DISTINCT q.question_order) AS question_order,
+                COUNT(q.qid) AS qid
+            FROM {{questions}} q
+            JOIN {{groups}} g ON q.gid = g.gid
+            GROUP BY sid, gid, parent_qid
+            HAVING question_order != qid;
+            ";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$info) {
+                $info['viewSurveyLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'view',
+                        'surveyid' => $info['sid'],
+                    ]
+                );
+                if ($info['parent_qid'] != 0) {
+                    $info['questionSummaryLink'] = Yii::app()->getController()->createUrl(
+                        'admin/questions',
+                        [
+                            'sa' => 'subquestions',
+                            'surveyid' => $info['sid'],
+                            'gid' => $info['gid'],
+                            'qid' => $info['parent_qid']
+                        ]
+                    );
+                }
+            }
+        }
+        return $result;
     }
 
     /**

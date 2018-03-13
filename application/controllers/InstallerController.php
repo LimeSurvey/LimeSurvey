@@ -584,6 +584,9 @@ class InstallerController extends CController
                 $aDbConfigArray = $this->_getDatabaseConfigArray();
                 $aDbConfigArray['class'] = '\CDbConnection';
                 \Yii::app()->setComponent('db', $aDbConfigArray, false);
+
+
+
                 $db = \Yii::app()->getDb();
                 $db->setActive(true);
                 $this->connection = $db;
@@ -1137,9 +1140,9 @@ class InstallerController extends CController
             case 'mysqli':
                 // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
                 if (substr($sDatabaseLocation, 0, 1) == "/") {
-                                    $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
+                    $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
                 } else {
-                                    $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
+                    $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 }
                 break;
             case 'pgsql':
@@ -1237,9 +1240,17 @@ class InstallerController extends CController
             $sCharset = 'utf8mb4';
         }
 
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+
+        if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
+            $emulatePrepare = true;
+        } else {
+            $emulatePrepare = null;
+        }
+
         $db = array(
-            'connectionString' => "$sDatabaseType:host=$sDatabaseLocation;port=$sDatabasePort;dbname=$sDatabaseName;",
-            'emulatePrepare' => true,
+            'connectionString' => $sDsn,
+            'emulatePrepare' => $emulatePrepare,
             'username' => $sDatabaseUser,
             'password' => $sDatabasePwd,
             'charset' => $sCharset,

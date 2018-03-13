@@ -5415,9 +5415,9 @@
 
                 $sdata = array_filter($sdata);
                 SurveyDynamic::sid($this->sid);
-                $oSurvey = new SurveyDynamic;
+                $oSurveyDynamic = new SurveyDynamic;
 
-                $iNewID = $oSurvey->insertRecords($sdata);
+                $iNewID = $oSurveyDynamic->insertRecords($sdata);
                 if ($iNewID)    // Checked
                 {
                     $srid = $iNewID;
@@ -5445,7 +5445,6 @@
             }
             if (count($updatedValues) > 0 || $finished)
             {
-                $query = 'UPDATE ' . $this->surveyOptions['tablename'] . ' SET ';
                 $setter = array();
                 switch ($this->surveyMode)
                 {
@@ -5463,14 +5462,15 @@
                         $thisstep = 0;
                         break;
                 }
-                $setter[] = App()->db->quoteColumnName('lastpage') . "=" . App()->db->quoteValue($thisstep);
+                $setter['lastpage'] = $thisstep;
+
 
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                    $setter[] = App()->db->quoteColumnName('datestamp') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                    $setter['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 }
                 if ($this->surveyOptions['ipaddr']) {
-                    $setter[] = App()->db->quoteColumnName('ipaddr') . "=" . App()->db->quoteValue(getIPAddress());
+                    $setter['ipaddr'] = getIPAddress();
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -5503,23 +5503,24 @@
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
                             break;
                     }
-                    if (is_null($val))
-                    {
-                        $setter[] = App()->db->quoteColumnName($key) . "=NULL";
-                    }
-                    else
-                    {
-                        $setter[] = App()->db->quoteColumnName($key) . "=" . App()->db->quoteValue(stripCtrlChars($val));
-                    }
+                    
+                    $setter[$key] = is_null($val) ? NULL :stripCtrlChars($val);
                 }
-                $query .= implode(', ', $setter);
-                $query .= " WHERE ID=";
 
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
-                    $query .= $_SESSION[$this->sessid]['srid'];
+                    $oSurveyResponse = SurveyDynamic::model($this->sid)->findByAttributes(['id' => $_SESSION[$this->sessid]['srid']]);
+                    $oSurvey = Survey::model()->findByPk($this->sid);
+                    //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
+                    if($oSurveyResponse->submitdate == null || $oSurvey->alloweditaftercompletion == 'Y'){
+                        array_walk($setter, function($value, $key) use (&$oSurveyResponse) {
+                            $oSurveyResponse->setAttribute($key, $value);
+                        });
+                        $saveResult = $oSurveyResponse->save();
+                    }
 
-                    if (!dbExecuteAssoc($query))
+
+                    if ( !$saveResult || $oSurveyResponse == null)
                     {
                         // TODO: This kills the session if adminemail is defined, so the queries below won't work.
                         $message = submitfailed('', $query);  // TODO - report SQL error?
@@ -5529,10 +5530,10 @@
                         }
 
                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-
                     }
+
                     // Save Timings if needed
-                    elseif ($this->surveyOptions['savetimings']) {
+                    else if ($this->surveyOptions['savetimings']) {
                         Yii::import("application.libraries.Save");
                         $cSave = new Save();
                         $cSave->set_answer_time();
@@ -5567,19 +5568,12 @@
                     }
                     else
                     {
-                        if ($finished) {
-                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
-                            if($this->surveyOptions['datestamp'])
-                            {
-                                // Replace with date("Y-m-d H:i:s") ? See timeadjust
-                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
-                            }
-                            else
-                            {
-                                $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
-                            }
-                            $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
-                            dbExecuteAssoc($sQuery);   // Checked
+                        if ($finished && $oSurveyResponse->submitdate == null) {
+                            $dateFinished = $this->surveyOptions['datestamp'] 
+                                ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust'])
+                                : date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+
+                            $oSurveyResponse->setAttribute('submitdate',$dateFinished);
                         }
                     }
 
@@ -9345,26 +9339,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_notice'] != '')
+                if ($aSurveyInfo['surveyls_policy_notice'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_error'] != '')
+                if ($aSurveyInfo['surveyls_policy_error'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_error'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_error'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
-                if ($aSurveyInfo['surveyls_datasecurity_notice_label'] != '')
+                if ($aSurveyInfo['surveyls_policy_notice_label'] != '')
                 {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_datasecurity_notice_label'],0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Data security label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
             }
 

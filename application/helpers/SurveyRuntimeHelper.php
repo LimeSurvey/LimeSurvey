@@ -946,11 +946,11 @@ class SurveyRuntimeHelper
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-                $this->aSurveyInfo['datasecurity_notice_label'] = gT("Please accept the data security policy");
+                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey policy.");
             }
 
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
-                $this->aSurveyInfo['datasecurity_error'] = gT("You have to accept the data security policy!");
+                $this->aSurveyInfo['datasecurity_error'] = gT("You will have to accept our survey policy!");
             }
 
             $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
@@ -969,7 +969,7 @@ class SurveyRuntimeHelper
     }
 
     private function checkForDataSecurityAccepted(){
-         if($this->param['thisstep'] === '0') {
+         if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
              $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
             //  if($data_security_accepted !== 'on' && ($this->aSurveyInfo['active'] == 'Y')){
              if($data_security_accepted !== 'on'){

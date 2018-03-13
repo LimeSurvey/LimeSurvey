@@ -41,9 +41,9 @@
             {% endif %}
         {% endblock %}
         {% block datasecurity %}
-            {% if (aSurveyInfo.showdatasecuritynotice == 1) %}
+            {% if (aSurveyInfo.showsurveypolicynotice == 1) %}
                 {{include('./subviews/privacy/privacy_text.twig')}}
-            {% elseif (aSurveyInfo.showdatasecuritynotice == 2) %}
+            {% elseif (aSurveyInfo.showsurveypolicynotice == 2) %}
                 {{include( './subviews/privacy/privacy_modal.twig')}}
             {% endif %}
         {% endblock %}

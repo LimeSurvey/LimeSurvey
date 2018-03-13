@@ -171,7 +171,7 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                <?php if($oSurvey->showdatasecuritynotice > 0) { ?>
+                <?php if($oSurvey->showsurveypolicynotice > 0) { ?>
                     <!-- Data security notice -->
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
@@ -180,7 +180,7 @@ $surveyid = $oSurvey->sid;
                             </div>
                             <div class="col-8">
                                 <?php
-                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_datasecurity_notice));
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_policy_notice));
                                     $fullSurveyDataSecurityNotice = LimeExpressionManager::GetLastPrettyPrintExpression();
 
                                     $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
@@ -199,7 +199,7 @@ $surveyid = $oSurvey->sid;
                             </div>
                             <div class="col-8">
                                 <?php
-                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_datasecurity_error));
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_policy_error));
                                     $fullSurveyDataSecurityNoticeError = LimeExpressionManager::GetLastPrettyPrintExpression();
 
                                     $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
@@ -218,7 +218,7 @@ $surveyid = $oSurvey->sid;
                             </div>
                             <div class="col-8">
                                 <?php
-                                    $dataSecNoticeLabel = Survey::replacePolicyLink($oSurvey->currentLanguageSettings->surveyls_datasecurity_notice_label, $oSurvey->sid);
+                                    $dataSecNoticeLabel = Survey::replacePolicyLink($oSurvey->currentLanguageSettings->surveyls_policy_notice_label, $oSurvey->sid);
                                     templatereplace(flattenText($dataSecNoticeLabel));
                                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                 ?>

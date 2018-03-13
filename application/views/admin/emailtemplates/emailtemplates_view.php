@@ -22,7 +22,7 @@ var LS = LS || {};  // namespace
 ", LSYii_ClientScript::POS_BEGIN );
 
 ?>        
-        <div class="side-body <?php echo getSideBodyClass(false); ?>" style="max-height: 75vh;">
+        <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">

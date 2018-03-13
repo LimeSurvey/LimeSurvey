@@ -219,11 +219,6 @@ class SurveyAdmin extends Survey_Common_Action
         //Yii::app()->loadHelper('text');
         Yii::app()->loadHelper('surveytranslator');
 
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-
-        Yii::app()->loadHelper('/admin/htmleditor');
-        initKcfinder();
-
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
 
         $aData          = array();
@@ -981,7 +976,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
         $this->_registerScriptFiles();
-        Yii::app()->loadHelper("admin/htmleditor");
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
@@ -1763,7 +1757,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @param Survey $survey survey
      * @return mixed
      */
-    private function _tabResourceManagement($survey)
+    private function _tabResourceManagement($oSurvey)
     {
         global $sCKEditorURL;
 
@@ -1774,7 +1768,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $disabledIfNoResources = '';
-        if (hasResources($survey->sid, 'survey') === false) {
+        if (hasResources($oSurvey->sid, 'survey') === false) {
             $disabledIfNoResources = " disabled='disabled'";
         }
         $aData = [];
@@ -1782,6 +1776,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
         $aData['sCKEditorURL'] = $sCKEditorURL;
         $aData['noform'] = true;
+
+        //KCFINDER SETTINGS
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->loadHelper('admin.htmleditor');
+        initKcfinder();
 
         return $aData;
     }

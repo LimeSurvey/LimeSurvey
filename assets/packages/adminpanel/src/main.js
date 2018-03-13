@@ -1,3 +1,4 @@
+
 //globals formId
 import Vue from 'vue';
 import Sidebar from './components/sidebar.vue';
@@ -8,7 +9,7 @@ import LOG from './mixins/logSystem.js';
 
 
 //Ignore phpunits testing tags
-Vue.config.ignoredElements = ['x-test']
+Vue.config.ignoredElements = ['x-test'];
 
 Vue.use(LOG);
 Vue.mixin({
@@ -90,7 +91,7 @@ $(document).on('ready', function () {
 
 let reloadcounter = 5;
 
-$(document).off('pjax:send.aploading').on('pjax:send.aploading', (e) => {
+$(document).off('pjax:send.aploading').on('pjax:send.aploading', () => {
     $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
     $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
     $('#pjax-file-load-container').find('div').css({
@@ -101,15 +102,16 @@ $(document).off('pjax:send.aploading').on('pjax:send.aploading', (e) => {
 });
 
 $(document).off('pjax:error.aploading').on('pjax:error.aploading', (event) => {
-    console.log(event);
+    // eslint-disable-next-line no-console
+    console.ls.log(event);
 });
 
-$(document).off('pjax:complete.aploading').on('pjax:complete.aploading', (e) => {
+$(document).off('pjax:complete.aploading').on('pjax:complete.aploading', () => {
     if(reloadcounter === 0){
         location.reload();
     }
 });
-$(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', (e) => {
+$(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', () => {
     $('#pjax-file-load-container').find('div').css('width', '100%');
     $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
     $(document).trigger('vue-resize-height');
