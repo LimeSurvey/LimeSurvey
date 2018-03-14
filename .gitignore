@@ -40,6 +40,8 @@
 !/upload/themes/question/readme.txt
 
 # tmp directory : whole except the index.html for directory create
+/tmp/*
+!/tmp/*/
 /tmp/assets/**/
 /tmp/runtime/gii-1.1.18/*.*
 /tmp/runtime/cache/*.bin
