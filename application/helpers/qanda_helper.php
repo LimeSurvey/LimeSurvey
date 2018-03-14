@@ -1962,12 +1962,7 @@ function do_multiplechoice($ia)
     }
 
     /// Generate answer rows
-    $i = 0;
-
-    $sRows = '';
     foreach ($aQuestions as $aQuestion) {
-        $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
-        $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$aQuestion['title'];
 
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
