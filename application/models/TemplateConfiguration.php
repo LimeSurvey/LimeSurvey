@@ -83,6 +83,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
     private $aReplacements;
 
+    public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
 
     /**
      * @return string the associated database table name
@@ -601,23 +602,32 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file)
     {
-        $checkImage = getimagesize($this->filesPath.$file['name']);
+        if(file_exists($this->filesPath.$file['name'])) {
+            $imagePath = $this->filesPath.$file['name'];
+            $fileRoot = './files';
+        } else {
+            $imagePath = $this->generalFilesPath.$file['name'] ;
+            $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles/';
+        }
+
+        
+        $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
-                    return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+                    return ['filepath' => $fileRoot.$file['name'], 'filename'=>$file['name']];
         }
     }
 
     protected function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        $fileList = Template::getOtherFiles($this->filesPath);
+        $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         foreach ($fileList as $file) {
             $isImage = $this->_filterImages($file);
 
             if ($isImage) {
-                            $aData['imageFileList'][] = $isImage;
+                $aData['imageFileList'][] = $isImage;
             }
         };
 
@@ -797,10 +807,10 @@ class TemplateConfiguration extends TemplateConfig
     protected function setThisTemplate()
     {
 
-        $this->apiVersion  = (!empty($this->template->api_version)) ? $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath    = $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath   = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
-
+        $this->apiVersion       = (!empty($this->template->api_version)) ? $this->template->api_version : null; // Mandtory setting in config XML
+        $this->viewPath         = $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath        = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
+        $this->generalFilesPath = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 

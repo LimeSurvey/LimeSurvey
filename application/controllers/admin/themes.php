@@ -107,6 +107,7 @@ class themes extends Survey_Common_Action
             $uploadresult = "";
             $success = false;
             $debug = [];
+
             if ($action == 'templateuploadimagefile') {
                 // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
                 // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
@@ -147,6 +148,10 @@ class themes extends Survey_Common_Action
                 }
 
                 $destdir = $oTemplateConfiguration->filesPath;
+                if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
+                    $destdir = $oTemplateConfiguration->generalFilesPath;
+                }
+                
                 $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
                 $fullfilepath = $destdir.$filename;
                 $debug[] = $destdir;
