@@ -1593,16 +1593,11 @@ class questions extends Survey_Common_Action
                     $aAttributeModified = $aAttribute;
                     $aAttributeModified['name'] = $aAttributeModified['name'].'_'.$sLanguage;
                     $aAttributeModified['language'] = $sLanguage;
-                    if ($aAttributeModified['readonly'] == true && $oSurvey->active == 'N') {
-                                            $aAttributeModified['readonly'] == false;
-                    }
-
                     if (isset($aAttributeModified[$sLanguage]['value'])) {
-                                            $aAttributeModified['value'] = $aAttributeModified[$sLanguage]['value'];
+                        $aAttributeModified['value'] = $aAttributeModified[$sLanguage]['value'];
                     } else {
-                                            $aAttributeModified['value'] = $aAttributeModified['default'];
+                        $aAttributeModified['value'] = $aAttributeModified['default'];
                     }
-
                     $aAttributesPrepared[] = $aAttributeModified;
                 }
             }

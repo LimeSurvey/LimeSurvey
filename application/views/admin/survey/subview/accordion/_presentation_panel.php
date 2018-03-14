@@ -46,49 +46,24 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                     ));?>
             </div>
         </div>
-                <!-- showxquestions -->
-        <?php switch($showxquestions):
-                case 'show':  ?>
 
-                    <!-- Show "There are X questions in this survey -->
-                    <div class="form-group">
-                        <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                        <div class="">
-                            <input type="hidden" class="form-control"  name="showxquestions" id="" value="1" />
-                            <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
-                        </div>
-                    </div>
-            <?php break;?>
-
-            <?php case 'hide': ?>
-
-                <!-- Show "There are X questions in this survey -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showxquestions" id="" value="0" />
-                        <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
-                    </div>
+        <!-- security notice -->
+        <div class="form-group">
+            <label class=" control-label" for='showsurveypolicynotice'><?php  eT("Show policy notice:") ; ?></label>
+            <div class="">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==0 ? 'active' : ''?>" >
+                        <input type="radio" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off"> <?=gT("Don't show");?>
+                    </label>
+                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==1 ? 'active' : ''?>" >
+                        <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show as text");?>
+                    </label>
+                    <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==2 ? 'active' : ''?>" >
+                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show in modal");?>
+                    </label>
                 </div>
-            <?php break;?>
-
-            <?php default: ?>
-
-                <!-- Show "There are X questions in this survey" -->
-                <div class="form-group">
-                    <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'showxquestions',
-                            'value'=> $oSurvey->isShowXQuestions,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
-                            ));
-                        ?>
-                    </div>
-                </div>
-            <?php break;?>
-        <?php endswitch ?>
+            </div>
+        </div>
 
         <?php switch($showgroupinfo):
                 case 'both': ?>
@@ -291,6 +266,50 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
     </div>
     <div class="col-sm-12 col-md-6">
         
+        <!-- showxquestions -->
+        <?php switch($showxquestions):
+                case 'show':  ?>
+
+                    <!-- Show "There are X questions in this survey -->
+                    <div class="form-group">
+                        <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                        <div class="">
+                            <input type="hidden" class="form-control"  name="showxquestions" id="" value="1" />
+                            <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
+                        </div>
+                    </div>
+            <?php break;?>
+
+            <?php case 'hide': ?>
+
+                <!-- Show "There are X questions in this survey -->
+                <div class="form-group">
+                    <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                    <div class="">
+                        <input type="hidden" name="showxquestions" id="" value="0" />
+                        <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
+                    </div>
+                </div>
+            <?php break;?>
+
+            <?php default: ?>
+
+                <!-- Show "There are X questions in this survey" -->
+                <div class="form-group">
+                    <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                    <div class="">
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'showxquestions',
+                            'value'=> $oSurvey->isShowXQuestions,
+                            'onLabel'=>gT('On'),
+                            'offLabel'=>gT('Off')
+                            ));
+                        ?>
+                    </div>
+                </div>
+            <?php break;?>
+        <?php endswitch ?>
+
         <!-- welcome screen -->
         <div class="form-group">
             <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>

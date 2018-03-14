@@ -90,16 +90,18 @@ class SurveyRuntimeHelper
     {
         // Survey settings
         $this->setSurveySettings($surveyid, $args);
-
+        
         // Start rendering
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         extract($args);
-
+        
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
         if (!isset($_SESSION[$this->LEMsessid]['step'])) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
+
+        $this->checkForDataSecurityAccepted();
 
         if (!$this->previewgrp && !$this->previewquestion) {
             $this->initMove(); // main methods to init session, LEM, moves, errors, etc
@@ -942,8 +944,21 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            $this->aSurveyInfo['description'] = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']     = $this->processString($this->aSurveyInfo['welcome']) ;
+            //Failsave to have a general standard value
+            if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
+                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey policy.");
+            }
+
+            if (empty($this->aSurveyInfo['datasecurity_error'])) {
+                $this->aSurveyInfo['datasecurity_error'] = gT("You will have to accept our survey policy!");
+            }
+
+            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
+            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
+            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
+            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
+            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
         }
 
         if ($bDisplayFirstPage) {
@@ -951,6 +966,19 @@ class SurveyRuntimeHelper
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
+    }
+
+    private function checkForDataSecurityAccepted(){
+         if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
+             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
+            //  if($data_security_accepted !== 'on' && ($this->aSurveyInfo['active'] == 'Y')){
+             if($data_security_accepted !== 'on'){
+                $_SESSION[$this->LEMsessid]['step'] = 0;
+                $this->aSurveyInfo['datasecuritynotaccepted'] = true;
+                $this->displayFirstPageIfNeeded(true);
+                Yii::app()->end(); // So we can still see debug messages
+            }
+         }
     }
 
     /**

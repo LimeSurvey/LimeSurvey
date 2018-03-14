@@ -2336,7 +2336,7 @@ class remotecontrol_handle
                 $command->addCondition("(completed ='N') or (completed='')");
                 $command->addCondition("validfrom is null OR validfrom < '{$sNow}'");
                 $command->addCondition("validuntil is null OR validuntil > '{$sNow}'");
-                $command->addCondition('emailstatus = "OK"');
+                $command->addCondition("emailstatus = 'OK'");
             }
             $command->order = 'tid';
 

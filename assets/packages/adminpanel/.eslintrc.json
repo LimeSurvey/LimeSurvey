@@ -4,9 +4,15 @@
         "commonjs": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["plugin:vue/essential", "plugin:prettier/recommended"],
     "parserOptions": {
+        "parser" : "babel-eslint",
+        "ecmaVersion": 2017,
         "sourceType": "module"
+    },
+    "plugins": ["vue", "prettier"],
+    "rules": {
+      "prettier/prettier": "error"
     },
     "globals": {
         "process": false,
@@ -15,23 +21,5 @@
         "Pjax" : true,
         "__dirname" : false,
         "LS" : false
-    },
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
     }
 }

@@ -2734,10 +2734,10 @@ function do_multiplenumeric($ia)
             } elseif ($slider_layout && $slider_default !== "" && $slider_default_set) {
                 $sValue                = $slider_default;
             } else {
-                $sValue                = '';
+                $sValue                = null;
             }
 
-            $sUnformatedValue = $sValue;
+            $sUnformatedValue = $sValue ? $sValue : '';
 
             if (strpos($sValue, ".")) {
                 $sValue = rtrim(rtrim($sValue, "0"), ".");
@@ -2800,7 +2800,7 @@ function do_multiplenumeric($ia)
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'slider_orientation'     => $slider_orientation,
-                    'slider_value'           => $sUnformatedValue,
+                    'slider_value'           => $slider_position ?  $slider_position : $sUnformatedValue,
                     'slider_step'            => $slider_step,
                     'slider_min'             => $slider_min,
                     'slider_mintext'         => $slider_mintext,

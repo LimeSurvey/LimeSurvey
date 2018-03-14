@@ -24,7 +24,7 @@ function CheckForDBUpgrades($subaction = null)
     $currentDBVersion = GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update/updatedb');
-            if (isset($subaction) && $subaction == "yes") {
+        if (isset($subaction) && $subaction == "yes") {
             $header = Yii::app()->getController()->_getAdminHeader(false, true);
             $header = preg_replace('/<###begin###>/', '', $header);
             echo $header;
@@ -51,6 +51,14 @@ function CheckForDBUpgrades($subaction = null)
         } else {
             return ShowDBUpgradeNotice();
         }
+    } else {
+        Yii::app()->user->setFlash(
+            'error',
+            sprintf(
+                gT('An internal error occured during the database upgrade. Please go back to the <a href="%s">main menu</a>. Contact support if the error persists.'),
+                Yii::app()->getController()->createUrl("/admin")
+            )
+        );
     }
 }
 

@@ -886,3 +886,15 @@ body .checkbox-item label::after {
 .radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus, .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus{
     outline: none;
 }
+
+.limit-text-window {
+    max-height: 40rem;
+    max-height: 33vh;
+    padding: 15px 5px;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    border-left: none;
+    border-right: none;
+    outline: none;
+}

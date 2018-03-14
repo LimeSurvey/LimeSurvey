@@ -46,6 +46,7 @@ function getSurveyDefaultSettings()
     'expires'                  => '',
     'showqnumcode'             => 'X',
     'showwelcome'              => 'Y',
+    'showsurveypolicynotice'       => 0,
     'emailresponseto'          => '',
     'assessments'              => 'N',
     'navigationdelay'          => 0);

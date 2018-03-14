@@ -2194,6 +2194,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>347], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        /**
+         * Adding security message and settings
+         */
+        if ($iOldDBVersion < 348) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice', 'text');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_error', 'text');
+            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice_label', 'string(192)');
+            $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
         
         if ($iOldDBVersion < 350) {
@@ -2357,6 +2370,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
+    // Update the global config object because it is caching the old version
+    setGlobalSetting('DBVersion', $currentDbVersion['stg_value']);
 
     Notification::broadcast(array(
         'title' => gT('Database update'),

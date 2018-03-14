@@ -46,111 +46,105 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                if ( $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive) )
+                $readonly = $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive);
+                switch ($aAttribute['inputtype'])
                 {
-                    // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
-                    echo "<input type='text' class='form-control' disabled value='".\CHtml::encode($aAttribute['value'])."' />";
+                    // Switch
+                    case 'switch':
+                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => $aAttribute['name'],
+                            'value'=> $aAttribute['value'],
+                            'onLabel'=>gT('On'),
+                            'offLabel'=>gT('Off'),
+                            'htmlOptions'=>array(
+                                'disabled'=>$readonly,
+                            ),
+                        ));
+                        break;
+                        // Button group
+                    case 'buttongroup':
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => $aAttribute['name'],
+                            'value'=> $aAttribute['value'] ,
+                            'selectOptions'=>$aAttribute['options'],
+                            'htmlOptions'=>array(
+                                'disabled'=>$readonly,
+                            ),
+                        ));
+                        break;
+                        // Single select
+                    case 'singleselect':
+                        echo CHtml::dropDownList($aAttribute['name'],$aAttribute['value'],$aAttribute['options'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                            'encode'=>false, // gt encode it by default
+                        ));
+                        break;
+                        // Text
+                    case 'text':
+                        if($aAttribute['expression']>=2) {
+                            echo CHtml::tag('div',array('class'=>"input-group"),"",false);
+                            echo CHtml::tag('div',array('class'=>"input-group-addon"),"{");
+                        }
+                         echo CHtml::textField($aAttribute['name'],$aAttribute['value'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                        ));
+                        if($aAttribute['expression']>=2) {
+                            echo CHtml::tag('div',array('class'=>"input-group-addon"),"}");
+                            echo CHtml::closeTag('div');
+                        }
+                        break;
+
+                    // Integer
+                    case 'integer':
+                        echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                            'step'=>1,
+                            'pattern'=>'\d+',
+                            'min'=>(isset($aAttribute['min'])?$aAttribute['min']:1),
+                            'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
+                        ));
+                        break;
+
+                    // Interger
+                    case 'columns':
+                        echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                            'step'=>1,
+                            'pattern'=>'\d+',
+                            'min'=>1,
+                            'max'=>12
+                        ));
+                        break;
+                    // Textarea
+                    case 'textarea':
+                        if ($aAttribute['expression']>=2) {
+                            echo CHtml::tag('div',array('class'=>"input-group"),"",false);
+                            echo CHtml::tag('div',array('class'=>"input-group-addon"),"{");
+                        }
+                        echo CHtml::textArea($aAttribute['name'],$aAttribute['value'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                        ));
+                        if ($aAttribute['expression']>=2) {
+                            echo CHtml::tag('div',array('class'=>"input-group-addon"),"}");
+                            echo CHtml::closeTag('div');
+                        }
+                        break;
+
+                    // Question template selector
+                    case 'question_template':
+                        echo CHtml::dropDownList($aAttribute['name'],$aAttribute['value'],$aQuestionTemplates,array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                        ));
+                        break;
+
                 }
-                else
-                {
-                    switch ($aAttribute['inputtype'])
-                    {
-                        // Switch
-                        case 'switch':
-                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => $aAttribute['name'],
-                                'value'=> $aAttribute['value'],
-                                'onLabel'=>gT('On'),
-                                'offLabel'=>gT('Off')
-                            ));
-                            break;
-                            // Button group
-                        case 'buttongroup':
-                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                                'name' => $aAttribute['name'],
-                                'value'=> $aAttribute['value'] ,
-                                'selectOptions'=>$aAttribute['options']
-                            ));
-                            break;
-                            // Single select
-                        case 'singleselect':
-                            echo "<select class='form-control' id='{$aAttribute['name']}' name='{$aAttribute['name']}'>";
-                            foreach($aAttribute['options'] as $sOptionvalue=>$sOptiontext)
-                            {
-                                echo "<option value='{$sOptionvalue}' ";
-                                if ($aAttribute['value']==$sOptionvalue)
-                                {
-                                    echo " selected='selected' ";
-                                }
-                                echo ">{$sOptiontext}</option>";
-                            }
-                            echo "</select>";
-                            break;
-
-                            // Text
-                        case 'text':?>
-                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
-                                <div class="input-group">
-                                    <div class="input-group-addon">{</div>
-                            <?php } ?>
-                            <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo htmlspecialchars($aAttribute['value'],ENT_QUOTES, 'UTF-8');?>' />
-                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
-                                    <div class="input-group-addon">}</div>
-                                </div>
-                            <?php } ?>
-                            <?php
-                            break;
-
-                        // Integer
-                        case 'integer':?>
-                            <?php echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
-                                'class'=>"form-control",
-                                'step'=>1,
-                                'pattern'=>'\d+',
-                                'min'=>(isset($aAttribute['min'])?$aAttribute['min']:1),
-                                'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
-                            )); ?>
-                            <?php
-                            break;
-
-                        // Interger
-                        case 'columns':?>
-                            <input type='number' min="1" max="12" step="1" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
-                            <?php
-                            break;
-
-
-                        // Textarea
-                        case 'textarea':?>
-                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
-                                <div class="input-group">
-                                    <div class="input-group-addon">{</div>
-                            <?php } ?>
-                            <textarea class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>'><?php echo $aAttribute['value'];?></textarea>
-                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
-                                    <div class="input-group-addon">}</div>
-                                </div>
-                            <?php } ?>
-                            <?php
-                            break;
-
-                        // Question template selector
-                        case 'question_template':
-                            echo "<select class='form-control' id='{$aAttribute['name']}' name='{$aAttribute['name']}'>";
-                            foreach($aQuestionTemplates as $sOptionvalue=>$sOptiontext)
-                            {
-                                echo "<option value='{$sOptionvalue}' ";
-                                if ($aAttribute['value']==$sOptionvalue)
-                                {
-                                    echo " selected='selected' ";
-                                }
-                                echo ">{$sOptiontext}</option>";
-                            }
-                            echo "</select>";
-                            break;
-
-                    }
-                }?>
+                ?>
             </div>
         </div>
 <?php endforeach;?>

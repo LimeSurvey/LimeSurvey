@@ -39,10 +39,15 @@
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
             {% endif %}
             <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
-                    {{ C.Html.textField( myfname, dispVal ,{
+                    {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item',
-                            'id' : "answer" ~ myfname, 
+                            'id' : "answer" ~ myfname ~ "slid", 
                             'aria-labelledby' : 'label-' ~ myfname
+                        })
+                    }}                
+                    {{ C.Html.textField( myfname, dispVal ,{
+                            'class': 'form-control answer-item numeric-item hidden slider-untouched',
+                            'id' : "answer" ~ myfname, 
                         })
                     }}                
                 {% if slider_showminmax %}
@@ -71,7 +76,8 @@
     }
     window.activeSliders.s{{myfname}} = new LSSlider({
         'qid': "{{qid}}",
-        'element': "{{myfname}}",
+        'element': "{{myfname}}slid",
+        'rootElement': "{{myfname}}",
         'value' : '{{slider_value}}',
         'min' : {{slider_min}},
         'max' : {{slider_max}},
