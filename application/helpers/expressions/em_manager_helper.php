@@ -5518,8 +5518,15 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $query .= $_SESSION[$this->sessid]['srid'];
+                    
+                    //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
+                    $oSurveyResponse = SurveyDynamic::model($this->sid)->findByAttributes(['id' => $_SESSION[$this->sessid]['srid']]);
+                    $result = true;
+                    if ($oSurveyResponse->submitdate == null || $this->surveyOptions['alloweditaftercompletion'] == 'Y') {
+                        $result = !dbExecuteAssoc($query);
+                    }
 
-                    if (!dbExecuteAssoc($query))
+                    if ($result)
                     {
                         // TODO: This kills the session if adminemail is defined, so the queries below won't work.
                         $message = submitfailed('', $query);  // TODO - report SQL error?
@@ -5567,7 +5574,7 @@
                     }
                     else
                     {
-                        if ($finished) {
+                        if ($finished && ($oSurveyResponse->submitdate == null || $this->surveyOptions['alloweditaftercompletion'] == 'Y')) {
                             $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
                             if($this->surveyOptions['datestamp'])
                             {
