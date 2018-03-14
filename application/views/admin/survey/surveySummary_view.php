@@ -240,12 +240,10 @@ $surveyid = $oSurvey->sid;
                 </a>
             </div>
             <div class="row ls-space margin top-10">
-        <?php } ?>
 
         <div class="col-md-12 col-lg-6">
-        <?=Yii::app()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/'.$panel, get_defined_vars(), true)?>
+        <?php // TODO: $panel not defined. Yii::app()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/'.$panel, get_defined_vars(), true)?>
         </div>
 
-    <?php } ?>       
 </div>
 <!-- END surveySummary -->
