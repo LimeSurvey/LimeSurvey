@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-15 09:19:21+00:00\n"
+"POT-Creation-Date: 2018-03-15 09:29:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4926,7 +4926,6 @@ msgid "An email with a generated password was sent to the user."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:151
-#: application/helpers/update/update_helper.php:35
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
 #: application/views/admin/dataentry/vvimport_result.php:10
@@ -11056,22 +11055,8 @@ msgstr ""
 msgid "Comma (,)"
 msgstr ""
 
-#: application/helpers/update/update_helper.php:37
-msgid "Database has been successfully upgraded to version %s"
-msgstr ""
-
-#: application/helpers/update/update_helper.php:40
-#: application/views/admin/token/tokenwarning.php:43
-#: application/views/admin/update/updater/steps/_old_step4b.php:40
-msgid "Back to main menu"
-msgstr ""
-
-#: application/helpers/update/update_helper.php:48
-msgid "Please fix this error in your database and try again"
-msgstr ""
-
-#: application/helpers/update/update_helper.php:58
-msgid "An internal error occured during the database upgrade. Please go back to the <a href=\"%s\">main menu</a>. Contact support if the error persists."
+#: application/helpers/update/update_helper.php:60
+msgid "An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists."
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:261
@@ -17071,7 +17056,7 @@ msgid "Data security checkbox label:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:143
-msgid "Howto link to survey policy statement modal"
+msgid "How to link to the survey policy statement modal window"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:144
@@ -19195,6 +19180,11 @@ msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:41
 msgid "You don't have the permission to activate tokens."
+msgstr ""
+
+#: application/views/admin/token/tokenwarning.php:43
+#: application/views/admin/update/updater/steps/_old_step4b.php:40
+msgid "Back to main menu"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:58
