@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-15 09:29:36+00:00\n"
+"POT-Creation-Date: 2018-03-15 13:31:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1016,9 +1016,8 @@ msgstr ""
 #: application/helpers/replacements_helper.php:479
 #: application/views/admin/assessments/assessments_delete.php:24
 #: application/views/admin/conditions/conditionshead_view.php:73
-#: application/views/admin/emailtemplates/email_language_template_tab.php:120
-#: application/views/admin/emailtemplates/email_language_template_tab.php:121
-#: application/views/admin/emailtemplates/emailtemplates_view.php:104
+#: application/views/admin/emailtemplates/email_language_template_tab.php:122
+#: application/views/admin/emailtemplates/emailtemplates_view.php:101
 #: application/views/admin/homepagesettings/index.php:21
 #: application/views/admin/labels/labelsetsbar_view.php:111
 #: application/views/admin/notifications/notifications.php:19
@@ -2354,7 +2353,8 @@ msgstr ""
 #: application/views/admin/assessments/assessments_edit.php:125
 #: application/views/admin/conditions/conditionshead_view.php:71
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
-#: application/views/admin/emailtemplates/emailtemplates_view.php:65
+#: application/views/admin/emailtemplates/email_language_template_tab.php:122
+#: application/views/admin/emailtemplates/emailtemplates_view.php:62
 #: application/views/admin/labels/editlabel_view.php:77
 #: application/views/admin/participants/blacklist_view.php:119
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:229
@@ -2529,6 +2529,103 @@ msgstr ""
 msgid "Email templates successfully saved."
 msgstr ""
 
+#: application/controllers/admin/emailtemplates.php:175
+msgid "Invitation"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:176
+msgid "Invitation email subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:177
+msgid "Invitation email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:178
+msgid "Invitation attachments:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:189
+msgid "Reminder"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:190
+msgid "Reminder email subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:191
+msgid "Reminder email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:192
+msgid "Reminder attachments:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:203
+msgid "Confirmation"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:204
+msgid "Confirmation email subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:205
+msgid "Confirmation email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:206
+msgid "Confirmation attachments:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:217
+#: application/controllers/admin/themes.php:838
+msgid "Registration"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:218
+msgid "Registration email subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:219
+msgid "Registration email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:220
+msgid "Registration attachments:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:231
+msgid "Basic admin notification"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:232
+msgid "Basic admin notification subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:233
+msgid "Basic admin notification email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:234
+msgid "Basic notification attachments:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:245
+msgid "Detailed admin notification"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:246
+msgid "Detailed admin notification subject:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:247
+msgid "Detailed admin notification email body:"
+msgstr ""
+
+#: application/controllers/admin/emailtemplates.php:248
+msgid "Detailed notification attachments:"
+msgstr ""
+
 #: application/controllers/admin/export.php:212
 #: application/controllers/admin/export.php:251
 #: application/controllers/admin/export.php:252
@@ -2684,7 +2781,6 @@ msgstr ""
 
 #: application/controllers/admin/labels.php:316
 #: application/helpers/qanda_helper.php:2389
-#: application/views/admin/emailtemplates/email_language_template_tab.php:122
 #: application/views/admin/labels/_labelviewtabcontent_view.php:86
 #: application/views/admin/survey/Question/answerOptions_view.php:232
 #: application/views/admin/themes/templatesummary_view.php:136
@@ -4105,11 +4201,6 @@ msgstr ""
 msgid "Survey list"
 msgstr ""
 
-#: application/controllers/admin/themes.php:838
-#: application/views/admin/emailtemplates/email_language_tab.php:46
-msgid "Registration"
-msgstr ""
-
 #: application/controllers/admin/themes.php:839
 msgid "Print answers"
 msgstr ""
@@ -4926,6 +5017,7 @@ msgid "An email with a generated password was sent to the user."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:151
+#: application/helpers/update/update_helper.php:35
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
 #: application/views/admin/dataentry/vvimport_result.php:10
@@ -11055,7 +11147,21 @@ msgstr ""
 msgid "Comma (,)"
 msgstr ""
 
-#: application/helpers/update/update_helper.php:60
+#: application/helpers/update/update_helper.php:37
+msgid "Database has been successfully upgraded to version %s"
+msgstr ""
+
+#: application/helpers/update/update_helper.php:40
+#: application/views/admin/token/tokenwarning.php:43
+#: application/views/admin/update/updater/steps/_old_step4b.php:40
+msgid "Back to main menu"
+msgstr ""
+
+#: application/helpers/update/update_helper.php:48
+msgid "Please fix this error in your database and try again"
+msgstr ""
+
+#: application/helpers/update/update_helper.php:58
 msgid "An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists."
 msgstr ""
 
@@ -12618,7 +12724,7 @@ msgid "Quick-add conditions"
 msgstr ""
 
 #: application/views/admin/conditions/conditionshead_view.php:72
-#: application/views/admin/emailtemplates/emailtemplates_view.php:66
+#: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/pluginmanager/configure.php:28
 #: application/views/admin/survey/Question/editQuestion_view.php:321
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:126
@@ -13088,98 +13194,6 @@ msgstr ""
 msgid "Cannot import the VVExport file."
 msgstr ""
 
-#: application/views/admin/emailtemplates/email_language_tab.php:4
-msgid "Invitation"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:5
-msgid "Invitation email subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:6
-msgid "Invitation email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:7
-msgid "Invitation attachments:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:18
-msgid "Reminder"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:19
-msgid "Reminder email subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:20
-msgid "Reminder email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:21
-msgid "Reminder attachments:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:32
-msgid "Confirmation"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:33
-msgid "Confirmation email subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:34
-msgid "Confirmation email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:35
-msgid "Confirmation attachments:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:47
-msgid "Registration email subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:48
-msgid "Registration email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:49
-msgid "Registration attachments:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:60
-msgid "Basic admin notification"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:61
-msgid "Basic admin notification subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:62
-msgid "Basic admin notification email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:63
-msgid "Basic notification attachments:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:74
-msgid "Detailed admin notification"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:75
-msgid "Detailed admin notification subject:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:76
-msgid "Detailed admin notification email body:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_tab.php:77
-msgid "Detailed notification attachments:"
-msgstr ""
-
 #: application/views/admin/emailtemplates/email_language_template_tab.php:31
 msgid "Actions:"
 msgstr ""
@@ -13218,17 +13232,17 @@ msgstr ""
 msgid "This will replace the existing text. Continue?"
 msgstr ""
 
-#: application/views/admin/emailtemplates/emailtemplates_view.php:82
+#: application/views/admin/emailtemplates/emailtemplates_view.php:79
 msgid "Choose file"
 msgstr ""
 
-#: application/views/admin/emailtemplates/emailtemplates_view.php:96
+#: application/views/admin/emailtemplates/emailtemplates_view.php:93
 #: application/views/admin/survey/Question/answerOptions_view.php:114
 #: application/views/admin/survey/Question/editQuestion_view.php:266
 msgid "Relevance equation"
 msgstr ""
 
-#: application/views/admin/emailtemplates/emailtemplates_view.php:105
+#: application/views/admin/emailtemplates/emailtemplates_view.php:102
 #: application/views/admin/survey/Question/massive_actions/_selector.php:63
 #: application/views/admin/survey/Question/massive_actions/_selector.php:84
 #: application/views/admin/survey/Question/massive_actions/_selector.php:105
@@ -19180,11 +19194,6 @@ msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:41
 msgid "You don't have the permission to activate tokens."
-msgstr ""
-
-#: application/views/admin/token/tokenwarning.php:43
-#: application/views/admin/update/updater/steps/_old_step4b.php:40
-msgid "Back to main menu"
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:58
