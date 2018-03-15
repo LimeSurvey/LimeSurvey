@@ -13,7 +13,12 @@ class TextDisplaySwitch extends CWidget {
         
         $this->registerScripts();
         $outView = (strlen($this->textToDisplay) > $this->abbreviationSize) ? 'default' : 'short';
-        $this->render($outView, null, $returnHtml);
+        
+        if( $this->returnHtml ){
+            return $this->render($outView, null, true);
+        }
+
+        $this->render($outView);
 
     }
 

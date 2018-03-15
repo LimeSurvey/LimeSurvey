@@ -312,11 +312,12 @@ class LS_Twig_Extension extends Twig_Extension
         templatereplace(flattenText($sInString));
         $fullInString = LimeExpressionManager::GetLastPrettyPrintExpression();
 
-        return $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+        $widget = App()->getController()->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
             'widgetsJsName' =>  $name,
             'textToDisplay' => $fullInString,
             'returnHtml' => true
         ));
+        return $widget->run();
     }
 
 
