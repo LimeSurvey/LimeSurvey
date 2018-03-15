@@ -41,7 +41,7 @@
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
-!/tmp/*/
+!/tmp/*/*index.html
 /tmp/assets/**/
 /tmp/runtime/gii-1.1.18/*.*
 /tmp/runtime/cache/*.bin
