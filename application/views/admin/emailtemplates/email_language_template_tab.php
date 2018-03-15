@@ -116,16 +116,9 @@ $script = array();
 <?php                 
 
 App()->getClientScript()->registerScript("ScriptEmailTemplateLanguageTemplate_<?=$grouplang?>_<?=$tab?>", "
-    $('#validate_expression_".$grouplang."_".$tab."').remoteModal({}, {
-        closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"".gT("Close")."\"><span aria-hidden=\"true\">&times;</span></button>',
-        closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gT("Close")."</button>',
-        saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT('Save changes')."</button>'
-    });\n\n
-    $('#reset_template_".$grouplang."_".$tab."').on('click', function(){
-        $('#'+$(this).data('target')).val($(this).data('value'));
-    });\n\n
     var prepEmailTemplates = PrepEmailTemplates();\n
     prepEmailTemplates.init();\n
+    prepEmailTemplates.bindActions({validate: '#validate_expression_".$grouplang."_".$tab."', reset: '#reset_template_".$grouplang."_".$tab."'}, 
+    {close: '".gT('Close')."', save: '".gT('Save')."'}, '".App()->getController()->createUrl('admin/emailtemplates/getTemplateOfType', array('type' => $tab, 'language' => $grouplang, 'survey' => $surveyid ))."');\n
     ".implode("\n", $script), LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>
