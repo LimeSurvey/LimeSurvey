@@ -45,15 +45,15 @@
         public function getFiles($qid = null)
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
-            $conditions = [
-                'sid' => $this->dynamicId,
-                'type' => Question::QT_VERTICAL_FILE_UPLOAD,
-                'language'=>$survey->language
-            ];
+            $criteria = new CDbCriteria();
+            $criteria->compare('sid', $this->dynamicId);
+            $criteria->compare('type', Question::QT_VERTICAL_FILE_UPLOAD);
+            $criteria->compare('questionL10ns.language', $survey->language);
             if ($qid !== null) {
-                $conditions['qid'] = $qid;
+                $criteria->compare('qid', $qid);
             }
-            $questions = Question::model()->findAllByAttributes($conditions);
+
+            $questions = Question::model()->with('questionL10ns')->findAll($criteria);
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
