@@ -30,7 +30,7 @@
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="{{ aSurveyInfo.class.indexmenugli }} dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}" {{ aSurveyInfo.attr.indexmenugli }} >
             <a class="{{ aSurveyInfo.class.indexmenuglia }} dropdown-toggle" {{ aSurveyInfo.attr.indexmenuglia }} href="#" >
-                {{ "Question index" | t }}
+                {{ gT("Question index") }}
                 <span class="{{ aSurveyInfo.class.indexmenugspan }} caret" {{ aSurveyInfo.attr.indexmenugspan }}></span>
             </a>
 
@@ -67,14 +67,14 @@
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="{{ aSurveyInfo.class.indexmenusli }} dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}" {{ aSurveyInfo.attr.indexmenusli }}>
             <a class="{{ aSurveyInfo.class.indexmenuslia }} dropdown-toggle animate" {{ aSurveyInfo.attr.indexmenuslia }}>
-                {{ "Question index" | t }}
+                {{ gT("Question index") }}
                 <span class="{{ aSurveyInfo.class.indexmenusspan }} caret" {{ aSurveyInfo.attr.indexmenusspan }}></span>
             </a>
 
             <!-- TODO: Remove this when support is added -->
             <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
                 <li>
-                    {{ "Question by question mode not yet supported." | t }}
+                    {{ gT("Question by question mode not yet supported.") }}
                 </li>
 
             {% for group in aSurveyInfo.indexItems %}

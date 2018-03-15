@@ -40,15 +40,15 @@
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
     <div class="{{ aSurveyInfo.class.savecontainer }} well clearfix " {{ aSurveyInfo.attr.savecontainer }}>
-        <div class="{{ aSurveyInfo.class.savecontainertitle }} h2" {{ aSurveyInfo.attr.savecontainertitle }}>{{ "Save your unfinished survey" | t }}</div>
+        <div class="{{ aSurveyInfo.class.savecontainertitle }} h2" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</div>
         <div class="{{ aSurveyInfo.class.savecontainertext }} text-info" {{ aSurveyInfo.attr.savecontainertext }}>
-            <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ "Enter a name and password for this survey and click save below." | t }} </p>
-            <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password." | t }} </p>
-            <p class='{{ aSurveyInfo.class.savecontainertextpc }}' {{ aSurveyInfo.attr.savecontainertextpc }}> {{ "If you give an email address, an email containing the details will be sent to you." | t }} </p>
-            <p {{ aSurveyInfo.attr.savecontainertextpd }}> {{ "After having clicked the save button you can either close this browser window or continue filling out the survey." | t }} </p>
+            <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ gT("Enter a name and password for this survey and click save below.") }} </p>
+            <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.") }} </p>
+            <p class='{{ aSurveyInfo.class.savecontainertextpc }}' {{ aSurveyInfo.attr.savecontainertextpc }}> {{ gT("If you give an email address, an email containing the details will be sent to you.") }} </p>
+            <p {{ aSurveyInfo.attr.savecontainertextpd }}> {{ gT("After having clicked the save button you can either close this browser window or continue filling out the survey.") }} </p>
         </div>
         <div class="{{ aSurveyInfo.class.savecontainerwarning }} text-warning" {{ aSurveyInfo.attr.savecontainerwarning }}>
-            <p> {{ "To remain anonymous please use a pseudonym as your username, also an email address is not required." | t }} </p>
+            <p> {{ gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.") }} </p>
         </div>
     </div>
 
@@ -96,9 +96,9 @@
 
                     <!-- Saved name  -->
                     <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label col-sm-3' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
-                        {{ "Name:" | t }}
+                        {{ gT("Name:") }}
                         <small class="{{ aSurveyInfo.class.saveformsurveydivalabelsmall }} text-danger asterisk fa fa-asterisk pull-left small " {{ aSurveyInfo.attr.saveformsurveydivalabelsmall }} ></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ "Mandatory" | t }}<span>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}<span>
                     </label>
                     <div class='{{ aSurveyInfo.class.saveformsurveydivb }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivb }}>
 
@@ -123,9 +123,9 @@
                 <!-- Password -->
                 <div class='{{ aSurveyInfo.class.saveformsurveydivc }} form-group' {{ aSurveyInfo.attr.saveformsurveydivc }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
-                        {{ "Password:" | t }}
+                        {{ gT("Password:") }}
                         <small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} ></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ "Mandatory" | t }}<span>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
                     <div class='{{ aSurveyInfo.class.saveformsurveydivcdiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivcdiv }}>
@@ -149,9 +149,9 @@
                 <!-- Confirm password -->
                 <div class='{{ aSurveyInfo.class.saveformsurveydivd }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
-                        {{ "Repeat password:" | t }}
+                        {{ gT("Repeat password:") }}
                         <small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ "Mandatory" | t }}<span>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
                     <div class='{{ aSurveyInfo.class.saveformsurveydivddiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivddiv }}>
@@ -174,7 +174,7 @@
                 <!-- Email -->
                 <div class='{{ aSurveyInfo.class.saveformsurveydive }}  form-group ' {{ aSurveyInfo.attr.saveformsurveydive }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivelabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivelabel }} >
-                        {{ "Your email address:" | t }}
+                        {{ gT("Your email address:") }}
                     </label>
                     <div class='{{ aSurveyInfo.class.saveformsurveydivediv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivediv }}>
 
@@ -198,7 +198,7 @@
                     <!-- Captcha -->
                     <div class='{{ aSurveyInfo.class.saveformsurveydivf }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }} >
                         <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
-                            {{ "Security question:" | t }}
+                            {{ gT("Security question:") }}
                         </label>
                         <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivddiv }} >
                             <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdiv }} input-group' {{ aSurveyInfo.attr.saveformsurveydivddivdiv }}>
@@ -215,7 +215,7 @@
                 <div class='{{ aSurveyInfo.class.saveformsurveydivg }} form-group' {{ aSurveyInfo.attr.saveformsurveydivg }}>
                     <div class='{{ aSurveyInfo.class.saveformsurveydivgdiv }}  col-sm-7 col-md-offset-3' {{ aSurveyInfo.attr.saveformsurveydivgdiv }}>
                         <button {{ aSurveyInfo.attr.saveformsurveydivgdivbutton }}  class='{{ aSurveyInfo.class.saveformsurveydivgdivbutton }} btn btn-default' >
-                            {{ "Save Now" | t }}
+                            {{ gT("Save Now") }}
                         </button>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
 
         <div class='{{ aSurveyInfo.class.saveformsurveydivh }}' {{ aSurveyInfo.attr.saveformsurveydivh }}>
             <div class="{{ aSurveyInfo.class.saveformsurveydivhdiv }} " {{ aSurveyInfo.attr.saveformsurveydivhdiv }}>
-                <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.saveformsurveydivhdiva }}">{{ "Return to survey" | t }}</a>
+                <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.saveformsurveydivhdiva }}">{{ gT("Return to survey") }}</a>
             </div>
         </div>
     </div>

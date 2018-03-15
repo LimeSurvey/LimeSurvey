@@ -2,7 +2,7 @@
     {% block question_name %}
     <div class="col-md-4">
         <b>{{question.question}} ({{question.qid}})</b><br/>
-        <small>{{ "Type:" | t }} ({{question.type}}/{{question.questionclass}})</small>
+        <small>{{ gT("Type:") }} ({{question.type}}/{{question.questionclass}})</small>
     </div>
     {% endblock  %}
     {% block question_answer %}
