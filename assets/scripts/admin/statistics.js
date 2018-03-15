@@ -697,7 +697,9 @@ var createPDFworker = function (tableArray) {
 
         createPDF('getParseHtmlPromise').then(function (resolve) {
             var answerObject = createPDF('exportPdf');
-            var newWindow = window.open(answerObject.msg, 600, 800);
+            console.ls.log(answerObject);
+            var newWindow = window.open("about:blank", 600, 800);
+            newWindow.document.write("<html style='height:100%;width:100%'><iframe style='width:100%;height:100%;' src='"+answerObject.msg+"' border=0></iframe></html>");
             res('done');
         }, function (reject) {
             rej(arguments);
