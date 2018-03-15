@@ -352,7 +352,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
 
     if (in_array($field['LStype'], array('N', 'K'))) {
         return array(
-            'size' => numericSize($field['sql_name']),
+            'size' => numericSize($field['sql_name'],true),
         );
     }
     if (in_array($field['LStype'], array('Q', 'S', 'T', 'U', ';', '*'))) {
@@ -2095,14 +2095,14 @@ function stringSize($sColumn)
  * Find the numeric size according DB size for existing question for SPSS export
  * Column name must be SGQA currently
  * @param string sColumn column
+ * @param boolean $decimal db type as decimal(30,10)
  * @return string integersize.decimalsize 
  **/
-function numericSize($sColumn)
+function numericSize($sColumn,$decimal=false)
 {
     // Find the sid
     $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
-
     /* Find the max len of integer part for positive value*/
     $maxInteger = Yii::app()->db
     ->createCommand("SELECT MAX($sColumn) FROM {{survey_".$iSurveyId."}}")
@@ -2115,13 +2115,30 @@ function numericSize($sColumn)
     $integerMinLen = strlen(intval($minInteger));
     /* Get size of integer part */
     $maxIntegerLen = max([$integerMaxLen, $integerMinLen]);
-    
     /* Find the max len of decimal part */
-    $maxDecimal = Yii::app()->db
-    ->createCommand("SELECT MAX(REVERSE(ABS($sColumn))) FROM {{survey_".$iSurveyId."}}") // Must control in another DB : mysql is OK
-    ->queryScalar();
-    // With integer : Decimal return 00000000000.1 and float return the integer
-    if (intval($maxDecimal) && strpos($maxDecimal, '.')) {
+    if($decimal) {
+        /* We have a DECIMAL(30,10) then can always take the last 10 digit and inverse */
+        /* According to doc : mysql and mssql didn't need cast, only pgsql > 8.4 */
+        $castedColumnString = $sColumn;
+        if(Yii::app()->db->driverName == 'pgsql') {
+            $castedColumnString = "CAST($sColumn as text)";
+        }
+        $maxDecimal = Yii::app()->db
+        ->createCommand("SELECT MAX(REVERSE(RIGHT($castedColumnString, 10))) FROM {{survey_".$iSurveyId."}}")
+        ->queryScalar();
+    } else {
+        /* Didn't work with text, when datatype are updated to text, but in such case : there are no good solution, except return string …*/
+        $castedColumnString = $sColumn;
+        if(Yii::app()->db->driverName == 'pgsql') {
+            $castedColumnString = "CAST($sColumn as FLOAT)";
+        }
+        $maxDecimal = Yii::app()->db
+        ->createCommand("SELECT MAX(REVERSE(CAST(ABS($castedColumnString) - FLOOR(ABS($castedColumnString)) as CHAR))) FROM {{survey_".$iSurveyId."}}")
+        ->queryScalar();
+    }
+    // With integer : Decimal return 00000000000 and float return 0
+    // With decimal : Decimal return 00000000012 and float return 12
+    if (intval($maxDecimal)) {
         $decimalMaxLen = strlen(intval($maxDecimal));
         // Width is integer width + the dot + decimal width
         $maxLen = $maxIntegerLen + 1 + $decimalMaxLen;
