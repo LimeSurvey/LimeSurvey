@@ -974,9 +974,6 @@ class questions extends Survey_Common_Action
         $aData = [];
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
 
-        // TODO: Can't find package lshelp?
-        //App()->getClientScript()->registerPackage('lshelp');
-
         $survey = Survey::model()->findByPk($iSurveyID);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -1081,6 +1078,7 @@ class questions extends Survey_Common_Action
     public function index($sa, $surveyid, $gid, $qid = null)
     {
         App()->getClientScript()->registerPackage('qTip2');
+        App()->getClientScript()->registerPackage('lshelp');
         $action = $sa;
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

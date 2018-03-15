@@ -297,6 +297,25 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * Get the textcontrol widget output for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getTextDisplayWidget($sInString, $name) {
+        templatereplace(flattenText($sInString));
+        $fullInString = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+        return $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+            'widgetsJsName' =>  $name,
+            'textToDisplay' => $fullInString,
+            'returnHtml' => true
+        ));
+    }
+
+
+
+    /**
      * Checks for a permission on render
      *
      * @param String $permission

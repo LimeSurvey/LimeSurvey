@@ -16,8 +16,8 @@
                     {{gT("Description:")}}
                 </div>
                 <div class="col-8">
-                        {% if oSurvey.currentLanguageSettings.surveyls_description != '' %}
-                            {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_description)}}
+                        {% if surveyTextContent.surveyls_description != '' %}
+                            {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
                         {% endif %}
                 </div>
             </div>
@@ -29,8 +29,8 @@
                     {{gT("Welcome:")}}
                 </div>
                 <div class="col-8">
-                        {% if oSurvey.currentLanguageSettings.surveyls_welcometext != '' %}
-                            {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_welcometext)}}
+                        {% if surveyTextContent.surveyls_welcometext != '' %}
+                            {{getTextDisplayWidget(surveyTextContent.surveyls_welcometext, "welcome_text")}}
                         {% endif %}
                 </div>
             </div>
@@ -43,11 +43,52 @@
                     {{gT("End message:")}}
                 </div>
                 <div class="col-8">
-                    {% if oSurvey.currentLanguageSettings.surveyls_endtext != '' %}
-                        {{getExpressionManagerOutput(oSurvey.currentLanguageSettings.surveyls_endtext)}}
+                    {% if surveyTextContent.surveyls_endtext != '' %}
+                        {{getTextDisplayWidget(surveyTextContent.surveyls_endtext, "end_text")}}
                     {% endif %}
                 </div>
             </div>
         </li>
+        {% if oSurvey.showsurveypolicynotice > 0 %}
+                    <!-- Data security notice -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                 {{ gT("Data security notice:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_notice != '' %}
+                                    {{getTextDisplayWidget(surveyTextContent.surveyls_policy_notice, "security_notice")}}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice error -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                {{ gT("Data security notice error:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_error != '' %}
+                                    {{getTextDisplayWidget(surveyTextContent.surveyls_policy_error, "security_error")}}
+                                {% endif %}                               
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice label -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                {{ gT("Data security notice label:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_notice_label != '' %}
+                                    {{getExpressionManagerOutput(surveyTextContent.surveyls_policy_notice_label)}}
+                                {% endif %}   
+                            </div>
+                        </div>
+                    </li>
+            {% endif %}
     </ul>
 </div>

@@ -231,6 +231,7 @@ $internalConfig = array(
                 'listScriptFiles'            => 'LS_Twig_Extension::listScriptFiles',
                 'getAllQuestionClasses'      => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',
+                'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',
                 'checkPermission'            => 'LS_Twig_Extension::checkPermission',
                 'intval'                     => 'intval',
                 'empty'                      => 'empty',
@@ -267,17 +268,18 @@ $internalConfig = array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
-                    'LSCaptcha'                          =>  array("renderOut")
+                    'LSCaptcha'                          =>  array("renderOut"),
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice'),
+                    'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'flattenText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'checkPermission', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'getLanguageNameFromCode', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'getExpressionManagerOutput', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createAbsoluteUrl', 'createUrl', 'json_decode', 'json_encode'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'flattenText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'checkPermission', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'getLanguageNameFromCode', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'getExpressionManagerOutput', 'getTextDisplayWidget', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createAbsoluteUrl', 'createUrl', 'json_decode', 'json_encode'),
             ),
 
         ),
