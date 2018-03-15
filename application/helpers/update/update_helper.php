@@ -20,7 +20,6 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
-    /*
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion = GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
@@ -53,7 +52,6 @@ function CheckForDBUpgrades($subaction = null)
             return ShowDBUpgradeNotice();
         }
     } else {
-     */
         Yii::app()->user->setFlash(
             'error',
             sprintf(
@@ -62,7 +60,7 @@ function CheckForDBUpgrades($subaction = null)
                 '</a>'
             )
         );
-    //}
+    }
 }
 
 /**
