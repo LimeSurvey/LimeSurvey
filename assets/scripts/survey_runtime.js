@@ -219,6 +219,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         /**
          * Set display value
          */
+        decimalValue.set({ toExpNeg: -11 })
         displayVal = decimalValue.toString();
         if (displayVal=='NaN')
         {
