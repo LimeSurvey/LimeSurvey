@@ -35,6 +35,28 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.5.2 (build 180315) to 3.5.3 (build 180316) March 16, 2018
+-Fixed issue #13372: Behavior of reset in mail templates (markusfluer)
+-Fixed issue: Database upgrade doesn't work
+
+Changes from 3.5.1 (build 180312) to 3.5.2 (build 180315) March 15, 2018
+-Fixed issue #13375: Brackets [ ] in printer friendly exports (markusfluer)
+-Fixed issue #13422: Dropdown menu in portuguese internal server error (markusfluer)
+-Fixed issue #13473: Use of exclusive option hangs browser page (markusfluer)
+-Fixed issue: Simply uploading an image in a standard theme wasn't working (markusfluer)
+-Fixed issue: Sporadic update error message on login right after upgrade (Carsten Schmitz)
+-Fixed issue: Relay on surveymodel rather than on inherited setting (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han 
+#Updated translation: French (France) by b00z00, arnaud21
+#Updated translation: Hungarian by kkd 
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
 Changes from 3.5.0 (build 180309) to 3.5.1 (build 180312) March 12, 2018
 -Fixed issue #12715: Behavior change for numericalmultiple Slider default value when 0 or null Upgraded PHP version (markusfluer)
 -Fixed issue #13247: Missing translation in beginner tour (markusfluer)

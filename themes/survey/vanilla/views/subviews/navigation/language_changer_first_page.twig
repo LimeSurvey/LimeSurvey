@@ -37,7 +37,7 @@
     <!-- Language Changer -->
     <div class=" {{ aSurveyInfo.class.formgroup }} form-group " {{ aSurveyInfo.attr.formgroup }} >
         <label class="{{ aSurveyInfo.class.controllabel }} control-label" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
-            <span class="{{ aSurveyInfo.class.languagechanger }} form-inline" {{ aSurveyInfo.attr.languagechanger }}>{{ "Language:" | t }}</span>
+            <span class="{{ aSurveyInfo.class.languagechanger }} form-inline" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
             {{
                 C.Html.dropDownList(
                     'lang',

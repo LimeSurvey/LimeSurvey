@@ -34,10 +34,10 @@
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
     <div class="{{ aSurveyInfo.class.savemessage }} well clearfix" {{ aSurveyInfo.attr.savemessage }}>
-        <div class="{{ aSurveyInfo.class.savemessagetitle }} h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ "Load unfinished survey" | t }}</div>
+        <div class="{{ aSurveyInfo.class.savemessagetitle }} h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
         <div class="{{ aSurveyInfo.class.savemessagetext }} text-info" {{ aSurveyInfo.attr.savemessagetext }}>
-            <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ "You can load a survey that you have previously saved from this screen." | t }} </p>
-            <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ "Type in the 'name' you used to save the survey, and the password." | t }} </p>
+            <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
+            <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>
         </div>
     </div>
 
@@ -85,9 +85,9 @@
                 <!-- Saved name  -->
                 <div class="{{ aSurveyInfo.class.saveformrow }} row form-group " {{ aSurveyInfo.attr.saveformrow }}>
                     <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-sm-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
-                        {{ "Saved name:" | t }}
+                        {{ gT("Saved name:") }}
                         <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
-                        <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} sr-only text-danger asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ "Mandatory" | t }}<span>
+                        <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} sr-only text-danger asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ gT("Mandatory") }}<span>
                     </label>
                     <div class="{{ aSurveyInfo.class.saveformrowcol }} col-sm-7 input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
                         <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" >
@@ -97,9 +97,9 @@
                 <!-- Password -->
                 <div class="{{ aSurveyInfo.class.passwordrow }} row form-group " {{ aSurveyInfo.attr.passwordrow }}>
                     <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label col-sm-3 '  {{ aSurveyInfo.attr.passwordrowcol }} >
-                        {{ "Password:" | t }}
+                        {{ gT("Password:") }}
                         <small class="{{ aSurveyInfo.class.passwordrowcolsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.passwordrowcolsmall }}></small>
-                        <span class="{{ aSurveyInfo.class.passwordrowcolspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ "Mandatory" | t }}<span>
+                        <span class="{{ aSurveyInfo.class.passwordrowcolspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
                     <div class='{{ aSurveyInfo.class.passwordrowinput }} col-sm-7'>
@@ -111,7 +111,7 @@
                     <!-- Captcha -->
                     <div class='{{ aSurveyInfo.class.captcharow }} row form-group ' {{ aSurveyInfo.attr.captcharow }}>
                         <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label col-sm-3 '  {{ aSurveyInfo.attr.captcharowlabel }}>
-                            {{ "Security question:" | t }}
+                            {{ gT("Security question:") }}
                         </label>
                         <div class='{{ aSurveyInfo.class.captcharowcol }} col-sm-7 ' {{ aSurveyInfo.attr.captcharowcol }}>
                             <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
@@ -128,7 +128,7 @@
                 <div class='{{ aSurveyInfo.class.loadrow }} row form-group ' {{ aSurveyInfo.attr.loadrow }}>
                     <div class='{{ aSurveyInfo.class.loadrowcol }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.loadrowcol }}>
                         <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-default' {{ aSurveyInfo.attr.loadrowcolbutton }} >
-                            {{ "Load now" | t }}
+                            {{ gT("Load now") }}
                         </button>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
 
         <div class='{{ aSurveyInfo.class.returntosurvey }}' {{ aSurveyInfo.attr.returntosurvey }}>
             <div class="{{ aSurveyInfo.class.returntosurveydiv }}" {{ aSurveyInfo.attr.returntosurveydiv }}>
-                <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.returntosurveydiva }}" {{ aSurveyInfo.attr.returntosurveydiva }}  >{{ "Return to survey" | t}}</a>
+                <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.returntosurveydiva }}" {{ aSurveyInfo.attr.returntosurveydiva }}  >{{ gT("Return to survey") }}</a>
             </div>
         </div>
     </div>

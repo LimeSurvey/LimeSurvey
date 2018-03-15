@@ -22,7 +22,7 @@
         {% block anonymous %}
             {% if (aSurveyInfo.anonymized == "Y") %}
             <div class="{{ aSurveyInfo.class.privacyhead }} h4 text-primary " {{ aSurveyInfo.attr.privacyhead }}>
-                {{ "This survey is anonymous." | t }}
+                {{ gT("This survey is anonymous.") }}
             </div>
             <div>
                 <p class="{{ aSurveyInfo.class.privacybody }}" {{ aSurveyInfo.attr.privacybody }}>

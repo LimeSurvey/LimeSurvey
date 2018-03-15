@@ -53,11 +53,11 @@ class LsDefaultDataSets
         return $returnArray;
     }
     
-    public static function getTemplateDefaultTexts($mode)
+    public static function getTemplateDefaultTexts($mode, $language='en')
     {
 
         $sOldLanguage = App()->language;
-        App()->setLanguage('en');
+        App()->setLanguage($language);
         $returnArray = array(
             'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results", $mode),
             'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}", $mode),

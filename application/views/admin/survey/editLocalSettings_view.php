@@ -140,7 +140,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <!-- Data security checkbox label -->
                 <div class="form-group">
                     <label class="control-label"><?php eT("Data security checkbox label:"); ?> 
-                    <i class="fa fa-question-circle" id="dataseclabel_popover_<?=$aSurveyLanguageSettings['surveyls_language']?>" data-toggle="popover" title="<?=gT('Howto link to survey policy statement modal')?>"  data-content="<?php
+                    <i class="fa fa-question-circle" id="dataseclabel_popover_<?=$aSurveyLanguageSettings['surveyls_language']?>" data-toggle="popover" title="<?=gT('How to link to the survey policy statement modal window')?>"  data-content="<?php
                         eT("If you want to specify a link to the survey policy please use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} to define the link that opens the popup. If there is no placeholder given, there will be an appendix.")
                     ?>"></i> </label>
                     <div class="">

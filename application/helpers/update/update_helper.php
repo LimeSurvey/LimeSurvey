@@ -55,8 +55,9 @@ function CheckForDBUpgrades($subaction = null)
         Yii::app()->user->setFlash(
             'error',
             sprintf(
-                gT('An internal error occured during the database upgrade. Please go back to the <a href="%s">main menu</a>. Contact support if the error persists.'),
-                Yii::app()->getController()->createUrl("/admin")
+                gT('An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists.'),
+                '<a href="' . Yii::app()->getController()->createUrl("/admin") . '">',
+                '</a>'
             )
         );
     }

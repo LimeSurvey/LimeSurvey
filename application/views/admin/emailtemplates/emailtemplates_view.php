@@ -49,9 +49,6 @@ var LS = LS || {};  // namespace
                     $bplang = $bplangs[$key];
                     $esrow = $attrib[$key];
                     $aDefaultTexts = $defaulttexts[$key];
-                    if ($ishtml == true) {
-                        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'],$ishtml);
-                    }
 
                     $this->renderPartial('/admin/emailtemplates/email_language_tab', compact( 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
 

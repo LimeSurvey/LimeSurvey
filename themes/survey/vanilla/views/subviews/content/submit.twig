@@ -34,8 +34,8 @@
     <div class="{{ aSurveyInfo.class.submitwrapper }}" {{ aSurveyInfo.attr.submitwrapper }}>
         <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
             {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ "Thank you!" | t }}</p>
-                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ "Your survey responses have been recorded." | t }}</p>
+                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
+                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
             {% else %}
                 {{ aSurveyInfo.aCompleted.sEndText }}
             {% endif %}
@@ -50,7 +50,7 @@
                 <!--  Link to Print Answer Preview -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdiva }}" {{ aSurveyInfo.attr.submitwrapperdiv }}>
                     <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
-                        {{ "Print your answers." | t }}
+                        {{ gT("Print your answers.") }}
                     </a>
                 </div>
             {% endif %}
@@ -60,7 +60,7 @@
                 <!-- Link to Public statistics -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
                     <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
-                        {{ "View the statistics for this survey." | t }}
+                        {{ gT("View the statistics for this survey.") }}
                     </a>
                 </div>
             {% endif %}

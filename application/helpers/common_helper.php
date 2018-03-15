@@ -761,8 +761,8 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-
-    $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode);
+    
+    $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode, $sLanguage);
     
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
