@@ -2583,6 +2583,8 @@ class tokens extends Survey_Common_Action
     protected function getTokenIds()
     {
         $aTokenIds = Yii::app()->request->getPost('tokenids', false);
+        $aTokenIds = $aTokenIds === false ? Yii::app()->request->getQuery('tokenids', false) : $aTokenIds;
+        
         if (!empty($aTokenIds)) {
             $aTokenIds = explode('|', $aTokenIds);
             $aTokenIds = array_filter($aTokenIds);
