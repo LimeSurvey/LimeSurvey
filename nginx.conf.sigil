@@ -75,7 +75,7 @@ server {
     index index.php;
     try_files $uri $uri/ /index.php?$args;
   }
-  location app \.php$ {
+  location ~ \.php$ {
     try_files $uri =404;
     include fastcgi_params;
     fastcgi_pass unix:/tmp/heroku.fcgi.5000.sock;
