@@ -5,7 +5,7 @@
     {
 	"dokku":
 	{
-	    "predeploy": "mkdir /app/tmp/session"
+	    "predeploy": "mkdir -p /app/tmp/session"
 	}
     }
 	
