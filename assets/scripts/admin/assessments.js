@@ -36,13 +36,13 @@ var bindAction = function(){
     });
 
     $('.action_assessments_editModal').on('click.assessments', function(){
-        $('input[name=action]').val('assessmentupdate');    
+        $('input[name=action]').val('assessmentupdate');
         $.ajax({
             url: loadEditUrl,
-            data: {id: $(this).closest('tr').data('assessment-id')},
+            data: {id: $(this).closest('tr').data('assessment-id'), YII_CSRF_TOKEN : LS.data.csrfToken},
             method: 'GET',
             success: function(responseData){
-                $("#in_survey_common").css({cursor: ""});        
+                $("#in_survey_common").css({cursor: ""});
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
                     if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
@@ -69,7 +69,9 @@ var bindAction = function(){
         $.each(CKEDITOR.instances, function(name, instance) {
             instance.setData('');
         });
-        $('#assessmentsform input').val('');
+
+        // We clear only visible input to keep the CSRF token
+        $('#assessmentsform input:visible').val('');
         // TODO: Clear <select> and radio buttons?
 
         $('#assesements-edit-add').modal('show');
@@ -137,4 +139,3 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     )
 });
-
