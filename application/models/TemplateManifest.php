@@ -841,10 +841,21 @@ class TemplateManifest extends TemplateConfiguration
 
         // Not mandatory (use package dependances)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
-        $this->packages                 = (!empty($this->config->xpath("//packages"))) ? $this->config->engine->packages : array();
-
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+        
+        //Add extra packages from xml
+        $this->packages                 = array();
+        $packageActionFromEngineSection = json_decode(json_encode($this->config->engine->packages));
+        if (!empty($packageActionFromEngineSection)) {
+            if (!empty($packageActionFromEngineSection->add)) {
+                $this->packages = array_merge($packageActionFromEngineSection->add, $this->packages);
+            }
+            if (!empty($packageActionFromEngineSection->remove)) {
+                $this->packages =  array_diff($this->packages, $packageActionFromEngineSection->remove);
+            }
+        }
+        $this->depends = array_merge($this->depends, $this->packages);
     }
 
 
