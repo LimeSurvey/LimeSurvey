@@ -3260,12 +3260,12 @@ function upgradeSurveyTables181($sMySQLCollation)
                 case 'sqlsrv':
                 case 'dblib':
                 case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
-                    alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                    alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                     $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
                 case 'mysqli':
-                    alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
+                    alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
             }
@@ -3288,12 +3288,12 @@ function upgradeTokenTables181($sMySQLCollation)
                     case 'sqlsrv':
                     case 'dblib':
                     case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
-                        alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                         $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
                         break;
                     case 'mysql':
                     case 'mysqli':
-                        alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
+                        alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
                 }

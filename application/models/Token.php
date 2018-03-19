@@ -124,7 +124,7 @@ abstract class Token extends Dynamic
             'lastname' => 'string(150)',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(35) {$sCollation}",
+            'token' => "string(36) {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
