@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-19 11:36:54+00:00\n"
+"POT-Creation-Date: 2018-03-19 11:42:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1728,7 +1728,7 @@ msgstr ""
 #: tmp/twig_translate.php:40 tmp/twig_translate.php:46
 #: tmp/twig_translate.php:52 tmp/twig_translate.php:58
 #: tmp/twig_translate.php:64 tmp/twig_translate.php:101
-#: tmp/twig_translate.php:104 tmp/twig_translate.php:128
+#: tmp/twig_translate.php:104 tmp/twig_translate.php:127
 msgid "Yes"
 msgstr ""
 
@@ -1893,7 +1893,7 @@ msgstr ""
 #: tmp/twig_translate.php:41 tmp/twig_translate.php:47
 #: tmp/twig_translate.php:53 tmp/twig_translate.php:59
 #: tmp/twig_translate.php:65 tmp/twig_translate.php:102
-#: tmp/twig_translate.php:105 tmp/twig_translate.php:129
+#: tmp/twig_translate.php:105 tmp/twig_translate.php:128
 msgid "No"
 msgstr ""
 
@@ -9311,7 +9311,7 @@ msgstr ""
 #: application/views/admin/themes/templatesummary_view.php:205
 #: application/views/admin/token/csvupload.php:122
 #: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:2
-#: tmp/twig_translate.php:72 tmp/twig_translate.php:132
+#: tmp/twig_translate.php:72 tmp/twig_translate.php:131
 msgid "Upload"
 msgstr ""
 
@@ -20625,11 +20625,11 @@ msgstr ""
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:3 tmp/twig_translate.php:125
+#: tmp/twig_translate.php:3 tmp/twig_translate.php:124
 msgid "Local Server"
 msgstr ""
 
-#: tmp/twig_translate.php:4 tmp/twig_translate.php:126
+#: tmp/twig_translate.php:4 tmp/twig_translate.php:125
 msgid "User browser"
 msgstr ""
 
@@ -20643,11 +20643,11 @@ msgstr ""
 #: tmp/twig_translate.php:36 tmp/twig_translate.php:38
 #: tmp/twig_translate.php:42 tmp/twig_translate.php:48
 #: tmp/twig_translate.php:54 tmp/twig_translate.php:60
-#: tmp/twig_translate.php:66 tmp/twig_translate.php:130
+#: tmp/twig_translate.php:66 tmp/twig_translate.php:129
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:11 tmp/twig_translate.php:127
+#: tmp/twig_translate.php:11 tmp/twig_translate.php:126
 msgid "Survey container"
 msgstr ""
 
@@ -20733,7 +20733,7 @@ msgstr ""
 msgid "Radio button animation"
 msgstr ""
 
-#: tmp/twig_translate.php:69 tmp/twig_translate.php:131
+#: tmp/twig_translate.php:69 tmp/twig_translate.php:130
 msgid "Fruity fonts"
 msgstr ""
 
@@ -20764,8 +20764,4 @@ msgstr ""
 
 #: tmp/twig_translate.php:119
 msgid "Accept"
-msgstr ""
-
-#: tmp/twig_translate.php:124
-msgid "For further information please contact"
 msgstr ""
