@@ -97,7 +97,7 @@ class Zend_Server_Reflection
     {
         if (!is_string($function) || !function_exists($function)) {
             require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid function "' . $function . '" passed to reflectFunction');
+            throw new Zend_Server_Reflection_Exception('Invalid function "'.$function.'" passed to reflectFunction');
         }
 
 

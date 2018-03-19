@@ -1,0 +1,88 @@
+{% extends "./subviews/logincomponents/captcha.twig" %}
+
+    {% block formheading %}
+        {{ gT("To participate in this restricted survey, you need a valid token.") }}
+    {% endblock %}
+
+    {% block description %}
+        <p class='{{ aSurveyInfo.class.maincoldivdivbp }} text-info' {{ aSurveyInfo.attr.maincoldivdivbp }}>
+            {% if aSurveyInfo.aForm.token == null  %}
+                {{ gT("If you have been issued a token, please enter it in the box below and click continue.") }}
+            {% else %}
+                {{ gT("Please confirm the token by answering the security question below and click continue.") }}
+            {% endif %}
+        </p>
+    {% endblock %}
+
+
+    {% block formcontent  %}
+
+        <div class='{{ aSurveyInfo.class.maincolform }} form-group' {{ aSurveyInfo.attr.maincolform }}>
+            <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformlabel }}>
+                <small class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                {{ gT("Token:") }}
+                <span class="{{ aSurveyInfo.class.maincolformlabelspan }} sr-only text-danger asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
+                    ( {{ gT("Mandatory") }} )
+                <span>
+
+            </label>
+
+            <div class='{{ aSurveyInfo.class.maincolformdiva }} col-sm-7' {{ aSurveyInfo.attr.maincolformdiva }}>
+                {% if aSurveyInfo.aForm.token == null  %}
+                    <input class='{{ aSurveyInfo.class.maincolformdivainput }} form-control' {{ aSurveyInfo.attr.maincolformdivainput }} >
+                {% else %}
+
+                    {% set passwordFieldHtmlOptions = {
+                        'id'       : 'token',
+                        'required' : true,
+                        'readonly' : true,
+                        'class'    : 'form-control'
+                        }
+                    %}
+
+                    {{
+                        C.Html.passwordField(
+                            'token',
+                            (( aSurveyInfo.aForm.token )),
+                            (passwordFieldHtmlOptions)
+                        )
+                    }}
+                {% endif %}
+            </div>
+        </div>
+
+        {#  CAPTACHA INSIDE TOKEN FORM #}
+        {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+            <div class='{{ aSurveyInfo.class.maincolformdivb }}  form-group ' {{ aSurveyInfo.attr.maincolformdivb }}>
+
+                <!-- Doesn't seems aria capable -->
+                <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                    {{ gT("Please solve the following equation:") }}
+                    <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                        ( {{ gT("Mandatory") }} )
+                    <span>
+                </label>
+                <div class="col-sm-2">
+                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
+                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
+                        {{ renderCaptcha().renderOut() }}
+                        <a href="#" class="btn btn-sm btn-default" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+                <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-sm-5' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                    <input class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+                </div>
+            </div>
+        {% endif %}
+
+        {{ aSurveyInfo.aForm.hiddenFields }}
+
+        <div class='{{ aSurveyInfo.class.maincolformdivc }} form-group ' {{ aSurveyInfo.attr.maincolformdivc }}>
+            <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                <button type="submit" class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-default' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                    {{ gT("Continue") }}
+                </button>
+            </div>
+        </div>
+    {% endblock %}

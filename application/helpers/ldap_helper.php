@@ -18,82 +18,88 @@
 /*********************************************/
 
 
-function ldap_getCnx($server_id = null) {
+function ldap_getCnx($server_id = null)
+{
     $ldap_server = Yii::app()->getConfig('ldap_server');
 
-    if ( is_null($server_id) ) {
-        return False;
-    }
-
-    else {
+    if (is_null($server_id)) {
+        return false;
+    } else {
+        $ds = false;
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
             $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 
-            if (! $ldap_server[$server_id]['referrals']) {
+            if (!$ldap_server[$server_id]['referrals']) {
                 ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
             }
 
-            if ($ldap_server[$server_id]['encrypt'] == 'start-tls' ) {
-                ldap_start_tls ($ds);
+            if ($ldap_server[$server_id]['encrypt'] == 'start-tls') {
+                ldap_start_tls($ds);
             }
-        }
-        elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
+        } elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
             if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
                 $ds = ldap_connect("ldaps://".$ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
-            }
-            else {
+            } else {
                 $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
             }
 
-            if (! $ldap_server[$server_id]['referrals']) {
+            if (!$ldap_server[$server_id]['referrals']) {
                 ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
             }
         }
-
         return $ds;
     }
 }
 
 
-function ldap_bindCnx($ds, $server_id = null) {
+function ldap_bindCnx($ds, $server_id = null)
+{
     $ldap_server = Yii::app()->getConfig('ldap_server');
 
-    if ( !$ds || is_null($server_id) ) {
+    if (!$ds || is_null($server_id)) {
         return 0;
     }
 
-    if ( isset($ldap_server[$server_id]['binddn']) && isset($ldap_server[$server_id]['bindpw']) ) {
-        $resbind=@ldap_bind($ds,
+    if (isset($ldap_server[$server_id]['binddn']) && isset($ldap_server[$server_id]['bindpw'])) {
+        $resbind = @ldap_bind($ds,
         $ldap_server[$server_id]['binddn'],
         $ldap_server[$server_id]['bindpw']);
-    }
-    else {
-        $resbind=@ldap_bind($ds);
+    } else {
+        $resbind = @ldap_bind($ds);
     }
     return $resbind;
 }
 
 
-function ldap_readattr($attr) {
+function ldap_readattr($attr)
+{
 
     if (is_array($attr)) {
         return trim($attr[0]);
-    }
-    else {
+    } else {
         return trim($attr);
     }
 }
 
 
-function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
-    if ( $scope == "base" ) {
+/**
+* 
+* 
+* @param mixed $ds
+* @param mixed $basedn
+* @param mixed $filter
+* @param mixed $attrlist
+* @param mixed $scope
+*/
+function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope)
+{
+    $search = false;
+    if ($scope == "base") {
         $search = ldap_read($ds, $basedn, $filter, $attrlist);
-    }
-    elseif ( $scope == "one" ) {
+    } elseif ($scope == "one") {
         $search = ldap_list($ds, $basedn, $filter, $attrlist);
-    }
-    elseif ( $scope == "sub" ) {
+    } elseif ($scope == "sub") {
         $search = ldap_search($ds, $basedn, $filter, $attrlist);
     }
     return $search;
@@ -103,30 +109,30 @@ function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
 /**
  * @param integer $surveyid
  */
-function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
+function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
+{
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
-    $totalrescount=0;
-    $userattrs=array();
+    $totalrescount = 0;
+    $userattrs = array();
 
     // First let's lowercase the ldap query values
-    prepareLdapQuery($ldapq);
+    prepareLDAPQuery($ldapq);
 
     // Retrieve the ldap user attribute-list to read
-    $userparams = array('firstname_attr','lastname_attr',
-			'email_attr','token_attr', 'language');
+    $userparams = array('firstname_attr', 'lastname_attr',
+            'email_attr', 'token_attr', 'language');
     //			'attr1', 'attr2');
 
-    $aTokenAttr=getAttributeFieldNames($surveyid);
-    foreach ($aTokenAttr as $thisattrfieldname)
-    {
-        $attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+    $aTokenAttr = getAttributeFieldNames($surveyid);
+    foreach ($aTokenAttr as $thisattrfieldname) {
+        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
         $userparams[] = "attr".$attridx;
     }
 
     foreach ($userparams as $id => $attr) {
-        if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
+        if (array_key_exists($attr, $ldap_queries[$ldapq]) &&
         $ldap_queries[$ldapq][$attr] != '') {
-            $userattrs[]=$ldap_queries[$ldapq][$attr];
+            $userattrs[] = $ldap_queries[$ldapq][$attr];
         }
     }
 
@@ -134,38 +140,39 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
     if (isset($ldap_queries[$ldapq]['groupfilter']) &&
     $ldap_queries[$ldapq]['groupfilter'] != '') {
 
-        $userCandidates=array(); // list of candidates
+        $userCandidates = array(); // list of candidates
 
-        $groupscope='sub'; // subtree search unless specified
+        $groupscope = 'sub'; // subtree search unless specified
         if (isset($ldap_queries[$ldapq]['groupscope']) &&
         $ldap_queries[$ldapq]['groupscope'] != '') {
-            $groupscope=$ldap_queries[$ldapq]['groupscope'];
+            $groupscope = $ldap_queries[$ldapq]['groupscope'];
         }
 
-        $groupmemberattr='member'; //use 'member' attribute unless specified
+        $groupmemberattr = 'member'; //use 'member' attribute unless specified
         if (isset($ldap_queries[$ldapq]['groupmemberattr']) &&
         $ldap_queries[$ldapq]['groupmemberattr'] != '') {
-            $groupmemberattr=$ldap_queries[$ldapq]['groupmemberattr'];
+            $groupmemberattr = $ldap_queries[$ldapq]['groupmemberattr'];
         }
 
         // Search for group candidates
-        $search_groups=ldap_search_withScope($ds,
+        $search_groups = ldap_search_withScope($ds,
         $ldap_queries[$ldapq]['groupbase'],
         $ldap_queries[$ldapq]['groupfilter'],
         array($groupmemberattr),
         $groupscope);
-        $rescount=@ldap_count_entries($ds,$search_groups);
+        $rescount = @ldap_count_entries($ds, $search_groups);
 
-        if ($rescount >= 1) { // at least 1 group was selected
-            $group_info=ldap_get_entries($ds, $search_groups);
+        if ($rescount >= 1) {
+// at least 1 group was selected
+            $group_info = ldap_get_entries($ds, $search_groups);
             // For each group candidate add members's id to $userCandidates[]
-            for ($i=0;$i<$group_info["count"];$i++) {
-                for ($j=0;$j<$group_info[$i][$groupmemberattr]["count"];$j++) {
+            for ($i = 0; $i < $group_info["count"]; $i++) {
+                for ($j = 0; $j < $group_info[$i][$groupmemberattr]["count"]; $j++) {
                     // Only add the user's id if not already listed
                     // (avoids duplicates if this user is in several groups)
-                    if (! in_array($group_info[$i][$groupmemberattr][$j],
+                    if (!in_array($group_info[$i][$groupmemberattr][$j],
                     $userCandidates)) {
-                        $userCandidates[]=$group_info[$i][$groupmemberattr][$j];
+                        $userCandidates[] = $group_info[$i][$groupmemberattr][$j];
                     }
                 }
             }
@@ -174,26 +181,26 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
             // and get user attrs
             foreach ($userCandidates as $key => $user) {
 
-                $user_is_dn=TRUE; // Suppose group members are DNs by default
+                $user_is_dn = true; // Suppose group members are DNs by default
                 if (isset($ldap_queries[$ldapq]['groupmemberisdn']) &&
-                $ldap_queries[$ldapq]['groupmemberisdn'] == False) {
-                    $user_is_dn=False;
+                $ldap_queries[$ldapq]['groupmemberisdn'] == false) {
+                    $user_is_dn = false;
                 }
 
                 if ($user_is_dn) {
                     // If group members are DNs
 
                     // Set userfilter (no filter by default)
-                    $userfilter='(objectclass=*)';
+                    $userfilter = '(objectclass=*)';
                     if (isset($ldap_queries[$ldapq]['userfilter']) &&
                     $ldap_queries[$ldapq]['userfilter'] != '') {
-                        $userfilter=$ldap_queries[$ldapq]['userfilter'];
+                        $userfilter = $ldap_queries[$ldapq]['userfilter'];
                     }
 
-                    $userscope='sub'; // subtree search unless specified
+                    $userscope = 'sub'; // subtree search unless specified
                     if (isset($ldap_queries[$ldapq]['userscope']) &&
                     $ldap_queries[$ldapq]['userscope'] != '') {
-                        $userscope=$ldap_queries[$ldapq]['userscope'];
+                        $userscope = $ldap_queries[$ldapq]['userscope'];
                     }
 
                     // If a userbase is defined, then get user's RND
@@ -203,26 +210,26 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                     if (isset($ldap_queries[$ldapq]['userbase']) &&
                     $ldap_queries[$ldapq]['userbase'] != '') {
                         // get user's rdn
-                        $user_dn_tab=explode(",", $user);
-                        $user_rdn=$user_dn_tab[0];
-                        $userfilter_rdn="(&("
+                        $user_dn_tab = explode(",", $user);
+                        $user_rdn = $user_dn_tab[0];
+                        $userfilter_rdn = "(&("
                         .$user_rdn.")".$userfilter.")";
 
-                        $search_users=ldap_search_withScope($ds,
+                        $search_users = ldap_search_withScope($ds,
                         $ldap_queries[$ldapq]['userbase'],
                         $userfilter_rdn,
                         $userattrs,
                         $userscope);
 
-                        $rescount=@ldap_count_entries($ds,$search_users);
+                        $rescount = @ldap_count_entries($ds, $search_users);
                         if ($rescount >= 1) {
                             // DN match criteria
                             // add to result array
-                            $user_info=@ldap_get_entries($ds, $search_users);
+                            $user_info = @ldap_get_entries($ds, $search_users);
 
-                            for ($i=0;$i<$rescount;$i++) {
+                            for ($i = 0; $i < $rescount; $i++) {
                                 if ($user_info[$i]['dn'] == $user) {
-                                    $ResArray[]=$user_info;
+                                    $ResArray[] = $user_info;
                                     $totalrescount++;
                                 }
                             }
@@ -231,17 +238,17 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                     else {
                         // There is no userbase defined
                         // Only apply userfilter to the user's DN
-                        $search_users=ldap_search_withScope($ds,
+                        $search_users = ldap_search_withScope($ds,
                         $user,
                         $userfilter,
                         $userattrs,
-							'base');
-                        $rescount=@ldap_count_entries($ds,$search_users);
+                            'base');
+                        $rescount = @ldap_count_entries($ds, $search_users);
 
                         if ($rescount >= 1) {
                             // DN match criteria, add result to the result Array
-                            $userentry=ldap_get_entries($ds, $search_users);
-                            $ResArray[]=$userentry;
+                            $userentry = ldap_get_entries($ds, $search_users);
+                            $ResArray[] = $userentry;
                             $totalrescount++;
                         }
                     } // End of Member is DN and a userbase is NOT defined
@@ -252,29 +259,29 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                     // Search given userid combined with userfilter
 
                     // Set userfilter ('open filter' by default)
-                    $userfilter='(objectclass=*)';
+                    $userfilter = '(objectclass=*)';
                     if (isset($ldap_queries[$ldapq]['userfilter']) &&
                     $ldap_queries[$ldapq]['userfilter'] != '') {
-                        $userfilter=$ldap_queries[$ldapq]['userfilter'];
+                        $userfilter = $ldap_queries[$ldapq]['userfilter'];
                     }
 
                     // Build the user filter from the RDN
-                    $userfilter_notdn="(&("
+                    $userfilter_notdn = "(&("
                     .$ldap_queries[$ldapq]['useridattr']."=".$user.")"
                     .$userfilter.")";
 
-                    $search_users=ldap_search_withScope($ds,
+                    $search_users = ldap_search_withScope($ds,
                     $ldap_queries[$ldapq]['userbase'],
                     $userfilter_notdn,
                     $userattrs,
                     $ldap_queries[$ldapq]['userscope']);
 
-                    $rescount=@ldap_count_entries($ds,$search_users);
+                    $rescount = @ldap_count_entries($ds, $search_users);
                     if ($rescount >= 1) {
                         // user matches criteria, add result to the result Array
-                        $user_info=ldap_get_entries($ds, $search_users);
-                        $ResArray[]=$user_info;
-                        $totalrescount+=$rescount;
+                        $user_info = ldap_get_entries($ds, $search_users);
+                        $ResArray[] = $user_info;
+                        $totalrescount += $rescount;
                     }
                 } // End of the members are not DN case
             } // End of foreach user member in the group
@@ -285,10 +292,10 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
         // No groupfilter is defined
         // Apply a simple userfilter then
 
-        $userscope='sub'; // default to subtree search
+        $userscope = 'sub'; // default to subtree search
         if (isset($ldap_queries[$ldapq]['userscope']) &&
         $ldap_queries[$ldapq]['userscope'] != '') {
-            $userscope=$ldap_queries[$ldapq]['userscope'];
+            $userscope = $ldap_queries[$ldapq]['userscope'];
         }
 
         $search_result = ldap_search_withScope($ds,
@@ -297,23 +304,21 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
         $userattrs,
         $userscope);
 
-        $rescount=ldap_count_entries($ds,$search_result);
-        if ( $rescount >= 1) {
+        $rescount = ldap_count_entries($ds, $search_result);
+        if ($rescount >= 1) {
             $user_info = ldap_get_entries($ds, $search_result);
-            $ResArray[]=$user_info;
-            $totalrescount+=$rescount;
+            $ResArray[] = $user_info;
+            $totalrescount += $rescount;
         }
     } // End of no group filtering
 
     return $totalrescount;
 }
 
-function prepareLdapQuery($queryId)
+function prepareLDAPQuery($queryId)
 {
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
-    $QueryName=$ldap_queries[$queryId]['name'];
-    $ldap_queries[$queryId] = array_map('strtolower',$ldap_queries[$queryId]);
-    $ldap_queries[$queryId]['name']=$QueryName;
+    $QueryName = $ldap_queries[$queryId]['name'];
+    $ldap_queries[$queryId] = array_map('strtolower', $ldap_queries[$queryId]);
+    $ldap_queries[$queryId]['name'] = $QueryName;
 }
-
-?>

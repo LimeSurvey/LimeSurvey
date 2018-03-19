@@ -15,18 +15,31 @@
 
 /**
  * This is the model class for table "{{plugins}}".
+ *
+ * @property integer $id
+ * @property string $name
+ * @property integer $active
+ * @property string $version
+ *
  */
-class Plugin extends CActiveRecord {
+class Plugin extends CActiveRecord
+{
 
     /**
-     * @param type $className
+     * @inheritdoc
      * @return Plugin
      */
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
+    public static function model($className = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($className);
+        return $model;
     }
-    
-    public function tableName() {
+
+    /** @inheritdoc */
+    public function tableName()
+    {
         return '{{plugins}}';
     }
+
 }

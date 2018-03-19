@@ -25,17 +25,14 @@ class LSActiveRecord extends CActiveRecord
      */
     public function behaviors()
     {
-        $aBehaviors=array();
-        $sCreateFieldName=($this->hasAttribute('created')?'created':null);
-        $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
+        $aBehaviors = array();
+        $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
+        $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
-        {
-            $sTimestampExpression=new CDbExpression('GETDATE()');
-        }
-        else
-        {
-            $sTimestampExpression=new CDbExpression('NOW()');
+        if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
+            $sTimestampExpression = new CDbExpression('GETDATE()');
+        } else {
+            $sTimestampExpression = new CDbExpression('NOW()');
         }
         $aBehaviors['CTimestampBehavior'] = array(
             'class' => 'zii.behaviors.CTimestampBehavior',
@@ -44,9 +41,8 @@ class LSActiveRecord extends CActiveRecord
             'timestampExpression' =>  $sTimestampExpression
         );
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
-        if (!Yii::app()->getConfig('Updating'))
-        {
-            $aBehaviors['PluginEventBehavior']= array(
+        if (!Yii::app()->getConfig('Updating')) {
+            $aBehaviors['PluginEventBehavior'] = array(
                 'class' => 'application.models.behaviors.PluginEventBehavior'
             );
         }
@@ -62,20 +58,18 @@ class LSActiveRecord extends CActiveRecord
      * This method is mainly internally used by other AR query methods.
      * @param CDbCriteria $criteria the query criteria
      * @param boolean $all whether to return all data
+     * @param bool $asAR
      * @return mixed the AR objects populated with the query result
      * @since 1.1.7
      */
     protected function query($criteria, $all = false, $asAR = true)
     {
-        if ($asAR === true)
-        {
+        if ($asAR === true) {
             return parent::query($criteria, $all);
-        } else
-        {
+        } else {
             $this->beforeFind();
             $this->applyScopes($criteria);
-            if (!$all)
-            {
+            if (!$all) {
                 $criteria->limit = 1;
             }
 
@@ -91,15 +85,15 @@ class LSActiveRecord extends CActiveRecord
      * Finds all active records satisfying the specified condition but returns them as array
      *
      * See {@link find()} for detailed explanation about $condition and $params.
-     * @param mixed $condition query condition or criteria.
+     * @param CDbCriteria $condition query condition or criteria.
      * @param array $params parameters to be bound to an SQL statement.
      * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
      */
     public function findAllAsArray($condition = '', $params = array())
     {
-        Yii::trace(get_class($this) . '.findAll()', 'system.db.ar.CActiveRecord');
+        Yii::trace(get_class($this).'.findAll()', 'system.db.ar.CActiveRecord');
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
-        return $this->query($criteria, true, false);  //Notice the third parameter 'false'
+        return $this->query($criteria, true, false); //Notice the third parameter 'false'
     }
 
 
@@ -109,9 +103,10 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
+     * @throws Exception
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
@@ -129,7 +124,7 @@ class LSActiveRecord extends CActiveRecord
 
         if ($forceRefresh || !array_key_exists($field, $maxIds)) {
             $maxId = $this->dbConnection->createCommand()
-                    ->select('MAX(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->select('MAX('.$this->dbConnection->quoteColumnName($field).')')
                     ->from($this->tableName())
                     ->queryScalar();
 
@@ -139,16 +134,17 @@ class LSActiveRecord extends CActiveRecord
 
         return $maxIds[$field];
     }
-    
+
     /**
      * Return the min value for a field
      *
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
+     * @throws Exception
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
@@ -160,12 +156,12 @@ class LSActiveRecord extends CActiveRecord
                 $field = $primaryKey;
             } else {
                 // Composite key, throw a warning to the programmer
-                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the min value for.', $this->tableName()));           }
+                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the min value for.', $this->tableName())); }
         }
 
         if ($forceRefresh || !array_key_exists($field, $minIds)) {
             $minId = $this->dbConnection->createCommand()
-                    ->select('MIN(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->select('MIN('.$this->dbConnection->quoteColumnName($field).')')
                     ->from($this->tableName())
                     ->queryScalar();
 
@@ -187,17 +183,17 @@ class LSActiveRecord extends CActiveRecord
      * See {@link find()} for detailed explanation about $condition and $params.
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
      * An attribute value can be an array which will be used to generate an IN condition.
-     * @param mixed $condition query condition or criteria.
+     * @param string $condition query condition or criteria.
      * @param array $params parameters to be bound to an SQL statement.
      * @return integer number of rows affected by the execution.
      */
-    public function deleteAllByAttributes($attributes,$condition='',$params=array())
+    public function deleteAllByAttributes($attributes, $condition = '', $params = array())
     {
-        $builder=$this->getCommandBuilder();
-        $table=$this->getTableSchema();
-        $criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
+        $builder = $this->getCommandBuilder();
+        $table = $this->getTableSchema();
+        $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params);
         $this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
-        $this->dispatchPluginModelEvent('beforeModelDeleteMany',                $criteria);
+        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria);
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 

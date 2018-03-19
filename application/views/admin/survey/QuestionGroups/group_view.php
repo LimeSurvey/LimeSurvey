@@ -1,6 +1,11 @@
+<?php
+/**
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup)); ?>
-    <h3><?php eT('Group summary'); ?></h3>
+    <div class="pagetitle h3"><?php eT('Group summary'); ?></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -64,15 +69,15 @@
     </div>
 
     <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')): ?>
-        <h3 id="survey-action-title"><?php eT('Group quick actions'); ?></h3>
+        <div id="survey-action-title" class="pagetitle h3"><?php eT('Group quick actions'); ?></div>
         <div class="row welcome survey-action">
             <div class="col-lg-12 content-right">
 
                 <!-- create question in this group -->
                 <div class="col-lg-3">
-                    <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                    <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                         <div class="panel-heading">
-                            <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
+                            <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                         </div>
                         <div class="panel-body">
                             <span class="icon-add text-success"  style="font-size: 3em;"></span>

@@ -1,6 +1,6 @@
 <?php
     /**
-    * Statistic main view
+    * Statistic simple view
     *
     */
 ?>
@@ -13,15 +13,15 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>
-                <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
+                <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                 <?php eT("Statistics"); ?>
             </h3>
         </div>
 
 
-            <div class="text-right">
-                <div class="form-group">
-                    <div style="display:inline-block;position:relative;top:-65px;">
+        <div class="text-right">
+            <div class="form-group">
+                <div style="display:inline-block;position:relative;top:-65px;">
                     <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
                     <?php
                     echo CHtml::dropDownList(
@@ -40,9 +40,8 @@
                     ;
                     ?>
                 </div>
-                </div>
             </div>
-
+        </div>
     </div>
 
 
@@ -52,6 +51,9 @@
             <div id='statisticsoutput' class='statisticsfilters'>
                 <?php echo $output; ?>
             </div>
+        </div>
+        <div class="col-lg-12 content-left">
+            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?=gT('Export images')?></button>
         </div>
     </div>
 </div>

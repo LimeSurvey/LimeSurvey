@@ -3,7 +3,7 @@
  * Plugin to redirect old url system (index.php?sid=surveyid) to the new url
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2016 LimeSurvey team <http://www.limesurvey.org>
+ * @copyright 2016 LimeSurvey team <https://www.limesurvey.org>
  * @license GPL v3
  * @version 0.0.1
  *
@@ -27,10 +27,10 @@ class oldUrlCompat extends PluginBase
     //~ {
         //~ $this->subscribe('afterPluginLoad','oldUrlCompat');
     //~ }
-    public function __construct(PluginManager $manager, $id)
+    public function __construct(\LimeSurvey\PluginManager\PluginManager $manager, $id)
     {
         parent::__construct($manager, $id);
-        $this->subscribe('afterPluginLoad','oldUrlCompat');
+        $this->subscribe('afterPluginLoad', 'oldUrlCompat');
     }
     /**
      * Forward survey controller if we are in default controller and a sid GET parameters is set
@@ -38,8 +38,7 @@ class oldUrlCompat extends PluginBase
      */
     public function oldUrlCompat()
     {
-        if(App()->getController() && App()->getController()->getId()==="surveys" && App()->request->getQuery('sid'))
-        {
+        if (App()->getController() && App()->getController()->getId() === "surveys" && App()->request->getQuery('sid')) {
             Yii::app()->getController()->forward('survey/index');
         }
     }

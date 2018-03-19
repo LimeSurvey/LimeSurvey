@@ -1,20 +1,24 @@
 <?php
-    /**
-    * Statistic main view
-    *
-    */
-?>
+/**
+ * Statistic main view
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('statisticsIndex');
+
+?>
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
-        <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
+        <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>
     </h3>
 
-    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal', 'id'=>'generate-statistics'));?>
+    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder', 'class'=>'', 'id'=>'generate-statistics'));?>
         <!-- General filters -->
         <div class="row">
             <div class="col-sm-12 content-right">
@@ -28,7 +32,7 @@
 
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyinfo'=>$surveyinfo)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('surveyid'=>$surveyid, 'selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
                                 <!-- Output format -->
@@ -130,6 +134,11 @@
                         </div>
                     </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 content-left">
+            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?=gT('Export images')?></button>
         </div>
     </div>
 </div>

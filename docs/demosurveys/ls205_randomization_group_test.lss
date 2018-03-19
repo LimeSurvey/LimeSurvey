@@ -2723,12 +2723,12 @@
    <row>
     <sid><![CDATA[88881]]></sid>
     <admin><![CDATA[Your Name]]></admin>
-    <adminemail><![CDATA[your@email.org]]></adminemail>
+    <adminemail><![CDATA[example@example.net]]></adminemail>
     <anonymized><![CDATA[Y]]></anonymized>
     <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[Y]]></savetimings>
-    <template><![CDATA[default]]></template>
+    <template><![CDATA[fruity]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages><![CDATA[fr ]]></additional_languages>
     <datestamp><![CDATA[N]]></datestamp>
@@ -2750,7 +2750,7 @@
     <assessments><![CDATA[Y]]></assessments>
     <usecaptcha><![CDATA[D]]></usecaptcha>
     <usetokens><![CDATA[N]]></usetokens>
-    <bounce_email><![CDATA[your@email.org]]></bounce_email>
+    <bounce_email><![CDATA[example@example.net]]></bounce_email>
     <attributedescriptions/>
     <emailresponseto/>
     <emailnotificationto/>

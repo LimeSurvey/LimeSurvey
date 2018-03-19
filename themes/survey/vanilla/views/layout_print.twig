@@ -1,0 +1,53 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Print Layout  ·._.·´¯)·._.·´¯)
+
+    This is the layout that will be used to print the survey to pdf
+    If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
+    This is different from the old LimeSurvey template engine, where you had to provide every one of the pstpl files.
+    Here, you must have a file called layout_global.twig (called from SurveyRuntimeHelper::run() ).
+    Other than that, you're free to organize your files and inclusions as you want.
+#}
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>{{print.sitename}} - {{ aSurveyInfo.surveyls_title }}</title>
+    </head>
+    <body>
+        <div id="limesurvey">
+            <h1>{{ aSurveyInfo.surveyls_title }}</h1>
+
+            <div class="survey-description">{{ aSurveyInfo.surveyls_description }}</div>
+
+            <div class="survey-welcome">{{ aSurveyInfo.surveyls_welcometext }}</div>
+
+            <p class="x-questions">{{print.therearexquestions}}</p>
+
+            {% for group in print.groups %}
+                {% set groupTemplate = './subviews/print/print_group.twig' %}
+                {{ include(groupTemplate) }}
+            {% endfor %}
+
+            {{print.privacy}}
+            
+            <p class="submit-by">
+                {{print.end}}<br />
+                {{print.submit_by}}<br />
+                {{print.fax_to}}<br />
+                {{print.submit_text}}<br />
+                {{print.thanks}}<br />
+            </p>
+
+        </div>
+    </body>
+</html>

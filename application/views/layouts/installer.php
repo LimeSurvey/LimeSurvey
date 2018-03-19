@@ -5,16 +5,21 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="" />
 
-    <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
 
         <?php
+        App()->getClientScript()->registerPackage('bootstrap');
+        App()->getClientScript()->registerPackage('bootstrap-switch');
+        App()->getClientScript()->registerPackage('jquery');
         App()->getClientScript()->registerPackage('jqueryui');
-        App()->bootstrap->register();
+        App()->getClientScript()->registerPackage('adminbasics');
         App()->getClientScript()->registerPackage('fontawesome');
+        App()->getClientScript()->registerPackage('font-roboto');
 
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-colors.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-common.css');
+        App()->getClientScript()->registerCssFile( Yii::app()->getConfig('styleurl') . 'Sea_Green/css/lime-admin-colors.css');
+        App()->getClientScript()->registerCssFile( Yii::app()->getConfig('styleurl') . 'Sea_Green/css/lime-admin-common.css');
+
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
@@ -35,13 +40,15 @@
 
 <body>
     <div class="container">
-        <div class="row"><div class="span12">
-            <h1><?php eT("LimeSurvey installer"); ?></h1>
-        </div></div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="pagetitle"><?php eT("LimeSurvey installer"); ?></h1>
+            </div>
+        </div>
         <?php echo $content; ?>
 
         <div class="row" style="margin-top: 30px;">
-            <div class="span12" style="text-align: center;">
+            <div class="col-xs-12" style="text-align: center;">
                 <img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/poweredby.png" alt="Powered by LimeSurvey"/>
             </div>
         </div>

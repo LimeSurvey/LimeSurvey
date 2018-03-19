@@ -4,7 +4,7 @@
     <div class="col-sm-11 col-sm-offset-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo isset($class) ? $class : ""; ?>">
-            <h2 ><?php echo $title;?></h2>
+            <div class="h2"><?php echo $title;?></div>
             <dl>
             <?php if(isset($aResult['success']) && is_array($aResult['success'])) {?>
                 <dt class='success'><?php eT("Success"); ?></dt>

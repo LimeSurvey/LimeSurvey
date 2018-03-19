@@ -1,0 +1,35 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Registration message._.·´¯)·._.·´¯)
+
+    If there is a message on the registration page, like "Survey has not started, or Register now! here it is displayed
+
+#}
+
+{% if registerSuccess %}
+    <p {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly.") }}</p>
+{% else %}
+    {% if sStartDate %}
+    <p {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</p>
+    {% else %}
+    <p  {{ aSurveyInfo.attr.registermessageb }} >{{ gT("You may register for this survey if you wish to take part.") }}</p>
+    {% endif %}
+    <p  {{ aSurveyInfo.attr.registermessagec }} >{{ gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.") }}</p>
+{% endif %}
+
+{% if  not empty(aSurveyInfo.aErrors) %}
+    <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.maincoldivdivbul }}>
+        {% for  key, error in aSurveyInfo.aErrors%}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

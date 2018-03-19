@@ -6,8 +6,15 @@
  * @var $surveyid
  * @var $surveyls_language
  */
+if(isset($data)){
+    extract($data);
+}
  $count=0;
- ?>
+ if(isset($scripts))
+    echo $scripts;
+
+PrepareEditorScript(false, $this);
+?>
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i=>$eachtitle):?>
         <li role="presentation" class="<?php if($count==0) {echo "active"; }?>">
@@ -27,3 +34,9 @@
     ?>
 <?php endforeach; ?>
 </div>
+
+<?php App()->getClientScript()->registerScript("EditSurveyTextTabs", "
+$('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
+    try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }
+})", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+

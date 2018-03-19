@@ -1,0 +1,88 @@
+@media(min-width: 640px){
+  .slider-wrapper{width:571px;margin:3px 20px 3px 0;height: 128px;}
+  .slider-labels{padding:1px 0 8px 13px;height:1em;}
+  .slider-label{display:inline-block;width:91px;text-indent:0;}
+  .slider-label{
+    float:left;
+    font-size: 22px;
+  }
+  .slider-label-1{text-indent:0;}
+  .slider-background .slider-rating
+  ,.page-odd .slider-background .slider-rating
+    {visibility:hidden;height:22px;}
+  .slider-grab-container{
+    position: relative;
+    width: 501px;
+    overflow: hidden;
+    height:35px;
+    margin-top: 30px;
+  }
+  .slider-line{
+    position: absolute;
+    left:19px;
+    bottom:0;
+    width: 501px;
+    height: 10px;
+    background: linear-gradient(to right,hsla(0,85%,45%,0.5) 0%,hsla(45, 95%,55%,0.8) 40%,hsla(128,85%,55%,0.9) 90%, hsla(0,0%,75%,1) 91%, hsla(0,0%,75%,1) 100%);
+  }
+  .slider-line.mandatory{
+    width: 400px;
+    background: linear-gradient(to right,hsla(0,85%,45%,0.5) 0%,hsla(45, 95%,55%,0.8) 40%,hsla(128,85%,55%,0.9) 100%);
+  }
+  .slider-handle{
+    width: 15px;
+    height: 29px;
+    background-color: hsla(1, 100%, 10%,1);
+    position: absolute;
+    left: 16px;
+    bottom:1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .slider-emoticon-wrapper{padding:1em 0 0}
+}
+@media(max-width: 639px){
+  .slider-wrapper{width:343px;margin:1px 7px 1px 0;height: 91px;}
+  .slider-labels{padding:1px 0 3px 6px;height:1em;}
+  .slider-label{display:inline-block;width:55px;text-indent:0;}
+  .slider-label{
+  *float:left;
+  }
+  .slider-label-1{text-indent:0;}
+  .slider-background .slider-rating
+  ,.page-odd .slider-background .slider-rating
+    {visibility:hidden;height:22px;}
+  .slider-grab-container{
+    position: relative;
+    width: 301px;
+    overflow: hidden;
+    height:35px;
+    margin-top: 30px;
+  }
+  .slider-line{
+    position: absolute;
+    left:0;
+    bottom:0;
+    width: 301px;
+    height: 10px;
+    background: linear-gradient(to right,hsla(0,85%,45%,0.5) 0%,hsla(45, 95%,55%,0.8) 40%,hsla(128,85%,55%,0.9) 90%, hsla(0,0%,75%,1) 91%, hsla(0,0%,75%,1) 100%);
+  }
+  .slider-line.mandatory{
+    width: 272px;
+    background: linear-gradient(to right,hsla(0,85%,45%,0.5) 0%,hsla(45, 95%,55%,0.8) 40%,hsla(128,85%,55%,0.9) 100%);
+  }
+  .slider-handle{
+    width: 15px;
+    height: 29px;
+    background-color: hsla(1, 100%, 10%,1);
+    position: absolute;
+    left: 8px;
+    bottom:1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .slider-emoticon-wrapper{padding:1em 0 0}
+}
+

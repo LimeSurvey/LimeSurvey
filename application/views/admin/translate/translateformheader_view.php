@@ -1,3 +1,4 @@
+<?php //echo print_r($amTypeOptions,true);?>
 <div id="translationloading" style="width: 100%; font-weight: bold; color: #000; text-align: center;">
     <br />
     <?php eT("Loading translations");?><br /><br />
@@ -16,21 +17,17 @@
 		translateJsonUrl = "<?php echo $this->createUrl("admin/translate/sa/ajaxtranslategoogleapi"); ?>";
 	</script>
 
-	<div id="translationtabs" style="display: none;">
+	<div id="translationtabs" >
 		<ul class="nav nav-tabs">
-		<?php
-		for($i = 0, $len = count($tab_names); $i < $len; $i++) {
-			$amTypeOptionsTemp = $amTypeOptions[$i];
-			$type = $tab_names[$i];
-			?> <li <?php if($i==0){echo ' class="active" ';}?>>
-                    <a data-toggle="tab"  href="#tab-<?php echo $type;?>">
-                        <span>
-                            <?php echo $amTypeOptionsTemp["description"];?>
-                        </span>
-                    </a>
-                </li> <?php
-		}
-		$i = 0;
-		?>
+		<?php for ($i = 0, $len = count($tab_names); $i < $len; $i++) {?>
+      <li <?php echo ($i==0) ? 'class="active"': '' ?> >
+            <a data-toggle="tab"  href="#tab-<?php echo $tab_names[$i];?>">
+                <span>
+                    <?php echo $amTypeOptions[$i]["description"];?>
+                </span>
+            </a>
+        </li>
+    <?php } ?>
+		<?php $i = 0; ?>
 		</ul>
-        <div class="tab-content">
+    <div class="tab-content">

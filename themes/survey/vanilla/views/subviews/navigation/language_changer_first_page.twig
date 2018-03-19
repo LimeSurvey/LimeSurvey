@@ -1,0 +1,75 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Language Changer  ·._.·´¯)·._.·´¯)
+
+    This file renders language changer inside the main container when multiple survey languages are available.
+
+    It uses the Yii helper CHtml::dropDownList().
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
+
+#}
+
+{% if aSurveyInfo.alanguageChanger.show == true %}
+
+    {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
+    {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
+
+    {#
+        array of attributes of the Drop Down list.
+        To add a new attribute, just add an entry:
+        'attribute' : 'value',
+    #}
+    {% set htmlOptions = {
+            'id'             : 'langchangerSelectMain',
+            'class'          : 'form-control',
+            'data-targeturl' : aLCD.targetUrl,
+        }
+    %}
+    <!-- Language Changer -->
+    <div class=" {{ aSurveyInfo.class.formgroup }} form-group " {{ aSurveyInfo.attr.formgroup }} >
+        <label class="{{ aSurveyInfo.class.controllabel }} control-label" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
+            <span class="{{ aSurveyInfo.class.languagechanger }} form-inline" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
+            {{
+                C.Html.dropDownList(
+                    'lang',
+                    aLCD.sSelected,
+                    aLCD.aListLang,
+                    htmlOptions
+                )
+            }}
+        </label>
+
+    </div>
+        {% if aLCD.withForm == true %}
+            <!-- for no js functionality (need form) -->
+            {% set buttonhtmlOptions = {
+                    'type'          : 'submit',
+                    'value'         : 'changelang',
+                    'name'          : 'move',
+                    'class'         : aSurveyInfo.class.aLCDWithForm,
+                    'data-toggle'   : "dropdown"
+                }
+            %}
+
+            {{
+                C.Html.htmlButton(
+                    ("Change the language" | gT ),
+                    htmlOptions
+                )
+            }}
+            {% endif %}
+
+    {# Activate the language changer  #}
+    {{ registerScript("BasicThemeScripts-LanguageChanger", "basicThemeScripts.initLanguageChanger('#langchangerSelectMain', 'form#limesurvey'); ", POS_POSTSCRIPT) }}
+
+
+{% endif %}

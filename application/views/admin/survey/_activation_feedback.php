@@ -29,11 +29,12 @@
 
                 <?php if($allowregister && !tableExists('tokens_'.$iSurveyID)):?>
                     <p>
-                        <?php eT("This survey allows public registration. A token table must also be created."); ?>
+                        <?php eT("This survey allows public registration. A survey participants table must also be created."); ?>
                         <br />
                         <br />
                         <input
                             type="submit"
+                            class="btn btn-default btn-lg limebutton"
                             value="<?php eT("Initialise participant table"); ?>"
                             onclick="<?php echo $onclickAction;?>"
                             />
@@ -48,18 +49,20 @@
                             <strong><?php eT("Open-access mode:");?></strong>
                             <?php eT("No invitation code is needed to complete the survey."); ?>
                             <br />
-                            <?php eT("You can switch to the closed-access mode by initialising a token table with the button below."); ?>
+                            <?php eT("You can switch to the closed-access mode by initialising a survey participants table by using the button below."); ?>
                             <br />
                             <br />
                             <input
                                 type='submit'
                                 class='btn btn-default'
+                                id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
                                 onclick="<?php echo $closedOnclickAction;?>"
                                 />
                             <input
                                 type='submit'
                                 class='btn btn-default'
+                                id='activateTokenTable__selector--no'
                                 value='<?php eT("No, thanks."); ?>'
                                 onclick="<?php echo $noOnclickAction;?>"
                                 />

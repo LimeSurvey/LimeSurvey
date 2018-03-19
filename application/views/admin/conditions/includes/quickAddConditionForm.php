@@ -1,8 +1,8 @@
-<div class="row">
-    <div class="col-lg-12">
-
+<div class="container-fluid">
+    <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form '));?>
+    
+        <div class="row">
         <!-- Form quick-add condition -->
-        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form form-horizontal'));?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
@@ -16,8 +16,9 @@
                     <input class='form-control' type='number' name='quick-add-scenario' id='quick-add-scenario' value='1' />
                 </div>
             </div>
-
-            <div class='form-group'>
+        </div>
+        <div class="row ls-space margin top-10 bottom-5">
+            <div class='form-group row'>
                 <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
@@ -30,7 +31,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-SRCPREVQUEST'>
                     <div class='form-group question-option'>
@@ -61,7 +61,8 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="row ls-space margin top-10">
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php eT("Comparison operator"); ?></label>
                 <div class='col-sm-4'>
@@ -74,8 +75,9 @@
                     </select>
                 </div>
             </div>
-
-            <div class='form-group'>
+        </div>
+        <div class="row">
+            <div class='form-group row'>
                 <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
@@ -97,7 +99,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-CANSWERSTAB'>
                     <div class='form-group answer-option'>
@@ -175,8 +176,9 @@
                     </div>
                 </div>
             </div>
-
-            <div class='form-group'>
+        </div>
+        <div class="row">
+            <div class='form-group '>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
                     <input type='hidden' name='quick-add-sid' value='<?php echo $iSurveyID; ?>' />

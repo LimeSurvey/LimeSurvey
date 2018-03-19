@@ -1,6 +1,6 @@
-<label class="col-sm-2 control-label" for="datepickerInputField_[<?php echo $name; ?>]"><?php echo $defaultname; ?></label>
+<label class=" control-label" for="datepickerInputField_[<?php echo $name; ?>]"><?php echo $defaultname; ?></label>
     <div>
-        <div class='col-sm-4'>
+        <div class=''>
             <select class="form-control" name="Attributes[<?php echo $name; ?>]" id="Attributes_<?php echo $name; ?>">
                 <option></option>  <!-- Nothing selected -->
                 <?php foreach ($options as $option): ?>

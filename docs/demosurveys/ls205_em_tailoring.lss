@@ -3565,7 +3565,7 @@ Assuming you are an adult, you are {weightstatus}.]]></question>
     <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[N]]></savetimings>
-    <template><![CDATA[default]]></template>
+    <template><![CDATA[fruity]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages/>
     <datestamp><![CDATA[Y]]></datestamp>

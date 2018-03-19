@@ -1,5 +1,4 @@
 <?php
-
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
@@ -176,17 +175,7 @@
     if (version_compare(PHP_VERSION, '5.3.3', '<'))
         die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 
-
-/**
- * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
- */
-    require_once 'application/Psr4AutoloaderClass.php';
-    $loader = new Psr4AutoloaderClass();
-    $loader->register();
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager/Storage');
-    $loader->addNamespace('ls\\menu', __DIR__ . '/application/libraries/MenuObjects');
-    $loader->addNamespace('ls\\helpers', __DIR__ . '/application/helpers');
+    require_once __DIR__ . '/third_party/autoload.php';
 
 /*
  * --------------------------------------------------------------------
@@ -200,15 +189,6 @@ require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
 $config = require_once(APPPATH . 'config/internal' . EXT);
-
-if (!file_exists(APPPATH . 'config/config' . EXT)) {
-    // If Yii can not start due to unwritable runtimePath, present an error
-    $sDefaultRuntimePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime';
-    if (!is_dir($sDefaultRuntimePath) || !is_writable($sDefaultRuntimePath)) {
-        // @@TODO: present html page styled like the installer
-        die (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
-    }
-}
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config)->run();

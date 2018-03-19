@@ -1,5 +1,15 @@
+<?php
+/**
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ * @var array $queries
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyParticipantsIndex');
+
+?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey participants"))); ?>
     <h3><?php eT("Survey participant summary"); ?></h3>
 
     <div class="row">
@@ -57,7 +67,4 @@
         </div>
     </div>
 
-    <script type='text/javascript'>
-        surveyid = '<?php echo $surveyid; ?>'
-    </script>
 </div>

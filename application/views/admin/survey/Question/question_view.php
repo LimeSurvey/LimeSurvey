@@ -1,6 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion)); ?>
-    <h3><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></h3>
+    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -185,10 +184,16 @@
                             </td>
                             <td>
                                 <?php
-                                    if ($aAdvancedSetting['i18n']==false)
-                                        echo htmlspecialchars($aAdvancedSetting['value']);
-                                    else
-                                        echo htmlspecialchars($aAdvancedSetting[$baselang]['value'])
+                                    if (isset($aAdvancedSetting['expression']) && $aAdvancedSetting['expression']==2){
+                                        LimeExpressionManager::ProcessString('{' . $aAdvancedSetting['value'] . '}', $qid);
+                                        echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                    } else {
+                                        if ($aAdvancedSetting['i18n']==false){
+                                            echo htmlspecialchars($aAdvancedSetting['value']);
+                                        } else {
+                                            echo htmlspecialchars($aAdvancedSetting[$baselang]['value']);
+                                        }
+                                    }
                                 ?>
                             </td>
                         </tr>
@@ -197,7 +202,7 @@
 
             <!-- Quick Actions -->
             <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')): ?>
-                <h3 id="survey-action-title"><?php eT('Question quick actions'); ?></h3>
+                <div id="survey-action-title" class="pagetitle h3"><?php eT('Question quick actions'); ?></div>
                 <div class="row welcome survey-action">
                     <div class="col-lg-12 content-right">
 
@@ -205,7 +210,7 @@
                         <div class="col-lg-3">
                             <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
+                                    <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                                 </div>
                                 <div class="panel-body">
                                     <span class="icon-add text-success"  style="font-size: 3em;"></span>

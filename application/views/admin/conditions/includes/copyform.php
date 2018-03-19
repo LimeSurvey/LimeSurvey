@@ -39,9 +39,9 @@
 
 </form>
 
-<script type="text/javascript">
+<script>
 function prepareCopyconditions() {
-    $("input:checked[name^='aConditionFromScenario']").each(function(i,val) {
+    $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
         var thecid = val.value;
         var theform = document.getElementById('copyconditions');
         addHiddenElement(theform,'copyconditionsfrom[]',thecid);
@@ -49,4 +49,3 @@ function prepareCopyconditions() {
     });
 }
 </script>
-

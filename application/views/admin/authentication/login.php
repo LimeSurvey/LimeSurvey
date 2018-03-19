@@ -2,6 +2,10 @@
 /**
  * Login Form
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('login');
+
 ?>
 <noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
@@ -79,27 +83,36 @@
                                     echo $blockData->getContent();
                                 }
 
-                                $languageData = array(
-                                    'default' => gT('Default')
-                                );
-                                foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
+                                $aLangList = getLanguageDataRestricted(true);
+                                $languageData = array();
+
+                                $reqLang = App()->request->getParam('lang');
+                                if ($reqLang === null){
+                                    $languageData['default'] = gT('Default');
+                                }else{
+                                    $languageData[$reqLang] = html_entity_decode($aLangList[$reqLang]['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLangList[$reqLang]['description'];
+                                    $languageData['default'] = gT('Default');
+                                    unset($aLangList[$reqLang]);
+                                }
+
+                                foreach ( $aLangList as $sLangKey => $aLanguage)
                                 {
                                     $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                                 }
-                                echo CHtml::label(gT('Language'), 'loginlang');
 
+
+                                echo CHtml::label(gT('Language'), 'loginlang');
+                                
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'name' => 'loginlang',
                                     'data' => $languageData,
+                                    'value' => $language,
                                     'pluginOptions' => array(
-                                    'options' => array(
-                                        'width' => '230px'
-                                    ),
-                                    'htmlOptions' => array(
-                                        'id' => 'loginlang'
-                                    ),
-                                    'value' => 'default'
-                                )));
+                                        'htmlOptions' => array(
+                                            'id' => 'loginlang'
+                                        ),
+                                    )
+                                ));
                                 ?>
 
                                 <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)

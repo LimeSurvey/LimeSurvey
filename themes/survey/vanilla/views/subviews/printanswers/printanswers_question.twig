@@ -1,0 +1,12 @@
+<div class="row question-container-printanswers" nobr="true" style="page-break-inside:avoid;"> 
+    {% block question_name %}
+    <div class="col-md-4">
+        <b>{{question.question}} ({{question.qid}})</b><br/>
+        <small>{{ gT("Type:") }} ({{question.type}}/{{question.questionclass}})</small>
+    </div>
+    {% endblock  %}
+    {% block question_answer %}
+        {{ include('./subviews/printanswers/question_types/template_generic_question.twig') }}
+    {% endblock  %}
+</div>
+

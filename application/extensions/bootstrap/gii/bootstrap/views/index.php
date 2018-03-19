@@ -6,7 +6,7 @@ Yii::app()->clientScript->registerScript(
 $('#{$class}_controller').change(function(){
 	$(this).data('changed',$(this).val()!='');
 });
-$('#{$class}_model').bind('keyup change', function(){
+$('#{$class}_model').on('keyup change', function(){
 	var controller=$('#{$class}_controller');
 	if(!controller.data('changed')) {
 		var id=new String($(this).val().match(/\\w*$/));

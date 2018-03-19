@@ -6,8 +6,8 @@
  */
 ?>
     <div class="form-group">
-            <label class="col-sm-4 control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
-            <div class="col-sm-6">
+            <label class=" control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+            <div class="">
                     <select class="form-control"  name='defaultlang' id='defaultlang'>
             <?php
                 $actuallang=getGlobalSetting('defaultlang');
@@ -27,11 +27,12 @@
     </div>
 
     <div class="form-group">
-            <label class="col-sm-4 control-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
-            <div class="col-sm-6">
+            <label class=" control-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
+            <div class="">
             <table id='languageSelection'>
             <tr>
                 <td>
+                <?php eT("Visible:"); ?><br>
                 <select class="form-control"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
                             foreach ($restrictToLanguages as $sLanguageCode) {?>
                             <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
@@ -52,6 +53,7 @@
                     </button>
                 </td>
                 <td >
+                <?php eT("Hidden:"); ?><br>
                 <select class="form-control"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                         <?php foreach ($excludedLanguages as $sLanguageCode) {
                             ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php

@@ -1,0 +1,66 @@
+.imageselect-horizontal {
+    width:90%;
+    margin: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.imageselect-list{
+    list-style: none;
+    padding: 4px;
+}
+
+.imageselect-horizontal .imageselect-list{
+    width: 2000%;
+    white-space: nowrap;
+    position: absolute;
+    overflow: visible;
+    left: 4px;
+    top: 4px;
+}
+.imageselect-list li.imageselect-listitem{
+    padding: 0;
+    margin: 6px 8px;
+    border: 0;
+    display: block;
+}
+
+.imageselect-horizontal li.imageselect-listitem{
+        display: inline-block;
+        height: 100%;
+}
+
+.imageselect-container{
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    padding:0;
+    margin:0;
+    border: none;
+}
+
+li.imageselect-listitem .imageselect-container .imageselect-label{
+    z-index:1;
+    margin: 3px;
+    padding: 0;
+    border: 18px solid hsla(0,0%,60%,0.9);
+    border-radius: 0;
+}
+
+li.imageselect-listitem .imageselect-container .imageselect-label:before{
+    display: none;
+}
+li.imageselect-listitem .imageselect-container .imageselect-label:after{
+    display: none;
+}
+li.imageselect-listitem .imageselect-container .imageselect-checkbox{
+    visibility: hidden;
+    position: relative;
+    top: 5px;
+    left:5px;
+    z-index:-1;
+}
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
+    border: 18px solid hsla(198,50%,30%,0.9);
+}

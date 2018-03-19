@@ -1,12 +1,14 @@
 <?php
-class ExportSTATAxml extends \ls\pluginmanager\PluginBase {
+class ExportSTATAxml extends \LimeSurvey\PluginManager\PluginBase
+{
     
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: Export survey results to a STATA xml file';
     static protected $name = 'STATA Export';
     
-    public function init() {
+    public function init()
+    {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -72,9 +74,8 @@ class ExportSTATAxml extends \ls\pluginmanager\PluginBase {
     public function newExport()
     {
         $event = $this->getEvent();
-        $type = $event->get('type');
 
-        $pluginsettings=$this->getPluginSettings(true);
+        $pluginsettings = $this->getPluginSettings(true);
         $writer = new STATAxmlWriter($pluginsettings);
         $event->set('writer', $writer);
     }

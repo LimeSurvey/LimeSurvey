@@ -1,0 +1,85 @@
+/**
+ * Extra css for uploade iframe
+ */
+body.uploader {
+    margin:0;width:100%;
+}
+html,body{height:100%}
+
+#dialog-confirm { padding: 0 20px; float: left; width: 750px; }/* Used .*/
+
+/* Using display:table */
+.files-list {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    list-style: none;
+    padding: 1em;
+    margin: 0;
+}
+.file-element{display:table-row;width:100%;padding:0.5em 0;}
+.file-info fieldset{
+border:0 none;
+padding:0;
+margin:0;
+}
+
+.file-tool{width:50px;text-align:center} /* Not sure we have it : it's button now */
+
+@media handled,screen and (max-width: 479px) {
+    .files-list{
+    display:block;
+    }
+    .file-element{
+    display:block;
+    }
+    .file-preview,.file-info,.file-tool{
+    width:100%;
+    display:block;
+    }
+}
+
+
+
+.file-info label{
+    float:left;
+    clear:left;
+    display:block;
+    width:12em;
+    padding:0 0.5em;
+    line-height:1.5;
+    text-align:right;
+}
+
+.file-info .input-container{
+    display:block;
+    margin-left:13em;
+}
+@media only screen and (max-width: 767px) {
+    .file-info label{
+    display:bloc;
+    float:none;
+    width:auto;
+    text-align:left;
+    }
+    .file-info .input-container{
+        margin-left:0;
+    }
+}
+.upload-div{
+    text-align: center;
+}
+.uploadmsg {
+    text-align: center;
+}
+
+.uploadstatus {
+    text-align: center;
+}
+
+img.uploaded {
+    display: block;
+    height: auto;
+    max-height: 100px;
+    max-width: 96%;
+}

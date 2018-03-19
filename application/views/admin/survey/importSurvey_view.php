@@ -92,6 +92,9 @@
                 <tr><td><?php eT("Quotas");?>:</td><td><?php echo $aImportResults['quota'];?></td></tr>
                 <tr><td><?php eT("Quota members:");?></td><td><?php echo $aImportResults['quotamembers'];?></td></tr>
                 <tr><td><?php eT("Quota language settings:");?></td><td><?php echo $aImportResults['quotals'];?></td></tr>
+                <?php if(!empty($aImportResults['plugin_settings'])) { ?>
+                    <tr><td><?php eT("Plugin settings:");?></td><td><?php echo $aImportResults['plugin_settings'];?></td></tr>
+                <?php } ?>
             </table>
             </div>
             </div>

@@ -14,35 +14,33 @@
 
 
     /**
-    * Outputs a full dump of the current LimeSurvey database
-    * @param string $sDbName Database Name
-    */
-    function outputDatabase($sDbName='', $bEchoOutput=true, $sFileName=null)
+     * Outputs a full dump of the current LimeSurvey database
+     * @param string $sDbName Database Name
+     */
+    function outputDatabase($sDbName = '', $bEchoOutput = true, $sFileName = null)
     {
-        if($sDbName=='')
-        {
-            $sDbName=_getDbName();
+        if ($sDbName == '') {
+            $sDbName = _getDbName();
         }
         $bAllowExportAllDb = (bool) Yii::app()->getConfig('allowexportalldb');
 
-        $sOutput=_outputDBDescription($sDbName, $bAllowExportAllDb);
-        if ($bEchoOutput)
-        {
+        $sOutput = _outputDBDescription($sDbName, $bAllowExportAllDb);
+        if ($bEchoOutput) {
             echo $sOutput;
         }
 
-        if (!is_null($sFileName))
-        {
-            $oFile=fopen($sFileName,'w');
-            fwrite($oFile,$sOutput);
-        }
-        else
-        {
-            $oFile=null;
+        if (!is_null($sFileName)) {
+            $oFile = fopen($sFileName, 'w');
+            if ($oFile === false) {
+                safeDie('Could not open output file.');
+            } else {
+                fwrite($oFile, $sOutput);
+            }
+        } else {
+            $oFile = null;
         }
         _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile);
-        if (!is_null($sFileName))
-        {
+        if (!is_null($sFileName) && $oFile !== false) {
             fclose($oFile);
         }
 
@@ -50,147 +48,129 @@
 
     function _outputDBDescription($sDbName, $bAllowExportAllDb)
     {
-        $sOutput= '--' . "\n";
-        $sOutput.= '-- LimeSurvey Database Dump of `' . $sDbName . '`' . "\n";
+        $sOutput = '--'."\n";
+        $sOutput .= '-- LimeSurvey Database Dump of `'.$sDbName.'`'."\n";
         if (!$bAllowExportAllDb) {
-            $sOutput= '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
+            $sOutput = '-- Only prefixed tables with: '.Yii::app()->db->tablePrefix."\n";
         }
-        $sOutput.= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
-        $sOutput.= '--' . "\n";
+        $sOutput .= '-- Date of Dump: '.dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust'))."\n";
+        $sOutput .= '--'."\n";
         return $sOutput;
     }
 
     function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
     {
-        if ($bAllowExportAllDb){
+        if ($bAllowExportAllDb) {
             $aTables = Yii::app()->db->getSchema()->getTableNames();
+        } else {
+            $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_')."%"))->queryColumn();
         }
-        else
-        {
-            $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix,'_')."%"))->queryColumn();
-        }
-        foreach ($aTables as $sTableName)
-        {
-            $oTableData=Yii::app()->db->getSchema()->getTable($sTableName);
-            $sOutput=_outputTableDescription($sTableName);
-            if ($bEchoOutput)
-            {
+        foreach ($aTables as $sTableName) {
+            $oTableData = Yii::app()->db->getSchema()->getTable($sTableName);
+            $sOutput = _outputTableDescription($sTableName);
+            if ($bEchoOutput) {
                 echo $sOutput;
             }
-            if (!is_null($sFileName))
-            {
-                fwrite($oFile,$sOutput);
+            if (!is_null($sFileName)) {
+                fwrite($oFile, $sOutput);
             }
             _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
         }
     }
 
     /**
-    * Outputs the table structure in sql format
-    */
+     * Outputs the table structure in sql format
+     */
     function _outputTableDescription($sTableName)
     {
-        $sOutput= "\n".'-- --------------------------------------------------------'."\n\n";
-        $sOutput.= '--'."\n";
-        $sOutput.= '-- Table structure for table `'.$sTableName.'`'."\n";
-        $sOutput.= '--'."\n\n";
-        $sOutput.= 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
+        $sOutput = "\n".'-- --------------------------------------------------------'."\n\n";
+        $sOutput .= '--'."\n";
+        $sOutput .= '-- Table structure for table `'.$sTableName.'`'."\n";
+        $sOutput .= '--'."\n\n";
+        $sOutput .= 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
 
         $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
-        $sOutput.= $aCreateTable['Create Table'].';'."\n\n";
+        $sOutput .= $aCreateTable['Create Table'].';'."\n\n";
         return $sOutput;
     }
 
     /**
-    * Outputs the table data in sql format
-    */
+     * Outputs the table data in sql format
+     */
     function _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile)
     {
-        $sOutput= '--'."\n";
-        $sOutput.= '-- Dumping data for table `'.$sTableName.'`'."\n";
-        $sOutput.= '--'."\n\n";
+        $sOutput = '--'."\n";
+        $sOutput .= '-- Dumping data for table `'.$sTableName.'`'."\n";
+        $sOutput .= '--'."\n\n";
 
         $iNbRecords = _countNumberOfEntries($sTableName);
         if ($iNbRecords > 0) {
             $iMaxNbRecords = _getMaxNbRecords();
             $aFieldNames = array_keys($oTableData->columns);
 
-            for ($i = 0; $i < ceil($iNbRecords / $iMaxNbRecords); $i++)
-            {
+            for ($i = 0; $i < ceil($iNbRecords / $iMaxNbRecords); $i++) {
                 $aRecords = Yii::app()->db->createCommand()
                 ->select()
                 ->from($sTableName)
                 ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) : null))
                 ->query()->readAll();
 
-                $sOutput.=_outputRecords($sTableName, $aFieldNames, $aRecords);
-                if ($bEchoOutput)
-                {
+                $sOutput .= _outputRecords($sTableName, $aFieldNames, $aRecords);
+                if ($bEchoOutput) {
                     echo $sOutput;
                 }
-                if (!is_null($sFileName))
-                {
-                    fwrite($oFile,$sOutput);
+                if (!is_null($sFileName)) {
+                    fwrite($oFile, $sOutput);
                 }
-                $sOutput='';
+                $sOutput = '';
 
 
             }
-            $sOutput.= "\n";
+            $sOutput .= "\n";
 
         }
-        if ($bEchoOutput)
-        {
+        if ($bEchoOutput) {
             echo $sOutput;
         }
-        if (!is_null($sFileName))
-        {
-            fwrite($oFile,$sOutput);
+        if (!is_null($sFileName)) {
+            fwrite($oFile, $sOutput);
         }
     }
 
     function _outputRecords($sTableName, $aFieldNames, $aRecords)
     {
-        $sLastFieldName=end($aFieldNames);
-        $aLastRecord=end($aRecords);
-        $i=0;
-        $sOutput='';
-        foreach ($aRecords as $aRecord)
-        {
-            if ($i==0){
-                $sOutput.= 'INSERT INTO `' . $sTableName . "` (";
-                foreach ($aFieldNames as $sFieldName)
-                {
-                    $sOutput.=  '`'.$sFieldName.'`,';
+        $sLastFieldName = end($aFieldNames);
+        $aLastRecord = end($aRecords);
+        $i = 0;
+        $sOutput = '';
+        foreach ($aRecords as $aRecord) {
+            if ($i == 0) {
+                $sOutput .= 'INSERT INTO `'.$sTableName."` (";
+                foreach ($aFieldNames as $sFieldName) {
+                    $sOutput .= '`'.$sFieldName.'`,';
                 }
-                $sOutput=substr($sOutput,0,-1);
-                $sOutput.=") VALUES\n";
+                $sOutput = substr($sOutput, 0, -1);
+                $sOutput .= ") VALUES\n";
             }
-            $sOutput.= '(';
-            foreach ($aFieldNames as $sFieldName)
-            {
+            $sOutput .= '(';
+            foreach ($aFieldNames as $sFieldName) {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sOutput.=Yii::app()->db->quoteValue($aRecord[$sFieldName]);
-                }
-                else
-                {
-                    $sOutput.= 'NULL';
+                    $sOutput .= Yii::app()->db->quoteValue($aRecord[$sFieldName]);
+                } else {
+                    $sOutput .= 'NULL';
                 }
 
                 if ($sFieldName != $sLastFieldName) {
-                    $sOutput.= ', ';
+                    $sOutput .= ', ';
                 }
             }
             $i++;
-            if ($i==200 || ($aLastRecord == $aRecord))
-            {
-                $sOutput.= ');' . "\n";
-                $i=0;
-            }
-            else
-            {
-                $sOutput.= '),' . "\n";
+            if ($i == 200 || ($aLastRecord == $aRecord)) {
+                $sOutput .= ');'."\n";
+                $i = 0;
+            } else {
+                $sOutput .= '),'."\n";
             }
         }
         return $sOutput;
@@ -198,14 +178,14 @@
 
     function _countNumberOfEntries($sTableName)
     {
-        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
+        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
         $iNumRows = $aNumRows['COUNT(*)'];
         return $iNumRows;
     }
 
     function _getMaxNbRecords()
     {
-        $iMaxRecords = (int)Yii::app()->getConfig('maxdumpdbrecords');
+        $iMaxRecords = (int) Yii::app()->getConfig('maxdumpdbrecords');
         if ($iMaxRecords < 1) {
             $iMaxRecords = 2500;
             return $iMaxRecords; // default
@@ -217,7 +197,8 @@
     /**
      * Get the database name
      */
-    function _getDbName() {
+    function _getDbName()
+    {
         // Yii doesn't give us a good way to get the database name
         preg_match('/dbname=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
         $sDbName = $aMatches[1];

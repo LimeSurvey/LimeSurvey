@@ -1,0 +1,900 @@
+/*
+    LimeSurvey
+
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.·  LS team custom CSS   ·._.·´¯)·._.·´¯)
+
+    You'd rather not touch it. This file can be overwritten by an update.
+
+
+    ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
+    ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
+    ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
+    ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
+    ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
+    ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
+
+    Please, use custom.css with "strong specificity"
+    see: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
+
+*/
+body {
+     padding-bottom: 10px;
+     padding-top: 60px;/* now is redefine in JS to fit any title length */
+}
+
+
+
+element.style {
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    text-decoration: underline;
+}
+
+.navbar-action-link{
+    padding-right:1em; /* really close to window without */
+}
+
+/* specific for survey listing */
+@media (min-width: 761px) {
+  .surveys-list .btn-group {
+    width: 50%;
+  }
+  .language_change_container{
+      height: 90vh;
+  }
+}
+
+.space-col {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+.group-outer-container{
+    display: flex;
+}
+.group-container{
+    width:100%;
+}
+
+.group-title-container {
+  padding: 1em;
+  background:transparent;
+}
+
+.top-container {
+    width: 100%;
+    padding: 0;
+    border-bottom: none;
+    color: inherit;
+}
+
+.top-container .top-content{
+    padding-top:1em;
+    padding-bottom:1em;
+    margin-bottom:2em;
+}
+
+.top-content .form-change-lang{float:right}
+.dir-rtl .top-content .form-change-lang{float:left}
+.no-js .top-content .form-change-lang{display:none}
+
+.top-container .top-content:empty{display:none}
+.group-description:empty{display:none}
+.group-title:empty{display:none}
+.top-container .progress {
+    height: 21px;
+    margin-bottom: 0;
+}
+.top-container .progress {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
+}
+.progress .progress-bar {
+    line-height:19px;
+}
+.top-container .form-change-lang {text-align:center}
+
+/**
+ * Navigator
+ */
+
+ #navigator-container {
+     padding-bottom: 1em;
+ }
+ #navigator-container > hr
+ {
+    margin-top: 0px;
+    margin-bottom: 0px;
+ }
+
+/**
+ * Question part
+ */
+/** Question Design **/
+
+.question-container {
+  margin-bottom: 2em;
+}
+
+
+
+.question-container-printanswers {
+  margin-top: 2em ;
+  margin-bottom: 2em ;
+  padding-bottom: 2em ;
+  border-bottom: 1px solid rgba(225, 225, 255, 0.6);
+}
+
+.question-title-container {
+  padding-top: 1em;
+  padding-bottom:1em;
+}
+.question-number,.question-code{float:left;margin:0 0.3em}
+.question-number:empty,.question-code:empty{display:none}
+
+.question-valid-container {
+  position: relative;
+}
+
+.ls-question-help,
+.ls-questionhelp{
+  margin-bottom:5px;
+}
+
+.question-valid-container .text-danger{
+  font-weight: bold;
+}
+
+.question-valid-container .text-info{
+  font-weight: bold;
+}
+.answer-container, .question-help-container {
+    border-color: #dbdbdb;
+}
+.answer-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+  padding-top: 0.5em;
+  padding-bottom:0.5em;
+}
+
+.ls-answers{
+  padding-top:15px;
+  padding-bottom:15px;
+  margin-bottom:0;
+}
+
+.question-help-container {
+
+}
+/* little icon near the question-help */
+.ls-questionhelp{position: relative;}
+.dir-ltr .ls-questionhelp{margin-left:1.2em;}
+.dir-rtl .ls-questionhelp{margin-right:1.2em;}
+
+.ls-questionhelp:before{content:"\f059"}
+.ls-questionhelp:before {
+    display: block;
+    position:absolute;
+    font-family: FontAwesome;
+    font-size: inherit;
+    line-height: inherit;
+    height:100%;
+}
+
+/* If you want to center the icon */
+/*
+.ls-questionhelp:before {
+    top:50%;
+    margin-top:-0.7em;
+}
+*/
+.dir-ltr .ls-questionhelp:before {
+    left:-1.1em;
+}
+.dir-rtl .ls-questionhelp:before {
+    right:-1.1em;
+}
+
+/**
+ * Unsure part
+ */
+
+ #main-col {
+     margin-top: 1em;
+ }
+
+ .col-centered{
+     float: none;
+     margin: 0 auto;
+ }
+
+.radio-list li
+{
+    display: block;
+    clear: both;
+}
+.question-item .other-label
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+/**
+ * For em-type
+ */
+ .hide-tip
+ {
+     display: none;
+ }
+
+/**
+ * Surveys list
+ */
+.surveys-list {
+    margin-top: 1em;
+    list-style: none;
+}
+.surveys-list li {
+    padding: 0.5em;
+}
+.surveys-list li a {
+    margin-left: 0.5em;
+}
+
+#surveys-list-jumbotron {
+    text-align: center;
+}
+
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width: 35%;
+    display: block;
+    margin: 15px auto;
+}
+
+/*#outerframeContainer {
+    height: 100%;
+}*/
+
+#surveyListFooter {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    padding-bottom: 80px;
+    padding-top: 10px;
+    margin-top: 10px;
+
+    bottom: 0px;
+    height: 60px;
+    background-color: rgba(236, 240, 241, 0.2);
+}
+
+@media (max-width: 768px) {
+    #surveyListFooter {
+        padding-bottom: 40px;
+        padding-top: 5px;
+        margin-top: 5px;
+        height: 40px;
+    }
+}
+
+/**
+ * Specific question part
+ */
+.radio-item label,.checkbox-item label {
+    cursor: pointer;
+}
+.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+    cursor: pointer;
+}
+.js td.radio-item,.js td.checkbox-item{
+    cursor: pointer;
+}
+
+.slider-item {
+    min-height: 50px;
+}
+
+
+/* Show more the heading in table */
+.ls-answers .ls-heading th{font-weight:700}
+/* Max width for some answer part */
+@media (min-width: 768px) {
+  .yesno-button,.gender-button {
+    width: 50%;
+  }
+  .yesno-button,.gender-button {
+    float: left;
+  }
+  .dir-rtl .yesno-button,.dir-rtl .gender-button {
+    float: right;
+  }
+}
+/* table color */
+.ls-even{
+background-color:#f9f9f9;
+}
+/* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
+.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
+/* array by column hover column */
+.table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
+.table-col-hover col.hover /* Actual solution : js only*/
+{
+    background-color: #ecf0f1;
+}
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    .ls-answers > tbody > tr.ls-even:hover {
+        background-color:#f9f9f9;
+    }
+}
+/**
+ * Gender buttons
+ */
+
+/* General */
+.button-item .ls-icon {
+    display: block;
+}
+.button-item .ls-icon {
+    font-size: 1.4em;
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+.file-upload-modal,.modal{
+    z-index: 2001;
+}
+
+/* Title of survey can be big, allow multiline, but leave the minimum */
+.navbar-brand {
+    height: auto;
+    min-height:60px;
+}
+
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.logo-container {
+  padding: 0px;
+  float: left;
+
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.logo-container>img {
+  max-height: 90px;
+  padding: 15px;
+  width: auto;
+}
+
+.brand-logo  .top-container .top-content{
+    padding-top: 2em;
+}
+
+
+
+/* Wrap text in e.g. gender button "No answer */
+.wrap-normal {
+    white-space: normal;
+}
+
+/* Center modal vertically, used by file-upload modal */
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+.modal-dialog {
+    display: inline-block;
+     text-align: left;
+     vertical-align: middle;
+}
+
+#yii-flash-message {
+    margin-top: 3em;
+}
+
+.prefix-text-right {
+    text-align: right;
+}
+
+.align-middle {
+    vertical-align: middle !important;
+}
+
+
+/* Used for date-picker icon within input */
+.form-control-feedback {
+    right: 1em;
+    left: auto;
+}
+
+body .navbar-default .navbar-brand:hover {
+}
+
+/* Only use <label> to get vertical align easy. Don't want boldness. */
+.no-label {
+    font-weight: normal;
+}
+
+table > tbody > tr > td.ddprefix {
+    padding-right: 1em;
+    vertical-align: middle;
+}
+
+
+/**
+ * On big screen only, iPad and up
+ */
+@media only screen and (min-width: 761px) {
+
+    .table-dual-scale .separator {
+        width: 6%;
+    }
+
+    table > tbody > tr > td.ddsuffix {
+        padding-left: 1em;
+        vertical-align: middle;
+    }
+
+}
+
+/**
+ * No more tables
+ * OBS: Media specific CSS must be last in this file.
+ * iPad has width 768px (according to Chrome dev tool)
+ * Google Nexus 10 has width 800px.
+ * (Both in portrait mode.)
+ * We don't have to collapse tables on pads.
+ */
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    table.ls-answers  tbody {
+        padding: 0 1em 0 1em;
+    }
+    table.ls-answers  tr{
+        border: 0 none;
+        padding: 1em;
+    }
+    table.ls-answers  tr th {
+        font-size: 1.1em;
+        text-align: center;
+        color: #317eac;
+    }
+    /*
+        No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
+        whereas visible-xs-block respect bootstrap standards (767px)
+        If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens.
+        We should repsect standards, we should not try to fit to non standards devices.
+    */
+    .visible-xs-block{
+        display: block !important;
+    }
+    .visible-xs-inline-block{
+        display: inline-block !important;
+    }
+
+    /* Add some margin for multiple short text */
+    .form-group.row {
+        margin-bottom: 15px;
+    }
+
+    table.ls-answers tbody {
+        padding: 0;
+    }
+
+    table.ls-answers  tr{
+        border: 1px solid #ccc;
+        padding: 0;
+        margin-bottom:1em;
+    }
+
+    /* Line header ; color is h4 color */
+    table.ls-answers tr th {
+        font-size: 1.1em;
+        text-align: left;
+        color: #317eac;
+    }
+
+    .array-by-columns .answertext {
+        padding: 8px;
+        padding-left: 0;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .array-by-columns .radio-item {
+        padding-bottom: 8px;
+    }
+
+    table.ls-answers td {
+        /* Behave  like a "row" */
+        min-height: 2em;
+        border: none;
+        position: relative;
+        /*padding-left: 95%;*/
+        padding-bottom: 1em;
+        white-space: normal;
+        text-align:left ;
+    }
+
+    /* Hide the first column in array-by-column */
+    .array-by-columns-table tr > *:nth-child(1) {
+        display: none;
+    }
+
+    /* Need some more space on phone */
+    .array-multi-flexi .answertext {
+        padding-bottom: 0.5em;
+    }
+
+    .array-multi-flexi .answer-item label {
+        padding-bottom: 0.5em;
+    }
+
+    /* On phone, left and right slider text is above and below slider */
+    .slider-left-span {
+        text-align: left;
+    }
+
+    /* As above, collapse prefix/suffix to above/below input */
+    .prefix-text-right {
+        text-align: left;
+    }
+
+    /* Used for date-picker icon within input */
+    .form-control-feedback {
+        right: 0.5em;
+    }
+
+    .col-xs-12.question-container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+}
+
+/** On small phones, leave some more space */
+@media only screen and (max-width: 400px) {
+
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+        margin: 1em;
+    }
+
+    /*
+    .col-sm-12.answer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    */
+
+    .no-more-tables tbody {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* For yes-no question, shrink the buttons a bit on phone screens */
+    .btn-lg, .btn-group-lg label {
+        padding: 10px 15px;
+    }
+
+    .slider.slider-horizontal {
+        /* Slider can be full width on phones */
+        width: 100%;
+    }
+
+    /* Center label under radio button on phones */
+    .five-point-choice label {
+        margin-left: 5px;
+    }
+
+    /* Make file-upload pop-up shorter on phones */
+    .file-upload-modal-body {
+        padding: 0;
+        height: 300px;
+    }
+
+    /* Modal should be in front of navbar, so the close icon is visible */
+    .modal {
+        z-index: 3000;
+    }
+
+    /* Less margin on phones */
+    .slider.slider-horizontal {
+        margin-bottom: 0.4em;
+    }
+
+}
+
+/**
+ * Display adjust, question type by question type
+ */
+
+
+.table > tbody > tr > th
+{
+    vertical-align: middle;
+}
+
+.othertext-label-checkox-container {
+    padding-top: 5px;
+    margin-right: 5px;
+}
+
+.geoloc-item .search-icon, .geoloc-item .checkbox  {
+    padding-top: 10px;
+}
+
+.geoname_search {
+    margin-bottom: 10px;
+}
+
+
+
+
+/* Give help text some space */
+.questionhelp {
+  padding-bottom:0.5em;
+}
+
+/* Arrow */
+/* Will confuse survey takers?
+.questionvalidcontainer:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: #233140;
+    border-width: 0.9em;
+    margin-left: -0.9em;
+}
+*/
+
+/* Asterix */
+.input-error .asterisk {
+    font-size: 1.2em;
+    margin-top:-0.2em;
+}
+
+#surveys-list-container
+{
+    margin-top: 50px;
+}
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#outerframeContainer {
+    min-height: 100%;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
+
+.xdebug-var-dump {
+    z-index: 10000;
+    position: relative;
+    top: 10px;
+}
+
+
+div.yes-no .btn-group label {
+  white-space:normal;
+}
+
+.privacy-header{
+    font-weight: bold;
+    font-style: italic;
+}
+
+/*** Divider for Bootstrap ***/
+
+.horizontal-divider.top{
+  border-top: 3px solid #323232;
+}
+.horizontal-divider.bottom{
+  border-bottom: 3px solid #323232;
+}
+
+.vertical-divider.left {
+  border-left: 3px solid #323232;
+}
+.vertical-divider.right {
+  border-right: 3px solid #323232;
+}
+@media (max-width: 800px){
+    .vertical-divider.left {
+    border: none;
+    }
+    .vertical-divider.right {
+    border: none;
+    }
+}
+
+@media only screen and (max-device-width: 760px){
+
+  h1, .h3{
+    font-size:18px;
+  }
+
+  .h4{
+    font-size:16px;
+  }
+
+  .question-container{
+    margin-bottom:1em;
+  }
+
+  .question-title-container{
+    padding-top:5px;
+    padding-bottom: 5px;
+  }
+
+  .answer-container{
+    //padding-top:0.5em;
+    //padding-bottom:0.5em;
+  }
+
+  .ls-question-help,
+  .ls-questionhelp{
+    font-size:14px;
+  }
+
+  .table-bordered{
+    border:none;
+  }
+
+  .ls-answers tbody:last-child tr:last-child{
+    margin-bottom:0;
+  }
+
+  .ls-answers{
+    padding-top:0;
+    padding-bottom:0;
+  }
+
+  .ls-answers > tbody > tr > td.radio-item ,
+  .ls-answers > tbody > tr > td.checkbox-item{
+    min-height:44px; /*minimal height for touching with finger */
+    padding-top:10px;
+    padding-left:28px;
+  }
+
+  .ls-answers.table > tbody + tbody {
+    border-top: none; /*overriding Bootstrap */
+  }
+
+  .help-block:last-child{
+    margin-bottom:0;
+  }
+
+  .ls-questionhelp,
+  .help-block{
+    font-size:90%;
+  }
+}
+
+p.return-to-survey{
+    clear:left;
+}
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+.text-break-pre{
+    white-space: pre-line;
+}
+
+.child-row-spacing>.row{
+    padding-bottom: 8px;
+}
+.child-row-border-bottom>.row:last-child{
+    padding-bottom: 0;
+}
+
+.superset {
+    font-size: 50%;
+    vertical-align: top;
+}
+}
+
+
+/* Remove question container*/
+#navbar {
+    background: none; border: none;
+}
+.question-title-container, .question-valid-container{
+    background: none; border: none;
+}
+.answer-container, .question-container{
+    border: none;
+}
+
+
+.navbar-default .navbar-brand, .navbar-default  {
+    border: none;
+}
+
+.alert {
+    background: none;
+}
+
+.question-item {
+    border: none;
+}
+
+body .checkbox-item label::after {
+    background-color: transparent;
+}
+
+/* aligns navigator buttons with question borders */
+#navigator-container > div {
+    padding: 0px;
+}
+
+.btn:focus, .btn:hover {
+    color: #fff;
+}
+
+/* Remove borders when checkbox is checked */
+.checkbox-item input[type="checkbox"]:checked + label::before{
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus, .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus{
+    outline: none;
+}
+
+.limit-text-window {
+    max-height: 40rem;
+    max-height: 33vh;
+    padding: 15px 5px;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    border-left: none;
+    border-right: none;
+    outline: none;
+}

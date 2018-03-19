@@ -50,25 +50,27 @@
 
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
-    <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-
+    <div id="beginScripts">
+        <###begin###>
+    </div>
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
+    <span class='sr-only'><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
-<script type='text/javascript'>
-var frameSrc = "/login";
-    <?php if(isset($formatdata)):?>
-    var userdateformat='<?php echo $formatdata['jsdate']; ?>';
-    var userlanguage='<?php echo $adminlang; ?>';
-    <?php endif; ?>
-</script>
+<?php App()->getClientScript()->registerScript("HeaderVariables",
+'var frameSrc = "/login";
+'.(isset($formatdata) ? 
+    ' var userdateformat="'.$formatdata['jsdate'].'";'
+   .'var userlanguage="'.$adminlang.'";'
+   : '' ), LSYii_ClientScript::POS_HEAD); ?>

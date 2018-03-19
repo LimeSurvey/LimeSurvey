@@ -96,6 +96,7 @@ class WhSwitch extends CInputWidget
         $this->htmlOptions['data-on-color'] = $this->onColor;
         $this->htmlOptions['data-off-color'] = $this->offColor;
         $this->htmlOptions['data-size'] = $this->size;
+        $this->htmlOptions['data-is-bootstrap-switch'] = true;
     }
 
     /**
@@ -135,16 +136,6 @@ class WhSwitch extends CInputWidget
      */
     public function registerClientScript()
     {
-        /* publish assets dir */
-        $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets';
-        $assetsUrl = $this->getAssetsUrl($path);
-        $id = TbArray::getValue('id', $this->htmlOptions);
-
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
-        $selector = '#' . $id;
-
-        $this->getApi()->registerPlugin('bootstrapSwitch', $selector);
-        $this->getApi()->registerEvents($selector, $this->events);
 
     }
 }

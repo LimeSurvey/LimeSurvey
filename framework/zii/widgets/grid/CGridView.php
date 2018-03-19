@@ -405,6 +405,7 @@ class CGridView extends CBaseListView
 	 * Creates a {@link CDataColumn} based on a shortcut column specification string.
 	 * @param string $text the column specification string
 	 * @return CDataColumn the column instance
+	 * @throws CException
 	 */
 	protected function createDataColumn($text)
 	{
@@ -471,8 +472,8 @@ class CGridView extends CBaseListView
 		$cs->registerCoreScript('bbq');
 		if($this->enableHistory)
 			$cs->registerCoreScript('history');
-		$cs->registerScriptFile($this->baseScriptUrl.'/jquery.yiigridview.js',CClientScript::POS_END);
-		$cs->registerScript(__CLASS__.'#'.$id,"jQuery('#$id').yiiGridView($options);");
+		$cs->registerScriptFile($this->baseScriptUrl.'/jquery.yiigridview.js',LSYii_ClientScript::POS_PREBEGIN);
+		$cs->registerScript(__CLASS__.'#'.$id,"jQuery('#$id').yiiGridView($options);",LSYii_ClientScript::POS_POSTSCRIPT);
 	}
 
 	/**

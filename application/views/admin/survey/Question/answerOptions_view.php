@@ -1,5 +1,4 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>$pageTitle )); ?>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
     </h3>
@@ -203,7 +202,7 @@
                                         <br/>
                                     <?php endif;?>
 
-                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' data-scale-id="<?php echo $scale_id; ?>" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                                         <?php eT('Predefined label sets...'); ?>
                                     </button>
 
@@ -236,10 +235,18 @@
                             type="hidden"
                             id="add-input-javascript-datas"
                             data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
-                            data-quickurl="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowQuickAdd/');?>"
+                            data-quickurl="<?php echo App()->createUrl(
+                                '/admin/questions/',
+                                array(
+                                    'sa' => 'getSubquestionRowQuickAdd',
+                                    'surveyid' => $surveyid,
+                                    'gid' => $gid
+                                )
+                            );?>"
                             data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"
+                            data-languages='<?php echo json_encode(Survey::model()->findByPk($surveyid)->getAllLanguages());?>'
                             data-gid="<?php echo $gid;?>"
                             data-qid="<?php echo $qid;?>"
                             data-scale-id="<?php echo $scale_id-1; // -1 : because it's incremented via <  ?>"

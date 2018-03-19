@@ -1,0 +1,25 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Clear all links: Shows the exit button ·._.·´¯)·._.·´¯)
+
+    This file render the exit button for top menu bar
+#}
+
+{# It must not be shown once survey is completed #}
+{% if aSurveyInfo.bShowClearAll == true  %}
+    <!-- Exit and clear survey -->
+    <li class="{{ aSurveyInfo.class.clearalllinks }}" {{ aSurveyInfo.attr.clearalllinks }}>
+        <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{gT("Please confirm you want to clear your response?" )}}' class='{{ aSurveyInfo.class.clearalllink }} animate' {{ aSurveyInfo.attr.clearalllink }}>
+            {{gT("Exit and clear survey" )}}
+        </a>
+    </li>
+{% endif %}

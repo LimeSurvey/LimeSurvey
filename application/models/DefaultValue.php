@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,76 +12,67 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class DefaultValue
+ *
+ * @property integer $qid Question id
+ * @property integer $scale_id
+ * @property string $language
+ * @property string $specialtype
+ * @property string $defaultvalue
+ *
+ * @property Question $question
+ */
 class DefaultValue extends LSActiveRecord
 {
     /* Default value when create (from DB) , leave some because add rules */
-    public $specialtype='';
-    public $scale_id='';
-    public $sqid=0;
-    public $language='';// required ?
+    public $specialtype = '';
+    public $scale_id = '';
+    public $sqid = 0;
+    public $language = ''; // required ?
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return CActiveRecord
+     * @inheritdoc
+     * @return DefaultValue
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{defaultvalues}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
     }
 
-    /**
-    * Relations with questions
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
         return array(
             'question' => array(self::HAS_ONE, 'Question', '',
-            'on' => "$alias.qid = question.qid",
+                'on' => "$alias.qid = question.qid",
             ),
         );
     }
-    /**
-    * Returns this model's validation rules
-    *
-    */
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
             array('qid', 'required'),
-            array('qid', 'numerical','integerOnly'=>true),
+            array('qid', 'numerical', 'integerOnly'=>true),
             array('qid', 'unique', 'criteria'=>array(
                     'condition'=>'specialtype=:specialtype and scale_id=:scale_id and sqid=:sqid and language=:language',
                     'params'=>array(
@@ -92,14 +85,16 @@ class DefaultValue extends LSActiveRecord
                 'message'=>'{attribute} "{value}" is already in use.'),
         );
     }
-    function insertRecords($data)
+    
+    public function insertRecords($data)
     {
         $oRecord = new self;
-        foreach ($data as $k => $v)
-            $oRecord->$k = $v;
-        if($oRecord->validate())
-            return $oRecord->save();
+        foreach ($data as $k => $v) {
+                    $oRecord->$k = $v;
+        }
+        if ($oRecord->validate()) {
+                    return $oRecord->save();
+        }
         tracevar($oRecord->getErrors());
     }
 }
-?>

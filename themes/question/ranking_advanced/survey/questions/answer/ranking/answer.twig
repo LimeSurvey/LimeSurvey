@@ -1,0 +1,75 @@
+{#
+!!!! BECAREFUL: ONLY FOR TESTING !!!!!
+!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
+
+!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
+
+/**
+ * Ranking question, item list header Html
+ *
+ * @var $sOptions         : the select options, generated with the view answer_row.php
+ *
+ * @var $name
+ * @var $myfname
+ * @var $labeltext
+ * @var $rankId
+ * @var $rankingName
+ * @var $max_answers
+ * @var $min_answers
+ * @var $qid
+ * @var $choice_title
+ * @var $rank_title
+ * @var $rank_help
+ * @var $showpopups
+ * @var $samechoiceheight
+ * @var $samelistheight
+ **** Additional attributes:
+ * @var question_template_attribute.show_handle
+ * @var question_template_attribute.only_pull
+ * @var question_template_attribute.visualize
+ */
+#}
+
+
+{% set show_handle=question_template_attribute.show_handle %}
+{% set show_number=question_template_attribute.show_number %}
+{# {% set show_handle="yes" %} #}
+
+{% set show_number="yes" %}
+
+
+<!-- answer -->
+<div class="{{coreClass}} ranking-advanced-style">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{basename}}">
+            {# rows/answer_row.twig #}
+            {{sSelects}}
+    </ul>
+    {% set rankingView = './views/' ~ question_template_attribute.visualize ~ '.twig' %}
+    {% set rankingView = './views/blocks.twig' %}
+    {{ include(rankingView) }}
+</div>
+
+{% set script %}
+try{
+ var ranking{{qId}} = new AdvancedRankingQuestion({
+        max_answers      : {{max_answers}},
+        min_answers      : {{min_answers}},
+        showpopups       : "{{showpopups}}",
+        samechoiceheight : "{{samechoiceheight}}",
+        samelistheight   : "{{samelistheight}}",
+        rankingName      : "{{rankingName}}",
+        questionId       : "{{qId}}",
+        numbersActive    : {{ ((show_number is same as('yes'))) ? 1 : 0 }},
+        withHandle       : {{ ((show_handle is same as('yes'))) ? 1 : 0 }}
+    });
+ ranking{{qId}}.init()
+} catch(e){}
+{% endset %}
+{# DEBUG #}
+<div class="hidden">
+{{script}}
+</div>
+{{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
+
+
+<!-- end of answer -->

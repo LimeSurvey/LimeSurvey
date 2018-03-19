@@ -16,7 +16,7 @@
 
 	 <!-- Call Redactor -->
     <script type="text/javascript">
-    $(document).ready(
+    $(document).on('ready pjax:scriptcomplete', 
         function()
         {
             $('#redactor').redactor({

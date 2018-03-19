@@ -1,0 +1,51 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.·  Main Content  ·._.·´¯)·._.·´¯)
+
+    This is the main content of the template.
+    It is the file used to display groups and questions.
+
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+}
+
+{# Include the form opening tag #}
+{{ include('./subviews/header/start_form.twig') }} <!-- main form -->
+
+    {# This will display the script and the hidden inputs needed for Expression Manager #}
+    {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+    {# Include the alert for no JavaScript #}
+    {{ include('./subviews/messages/no_js_alert.twig') }}
+
+    {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
+    {{ include('./subviews/privacy/allinone_mode_welcome_privacy.twig') }}
+
+    {#
+        PRESENT THE QUESTION GROUPS
+
+        This is the main part. It will render each question group for this page (depending of Survey Mode setting )
+        Each group will then render its own questions
+
+     #}
+    {% for  aGroup in aSurveyInfo.aGroups %}
+        {{ include('./subviews/survey/group.twig') }}
+    {% endfor %}
+
+    {# Presents the navigator #}
+    {% if aSurveyInfo.aNavigator.show %}
+        {{ include('./subviews/navigation/navigator.twig') }}
+    {% endif %}
+
+</form> <!-- main form -->

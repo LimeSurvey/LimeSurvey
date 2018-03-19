@@ -1,0 +1,51 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Question Text Content  ·._.·´¯)·._.·´¯)
+
+    This file render the quetion text content.
+    NOTE: see views/subviews/survey/question.twig comments for more infos
+#}
+
+
+{# If the question is mandatory, the asterisk will be shown  #}
+{% if aQuestion.mandatory != '' %}
+    <!-- Add a visual information + just Mandatory string for aria : can be improved -->
+    <div class="{{ aSurveyInfo.class.questionasterix }} pull-left" {{ aSurveyInfo.attr.questionasterix }} >
+        <small class="{{ aSurveyInfo.class.questionasterixsmall }} text-danger fa fa-asterisk small" {{ aSurveyInfo.attr.questionasterixsmall }}></small>
+        <span class="{{ aSurveyInfo.class.questionasterixspan }} sr-only text-danger" {{ aSurveyInfo.attr.questionasterixspan }} >
+            {{ gT("(This question is mandatory)") }}
+        </span>
+    </div>
+{% endif %}
+
+{# If the question number is to be shown (set in survey settings) #}
+{% if (aShow.question_number) %}
+    <span class='{{ aSurveyInfo.class.questionnumber }}' {{ aSurveyInfo.attr.questionnumber }} >
+        {{ aQuestion.number }}
+    </span>
+{% endif %}
+
+{# If the question code is to be shown (set in survey settings) #}
+{% if (aShow.question_code) %}
+    <span class='{{ aSurveyInfo.class.questioncode }}' {{ aSurveyInfo.attr.questioncode }}>
+        {{ aQuestion.code }}
+    </span>
+{% endif %}
+
+{# The question text as entered by the survey creator in question editing #}
+<div class="{{ aSurveyInfo.class.questiontext }}" {{ aSurveyInfo.attr.questiontext }}>
+    <div id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
+        {{ aQuestion.text | raw }}
+    </div>
+</div>
