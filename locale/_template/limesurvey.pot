@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-19 11:16:54+00:00\n"
+"POT-Creation-Date: 2018-03-19 11:36:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4899,8 +4899,8 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/group_view.php:20
 #: application/views/admin/survey/editLocalSettings_view.php:46
 #: application/views/admin/survey/editLocalSettings_view.php:50
-#: application/views/admin/survey/subview/_create_survey_text.php:78
-#: application/views/admin/survey/subview/_create_survey_text.php:83
+#: application/views/admin/survey/subview/_create_survey_text.php:100
+#: application/views/admin/survey/subview/_create_survey_text.php:105
 #: application/views/admin/survey/surveySummary_view.php:123
 #: application/views/admin/usergroup/addUserGroup_view.php:24
 #: application/views/admin/usergroup/editUserGroup_view.php:15
@@ -4915,8 +4915,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9347
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
-#: application/views/admin/survey/subview/_create_survey_text.php:174
-#: application/views/admin/survey/subview/_create_survey_text.php:179
+#: application/views/admin/survey/subview/_create_survey_text.php:196
+#: application/views/admin/survey/subview/_create_survey_text.php:201
 #: application/views/admin/survey/surveySummary_view.php:160
 msgid "End message:"
 msgstr ""
@@ -6695,7 +6695,7 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:36
-#: application/views/admin/survey/subview/_create_survey_text.php:65
+#: application/views/admin/survey/subview/_create_survey_text.php:88
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:43
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:78
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:113
@@ -6796,7 +6796,7 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:37
-#: application/views/admin/survey/subview/_create_survey_text.php:66
+#: application/views/admin/survey/subview/_create_survey_text.php:89
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:44
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:79
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:114
@@ -7261,7 +7261,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:51
 #: application/views/admin/survey/Question/listquestions.php:40
 #: application/views/admin/survey/Question/massive_actions/_set_question_group_position.php:14
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:246
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:242
 msgid "Group:"
 msgstr ""
 
@@ -8950,15 +8950,15 @@ msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9340
 #: application/views/admin/survey/editLocalSettings_view.php:120
-#: application/views/admin/survey/subview/_create_survey_text.php:165
+#: application/views/admin/survey/subview/_create_survey_text.php:187
 #: application/views/admin/survey/surveySummary_view.php:140
 msgid "Welcome:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9354
 #: application/views/admin/survey/editLocalSettings_view.php:58
-#: application/views/admin/survey/subview/_create_survey_text.php:93
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:178
+#: application/views/admin/survey/subview/_create_survey_text.php:115
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:174
 #: application/views/admin/survey/surveySummary_view.php:86
 msgid "End URL:"
 msgstr ""
@@ -14659,7 +14659,7 @@ msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:89
 #: application/views/admin/survey/subview/_survey_quickaction.php:80
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:270
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:266
 msgid "All in one"
 msgstr ""
 
@@ -14669,7 +14669,7 @@ msgid "Only previous pages answers are available"
 msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:101
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:269
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:265
 msgid "Group by Group"
 msgstr ""
 
@@ -17078,26 +17078,26 @@ msgid "Survey title:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:66
-#: application/views/admin/survey/subview/_create_survey_text.php:103
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:186
+#: application/views/admin/survey/subview/_create_survey_text.php:125
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:182
 msgid "URL description:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:74
-#: application/views/admin/survey/subview/_create_survey_text.php:113
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:194
+#: application/views/admin/survey/subview/_create_survey_text.php:135
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:190
 #: application/views/admin/user/personalsettings.php:191
 msgid "Date format:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:91
-#: application/views/admin/survey/subview/_create_survey_text.php:133
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:202
+#: application/views/admin/survey/subview/_create_survey_text.php:155
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:198
 msgid "Decimal mark:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:116
-#: application/views/admin/survey/subview/_create_survey_text.php:160
+#: application/views/admin/survey/subview/_create_survey_text.php:182
 msgid "Welcome message:"
 msgstr ""
 
@@ -17328,7 +17328,12 @@ msgstr ""
 msgid "Reset to default settings"
 msgstr ""
 
-#: application/views/admin/survey/subview/_create_survey_text.php:59
+#: application/views/admin/survey/subview/_create_survey_text.php:64
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:74
+msgid "Base language:"
+msgstr ""
+
+#: application/views/admin/survey/subview/_create_survey_text.php:82
 msgid "Create example question group and question?"
 msgstr ""
 
@@ -17358,7 +17363,7 @@ msgid "Set below if your questions are shown one at a time, group by group or al
 msgstr ""
 
 #: application/views/admin/survey/subview/_survey_quickaction.php:76
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:262
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:258
 msgid "Format:"
 msgstr ""
 
@@ -17453,56 +17458,52 @@ msgstr ""
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:74
-msgid "Base language:"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:94
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:91
 msgid "Additional Languages"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:107
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:104
 msgid "Select additional languages"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:119
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:115
 msgid "Survey owner:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:141
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:210
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:137
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:206
 #: application/views/admin/survey/surveySummary_view.php:247
 msgid "Administrator:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:151
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:218
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:147
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:214
 msgid "Admin email:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:161
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:157
 msgid "Bounce email:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:169
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:234
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:165
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:230
 #: application/views/admin/survey/surveySummary_view.php:258
 msgid "Fax to:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:188
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:184
 msgid "Some description text"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:226
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:222
 msgid "Bounce Email:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:268
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:264
 msgid "Question by Question"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:277
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:273
 #: application/views/admin/themes/templateeditorbar_view.php:188
 msgid "Template:"
 msgstr ""
@@ -20683,11 +20684,11 @@ msgid "Background image file"
 msgstr ""
 
 #: tmp/twig_translate.php:33
-msgid "Brand logo"
+msgid "Logo"
 msgstr ""
 
 #: tmp/twig_translate.php:37
-msgid "Brand logo file"
+msgid "Logo file"
 msgstr ""
 
 #: tmp/twig_translate.php:39
