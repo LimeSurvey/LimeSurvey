@@ -55,7 +55,7 @@
                     {{ aError.message }}
                 </p>
                 <p>
-                    {{gT("For further information please contact")}} {{ aSurveyInfo.adminname }}:<br>
+                    {{gT("For further information please contact %s:")|format (aSurveyInfo.adminname)}}<br>
                     <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
                 </p>
             </div>
