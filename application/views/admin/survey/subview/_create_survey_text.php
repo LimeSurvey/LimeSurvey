@@ -54,6 +54,29 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
+    </div>
+    <hr class="col-sm-12" />
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <!-- Base language -->
+            <div class="form-group">
+
+                <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
+                <div class="" style="padding-top: 7px;">
+                    <?php if($oSurvey->isNewRecord):?>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'asDropDownList' => true,
+                        'data' => getLanguageDataRestricted (false,'short'),
+                        'value' => $oSurvey->language,
+                        'name' => 'language',
+                        'pluginOptions' => array()
+                    ));?>
+                    <?php else:?>
+                    <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
              <div class="form-group">
                 <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
@@ -68,9 +91,8 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
-        <hr class="col-sm-12" />
     </div>
-    <div class="row">
+    <div class="row">    
         <div class="col-sm-12 col-md-6">
             <!-- Description -->
             <div class="form-group">
