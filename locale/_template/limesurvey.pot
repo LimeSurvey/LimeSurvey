@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-19 11:12:22+00:00\n"
+"POT-Creation-Date: 2018-03-19 11:16:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1060,7 +1060,7 @@ msgstr ""
 #: application/views/admin/token/token_bar.php:237
 #: application/views/admin/usergroup/usergroupbar_view.php:55
 #: application/views/survey/questions/question_help/error-tip.php:12
-#: tmp/twig_translate.php:121 tmp/twig_translate.php:122
+#: tmp/twig_translate.php:120 tmp/twig_translate.php:121
 msgid "Close"
 msgstr ""
 
@@ -1728,7 +1728,7 @@ msgstr ""
 #: tmp/twig_translate.php:40 tmp/twig_translate.php:46
 #: tmp/twig_translate.php:52 tmp/twig_translate.php:58
 #: tmp/twig_translate.php:64 tmp/twig_translate.php:101
-#: tmp/twig_translate.php:104 tmp/twig_translate.php:131
+#: tmp/twig_translate.php:104 tmp/twig_translate.php:128
 msgid "Yes"
 msgstr ""
 
@@ -1893,7 +1893,7 @@ msgstr ""
 #: tmp/twig_translate.php:41 tmp/twig_translate.php:47
 #: tmp/twig_translate.php:53 tmp/twig_translate.php:59
 #: tmp/twig_translate.php:65 tmp/twig_translate.php:102
-#: tmp/twig_translate.php:105 tmp/twig_translate.php:132
+#: tmp/twig_translate.php:105 tmp/twig_translate.php:129
 msgid "No"
 msgstr ""
 
@@ -3972,7 +3972,7 @@ msgstr ""
 #: application/views/survey/frontpage/captchaForm/form.php:39
 #: application/views/survey/frontpage/registerForm/form.php:56
 #: application/views/survey/frontpage/tokenForm/form.php:57
-#: tmp/twig_translate.php:115 tmp/twig_translate.php:119
+#: tmp/twig_translate.php:115 tmp/twig_translate.php:118
 msgid "Continue"
 msgstr ""
 
@@ -4266,7 +4266,7 @@ msgid "You should have a great time doing this"
 msgstr ""
 
 #: application/controllers/admin/themes.php:892
-#: application/helpers/replacements_helper.php:198 tmp/twig_translate.php:125
+#: application/helpers/replacements_helper.php:198
 msgid "There is 1 question in this survey"
 msgstr ""
 
@@ -9311,7 +9311,7 @@ msgstr ""
 #: application/views/admin/themes/templatesummary_view.php:205
 #: application/views/admin/token/csvupload.php:122
 #: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:2
-#: tmp/twig_translate.php:72 tmp/twig_translate.php:135
+#: tmp/twig_translate.php:72 tmp/twig_translate.php:132
 msgid "Upload"
 msgstr ""
 
@@ -10770,7 +10770,7 @@ msgstr ""
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:123
+#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:122
 msgid "Your assessment"
 msgstr ""
 
@@ -16365,7 +16365,7 @@ msgstr ""
 #: tmp/twig_translate.php:79 tmp/twig_translate.php:80
 #: tmp/twig_translate.php:81 tmp/twig_translate.php:85
 #: tmp/twig_translate.php:86 tmp/twig_translate.php:112
-#: tmp/twig_translate.php:113 tmp/twig_translate.php:117
+#: tmp/twig_translate.php:113 tmp/twig_translate.php:116
 msgid "Mandatory"
 msgstr ""
 
@@ -18566,7 +18566,7 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:33
 #: application/views/admin/themes/templateeditor_surveylist_view.php:77
-#: tmp/twig_translate.php:126
+#: tmp/twig_translate.php:123
 msgid "Start survey"
 msgstr ""
 
@@ -20624,11 +20624,11 @@ msgstr ""
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:3 tmp/twig_translate.php:128
+#: tmp/twig_translate.php:3 tmp/twig_translate.php:125
 msgid "Local Server"
 msgstr ""
 
-#: tmp/twig_translate.php:4 tmp/twig_translate.php:129
+#: tmp/twig_translate.php:4 tmp/twig_translate.php:126
 msgid "User browser"
 msgstr ""
 
@@ -20642,11 +20642,11 @@ msgstr ""
 #: tmp/twig_translate.php:36 tmp/twig_translate.php:38
 #: tmp/twig_translate.php:42 tmp/twig_translate.php:48
 #: tmp/twig_translate.php:54 tmp/twig_translate.php:60
-#: tmp/twig_translate.php:66 tmp/twig_translate.php:133
+#: tmp/twig_translate.php:66 tmp/twig_translate.php:130
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:11 tmp/twig_translate.php:130
+#: tmp/twig_translate.php:11 tmp/twig_translate.php:127
 msgid "Survey container"
 msgstr ""
 
@@ -20732,7 +20732,7 @@ msgstr ""
 msgid "Radio button animation"
 msgstr ""
 
-#: tmp/twig_translate.php:69 tmp/twig_translate.php:134
+#: tmp/twig_translate.php:69 tmp/twig_translate.php:131
 msgid "Fruity fonts"
 msgstr ""
 
@@ -20741,7 +20741,7 @@ msgid "Fruity variations"
 msgstr ""
 
 #: tmp/twig_translate.php:73 tmp/twig_translate.php:114
-#: tmp/twig_translate.php:118
+#: tmp/twig_translate.php:117
 msgid "Reload captcha"
 msgstr ""
 
@@ -20750,7 +20750,7 @@ msgid "Restart this survey"
 msgstr ""
 
 #: tmp/twig_translate.php:109
-msgid "File of Type"
+msgid "File type"
 msgstr ""
 
 #: tmp/twig_translate.php:110
@@ -20761,18 +20761,10 @@ msgstr ""
 msgid "queXMLPDF export"
 msgstr ""
 
-#: tmp/twig_translate.php:116
-msgid "Please solve the following equation"
-msgstr ""
-
-#: tmp/twig_translate.php:120
+#: tmp/twig_translate.php:119
 msgid "Accept"
 msgstr ""
 
 #: tmp/twig_translate.php:124
-msgid "There is no question in this survey"
-msgstr ""
-
-#: tmp/twig_translate.php:127
 msgid "For further information please contact"
 msgstr ""
