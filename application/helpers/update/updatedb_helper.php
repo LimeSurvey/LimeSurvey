@@ -3108,15 +3108,19 @@ function upgradeSurveys177()
 function upgradeTokens176()
 {
     $oDB = Yii::app()->db;
-    $arSurveys = Survey::model()->findAll();
+    $arSurveys = $oDB
+    ->createCommand()
+    ->select('*')
+    ->from('surveys')
+    ->queryAll();
     // Fix any active token tables
     foreach ( $arSurveys as $arSurvey )
     {
-        $sTokenTableName='tokens_'.$arSurvey->sid;
+        $sTokenTableName='tokens_'.$arSurvey['sid'];
         if (tableExists($sTokenTableName))
         {                                        
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
-            $aAttributes = $arSurvey->tokenAttributes;
+            $aAttributes = $arSurvey['tokenAttributes'];
             foreach($aColumnNamesIterator as $sColumnName)
             {
                 // Check if an old atttribute_cpdb column exists in that token table
@@ -3136,7 +3140,7 @@ function upgradeTokens176()
                     }
                 }
             }
-            Survey::model()->updateByPk($arSurvey->sid, array('attributedescriptions' => serialize($aAttributes)));
+            $oDB->createCommand()->update('{{surveys}}',array('attributedescriptions'=>serialize($aAttributes)),"sid=".$arSurvey['sid']);
         }
     }
     unset($arSurveys);
