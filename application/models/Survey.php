@@ -147,6 +147,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLanguageSetting $defaultlanguage
  * @property string[] $oldResponsesTableNames
  * @property string[] $oldTokensTableNames
+ * @property string $state survey current state  'inactive', 'expired', 'willRun', 'willExpire' or 'running'
+ *
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
@@ -155,6 +157,13 @@ class Survey extends LSActiveRecord
     const SURVEY = "survey";
     const TOKENS = "tokens";
     const TABLE_DELIMITER = "_";
+
+    const STATE_INACTIVE = 'inactive';
+    const STATE_EXPIRED = 'expired';
+    const STATE_WILL_RUN = 'willRun';
+    const STATE_WILL_EXPIRE = 'willExpire';
+    const STATE_RUNNING = 'running';
+
 
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
@@ -1048,8 +1057,8 @@ class Survey extends LSActiveRecord
      */
     public function getState()
     {
-        if ($this->active == 'N') {
-            return 'inactive';
+        if (!$this->isActive) {
+            return self::STATE_INACTIVE;
         } elseif ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
@@ -1065,23 +1074,25 @@ class Survey extends LSActiveRecord
             $bWillRun = ($oStart > $oNow);
 
             if ($bExpired) {
-                return 'expired';
+                return self::STATE_EXPIRED;
             } elseif ($bWillRun) {
-                return 'willRun';
+                return self::STATE_WILL_RUN;
             } else {
-                return 'willExpire';
+                return self::STATE_WILL_EXPIRE;
             }
         }
         // If it's active, and doesn't have expire date, it's running
         else {
-            return 'running';
+            return self::STATE_RUNNING;
         }
     }
 
 
     /**
      * @todo Document code, please.
+     *
      * @return string
+     * @deprecated seems unused and should not be here anyway 2018-03-20
      */
     public function getRunning()
     {
