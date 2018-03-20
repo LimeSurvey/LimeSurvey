@@ -8,7 +8,7 @@
     <div class='row container-fluid'>
 
         <!-- left buttons -->
-        <div class="col-md-10">
+        <div class="col-md-9">
 
             <!-- Token view buttons -->
             <?php if( isset($token_bar['buttons']['view']) ): ?>
@@ -183,15 +183,20 @@
         </div>
 
         <!-- Right buttons -->
-        <div class="col-md-2 text-right">
+        <div class="col-md-3 text-right">
 
             <!-- View token buttons -->
             <?php if( isset($token_bar['buttons']['view'] )): ?>
 
-                <!-- Delete tokens table -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','delete')): ?>
+                    <!-- Delete tokens table -->
                     <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>" role="button">
                         <?php eT("Delete participants table"); ?>
+                    </a>
+
+                    <!-- Anonymize tokens table -->
+                    <a class="btn btn-warning" href="<?php echo $this->createUrl("admin/tokens/sa/anonymize/surveyid/$oSurvey->sid"); ?>" role="button">
+                        <?php eT("Anonymize tokens"); ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
