@@ -18253,7 +18253,7 @@ Please correct this or you won't be able to pass some of the Validation Tests la
     <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[N]]></savetimings>
-    <template><![CDATA[default]]></template>
+    <template><![CDATA[fruity]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages/>
     <datestamp><![CDATA[Y]]></datestamp>

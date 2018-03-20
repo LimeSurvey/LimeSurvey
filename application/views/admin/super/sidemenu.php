@@ -11,30 +11,28 @@
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
     if ($sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
-        && !$sidemenu['state']))
-    {
+        && !$sidemenu['state'])) {
         $showSideMenu = false;
-    }
-    else
-    {
+    } else {
         $showSideMenu = true;
     }
     $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/" ,["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/" ,["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid]);
-    if(isset($oQuestionGroup))
+    if(isset($oQuestionGroup)) {
         $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
-    else 
+    } else {
         $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
+    }
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder", ["surveyid" =>  $surveyid]);
+    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
-
-    if ($activated)
-    {
+    $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
+    if ($activated || !$createPermission) {
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
+
 
 ?>
 <sidebar

@@ -395,11 +395,13 @@ class Survey_Common_Action extends CAction
      * Header
      * @param array $aData
      */
-    private function _showHeaders($aData)
+    private function _showHeaders($aData, $sendHTTPHeader = true)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
-            header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+            if ($sendHTTPHeader) {
+                header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+            }
             Yii::app()->getController()->_getAdminHeader();
         }
     }
@@ -426,7 +428,7 @@ class Survey_Common_Action extends CAction
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
-                    'title' => 'Password warning',
+                    'title' => gT('Password warning'),
                     'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
@@ -1244,13 +1246,12 @@ class Survey_Common_Action extends CAction
     protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
         if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
-                    $dir .= DIRECTORY_SEPARATOR;
+            $dir .= DIRECTORY_SEPARATOR;
         }
 
         do {
             $path = $dir.$prefix.mt_rand(0, 9999999);
-        }
-        while (!mkdir($path, $mode));
+        } while (!mkdir($path, $mode));
 
         return $path;
     }

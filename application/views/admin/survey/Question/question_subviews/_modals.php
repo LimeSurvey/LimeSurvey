@@ -38,19 +38,24 @@
             </div>
 
             <div class="modal-body">
-                <div class="row">
-                    <div class="">
-                        <select id='labelsets' size='10' style='width:250px;'>
-                            <option>&nbsp;</option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <div id='labelsetpreview'>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="labelsets"><?=gT('Please select a label set')?></label>
+                        </div>
+                        <div class="col-sm-12">
+                            <select id='labelsets' size='10' style='width:250px;'>
+                                <option>--<?=gT('Select label set')?>--</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div id='labelsetpreview' class="col-sm-12 ls-space margin top-15" >
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
             <div class="modal-footer button-list">
                 <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>

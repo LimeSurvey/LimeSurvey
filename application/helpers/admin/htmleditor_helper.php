@@ -212,10 +212,16 @@
         }
 
         $scriptCode = ""
-        . "$(document).on('ready pjax:scriptcomplete triggerCreateCKEditor', 
+        . "$(document).on('ready pjax:scriptcomplete', 
             function(){ 
                 if($('#".$fieldname."').length >0){
-                    var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+                    var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
+                    if ($oCKeditorVarName) { 
+                            CKEDITOR.remove($oCKeditorVarName);
+                        $oCKeditorVarName = null;
+                    }
+
+                    $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
                     LimeReplacementFieldsType : \"".$fieldtype."\"
                     ,LimeReplacementFieldsSID : \"".$surveyID."\"
                     ,LimeReplacementFieldsGID : \"".$gID."\"

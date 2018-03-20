@@ -153,6 +153,37 @@ var PrepEmailTemplates = function(){
         
         
     },
+    bindActions = function(elements, translate, resetUrl){
+        $(elements.validate).remoteModal({}, {
+            closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label="'+translate.close+'"><span aria-hidden=\"true\">&times;</span></button>',
+            closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">'+translate.close+'</button>',
+            saveButton : '<button type=\"button\" class=\"btn btn-primary\">'+translate.save+'</button>'
+        });
+        $(elements.reset).on('click', function(){
+            var $self = $(this);
+            $.ajax({
+                url : resetUrl,
+                dataType: 'html',
+                success: function(result){
+                    if(CKEDITOR.instances[$self.data('target')]){
+                        CKEDITOR.instances[$self.data('target')].setData(result);
+                    } else {
+                        $('#'+$self.data('target')).val(result);
+                    }
+
+                },
+                error: console.ls.error,
+                beforeSend: function(){
+                    if(CKEDITOR.instances[$self.data('target')]){
+                        CKEDITOR.instances[$self.data('target')].setData('');
+                    } else {
+                        $('#'+$self.data('target')).val('');
+                    }
+
+                }
+            });
+        });
+    },
 
     init = function(modal_id){
         // Binds the Default value buttons for each email template subject and body text
@@ -184,6 +215,7 @@ var PrepEmailTemplates = function(){
 
     return {
         init: init,
+        bindActions: bindActions,
         currentTarget: currentTarget,
         addAttachment: addAttachment
     }

@@ -269,7 +269,7 @@ class Usergroups extends Survey_Common_Action
                     }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
+                $eguquery = "SELECT * FROM {{user_in_groups}} AS a LEFT JOIN {{user_groups}} ug on a.ugid=ug.ugid INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE a.ugid = ".$ugid." ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
                 $aUserInGroupsResult = $eguresult->readAll();
                 $sCondition2 = "ugid = :ugid";
@@ -298,8 +298,8 @@ class Usergroups extends Survey_Common_Action
                     $userloop[$row]["userid"] = $egurow['uid'];
 
                     //	output users
-                    $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+                    $userloop[$row]["rowclass"] = $bgcc;                                                                                       
+                    if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $egurow['owner_id']==Yii::app()->session['loginID'])  {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
@@ -367,24 +367,24 @@ class Usergroups extends Survey_Common_Action
                     list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('You can not add or remove the group owner from the group.')));
                 } else {
                     $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
-                    $sFlashType='';$sFlashMessage='';
+                    $sFlashType = ''; $sFlashMessage = '';
                     switch ($action) {
                         case 'add' :
                             if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                                $sFlashType='success'; $sFlashMessage=gT('User added.');
+                                $sFlashType = 'success'; $sFlashMessage = gT('User added.');
                             } else {
-                                $sFlashType='error'; $sFlashMessage=gT('Failed to add user.').'<br />'.gT('User already exists in the group.');
+                                $sFlashType = 'error'; $sFlashMessage = gT('Failed to add user.').'<br />'.gT('User already exists in the group.');
                             }
                             break;
                         case 'remove' :
                             if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid))) {
-                                $sFlashType='success'; $sFlashMessage=gT('User removed.');
+                                $sFlashType = 'success'; $sFlashMessage = gT('User removed.');
                             } else {
-                                $sFlashType='error'; $sFlashMessage=gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.');
+                                $sFlashType = 'error'; $sFlashMessage = gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.');
                             }
                             break;
                     }
-                    if(!empty($sFlashType) && !empty($sFlashMessage)) { 
+                    if (!empty($sFlashType) && !empty($sFlashMessage)) { 
                         Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
                     }
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));

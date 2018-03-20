@@ -43,6 +43,7 @@
             } 
         ?>
     </form>
+    <br/>
     <div class="progress">
         <div class="progress-bar progress-bar-striped active" id="countdown-progress" role="progressbar" aria-valuenow="70"
         aria-valuemin="0" aria-valuemax="100" style="width:100%">

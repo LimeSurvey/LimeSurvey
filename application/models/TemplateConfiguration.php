@@ -83,6 +83,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
     private $aReplacements;
 
+    public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
 
     /**
      * @return string the associated database table name
@@ -511,7 +512,7 @@ class TemplateConfiguration extends TemplateConfig
             $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
         }
 
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/', array("templatename"=>$this->template_name));
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
 
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
@@ -538,7 +539,9 @@ class TemplateConfiguration extends TemplateConfig
 
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
-            data-href="'.$sUninstallUrl.'"
+            data-ajax-url="'.$sUninstallUrl.'"
+            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+            data-gridid = "yw0"
             data-target="#confirmation-modal"
             data-toggle="modal"
             data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
@@ -599,23 +602,32 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file)
     {
-        $checkImage = getimagesize($this->filesPath.$file['name']);
+        if(file_exists($this->filesPath.$file['name'])) {
+            $imagePath = $this->filesPath.$file['name'];
+            $fileRoot = './files';
+        } else {
+            $imagePath = $this->generalFilesPath.$file['name'] ;
+            $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles/';
+        }
+
+        
+        $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
-                    return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+                    return ['filepath' => $fileRoot.$file['name'], 'filename'=>$file['name']];
         }
     }
 
     protected function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        $fileList = Template::getOtherFiles($this->filesPath);
+        $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         foreach ($fileList as $file) {
             $isImage = $this->_filterImages($file);
 
             if ($isImage) {
-                            $aData['imageFileList'][] = $isImage;
+                $aData['imageFileList'][] = $isImage;
             }
         };
 
@@ -630,7 +642,9 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptions();
         $oTemplate->setOptionInheritance();
 
-        $renderArray['oParentOptions'] = (array) $oTemplate->oOptions;
+        //We add some extra values to the option page
+        //This is just a dirty hack, and somewhere in the future we will correct it
+        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  $oTemplate->packages_to_load, 'files_css' => $oTemplate->files_css));
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
@@ -767,9 +781,7 @@ class TemplateConfiguration extends TemplateConfig
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
-                TemplateConfiguration::uninstall($this->template_name);
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
-                Yii::app()->getController()->redirect(array("admin/themeoptions"));
+                $this->uninstallIncorectTheme($this->template_name);
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -778,15 +790,27 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Uninstall a theme and, display error message, and redirect to theme list
+     * @param string $sTemplateName     
+     */
+    protected function uninstallIncorectTheme($sTemplateName)
+    {
+        TemplateConfiguration::uninstall($sTemplateName);
+        Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $sTemplateName), 'error');
+        Yii::app()->getController()->redirect(array("admin/themeoptions"));
+        Yii::app()->end();
+    }
+
+    /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
     protected function setThisTemplate()
     {
 
-        $this->apiVersion  = (!empty($this->template->api_version)) ? $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath    = $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath   = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
-
+        $this->apiVersion       = (!empty($this->template->api_version)) ? $this->template->api_version : null; // Mandtory setting in config XML
+        $this->viewPath         = $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath        = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
+        $this->generalFilesPath = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 
@@ -850,7 +874,13 @@ class TemplateConfiguration extends TemplateConfig
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
-                return $this->getParentConfiguration()->getOptionKey($key);
+                $oParentConfig = $this->getParentConfiguration();
+                if ($oParentConfig->id != $this->id){
+                    return $this->getParentConfiguration()->getOptionKey($key);
+                }else{
+                    $this->uninstallIncorectTheme($this->template_name);
+                }
+
             }
             return  $value;
         } else {
@@ -1008,4 +1038,24 @@ class TemplateConfiguration extends TemplateConfig
         return $sAttribute;
     }
 
+    /**
+     * @return string
+     */
+    public function getTemplateAndMotherNames()
+    {
+        $oRTemplate = $this;
+        $sTemplateNames = $this->sTemplateName;
+
+        while (!empty($oRTemplate->oMotherTemplate)) {
+
+            $sTemplateNames .= ' ' . $oRTemplate->template->extends;
+            $oRTemplate      = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                // Throw alert: should not happen
+                break;
+            }
+        }
+
+        return $sTemplateNames;
+    }
 }

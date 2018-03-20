@@ -190,23 +190,23 @@ class TokenDynamic extends LSActiveRecord
         }
 
         if ($SQLemailstatuscondition) {
-                    $command->addCondition($SQLemailstatuscondition);
+            $command->addCondition($SQLemailstatuscondition);
         }
 
         if ($SQLremindercountcondition) {
-                    $command->addCondition($SQLremindercountcondition);
+            $command->addCondition($SQLremindercountcondition);
         }
 
         if ($SQLreminderdelaycondition) {
-                    $command->addCondition($SQLreminderdelaycondition);
+            $command->addCondition($SQLreminderdelaycondition);
         }
 
         if ($aTokenIds) {
-                    $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
         }
 
         if ($iMaxEmails) {
-                    $command->limit = $iMaxEmails;
+            $command->limit = $iMaxEmails;
         }
 
         $command->order = 'tid';

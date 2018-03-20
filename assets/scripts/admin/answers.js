@@ -28,10 +28,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
     $('#editanswersform').submit(checkForDuplicateCodes);
-    $('#btnlsreplace').click(transferlabels);
-    $('#btnlsinsert').click(transferlabels);
-    $('#labelsets').click(lspreview);
-    $('#languagefilter').click(lsbrowser);
+    $('#btnlsreplace').on('click', function(e){e.preventDefault(), transferlabels('replace')});
+    $('#btnlsinsert').on('click', function(e){e.preventDefault(), transferlabels('insert')});
     $('.bthsaveaslabel').click(getlabel);
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
@@ -41,13 +39,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     $('.btnaddanswer').on("click.answeroptions", addinput);
     $('.btndelanswer').on("click.answeroptions", deleteinput);
-    $('.btnlsbrowser').on("click.answeroptions", lsbrowser );
+    $('#labelsetbrowserModal').on("shown.bs.modal.", lsbrowser );
+    $('#labelsetbrowserModal').on("hidden.bs.modal.", lsbrowser_destruct );
 });
 
 function rebindClickHandler(){
     $('.btnaddanswer').off("click.answeroptions").on("click.answeroptions", addinput);
     $('.btndelanswer').off("click.answeroptions").on("click.answeroptions", deleteinput);
-    $('.btnlsbrowser').off("click.answeroptions").on("click.answeroptions", lsbrowser );
 }
 
 function deleteinput(e)
@@ -93,6 +91,30 @@ function deleteinput(e)
         setTimeout(jQuery.unblockUI,1000);
     }
     updaterowproperties();
+}
+
+function addInputPredefined(i){
+    var $elDatas = $('#add-input-javascript-datas');
+    var scale_id= $('#current_scale_id').val();
+    
+    //We build the datas for the request
+    datas = {
+        'surveyid':             $elDatas.data('surveyid'),
+        'gid':                  $elDatas.data('gid'),
+        'codes':                JSON.stringify({'lbl_1':'eins'}),
+        'scale_id':             scale_id,
+        'position':             i,
+        'type':                 'answer',
+        'languages' :           JSON.stringify($elDatas.data('languages').join(';')),
+        'assessmentvisible':    $elDatas.data('assessmentvisible') == 1,
+    };
+      // We get the HTML of the new row to insert
+     return $.ajax({
+        type: "GET",
+        contentType: 'json',
+        url: $elDatas.data('url'),
+        data: datas,
+    });
 }
 
 /**
@@ -200,13 +222,11 @@ function addinput(e)
         data: datas,
         success: function(arrayofhtml) {
 
-            // arrayofhtml is a json string containing the different HTML row by language
+            // arrayofhtml is a json object containing the different HTML row by language
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
-            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
-
             // We insert each row for each language
-            $.each($arrayOfHtml, function(lang, htmlRow){
+            $.each(arrayofhtml, function(lang, htmlRow){
                 $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
                 $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
                 updaterowproperties();
@@ -406,302 +426,181 @@ function areCodesUnique(sNewValue)
     }
 }
 
+function lsbrowser_destruct(e){
+    $('#labelsets').select2('destroy');
+    $("#labelsetpreview").empty();
+}
+
 function lsbrowser(e)
 {
-    e.preventDefault();
-    scale_id=removechars($(this).attr('id'));
-    surveyid=$('input[name=sid]').val();
+    var scale_id= $(e.relatedTarget).data('scale-id');
+    $('body').append('<input type="hidde" id="current_scale_id" value="'+scale_id+'" name="current_scale_id" />');
 
-    $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
-        var x=0;
-        // $("#labelsets").removeOption(/.*/);
-        for (x in json)
-            {
-            $('#labelsets').addOption(json[x][0],json[x][1]);
-            if (x==0){
-                remind=json[x][0];
+    $('#labelsets').select2();
+    $("#labelsetpreview").html('');
+    //    e.preventDefault();
+    var scale_id=removechars($(this).attr('id'));
+    var surveyid=$('input[name=sid]').val();
+        
+    $.ajax({
+        url: lspickurl,
+        data: {sid:surveyid, match:1},
+        success: function(jsonString){
+            console.ls.log("combined String", jsonString);
+            
+            if (jsonString.success !== true) {
+                $("#labelsetpreview").html("<p class='alert'>"+strNoLabelSet+"</p>");
+                $('#btnlsreplace').addClass('disabled');
+                $('#btnlsinsert').addClass('disabled');
+                $('#btnlsreplace').attr('disabled','disabled');
+                $('#btnlsinsert').attr('disabled','disabled');
+            } else {
+                $('#labelsets').find('option').each(function(i,option){if($(option).attr('value')){ $(option).remove(); }});
+                console.ls.group('SelectParsing');
+                console.ls.log('allResults', jsonString.labelsets);
+                $.each(jsonString.labelsets, function(i,item){
+                    console.log('SelectItem', item);
+                    var newOption = $('<option value="'+item.lid+'">'+item.label_name+'</option>');
+                    console.ls.log('newOption', newOption);
+                    $('#labelsets').append(newOption).trigger('change');
+                });
+                console.ls.groupEnd('SelectParsing');
+                
             }
-        }
-        if ($('#labelsets > option').size()>0)
-            {
-            $('#labelsets').selectOptions(remind);
-            lspreview();
-        }
-        else
-            {
-            $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
-            $('#btnlsreplace').addClass('ui-state-disabled');
-            $('#btnlsinsert').addClass('ui-state-disabled');
-            $('#btnlsreplace').attr('disabled','disabled');
-            $('#btnlsinsert').attr('disabled','disabled');
         }
     });
 
+    $('#labelsets').on('change', function(){
+        lspreview($(this).val());
+    });
 }
 
 // previews the labels in a label set after selecting it in the select box
-function lspreview()
-{
-    if ($('#labelsets > option').size()==0)
-        {
-        return;
-    }
-
-    var lsid=$('#labelsets').val();
-    surveyid=$('input[name=sid]').val();
-    // check if this label set is already cached
-    if (!isset(labelcache[lsid]))
-        {
-        $.ajax({
-            url: lsdetailurl,
-            dataType: 'json',
-            data: {lid:lsid, sid:surveyid},
-            cache: true,
-            success: function(json){
-                $("#labelsetpreview").empty();
-                var tabindex='<ul class="nav nav-tabs">';
-                var tabbody='<div class="tab-content">';
-                var count=0;
-                for ( x in json)
-                {
-                    language=json[x];
-                    for (y in language)
-                    {
-                        if(count==0)
-                        {
-                            active="active";
-                            bodyactive="in active";
-                            count++;
-                        }
-                        else
-                        {
-                            active = bodyactive = "";
-                        }
-
-                        //tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                        //tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
-
-                        tabindex=tabindex+
-                            '<li role="presentation" class="'+active+'">'+
-                            '   <a data-toggle="tab" href="#language_'+y+'">'+
-                                    language[y][1]+
-                            '   </a>'+
-                            '</li>';
-
-                        tabbody=tabbody+
-                                '<div id="language_'+y+'" class="tab-page tab-pane fade '+bodyactive+'">'+
-                                '   <table class="limetable">';
-
-                        lsrows=language[y][0];
-                        tablerows='';
-                        var highlight=true;
-                        for (z in lsrows)
-                        {
-                            highlight=!highlight;
-                            tabbody=tabbody+'<tbody><tr';
-                            if (highlight==true) {
-                                tabbody=tabbody+" class='highlight' ";
-                            }
-                            if (lsrows[z].title==null) {
-                                lsrows[z].title='';
-                            }
-                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td';
-                            if (!assessmentvisible)
-                            {
-                                tabbody=tabbody+' style="display:none;"';
-                            }
-                            tabbody=tabbody+'>'+lsrows[z].assessment_value+'</td>';
-                            tabbody=tabbody+'<td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
-                        }
-                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th';
-                        if (!assessmentvisible)
-                        {
-                            tabbody=tabbody+' style="display:none;"';
-                        }
-                        tabbody=tabbody+'>'+sAssessmentValue+'</th>';
-                        tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
-                    }
-                }
-                tabindex=tabindex+'</ul>';
-                tabbody=tabbody+'</div>';
-                $("#labelsetpreview").append(tabindex+tabbody);
-                labelcache[lsid]=tabindex+tabbody;
+function lspreview(lid)
+{    
+    var surveyid=$('input[name=sid]').val();
+    return $.ajax({
+        url: lsdetailurl,
+        data: {sid:surveyid, lid:lid},
+        cache: true,
+        success: function(json){
+            console.ls.log('lspreview', json);
+            if(json.languages == []){
+                console.ls.console.warn('NOTHING TO RENDER!', json);
+                return;
             }
-        });
-    }
-    else
-    {
-        $("#labelsetpreview").empty();
-        $("#labelsetpreview").append(labelcache[lsid]);
-    }
+
+            var $liTemplate = $('<li role="presentation"></li>'),
+                $aTemplate = $('<a data-toggle="tab"></a>'),
+                $tabTodyTemplate = $('<div></div>'),
+                $listTemplate = $('<div class="list-group selector_label-list"></div>');
+                $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+                $tabindex=$('<ul class="nav nav-tabs" role="tablist"></ul>'),
+                $tabbody=$('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>'),
+                count=0;
+
+
+            console.ls.group('LanguageParsing');
+            var i=0;
+            $.each(json.languages, function(language, languageName){
+                console.ls.log('Language', language, languageName);
+                var $linkItem = $aTemplate.clone();
+                var $bodyItem = $tabTodyTemplate.clone();
+                var $itemList = $listTemplate.clone();
+
+                var classLink = i===0 ? 'active' : '';
+                var classBody = i===0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+
+                $linkItem.addClass(classLink).attr('href', "#language_"+language ).text(languageName);
+                $liTemplate.clone().append($linkItem).appendTo($tabindex);
+                
+
+                $bodyItem.addClass(classBody).attr('id', 'language_'+language );
+                $tabbody.append($bodyItem);
+
+                console.ls.group('ParseLabelSet');                    
+                
+                var labelSet = json.results[language]
+                console.ls.log('LabelSet', labelSet);
+
+                var $itemList = $listTemplate.clone();
+
+                console.ls.group('ParseLabels');                    
+                $.each(labelSet.labels, function(i,label){
+                    console.ls.log('Label', i, label);                
+                    var $listItem = $listItemTemplate.clone();
+                    $listItem.append('<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">'+label.code+'</div>');
+                    $listItem.append('<div class="col-md-8">'+(label.title || '')+'</div>');
+                    $listItem.append('<div class="col-md-1"></div>');
+                    $listItem.attr('data-label', JSON.stringify(label));
+                    $itemList.append($listItem);
+
+                });
+                
+                console.ls.groupEnd('ParseLabels');
+                $bodyItem.append('<h4>'+labelSet.label_name+'</h4>');
+                $itemList.appendTo($bodyItem);
+                
+                console.ls.groupEnd('ParseLabelSet');
+            });
+            console.ls.groupEnd('LanguageParsing');
+            $("#labelsetpreview").empty();
+            $('<div></div>').append($tabindex).append($tabbody).appendTo($("#labelsetpreview"));
+            $tabindex.find('li').first().find('a').trigger('click');
+        }
+    });
 }
 
 
-function transferlabels()
+function transferlabels(type)
 {
-    surveyid=$('input[name=sid]').val();
-    if ($(this).attr('id')=='btnlsreplace')
-        {
-        var lsreplace=true;
-    }
-    else
-        {
-        var lsreplace=false;
-    }
-    var lsid=$('#labelsets').val();
-    $.ajax({
-        url: lsdetailurl,
-        dataType: 'json',
-        data: {lid:lsid, sid:surveyid},
-        cache: true,
-        success: function(json){
-            languages=langs.split(';');
-            var x;
-            var defaultdata_labels = null;
-            for (x in languages)
-                {
-                lang_x_found_in_label=false;
-                if (assessmentvisible)
-                    {
-                    assessment_style='';
-                    assessment_type='text';
-                }
-                else
-                    {
-                    assessment_style='style="display:none;"';
-                    assessment_type='hidden';
-                }
+    var surveyid = $('input[name=sid]').val();
+    var languages = langs.split(';');
+    var labels = [];
+    var scale_id= $('#current_scale_id').val();
 
-                var tablerows='';
-                var y;
-                for (y in json)
-                    {
-
-                    language=json[y];
-                    var lsrows = new Array();
-                    for (z in language)
-                        {
-                        if (z == languages[0])
-                            {
-                            defaultdata_labels=language[languages[0]];
-                        }
-
-                        if (z==languages[x])
-                            {
-                            lang_x_found_in_label = true;
-                            lsrows=language[z][0];
-                        }
-
-                        var k;
-                        for (k in lsrows)
-                            {
-                            if (x==0) {
-                                tablerows=tablerows+
-                                '<tr class="row_'+k+'" >'+
-                                '   <td>'+
-                                '       <span class="fa fa-bars bigIcons"></span>'+
-                                '   </td>'+
-                                '   <td>'+
-                                '       <input class="code second-in-answerjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" value="'+htmlspecialchars(lsrows[k].code)+'" />'+
-                                '   </td>'+
-                                '   <td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/>'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <input type="text" size="20" class="answer third-in-answerjs  form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <a class="editorLink">'+
-                                '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
-
-                                '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
-                                '   </td>'+
-                                '</tr>'
-                            }
-                            else
-                                {
-                                tablerows=tablerows+
-                                '<tr class="row_'+k+'" >'+
-                                '   <td>&nbsp;</td>'+
-                                '   <td>'+
-                                        htmlspecialchars(lsrows[k].code)+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <input type="text" size="20" class="answer fourth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '   </td>'+
-
-                                '   <td>'+
-                                '           <a class="editorLink">'+
-                                '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
-
-                                '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
-                                '   </td>'+
-                                '</tr>'
-                            }
-                        }
-                    }
-                }
-                if (lang_x_found_in_label === false)
-                    {
-                    lsrows=defaultdata_labels[0];
-                    var k=0;
-                    for (k in lsrows)
-                        {
-                        tablerows=tablerows+
-                        '<tr class="row_'+k+'" >'+
-                        '   <td>&nbsp;</td>'+
-                        '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
-
-                        '   <td>'+
-                        '           <input type="text" size="20" class="answer fifth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                        '   </td>'+
-
-                        '   <td>'+
-                        '           <a class="editorLink">'+
-                        '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                        '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                        '           </a>'+
-
-                        '       <span class="btnaddanswer icon-add text-success" />'+
-                        '       <span class="btndelanswer  fa fa-trash text-warning" />'+
-                        '   </td>'+
-                        '</tr>'
-                    }
-                }
-                if (lsreplace) {
-                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
-                }
-                $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
-                // Unbind any previous events
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
-                $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
-                // Bind events again
-                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions', addinput);
-                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.answeroptions', deleteinput);
-                $('#answers_'+languages[x]+'_'+scale_id+' .answer').focus(function(){
-                    if ($(this).val()==newansweroption_text)
-                        {
-                        $(this).val('');
-                    }
-                });
+    addInputPredefined(1).then(function(result){
+        console.ls.log(result);
+        $.each(result, function(lng, row){
+            var $table = $('#answers_'+lng+'_'+scale_id);
+            
+            if(type == 'replace'){
+                $table.find('tbody').empty();
             }
+            
+            $("#labelsetpreview").find('#language_'+lng).find('.selector_label-list').find('.selector_label-list-row').each(function(i,item){
+                try{
+                    var label = $(item).data('label');
+                    var $row = $(row);
+                    var $row = $(row)
+                    var $tr = $row.eq(4);
+                    var randId = 'new'+Math.floor(Math.random()*10000);
+
+                    // $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/,randId));
+                    // $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3-5}/,randId));
+
+                    $row.find('input').each(function(j,inputField){
+                        $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/,randId));
+                        $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/,randId));
+                    });
+                
+                    $row.find('td.code-title').find('input[type=text]').length >0 ? $row.find('td.code-title').find('input[type=text]').val(label.code) : $row.find('td.code-title').text(label.code);
+                    $row.find('td.assessment-value').find('input[type=text]').length >0 ? $row.find('td.assessment-value').find('input[type=text]').val(label.assessment_value) : '';
+                
+                    $row.find('td.code-title').find('input[type=text]').val(label.code);
+                    $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
+                    $table.find('tbody').append($row);
+                    
+                } catch(e) {console.ls.error(e);}
+            });
+        
             $('.tab-page:first .answertable tbody').sortable('refresh');
-            $('#labelsetbrowserModal').modal('hide');
             updaterowproperties();
-
-    }}
-    );
-
-
+            $('#labelsetbrowserModal').modal('hide');
+            $('#current_scale_id').remove();
+        });
+        var $lang_table = $('#answers_'+language+'_'+scale_id);
+    });
 }
 
 

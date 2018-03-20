@@ -104,9 +104,8 @@ class InstallerController extends CController
      */
     private function _checkInstallation()
     {
-        if (file_exists(APPPATH.'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
+        if (file_exists(APPPATH.'config/config.php')) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
-            exit();
         }
     }
 
@@ -554,8 +553,8 @@ class InstallerController extends CController
     {
         $aData = [];
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
-        $aData['title'] = gT("Optional settings");
-        $aData['descp'] = gT("Optional settings to give you a head start");
+        $aData['title'] = gT("Administrator settings");
+        $aData['descp'] = gT("Further settings for application administrator");
         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'on');
         $aData['progressValue'] = 80;
         $this->loadHelper('surveytranslator');
@@ -581,8 +580,16 @@ class InstallerController extends CController
 
                 // Flush query cache because Yii does not handle properly the new DB prefix
                 Yii::app()->cache->flush();
-                //config file is written, and we've a db in place
-                $this->connection = Yii::app()->db;
+
+                $aDbConfigArray = $this->_getDatabaseConfigArray();
+                $aDbConfigArray['class'] = '\CDbConnection';
+                \Yii::app()->setComponent('db', $aDbConfigArray, false);
+
+
+
+                $db = \Yii::app()->getDb();
+                $db->setActive(true);
+                $this->connection = $db;
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
@@ -591,6 +598,7 @@ class InstallerController extends CController
                         if (User::model()->count() > 0) {
                             safeDie('Fatal error: Already an admin user in the system.');
                         }
+
                         // Save user
                         $user = new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
@@ -604,6 +612,7 @@ class InstallerController extends CController
                         $user->lang = $sSiteLanguage;
                         $user->email = $sAdminEmail;
                         $user->save();
+
                         // Save permissions
                         $permission = new Permission;
                         $permission->entity_id = 0;
@@ -612,6 +621,7 @@ class InstallerController extends CController
                         $permission->permission = 'superadmin';
                         $permission->read_p = 1;
                         $permission->save();
+
                         // Save  global settings
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
@@ -619,34 +629,36 @@ class InstallerController extends CController
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
+
                         // only continue if we're error free otherwise setup is broken.
+                        Yii::app()->session['deletedirectories'] = true;
+
+                        $aData['title'] = gT("Success!");
+                        $aData['descp'] = gT("LimeSurvey has been installed successfully.");
+                        $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
+                        $aData['progressValue'] = 100;
+                        $aData['user'] = $sAdminUserName;
+                        if ($sDefaultAdminPassword == $sAdminPassword) {
+                            $aData['pwd'] = $sAdminPassword;
+                        } else {
+                            $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
+                        }
+
+                        $this->_writeConfigFile();
+
+                        $this->render('/installer/success_view', $aData);
+
+                        return;
+
                     } catch (Exception $e) {
-                        throw new Exception(sprintf('Could not add optional settings: %s.', $e));
+                        throw new Exception(sprintf('Could not add administrator settings: %s.', $e));
                     }
 
-                    Yii::app()->session['deletedirectories'] = true;
-
-                    $aData['title'] = gT("Success!");
-                    $aData['descp'] = gT("LimeSurvey has been installed successfully.");
-                    $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
-                    $aData['progressValue'] = 100;
-                    $aData['user'] = $sAdminUserName;
-                    if ($sDefaultAdminPassword == $sAdminPassword) {
-                        $aData['pwd'] = $sAdminPassword;
-                    } else {
-                        $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
-                    }
-
-                    $this->render('/installer/success_view', $aData);
-                    return;
                 }
             } else {
                 unset($aData['confirmation']);
             }
-        } elseif (empty(Yii::app()->session['configFileWritten'])) {
-            $this->_writeConfigFile();
         }
-
         $this->render('/installer/optconfig_view', $aData);
     }
 
@@ -1128,9 +1140,9 @@ class InstallerController extends CController
             case 'mysqli':
                 // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
                 if (substr($sDatabaseLocation, 0, 1) == "/") {
-                                    $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
+                    $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
                 } else {
-                                    $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
+                    $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 }
                 break;
             case 'pgsql':
@@ -1207,6 +1219,45 @@ class InstallerController extends CController
         $sDatabaseLocation = Yii::app()->session['dblocation'];
 
         return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser');
+    }
+
+    /**
+     * Use with \Yii::app()->setComponent() to set connection at runtime.
+     * @return array
+     */
+    private function _getDatabaseConfigArray()
+    {
+        $sDatabaseType = Yii::app()->session['dbtype'];
+        $sDatabasePort = Yii::app()->session['dbport'];
+        $sDatabaseName = Yii::app()->session['dbname'];
+        $sDatabaseUser = Yii::app()->session['dbuser'];
+        $sDatabasePwd = Yii::app()->session['dbpwd'];
+        $sDatabasePrefix = Yii::app()->session['dbprefix'];
+        $sDatabaseLocation = Yii::app()->session['dblocation'];
+
+        $sCharset = 'utf8';
+        if (in_array($sDatabaseType, array('mysql', 'mysqli'))) {
+            $sCharset = 'utf8mb4';
+        }
+
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+
+        if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
+            $emulatePrepare = true;
+        } else {
+            $emulatePrepare = null;
+        }
+
+        $db = array(
+            'connectionString' => $sDsn,
+            'emulatePrepare' => $emulatePrepare,
+            'username' => $sDatabaseUser,
+            'password' => $sDatabasePwd,
+            'charset' => $sCharset,
+            'tablePrefix' => $sDatabasePrefix
+        );
+
+        return $db;
     }
 
     /**

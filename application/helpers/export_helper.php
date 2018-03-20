@@ -188,6 +188,15 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                                 echo($na);
                         }
                         break;
+                    case ':':
+                        $aSize = explode(".", $field['size']);
+                        if (isset($aSize[1]) && $aSize[1]) {
+                            // We need to add decimal
+                            echo $q.number_format($row[$fieldno], $aSize[1], ".", "").$q;
+                        } else {
+                            echo $q.$row[$fieldno].$q;
+                        }
+                        break;
                     case 'P':
                     case 'M':
                         if (substr($field['code'], -7) != 'comment' && substr($field['code'], -5) != 'other') {
@@ -199,16 +208,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                                 echo($na);
                             }
                             break; // Break inside if : comment and other are string to be filtered
-                        }
-                    case ':':
-                        $aSize = explode(".", $field['size']);
-                        if (isset($aSize[1]) && $aSize[1]) {
-                            // We need to add decimal
-                            echo $q.number_format($row[$fieldno], $aSize[1], ".", "").$q;
-                        } else {
-                            echo $q.$row[$fieldno].$q;
-                        }
-                        break;
+                        } // else do default action
                     default:
                         $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                         if (trim($strTmp) != '') {
@@ -1931,46 +1931,49 @@ function tokensExport($iSurveyID)
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
 
-    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
+    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
     if ($sEmailFiter != '') {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
-            $oRecordSet->andWhere("CAST(email as varchar) like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
+            $oRecordSet->andWhere("CAST(lt.email as varchar) like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         } else {
-            $oRecordSet->andWhere("email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
+            $oRecordSet->andWhere("lt.email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         }
     }
     if ($iTokenStatus == 1) {
-        $oRecordSet->andWhere("completed<>'N'");
+        $oRecordSet->andWhere("lt.completed<>'N'");
     } elseif ($iTokenStatus == 2) {
-        $oRecordSet->andWhere("completed='N'");
+        $oRecordSet->andWhere("lt.completed='N'");
         if ($bIsNotAnonymous) {
-            $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
+            $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+            $oRecordSet->andWhere("ls.id IS NULL");
         }
     }
     if ($iTokenStatus == 3 && $bIsNotAnonymous) {
-        $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
+        $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+        $oRecordSet->andWhere("lt.completed='N'");
+        $oRecordSet->andWhere("ls.id IS NULL");    
     }
-
+        
     if ($iInvitationStatus == 1) {
-        $oRecordSet->andWhere("sent<>'N'");
+        $oRecordSet->andWhere("lt.sent<>'N'");
     }
     if ($iInvitationStatus == 2) {
-        $oRecordSet->andWhere("sent='N'");
+        $oRecordSet->andWhere("lt.sent='N'");
     }
 
     if ($iReminderStatus == 1) {
-        $oRecordSet->andWhere("remindersent<>'N'");
+        $oRecordSet->andWhere("lt.remindersent<>'N'");
     }
     if ($iReminderStatus == 2) {
-        $oRecordSet->andWhere("remindersent='N'");
+        $oRecordSet->andWhere("lt.remindersent='N'");
     }
 
     if ($sTokenLanguage != '') {
-        $oRecordSet->andWhere("language=".App()->db->quoteValue($sTokenLanguage));
+        $oRecordSet->andWhere("lt.language=".App()->db->quoteValue($sTokenLanguage));
     }
-    $oRecordSet->order("tid");
+    $oRecordSet->order("lt.tid");
     $bresult = $oRecordSet->query();
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");

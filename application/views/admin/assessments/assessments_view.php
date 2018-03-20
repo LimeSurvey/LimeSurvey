@@ -56,7 +56,7 @@ LSYii_ClientScript::POS_BEGIN
                         'ajaxType' => 'POST',
                         'ajaxUpdate' => 'assessments-grid',
                         'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'afterAjaxUpdate'=>'function(){ try{bindAction();} catch(e) {} }',
+                        'afterAjaxUpdate'=>'bindAction',
                     ));
                 ?>
               </div>

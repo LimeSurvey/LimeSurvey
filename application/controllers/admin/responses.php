@@ -281,6 +281,7 @@ class responses extends Survey_Common_Action
                                 $answervalue = "Y";
                             }
                         } else {
+                            // File upload question type.
                             if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|") {
                                 $index = $fnames[$i]['index'];
                                 $metadata = $fnames[$i]['metadata'];
@@ -302,7 +303,7 @@ class responses extends Survey_Common_Action
                                     }
                                     $aData['bHasFile'] = true;
                                 } else {
-                                                                    $answervalue = "";
+                                    $answervalue = "";
                                 }
                             } else {
                                 $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $sBrowseLanguage))), ENT_QUOTES);

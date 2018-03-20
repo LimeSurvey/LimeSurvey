@@ -103,13 +103,8 @@ return array(
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
-            array(
-                'pjax.js',
-            ) 
-            : array(
-                'min/pjax.min.js',
-            )
+        'js' => array(
+            $debug > 0 ? 'pjax.js' : 'min/pjax.min.js',
         ),
         'depends' => array(
             'lslog',
@@ -135,7 +130,7 @@ return array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
         'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '.debug' : '.min').'.js',
+            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
             'build/surveysettings'.$minVersion.'.js',
             'build/hammer'.$minVersion.'.js'
         ),

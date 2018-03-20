@@ -57,6 +57,7 @@ LS.resp =  {
         });
 
         reinstallResponsesFilterDatePicker();
+        bindListItemclick();
     },
 
     /**
@@ -80,34 +81,39 @@ LS.resp =  {
  * @return
  */
 function reinstallResponsesFilterDatePicker() {
-    
-        // Since grid view is updated with Ajax, we need to fetch date format each update
-        var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
-    
+
+    // Since grid view is updated with Ajax, we need to fetch date format each update
+    var $input = $('input[name="dateFormatDetails"]');
+    if ($input.val()) {
+        var dateFormatDetails = JSON.parse($input.val());
+
         $('#SurveyDynamic_startdate').datetimepicker({
             format: dateFormatDetails.jsdate
         });
         $('#SurveyDynamic_datestamp').datetimepicker({
             format: dateFormatDetails.jsdate
         });
-    
+
         $('#SurveyDynamic_startdate').on('focusout', function() {
             var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
             $.fn.yiiGridView.update('responses-grid', {data: data});
         });
-    
+
         $('#SurveyDynamic_datestamp').on('focusout', function() {
             var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
             $.fn.yiiGridView.update('responses-grid', {data: data});
         });
+    } else {
+        console.ls.log('Internal error? Run reinstallResponsesFilterDatePicker, but find no input with name dateFormatDetails.');
     }
-    
+}
+
 function onDocumentReadyListresponse() {
     if($('#bottom-scroller').length > 0)
         $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
-    
+
     $('#top-scroller').height('18px');
-    
+
     LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
     LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
 

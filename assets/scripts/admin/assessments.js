@@ -36,17 +36,21 @@ var bindAction = function(){
     });
 
     $('.action_assessments_editModal').on('click.assessments', function(){
-        $('input[name=action]').val('assessmentupdate');    
+        $('input[name=action]').val('assessmentupdate');
         $.ajax({
             url: loadEditUrl,
-            data: {id: $(this).closest('tr').data('assessment-id')},
+            data: {id: $(this).closest('tr').data('assessment-id'), YII_CSRF_TOKEN : LS.data.csrfToken},
             method: 'GET',
             success: function(responseData){
-                $("#in_survey_common").css({cursor: ""});        
+                $("#in_survey_common").css({cursor: ""});
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
-                    if(!itemToChange.is('input[type=checkbox]') &&  !itemToChange.is('input[type=radio]')) {
-                        itemToChange.val(value).trigger('change');
+                    if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
+                        if (CKEDITOR.instances[key]) {
+                            CKEDITOR.instances[key].setData(value);
+                        } else {
+                            itemToChange.val(value).trigger('change');
+                        }
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }
@@ -60,6 +64,16 @@ var bindAction = function(){
     });
 
     $('#selector__assessment-add-new').on('click.assessments', function(){
+
+        // Clear all fields.
+        $.each(CKEDITOR.instances, function(name, instance) {
+            instance.setData('');
+        });
+
+        // We clear only visible input to keep the CSRF token
+        $('#assessmentsform input:visible').val('');
+        // TODO: Clear <select> and radio buttons?
+
         $('#assesements-edit-add').modal('show');
     });
 

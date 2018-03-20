@@ -27,21 +27,28 @@
 
     <div class="{{ aSurveyInfo.class.previewsubmit }}" {{ aSurveyInfo.attr.previewsubmit }}>
         <div class='{{ aSurveyInfo.class.previewsubmittext }}' {{ aSurveyInfo.attr.previewsubmittext }}>
+            {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
+                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
+            {% else %}
+                {{ aSurveyInfo.aCompleted.sEndText }}
+            {% endif %}
+
             {# Assessments #}
             {% if (aSurveyInfo.aAssessments.show) %}
                 {{ include('./subviews/messages/assessments.twig') }}
             {% endif %}
 
-            <br />
+            <br /><br />
             {# TODO: rewrite this before master #}
             <strong >
                 <font size='2' color='red'>
-                    {{ "Did Not Save" | t }}
+                    {{ gT("Did Not Save") }}
                 </font>
             </strong>
             <br /><br />
 
-            {{ "Your survey responses have not been recorded. This survey is not yet active." | t }}
+            {{ gT("Your survey responses have not been recorded. This survey is not yet active.") }}
             <br /><br />
         </div>
     </div>

@@ -6,9 +6,9 @@
         </div>
         <div class="col-md-8 text-left">
             {% if question.answervalue is sameas("M") %}
-                {{ "Male" | t }} <i class="fa fa-mars"></i>
+                {{ gT("Male") }} <i class="fa fa-mars"></i>
             {% elseif question.answervalue is sameas("F") %}
-                {{ "Female" | t }} <i class="fa fa-venus"></i>
+                {{ gT("Female") }} <i class="fa fa-venus"></i>
             {% else %}
                 {{question.answervalue}}
             {% endif %}

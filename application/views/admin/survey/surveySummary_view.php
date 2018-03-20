@@ -140,9 +140,14 @@ $surveyid = $oSurvey->sid;
                             <?php eT("Welcome:");?>
                         </div>
                         <div class="col-8">
-                            <?php
+                            <?php 
                                 templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_welcometext));
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                $fullWelcomeText = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+                                $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+                                        'widgetsJsName' => "welcome_text",
+                                        'textToDisplay' => $fullWelcomeText
+                                    ));
                             ?>
                         </div>
                     </div>
@@ -155,13 +160,72 @@ $surveyid = $oSurvey->sid;
                             <?php eT("End message:");?>
                         </div>
                         <div class="col-8">
-                                <?php
+                            <?php
                                 templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_endtext));
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                            ?>
+                                $fullSurveyEndText = LimeExpressionManager::GetLastPrettyPrintExpression();
+                                $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+                                    'widgetsJsName' => "end_text",
+                                    'textToDisplay' => $fullSurveyEndText
+                                ));
+                        ?>
                         </div>
                     </div>
                 </li>
+                <?php if($oSurvey->showsurveypolicynotice > 0) { ?>
+                    <!-- Data security notice -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("Data security notice:");?>
+                            </div>
+                            <div class="col-8">
+                                <?php
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_policy_notice));
+                                    $fullSurveyDataSecurityNotice = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+                                    $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+                                        'widgetsJsName' => "security_notice",
+                                        'textToDisplay' => $fullSurveyDataSecurityNotice
+                                    ));
+                            ?>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice error -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("Data security notice error:");?>
+                            </div>
+                            <div class="col-8">
+                                <?php
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_policy_error));
+                                    $fullSurveyDataSecurityNoticeError = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+                                    $this->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+                                        'widgetsJsName' => "security_error",
+                                        'textToDisplay' => $fullSurveyDataSecurityNoticeError
+                                    ));
+                            ?>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice label -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("Data security notice label:");?>
+                            </div>
+                            <div class="col-8">
+                                <?php
+                                    $dataSecNoticeLabel = Survey::replacePolicyLink($oSurvey->currentLanguageSettings->surveyls_policy_notice_label, $oSurvey->sid);
+                                    templatereplace(flattenText($dataSecNoticeLabel));
+                                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                ?>
+                            </div>
+                        </div>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
     </div>
@@ -218,7 +282,7 @@ $surveyid = $oSurvey->sid;
                                     <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
                                     <?php
                                 } else {
-                                    echo $templatename;
+                                    echo isset($templatename) ? $templatename : '';
                                 }
                             } else {
                                 $errorMessage = sprintf(

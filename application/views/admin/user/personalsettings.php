@@ -63,7 +63,9 @@
                                     <i class="fa fa-lock"></i>
                                     <?=gT("Change password")?>
                                 </button>
+                                
                                 <br/>
+                                <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                             </div>
                             <div class="col-md-9">
                                 <div class="container-fluid">
@@ -236,5 +238,11 @@ $('#selector__showChangePassword').on('click', function(e){
         }
     );
     $(this).find('i').toggleClass('fa-unlock').toggleClass('fa-lock');
+    if ( $('#newpasswordshown').val() == '0' ){
+        $('#newpasswordshown').val('1');
+    }else{
+        $('#newpasswordshown').val('0');
+    }
+
 });
 ", LSYii_ClientScript::POS_POSTSCRIPT);

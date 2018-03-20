@@ -181,7 +181,10 @@ class Template extends LSActiveRecord
         if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = getGlobalSetting('defaulttheme');
-            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+
+            if(method_exists(Yii::app(), 'setFlashMessage'))
+                Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return $sTemplateName;
         } else {
@@ -338,6 +341,10 @@ class Template extends LSActiveRecord
         $otherFiles = array();
         if (file_exists($filesDir) && $handle = opendir($filesDir)) {
             while (false !== ($file = readdir($handle))) {
+                // The file '..' can mess with open_basedir permissions.
+                if ($file == '..' || $file == '.') {
+                    continue;
+                }
                 if (!is_dir($file)) {
                     $otherFiles[] = array("name" => $file);
                 }
@@ -408,40 +415,18 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateList()
     {
-        $sUserTemplateRootDir    = Yii::app()->getConfig("userthemerootdir");
-        $standardTemplateRootDir = Yii::app()->getConfig("standardthemerootdir");
+
 
         $aTemplateList = array();
-        $aStandardTemplates = self::getStandardTemplateList();
 
-        foreach ($aStandardTemplates as $sTemplateName) {
-            $oTemplate = self::model()->findByPk($sTemplateName);
+        $oTemplateList = TemplateConfiguration::model()->search();
+        $oTemplateList->setPagination(false);
 
-            if (is_object($oTemplate)) {
-                $aTemplateList[$sTemplateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$oTemplate->folder;
-            }
+        foreach ($oTemplateList->getData() as $oTemplate) {
+            $aTemplateList[$oTemplate->template_name] =  (isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
         }
-
-        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
-            while (false !== ($sTemplatePath = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sTemplatePath")
-                    && $sTemplatePath != "."
-                    && $sTemplatePath != ".." && $sTemplatePath != ".svn"
-                    && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
-
-                    $oTemplate = self::getTemplateConfiguration($sTemplatePath, null, null, true);
-
-                    if (is_object($oTemplate)) {
-                        $aTemplateList[$sTemplatePath] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aTemplateList);
-
         return $aTemplateList;
+
     }
 
     /**
@@ -513,6 +498,15 @@ class Template extends LSActiveRecord
 
 
         return self::$instance;
+    }
+
+    /**
+     * Sets self::$instance to null;
+     * Needed for unit test.
+     */
+    public static function resetInstance()
+    {
+        self::$instance = null;
     }
 
     /**

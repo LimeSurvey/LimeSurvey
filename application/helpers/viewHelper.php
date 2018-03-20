@@ -212,7 +212,7 @@ class viewHelper
             $sString = flattenText($sString, false, true);
         }
 
-        if ($iAbbreviated>0) {
+        if ($iAbbreviated > 0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;
@@ -308,4 +308,5 @@ class viewHelper
         {
             return sprintf('<x-test id="action::%s"></x-test>', $name);
         }
+
 }

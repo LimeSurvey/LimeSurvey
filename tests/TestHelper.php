@@ -121,6 +121,10 @@ class TestHelper extends TestCase
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
         $result = \activateSurvey($surveyId);
+        // For Travis debugging.
+        if (isset($result['error'])) {
+            var_dump($result);
+        }
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 

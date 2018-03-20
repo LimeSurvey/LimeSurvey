@@ -778,7 +778,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = array();
 
-    $aRows = array();;
+    $aRows = array(); ;
     for ($fp = 1; $fp <= 5; $fp++) {
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp) {
@@ -823,16 +823,16 @@ function do_5pointchoice($ia)
     if ($aQuestionAttributes['slider_rating'] == 1) {
         $slider_rating = 1;
         Yii::app()->getClientScript()->registerPackage('question-5pointchoice-star');
+        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
+    }
+    
+    if ($aQuestionAttributes['slider_rating'] == 2) {
+        $slider_rating = 2;
+        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
         Yii::app()->getClientScript()->registerScript('doRatingSlider_'.$ia[0], "
             var doRatingSlider_".$ia[1]."= new getRatingSlider('".$ia[0]."');
             doRatingSlider_".$ia[1]."();
         ", LSYii_ClientScript::POS_POSTSCRIPT);
-    }
-
-    if ($aQuestionAttributes['slider_rating'] == 2) {
-        $slider_rating = 2;
-        Yii::app()->getClientScript()->registerPackage('question-5pointchoice-slider');
-        Yii::app()->getClientScript()->registerScript('doRatingStar_'.$ia[0], "doRatingStar('".$ia[0]."'); ", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
 
@@ -1926,7 +1926,7 @@ function do_multiplechoice($ia)
     // General variables
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-    $inputnames             = array(); // TODO : check if really used
+    $inputnames             = array(); // It is used!
     $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
@@ -1935,14 +1935,10 @@ function do_multiplechoice($ia)
     $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
-    if ($aQuestionAttributes['other_numbers_only'] == 1) {
-        $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator                 = $sSeparator['separator'];
-        $oth_checkconditionFunction = "fixnum_checkconditions";
-    } else {
-        $sSeparator = '.'; // TODO: Correct default?
-        $oth_checkconditionFunction = "checkconditions";
-    }
+    $aSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator             = $aSeparator['separator'];
+    
+    $oth_checkconditionFunction = ($aQuestionAttributes['other_numbers_only'] == 1) ? "fixnum_checkconditions" : "checkconditions";
 
     //// Retrieving datas
 
@@ -1955,38 +1951,19 @@ function do_multiplechoice($ia)
     $anscount  = count($ansresult);
     $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
-    //// Columns containing answer rows, set by user in question attribute
-    /// TODO : move to a dedicated function
-
-    // setting variables
-    $iRowCount        = 0;
-    $isOpen           = false; // Is a column opened
-
+    // First we calculate the width of each column
+    // Max number of column is 12 http://getbootstrap.com/css/#grid
+    $iColumnWidth = round(12 / $iNbCols);
+    $iColumnWidth = ($iColumnWidth >= 1) ? $iColumnWidth : 1;
+    $iColumnWidth = ($iColumnWidth <= 12) ? $iColumnWidth : 12;
+    $iMaxRowsByColumn = ceil($anscount / $iNbCols);
+    
     if ($iNbCols > 1) {
-        // Add a class on the wrapper
         $coreClass .= " multiple-list nbcol-{$iNbCols}";
-        // First we calculate the width of each column
-        // Max number of column is 12 http://getbootstrap.com/css/#grid
-        $iColumnWidth = round(12 / $iNbCols);
-        $iColumnWidth = ($iColumnWidth >= 1) ? $iColumnWidth : 1;
-        $iColumnWidth = ($iColumnWidth <= 12) ? $iColumnWidth : 12;
-
-        // Then, we calculate how many answer rows in each column
-        $iMaxRowsByColumn = ceil($anscount / $iNbCols);
-        $first = true; // The very first item will open a bootstrap row containing the columns
-    } else {
-        $iColumnWidth = 12;
-        $iMaxRowsByColumn = $anscount + 3; // No max
-        $first = true;
     }
 
-    /// Generate answer rows
-    $i = 0;
-
-    $sRows = '';
+    $aRows = [];
     foreach ($ansresult as $ansrow) {
-        $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
-        $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$ansrow['title'];
 
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
@@ -2002,23 +1979,11 @@ function do_multiplechoice($ia)
         $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
         $inputnames[]            = $myfname;
 
-        ////
-        // Open Column
-        // The column is opened if user set more than one column in question attribute
-        // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1) {
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array(
-                'iColumnWidth' => (isset($iColumnWidth)) ? $iColumnWidth : '',
-                'first'        => (isset($first)) ? $first : ''),
-                true);
-            $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            $first   = false; // The row containing the column has been opened at the first call.
-        }
 
         ////
         // Insert row
         // Display the answer row
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row', array(
+        $aRows[] = array(
             'name'                    => $ia[1], // field name
             'title'                   => $ansrow['title'],
             'question'                => $ansrow['question'],
@@ -2028,25 +1993,12 @@ function do_multiplechoice($ia)
             'myfname'                 => $myfname,
             'sValue'                  => $sValue,
             'relevanceClass'          => $relevanceClass,
-            ), true);
+            );
 
-        ////
-        // Close column
-        // The column is closed if the user set more than one column in question attribute
-        // and if the max answer rows by column is reached.
-        // If max answer rows by column is not reached while there is no more answer,
-        // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if ($iRowCount == $iMaxRowsByColumn) {
-            $last      = ($i == $anscount) ?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>$last), true);
-            $iRowCount = 0;
-            $isOpen    = false;
-        }
     }
 
     //==>  rows
     if ($other == 'Y') {
-        $iRowCount++;
         $myfname = $ia[1].'other';
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
@@ -2078,18 +2030,9 @@ function do_multiplechoice($ia)
         ++$anscount;
 
         ////
-        // Open Column
-        // The column is opened if user set more than one column in question attribute
-        // and if this is the first answer row (should never happen for 'other'),
-        // or if the column has been closed and the row count reset before.
-        if ($iRowCount == 1) {
-            $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
-        }
-
-        ////
         // Insert row
         // Display the answer row
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row_other', array(
+        $aRows[] = array(
             'myfname'                    => $myfname,
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
@@ -2098,33 +2041,25 @@ function do_multiplechoice($ia)
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
             'sValueHidden'               => $sValueHidden,
-            'relevanceClass'          => $relevanceClass,
-            ), true);
+            'relevanceClass'             => $relevanceClass,
+            'other'                      => true
+            );
 
-        ////
-        // Close column
-        // The column is closed if the user set more than one column in question attribute
-        // Other is always the last answer, so it's always closing the col and the bootstrap row containing the columns
-        $sRows    .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>true), true);
-        $isOpen    = false;
+
     }
 
-    ////
-    // Close column
-    // The column is closed if the user set more than one column in question attribute
-    // and if on column has been opened and not closed
-    // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if ($isOpen) {
-        $sRows .= doRender('/survey/questions/answer/multiplechoice/columns/column_footer', array('last'=>true), true);
-    }
+  
 
     // ==> answer
     $answer = doRender('/survey/questions/answer/multiplechoice/answer', array(
-        'sRows'    => $sRows,
-        'name'     => $ia[1],
-        'basename' => $ia[1],
-        'anscount' => $anscount,
-        'coreClass'=> $coreClass,
+        'aRows'            => $aRows,
+        'name'             => $ia[1],
+        'basename'         => $ia[1],
+        'anscount'         => $anscount,
+        'iColumnWidth'     => $iColumnWidth,
+        'iMaxRowsByColumn' => $iMaxRowsByColumn,
+        'iNbCols'          => $iNbCols,
+        'coreClass'        => $coreClass,
         ), true);
 
     return array($answer, $inputnames);
@@ -2340,7 +2275,6 @@ function do_file_upload($ia)
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview = Yii::app()->request->getParam('action') == "previewgroup" || Yii::app()->request->getParam('action') == "previewquestion" || $thissurvey['active'] != "Y";
-
     if ($bPreview) {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
         $questgrppreview = 1; // Preview is launched from Question or group level
@@ -2351,18 +2285,31 @@ function do_file_upload($ia)
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-    
-    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
-    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
-    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
-
+    $answer = "<script type='text/javascript'>
+        function upload_$ia[1]() {
+            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
+            uploadurl += '&preview={$questgrppreview}&show_title={$aQuestionAttributes['show_title']}';
+            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}';
+            uploadurl += '&minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
+            uploadurl += '&maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
+            $('#upload_$ia[1]').attr('href',uploadurl);
+        }
+        var uploadLang = {
+             title: '".gT('Upload your files', 'js')."',
+             returnTxt: '" . gT('Return to survey', 'js')."',
+             headTitle: '" . gT('Title', 'js')."',
+             headComment: '" . gT('Comment', 'js')."',
+             headFileName: '" . gT('File name', 'js')."',
+             deleteFile : '".gT('Delete')."',
+             editFile : '".gT('Edit')."'
+            };
+        var imageurl =  '".Yii::app()->getConfig('imageurl')."';
+        var uploadurl =  '".$scriptloc."';
+    </script>\n";
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js", LSYii_ClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
     // Modal dialog
     //$answer .= $uploadbutton;
-
     $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')])) {
         $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
@@ -2370,30 +2317,81 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
-    $surveyId = Yii::app()->getConfig('surveyID');
     $fileuploadData = array(
-        'surveyId' => $surveyId,
-        'qid' => $ia[0],
         'fileid' => $ia[1],
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue'=>$filecountvalue,
         'coreClass'=>$coreClass,
         'basename' => $ia[1],
-        'maxFiles' => $aQuestionAttributes['max_num_of_files'],
-        'minFiles' => $aQuestionAttributes['min_num_of_files'],
-        'uploadurl' => $uploadurl,
-        'showTitle' => $aQuestionAttributes["show_title"],
-        'showComment' => $aQuestionAttributes["show_comment"],
     );
-    App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
-    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
-    // App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
-    // App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
-
-    $answer = doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
-
+    $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
+    $answer .= '<script type="text/javascript">
+    var surveyid = '.Yii::app()->getConfig('surveyID').';
+    $(document).on("ready pjax:scriptcomplete", function(){
+    var fieldname = "'.$ia[1].'";
+    var filecount = $("#"+fieldname+"_filecount").val();
+    var json = $("#"+fieldname).val();
+    var show_title = "'.$aQuestionAttributes["show_title"].'";
+    var show_comment = "'.$aQuestionAttributes["show_comment"].'";
+    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);
+    });
+    </script>';
+    $answer .= '<script type="text/javascript">
+    $(".basic_'.$ia[1].'").change(function() {
+    var i;
+    var jsonstring = "[";
+    for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
+    {
+    if ($("#'.$ia[1].'_"+i).val() == "")
+    continue;
+    filecount++;
+    if (i != 1)
+    jsonstring += ", ";
+    if ($("#answer'.$ia[1].'_"+i).val() != "")
+    jsonstring += "{ ';
+    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_title'])) {
+            $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
+    } else {
+            $answer .= '\"title\":\"\",';
+    }
+    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_comment'])) {
+            $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
+    } else {
+            $answer .= '\"comment\":\"\",';
+    }
+    $answer .= '\"size\":\"\",\"name\":\"\",\"ext\":\"\"}";
+    }
+    jsonstring += "]";
+    $("#'.$ia[1].'").val(jsonstring);
+    $("#'.$ia[1].'_filecount").val(filecount);
+    });
+    </script>';
+    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
+    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
+    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
+    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
+    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
+    $answer .= '
+    <!-- Trigger the modal with a button -->
+        <!-- Modal -->
+        <div id="file-upload-modal-' . $ia[1].'" class="modal fade file-upload-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header file-upload-modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="h4 modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']).'</div>
+                    </div>
+                    <div class="modal-body file-upload-modal-body">
+                        <iframe id="uploader' . $ia[1].'" name="uploader'.$ia[1].'" class="uploader-frame" src="'.$uploadurl.'" title="'.gT("Upload").'"></iframe>
+                    </div>
+                    <div class="modal-footer file-upload-modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes").'</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ';
     $inputnames = array();
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";
@@ -2583,7 +2581,7 @@ function do_multiplenumeric($ia)
     }
 
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-
+    
     /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
     list($sLabelWidth, $sInputContainerWidth, $defaultWidth) = getLabelInputWidth($aQuestionAttributes['label_input_columns'], $aQuestionAttributes['text_input_width']);
 
@@ -2696,10 +2694,10 @@ function do_multiplenumeric($ia)
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = 10;
                     }
                     if (!empty($sliderright)) {
-                        $sliderWidth -= 2;
+                        $sliderWidth = $sliderWidth==10 ? 8 : 10 ;
                     }
                     $sliders   = true; // What is the usage ?
                 } else {
@@ -2737,10 +2735,10 @@ function do_multiplenumeric($ia)
             } elseif ($slider_layout && $slider_default !== "" && $slider_default_set) {
                 $sValue                = $slider_default;
             } else {
-                $sValue                = '';
+                $sValue                = null;
             }
 
-            $sUnformatedValue = $sValue;
+            $sUnformatedValue = $sValue ? $sValue : '';
 
             if (strpos($sValue, ".")) {
                 $sValue = rtrim(rtrim($sValue, "0"), ".");
@@ -2803,7 +2801,7 @@ function do_multiplenumeric($ia)
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'slider_orientation'     => $slider_orientation,
-                    'slider_value'           => $sUnformatedValue,
+                    'slider_value'           => $slider_position ?  $slider_position : $sUnformatedValue,
                     'slider_step'            => $slider_step,
                     'slider_min'             => $slider_min,
                     'slider_mintext'         => $slider_mintext,

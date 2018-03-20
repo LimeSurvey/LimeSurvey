@@ -23,6 +23,7 @@
  * @property string $surveyls_description Survey description in this language
  * @property string $surveyls_welcometext Survey welcome-text in this language
  * @property string $surveyls_endtext Survey end-text in this language
+ * @property string $surveyls_policy_notice The survey data-security notice
  * @property string $surveyls_url Survey end-url for this language
  * @property string $surveyls_urldescription Survey end-url description for this language
  * @property string $surveyls_email_invite_subj Survey inivitation e-mail subject for this language
@@ -116,6 +117,9 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_description', 'LSYii_Validators'),
             array('surveyls_welcometext', 'LSYii_Validators'),
             array('surveyls_endtext', 'LSYii_Validators'),
+            array('surveyls_policy_notice', 'LSYii_Validators'),
+            array('surveyls_policy_error', 'LSYii_Validators'),
+            array('surveyls_policy_notice_label', 'LSYii_Validators'),
             array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
             array('surveyls_urldescription', 'LSYii_Validators'),
 
@@ -124,7 +128,7 @@ class SurveyLanguageSetting extends LSActiveRecord
         );
     }
     
-    public function defaultScope()
+    public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
     }        

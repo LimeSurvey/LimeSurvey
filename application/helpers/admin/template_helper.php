@@ -130,10 +130,10 @@ function is_template_editable($templatename)
 function templateExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
-    $aAllowExtensions[] = 'pstpl';
+    $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
-    if (substr_count($info['basename'], '.') != 1) {
+    if (substr_count($info['basename'], '.') > 1) {
         return 0;
     }
 

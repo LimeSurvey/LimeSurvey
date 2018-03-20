@@ -47,8 +47,10 @@ $script = array();
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='control-label col-md-1 col-sm-2 col-xs-6' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>&nbsp;
-            <button class="add-attachment btn btn-default col-md-1 col-sm-2 col-xs-6" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+            <label class='control-label col-xs-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <div class="col-xs-12">
+                <button class="add-attachment btn btn-default" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+            </div>
     </div>
 
 
@@ -114,12 +116,9 @@ $script = array();
 <?php                 
 
 App()->getClientScript()->registerScript("ScriptEmailTemplateLanguageTemplate_<?=$grouplang?>_<?=$tab?>", "
-    $('#validate_expression_".$grouplang."_".$tab."').remoteModal();\n\n
-    $('#reset_template_".$grouplang."_".$tab."').on('click', function(){
-        $('#'+$(this).data('target')).val($(this).data('value'));
-    });\n\n
     var prepEmailTemplates = PrepEmailTemplates();\n
     prepEmailTemplates.init();\n
+    prepEmailTemplates.bindActions({validate: '#validate_expression_".$grouplang."_".$tab."', reset: '#reset_template_".$grouplang."_".$tab."'}, 
+    {close: '".gT('Close')."', save: '".gT('Save')."'}, '".App()->getController()->createUrl('admin/emailtemplates/getTemplateOfType', array('type' => $tab, 'language' => $grouplang, 'survey' => $surveyid ))."');\n
     ".implode("\n", $script), LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>

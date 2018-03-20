@@ -12,9 +12,9 @@
  */
 
 
-$config['versionnumber'] = '3.0.5';  //The current version of this branch, LS3
-$config['dbversionnumber'] = 345;
+$config['versionnumber'] = '3.5.3'; //The current version of this branch, LS3
+$config['dbversionnumber'] = 348;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30008';
+$config['assetsversionnumber'] = '30024';
 return $config;

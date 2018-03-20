@@ -8,12 +8,13 @@ var LSSlider = function (options) {
     "use strict";
     var LSvar = window.LSvar || {};
     var debugMode = LSvar.debugMode || 0;
-    console.log(LSvar, debugMode);
+    console.ls.log(LSvar, debugMode);
 
     //contextual settings and constants
     var
         qid = options.qid,
         elementName = options.element,
+        rootElementName = options.rootElement,
         reset = options.reset || '',
         prefix = options.prefix || '',
         suffix = options.suffix || '',
@@ -42,12 +43,19 @@ var LSSlider = function (options) {
 
     //recurringObjects
     var elementObject = $('#answer' + elementName),
+        rootElementObject = $('#answer' + rootElementName),
         listItemObject = $('#javatbd' + elementName);
 
     //settingFunctions
     var stringFormatter = function (value) {
             var displayValue = value.toString().replace('.', separator);
             return prefix + displayValue + suffix;
+        },
+        writeToRootElement = function(value){
+            if(listItemObject.find('.slider-container').hasClass('slider-untouched') && rootElementObject.hasClass('slider-untouched')){
+                return;
+            }
+            rootElementObject.val(value);
         },
         /**
          * The slide start event triggered when the handle of the slider is touched
@@ -59,11 +67,13 @@ var LSSlider = function (options) {
             var displayValue = currentValue.toString().replace('.', separator); // We format it with the right separator
             
             elementObject.val(displayValue); // We parse it to the element
-            
+            rootElementObject.removeClass('slider-untouched');
+            writeToRootElement(displayValue);
+    
             if (debugMode > 0) {
-                console.log('sliderDebug started dragging', elementObject);
-                console.log('sliderDebug current value', currentValue);
-                console.log('sliderDebug current display value', displayValue);
+                console.ls.log('sliderDebug started dragging', elementObject);
+                console.ls.log('sliderDebug current value', currentValue);
+                console.ls.log('sliderDebug current display value', displayValue);
             }
 
             triggerChanges();
@@ -75,11 +85,11 @@ var LSSlider = function (options) {
             //Correct the value to fit the correct decimal separator and trigger em.
             var displayValue = event.value.toString().replace('.', separator); // We format it with the right separator
             elementObject.val( displayValue );
-
+            writeToRootElement(displayValue);
             if (debugMode > 0) {
-                console.log('sliderDebug stopped dragging', elementObject);
-                console.log('sliderDebug new value', event.value);
-                console.log('sliderDebug new value', displayValue);
+                console.ls.log('sliderDebug stopped dragging', elementObject);
+                console.ls.log('sliderDebug new value', event.value);
+                console.ls.log('sliderDebug new value', displayValue);
             }
             triggerChanges();
 
@@ -88,13 +98,14 @@ var LSSlider = function (options) {
             value = value || position;
             sliderObject.setValue(position, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
+            writeToRootElement(displayValue);
             triggerChanges();
         },
 
         triggerChanges = function () {
-            ExprMgr_process_relevance_and_tailoring('keyup', elementName, 'change');
+            ExprMgr_process_relevance_and_tailoring('keyup', rootElementName, 'change');
             if (debugMode > 0) {
-                console.log('sliderDebug triggered change', elementObject);
+                console.ls.log('sliderDebug triggered change', rootElementObject);
             }
         },
 
@@ -112,6 +123,7 @@ var LSSlider = function (options) {
                 e.preventDefault();
                 /* Position slider button at position */
                 listItemObject.find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
+                rootElementObject.addClass('slider-untouched');
                 setValue(null, true, true);
                 /* if don't set position : reset to '' */
                 if (!setPosition) {
@@ -128,16 +140,22 @@ var LSSlider = function (options) {
         },
         createSlider = function () {
             if (custom_handle != null) {
-                document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
+               var customStyleSheet = $('<style></style>');
+               customStyleSheet.attr('type','text/css');
+               customStyleSheet.text('#' + elementObject.attr('id') + ' .slider-handle.custom::before { content: "' + custom_handle + '" }');
+               customStyleSheet.appendTo('body');
+                // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
-
+            
             sliderObject = new Slider(elementObject[0], createSliderSettings());
-            triggerChanges();
 
+            triggerChanges();
+            
+            
             if (debugMode > 0) {
-                console.log('sliderDebug slider created', sliderObject);
-                console.log('sliderDebug slider settings', sliderSettings);
-                console.log('sliderDebug slider node', elementObject);
+                console.ls.log('sliderDebug slider created', sliderObject);
+                console.ls.log('sliderDebug slider settings', sliderSettings);
+                console.ls.log('sliderDebug slider node', elementObject);
             }
 
             bindResetAction();

@@ -247,13 +247,16 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
+        $sUrlImgAsset = '';
 
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            $sUrlImgAsset = '';
-            // TODO: publish a default image "not found"
         }
+
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
+            $sUrlImgAsset = $sImagePath;
+        }
+        
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -268,12 +271,15 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset = '';
-
+        $sUrlImgAsset =  '';$sImagePath;
+        
+        
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            // TODO: publish a default image "not found"
+        } 
+
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
+            $sUrlImgAsset = $sImagePath;
         }
 
         return $sUrlImgAsset;
@@ -388,6 +394,5 @@ class LS_Twig_Extension extends Twig_Extension
 
         }
     }
-
 
 }

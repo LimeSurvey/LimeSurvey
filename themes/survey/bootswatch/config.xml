@@ -85,6 +85,7 @@
             <screens>
                 <question>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>
@@ -102,10 +103,9 @@
                 </question>
 
                 <surveylist>
-                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
-                    <file type="view" role="content">./subviews/content/survey_list.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -186,6 +186,23 @@
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
                 </save>
+
+                <register>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/register.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_error.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_head.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_message.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/required.twig</file>
+                </register>
+
+                <printanswers>
+                    <file type="view" role="layout">./subviews/content/printanswers.twig</file>
+                    <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
+                </printanswers>
+
             </screens>
         </template_editor>
     </engine>

@@ -58,7 +58,7 @@
     {{ dump(aSurveyInfo) }}
 
     To echo a variable, just insert                      : {{ variable }}
-    To translate a string, just insert                   : {{ string | t }}
+    To translate a string, just insert                   : {{gT( string )}}
 
     NOTE: aSurveyInfo should be cleaned to remove the unnecessary data.
 
@@ -106,7 +106,6 @@
 
             <div id="{{ aSurveyInfo.id.dynamicreload }}">
             {% block body %}
-
                 {# Bootstrap Navigation Bar: the top menu #}
                 {% block nav_bar %}
                     {{ include('./subviews/header/nav_bar.twig') }}
@@ -115,8 +114,9 @@
 
                 {# Replace the content block #}
                 {% block content %}
+                    <div class="container-fluid">
                     {{  registerTemplateCssFile('./css/survey-list.css') }}
-
+                
                     <div class="{{ aSurveyInfo.class.surveylistrow }} row" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
 
                         {# include the alert for no JavaScript #}
@@ -129,7 +129,7 @@
 
                         <div class="{{ aSurveyInfo.class.surveylistrowdiva }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
                             <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }} h3' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
-                                {{ "The following surveys are available:" | t }}
+                                {{ gT("The following surveys are available:") }}
                             </div>
                         </div>
 
@@ -138,12 +138,12 @@
                                 <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }} list-unstyled ' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
 
                                     {% for key, oSurvey in aSurveyInfo.publicSurveys %}
-                                    <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group btn-block" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
+                                    <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group col-sm-6 col-xs-12" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
                                         <a
                                         href="{{ oSurvey.sSurveyUrl }}"
-                                        title="{{ "Start survey" | t }}"
+                                        title="{{ gT("Start survey") }}"
                                         lang="{{ oSurvey.language }}"
-                                        class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
+                                        class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary col-xs-12"  >
                                         {{ oSurvey.localizedTitle }}
                                     </a>
                                 </li>
@@ -160,20 +160,27 @@
 
                     <div id="{{ aSurveyInfo.id.surveylistfooter }}" class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
                         <div class="{{ aSurveyInfo.class.surveylistfootercont }} container" {{ aSurveyInfo.attr.surveylistfootercont }}>
-                            <p {{ aSurveyInfo.attr.surveylistfootercontp }}>
-                                <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} >
-                                    {{ image("./files/poweredby.png", "LimeSurvey Survey Software") }}
-                                </a>
-
-                                <br />
-                                <a {{ aSurveyInfo.attr.surveylistfootercontpab }} >
-                                    The Online Survey Tool
-                                </a>
-                                - Free & Open Source
-                                <br />
-                            </p>
+                            <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
+                                <div class="col-xs-6 col-sm-12 text-center">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} class="center-block text-center">
+                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-responsive center-block '}) }}
+                                    </a>
+                                </div>
+                                <div class="col-sm-12 hidden-xs text-center">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }}>
+                                        The Online Survey Tool
+                                    </a>
+                                    - Free & Open Source
+                                </div>
+                                <div class="col-xs-6 visible-xs text-center">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpab }}>
+                                        Online Surveytool
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
                 {% endblock %}
 
 
@@ -186,5 +193,10 @@
         <div id="bottomScripts">
             <###end###>
         </div>
+        {% block themescripts %}
+        <script>
+            window.basicThemeScripts.init();
+        </script>
+        {% endblock %}
     </body>
 </html>

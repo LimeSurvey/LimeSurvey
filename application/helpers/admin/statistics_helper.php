@@ -2214,10 +2214,11 @@ class statistics_helper
         }
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
-        //echo '<pre>'; var_dump($outputs['alist']); echo '</pre>';die;
         $statisticsoutput_footer = "<script>";
 
-        $lbl = array();
+        $lbl       = array();
+        $tableXLS  = array();
+        $tablePDF2 = array();
         foreach ($outputs['alist'] as $al) {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
@@ -2360,7 +2361,6 @@ class statistics_helper
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
-                    $tablePDF2 = array();
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
 
                     foreach ($result2 as $row2) {
@@ -2370,7 +2370,6 @@ class statistics_helper
 
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
-                    $tableXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
 
                     $result2 = $this->_listcolumn($surveyid, $sColumnName);
@@ -2378,10 +2377,7 @@ class statistics_helper
                     foreach ($result2 as $row2) {
                         $tableXLS[] = array($row2['id'], $row2['value']);
                     }
-
                 }
-
-
             }
 
             /*
@@ -2549,7 +2545,6 @@ class statistics_helper
             if (!(in_array('is_comment', $al) || in_array('is_no_answer', $al))) {
                 $grawdata_percents[] = $row;
             }
-            //var_dump($grawdata); die();
             //put question title and code into array
             $label[] = $fname;
 
@@ -3868,7 +3863,7 @@ class statistics_helper
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
                 $this->workbook = new Xlswriter($sFileName);
             } else {
-                            $this->workbook = new Xlswriter();
+                $this->workbook = new Xlswriter();
             }
 
             $this->workbook->setVersion(8);
@@ -3882,7 +3877,7 @@ class statistics_helper
                 $this->workbook->setTempDir($sTempDir);
             }
             if ($outputTarget != 'F') {
-                            $this->workbook->send('statistic-survey'.$surveyid.'.xls');
+                $this->workbook->send('statistic-survey'.$surveyid.'.xls');
             }
 
             // Creating the first worksheet
@@ -4022,7 +4017,7 @@ class statistics_helper
                 $sOutputHTML .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
-//Make sure there really is an answerlist, and if so:
+                    //Make sure there really is an answerlist, and if so:
                     $display = $this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
@@ -4036,7 +4031,7 @@ class statistics_helper
 
             //output
             if ($outputType == 'html') {
-                        $sOutputHTML .= "<br />&nbsp;\n";
+                $sOutputHTML .= "<br />&nbsp;\n";
             }
 
         }    //end if -> show summary results
@@ -4057,12 +4052,12 @@ class statistics_helper
                 $this->pdf->lastPage();
 
                 if ($outputTarget == 'F') {
-// This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
+                    // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
                     $tempfilename = $sTempDir."/Survey_".$surveyid.".pdf";
                     $this->pdf->Output($tempfilename, $outputTarget);
                     return $tempfilename;
                 } else {
-                                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $outputTarget);
+                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $outputTarget);
                 }
 
                 break;

@@ -472,6 +472,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['mr']['rtl'] = false;
     $supportedLanguages['mr']['dateformat'] = 2;
     $supportedLanguages['mr']['radixpoint'] = 0;
+    
+    // Myanmar / Burmese
+    $supportedLanguages['mya']['description'] = gT('Myanmar (Burmese)');
+    $supportedLanguages['mya']['nativedescription'] = '&#4121;&#4156;&#4116;&#4154;&#4121;&#4140;&#4120;&#4140;&#4126;&#4140;';
+    $supportedLanguages['mya']['rtl'] = false;
+    $supportedLanguages['mya']['dateformat'] = 1;
+    $supportedLanguages['mya']['radixpoint'] = 1;
 
     // Norwegian Bokmal
     $supportedLanguages['nb']['description'] = gT('Norwegian (Bokmal)');

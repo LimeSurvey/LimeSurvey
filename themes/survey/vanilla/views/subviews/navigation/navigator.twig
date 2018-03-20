@@ -32,7 +32,7 @@
         {% if aNavigator.aMovePrev.show %}
             <!-- Button previous -->
             <button  {{ aSurveyInfo.attr.navigatorbuttonprev }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default  " >
-                {{ "Previous" | t }}
+                {{ gT("Previous") }}
             </button>
         {% endif %}
     </div>
@@ -45,12 +45,12 @@
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
                 <!-- Button submit -->
                 <button type="submit"  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
-                    {{ "Submit" | t }}
+                    {{ gT("Submit") }}
                 </button>
             {% else %}
                 <!-- Button Next -->
                 <button type="submit" {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
-                    {{ "Next" | t }}
+                    {{ gT("Next") }}
                 </button>
             {% endif %}
         {% endif %}

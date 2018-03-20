@@ -2,8 +2,10 @@
  * Simple way to have remotely loaded modals withoud the need to have a perfect markup and replace everything.
  */
 
-var BootstrapRemoteModal = function(presetOptions){
+var BootstrapRemoteModal = function(presetOptions, templateOptions){
     presetOptions = presetOptions || {};
+    templateOptions = templateOptions || {};
+    
     "use strict";
     var options = {
         parentElement       : presetOptions.parentElement      || 'body',
@@ -23,17 +25,23 @@ var BootstrapRemoteModal = function(presetOptions){
         blocking            : presetOptions.blocking           || false
     }
 
+    var templateStrings = {
+        closeIcon   : templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButton : templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+        saveButton  : templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
+    };
+
     //Define all the blocks and combine them by jquery methods
     var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock    = $('<div class="modal-content"></div>'),
         headerBlock     = $('<div class="modal-header"></div>'),
-        closeIcon       = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'),
         headlineBlock   = $('<h4 class="modal-title"></h4>'),
         bodyBlock       = $('<div class="modal-body"></div>'),
         footerBlock     = $('<div class="modal-footer"></div>'),
-        closeButton     = $('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'),
-        saveButton      = $('<button type="button" class="btn btn-primary">Save changes</button>');
+        closeIcon       = $(templateOptions.closeIcon),
+        closeButton     = $(templateOptions.closeButton),
+        saveButton      = $(templateOptions.saveButton);
 
     var modalObject = null;
     

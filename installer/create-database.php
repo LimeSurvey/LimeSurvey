@@ -531,6 +531,7 @@ function createDatabase($oDB){
             'ipaddr' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
             'datecreated' => "datetime",
+            'showsurveypolicynotice' => 'int DEFAULT 0',
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
@@ -603,6 +604,9 @@ function createDatabase($oDB){
             'surveyls_description' => "TEXT NULL",
             'surveyls_welcometext' => "TEXT NULL",
             'surveyls_endtext' => "TEXT NULL",
+            'surveyls_policy_notice' => "TEXT NULL",
+            'surveyls_policy_error' => "TEXT NULL",
+            'surveyls_policy_notice_label' => 'string(192) NULL',
             'surveyls_url' => "TEXT NULL",
             'surveyls_urldescription' => "string(255) NULL",
             'surveyls_email_invite_subj' => "string(255) NULL",
@@ -732,14 +736,10 @@ function createDatabase($oDB){
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
-        foreach($tutorialsData=LsDefaultDataSets::getTutorialData() as $tutorials){
-            $oDB->createCommand()->insert('{{tutorials}}', $tutorials);
-        }
-
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
             'tid' => 'int NOT NULL',
-            'uid' => 'int DEFAULT NULL',
+            'uid' => 'int NOT NULL',
             'taken' => 'int DEFAULT 1',
         ));
 
@@ -767,14 +767,6 @@ function createDatabase($oDB){
                 'settings' => 'text'
             ]
         );
-       
-
-        foreach($tutorialEntryData=LsDefaultDataSets::getTutorialEntryData() as $tutorialEntry) {
-            $teid =  $tutorialEntry['teid'];
-            unset($tutorialEntry['teid']);
-            $oDB->createCommand()->insert('{{tutorial_entries}}', $tutorialEntry);
-            $oDB->createCommand()->insert('{{tutorial_entry_relation}}', array('tid' => 1, 'teid' => $teid));
-        }
 
         //user_in_groups
         $oDB->createCommand()->createTable('{{user_in_groups}}', array(

@@ -3717,15 +3717,15 @@ class quexmlpdf extends pdf
     protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
         $this->sectionCP++;
-
         $mtitle = $title;
-
+        
         if ($title === false) {
             $mtitle = $this->sectionCP;
         }
-
+        
         $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $mtitle);
-
+        
+        $html = '';
         if ($title !== false) {
                 $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
                 $html .= "<span class=\"sectionDescription\">$desc</span>";

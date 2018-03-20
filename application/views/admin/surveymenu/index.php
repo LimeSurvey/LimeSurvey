@@ -24,8 +24,8 @@ echo viewHelper::getViewTestTag('surveyMenus');
             <?php eT('Survey menus')?> 
         </div>
         <div class="col-12">
-            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
-                <i class="fa fa-plus"></i>&nbsp;<?php eT('New') ?>
+            <a class="btn btn-default pull-left col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
+                <i class="icon-add text-success"></i>&nbsp;<?php eT('New') ?>
             </a>	
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
             <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">

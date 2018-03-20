@@ -75,7 +75,6 @@ $script = "
         }
     }
 
--->
 ";
 
 Yii::app()->getClientScript()->registerScript('ckEditorPreparingSettings', $script, LSYii_ClientScript::POS_BEGIN);

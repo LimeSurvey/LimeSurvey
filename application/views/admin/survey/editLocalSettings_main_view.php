@@ -21,7 +21,7 @@ echo $scripts;
 ?>
   <!-- START editLocalSettings -->
   <div class="row col-12">
-    <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
+    <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
 
     <!-- Edition container -->
 

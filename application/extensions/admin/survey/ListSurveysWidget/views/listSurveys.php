@@ -60,7 +60,7 @@
                         'header' => gT('Title'),
                         'name' => 'title',
                         'type' => 'raw',
-                        'value'=>'CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid))) : ""',
                         'htmlOptions' => array('class' => 'col-md-2 has-link'),
                         'headerHtmlOptions'=>array('class' => 'col-md-4'),
                     ),
@@ -69,7 +69,7 @@
                         'header' => gT('Group'),
                         'name' => 'group',
                         'type' => 'raw',
-                        'value'=>'CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'isset($data->surveygroup) ? CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid))) : ""',
                         'htmlOptions' => array('class' => 'col-md-2 has-link'),
                     ),
 
