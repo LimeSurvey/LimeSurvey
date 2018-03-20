@@ -1842,7 +1842,7 @@ return $s->hasTokensTable; });
     }
 
     /**
-     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * Get the count of questions that do not need input (skipping text-display etc.)
      * @return integer
      */
     public function getCountNoInputQuestions()
@@ -1953,6 +1953,7 @@ return $s->hasTokensTable; });
      * @return string[]
      */
     public function getOldTokensTableNames() {
+
         return self::findTableNames(self::OLD.self::TABLE_DELIMITER.self::TOKENS.self::TABLE_DELIMITER.$this->primaryKey.self::TABLE_DELIMITER);
     }
 
@@ -1963,7 +1964,8 @@ return $s->hasTokensTable; });
     public static function findTableNames($like) {
         $allTableNames = Yii::app()->db->schema->tableNames;
         $input = preg_quote($like, '~');
-        return preg_filter('~' . $input . '~', null, $allTableNames);
+        $tableNames = preg_grep('~' . $input . '~', $allTableNames);
+        return array_values($tableNames);
     }
 
 }

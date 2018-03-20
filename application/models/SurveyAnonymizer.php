@@ -39,11 +39,9 @@ class SurveyAnonymizer
         if ($this->survey->hasTokensTable) {
             $this->anonymizeTokensTable($this->survey->tokensTableName);
         }
-        if ($this->includeOldTables) {
-            if (!empty($this->survey->oldTokensTableNames)) {
-                foreach ($this->survey->oldTokensTableNames as $tableName) {
-                    $this->anonymizeTokensTable($tableName);
-                }
+        if ($this->includeOldTables && !empty($this->survey->oldTokensTableNames)) {
+            foreach ($this->survey->oldTokensTableNames as $tableName) {
+                $this->anonymizeTokensTable($tableName);
             }
         }
     }
@@ -53,38 +51,52 @@ class SurveyAnonymizer
             $this->anonymizeResponsesTable($this->survey->responsesTableName);
         }
 
-        if ($this->includeOldTables) {
-            if (!empty($this->survey->oldResponsesTableNames)) {
-                foreach ($this->survey->oldResponsesTableNames as $tableName) {
-                    $this->anonymizeTokensTable($tableName);
-                }
+        if ($this->includeOldTables && !empty($this->survey->oldResponsesTableNames)) {
+            foreach ($this->survey->oldResponsesTableNames as $tableName) {
+                $this->anonymizeResponsesTable($tableName);
             }
         }
     }
 
 
+    /*
+     * @return bool
+     */
     private function anonymizeResponsesTable($tableName){
         return $this->anonymizeDynamicTable(SurveyDynamic::class, $tableName);
-   }
+    }
 
 
+    /*
+     * @return bool
+     */
     private function anonymizeTokensTable($tableName){
         return $this->anonymizeDynamicTable(TokenDynamic::class, $tableName);
     }
 
+    /**
+     * @param string $dynamicClass Dynamic model classname
+     * @param string $tableName
+     * @return bool
+     */
     private function anonymizeDynamicTable($dynamicClass, $tableName){
-
         /** @var LSDynamicRecordInterface $dynamicModel */
         $dynamicModel = $dynamicClass::model($this->survey->primaryKey);
+        $tableColumnNames = Yii::app()->db->schema->getTable($tableName)->columnNames;
         $valueMap = [];
+
         foreach ($dynamicModel->personalFieldNames as $fieldName) {
-            $valueMap[$fieldName] = self::ANONYMIZED_STRING;
-            if ($fieldName == 'email') {
-                $valueMap[$fieldName] = self::ANONYMIZED_EMAIL;
+            if (in_array($fieldName,$tableColumnNames)) {
+                $valueMap[$fieldName] = self::ANONYMIZED_STRING;
+                if ($fieldName == 'email') {
+                    $valueMap[$fieldName] = self::ANONYMIZED_EMAIL;
+                }
             }
         }
-        return Yii::app()->db->createCommand()->update($tableName,$valueMap);
-
+        if (!empty($valueMap)) {
+            Yii::app()->db->createCommand()->update($tableName,$valueMap);
+        }
+        return true;
     }
 
 

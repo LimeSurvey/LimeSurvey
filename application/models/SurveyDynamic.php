@@ -918,11 +918,11 @@ class SurveyDynamic extends LSActiveRecord implements LSDynamicRecordInterface
      * @return string[]
      */
     public function getPersonalFieldNames(){
-        return [
-            'ip_address',
-        ];
+        $fieldNames = [];
+        $fieldNames[] ='ipaddr';
 
         //TODO a way to identify custom fields as personal data
+        return $fieldNames;
     }
 }
 
