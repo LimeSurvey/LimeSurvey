@@ -3303,65 +3303,6 @@ function upgradeTokenTables181($sMySQLCollation)
 }
 
 
-/**
- * @param string $sMySQLCollation
- */
-function upgradeSurveyTables182($sMySQLCollation)
-{
-    $oDB = Yii::app()->db;
-    $oSchema = Yii::app()->db->schema;
-    if (Yii::app()->db->driverName != 'pgsql') {
-        $aTables = dbGetTablesLike("survey\_%");
-        foreach ($aTables as $sTableName) {
-            $oTableSchema = $oSchema->getTable($sTableName);
-            if (!in_array('token', $oTableSchema->columnNames)) {
-                continue;
-            }
-            // No token field in this table
-            switch (Yii::app()->db->driverName) {
-                case 'sqlsrv':
-                case 'dblib':
-                case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
-                    alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                    break;
-                case 'mysql':
-                case 'mysqli':
-                    alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
-                    break;
-                default: die('Unknown database driver');
-            }
-        }
-
-    }
-}
-
-/**
- * @param string $sMySQLCollation
- */
-function upgradeTokenTables182($sMySQLCollation)
-{
-    $oDB = Yii::app()->db;
-    if (Yii::app()->db->driverName != 'pgsql') {
-        $aTables = dbGetTablesLike("tokens%");
-        if (!empty($aTables)) {
-            foreach ($aTables as $sTableName) {
-                switch (Yii::app()->db->driverName) {
-                    case 'sqlsrv':
-                    case 'dblib':
-                    case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
-                        alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                        break;
-                    case 'mysql':
-                    case 'mysqli':
-                        alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
-                        break;
-                    default: die('Unknown database driver');
-                }
-            }
-        }
-    }
-}
-
 
 /**
 * @param string $sFieldType
