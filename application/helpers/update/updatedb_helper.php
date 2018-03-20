@@ -2298,7 +2298,6 @@ function upgradeSurveyTables349($sMySQLCollation)
                 case 'dblib':
                 case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
                     alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                    $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
                 case 'mysqli':
@@ -2326,7 +2325,6 @@ function upgradeTokenTables349($sMySQLCollation)
                     case 'dblib':
                     case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
                         alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                        $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
                         break;
                     case 'mysql':
                     case 'mysqli':
