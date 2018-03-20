@@ -2195,6 +2195,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>347], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         /**
          * Adding security message and settings
          */
@@ -2206,6 +2207,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Make tokens fit UUID 36 chars
+         */
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTokenTables349('utf8_bin');
+            upgradeSurveyTables349('utf8_bin');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>349),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -2264,6 +2276,70 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeSurveyTables349($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("survey\_%");
+        foreach ($aTables as $sTableName) {
+            $oTableSchema = $oSchema->getTable($sTableName);
+            if (!in_array('token', $oTableSchema->columnNames)) {
+                continue;
+            }
+            // No token field in this table
+            switch (Yii::app()->db->driverName) {
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                    alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                    $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
+                    break;
+                case 'mysql':
+                case 'mysqli':
+                    alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                    break;
+                default: die('Unknown database driver');
+            }
+        }
+
+    }
+}
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeTokenTables349($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("tokens%");
+        if (!empty($aTables)) {
+            foreach ($aTables as $sTableName) {
+                switch (Yii::app()->db->driverName) {
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                        alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                        break;
+                    default: die('Unknown database driver');
+                }
+            }
+        }
+    }
+}
+
+
 /**
  * @param CDbConnection $oDB
  *
