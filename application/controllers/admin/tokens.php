@@ -2286,6 +2286,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("This survey does not have a tokens table!");
             return;
         }
+        $surveyAnonymizer = new SurveyAnonymizer($survey);
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
@@ -2293,7 +2294,6 @@ class tokens extends Survey_Common_Action
                 <p><strong>".gT('NB!')."</strong> ".gT("If you anonymize the survey, all identifiable fields in the tokens table will be replaced with non-identifiable pseudo values")."</p>"
                 ."<div class='h2'>".gT("This step can not be undone! The original values will be permanently lost unless you have a separate backup copy of your data!")."</div>"
                 ."</div>";
-
 
             $this->_renderWrappedTemplate('token', array('message' => array(
                 'title' => gT("Anonymize survey"),
@@ -2304,13 +2304,20 @@ class tokens extends Survey_Common_Action
                     . gT("Cancel")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}")."', '_top')\" /></div>\n"
             )), $aData);
         }
-        /* The user has confirmed they want to delete the tokens table */
+        /* The user has confirmed */
         else {
+            if ($surveyAnonymizer->anonymize()){
+                $alert = "<div class=\"alert alert-success\">"
+                    .gT("The survey has been anonymized!")
+                    ."</div>";
+            } else {
+                $alert = "<div class=\"alert alert-danger\">
+                    <p>".gT("The anonymization has failed!")."</p>
+                    <p>".$surveyAnonymizer->error."</p>
+                    </div>";
+            }
 
             $aData['sidemenu']['state'] = false;
-            $alert = "<div class=\"alert alert-success\">"
-                .gT("The survey has been anonymized!")
-                ."</div>";
             $this->_renderWrappedTemplate('token', array('message' => array(
                 'title' => gT("Anonymize survey"),
                 'message' => $alert
