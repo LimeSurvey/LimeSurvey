@@ -414,6 +414,8 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
+        /* We need a valid template, else public part can broke totally #13493 */
+        $this->template = Template::templateNameFilter($this->template);
     }
 
 
