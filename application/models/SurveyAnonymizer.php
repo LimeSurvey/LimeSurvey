@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class SurveyAnonymizer will overwrite the possibly personal data with random un-identifiable data
+ * Class SurveyAnonymizer will overwrite the possibly personal data with un-identifiable data
  */
 class SurveyAnonymizer
 {
