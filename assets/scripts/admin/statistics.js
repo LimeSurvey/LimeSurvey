@@ -698,6 +698,14 @@ var createPDFworker = function (tableArray) {
         createPDF('getParseHtmlPromise').then(function (resolve) {
             var answerObject = createPDF('exportPdf');
             console.ls.log(answerObject);
+            var a = document.createElement('a');
+            if(typeof a.download != "undefined") {
+                $('body').append("<a id='exportPdf-download-link' style='display:none;' href='" + answerObject.msg + "' download='pdf-survey.pdf'></a>");// Must add sid and other info
+                $("#exportPdf-download-link").get(0).click();
+                $("#exportPdf-download-link").remove();
+                res('done');
+                return;
+            } 
             var newWindow = window.open("about:blank", 600, 800);
             newWindow.document.write("<html style='height:100%;width:100%'><iframe style='width:100%;height:100%;' src='"+answerObject.msg+"' border=0></iframe></html>");
             res('done');
