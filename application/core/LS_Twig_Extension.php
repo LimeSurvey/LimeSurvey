@@ -254,7 +254,7 @@ class LS_Twig_Extension extends Twig_Extension
         }
 
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
-            $sUrlImgAsset = $sImagePath;
+            $sUrlImgAsset = self::assetPublish($sImagePath);
         }
         
 
@@ -271,7 +271,7 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset =  '';$sImagePath;
+        $sUrlImgAsset =  '';
         
         
         if ($oTemplate) {
@@ -279,7 +279,7 @@ class LS_Twig_Extension extends Twig_Extension
         } 
 
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
-            $sUrlImgAsset = $sImagePath;
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').$sImagePath);
         }
 
         return $sUrlImgAsset;

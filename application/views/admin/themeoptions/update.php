@@ -265,6 +265,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
             var $progressBar = $(options.progress);
 
             var onSuccess = options.onSuccess || function(){};
+            var onBeforeSend = options.onBeforeSend || function(){};
 
             var progressHandling = function(event){
                 var percent = 0;
@@ -295,6 +296,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
                         }
                         return myXhr;
                     },
+                    beforeSend : onBeforeSend,
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){

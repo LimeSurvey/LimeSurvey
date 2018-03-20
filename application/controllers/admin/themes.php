@@ -161,6 +161,7 @@ class themes extends Survey_Common_Action
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 } else {
                     $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+                    Yii::app()->user->setFlash('success', "Data1 saved!");
                     $success = true;
                 };
 
