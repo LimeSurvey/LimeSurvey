@@ -198,6 +198,29 @@ class PluginManager extends \CApplicationComponent
      */
     public function scanPlugins($forceReload = false)
     {
+        global $__plugin_id;
+        global $__enable_plugin_shutdown;
+        $__enable_plugin_shutdown = true;
+        register_shutdown_function(function() {
+            global $__enable_plugin_shutdown;
+            global $__plugin_id;
+            if (!$__enable_plugin_shutdown) {
+                return;
+            }
+
+            $plugin = Plugin::model()->find('name = :name', [':name' => $__plugin_id]);
+
+            if ($plugin) {
+                $plugin->load_error = 1;
+                $plugin->update();
+            } else {
+                $plugin = new Plugin();
+                $plugin->name = $__plugin_id;
+                $plugin->active = 0;
+                $plugin->load_error = 1;
+                $result = $plugin->save();
+            }
+        });
         $result = array();
         foreach ($this->pluginDirs as $pluginDir) {
             $currentDir = Yii::getPathOfAlias($pluginDir);
@@ -207,15 +230,23 @@ class PluginManager extends \CApplicationComponent
                         // Check if the base plugin file exists.
                         // Directory name Example most contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
+                        $__plugin_id = $pluginName;
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
-                        if (file_exists($file)) {
-                            $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                        $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+                        if (empty($plugin) || $plugin->load_error == 0) {
+                            if (file_exists($file)) {
+                                $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                            }
+                        } else {
+                            echo 'Plugin load error: ' . $pluginName;
                         }
                     }
 
                 }
             }
         }
+
+        $__enable_plugin_shutdown = false;
 
         return $result;
     }

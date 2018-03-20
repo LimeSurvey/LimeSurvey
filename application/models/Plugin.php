@@ -22,7 +22,7 @@
  * @property string $version
  *
  */
-class Plugin extends CActiveRecord
+class Plugin extends LSActiveRecord
 {
 
     /**

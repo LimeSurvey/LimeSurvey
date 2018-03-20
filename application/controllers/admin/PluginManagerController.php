@@ -46,7 +46,7 @@ class PluginManagerController extends Survey_Common_Action
             /* @var $plugin Plugin */
             if (array_key_exists($oPlugin->name, $aDiscoveredPlugins)) {
                 $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
-                if ($plugin) {
+                if ($plugin && $oPlugin->load_error == 0) {
                     $aPluginSettings = $plugin->getPluginSettings(false);
                     $data[]          = array(
                         'id'          => $oPlugin->id,
@@ -60,8 +60,8 @@ class PluginManagerController extends Survey_Common_Action
             } else {
                 // This plugin is missing, maybe the files were deleted but the record was not removed from the database
                 // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
-                $oPlugin->delete();
+                //App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing."), $oPlugin->name));
+                //$oPlugin->delete();
             }
         }
 

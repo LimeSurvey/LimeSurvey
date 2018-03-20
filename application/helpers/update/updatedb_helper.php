@@ -2320,13 +2320,27 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
             
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
-
             $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
             $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
 
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
+
             $oTransaction->commit();
         }   
+
+        /**
+         * Add load_error and load_error_message to plugin system.
+         */
+        if ($iOldDBVersion < 400) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error_message', 'text');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
             
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
