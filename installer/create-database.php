@@ -286,6 +286,8 @@ function createDatabase($oDB){
             'name' =>  "string(50) NOT NULL",
             'active' =>  "int NOT NULL default 0",
             'version' =>  "string(32) NULL",
+            'load_error' => 'int default 0',
+            'load_error_message' => 'text'
         ));
 
 
