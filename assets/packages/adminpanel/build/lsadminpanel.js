@@ -36337,7 +36337,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store_vuex_store_js__ = __webpack_require__(380);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js__ = __webpack_require__(386);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js__);
-
 //globals formId
 
 
@@ -36346,82 +36345,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
 //Ignore phpunits testing tags
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.ignoredElements = ['x-test'];
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.ignoredElements = ["x-test"];
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     methods: {
-        updatePjaxLinks: function () {
-            this.$store.commit('updatePjax');
+        updatePjaxLinks: function() {
+            this.$store.commit("updatePjax");
         }
     }
 });
 
-$(document).on('ready', function () {
+$(document).on("ready", function() {
     const AppState = __WEBPACK_IMPORTED_MODULE_4__store_vuex_store_js__["a" /* default */](LS.globalUserId);
-    if (document.getElementById('vue-app-main-container')) {
+    if (document.getElementById("vue-app-main-container")) {
         // eslint-disable-next-line
         const vueGeneralApp = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-            el: '#vue-app-main-container',
+            el: "#vue-app-main-container",
             store: AppState,
             components: {
-                'sidebar': __WEBPACK_IMPORTED_MODULE_1__components_sidebar_vue___default.a,
-                'topbar': __WEBPACK_IMPORTED_MODULE_2__components_topbar_vue___default.a,
-                'lspanelparametertable': __WEBPACK_IMPORTED_MODULE_3__components_parameter_table_vue___default.a,
+                sidebar: __WEBPACK_IMPORTED_MODULE_1__components_sidebar_vue___default.a,
+                topbar: __WEBPACK_IMPORTED_MODULE_2__components_topbar_vue___default.a,
+                lspanelparametertable: __WEBPACK_IMPORTED_MODULE_3__components_parameter_table_vue___default.a
             },
             methods: {
                 controlWindowSize() {
-                    const
-                        adminmenuHeight = $('body').find('nav').first().height(),
-                        footerHeight = $('body').find('footer').last().height(),
-                        menuHeight = $('.menubar').outerHeight(),
-                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                    const adminmenuHeight = $("body")
+                            .find("nav")
+                            .first()
+                            .height(),
+                        footerHeight = $("body")
+                            .find("footer")
+                            .last()
+                            .height(),
+                        menuHeight = $(".menubar").outerHeight(),
+                        inSurveyOffset =
+                            adminmenuHeight + footerHeight + menuHeight + 25,
                         windowHeight = window.innerHeight,
-                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+                        inSurveyViewHeight = windowHeight - inSurveyOffset;
 
-                    this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+                    this.$store.commit(
+                        "changeInSurveyViewHeight",
+                        inSurveyViewHeight
+                    );
                 }
             },
             created() {
                 this.controlWindowSize();
-                window.addEventListener('resize', () => {
+                window.addEventListener("resize", () => {
                     this.controlWindowSize();
                 });
 
-                $(document).on('vue-resize-height',  ()=>{
+                $(document).on("vue-resize-height", () => {
                     this.controlWindowSize();
                 });
 
-                $(document).on('vue-sidebar-collapse',  ()=>{
-                    this.$store.commit('changeIsCollapsed', true);
+                $(document).on("vue-sidebar-collapse", () => {
+                    this.$store.commit("changeIsCollapsed", true);
                 });
             },
             mounted() {
-                const surveyid = $(this.$el).data('surveyid');
+                const surveyid = $(this.$el).data("surveyid");
                 if (surveyid != 0) {
-                    this.$store.commit('updateSurveyId', surveyid);
+                    this.$store.commit("updateSurveyId", surveyid);
                 }
-                const maxHeight = ($('#in_survey_common').height() - 35) || 400;
-                this.$store.commit('changeMaxHeight', maxHeight);
+                const maxHeight = $("#in_survey_common").height() - 35 || 400;
+                this.$store.commit("changeMaxHeight", maxHeight);
                 this.updatePjaxLinks();
-                
-                $(document).on('click', 'ul.pagination>li>a',  ()=>{
+
+                $(document).on("click", "ul.pagination>li>a", () => {
                     this.updatePjaxLinks();
                 });
-                
-                $(document).on('vue-redraw',  ()=>{
+
+                $(document).on("vue-redraw", () => {
                     this.$forceUpdate();
                     this.updatePjaxLinks();
                 });
                 window.singletonPjax();
 
-                $(document).trigger('vue-reload-remote');
-                
-                window.setInterval(function(){
-                    $(document).trigger('vue-reload-remote');
-                }, (60*5*1000));
+                $(document).trigger("vue-reload-remote");
+
+                window.setInterval(function() {
+                    $(document).trigger("vue-reload-remote");
+                }, 60 * 5 * 1000);
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -36430,47 +36437,64 @@ $(document).on('ready', function () {
 
 let reloadcounter = 5;
 
-$(document).off('pjax:send.aploading').on('pjax:send.aploading', () => {
-    $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
-    $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
-    $('#pjax-file-load-container').find('div').css({
-        'width': '20%',
-        'display': 'block'
+$(document)
+    .off("pjax:send.aploading")
+    .on("pjax:send.aploading", () => {
+        $('<div id="pjaxClickInhibitor"></div>').appendTo("body");
+        $(
+            ".ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable"
+        ).remove();
+        $("#pjax-file-load-container")
+            .find("div")
+            .css({
+                width: "20%",
+                display: "block"
+            });
+        reloadcounter--;
     });
-    reloadcounter--;
-});
 
-$(document).off('pjax:error.aploading').on('pjax:error.aploading', (event) => {
-    // eslint-disable-next-line no-console
-    console.ls.log(event);
-});
+$(document)
+    .off("pjax:error.aploading")
+    .on("pjax:error.aploading", event => {
+        // eslint-disable-next-line no-console
+        console.ls.log(event);
+    });
 
-$(document).off('pjax:complete.aploading').on('pjax:complete.aploading', () => {
-    if(reloadcounter === 0){
-        location.reload();
-    }
-});
-$(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', () => {
-    $('#pjax-file-load-container').find('div').css('width', '100%');
-    $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
-    $(document).trigger('vue-resize-height');
-    $(document).trigger('vue-reload-remote');
-    // $(document).trigger('vue-sidemenu-update-link');
-    setTimeout(function () {
-        $('#pjax-file-load-container').find('div').css({
-            'width': '0%',
-            'display': 'none'
+$(document)
+    .off("pjax:complete.aploading")
+    .on("pjax:complete.aploading", () => {
+        if (reloadcounter === 0) {
+            location.reload();
+        }
+    });
+$(document)
+    .off("pjax:scriptcomplete.aploading")
+    .on("pjax:scriptcomplete.aploading", () => {
+        $("#pjax-file-load-container")
+            .find("div")
+            .css("width", "100%");
+        $("#pjaxClickInhibitor").fadeOut(400, function() {
+            $(this).remove();
         });
-    }, 2200);
-});
-
+        $(document).trigger("vue-resize-height");
+        $(document).trigger("vue-reload-remote");
+        // $(document).trigger('vue-sidemenu-update-link');
+        setTimeout(function() {
+            $("#pjax-file-load-container")
+                .find("div")
+                .css({
+                    width: "0%",
+                    display: "none"
+                });
+        }, 2200);
+    });
 
 // const topmenu = new Vue(
-//   {  
+//   {
 //     el: '#vue-top-menu-app',
 //     components: {
 //       'topbar' : Topbar,
-//     } 
+//     }
 // });
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
@@ -36492,7 +36516,7 @@ var Component = __webpack_require__(27)(
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-3ebf670a",
   /* moduleIdentifier (server only) */
   null
 )
@@ -36530,13 +36554,13 @@ var content = __webpack_require__(338);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(45)("0ed5b60e", content, false);
+var update = __webpack_require__(45)("bbba9cfe", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue");
+   module.hot.accept("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -36554,7 +36578,7 @@ exports = module.exports = __webpack_require__(44)(true);
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"sidebar.vue","sourceRoot":""}]);
+exports.push([module.i, "\n.sidebar_loader[data-v-3ebf670a] {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,mBAAmB;EACnB,YAAY;EACZ,qCAAqC;EACrC,cAAc;EACd,kDAAkD;EAClD,OAAO;CAAE","file":"sidebar.vue","sourcesContent":[".sidebar_loader {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -36646,7 +36670,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             collapsedmenus: {},
             topmenus: {},
             bottommenus: {},
-            sideBarHeight: "400px"
+            sideBarHeight: "400px",
+            showLoader: false
         };
     },
     computed: {
@@ -36670,6 +36695,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getWindowHeight() {
             return screen.height * 2 + "px";
+        },
+        getloaderHeight() {
+            return $("#sidebar").height();
         }
     },
     methods: {
@@ -36695,13 +36723,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 };
             });
             this.$log.log("QuestionGroup order changed");
+            this.showLoader = true;
             this.post(this.updateOrderLink, {
                 grouparray: onlyGroupsArray,
                 surveyid: this.$store.surveyid
             }).then(result => {
                 self.$log.log("questiongroups updated");
+                self.getQuestions().then(() => {
+                    self.showLoader = false;
+                });
             }, error => {
                 self.$log.error("questiongroups updating error!");
+                self.getQuestions().then(() => {
+                    self.showLoader = false;
+                });
             });
         },
         controlActiveLink() {
@@ -37068,41 +37103,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         orderedQuestionGroups() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
                 return parseInt(a.group_order || 999999);
-            }, ['asc']);
+            }, ["asc"]);
         },
         createQuestionAllowed() {
             return this.$store.state.questiongroups.length > 0 && this.createQuestionLink != undefined && this.createQuestionLink.length > 1;
         },
         createAllowance() {
-            let createGroupAllowed = this.createQuestionGroupLink != undefined && this.createQuestionGroupLink.length > 1 ? 'g' : '';
-            let createQuestionAllowed = this.createQuestionAllowed ? 'q' : '';
+            let createGroupAllowed = this.createQuestionGroupLink != undefined && this.createQuestionGroupLink.length > 1 ? "g" : "";
+            let createQuestionAllowed = this.createQuestionAllowed ? "q" : "";
             return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
+            return parseInt(this.$store.state.sidebarwidth) - 95 + "px";
         }
     },
     methods: {
         questionItemClasses(question) {
             let classes = "";
-            classes += this.$store.state.lastQuestionOpen === question.qid ? 'selected' : ' ';
+            classes += this.$store.state.lastQuestionOpen === question.qid ? "selected" : " ";
 
-            if (this.draggedQuestion !== null) classes += this.draggedQuestion.qid === question.qid ? ' dragged' : ' ';
+            if (this.draggedQuestion !== null) classes += this.draggedQuestion.qid === question.qid ? " dragged" : " ";
 
             return classes;
         },
         questionGroupItemClasses(questionGroup) {
             let classes = "";
-            classes += this.isActive(questionGroup.gid) ? 'selected' : ' ';
+            classes += this.isActive(questionGroup.gid) ? "selected" : " ";
 
-            if (this.draggedQuestionGroup !== null) classes += this.draggedQuestionGroup.gid === questionGroup.gid ? ' dragged' : ' ';
+            if (this.draggedQuestionGroup !== null) classes += this.draggedQuestionGroup.gid === questionGroup.gid ? " dragged" : " ";
 
             return classes;
         },
         orderQuestions(questionList) {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(questionList, a => {
                 return parseInt(a.question_order || 999999);
-            }, ['asc']);
+            }, ["asc"]);
         },
         isActive(index) {
             const result = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.indexOf(this.active, index) != -1;
@@ -37120,38 +37155,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.active.push(index);
             }
             this.$forceUpdate();
-            this.$store.commit('questionGroupOpenArray', this.active);
+            this.$store.commit("questionGroupOpenArray", this.active);
             this.updatePjaxLinks();
         },
         addActive(questionGroupId) {
             if (!this.isActive(questionGroupId)) {
                 this.active.push(questionGroupId);
             }
-            this.$store.commit('questionGroupOpenArray', this.active);
+            this.$store.commit("questionGroupOpenArray", this.active);
         },
         openQuestionGroup(questionGroup) {
             this.addActive(questionGroup.gid);
-            this.$store.commit('lastQuestionGroupOpen', questionGroup);
+            this.$store.commit("lastQuestionGroupOpen", questionGroup);
             this.$forceUpdate();
             this.updatePjaxLinks();
         },
         openQuestion(question) {
             this.addActive(question.gid);
-            this.$store.commit('lastQuestionOpen', question);
+            this.$store.commit("lastQuestionOpen", question);
             this.$forceUpdate();
-            $(document).trigger('pjax:load', { url: question.link });
+            $(document).trigger("pjax:load", { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
             this.questiongroupDragging = true;
-            $event.dataTransfer.setData('text/plain', 'node');
+            $event.dataTransfer.setData("text/plain", "node");
         },
         endDraggingGroup($event, questiongroupObject) {
             if (this.draggedQuestionGroup !== null) {
                 this.draggedQuestionGroup = null;
                 this.questiongroupDragging = false;
-                this.$emit('questiongrouporder');
+                this.$emit("questiongrouporder");
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
@@ -37187,7 +37222,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
-            $event.dataTransfer.setData('text/plain', 'node');
+            $event.dataTransfer.setData("text/plain", "node");
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -37197,7 +37232,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.questionDragging = false;
                 this.draggedQuestion = null;
                 this.draggedQuestionsGroup = null;
-                this.$emit('questiongrouporder');
+                this.$emit("questiongrouporder");
             }
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
@@ -37212,7 +37247,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
 
-        $(document).on('vue-reload-remote', () => {
+        $(document).on("vue-reload-remote", () => {
             this.$forceUpdate();
         });
     }
@@ -38105,7 +38140,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "mouseleave": _vm.mouseleave,
       "mouseup": _vm.mouseup
     }
-  }, [_c('div', {
+  }, [(_vm.showLoader) ? _c('div', {
+    staticClass: "sidebar_loader",
+    style: ({
+      width: _vm.getSideBarWidth,
+      height: _vm.getloaderHeight
+    })
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-12 fill-height ls-space padding all-0",
     staticStyle: {
       "height": "100%"
@@ -38248,7 +38289,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-ellipsis-v"
   })])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ls-flex ls-flex-column fill align-content-center align-items-center"
+  }, [_c('i', {
+    staticClass: "fa fa-circle-o-notch fa-2x fa-spin"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
