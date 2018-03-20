@@ -893,8 +893,6 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $sQuery = "
             SELECT
-                q.question_order,
-                q.qid,
                 q.gid,
                 q.sid,
                 q.parent_qid,
