@@ -39,24 +39,52 @@ class SurveyAnonymizer
         if ($this->survey->hasTokensTable) {
             $this->anonymizeTokensTable($this->survey->tokensTableName);
         }
+        if ($this->includeOldTables) {
+            if (!empty($this->survey->oldTokensTableNames)) {
+                foreach ($this->survey->oldTokensTableNames as $tableName) {
+                    $this->anonymizeTokensTable($tableName);
+                }
+            }
+        }
     }
 
     private function anonymizeSurveyTables() {
         if ($this->survey->hasResponsesTable) {
+            $this->anonymizeResponsesTable($this->survey->responsesTableName);
+        }
+
+        if ($this->includeOldTables) {
+            if (!empty($this->survey->oldResponsesTableNames)) {
+                foreach ($this->survey->oldResponsesTableNames as $tableName) {
+                    $this->anonymizeTokensTable($tableName);
+                }
+            }
         }
     }
 
 
+    private function anonymizeResponsesTable($tableName){
+        return $this->anonymizeDynamicTable(SurveyDynamic::class, $tableName);
+   }
+
+
     private function anonymizeTokensTable($tableName){
-        $tokenDynamic = TokenDynamic::model($this->survey->primaryKey);
+        return $this->anonymizeDynamicTable(TokenDynamic::class, $tableName);
+    }
+
+    private function anonymizeDynamicTable($dynamicClass, $tableName){
+
+        /** @var LSDynamicRecordInterface $dynamicModel */
+        $dynamicModel = $dynamicClass::model($this->survey->primaryKey);
         $valueMap = [];
-        foreach ($tokenDynamic->personalFieldNames as $fieldName) {
+        foreach ($dynamicModel->personalFieldNames as $fieldName) {
             $valueMap[$fieldName] = self::ANONYMIZED_STRING;
             if ($fieldName == 'email') {
                 $valueMap[$fieldName] = self::ANONYMIZED_EMAIL;
             }
         }
-        Yii::app()->db->createCommand()->update($tableName,$valueMap);
+        return Yii::app()->db->createCommand()->update($tableName,$valueMap);
+
     }
 
 

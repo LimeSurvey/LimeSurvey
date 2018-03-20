@@ -40,9 +40,8 @@
  *
  * @property array $standardCols
  * @property array $standardColsForGrid
- * @property string[] $personalFieldNames The fields that contain personal data
  */
-class TokenDynamic extends LSActiveRecord
+class TokenDynamic extends LSActiveRecord implements LSDynamicRecordInterface
 {
     /** @var int $sid */
     protected static $sid = 0;

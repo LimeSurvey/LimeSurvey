@@ -14,7 +14,7 @@
  *
   * 	Files Purpose: lots of common functions
  */
-class SurveyDynamic extends LSActiveRecord
+class SurveyDynamic extends LSActiveRecord implements LSDynamicRecordInterface
 {
     /** @var string $completed_filter */
     public  $completed_filter;
@@ -911,6 +911,18 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         return $aGroupArray;
+    }
+
+    /**
+     * Get the field names that contain personal data in responses
+     * @return string[]
+     */
+    public function getPersonalFieldNames(){
+        return [
+            'ip_address',
+        ];
+
+        //TODO a way to identify custom fields as personal data
     }
 }
 
