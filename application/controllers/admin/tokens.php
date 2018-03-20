@@ -2270,6 +2270,59 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * Anonymize tokens table
+     * @param int $iSurveyId
+     * @return void
+     */
+    public function anonymize($iSurveyId)
+    {
+        $iSurveyId = (int) $iSurveyId;
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) {
+            Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
+            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+        }
+        if (!$survey->hasTokensTable) {
+            Yii::app()->session['flashmessage'] = gT("This survey does not have a tokens table!");
+            return;
+        }
+
+        if (!Yii::app()->request->getQuery('ok')) {
+            $aData['sidemenu']['state'] = false;
+            $alert = "<div class=\"alert alert-danger\">
+                <p><strong>".gT('NB!')."</strong> ".gT("If you anonymize the survey, all identifiable fields in the tokens table will be replaced with non-identifiable pseudo values")."</p>"
+                ."<div class='h2'>".gT("This step can not be undone! The original values will be permanently lost unless you have a separate backup copy of your data!")."</div>"
+                ."</div>";
+
+
+            $this->_renderWrappedTemplate('token', array('message' => array(
+                'title' => gT("Anonymize survey"),
+                'message' => $alert
+                    . "<div class='control-group'><input class='btn btn-danger' type='submit' value='"
+                    . gT("Anonmymize survey")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/anonymize/surveyid/{$iSurveyId}/ok/Y")."', '_top')\" />\n"
+                    . "<input class='btn btn-default' type='submit' value='"
+                    . gT("Cancel")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}")."', '_top')\" /></div>\n"
+            )), $aData);
+        }
+        /* The user has confirmed they want to delete the tokens table */
+        else {
+
+            $aData['sidemenu']['state'] = false;
+            $alert = "<div class=\"alert alert-success\">"
+                .gT("The survey has been anonymized!")
+                ."</div>";
+            $this->_renderWrappedTemplate('token', array('message' => array(
+                'title' => gT("Anonymize survey"),
+                'message' => $alert
+                    . "<input type='submit' class='btn btn-default' value='"
+                    . gT("Main Admin Screen")."' onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyId)."', '_top')\" />"
+            )), $aData);
+            LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+        }
+    }
+
+
+    /**
      * @param int $iSurveyId
      * @return void
      */
