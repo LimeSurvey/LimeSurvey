@@ -194,13 +194,6 @@
                         <?php eT("Delete participants table"); ?>
                     </a>
 
-
-                    <?php if($oSurvey->canBeAnonymized):?>
-                        <!-- Anonymize survey -->
-                        <a class="btn btn-warning" href="<?php echo $this->createUrl("admin/tokens/sa/anonymize/surveyid/$oSurvey->sid"); ?>" role="button">
-                            <?php eT("Anonymize survey"); ?>
-                        </a>
-                    <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
 

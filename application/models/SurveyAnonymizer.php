@@ -30,12 +30,12 @@ class SurveyAnonymizer
      * @return bool
      */
     public function anonymize(){
-        if ($this->canBeAnononymized) {
-
+        if ($this->survey->canBeAnonymized) {
+            $this->anonymizeTokensTables();
+            $this->anonymizeSurveyTables();
+            return true;
         }
-        $this->anonymizeTokensTables();
-        $this->anonymizeSurveyTables();
-        return true;
+        return false;
     }
 
 
