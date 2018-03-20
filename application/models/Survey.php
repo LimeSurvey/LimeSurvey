@@ -148,6 +148,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string[] $oldResponsesTableNames
  * @property string[] $oldTokensTableNames
  * @property string $state survey current state  'inactive', 'expired', 'willRun', 'willExpire' or 'running'
+ * @property bool $canBeAnonymized
  *
  * @method mixed active()
  */
@@ -1977,6 +1978,18 @@ return $s->hasTokensTable; });
         $input = preg_quote($like, '~');
         $tableNames = preg_grep('~' . $input . '~', $allTableNames);
         return array_values($tableNames);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCanBeAnonymized() {
+        // allow anonymizing when we can not add any data
+        $allowedStates = [
+            self::STATE_EXPIRED,
+            self::STATE_INACTIVE
+        ];
+        return in_array($this->state, $allowedStates);
     }
 
 }

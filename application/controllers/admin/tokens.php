@@ -2282,11 +2282,18 @@ class tokens extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        if (!$survey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = gT("This survey does not have a tokens table!");
-            return;
-        }
         $surveyAnonymizer = new SurveyAnonymizer($survey);
+
+        if (!$survey->canBeAnonymized) {
+            $alert = "<div class=\"alert alert-danger\">".gT("This survey can not be anonymized!")
+                ."</div>";
+            $aData['sidemenu']['state'] = false;
+            $this->_renderWrappedTemplate('token', array('message' => array(
+                'title' => gT("Anonymize survey"),
+                'message' => $alert
+            )), $aData);
+            return null;
+        }
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;

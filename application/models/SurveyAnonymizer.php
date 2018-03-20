@@ -2,7 +2,6 @@
 
 /**
  * Class SurveyAnonymizer will overwrite the possibly personal data with random un-identifiable data
- * @property boolean $canBeAnonymized
  */
 class SurveyAnonymizer
 {
@@ -39,12 +38,6 @@ class SurveyAnonymizer
         return true;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getGanBeAnonymized() {
-        return $this->survey->getState();
-    }
 
 
     private function anonymizeTokensTables() {
