@@ -145,10 +145,17 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property string[] $oldResponsesTableNames
+ * @property string[] $oldTokensTableNames
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
 {
+    const OLD = "old";
+    const SURVEY = "survey";
+    const TOKENS = "tokens";
+    const TABLE_DELIMITER = "_";
+
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
@@ -157,8 +164,6 @@ class Survey extends LSActiveRecord
      * @var array $findByPkCache
      */
     protected $findByPkCache = array();
-
-
 
     public $searched_value;
     
@@ -1934,5 +1939,31 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
-    }    
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getOldResponsesTableNames() {
+        return self::findTableNames(self::OLD.self::TABLE_DELIMITER.self::SURVEY.self::TABLE_DELIMITER.$this->primaryKey.self::TABLE_DELIMITER);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getOldTokensTableNames() {
+        return self::findTableNames(self::OLD.self::TABLE_DELIMITER.self::TOKENS.self::TABLE_DELIMITER.$this->primaryKey.self::TABLE_DELIMITER);
+    }
+
+    /**
+     * @param string $like "%LIKE%"
+     * @return string[]
+     */
+    public static function findTableNames($like) {
+        $allTableNames = Yii::app()->db->schema->tableNames;
+        $input = preg_quote($like, '~');
+        return preg_filter('~' . $input . '~', null, $allTableNames);
+    }
+
 }
