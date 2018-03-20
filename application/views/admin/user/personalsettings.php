@@ -72,7 +72,7 @@
                                     <div class="row selector__password-row hidden">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <?php echo CHtml::label(gT("Old password:"), 'lang', array('class'=>"control-label")); ?>
+                                                <?php echo CHtml::label(gT("Current password:"), 'lang', array('class'=>"control-label")); ?>
                                                 <div class="">
                                                     <?php echo CHtml::passwordField('oldpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                                                 </div>
