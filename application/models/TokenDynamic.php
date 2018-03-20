@@ -40,6 +40,7 @@
  *
  * @property array $standardCols
  * @property array $standardColsForGrid
+ * @property string[] $personalFieldNames The fields that contain personal data
  */
 class TokenDynamic extends LSActiveRecord
 {
@@ -1012,5 +1013,20 @@ class TokenDynamic extends LSActiveRecord
 
         return $dataProvider;
 
+    }
+
+
+    /**
+     * Get the field names that contain personal data for participants
+     * @return string[]
+     */
+    public function getPersonalFieldNames(){
+        return [
+            'firstname',
+            'lastname',
+            'email',
+        ];
+
+        //TODO a way to identify custom fields as personal data
     }
 }
