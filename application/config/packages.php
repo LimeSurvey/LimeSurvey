@@ -118,13 +118,8 @@ return array(
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
-            array(
-                'pjax.js',
-            ) 
-            : array(
-                'min/pjax.min.js',
-            )
+        'js' => array(
+            $debug > 0 ? 'pjax.js' : 'min/pjax.min.js',
         ),
         'depends' => array(
             'lslog',

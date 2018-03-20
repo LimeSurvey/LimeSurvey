@@ -297,7 +297,7 @@
             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                 <div class='row' id="general_inherit_active">
                     <div class='form-group row'>
-                        <label for='simple_edit_options_general_inherit' class='control-label'>{{"Inherit everything" | t}}</label>
+                        <label for='simple_edit_options_general_inherit' class='control-label'>{{gT("Inherit everything" )}}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
@@ -560,7 +560,7 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Brandlogo #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogo' class='control-label'> {{ gT("Brand logo") }}</label>
+                        <label for='simple_edit_options_brandlogo' class='control-label'> {{ gT("Logo") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
@@ -585,7 +585,7 @@
                 <div class='col-sm-8 col-md-6'>
                     {#  Brandlogo file selector #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Brand logo file") }}</label>
+                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Logo file") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}

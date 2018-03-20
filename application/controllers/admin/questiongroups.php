@@ -412,9 +412,10 @@ class questiongroups extends Survey_Common_Action
                 {
                     $oQuestion->question_order = $aQuestion['question_order'];
                     $oQuestion->gid = $aQuestion['gid'];
-                    $oQuestion->save();
+                    $oQuestion->save(true);
                 }, $oQuestions);
             }
+            
             Question::updateSortOrder($aQuestiongroup['gid'], $surveyid);
         }
 

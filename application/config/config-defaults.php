@@ -680,8 +680,11 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+
+
+// When this parameter is true, the configuration of the XML file will be used instead of the database to display the themes (default behavior in 2.50+).
+// This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
-$config['force_dbsettings_for_survey_rendering'] = false;
 
 return $config;
 //settings deleted
