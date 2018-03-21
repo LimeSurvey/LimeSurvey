@@ -321,31 +321,52 @@ class PluginManager extends \CApplicationComponent
      */
     public function loadPlugin($pluginName, $id = null)
     {
-        // If the id is not set we search for the plugin.
-        if (!isset($id)) {
-            foreach ($this->plugins as $plugin) {
-                if (get_class($plugin) == $pluginName) {
-                    return $plugin;
+        $return = null;
+        $this->shutdownObject->enable();
+        $this->shutdownObject->setPluginName($pluginName);
+        try {
+            // If the id is not set we search for the plugin.
+            if (!isset($id)) {
+                foreach ($this->plugins as $plugin) {
+                    if (get_class($plugin) == $pluginName) {
+                        $return = $plugin;
+                    }
                 }
-            }
-        } else {
-            if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
-                if ($this->getPluginInfo($pluginName) !== false) {
-                    if (class_exists($pluginName)) {
-                        $this->plugins[$id] = new $pluginName($this, $id);
-
-                        if (method_exists($this->plugins[$id], 'init')) {
-                            $this->plugins[$id]->init();
+            } else {
+                if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
+                    if ($this->getPluginInfo($pluginName) !== false) {
+                        if (class_exists($pluginName)) {
+                            $this->plugins[$id] = new $pluginName($this, $id);
+                            if (method_exists($this->plugins[$id], 'init')) {
+                                $this->plugins[$id]->init();
+                            }
+                        } else {
+                            $this->plugins[$id] = null;
                         }
                     } else {
                         $this->plugins[$id] = null;
                     }
-                } else {
-                    $this->plugins[$id] = null;
                 }
+                $return = $this->plugins[$id];
             }
-            return $this->plugins[$id];
+        } catch (\Throwable $ex) {
+            // Load error.
+            $error = [
+                'message' => $ex->getMessage(),
+                'file'  => $ex->getFile()
+            ];
+            $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+            $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+            if (!$saveResult) {
+                // This only happens if database save fails.
+                $this->shutdownObject->disable();
+                throw new \Exception(
+                    'Internal error: Could not save load error for plugin ' . $pluginName
+                );
+            }
         }
+        $this->shutdownObject->disable();
+        return $return;
     }
 
     /**

@@ -27,6 +27,7 @@ class PluginManagerController extends Survey_Common_Action
         );
 
         // Install newly discovered plugins.
+        /*
         foreach ($aDiscoveredPlugins as $discoveredPlugin) {
             if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames)) {
                 $oPlugin         = new Plugin();
@@ -39,29 +40,26 @@ class PluginManagerController extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($event);
             }
         }
+         */
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = array();
         foreach ($aoPlugins as $oPlugin) {
             /* @var $plugin Plugin */
-            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins)) {
-                $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
-                if ($plugin && $oPlugin->load_error == 0) {
-                    $aPluginSettings = $plugin->getPluginSettings(false);
-                    $data[]          = array(
-                        'id'          => $oPlugin->id,
-                        'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                        'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                        'active'      => $oPlugin->active,
-                        'settings'    => $aPluginSettings,
-                        'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                    );
-                }
+            $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
+            if ($plugin) {
+                $aPluginSettings = $plugin->getPluginSettings(false);
+                $data[]          = array(
+                    'id'          => $oPlugin->id,
+                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
+                    'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
+                    'active'      => $oPlugin->active,
+                    'settings'    => $aPluginSettings,
+                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
+                );
             } else {
-                // This plugin is missing, maybe the files were deleted but the record was not removed from the database
-                // Now delete this record. Depending on the plugin the settings will be preserved
-                //App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing."), $oPlugin->name));
-                //$oPlugin->delete();
+                tracevar($oPlugin->name);
+                // What?
             }
         }
 
