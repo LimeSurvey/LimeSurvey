@@ -16,7 +16,10 @@ class PluginManagerController extends Survey_Common_Action
     {
         $oPluginManager = App()->getPluginManager();
 
+        $oPluginManager->scanPlugins();
+
         // Scan the plugins folder.
+        /*
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
         $aInstalledNames    = array_map(
@@ -27,7 +30,6 @@ class PluginManagerController extends Survey_Common_Action
         );
 
         // Install newly discovered plugins.
-        /*
         foreach ($aDiscoveredPlugins as $discoveredPlugin) {
             if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames)) {
                 $oPlugin         = new Plugin();
@@ -45,22 +47,14 @@ class PluginManagerController extends Survey_Common_Action
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = array();
         foreach ($aoPlugins as $oPlugin) {
-            /* @var $plugin Plugin */
-            $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
-            if ($plugin) {
-                $aPluginSettings = $plugin->getPluginSettings(false);
-                $data[]          = array(
-                    'id'          => $oPlugin->id,
-                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                    'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                    'active'      => $oPlugin->active,
-                    'settings'    => $aPluginSettings,
-                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                );
-            } else {
-                tracevar($oPlugin->name);
-                // What?
-            }
+            $data[] = [
+                'id'          => $oPlugin->id,
+                'name'        => $oPlugin->name,
+                'load_error'  => $oPlugin->load_error,
+                'description' => '',
+                'active'      => $oPlugin->active,
+                'settings'    => []
+            ];
         }
 
         if (Yii::app()->request->getParam('pageSize')) {
@@ -70,11 +64,13 @@ class PluginManagerController extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
-        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
+
+        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
     /**

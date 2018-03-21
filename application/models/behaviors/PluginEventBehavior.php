@@ -25,8 +25,12 @@ class PluginEventBehavior extends CModelBehavior
 
     public function afterSave(CEvent $event)
     {
-        $this->dispatchPluginModelEvent('after'.get_class($this->owner).'Save');
-        $this->dispatchPluginModelEvent('afterModelSave');
+        $pluginManager = App()->getPluginManager();
+        // Don't propagate event if we're in a shutdown, since it will lead to an infinite loop.
+        if (!$pluginManager->shutdownObject->isEnabled()) {
+            $this->dispatchPluginModelEvent('after'.get_class($this->owner).'Save');
+            $this->dispatchPluginModelEvent('afterModelSave');
+        }
     }
 
     public function beforeDelete(CModelEvent $event)
@@ -37,8 +41,12 @@ class PluginEventBehavior extends CModelBehavior
 
     public function beforeSave(CModelEvent $event)
     {
-        $this->dispatchPluginModelEvent('before'.get_class($this->owner).'Save');
-        $this->dispatchPluginModelEvent('beforeModelSave');
+        $pluginManager = App()->getPluginManager();
+        // Don't propagate event if we're in a shutdown, since it will lead to an infinite loop.
+        if (!$pluginManager->shutdownObject->isEnabled()) {
+            $this->dispatchPluginModelEvent('before'.get_class($this->owner).'Save');
+            $this->dispatchPluginModelEvent('beforeModelSave');
+        }
     }
 
     /**

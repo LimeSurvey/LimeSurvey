@@ -49,7 +49,7 @@ class PluginManager extends \CApplicationComponent
     /**
      * @var PluginManagerShutdownFunction
      */
-    protected $shutdownObject;
+    public $shutdownObject;
 
     /**
      * Creates the plugin manager.
@@ -385,7 +385,9 @@ class PluginManager extends \CApplicationComponent
             $records = $pluginModel->findAllByAttributes(array('active'=>1));
 
             foreach ($records as $record) {
-                $this->loadPlugin($record->name, $record->id);
+                if ($record->load_error == 0) {
+                    $this->loadPlugin($record->name, $record->id);
+                }
             }
         } else {
             // Log it ? tracevar ?
@@ -401,7 +403,9 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            $this->loadPlugin($record->name, $record->id);
+            if ($record->load_error == 0) {
+                $this->loadPlugin($record->name, $record->id);
+            }
         }
     }
 

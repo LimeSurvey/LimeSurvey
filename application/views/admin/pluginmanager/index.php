@@ -61,12 +61,14 @@ echo viewHelper::getViewTestTag('pluginManager');
             //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
             'value' => function($data)
             {
-                if ($data['active'] == 1)
-                {
+                if ($data['load_error'] == 1) {
+                    return sprintf(
+                        "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
+                        gT('Plugin load error')
+                    );
+                } elseif ($data['active'] == 1) {
                     return "<span class='fa fa-circle'></span>";
-                }
-                else
-                {
+                } else {
                     return "<span class='fa fa-circle-thin'></span>";
                 }
             }
@@ -91,7 +93,9 @@ echo viewHelper::getViewTestTag('pluginManager');
                 $output='';
                 if(Permission::model()->hasGlobalPermission('settings','update'))
                 {
-                    if ($data['active'] == 0)
+                    if ($data['load_error'] == 1) {
+                        $output = '';
+                    } elseif ($data['active'] == 0)
                     {
                         $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
                             . "<span class='fa fa-power-off'>&nbsp;</span>"

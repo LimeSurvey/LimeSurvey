@@ -44,6 +44,14 @@ class PluginManagerShutdownFunction
     }
 
     /**
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
      * 
      */
     public function setPluginName($name)
