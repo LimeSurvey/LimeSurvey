@@ -228,17 +228,16 @@ class PluginManager extends \CApplicationComponent
                         // Check if the base plugin file exists.
                         // Directory name Example most contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
-                        $__plugin_id = $pluginName;
+                        $this->shutdownObject->setPluginName($pluginName);
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (empty($plugin) || $plugin->load_error == 0) {
-                            $this->shutdownObject->setPluginName($pluginName);
                             if (file_exists($file)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
-                                } catch(\Throwable $ex) {
+                                } catch (\Throwable $ex) {
                                     // Load error.
-                                }  
+                                }
                             }
                         } else {
                             // TODO: List faulty plugins.
