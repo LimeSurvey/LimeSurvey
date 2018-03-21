@@ -392,6 +392,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
+                    $aGroup['aQuestions'][$qid]['class']                = $this->getCurrentQuestionClasses($qid);
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
@@ -1855,6 +1856,7 @@ class SurveyRuntimeHelper
         $event->set('qid', $data['qid']);
         $event->set('gid', $data['gid']);
         $event->set('text', $data['text']);
+        $event->set('class', $data['class']);
         $event->set('input_error_class', $data['input_error_class']);
         $event->set('answers', $data['answer']);  // NB: "answers" in plugin, "answer" in $data.
         $event->set('help', $data['help']['text']);
@@ -1867,6 +1869,7 @@ class SurveyRuntimeHelper
 
         $data['text']               = $event->get('text');
         $data['mandatory']          = $event->get('mandatory',$data['mandatory']);
+        $data['class']              = $event->get('class');
         $data['input_error_class']  = $event->get('input_error_class');
         $data['valid_message']      = $event->get('valid_message');
         $data['file_valid_message'] = $event->get('file_valid_message');
@@ -1876,5 +1879,49 @@ class SurveyRuntimeHelper
         $data['help']['show']       = flattenText($data['help']['text'], true, true) != '';
 
         return $data;
+    }
+    /**
+     * Retreive the question classes for a given question id
+     *
+     * @param  int      $iQid the question id
+     * @return string   the classes
+     */
+    public function getCurrentQuestionClasses($iQid)
+    {
+        $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        $sType           = $lemQuestionInfo['info']['type'];
+        $aQuestionClass  = Question::getQuestionClass($sType);
+
+        /* Add the relevance class */
+        if (!$lemQuestionInfo['relevant']) {
+            $aQuestionClass .= ' ls-irrelevant';
+            $aQuestionClass .= ' ls-hidden';
+        }
+
+        /* Can use aQuestionAttributes too */
+        if ($lemQuestionInfo['hidden']) {
+            $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
+            $aQuestionClass .= ' ls-hidden';
+        }
+
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
+
+        //add additional classes
+        if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
+            /* Got to use static expression */
+            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the last one ...*/
+            if ($emCssClass != "") {
+                $aQuestionClass .= " ".Chtml::encode($emCssClass);
+            }
+        }
+
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+            $aQuestionClass .= ' mandatory';
+        }
+
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
+            $aQuestionClass .= ' missing';
+        }
+        return $aQuestionClass;
     }
 }

@@ -22,7 +22,8 @@
 {% set sClasses     = ''   %}
 
 {% if not (aQuestion.templateeditor) %}
-    {% set sClasses     = getAllQuestionClasses( aQuestion.qid )     %}
+    {# TODO : Add class in templateeditor mode #}
+    {% set sClasses     = aQuestion.class %}
 {% endif %}
 
 <!-- Question {{ aQuestion.qid  }}  -->
