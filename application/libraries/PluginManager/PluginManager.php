@@ -214,6 +214,8 @@ class PluginManager extends \CApplicationComponent
      * Scans the plugin directory for plugins.
      * This function is not efficient so should only be used in the admin interface
      * that specifically deals with enabling / disabling plugins.
+     * @todo $forceReload not used?
+     * @return array
      */
     public function scanPlugins($forceReload = false)
     {
@@ -237,6 +239,18 @@ class PluginManager extends \CApplicationComponent
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                                 } catch (\Throwable $ex) {
                                     // Load error.
+                                    $error = [
+                                        'error' => $ex->getMessage(),
+                                        'file'  => $ex->getFile()
+                                    ];
+                                    $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+                                    if (!$saveResult) {
+                                        // This only happens if database save fails.
+                                        $this->shutdownObject->disable();
+                                        throw new \Exception(
+                                            'Internal error: Could not save load error for plugin ' . $pluginName
+                                        );
+                                    }
                                 }
                             }
                         } else {
@@ -443,5 +457,4 @@ class PluginManager extends \CApplicationComponent
         $this->subscriptions = array();
         $this->loadPlugins();
     }
-
 }

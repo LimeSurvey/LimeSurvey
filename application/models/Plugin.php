@@ -53,4 +53,25 @@ class Plugin extends LSActiveRecord
         $this->load_error_message = $error['message'] . ' ' . $error['file'];
         return $this->update();
     }
+
+    /**
+     * @param Plugin|null $plugin
+     * @param string $pluginName
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return void
+     */
+    public static function setPluginLoadError($plugin, $pluginName, array $error)
+    {
+        if ($plugin) {
+            $result = $plugin->setLoadError($error);
+        } else {
+            $plugin = new \Plugin();
+            $plugin->name = $pluginName;
+            $plugin->active = 0;
+            $result1 = $plugin->save();
+            $result2 = $plugin->setLoadError($error);
+            $result = $result1 && $result2;
+        }
+        return $result;
+    }
 }

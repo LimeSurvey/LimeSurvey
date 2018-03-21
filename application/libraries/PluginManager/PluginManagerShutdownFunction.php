@@ -39,6 +39,7 @@ class PluginManagerShutdownFunction
      */
     public function disable()
     {
+        $this->currentPluginName = null;
         $this->enabled = false;
     }
 
@@ -75,16 +76,11 @@ class PluginManagerShutdownFunction
 
         $plugin = \Plugin::model()->find('name = :name', [':name' => $this->currentPluginName]);
 
-        if ($plugin) {
-            $result = $plugin->setLoadError($error);
-        } else {
-            $plugin = new \Plugin();
-            $plugin->name = $this->currentPluginName;
-            $plugin->active = 0;
-            $result1 = $plugin->save();
-            $result2 = $plugin->setLoadError($error);
-            $result = $result1 && $result2;
-        }
+        $result = Plugin::setPluginLoadError(
+            $plugin,
+            $this->currentPluginName,
+            $error
+        );
 
         $this->showError(
             [
@@ -107,14 +103,15 @@ class PluginManagerShutdownFunction
         echo '</h1>';
 
         echo '<h2>';
-        printf($data['error']['message']);
+        echo $data['error']['message'];
         echo '</h2>';
 
         echo '<p>';
         if ($data['result']) {
-            printf('This plugin has been marked as faulty and will not be loaded again. See the plugin manager for more details, or contact the plugin author.');
+            echo 'This plugin has been marked as faulty and will not be loaded again. '
+                . 'See the plugin manager for more details, or contact the plugin author.';
         } else {
-            printf('This plugin could not be updated. Please contact support.');
+            echo 'This plugin could not be updated. Please contact support.';
         }
         echo '</p>';
     }
