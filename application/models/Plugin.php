@@ -42,4 +42,15 @@ class Plugin extends LSActiveRecord
         return '{{plugins}}';
     }
 
+    /**
+     * Set this plugin as load error in database, and saves the error message.
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return boolean Update result.
+     */
+    public function setLoadError(array $error)
+    {
+        $this->load_error = 1;
+        $this->load_error_message = $error['message'] . ' ' . $error['file'];
+        return $this->update();
+    }
 }

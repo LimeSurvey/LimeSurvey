@@ -1,5 +1,7 @@
 <?php
+
 namespace LimeSurvey\PluginManager;
+
 use \Yii;
 use Plugin;
 
@@ -14,6 +16,7 @@ class PluginManager extends \CApplicationComponent
      * @var mixed $api The class name of the API class to load, or
      */
     public $api;
+
     /**
      * Array mapping guids to question object class names.
      * @var array
@@ -25,17 +28,28 @@ class PluginManager extends \CApplicationComponent
      */
     protected $plugins = array();
 
+    /**
+     * @var array
+     */
     protected $pluginDirs = array(
         'webroot.plugins', // User plugins
         'application.core.plugins' // Core plugins
     );
 
+    /**
+     * @var array
+     */
     protected $stores = array();
 
     /**
      * @var array<string, array> Array with string key to tuple value like 'eventName' => array($plugin, $method)
      */
     protected $subscriptions = array();
+
+    /**
+     * @var PluginManagerShutdownFunction
+     */
+    protected $shutdownObject;
 
     /**
      * Creates the plugin manager.
@@ -45,6 +59,11 @@ class PluginManager extends \CApplicationComponent
      */
     public function init()
     {
+        // NB: The shutdown object is disabled by default. Must be enabled
+        // before attempting to load plugins (and disabled after).
+        $this->shutdownObject = new PluginManagerShutdownFunction();
+        register_shutdown_function($this->shutdownObject);
+
         parent::init();
         if (!is_object($this->api)) {
             $class = $this->api;
@@ -198,29 +217,8 @@ class PluginManager extends \CApplicationComponent
      */
     public function scanPlugins($forceReload = false)
     {
-        global $__plugin_id;
-        global $__enable_plugin_shutdown;
-        $__enable_plugin_shutdown = true;
-        register_shutdown_function(function() {
-            global $__enable_plugin_shutdown;
-            global $__plugin_id;
-            if (!$__enable_plugin_shutdown) {
-                return;
-            }
+        $this->shutdownObject->enable();
 
-            $plugin = Plugin::model()->find('name = :name', [':name' => $__plugin_id]);
-
-            if ($plugin) {
-                $plugin->load_error = 1;
-                $plugin->update();
-            } else {
-                $plugin = new Plugin();
-                $plugin->name = $__plugin_id;
-                $plugin->active = 0;
-                $plugin->load_error = 1;
-                $result = $plugin->save();
-            }
-        });
         $result = array();
         foreach ($this->pluginDirs as $pluginDir) {
             $currentDir = Yii::getPathOfAlias($pluginDir);
@@ -234,11 +232,16 @@ class PluginManager extends \CApplicationComponent
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (empty($plugin) || $plugin->load_error == 0) {
+                            $this->shutdownObject->setPluginName($pluginName);
                             if (file_exists($file)) {
-                                $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                                try {
+                                    $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                                } catch(\Throwable $ex) {
+                                    // Load error.
+                                }  
                             }
                         } else {
-                            echo 'Plugin load error: ' . $pluginName;
+                            // TODO: List faulty plugins.
                         }
                     }
 
@@ -246,7 +249,7 @@ class PluginManager extends \CApplicationComponent
             }
         }
 
-        $__enable_plugin_shutdown = false;
+        $this->shutdownObject->disable();
 
         return $result;
     }
