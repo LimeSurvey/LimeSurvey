@@ -240,7 +240,7 @@ class PluginManager extends \CApplicationComponent
                                 } catch (\Throwable $ex) {
                                     // Load error.
                                     $error = [
-                                        'error' => $ex->getMessage(),
+                                        'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
                                     $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
