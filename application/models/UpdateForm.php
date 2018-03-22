@@ -259,7 +259,7 @@ class UpdateForm extends CFormModel
      */
     public function downloadUpdateUpdaterFile($tobuild)
     {
-        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild;
+        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild.'&frombuild='.$this->build;
         $file = $this->_performDownload($getters, 'update_updater');
         return $file;
     }
