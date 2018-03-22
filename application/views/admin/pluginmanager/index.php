@@ -59,8 +59,7 @@ echo viewHelper::getViewTestTag('pluginManager');
             'name' => 'status',
             //'rowHtmlOptionsExpression' => 'array("data-id" => $data->id)',
             //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
-            'value' => function($data)
-            {
+            'value' => function ($data) {
                 if ($data['load_error'] == 1) {
                     return sprintf(
                         "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
@@ -75,7 +74,26 @@ echo viewHelper::getViewTestTag('pluginManager');
         ),
         array(// display the 'name' attribute
             'header' => gT('Plugin'),
-            'name' => 'name'
+            'name' => 'name',
+            'type' => 'html',
+            'value' => function ($data) {
+                $url = Yii::app()->getController()->createUrl(
+                    '/admin/pluginmanager',
+                    [
+                        'sa' => 'configure',
+                        'id' => $data['id']
+                    ]
+                );
+                if ($data['load_error'] == 0) {
+                    return sprintf(
+                        '<a href="%s">%s</a>',
+                        $url,
+                        $data['name']
+                    );
+                } else {
+                    return $data['name'];
+                }
+            }
         ),
         array(// display the 'description' attribute
             'header' => gT('Description'),
