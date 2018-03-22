@@ -16,18 +16,9 @@
     The div containing the question is one of tag that could often change from a template to another
     Different classes, options, etc
     So we separate it
-
-
 #}
-{% set sClasses     = ''   %}
-
-{% if not (aQuestion.templateeditor) %}
-    {# TODO : Add class in templateeditor mode #}
-    {% set sClasses     = aQuestion.class %}
-{% endif %}
-
 <!-- Question {{ aQuestion.qid  }}  -->
-<div {{ aQuestion.attributes }} class=" row {{ sClasses }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
+<div {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
     {{ include('./subviews/survey/question.twig') }}
 </div>
 <!-- End of question  {{ aQuestion.qid  }}  -->
