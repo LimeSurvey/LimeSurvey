@@ -392,6 +392,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
+                    $aGroup['aQuestions'][$qid]['class']                = $this->getCurrentQuestionClasses($qid);
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
@@ -1302,195 +1303,6 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Construction of replacement array, actually doing it with redata
-     *
-     * @param array $aQuestionQanda : array from qanda helper
-     * @return array of replacement for question.psptl
-     **/
-    public static function getQuestionReplacement($aQuestionQanda)
-    {
-
-        // Get the default replacement and set empty value by default
-        $aReplacement = array(
-            "QID"=>"",
-            //"GID"=>"", // Attention : set in replacement helper too (by gid).
-            "SGQ"=>"",
-            "AID"=>"",
-            "QUESTION_CODE"=>"",
-            "QUESTION_NUMBER"=>"",
-            "QUESTION"=>"",
-            "QUESTION_TEXT"=>"",
-            "QUESTIONHELP"=>"", // User help
-            "QUESTIONHELPPLAINTEXT"=>"",
-            "QUESTION_CLASS"=>"",
-            "QUESTION_MAN_CLASS"=>"",
-            "QUESTION_INPUT_ERROR_CLASS"=>"",
-            "ANSWER"=>"",
-            "QUESTION_HELP"=>"", // Core help
-            "QUESTION_VALID_MESSAGE"=>"",
-            "QUESTION_FILE_VALID_MESSAGE"=>"",
-            "QUESTION_MAN_MESSAGE"=>"",
-            "QUESTION_MANDATORY"=>"",
-            "QUESTION_ESSENTIALS"=>"",
-        );
-        if (!is_array($aQuestionQanda) || empty($aQuestionQanda[0])) {
-            return $aReplacement;
-        }
-        $iQid = $aQuestionQanda[4];
-        /* Need actual EM status */
-        $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
-        /* Allow Question Attribute to update some part */
-        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
-
-        $iSurveyId = Yii::app()->getConfig('surveyID'); // Or : by SGQA of question ? by Question::model($iQid)->sid;
-        //~ $oSurveyId=Survey::model()->findByPk($iSurveyId); // Not used since 2.50
-        $sType = $lemQuestionInfo['info']['type'];
-
-        // Core value : not replaced
-        $aReplacement['QID'] = $iQid;
-        $aReplacement['GID'] = $aQuestionQanda[6]; // Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
-        $aReplacement['SGQ'] = $aQuestionQanda[7];
-        $aReplacement['AID'] = isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "";
-        $sCode = $aQuestionQanda[5];
-        $iNumber = $aQuestionQanda[0]['number'];
-
-        /* QUESTION_CODE + QUESTION_NUMBER */
-        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId, App()->getLanguage());
-        // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') {
-            // Use survey level settings
-            $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
-        } else {
-            // Use global setting
-            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
-        }
-
-        switch ($showqnumcode_) {
-            case 'both':
-            case 'B': // Both
-                $aReplacement['QUESTION_CODE'] = $sCode;
-                $aReplacement['QUESTION_NUMBER'] = $iNumber;
-                break;
-            case 'number':
-            case 'N': // Number only
-                $aReplacement['QUESTION_CODE'] = "";
-                $aReplacement['QUESTION_NUMBER'] = $iNumber;
-                break;
-            case 'code':
-            case 'C': // Code only
-                $aReplacement['QUESTION_CODE'] = $sCode;
-                $aReplacement['QUESTION_NUMBER'] = "";
-                break;
-            case 'none':
-            case 'X':
-            default: // Neither
-                $aReplacement['QUESTION_CODE'] = "";
-                $aReplacement['QUESTION_NUMBER'] = "";
-                break;
-        }
-
-        $aReplacement['QUESTION'] = $aQuestionQanda[0]['all']; // Deprecated : only used in old template (very old)
-        // Core value : user text : add an id for labelled-by and described-by
-        $aReplacement['QUESTION_TEXT'] = CHtml::tag("div", array('id'=>"ls-question-text-{$aReplacement['SGQ']}", 'class'=>"ls-label-question"), $aQuestionQanda[0]['text']);
-        $aReplacement['QUESTIONHELP'] = $lemQuestionInfo['info']['help']; // User help
-        if (flattenText($aReplacement['QUESTIONHELP'], true, true) != '') {
-            $aReplacement['QUESTIONHELP'] = Yii::app()->getController()->renderPartial('//survey/questions/question_help/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true); ;
-        }
-        // Core value :the classes
-        $aQuestionClass = array(
-            Question::getQuestionClass($sType),
-        );
-        /* Add the relevance class */
-        if (!$lemQuestionInfo['relevant']) {
-            $aQuestionClass[] = 'ls-irrelevant';
-            $aQuestionClass[] = 'ls-hidden';
-        }
-        if ($lemQuestionInfo['hidden']) {
-/* Can use aQuestionAttributes too */
-            $aQuestionClass[] = 'ls-hidden-attribute'; /* another string ? */
-            $aQuestionClass[] = 'ls-hidden';
-        }
-        //add additional classes
-        if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
-            /* Got to use static expression */
-            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
-            if ($emCssClass != "") {
-                $aQuestionClass[] = Chtml::encode($emCssClass);
-            }
-        }
-        $aReplacement['QUESTION_CLASS'] = implode(" ", $aQuestionClass);
-
-        $aMandatoryClass = array();
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
-            $aMandatoryClass[] = 'mandatory';
-        }
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_'.$iSurveyId]['maxstep'] != $_SESSION['survey_'.$iSurveyId]['step']) {
-            $aMandatoryClass[] = 'missing';
-        }
-        $aReplacement['QUESTION_MAN_CLASS'] = !empty($aMandatoryClass) ? " ".implode(" ", $aMandatoryClass) : "";
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = $aQuestionQanda[0]['input_error_class'];
-        // Core value : LS text : EM and not
-        $aReplacement['ANSWER'] = $aQuestionQanda[1];
-        $aReplacement['QUESTION_HELP'] = $aQuestionQanda[0]['help']; // Core help only, not EM
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $aQuestionQanda[0]['valid_message']; // $lemQuestionInfo['validTip']
-        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $aQuestionQanda[0]['file_valid_message']; // $lemQuestionInfo['??']
-        $aReplacement['QUESTION_MAN_MESSAGE'] = $aQuestionQanda[0]['man_message'];
-        $aReplacement['QUESTION_MANDATORY'] = $aQuestionQanda[0]['mandatory'];
-        // For QUESTION_ESSENTIALS
-        $aHtmlOptions = array();
-
-        // Launch the event
-        $event = new PluginEvent('beforeQuestionRender');
-        // Some helper
-        $event->set('surveyId', $iSurveyId);
-        $event->set('type', $sType);
-        $event->set('code', $sCode);
-        $event->set('qid', $iQid);
-        $event->set('gid', $aReplacement['GID']);
-        $event->set('sgq', $aReplacement['SGQ']);
-        // User text
-        $event->set('text', $aReplacement['QUESTION_TEXT']);
-        $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
-        // The classes
-        $event->set('class', $aReplacement['QUESTION_CLASS']);
-        $event->set('man_class', $aReplacement['QUESTION_MAN_CLASS']);
-        $event->set('input_error_class', $aReplacement['QUESTION_INPUT_ERROR_CLASS']);
-        // LS core text
-        $event->set('answers', $aReplacement['ANSWER']);
-        $event->set('help', $aReplacement['QUESTION_HELP']);
-        $event->set('man_message', $aReplacement['QUESTION_MAN_MESSAGE']);
-        $event->set('valid_message', $aReplacement['QUESTION_VALID_MESSAGE']);
-        $event->set('file_valid_message', $aReplacement['QUESTION_FILE_VALID_MESSAGE']);
-        // htmlOptions for container
-        $event->set('aHtmlOptions', $aHtmlOptions);
-
-        App()->getPluginManager()->dispatchEvent($event);
-        // User text
-        $aReplacement['QUESTION_TEXT'] = $event->get('text');
-        $aReplacement['QUESTIONHELP'] = $event->get('questionhelp');
-        $aReplacement['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($aReplacement['QUESTIONHELP']));
-        // The classes
-        $aReplacement['QUESTION_CLASS'] = $event->get('class');
-        $aReplacement['QUESTION_MAN_CLASS'] = $event->get('man_class');
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = $event->get('input_error_class');
-        // LS core text
-        $aReplacement['ANSWER'] = $event->get('answers');
-        $aReplacement['QUESTION_HELP'] = $event->get('help');
-        $aReplacement['QUESTION_MAN_MESSAGE'] = $event->get('man_message');
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
-        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
-        $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory', $aReplacement['QUESTION_MANDATORY']);
-        //Another data for QUESTION_ESSENTIALS
-        $aHtmlOptions = (array) $event->get('aHtmlOptions');
-        unset($aHtmlOptions['class']); // Disallowing update/set class
-        $aHtmlOptions['id'] = "question{$iQid}"; // Always add id for QUESTION_ESSENTIALS$
-
-        $aReplacement['QUESTION_ESSENTIALS'] = CHtml::renderAttributes($aHtmlOptions);
-
-        return $aReplacement;
-    }
-    /**
      * Html error message if needed/available in the page
      * @return string (html)
      * @todo : move to coreReplacements ? Can be good.
@@ -1855,18 +1667,19 @@ class SurveyRuntimeHelper
         $event->set('qid', $data['qid']);
         $event->set('gid', $data['gid']);
         $event->set('text', $data['text']);
+        $event->set('class', $data['class']);
         $event->set('input_error_class', $data['input_error_class']);
         $event->set('answers', $data['answer']);  // NB: "answers" in plugin, "answer" in $data.
         $event->set('help', $data['help']['text']);
         $event->set('man_message', $data['man_message']);
         $event->set('valid_message', $data['valid_message']);
         $event->set('file_valid_message', $data['file_valid_message']);
-        //$event->set('aHtmlOptions', $aHtmlOptions);  // TODO
-
+        $event->set('aHtmlOptions', array()); // Set as empty array, not needed. Before 3.0 usage for EM style
         App()->getPluginManager()->dispatchEvent($event);
 
         $data['text']               = $event->get('text');
         $data['mandatory']          = $event->get('mandatory',$data['mandatory']);
+        $data['class']              = $event->get('class');
         $data['input_error_class']  = $event->get('input_error_class');
         $data['valid_message']      = $event->get('valid_message');
         $data['file_valid_message'] = $event->get('file_valid_message');
@@ -1874,7 +1687,52 @@ class SurveyRuntimeHelper
         $data['answer']             = $event->get('answers');
         $data['help']['text']       = $event->get('help');
         $data['help']['show']       = flattenText($data['help']['text'], true, true) != '';
+        $data['attributes']         = CHtml::renderAttributes(array_merge((array) $event->get('aHtmlOptions'), ['id' => "question{$data['qid']}"]));
 
         return $data;
+    }
+    /**
+     * Retreive the question classes for a given question id
+     *
+     * @param  int      $iQid the question id
+     * @return string   the classes
+     */
+    public function getCurrentQuestionClasses($iQid)
+    {
+        $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        $sType           = $lemQuestionInfo['info']['type'];
+        $aQuestionClass  = Question::getQuestionClass($sType);
+
+        /* Add the relevance class */
+        if (!$lemQuestionInfo['relevant']) {
+            $aQuestionClass .= ' ls-irrelevant';
+            $aQuestionClass .= ' ls-hidden';
+        }
+
+        /* Can use aQuestionAttributes too */
+        if ($lemQuestionInfo['hidden']) {
+            $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
+            $aQuestionClass .= ' ls-hidden';
+        }
+
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
+
+        //add additional classes
+        if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
+            /* Got to use static expression */
+            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the last one ...*/
+            if ($emCssClass != "") {
+                $aQuestionClass .= " ".Chtml::encode($emCssClass);
+            }
+        }
+
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+            $aQuestionClass .= ' mandatory';
+        }
+
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
+            $aQuestionClass .= ' missing';
+        }
+        return $aQuestionClass;
     }
 }
