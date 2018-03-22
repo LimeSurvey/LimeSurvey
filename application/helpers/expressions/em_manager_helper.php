@@ -9612,7 +9612,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Validation this way so that regex (preg) works
                 $prettyValidEqn = '';
-                if ($q['prettyValidEqn'] != '') {
+                if ($q['validEqn'] != '') {
                     $validationEqn = $q['validEqn'];
                     if (!isset($LEM->ParseResultCache[$validationEqn]))
                     {
