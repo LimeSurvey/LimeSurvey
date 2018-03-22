@@ -220,7 +220,15 @@ class PluginManagerController extends Survey_Common_Action
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
 
-        $this->_renderWrappedTemplate('pluginmanager', 'configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
+        $this->_renderWrappedTemplate(
+            'pluginmanager',
+            'configure',
+            array(
+                'settings' => $aSettings,
+                'plugin' => $arPlugin,
+                'properties' => $aPluginProp
+            )
+        );
     }
 
     /**
