@@ -1674,8 +1674,7 @@ class SurveyRuntimeHelper
         $event->set('man_message', $data['man_message']);
         $event->set('valid_message', $data['valid_message']);
         $event->set('file_valid_message', $data['file_valid_message']);
-        //$event->set('aHtmlOptions', $aHtmlOptions);  // TODO
-
+        $event->set('aHtmlOptions', array()); // Set as empty array, not needed. Before 3.0 usage for EM style
         App()->getPluginManager()->dispatchEvent($event);
 
         $data['text']               = $event->get('text');
@@ -1688,6 +1687,7 @@ class SurveyRuntimeHelper
         $data['answer']             = $event->get('answers');
         $data['help']['text']       = $event->get('help');
         $data['help']['show']       = flattenText($data['help']['text'], true, true) != '';
+        $data['attributes']         = CHtml::renderAttributes(array_merge((array) $event->get('aHtmlOptions'), ['id' => "question{$data['qid']}"]));
 
         return $data;
     }

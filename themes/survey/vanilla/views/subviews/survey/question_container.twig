@@ -27,7 +27,7 @@
 {% endif %}
 
 <!-- Question {{ aQuestion.qid  }}  -->
-<div id="question{{ aQuestion.qid }}" class=" row {{ sClasses }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
+<div {{ aQuestion.attributes }} class=" row {{ sClasses }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
     {{ include('./subviews/survey/question.twig') }}
 </div>
 <!-- End of question  {{ aQuestion.qid  }}  -->
