@@ -112,7 +112,14 @@ echo viewHelper::getViewTestTag('pluginManager');
                 if(Permission::model()->hasGlobalPermission('settings','update'))
                 {
                     if ($data['load_error'] == 1) {
-                        $output = '';
+                        $reloadUrl = Yii::app()->createUrl(
+                            'admin/pluginmanager',
+                            [
+                                'sa' => 'resetLoadError',
+                                'pluginId' => $data['id']
+                            ]
+                        );
+                        $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
                     } elseif ($data['active'] == 0)
                     {
                         $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"

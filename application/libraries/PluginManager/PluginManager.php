@@ -228,7 +228,7 @@ class PluginManager extends \CApplicationComponent
                 foreach (new \DirectoryIterator($currentDir) as $fileInfo) {
                     if (!$fileInfo->isDot() && $fileInfo->isDir()) {
                         // Check if the base plugin file exists.
-                        // Directory name Example most contain file ExamplePlugin.php.
+                        // Directory name Example must contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
                         $this->shutdownObject->setPluginName($pluginName);
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";

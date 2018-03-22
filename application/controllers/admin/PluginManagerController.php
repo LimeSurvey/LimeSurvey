@@ -232,6 +232,46 @@ class PluginManagerController extends Survey_Common_Action
     }
 
     /**
+     * Set load_error to 0 for plugin with id $pluginId.
+     * This makes it possible to try to load the plugin again,
+     * if a fix for previous load error has been implemented.
+     *
+     * @param int $pluginId
+     * @return void
+     */
+    public function resetLoadError($pluginId)
+    {
+        $url = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'index'
+            ]
+        );
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($url);
+        }
+
+        $pluginId = (int) $pluginId;
+        $plugin = Plugin::model()->find('id = :id', [':id' => $pluginId]);
+        if ($plugin) {
+            $plugin->load_error = 0;
+            $plugin->load_error_message = '';
+            $result = $plugin->update();
+            if ($result) {
+                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %d'), $pluginId));
+            } else {
+                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %d'), $pluginId));
+            }
+            $this->getController()->redirect($url);
+        } else {
+            Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
+            $this->getController()->redirect($url);
+        }
+    }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
