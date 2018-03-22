@@ -172,9 +172,15 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function configure($id)
     {
+        $url = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'index'
+            ]
+        );
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
-            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+            $this->getController()->redirect($url);
         }
 
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
@@ -182,14 +188,14 @@ class PluginManagerController extends Survey_Common_Action
 
         if ($arPlugin === null) {
             Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
-            $this->getController()->redirect(array('admin/pluginmanager/sa/index'));
+            $this->getController()->redirect($url);
         }
 
         // If post handle data, yt0 seems to be the submit button
         if (App()->request->isPostRequest) {
             if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
-                $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+                $this->getController()->redirect($url);
             }
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
@@ -208,7 +214,7 @@ class PluginManagerController extends Survey_Common_Action
         if (empty($aSettings)) {
             // And show a message
             Yii::app()->user->setFlash('notice', gt('This plugin has no settings.'));
-            $this->getController()->redirect('admin/pluginmanager/sa/index', true);
+            $this->getController()->redirect($url, true);
         }
 
         // Send to view plugin porperties: name and description
