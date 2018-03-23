@@ -392,7 +392,7 @@ abstract class PluginBase implements iPlugin
      * Read XML config file and store it in $this->config
      * Assumes config file is config.xml and in plugin root folder.
      * @todo Could this be moved to plugin model?
-     * @return void
+     * @return boolean
      */
     public function readConfigFile()
     {
@@ -405,6 +405,7 @@ abstract class PluginBase implements iPlugin
             if ($this->config === null) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
+                return false;
             } else if ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
@@ -418,8 +419,10 @@ abstract class PluginBase implements iPlugin
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
+            return true;
         } else {
             $this->log('Found no config file');
+            return false;
         }
     }
 
