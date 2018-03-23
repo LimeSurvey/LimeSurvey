@@ -2346,7 +2346,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
 
             // Plugin type is either "core" or "user" (different folder locations).
-            $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', 'string(4)');
+            $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', "string(4) default 'user'");
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
 
