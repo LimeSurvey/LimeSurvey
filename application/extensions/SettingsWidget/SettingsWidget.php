@@ -219,9 +219,17 @@ class SettingsWidget extends CWidget
      */
     protected function renderAdditionalHtml()
     {
-        echo $this->additionalHtml;
+        $url = App()->createUrl("admin/pluginmanager/sa/index");
+        echo "<div class='form-group'>";
+        echo "<div class='col-sm-6 col-md-offset-4'>";
+        if (Permission::model()->hasGlobalPermission('settings','update')) {
+            echo "<button name='save' class='btn btn-success' type='submit'><span class='fa fa-floppy-o'></span>&nbsp;".gT('Save')."</button>&nbsp;";
+            echo "<button name='redirect' value='" . $url . "' class='btn btn-default' type='submit'><span class='fa fa-saved'></span>&nbsp;".gT('Save and close')."</button>&nbsp;";
+        }
+        echo "<a class='btn btn-danger' href='" . $url . "'>".gT('Close')."</a>";
+        echo "</div>";
+        echo "</div>";
     }
-
 
     /**
      * fix metaData for a setting : set default etc.
