@@ -21,6 +21,24 @@
         <div class="col-sm-8"><?php echo $metadata->description; ?></div>
     </div>
 
+    <!-- Author -->
+    <div class="form-group col-sm-12">
+        <label class="col-sm-4 control-label"><?php eT("Author:"); ?></label>
+        <div class="col-sm-4"><?php echo $metadata->author; ?></div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group col-sm-12">
+        <label class="col-sm-4 control-label"><?php eT("Email:"); ?></label>
+        <div class="col-sm-4"><a href="mailto:<?php echo $metadata->authorEmail; ?>"><?php echo $metadata->authorEmail; ?></a></div>
+    </div>
+
+    <!-- Url -->
+    <div class="form-group col-sm-12">
+        <label class="col-sm-4 control-label"><?php eT("Web page:"); ?></label>
+        <div class="col-sm-4"><a href="<?php echo $metadata->authorUrl; ?>" target="_blank"><?php echo $metadata->authorUrl; ?></a></div>
+    </div>
+
     <!-- Version -->
     <div class="form-group col-sm-12">
         <label class="col-sm-4 control-label"><?php eT("Version:"); ?></label>
@@ -33,7 +51,13 @@
         <div class="col-sm-4"><?php echo $metadata->last_update; ?></div>
     </div>
 
-    <!-- Last updated -->
+    <!-- License -->
+    <div class="form-group col-sm-12">
+        <label class="col-sm-4 control-label"><?php eT("License:"); ?></label>
+        <div class="col-sm-8"><?php echo $metadata->license; ?></div>
+    </div>
+
+    <!-- Compatible -->
     <div class="form-group col-sm-12">
         <label class="col-sm-4 control-label"><?php eT("Compatible"); ?></label>
         <?php if ($plugin->isCompatible()): ?>
@@ -42,7 +66,6 @@
             <div class="col-sm-4"><span class="fa fa-times text-warning"></span></div>
         <?php endif; ?>
     </div>
-
 
     <!-- Active -->
     <div class="form-group col-sm-12">
@@ -63,6 +86,4 @@
             </div>
         <?php endif; ?>
     </div>
-
-
 </div>
