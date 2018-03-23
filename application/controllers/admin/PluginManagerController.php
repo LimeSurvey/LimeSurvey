@@ -215,14 +215,19 @@ class PluginManagerController extends Survey_Common_Action
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
 
+        $fullPageBar = [];
+        $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
+        $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
+
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'configure',
-            array(
-                'settings' => $aSettings,
-                'plugin' => $arPlugin,
-                'properties' => $aPluginProp
-            )
+            [
+                'settings'   => $aSettings,
+                'plugin'     => $arPlugin,
+                'properties' => $aPluginProp,
+                'fullpagebar' => $fullPageBar
+            ]
         );
     }
 
