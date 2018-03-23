@@ -15,6 +15,12 @@
         <div class="col-sm-4"><?php echo $metadata->name; ?></div>
     </div>
 
+    <!-- Description -->
+    <div class="form-group col-sm-12">
+        <label class="col-sm-4 control-label"><?php eT("Description:"); ?></label>
+        <div class="col-sm-8"><?php echo $metadata->description; ?></div>
+    </div>
+
     <!-- Version -->
     <div class="form-group col-sm-12">
         <label class="col-sm-4 control-label"><?php eT("Version:"); ?></label>
@@ -42,15 +48,15 @@
     <div class="form-group col-sm-12">
         <label class="col-sm-4 control-label"><?php eT("Active:"); ?></label>
         <?php if ($plugin['active']): ?>
-            <div class="col-sm-4"><span class="fa fa-check text-success"></span></div>
-            <div class="col-sm-4">
+            <div class="col-sm-2"><span class="fa fa-check text-success"></span></div>
+            <div class="col-sm-2">
                 <a data-toggle="tooltip" title="<?php eT('Deactivate'); ?>" href='#activate' data-action='activate' data-id='<?php echo $plugin['id']; ?>' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>
                    <span class='fa fa-power-off'></span>
                 </a>
             </div>
         <?php else: ?>
-            <div class="col-sm-4"><span class="fa fa-times text-warning"></span></div>
-            <div class="col-sm-4">
+            <div class="col-sm-2"><span class="fa fa-times text-warning"></span></div>
+            <div class="col-sm-2">
                 <a data-toggle="tooltip" title="<?php eT('Activate'); ?>" href='#activate' data-action='activate' data-id='<?php echo $plugin['id']; ?>' class='ls_action_changestate btn btn-default btn-xs btntooltip'>
                    <span class='fa fa-power-off'></span>
                 </a>
