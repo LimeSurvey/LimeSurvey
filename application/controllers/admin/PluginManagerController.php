@@ -69,7 +69,6 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
-
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
@@ -183,15 +182,18 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($url);
         }
 
-        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
-        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
+        $plugin      = Plugin::model()->findByPk($id);
+        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
 
-        if ($arPlugin === null) {
+        $oPluginObject->readConfigFile();
+
+        if ($plugin === null) {
             Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect($url);
         }
 
         // If post handle data, yt0 seems to be the submit button
+        // TODO: Break out to separate method.
         if (App()->request->isPostRequest) {
             if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
@@ -213,7 +215,7 @@ class PluginManagerController extends Survey_Common_Action
         $aSettings = $oPluginObject->getPluginSettings();
 
         // Send to view plugin porperties: name and description
-        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
+        $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $fullPageBar = [];
         $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
@@ -223,10 +225,11 @@ class PluginManagerController extends Survey_Common_Action
             'pluginmanager',
             'configure',
             [
-                'settings'   => $aSettings,
-                'plugin'     => $arPlugin,
-                'properties' => $aPluginProp,
-                'fullpagebar' => $fullPageBar
+                'settings'     => $aSettings,
+                'plugin'       => $plugin,
+                'pluginObject' => $oPluginObject,
+                'properties'   => $aPluginProp,
+                'fullpagebar'  => $fullPageBar
             ]
         );
     }

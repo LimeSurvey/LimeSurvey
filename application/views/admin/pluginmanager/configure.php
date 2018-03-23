@@ -24,7 +24,10 @@ echo viewHelper::getViewTestTag('configurePlugin');
             <?php $this->renderPartial(
                 './pluginmanager/overview',
                 [
-                    'plugin' => $plugin
+                    'plugin'       => $plugin,
+                    'pluginObject' => $pluginObject,
+                    'config'       => $pluginObject->config,
+                    'metadata'     => $pluginObject->config->metadata
                 ]
             ); ?>
         </div>

@@ -20,11 +20,9 @@
  * @property string $name
  * @property integer $active
  * @property string $version
- *
  */
 class Plugin extends LSActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return Plugin
@@ -55,6 +53,39 @@ class Plugin extends LSActiveRecord
     }
 
     /**
+     * Returns true if this plugin is compatible with this version of LS.
+     * @return boolean
+     */
+    public function isCompatible()
+    {
+        $config = $this->getConfig();
+        $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
+        foreach ($config->compatibility->version as $pluginVersion) {
+            // At least one $v in config.xml must be higher or equal to versionnumber.
+            if (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     */
+    public function getConfig()
+    {
+        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
+        if (file_exists($file)) {
+            libxml_disable_entity_loader(false);
+            $config = simplexml_load_file(realpath($file));
+            libxml_disable_entity_loader(true);
+            return $config;
+        } else {
+            throw new \Exception('Missing configuration file for plugin ' . $this->name);
+        }
+    }
+
+    /**
      * @param Plugin|null $plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
@@ -73,5 +104,31 @@ class Plugin extends LSActiveRecord
             $result = $result1 && $result2;
         }
         return $result;
+    }
+
+    /**
+     * Get installation folder of this plugin.
+     * Installation folder is different for core and
+     * user plugins.
+     * @return string
+     * @throws Exception
+     */
+    protected function getDir()
+    {
+        $pluginManager = App()->getPluginManager();
+        $alias = $pluginManager->pluginDirs[$this->plugin_type];
+
+        if (empty($alias)) {
+            throw new \Exception('Unknown plugin type: ' . json_encode($this->plugin_type));
+        }
+
+        $folder = Yii::getPathOfAlias($alias);
+
+        if (empty($folder)) {
+            throw new \Exception('Alias has no folder: ' . json_encode($alias));
+        }
+
+        // NB: Name is same as plugin folder and plugin main class.
+        return $folder . DIRECTORY_SEPARATOR . $this->name;
     }
 }

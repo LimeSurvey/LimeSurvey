@@ -21,32 +21,36 @@ class PluginManager extends \CApplicationComponent
      * Array mapping guids to question object class names.
      * @var array
      */
-    protected $guidToQuestion = array();
+    protected $guidToQuestion = [];
 
     /**
      * @var array
      */
-    protected $plugins = array();
+    protected $plugins = [];
 
     /**
      * @var array
      */
-    protected $pluginDirs = array(
-        'webroot.plugins', // User plugins
-        'application.core.plugins' // Core plugins
-    );
+    public $pluginDirs = [
+        // User plugins
+        'user' => 'webroot.plugins',
+        // Core plugins
+        'core' => 'application.core.plugins'
+    ];
 
     /**
      * @var array
      */
-    protected $stores = array();
+    protected $stores = [];
 
     /**
      * @var array<string, array> Array with string key to tuple value like 'eventName' => array($plugin, $method)
      */
-    protected $subscriptions = array();
+    protected $subscriptions = [];
 
     /**
+     * Created at init.
+     * Used to deal with syntax errors etc in plugins during load.
      * @var PluginManagerShutdownFunction
      */
     public $shutdownObject;
