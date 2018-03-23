@@ -211,11 +211,6 @@ class PluginManagerController extends Survey_Common_Action
 
         // Prepare settings to be send to the view.
         $aSettings = $oPluginObject->getPluginSettings();
-        if (empty($aSettings)) {
-            // And show a message
-            Yii::app()->user->setFlash('notice', gt('This plugin has no settings.'));
-            $this->getController()->redirect($url, true);
-        }
 
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
