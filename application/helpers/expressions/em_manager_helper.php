@@ -9405,7 +9405,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid = $q['info']['gid'];
                 $qid = $q['info']['qid'];
                 $qseq = $q['info']['qseq'];
-
                 $errorCount=0;
 
                 //////
@@ -9629,7 +9628,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Validation this way so that regex (preg) works
                 $prettyValidEqn = '';
-                if ($q['prettyValidEqn'] != '') {
+                if ($q['validEqn'] != '') {
                     $validationEqn = $q['validEqn'];
                     if (!isset($LEM->ParseResultCache[$validationEqn]))
                     {
@@ -9887,8 +9886,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = '';
                         break;
                 }
-                $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
+                $out = "<p class='LEMheading'>$message</p>\n" . $out;
             }
+            $out .="</div>";
             return array(
                 'errors'=>$allErrors,
                 'html'=>$out

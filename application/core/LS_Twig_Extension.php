@@ -168,6 +168,7 @@ class LS_Twig_Extension extends Twig_Extension
      *
      * @param  int      $iQid the question id
      * @return string   the classes
+     * @deprecated must be removed when allow to broke template. Since it was in 3.0 , it was in API (and question.twig are surely be updated).
      */
     public static function getAllQuestionClasses($iQid)
     {
