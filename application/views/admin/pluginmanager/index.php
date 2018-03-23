@@ -122,14 +122,12 @@ echo viewHelper::getViewTestTag('pluginManager');
                         $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
                     } elseif ($data['active'] == 0)
                     {
-                        $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
-                            . gT('Activate')
+                        $output = "<a data-toggle='tooltip' title='" . gT('Activate'). "' href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
+                            . "<span class='fa fa-power-off'></span>"
                         ."</a>";
                     } else {
-                        $output = "<a href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs'>"
-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
-                            . gT('Deactivate')
+                        $output = "<a data-toggle='tooltip' title='" . gT('Deactivate') . "' href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>"
+                            . "<span class='fa fa-power-off'></span>"
                         ."</a>";
                     }
                 }
@@ -141,15 +139,6 @@ echo viewHelper::getViewTestTag('pluginManager');
             }
         ),
     );
-
-    /*
-    array(            // display a column with "view", "update" and "delete" buttons
-    'class' => 'CallbackColumn',
-    'label' => function($data) { return ($data->active == 1) ? "deactivate": "activate"; },
-    'url' => function($data) { return array("/plugins/activate", "id"=>$data["id"]); }
-    )
-    );
-    */
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
