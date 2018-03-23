@@ -2341,6 +2341,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 401) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Plugin type is either "core" or "user" (different folder locations).
+            $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', 'string(4)');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
             
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
