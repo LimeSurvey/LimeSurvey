@@ -347,14 +347,12 @@
         * current Group sequence (0-based index)
         * @example 1
         * @var integer
-        * @deprecated : not updated in this class
         */
         private $currentGroupSeq;
         /**
         * for Question-by-Question mode, the 0-based index
         * @example 3
         * @var integer
-        * @deprecated : not updated in this class
         */
         private $currentQuestionSeq;
         /**
