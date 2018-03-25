@@ -4484,6 +4484,7 @@
             }
             $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
             $qnum = is_null($questionNum) ? 0 : $questionNum;
+
             $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
 
             if ($timeit) {
@@ -4493,7 +4494,50 @@
             return $result;
         }
 
+        /**
+        * Translate all Expressions, Macros, registered variables, etc. in $string for current step
+        * @param string $string - the string to be replaced
+        * @param array|null $replacementFields - optional replacement values
+        * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+        * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed ( I don't know the usage (Shnoulle 2018-03-23))
+        * @return string - the original $string with all replacements done.
+        */
+        static function ProcessStepString($string, $replacementFields=array(), $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+        {
+            $LEM =& LimeExpressionManager::singleton();
 
+            // Fill tempVars if needed
+            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0) {
+                $replaceArray = array();
+                foreach ($replacementFields as $key => $value) {
+                    $replaceArray[$key] = array(
+                    'code'=>$value,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    );
+                }
+                $LEM->tempVars = $replaceArray;
+            }
+            // Get current seq for question and group*/
+            $questionSeq = $LEM->currentQuestionSeq;
+            $groupSeq = $LEM->currentGroupSeq;
+            // Group by group : need find questionSeq  */
+            if($groupSeq > -1 && $questionSeq == -1 && isset($LEM->groupSeqInfo[$groupSeq]['qend'])) {
+                $questionSeq = $LEM->groupSeqInfo[$groupSeq]['qend'];
+            }
+            // EM core need questionSeq + question id … */
+            $qid = 0;
+            if($questionSeq > -1 && !is_null($questionSeq)) {
+                $aQid=array_keys($LEM->questionId2questionSeq,$questionSeq);
+                if(isset($aQid[0])) {
+                    $qid = $aQid[0];
+                }
+            }
+            // Replace in string
+            $string = $LEM->em->sProcessStringContainingExpressions($string,$qid, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+            return $string;
+        }
         /**
         * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
         * @param string $eqn - the relevance equation
