@@ -102,9 +102,8 @@ class SurveyRuntimeHelper
         }
 
         $this->checkForDataSecurityAccepted();
-
+        $this->initMove(); // main methods to init session, LEM, moves, errors, etc
         if (!$this->previewgrp && !$this->previewquestion) {
-            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
@@ -114,7 +113,6 @@ class SurveyRuntimeHelper
             $this->setNotAnsweredAndNotValidated();
 
         } else {
-            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
             $this->setPreview();
         }
 
@@ -123,6 +121,8 @@ class SurveyRuntimeHelper
 
         $this->fixMaxStep();
 
+        /* Update Survey text after move : get current (static) value (TODO : find the solution to get javascripted EM) */
+        $this->processSurveyText();
         //******************************************************************************************************
         //PRESENT SURVEY
         //******************************************************************************************************
@@ -299,7 +299,6 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
         $_gseq = -1;
-
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl) {
 
             ++$_gseq;
@@ -541,7 +540,7 @@ class SurveyRuntimeHelper
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
-
+        $this->processSurveyText(); // Basic replacement (can be need to be updated)
         if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota') {
             $this->checkPrevStep(); // Check if prev step is set, else set it
             $this->setMoveResult();
@@ -953,13 +952,6 @@ class SurveyRuntimeHelper
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
                 $this->aSurveyInfo['datasecurity_error'] = gT("You will have to accept our survey policy!");
             }
-
-            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
-            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
-            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
-            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
-            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
         }
 
         if ($bDisplayFirstPage) {
@@ -967,6 +959,20 @@ class SurveyRuntimeHelper
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
+    }
+
+    /**
+     * process Expression on Survey Text
+     */
+    private function processSurveyText()
+    {
+            $this->aSurveyInfo['name']                      = $this->processString($this->aSurveyInfo['name']);
+            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
+            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
+            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
+            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
+            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
+            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
     }
 
     private function checkForDataSecurityAccepted(){
@@ -1231,6 +1237,7 @@ class SurveyRuntimeHelper
      * Check in a string if it uses expressions to replace them
      * @param string $sString the string to evaluate
      * @return string
+     * @todo : find/get current qid for processing string
      */
     private function processString($sString, $iRecursionLevel = 1)
     {
@@ -1240,10 +1247,7 @@ class SurveyRuntimeHelper
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields, $iRecursionLevel);
-            
         }
-
-
         return $sProcessedString;
     }
 
@@ -1269,7 +1273,7 @@ class SurveyRuntimeHelper
         $this->aSurveyOptions         = isset($surveyOptions) ? $surveyOptions : null;
         $this->aMoveResult            = isset($moveResult) ? $moveResult : null;
         $this->sMove                  = isset($move) ? $move : null;
-        $this->bInvalidLastPage = isset($invalidLastPage) ? $invalidLastPage : null;
+        $this->bInvalidLastPage       = isset($invalidLastPage) ? $invalidLastPage : null;
         $this->notanswered            = isset($notanswered) ? $notanswered : null;
         $this->filenotvalidated       = isset($filenotvalidated) ? $filenotvalidated : null;
         $this->completed              = isset($completed) ? $completed : null;
