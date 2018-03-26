@@ -7213,7 +7213,6 @@
         */
         public static function GetRelevanceAndTailoringJavaScript($bReturnArray=false)
         {
-            tracevar('GetRelevanceAndTailoringJavaScript');
             $aQuestionsWithDependencies = array();
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
