@@ -50,8 +50,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                     $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                     Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
                     $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
-                    /* Maybe using some str_replace("<!-- EM Hidden Inputs -->",$sHiddenInputs,$sHtml); Unsure of usage without javascript ?*/
-                    Yii::app()->clientScript->registerScript('lemHiddenInputs','$("#limesurvey").append('.json_encode($sHiddenInputs).');',CClientScript::POS_BEGIN);
+                    $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sHiddenInputs,$sHtml);
+                    /* @TODO : remove usage of "<!-- emScriptsAndHiddenInputs -->" : directly add even if template don't have aSurveyInfo.EM.ScriptsAndHiddenInputs */
+                    /* Add it at end of form ( replace </form>) ? */
                     Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
                     Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
                     LimeExpressionManager::FinishProcessingPage();
