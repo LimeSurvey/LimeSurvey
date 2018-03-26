@@ -4484,7 +4484,6 @@
             }
             $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
             $qnum = is_null($questionNum) ? 0 : $questionNum;
-
             $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
 
             if ($timeit) {
@@ -4497,13 +4496,16 @@
         /**
         * Translate all Expressions, Macros, registered variables, etc. in $string for current step
         * @param string $string - the string to be replaced
-        * @param array|null $replacementFields - optional replacement values
+        * @param array $replacementFields - optional replacement values
         * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
-        * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed ( I don't know the usage (Shnoulle 2018-03-23))
+        * @param boolean $static - return static string (without any javascript)
         * @return string - the original $string with all replacements done.
         */
-        static function ProcessStepString($string, $replacementFields=array(), $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+        public static function ProcessStepString($string, $replacementFields=array(), $numRecursionLevels=3, $static=false)
         {
+            if((strpos($string, "{") === false)){
+                return $string;
+            }
             $LEM =& LimeExpressionManager::singleton();
 
             // Fill tempVars if needed
@@ -4535,9 +4537,10 @@
                 }
             }
             // Replace in string
-            $string = $LEM->em->sProcessStringContainingExpressions($string,$qid, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+            $string = $LEM->em->sProcessStringContainingExpressions($string,$qid, $numRecursionLevels, 1, $groupSeq, $questionSeq,$static);
             return $string;
         }
+
         /**
         * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
         * @param string $eqn - the relevance equation
@@ -7210,6 +7213,7 @@
         */
         public static function GetRelevanceAndTailoringJavaScript($bReturnArray=false)
         {
+            tracevar('GetRelevanceAndTailoringJavaScript');
             $aQuestionsWithDependencies = array();
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();

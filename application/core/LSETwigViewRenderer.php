@@ -40,7 +40,22 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             if ($oLayoutTemplate) {
                 $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
                 $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-
+                if(isset($aDatas['step'])) {
+                    /* If step is set : we need EM javascript added */
+                    /* And this js must be added after all html read to allow usage of EM in template */
+                    $step = $aDatas['step'];
+                    $LEMskipReprocessing = $aDatas['LEMskipReprocessing'];
+                    LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
+                    $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
+                    $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+                    Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+                    $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
+                    /* Maybe using some str_replace("<!-- EM Hidden Inputs -->",$sHiddenInputs,$sHtml); Unsure of usage without javascript ?*/
+                    Yii::app()->clientScript->registerScript('lemHiddenInputs','$("#limesurvey").append('.json_encode($sHiddenInputs).');',CClientScript::POS_BEGIN);
+                    Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
+                    Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
+                    LimeExpressionManager::FinishProcessingPage();
+                }
                 if ($bReturn) {
                     return $sHtml;
                 } else {
