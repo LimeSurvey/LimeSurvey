@@ -7178,6 +7178,15 @@
         }
 
         /**
+         * Did LEM is currently initialized
+         * @return boolean
+         */
+        public static function isInitialized ()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            return $LEM->initialized;
+        }
+        /**
         * Should be called at end of each page
         * @return void
         */

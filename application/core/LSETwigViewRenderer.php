@@ -40,11 +40,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             if ($oLayoutTemplate) {
                 $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
                 $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-                if(isset($aDatas['step'])) {
-                    /* If step is set : we need EM javascript added */
+                if(LimeExpressionManager::isInitialized()) {
+                    /* If LimeExpressionManager is Initialized : we need EM javascript added */
                     /* And this js must be added after all html read to allow usage of EM in template */
-                    $step = $aDatas['step'];
-                    $LEMskipReprocessing = $aDatas['LEMskipReprocessing'];
+                    $LEMskipReprocessing = isset($aDatas['LEMskipReprocessing']) ? $aDatas['LEMskipReprocessing'] : false;
                     LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
                     $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
                     $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
