@@ -303,10 +303,10 @@ class UserAction extends Survey_Common_Action
         }
 
         //DELETE USER FROM TABLE
-        $dresult = User::model()->deleteUser($postuserid);
+        User::model()->deleteUser($postuserid);
 
         // Delete user rights
-        $dresult = Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
+        Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
         if ($postuserid == Yii::app()->session['loginID']) {
             session_destroy(); // user deleted himself
@@ -670,8 +670,6 @@ class UserAction extends Survey_Common_Action
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
-        } else {
-            $aData = array();
         }
 
         // Get user lang
