@@ -534,7 +534,6 @@ class SurveyRuntimeHelper
      */
     private function initMove()
     {
-        $this->processSurveyText(); // Basic replacement, needed for all page
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
@@ -555,7 +554,8 @@ class SurveyRuntimeHelper
                 $this->bShowEmptyGroup = true;
             }
         }
-        
+        $this->processSurveyText(); // Basic replacement, needed for all page
+
     }
 
 
