@@ -863,13 +863,11 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $sQuery = "
             SELECT 
-                sid,
-                COUNT(DISTINCT group_order) AS group_order,
-                COUNT(gid) AS gid
+                sid
             FROM
                 {{groups}}
             GROUP BY sid
-            HAVING group_order != gid";
+            HAVING COUNT(DISTINCT group_order) != COUNT(gid)";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
         if (!empty($result)) {
             foreach ($result as &$survey) {
@@ -893,15 +891,13 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $sQuery = "
             SELECT
-                q.gid,
                 q.sid,
-                q.parent_qid,
-                COUNT(DISTINCT q.question_order) AS question_order,
-                COUNT(q.qid) AS qid
+                q.gid,
+                q.parent_qid
             FROM {{questions}} q
             JOIN {{groups}} g ON q.gid = g.gid
-            GROUP BY sid, gid, parent_qid
-            HAVING question_order != qid;
+            GROUP BY q.sid, q.gid, q.parent_qid
+            HAVING COUNT(DISTINCT question_order) != COUNT(qid);
             ";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
         if (!empty($result)) {
@@ -911,6 +907,14 @@ class CheckIntegrity extends Survey_Common_Action
                     [
                         'sa' => 'view',
                         'surveyid' => $info['sid'],
+                    ]
+                );
+                $info['viewGroupLink'] = Yii::app()->getController()->createUrl(
+                    'admin/questiongroups',
+                    [
+                        'sa' => 'view',
+                        'surveyid' => $info['sid'],
+                        'gid' => $info['gid']
                     ]
                 );
                 if ($info['parent_qid'] != 0) {
@@ -923,6 +927,7 @@ class CheckIntegrity extends Survey_Common_Action
                             'qid' => $info['parent_qid']
                         ]
                     );
+
                 }
             }
         }
