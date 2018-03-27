@@ -121,8 +121,6 @@ class SurveyRuntimeHelper
 
         $this->fixMaxStep();
 
-        /* Update Survey text after move : get current (static) value (TODO : find the solution to get javascripted EM) */
-        $this->processSurveyText();
         //******************************************************************************************************
         //PRESENT SURVEY
         //******************************************************************************************************
@@ -131,7 +129,7 @@ class SurveyRuntimeHelper
 
         Yii::app()->loadHelper('qanda');
         setNoAnswerMode($this->aSurveyInfo);
-
+        
         //Iterate through the questions about to be displayed:
         $inputnames = array();
         $vpopup     = $fpopup = false;
@@ -260,7 +258,6 @@ class SurveyRuntimeHelper
         }
 
         sendCacheHeaders();
-
         Yii::app()->loadHelper('surveytranslator');
 
         $this->aSurveyInfo['upload_file'] = $upload_file;
@@ -307,9 +304,9 @@ class SurveyRuntimeHelper
             $aGroup           = array();
             $groupname        = $gl['group_name'];
             // TODO: Add standard replacement fields to group name and description?
-            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
+            $groupname        = $this->processString($groupname);
             $groupdescription = $gl['description'];
-            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
+            $groupdescription = $this->processString($groupdescription);
 
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
@@ -328,7 +325,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1, false, true, false);
+            $aGroup['name']        = $this->ProcessString($gl['group_name']);
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -343,9 +340,8 @@ class SurveyRuntimeHelper
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
-            $aGroup['showdescription']  = (!$this->previewquestion && trim($redata['groupdescription']) != "" && $showgroupdesc_);
-            $aGroup['description']      = $redata['groupdescription'];
-
+            $aGroup['description']      = $this->processString($gl['description']);
+            $aGroup['showdescription']  = (!$this->previewquestion && trim($aGroup['description']) != "" && $showgroupdesc_);
             // one entry per QID
             foreach ($qanda as $qa) {
 
@@ -420,11 +416,12 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
             }
         }
-
         /**
          *  Expression Manager Scrips and inputs
          */
         $step = isset($_SESSION[$this->LEMsessid]['step']) ? $_SESSION[$this->LEMsessid]['step'] : '';
+        /* Update Survey text after move : get current value */
+        $this->processSurveyText();
         LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
         $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
         $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
@@ -540,7 +537,6 @@ class SurveyRuntimeHelper
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
-        $this->processSurveyText(); // Basic replacement (can be need to be updated)
         if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota') {
             $this->checkPrevStep(); // Check if prev step is set, else set it
             $this->setMoveResult();
@@ -557,8 +553,8 @@ class SurveyRuntimeHelper
             if ($_SESSION[$this->LEMsessid]['step'] == 0) {
                 $this->bShowEmptyGroup = true;
             }
-
         }
+        $this->processSurveyText(); // Basic replacement, needed for all page
 
     }
 
@@ -966,13 +962,13 @@ class SurveyRuntimeHelper
      */
     private function processSurveyText()
     {
-            $this->aSurveyInfo['name']                      = $this->processString($this->aSurveyInfo['name']);
-            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
-            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
-            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
-            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
-            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
+        $this->aSurveyInfo['name']                      = $this->processString($this->aSurveyInfo['surveyls_title']);
+        $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['surveyls_description']);
+        $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['surveyls_welcometext']) ;
+        $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['surveyls_policy_notice']) ;
+        $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['surveyls_policy_error']) ;
+        $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['surveyls_policy_notice_label'],$this->aSurveyInfo['sid']);
+        $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
     }
 
     private function checkForDataSecurityAccepted(){
@@ -1246,7 +1242,7 @@ class SurveyRuntimeHelper
         if((strpos($sProcessedString, "{") !== false)){
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
-            $sProcessedString = LimeExpressionManager::ProcessString( $sString, null, $aStandardsReplacementFields, $iRecursionLevel);
+            $sProcessedString = LimeExpressionManager::ProcessStepString( $sString, $aStandardsReplacementFields, $iRecursionLevel);
         }
         return $sProcessedString;
     }
