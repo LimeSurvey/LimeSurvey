@@ -7215,6 +7215,28 @@
             $_SESSION['LEMsingleton']=serialize($LEM);
         }
 
+        /**
+         * End public HTML
+         * @return string|null : hidden inputs needed for relevance
+         * @todo : add directly hidden input in page without return it.
+         */
+        public static function FinishProcessPublicPage()
+        {
+            if(self::isInitialized()) {
+                $LEM =& LimeExpressionManager::singleton();
+                /* Replace FinishProcessingGroup directly : always needed (in all in one too, and needed at end only (after all html are processed for Expression)) */
+                $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
+                $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
+                $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+                $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+                $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
+                $LEM->FinishProcessingPage();
+                return $sHiddenInputs;
+            }
+        }
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
