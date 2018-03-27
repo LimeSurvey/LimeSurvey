@@ -1,0 +1,16 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2007-2018 The LimeSurvey Project Team
+
+    Show the question index in navigator
+#}
+
+<div class="col-sm-6 index-wrapper">
+    {% if aSurveyInfo.format == 'G' %}
+        {{ include('./subviews/navigation/question_index_groups_buttons.twig') }}
+    {% endif %}
+
+    {% if aSurveyInfo.format == 'S' %}
+        {{ include('./subviews/navigation/question_index_questions_buttons.twig') }}
+    {% endif %}
+</div>
