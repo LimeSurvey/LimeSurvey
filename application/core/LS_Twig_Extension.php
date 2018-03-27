@@ -406,6 +406,13 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function processString($string,$static=false,$numRecursionLevels=3,$aReplacement = array())
     {
+        if(!is_string($string)) {
+            /* Add some errors in template editor , see #13532 too */
+            if(Yii::app()->getController()->getId() == 'admin' && Yii::app()->getController()->getAction()->getId() == 'themes') {
+                Yii::app()->setFlashMessage(gT("Usage of processString without a string in your template"),'error');
+            }
+            return;
+        }
         return LimeExpressionManager::ProcessStepString($string, $aReplacement,$numRecursionLevels, $static);
     }
 }
