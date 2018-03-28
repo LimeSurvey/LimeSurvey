@@ -70,7 +70,8 @@ class Plugin extends LSActiveRecord
     }
 
     /**
-     * 
+     * @return xml
+     * @throws Exception if file does not exist.
      */
     public function getConfig()
     {
@@ -89,7 +90,7 @@ class Plugin extends LSActiveRecord
      * @param Plugin|null $plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
-     * @return void
+     * @return boolean
      */
     public static function setPluginLoadError($plugin, $pluginName, array $error)
     {

@@ -279,6 +279,7 @@ class PluginManager extends \CApplicationComponent
      * Gets the description of a plugin. The description is accessed via a
      * static function inside the plugin file.
      *
+     * @todo Read config.xml instead.
      * @param string $pluginClass The classname of the plugin
      * @return array|null
      */
@@ -286,6 +287,7 @@ class PluginManager extends \CApplicationComponent
     {
         $result = array();
         $class = "{$pluginClass}";
+        $config = null;
 
         if (!class_exists($class, false)) {
             $found = false;
@@ -299,6 +301,18 @@ class PluginManager extends \CApplicationComponent
                 $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
                 if (file_exists($file)) {
                     Yii::import($pluginDir.".$pluginClass.*");
+
+                    $configFile = Yii::getPathOfAlias($pluginDir)
+                        . DIRECTORY_SEPARATOR . $pluginClass
+                        . DIRECTORY_SEPARATOR .'config.xml';
+                    if (file_exists($configFile)) {
+                        libxml_disable_entity_loader(false);
+                        $config = simplexml_load_file(realpath($configFile));
+                        libxml_disable_entity_loader(true);
+                    } else {
+                        $config = null;
+                    }
+
                     $found = true;
                     break;
                 }
@@ -315,6 +329,7 @@ class PluginManager extends \CApplicationComponent
             $result['description'] = call_user_func(array($class, 'getDescription'));
             $result['pluginName']  = call_user_func(array($class, 'getName'));
             $result['pluginClass'] = $class;
+            $result['config']      = $config;
             $result['load_error']  = 0;
             return $result;
         }
