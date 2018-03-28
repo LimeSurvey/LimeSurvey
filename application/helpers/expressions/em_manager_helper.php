@@ -3904,6 +3904,14 @@
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
+                        // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
+                        if($other == "Y") {
+                            if (isset($qattr[$questionNum]['other_replace_text']) && trim($qattr[$questionNum]['other_replace_text']) != '') {
+                                $question = trim($qattr[$questionNum]['other_replace_text']);
+                            } else {
+                                $question = $this->gT('Other:');
+                            }
+                        }
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                         if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                             //                            $rowdivid = substr($sgqa,0,-7);
@@ -4235,9 +4243,9 @@
                 //                . ",'qseq':" . $questionSeq
                 .$ansList;
 
-                if ($type == 'M' || $type == 'P')
-                {
-                    $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'";
+                if ($type == 'M' || $type == 'P') {
+                    $question = htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES);
+                    $this->varNameAttr[$jsVarName] .= ",'question':'" . $question . "'";
                 }
                 $this->varNameAttr[$jsVarName] .= "}";
             }
@@ -7832,7 +7840,6 @@
             $jsParts[] = implode("\n",$valEqns);
 
             $allJsVarsUsed = array_unique($allJsVarsUsed);
-
             // Add JavaScript Mapping Arrays
             if (isset($LEM->alias2varName) && count($LEM->alias2varName) > 0)
             {
@@ -8925,12 +8932,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                                 case 'M': //Multiple choice checkbox
                                 case 'P': //Multiple choice with comments checkbox + text
-                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
-                                    {
+                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name)) {
                                         return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         return $_SESSION[$this->sessid][$sgqa];
                                     }
                                 default:
@@ -9020,12 +9024,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 case 'scale_id':
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                 case 'shown':
-                    if (isset($var['shown']))
-                    {
+                    if (isset($var['shown'])) {
                         return $var['shown'];    // for static values like TOKEN
-                    }
-                    else
-                    {
+                    } else {
                         $type = $var['type'];
                         $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
                         $shown = $default;  // Default value to satisfy Scrutinizer
@@ -9100,16 +9101,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 break;
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
-                                {
+                                // We need question too for other !empty test Y or anything for other. see #13505
+                                if (!empty($code) && isset($var['question']) && !preg_match('/comment$/',$sgqa)) {
                                     $shown = $var['question'];
-                                }
-                                elseif (preg_match('/comment$/',$sgqa)) {
+                                } elseif (preg_match('/comment$/',$sgqa)) {
                                     $shown=$code; // This one return sgqa.code
-                                }
-                                else
-                                {
-                                    $shown = $default;
                                 }
                                 break;
                             case 'G': //GENDER drop-down list
