@@ -56,6 +56,6 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                 </div>
             </div>
         </div>
+        <span id="locator" data-location="attributes">&nbsp;</span>
     </div>
-    <span id="locator" data-location="attributes">&nbsp;</span>
 </div>

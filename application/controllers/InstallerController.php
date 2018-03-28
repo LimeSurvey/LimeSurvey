@@ -180,7 +180,7 @@ class InstallerController extends CController
     public function stepViewLicense()
     {
         header('Content-Type: text/plain; charset=UTF-8');
-        readfile(dirname((string) BASEPATH).'/docs/license.txt');
+        readfile(dirname((string) BASEPATH).'/LICENSE');
         exit;
     }
 

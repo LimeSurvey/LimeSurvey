@@ -35,6 +35,7 @@ class OptinController extends LSYii_Controller
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sToken = $token;
         $sToken = Token::sanitizeToken($sToken);
 
@@ -46,7 +47,7 @@ class OptinController extends LSYii_Controller
         //Check that there is a SID
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = $oSurvey->language;
         } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }

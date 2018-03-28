@@ -2022,7 +2022,7 @@ class quexmlpdf extends pdf
                     $sqtmp['varname'] = $sq['varName'];
 
                     if (isset($sq['defaultValue'])) {
-                        $sqtmp['defaultvalue'] = $sq['defaultValue'];
+                        $sqtmp['defaultvalue'] = current($sq['defaultValue']);
                     }
 
                     if (isset($sq->contingentQuestion)) {
@@ -2038,7 +2038,7 @@ class quexmlpdf extends pdf
                         }
 
                         if (isset($sq->contingentQuestion['defaultValue'])) {
-                            $oarr['defaultvalue'] = $sq->contingentQuestion['defaultValue'];
+                            $oarr['defaultvalue'] = current($sq->contingentQuestion['defaultValue']);
                         }
 
                         $oarr['varname'] = $sq->contingentQuestion['varName'];
@@ -2063,7 +2063,7 @@ class quexmlpdf extends pdf
                     }
 
                     if (isset($r['defaultValue'])) {
-                        $rstmp['defaultvalue'] = $r['defaultValue'];
+                        $rstmp['defaultvalue'] = current($r['defaultValue']);
                     }
 
                     if (isset($r->fixed)) {
@@ -2101,7 +2101,7 @@ class quexmlpdf extends pdf
                                 }
 
                                 if (isset($c->contingentQuestion['defaultValue'])) {
-                                    $oarr['defaultvalue'] = $c->contingentQuestion['defaultValue'];
+                                    $oarr['defaultvalue'] = current($c->contingentQuestion['defaultValue']);
                                 }
 
                                 $oarr['varname'] = $c->contingentQuestion['varName'];
@@ -2439,7 +2439,8 @@ class quexmlpdf extends pdf
                 return;
             }
 
-            for ($rcount = 0; $rcount < count($question['responses']); $rcount++) {
+            $arraySize = count($question['responses']);
+            for ($rcount = 0; $rcount < $arraySize; $rcount++) {
                 $r = $question['responses'][$rcount];
 
                 //only split after one response
@@ -3009,7 +3010,7 @@ class quexmlpdf extends pdf
 
             $string = false;
             if ($defaultvalue !== false) {
-                $string = substr($defaultvalue, $startstring, $cells);
+                $string = mb_substr($defaultvalue, $startstring, $cells, "UTF-8");
             }
 
             $this->drawCells($cells, $string);
@@ -3073,10 +3074,7 @@ class quexmlpdf extends pdf
             //Add the box to the layout scheme
             $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $this->textResponseWidth, $this->GetY() + $this->textResponseHeight);
 
-            $text = '';
-            if (isset($string[$j])) {
-                $text = $string[$j];
-            }
+            $text = mb_substr($string,$j,1,"UTF-8");
 
             //Draw the box
             $this->Cell($this->textResponseWidth, $this->textResponseHeight, $text, $border, 0, '', true, '', 0, false, 'T', 'C');
@@ -3139,7 +3137,7 @@ class quexmlpdf extends pdf
             if ($bgtype != 6) {
                 $string = false;
                 if (isset($s['defaultvalue'])) {
-                    $string = substr($s['defaultvalue'], 0, $width);
+                    $string = mb_substr($s['defaultvalue'], 0, $width,"UTF-8");
                 }
 
                 //Draw the cells
@@ -3262,7 +3260,8 @@ class quexmlpdf extends pdf
             return;
         }
 
-        for ($i = 0; $i < count($subquestions); $i++) {
+        $arraySize = count($subquestions);
+        for ($i = 0; $i < $arraySize; $i++) {
             if ($split && $i == 1) {
                 //don't proceed if breaking the page already
                 if ($this->pageBreakOccured) {
@@ -3388,7 +3387,8 @@ class quexmlpdf extends pdf
      */
     protected function drawSingleChoiceVerticalSeparate($categories, $subquestions, $parenttext, $help, $split = 'notset')
     {
-        for ($sc = 0; $sc < count($subquestions); $sc++) {
+        $arraySize = count($subquestions);
+        for ($sc = 0; $sc < $arraySize; $sc++) {
             $s = $subquestions[$sc];
 
             $this->drawQuestionHead("", $this->numberToLetter($sc + 1).". ".$s['text'], $help);
@@ -3487,7 +3487,8 @@ class quexmlpdf extends pdf
             $split = $this->allowSplittingSingleChoiceVertical && ($total >= $this->minSplittingSingleChoiceVertical);
         }
 
-        for ($i = 0; $i < count($categories); $i++) {
+        $arraySize = count($categories);
+        for ($i = 0; $i < $arraySize; $i++) {
             //don't continue if page break already (start on new page)
             if ($i == 1 && $split) {
                 if ($this->pageBreakOccured) {
@@ -3542,7 +3543,8 @@ class quexmlpdf extends pdf
             }
 
             //draw the response boxes
-            for ($j = 0; $j < count($subquestions); $j++) {
+            $arraySize = count($subquestions);
+            for ($j = 0; $j < $arraySize; $j++) {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {
@@ -3716,6 +3718,7 @@ class quexmlpdf extends pdf
      */
     protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
+        $html = '';
         $this->sectionCP++;
         $mtitle = $title;
         

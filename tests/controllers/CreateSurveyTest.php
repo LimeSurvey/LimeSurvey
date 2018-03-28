@@ -54,7 +54,7 @@ class CreateSurveyTest extends TestBaseClassWeb
         $criteria->with = ['correct_relation_defaultlanguage'];
         $survey = \Survey::model()->find($criteria);
         if ($survey) {
-            $survey->deleteSurvey($survey->sid);
+            $survey->deleteSurvey($survey->sid,true);
         }
     }
 

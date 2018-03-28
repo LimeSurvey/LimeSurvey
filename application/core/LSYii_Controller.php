@@ -94,16 +94,16 @@ abstract class LSYii_Controller extends CController
         }
 
         if (!function_exists('mb_convert_encoding')) {
-                    $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
+            $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
         }
 
         if ($dieoutput != '') {
-                    throw new CException($dieoutput);
+            throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < 1200) {
+        if (ini_get("max_execution_time") < Yii::app()->getConfig('max_execution_time')) {
             try {
-                set_time_limit(1200); // Maximum execution time - works only if safe_mode is off 
+                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off 
             } catch (Exception $e) {};
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M')) {

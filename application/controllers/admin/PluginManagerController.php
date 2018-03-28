@@ -16,7 +16,10 @@ class PluginManagerController extends Survey_Common_Action
     {
         $oPluginManager = App()->getPluginManager();
 
+        $oPluginManager->scanPlugins();
+
         // Scan the plugins folder.
+        /*
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
         $aInstalledNames    = array_map(
@@ -39,30 +42,19 @@ class PluginManagerController extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($event);
             }
         }
+         */
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = array();
         foreach ($aoPlugins as $oPlugin) {
-            /* @var $plugin Plugin */
-            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins)) {
-                $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
-                if ($plugin) {
-                    $aPluginSettings = $plugin->getPluginSettings(false);
-                    $data[]          = array(
-                        'id'          => $oPlugin->id,
-                        'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                        'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                        'active'      => $oPlugin->active,
-                        'settings'    => $aPluginSettings,
-                        'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                    );
-                }
-            } else {
-                // This plugin is missing, maybe the files were deleted but the record was not removed from the database
-                // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
-                $oPlugin->delete();
-            }
+            $data[] = [
+                'id'          => $oPlugin->id,
+                'name'        => $oPlugin->name,
+                'load_error'  => $oPlugin->load_error,
+                'description' => '',
+                'active'      => $oPlugin->active,
+                'settings'    => []
+            ];
         }
 
         if (Yii::app()->request->getParam('pageSize')) {
@@ -72,11 +64,18 @@ class PluginManagerController extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
-        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+        $aData['scanFilesUrl'] = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'scanFiles',
+            ]
+        );
+
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
+        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
     /**
@@ -94,6 +93,43 @@ class PluginManagerController extends Survey_Common_Action
         } else if ($type == "deactivate") {
             $this->deactivate($id);
         }
+    }
+
+    /**
+     * Scan files in plugin folder and add them to the database.
+     * @return void
+     */
+    public function scanFiles()
+    {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect(['/admin/pluginmanager']);
+        }
+
+        $oPluginManager = App()->getPluginManager();
+        $result = $oPluginManager->scanPlugins();
+
+        Yii::app()->setFlashMessage(
+            sprintf(
+                gT('Found %s plugins in file system'),
+                count($result)
+            ),
+            'notice'
+        );
+
+        $data = [];
+        $data['result'] = $result;
+        $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
+        $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
+
+        $this->_renderWrappedTemplate(
+            'pluginmanager',
+            'scanFilesResult',
+            $data
+        );
+
+        //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
+        //$this->getController()->redirect($indexUrl);
     }
 
     /**
@@ -178,24 +214,36 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function configure($id)
     {
+        $url = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'index'
+            ]
+        );
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
-            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+            $this->getController()->redirect($url);
         }
 
-        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
-        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
+        $plugin      = Plugin::model()->findByPk($id);
+        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
 
-        if ($arPlugin === null) {
+        if (!$oPluginObject->readConfigFile()) {
+            Yii::app()->user->setFlash('error', gT('Found no configuration file for this plugin.'));
+            $this->getController()->redirect($url);
+        }
+
+        if ($plugin === null) {
             Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
-            $this->getController()->redirect(array('admin/pluginmanager/sa/index'));
+            $this->getController()->redirect($url);
         }
 
         // If post handle data, yt0 seems to be the submit button
+        // TODO: Break out to separate method.
         if (App()->request->isPostRequest) {
             if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
-                $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+                $this->getController()->redirect($url);
             }
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
@@ -211,16 +259,65 @@ class PluginManagerController extends Survey_Common_Action
 
         // Prepare settings to be send to the view.
         $aSettings = $oPluginObject->getPluginSettings();
-        if (empty($aSettings)) {
-            // And show a message
-            Yii::app()->user->setFlash('notice', gt('This plugin has no settings.'));
-            $this->getController()->redirect('admin/pluginmanager/sa/index', true);
-        }
 
         // Send to view plugin porperties: name and description
-        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
+        $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
-        $this->_renderWrappedTemplate('pluginmanager', 'configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
+        $fullPageBar = [];
+        $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
+        $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
+
+        $this->_renderWrappedTemplate(
+            'pluginmanager',
+            'configure',
+            [
+                'settings'     => $aSettings,
+                'plugin'       => $plugin,
+                'pluginObject' => $oPluginObject,
+                'properties'   => $aPluginProp,
+                'fullpagebar'  => $fullPageBar
+            ]
+        );
+    }
+
+    /**
+     * Set load_error to 0 for plugin with id $pluginId.
+     * This makes it possible to try to load the plugin again,
+     * if a fix for previous load error has been implemented.
+     *
+     * @param int $pluginId
+     * @return void
+     */
+    public function resetLoadError($pluginId)
+    {
+        $url = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'index'
+            ]
+        );
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($url);
+        }
+
+        $pluginId = (int) $pluginId;
+        $plugin = Plugin::model()->find('id = :id', [':id' => $pluginId]);
+        if ($plugin) {
+            $plugin->load_error = 0;
+            $plugin->load_error_message = '';
+            $result = $plugin->update();
+            if ($result) {
+                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %d'), $pluginId));
+            } else {
+                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %d'), $pluginId));
+            }
+            $this->getController()->redirect($url);
+        } else {
+            Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
+            $this->getController()->redirect($url);
+        }
     }
 
     /**

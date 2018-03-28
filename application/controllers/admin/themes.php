@@ -161,6 +161,7 @@ class themes extends Survey_Common_Action
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 } else {
                     $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+                    Yii::app()->user->setFlash('success', "Data1 saved!");
                     $success = true;
                 };
 
@@ -445,7 +446,7 @@ class themes extends Survey_Common_Action
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".returnGlobal('copydir');
 
-                if (isStandardTemplate(returnGlobal('newname'))) {
+                if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
@@ -860,7 +861,7 @@ class themes extends Survey_Common_Action
         if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages)) {
             $sLanguageCode = Yii::app()->session['adminlang'];
         }
-        $aAllTemplates = getTemplateList();
+        $aAllTemplates = Template::getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
             $templatename = getGlobalSetting('defaulttheme');
         }
@@ -968,6 +969,8 @@ class themes extends Survey_Common_Action
                 $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
                 $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
                 $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = "This is some helpful text.";
+                $thissurvey['aGroups'][1]["aQuestions"][1]["class"]         = "list-radio mandatory";
+                $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
                 // Question 2 Datas
                 $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
@@ -978,6 +981,8 @@ class themes extends Survey_Common_Action
                 $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
                 $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
                 $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = "This is some helpful text.";
+                $thissurvey['aGroups'][1]["aQuestions"][2]["class"]         = "text-long";
+                $thissurvey['aGroups'][1]["aQuestions"][2]["attributes"]    = 'id="question43"';
 
                 // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
                 $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;

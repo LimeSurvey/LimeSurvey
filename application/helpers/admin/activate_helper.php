@@ -64,6 +64,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
             SET cqid=$iNewQID,
             cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
             WHERE cqid=$iQuestionID";
+            // FIXME undefined function db_execute_assosc()
             db_execute_assosc($sQuery);
         }
     }
@@ -86,7 +87,10 @@ function checkGroup($postsid)
 
 
     $baselang = Survey::model()->findByPk($postsid)->language;
-    $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
+    $groupquery = "SELECT g.gid,ls.group_name,count(q.qid) as count from {{questions}} as q 
+                   RIGHT JOIN {{groups}} as g ON q.gid=g.gid 
+                   join {{group_l10ns}} ls on g.gid=ls.gid
+                   WHERE g.sid=$postsid AND ls.language='$baselang' group by g.gid,ls.group_name;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row) {
 //TIBO
@@ -116,7 +120,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "O" -> LIST WITH COMMENT
     //  # "M" -> Multiple choice
     //    # "P" -> Multiple choice with comments
-    //    # "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
+    //    # "A", "B", "C", "E", "F", "H" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
     //  # "I" -> LANGUAGE SWITCH
@@ -125,58 +129,86 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # "1" -> MULTI SCALE
 
     $survey = Survey::model()->findByPk($iSurveyID);
+    $oDB = Yii::app()->db;
 
-    $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = $oDB->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid', 'type'])
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+        ->where('sid=:sid and parent_qid=0', [':sid' => $iSurveyID]);
+
+    $chkresult = $chkquery->queryAll();
+
     foreach ($chkresult as $chkrow) {
         if ($qtypes[$chkrow['type']]['subquestions'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['subquestions']; $i++) {
-                $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} and scale_id={$i} ORDER BY question_order";
-                $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
-                $chacount = count($charesult);
+                $chaquery = Yii::app()->db->createCommand()
+                    ->select('COUNT(qid)')
+                    ->from('{{questions}}')
+                    ->where('parent_qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow->gid);
                 }
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
             for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
-                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
-                $charesult = Yii::app()->db->createCommand($chaquery)->query()->readAll();
-                $chacount = count($charesult);
+                $chaquery = Yii::app()->db->createCommand()
+                    ->select('COUNT(aid)')
+                    ->from('{{answers}}')
+                    ->where('qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow->gid);
                 }
             }
         }
     }
+    unset($chkrow);
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid'])
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+        ->where("sid=:sid AND type = ''", [':sid'=>$iSurveyID]);
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow->gid);
     }
 
 
-
-
     //Check that certain array question types have answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+        ->select(['q.qid', 'ls.question', 'gid']) 
+        ->from('{{questions}} q')
+        ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+        ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
+        ->andWhere("sid=:sid", [':sid'=>$iSurveyID]) 
+        ->andWhere("type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."')")
+        ->andWhere("q.parent_qid=0");
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow->gid);
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkquery = Yii::app()->db->createCommand()
+    ->select(['q.qid', 'ls.question', 'gid'])
+    ->from('{{questions}} q')
+    ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+    ->andWhere("(Select count(*) from {{answers}} a where a.qid=q.qid and scale_id=1)=0")
+    ->andWhere("sid=:sid", [':sid'=>$iSurveyID]) 
+    ->andWhere("type='".Question::QT_1_ARRAY_MULTISCALE."'")
+    ->andWhere("q.parent_qid=0");
+    $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow->gid);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('".Question::QT_S_SHORT_FREE_TEXT."', '".Question::QT_D_DATE."', '".Question::QT_T_LONG_FREE_TEXT."', '".Question::QT_Q_MULTIPLE_SHORT_TEXT."')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow; } // Get table output into array
@@ -189,13 +221,16 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     $qordercount = "";
     //1: Get each condition's question id
-    $conquery = "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
-    . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}} "
-    . "WHERE {{questions}}.sid={$iSurveyID} "
-    . "AND {{conditions}}.qid={{questions}}.qid "
-    . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
-    $conresult = Yii::app()->db->createCommand($conquery)->query()->readAll();
+    $conquery = Yii::app()->db->createCommand()
+    ->select(['cndn.qid', 'cqid', 'ls.question', 'q.gid'])
+    ->from('{{conditions}} cndn')
+    ->join('{{questions}} q', 'cndn.qid=q.qid')
+    ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
+    ->andWhere('q.sid=:sid', [':sid'=>$iSurveyID])
+    ->andWhere('ls.language=:lngn', [':lngn'=>$survey->language])
+    ->order('cndn.qid');
+
+    $conresult = $conquery->queryAll();
     //2: Check each conditions cqid that it occurs later than the cqid
     foreach ($conresult as $conrow) {
         $cqidfound = 0;
@@ -222,7 +257,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
-            $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
@@ -231,255 +266,6 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     } else {
             return false;
     }
-    }
-
-/**
-* Function to activate a survey
-* @param int $iSurveyID The Survey ID
-* @param bool $simulate
-* @return array
-*/
-function activateSurvey($iSurveyID, $simulate = false)
-{
-    // Event beforeSurveyActivate
-    $oSurvey = Survey::model()->findByPk($iSurveyID);
-    $event = new PluginEvent('beforeSurveyActivate');
-    $event->set('surveyId', $iSurveyID);
-    $event->set('simulate', $simulate);
-    App()->getPluginManager()->dispatchEvent($event);
-    $success = $event->get('success');
-    $message = $event->get('message');
-    if ($success === false) {
-        Yii::app()->user->setFlash('error', $message);
-        return array('error' => 'plugin');
-    } else if (!empty($message)) {
-        Yii::app()->user->setFlash('info', $message);
-    }
-
-    $aTableDefinition = array();
-    $bCreateSurveyDir = false;
-    // Specify case sensitive collations for the token
-    $sCollation = '';
-    if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
-        $sCollation = " COLLATE 'utf8mb4_bin'";
-    }
-    if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
-        $sCollation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
-    }
-    //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $oSurvey->fixInvalidQuestions();
-    //Get list of questions for the base language
-    $sFieldMap = createFieldMap($oSurvey, 'full', true, false, $oSurvey->language);
-    //For each question, create the appropriate field(s)
-    foreach ($sFieldMap as $j=>$aRow) {
-        switch ($aRow['type']) {
-            case 'seed':
-                $aTableDefinition[$aRow['fieldname']] = "string(31)";
-                break;
-            case 'startlanguage':
-                $aTableDefinition[$aRow['fieldname']] = "string(20) NOT NULL";
-                break;
-            case 'id':
-                $aTableDefinition[$aRow['fieldname']] = "pk";
-                break;
-            case "startdate":
-            case "datestamp":
-                $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
-                break;
-            case "submitdate":
-                $aTableDefinition[$aRow['fieldname']] = "datetime";
-                break;
-            case "lastpage":
-                $aTableDefinition[$aRow['fieldname']] = "integer";
-                break;
-            case "N":  //Numerical
-            case "K":  //Multiple Numerical
-                $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
-                break;
-            case "S":  //SHORT TEXT
-                $aTableDefinition[$aRow['fieldname']] = "text";
-                break;
-            case "L":  //LIST (RADIO)
-            case "!":  //LIST (DROPDOWN)
-            case "M":  //Multiple choice
-            case "P":  //Multiple choice with comment
-            case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
-                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                } else {
-                    $aTableDefinition[$aRow['fieldname']] = "text";
-                }
-                break;
-            case "U":  //Huge text
-            case "Q":  //Multiple short text
-            case "T":  //LONG TEXT
-            case ";":  //Multi Flexi
-            case ":":  //Multi Flexi
-                $aTableDefinition[$aRow['fieldname']] = "text";
-                break;
-            case "D":  //DATE
-                $aTableDefinition[$aRow['fieldname']] = "datetime";
-                break;
-            case "5":  //5 Point Choice
-            case "G":  //Gender
-            case "Y":  //YesNo
-            case "X":  //Boilerplate
-                $aTableDefinition[$aRow['fieldname']] = "string(1)";
-                break;
-            case "I":  //Language switch
-                $aTableDefinition[$aRow['fieldname']] = "string(20)";
-                break;
-            case "|":
-                $bCreateSurveyDir = true;
-                if (strpos($aRow['fieldname'], "_")) {
-                                    $aTableDefinition[$aRow['fieldname']] = "integer";
-                } else {
-                                    $aTableDefinition[$aRow['fieldname']] = "text";
-                }
-                break;
-            case "ipaddress":
-                if ($oSurvey->ipaddr == "Y") {
-                                    $aTableDefinition[$aRow['fieldname']] = "text";
-                }
-                break;
-            case "url":
-                if ($oSurvey->refurl == "Y") {
-                                    $aTableDefinition[$aRow['fieldname']] = "text";
-                }
-                break;
-            case "token":
-                $aTableDefinition[$aRow['fieldname']] = 'string(36)'.$sCollation;
-                break;
-            case '*': // Equation
-                $aTableDefinition[$aRow['fieldname']] = "text";
-                break;
-            case 'R':
-                /**
-                 * See bug #09828: Ranking question : update allowed can broke Survey DB
-                 * If max_subquestions is not set or is invalid : set it to actual answers numbers
-                 */
-
-                $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $aRow['qid'], 'language'=>Survey::model()->findByPk($iSurveyID)->language)
-                );
-                $oQuestionAttribute = QuestionAttribute::model()->find(
-                    "qid = :qid AND attribute = 'max_subquestions'",
-                    array(':qid' => $aRow['qid'])
-                );
-                if (empty($oQuestionAttribute)) {
-                    $oQuestionAttribute = new QuestionAttribute();
-                    $oQuestionAttribute->qid = $aRow['qid'];
-                    $oQuestionAttribute->attribute = 'max_subquestions';
-                    $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->save();
-                } elseif (intval($oQuestionAttribute->value) < 1) {
-// Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                    $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->save();
-                }
-                $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                break;
-            default:
-                $aTableDefinition[$aRow['fieldname']] = "string(5)";
-        }
-        if ($oSurvey->anonymized == 'N' && !array_key_exists('token', $aTableDefinition)) {
-            $aTableDefinition['token'] = 'string(36)'.$sCollation;
-        }
-        if ($simulate) {
-            $tempTrim = trim($aTableDefinition);
-            $brackets = strpos($tempTrim, "(");
-            if ($brackets === false) {
-                $type = substr($tempTrim, 0, 2);
-            } else {
-                $type = substr($tempTrim, 0, 2);
-            }
-            $arrSim[] = array($type);
-        }
-    }
-
-    if ($simulate) {
-        return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
-    }
-
-    // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
-
-    $sTableName = "{{survey_{$iSurveyID}}}";
-    Yii::app()->loadHelper("database");
-    try {
-        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
-        Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-    } catch (CDbException $e) {
-        if (App()->getConfig('debug')) {
-            return array('error'=>$e->getMessage());
-        } else {
-            return array('error'=>'surveytablecreation');
-        }
-    }
-    try {
-        if (isset($aTableDefinition['token'])) {
-            Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1, 50000), $sTableName, 'token');
-        }
-    } catch (CDbException $e) {
-    }
-
-    $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
-    $iAutoNumberStart = Yii::app()->db->createCommand($sQuery)->queryScalar();
-    //if there is an autonumber_start field, start auto numbering here
-    if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
-        if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            mssql_drop_primary_index('survey_'.$iSurveyID);
-            mssql_drop_constraint('id', 'survey_'.$iSurveyID);
-            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} drop column id ";
-            Yii::app()->db->createCommand($sQuery)->execute();
-            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} ADD [id] int identity({$iAutoNumberStart},1)";
-            Yii::app()->db->createCommand($sQuery)->execute();
-            // Add back the primaryKey
-
-            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $oSurvey->responsesTableName, 'id');
-        } elseif (Yii::app()->db->driverName == 'pgsql') {
-            $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
-            @Yii::app()->db->createCommand($sQuery)->execute();
-        } else {
-            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
-            @Yii::app()->db->createCommand($sQuery)->execute();
-        }
-    }
-
-    if ($oSurvey->savetimings == "Y") {
-        $timingsfieldmap = createTimingsFieldMap($iSurveyID, "full", false, false, $oSurvey->language);
-
-        $aTimingTableDefinition = array();
-        $aTimingTableDefinition['id'] = $aTableDefinition['id'];
-        foreach ($timingsfieldmap as $field=>$fielddata) {
-            $aTimingTableDefinition[$field] = 'FLOAT';
-        }
-
-        $sTableName = "{{survey_{$iSurveyID}_timings}}";
-        try {
-            Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        } catch (CDbException $e) {
-            return array('error'=>'timingstablecreation');
-        }
-
-    }
-    $aResult = array(
-        'status' => 'OK',
-        'pluginFeedback' => $event->get('pluginFeedback')
-    );
-    // create the survey directory where the uploaded files can be saved
-    if ($bCreateSurveyDir) {
-        if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
-            if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
-                $aResult['warning'] = 'nouploadsurveydir';
-            } else {
-                file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
-            }
-        }
-    }
-    $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
-    Yii::app()->db->createCommand($sQuery)->query();
-    return $aResult;
 }
 
 /**
@@ -498,9 +284,10 @@ function mssql_drop_constraint($fieldname, $tablename)
     sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
-    $result = dbExecuteAssoc($dfquery)->read();
-    $defaultname = $result['CONTRAINT_NAME'];
+    WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
+    $result = Yii::app()->db->createCommand($dfquery)->query();
+    $result = $result->read();
+    $defaultname = $result['CONSTRAINT_NAME'];
     if ($defaultname != false) {
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }

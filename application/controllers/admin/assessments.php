@@ -35,14 +35,14 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
-            $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $languages = $oSurvey->allLanguages;
+            $surveyLanguage = $oSurvey->language;
 
             Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}";
 
-            array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
@@ -252,13 +252,13 @@ class Assessments extends Survey_Common_Action
      */
     private function _collectGroupData($iSurveyID, &$aData = array())
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
-            $groupId = $group->attributes['gid'];
-            $groupName = $group->attributes['group_name'];
+            $groupId = $group->gid;                        
+            $groupName = $group->questionGroupL10ns[$oSurvey->language]->group_name;
             $aData['groups'][$groupId] = $groupName;
         }
-        return $aData;
     }
 
     /**

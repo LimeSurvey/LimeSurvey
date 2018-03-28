@@ -184,7 +184,8 @@ class viewHelper
      * Return a string with the good separator before and after
      *
      * @param $sString :the string
-     * @param : string/array : the string to put before of the array (before,after)
+     * @param string|array : the string to put before of the array (before,after)
+     * @return string
      */
     public static function putSeparator($sString, $separator)
     {

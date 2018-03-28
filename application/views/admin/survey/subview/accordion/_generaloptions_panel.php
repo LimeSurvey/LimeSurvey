@@ -160,14 +160,6 @@
                 </div>
             </div>
 
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
-                <div class="">
-                    <input class="form-control" type='text' size='50' id='faxto' name='faxto' value="<?php echo htmlspecialchars($oSurvey->faxto); ?>" />
-                </div>
-            </div>
-
             <?php else: ?>
             <!-- End URL -->
             <div class="form-group">
@@ -222,14 +214,6 @@
                 <label class=" control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
                 <div class="">
                     <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
-                </div>
-            </div>
-
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
-                <div class="">
-                    <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
                 </div>
             </div>
 

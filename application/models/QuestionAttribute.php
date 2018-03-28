@@ -62,6 +62,17 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
+        /**
+         * This defaultScope indexes the ActiveRecords given back by attribute name
+         * Important: This does not work if you want to retrieve records for more than one question at a time.
+         * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
+         * @return array Scope that indexes the records by their attribute bane
+         */
+    public function defaultScope()
+    {
+        return array('index'=>'attribute');
+    }
+    
     /** @inheritdoc */
     public function rules()
     {
@@ -178,7 +189,7 @@ class QuestionAttribute extends LSActiveRecord
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
             } else {
-                $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+                $aLanguages = $oQuestion->survey->allLanguages;
             }
             // Get all atribute set for this question
             $sType = $oQuestion->type;
@@ -188,7 +199,7 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
 
-            $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
+            $aAttributeNames = questionHelper::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
@@ -246,6 +257,11 @@ class QuestionAttribute extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     public static function insertRecords($data)
     {
         $attrib = new self;

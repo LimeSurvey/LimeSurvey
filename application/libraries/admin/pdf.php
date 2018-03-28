@@ -364,7 +364,8 @@ class pdf extends TCPDF
         $maxwidth = $this->getEqualWidth($array);
         $oldStyle = $this->FontStyle;
         $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             for ($b = 0; $b < sizeof($array[$a]); $b++) {
                 $this->Cell($maxwidth, 4, $this->delete_html($array[$a][$b]), 0, 0, 'L');
             }
@@ -378,14 +379,15 @@ class pdf extends TCPDF
      * Creates a Table with equal cell width.
      * @param $array - table array( 0=> array("td", "td", "td"),
      * 								1=> array("td", "td", "td"))
-     * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
+     * @param integer $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
      * @return void
      */
     public function equalTable($array, $modulo = 1)
     {
         $maxwidth = $this->getEqualWidth($array);
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
@@ -412,11 +414,13 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
-            for ($b = 0; $b < sizeof($array[$a]); $b++) {
+            $subArraySize = sizeof($array[$a]);
+            for ($b = 0; $b < $subArraySize; $b++) {
                 //echo $maxwidth[$b]." max $b.Spalte<br/>";
                 $this->Cell($maxwidth[$b], 4, $this->delete_html($array[$a][$b]), 0, 0, 'L', $fill);
             }
@@ -441,7 +445,9 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $iHeight = 0;
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 1; } else {$fill = 0; }
             } else {$fill = 0; }
@@ -491,7 +497,8 @@ class pdf extends TCPDF
     public function getminwidth($array)
     {
         $width = array();
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 $stringWidth = 0;
                 $chars = str_split($this->delete_html($array[$i][$j]), 1);
@@ -512,7 +519,8 @@ class pdf extends TCPDF
     }
     public function getmaxwidth($array)
     {
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (($i - 1) >= 0) {
                     if (strlen($this->delete_html($array[($i - 1)][$j])) < strlen($this->delete_html($array[$i][$j]))) {
@@ -542,7 +550,8 @@ class pdf extends TCPDF
         $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
         $faktor = $fullWidth / array_sum($width);
 
-        for ($i = 0; $i < sizeof($width); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             $maxlength[$i] = $faktor * $width[$i];
         }
         return $maxlength;
@@ -552,7 +561,7 @@ class pdf extends TCPDF
      * gets the width for each column in tables, based on pagewidth and count of columns.
      * Good for static tables with equal value String-length
      * @param $array
-     * @return unknown_type
+     * @return mixed
      */
     public function getEqualWidth($array)
     {
@@ -561,7 +570,8 @@ class pdf extends TCPDF
 
         $width = ($this->GetLineWidth() * 1000) - $deadSpace;
         $count = 0;
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (sizeof($array[$i]) > $count) {
                     $count = sizeof($array[$i]);
@@ -589,11 +599,11 @@ class pdf extends TCPDF
     /**
      *
      * Create Answer PDF document, set metadata and set title
-     * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sSurveyName - Survey name (header, metadata and title),
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aSurveyInfo - Survey Information (preventing from passing to methods every time)
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sSurveyName - Survey name (header, metadata and title),
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
@@ -623,8 +633,8 @@ class pdf extends TCPDF
     /**
      *
      * Add title to pdf
-     * @param $sTitle - Title
-     * @param $sSubtitle - Subtitle
+     * @param string $sTitle - Title
+     * @param string $sSubtitle - Subtitle
      * @return void
      */
     public function addTitle($sTitle, $sSubtitle = "")
@@ -649,9 +659,9 @@ class pdf extends TCPDF
     /**
      *
      * Add header to pdf
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
@@ -717,12 +727,12 @@ class pdf extends TCPDF
      *
      * Add answer to PDF
      *
-     * @param $sQuestion - Question field text array
-     * @param $sResponse - Answer field text array
-     * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
+     * @param string $sQuestion - Question field text array
+     * @param string $sResponse - Answer field text array
+     * @param boolean $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
      *                               because we can not interpret expressions so just purify.
      *                               TODO: Find a universal valid method to interpret expressions
-     * @param $bAllowBreakPage - Allow break cell in two pages
+     * @param boolean $bAllowBreakPage - Allow break cell in two pages
      * @return void
      */
     public function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)

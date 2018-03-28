@@ -239,11 +239,12 @@ class GlobalSettings extends Survey_Common_Action
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList())) {
+            if (array_key_exists($sTemplate, Template::getTemplateList())) {
 // Filter template name
                 setGlobalSetting('defaulttheme', $sTemplate);
             }
             setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
+            setGlobalSetting('force_ssl', Yii::app()->getRequest()->getPost('force_ssl'));
         }
 
         // we set the admin theme
@@ -312,7 +313,6 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
         setGlobalSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
         setGlobalSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
-        setGlobalSetting('force_ssl', Yii::app()->getRequest()->getPost('force_ssl'));
         setGlobalSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         setGlobalSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         setGlobalSetting('rpc_publish_api', (bool) Yii::app()->getRequest()->getPost('rpc_publish_api'));

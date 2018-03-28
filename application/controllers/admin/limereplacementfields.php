@@ -31,8 +31,7 @@ class limereplacementfields extends Survey_Common_Action
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $oSurvey = Survey::model()->findByPk($surveyid);
-            $surveyformat = $oSurvey->format; // S, G, A
+            $surveyformat = $survey->format; // S, G, A
 
             //Go through each question until we reach the current one
             //error_log(print_r($qrows,true));
@@ -189,7 +188,7 @@ class limereplacementfields extends Survey_Common_Action
      */
     private function _getReplacementFields($fieldtype, $surveyid)
     {
-
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $replFields = array();
         if (!$surveyid) {
                     return array($replFields, false);
@@ -295,9 +294,8 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['EXPIRY'] = gT("Survey expiration date");
 
                 // email-conf can accept insertans fields for non anonymous surveys
-                if (isset($surveyid)) {
-                    $oSurvey = Survey::model()->findByPk($surveyid);
-                    if ($oSurvey->anonymized == "N") {
+                if (!empty($oSurvey)) {
+                    if (!$oSurvey->isAnonymized) {
                         return array($replFields, true);
                     }
                 }

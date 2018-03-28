@@ -35,6 +35,7 @@ class OptoutController extends LSYii_Controller
             $iSurveyID     = Yii::app()->request->getQuery('surveyid');
             $sLanguageCode = Yii::app()->request->getQuery('langcode');
             $sToken        = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
+            $oSurvey       = Survey::model()->findByPk($iSurveyID);
 
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('sanitize');
@@ -48,7 +49,7 @@ class OptoutController extends LSYii_Controller
             //Check that there is a SID
             // Get passed language from form, so that we dont lose this!
             if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                $sBaseLanguage = $oSurvey->language;
             } else {
                 $sBaseLanguage = sanitize_languagecode($sLanguageCode);
             }
@@ -77,18 +78,19 @@ class OptoutController extends LSYii_Controller
         $iSurveyID = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
         $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
         if (!$iSurveyID) {
-//IF there is no survey id, redirect back to the default public page
+            //IF there is no survey id, redirect back to the default public page
             $this->redirect(array('/'));
         }
         $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = $oSurvey->language;
         } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
@@ -129,17 +131,18 @@ class OptoutController extends LSYii_Controller
         $iSurveyID = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
         $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
         if (!$iSurveyID) {
-//IF there is no survey id, redirect back to the default public page
+            //IF there is no survey id, redirect back to the default public page
             $this->redirect(array('/'));
         }
         $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = $oSurvey->language;
         } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }

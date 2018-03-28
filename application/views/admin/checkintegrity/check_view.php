@@ -169,13 +169,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 } ?>
 
                 <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)): ?>
-                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question respectively, check the question order and save it."); ?>
+                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question and group respectively, check the question order and save it."); ?>
                         <ul>
                             <?php foreach ($questionOrderDuplicates as $info): ?>
                             <li>
                                 SID: <a href="<?php echo $info['viewSurveyLink']; ?>"><?php echo $info['sid']; ?></a>
-                                GID: <?php echo $info['sid']; ?>
-                                QID: <?php echo $info['qid']; ?>
+                                GID: <a href="<?php echo $info['viewGroupLink']; ?>"><?php echo $info['gid']; ?></a>
                                 <?php if ($info['parent_qid'] != 0): ?>
                                     Parent QID: <a href="<?php echo $info['questionSummaryLink']; ?>"><?php echo $info['parent_qid']; ?></a>
                                 <?php endif; ?>

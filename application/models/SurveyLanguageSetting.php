@@ -141,7 +141,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     public function lsdefault($attribute)
     {
         $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
-        $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
+        $sEmailFormat = $oSurvey->isHtmlEmail ? 'html' : '';
         $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 
             $aDefaultTextData = array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
@@ -177,20 +177,6 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         $captions = @json_decode($this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
-    }
-
-    /**
-     * @param mixed|bool $condition
-     * @param bool $return_query
-     * @return mixed
-     */
-    public function getAllRecords($condition = false, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != false) {
-            $query->where($condition);
-        }
-        return ($return_query) ? $query->queryAll() : $query;
     }
 
     /**

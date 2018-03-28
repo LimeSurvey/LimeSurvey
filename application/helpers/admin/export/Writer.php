@@ -226,7 +226,7 @@ abstract class Writer implements IWriter
         //The following if block handles transforms of Ys and Ns.
         if (($oOptions->convertN || $oOptions->convertY) &&
         isset($fieldType) &&
-        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')) {
+        ($fieldType == Question::QT_M_MULTIPLE_CHOICE || $fieldType == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $fieldType == Question::QT_Y_YES_NO_RADIO)) {
             if (($value == 'N' || ($value == '' && !is_null($value))) && $oOptions->convertN) {
                 return $oOptions->nValue;
             } else if ($value == 'Y' && $oOptions->convertY) {

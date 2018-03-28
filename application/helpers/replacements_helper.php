@@ -342,10 +342,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
-    if (!isset($replacements['QID'])) {
-        Yii::import('application.helpers.SurveyRuntimeHelper');
-        $coreReplacements = array_merge($coreReplacements, SurveyRuntimeHelper::getQuestionReplacement(null)); // so $replacements overrides core values
-    }
     if (!is_null($replacements) && is_array($replacements)) {
         $doTheseReplacements = array_merge($coreReplacements, $replacements); // so $replacements overrides core values
     } else {
@@ -433,13 +429,9 @@ function getStandardsReplacementFields($thissurvey)
     } else {
         $_datestamp = '-';
     }
-
     $_assessment_current_total = '';
     if (!empty($thissurvey['aAssessments'])) {
-        if (!empty($thissurvey['aAssessments']['total'])) {
-            $_assessment_current_total = $thissurvey['aAssessments']['total'];
-        }
-
+        $_assessment_current_total = $thissurvey['aAssessments']['total'];
     }
 
 

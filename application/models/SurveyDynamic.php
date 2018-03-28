@@ -352,7 +352,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         // Upload question
-        if ($oFieldMap->type == '|' && strpos($oFieldMap->fieldname, 'filecount') === false) {
+        if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
 
             $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);

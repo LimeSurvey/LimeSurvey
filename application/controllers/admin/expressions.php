@@ -42,9 +42,8 @@ class Expressions extends Survey_Common_Action
         } else {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('decimal');
-
+            App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
             $aData['subaction'] = $this->_printTitle($aData['sa']);
@@ -53,9 +52,9 @@ class Expressions extends Survey_Common_Action
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             $sAction = Yii::app()->request->getQuery('sa', false);
             if ($sAction) {
-                            $this->test($sAction, $aData);
+                $this->test($sAction, $aData);
             } else {
-                            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+                $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
             }
         }
     }
@@ -85,7 +84,7 @@ class Expressions extends Survey_Common_Action
         $language = Yii::app()->request->getParam('lang', null); 
         
         if ($language !== null) {
-                    $language = sanitize_languagecode($language);
+            $language = sanitize_languagecode($language);
         }
 
         $aData['sid'] = $sid;
@@ -127,7 +126,7 @@ class Expressions extends Survey_Common_Action
 
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
+        App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
@@ -171,7 +170,7 @@ class Expressions extends Survey_Common_Action
         
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
+        App()->getClientScript()->registerPackage('expressions');
 
         
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        

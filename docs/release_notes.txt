@@ -35,7 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 3.5.2 (build 180315) to 3.5.3 (build 180316) March 16, 2018
+Changes from 3.5.3 (build 180316) to 3.5.4 (build 180320) Mar 20, 2018
+-Fixed issue #13476: Unable to send individual remind and invite mails (markusfluer)
+-Fixed issue #13480: Assessments: wrong windows size and crash after adding a rule (LouisGac)
+-Fixed issue #13483: Unable to enter 0.000000001 for numeric value (Carsten Schmitz)
+-Fixed issue #13486: Language dropdown must be at first page when create survey (markusfluer)
+-Fixed issue #13494: Problem when activating force_xmlsettings_for_survey_rendering (markusfluer)
+-Fixed issue: Calculations sometimes fail in EM (markusfluer)
+-Fixed issue: Multiple problems regarding question reorder (markusfluer)
+-Fixed issue: PDF download in statistics not possible anymore (markusfluer)
+-Fixed issue: Unable to log in to MSSQL when updating from 2.05 or older (Carsten Schmitz)
+-Fixed issue: Update from Dbversion 164 or earlier stuck at version 175 (Carsten Schmitz)
+-Fixed issue: Ckeditor not showing on IE (kw-pr)
+#Updated translation: Arabic by iceclimber81
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by LS_fan
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by zfocuz, Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, markusfluer
+#Updated translation: German by markusfluer, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by markusfluer, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Myanmar by AlexEDGE1
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Spanish (Spain) by Dhel210, aesteban
+
+Changes from 3.5.2 (build 180315) to 3.5.3 (build 180316) Mar 16, 2018
 -Fixed issue #13372: Behavior of reset in mail templates (markusfluer)
 -Fixed issue: Database upgrade doesn't work
 
@@ -57,7 +87,7 @@ Changes from 3.5.1 (build 180312) to 3.5.2 (build 180315) March 15, 2018
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Polish by elissa
 
-Changes from 3.5.0 (build 180309) to 3.5.1 (build 180312) March 12, 2018
+Changes from 3.5.0 (build 180309) to 3.5.1 (build 180312) Mar 12, 2018
 -Fixed issue #12715: Behavior change for numericalmultiple Slider default value when 0 or null Upgraded PHP version (markusfluer)
 -Fixed issue #13247: Missing translation in beginner tour (markusfluer)
 -Fixed issue #13464: Invalid SQL in "mail_registered_participants" (Olle Haerstedt)
@@ -66,7 +96,7 @@ Changes from 3.5.0 (build 180309) to 3.5.1 (build 180312) March 12, 2018
 -Fixed issue: Cannot install on MSSQL server (Carsten Schmitz)
 -Fixed issue: Multiple inSurveyView height related problems (markusfluer)
 
-Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) March 9, 2018
+Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) Mar 9, 2018
  -Fixed issue #13461: Unable to start survey (markusfluer)
  -Fixed issue #13204: Even with good settings : browse ressources show "You don't have Permission to browse this server" (markusfluer)
  -Fixed issue #13268: Impossibilité de désactiver un questionnaire (markusfluer)
@@ -105,7 +135,7 @@ Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) March 9, 2018
  #Updated translation: Polish (Informal) by elissa
  #Updated translation: Polish by elissa
 
-Changes from 3.4.3 (build 180227) to 3.4.4 (build 180305) March 5, 2018
+Changes from 3.4.3 (build 180227) to 3.4.4 (build 180305) Mar 5, 2018
 -Fixed issue #13246: Fix plugin in survey responses (Olle Haerstedt)
 -Fixed issue #13310: Cannot delete surveys in Survey list when debug is on (Olle Haerstedt)
 -Fixed issue #13356: Crash at optin and optout (Olle Haerstedt)

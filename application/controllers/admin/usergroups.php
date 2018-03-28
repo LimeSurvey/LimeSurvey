@@ -269,9 +269,7 @@ class Usergroups extends Survey_Common_Action
                     }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a LEFT JOIN {{user_groups}} ug on a.ugid=ug.ugid INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE a.ugid = ".$ugid." ORDER BY b.users_name";
-                $eguresult = dbExecuteAssoc($eguquery);
-                $aUserInGroupsResult = $eguresult->readAll();
+                $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
                 $sCondition2 = "ugid = :ugid";
                 $sParams2 = [':ugid'=>$ugid];
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -288,7 +286,7 @@ class Usergroups extends Survey_Common_Action
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
-                foreach ($aUserInGroupsResult as $egurow) {
+                foreach ($aUserInGroupsResult->users as $egurow) {
                     // @todo: Move the zebra striping to view
                     if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";
@@ -313,7 +311,14 @@ class Usergroups extends Survey_Common_Action
                 $aData["userloop"] = $userloop;
                 if ($row2 !== false) {
                     $aData["useradddialog"] = true;
-                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
+                    
+                    $aUsers = User::model()->findAll(['join'=>"LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition'=>"id IS NULL"]);
+                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function($user)
+                    {
+                        return \CHtml::encode($user->users_name)." (".\CHtml::encode($user->full_name).')'; });
+                    // Remove group owner because an owner is automatically member of a group
+                    unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
+                    $aData["addableUsers"] = array('-1'=>gT("Please choose...")) + $aNewUserListData;
                     $aData["useraddurl"] = "";
                 }
                 $aViewUrls[] = 'viewUserGroup_view';
@@ -384,7 +389,7 @@ class Usergroups extends Survey_Common_Action
                             }
                             break;
                     }
-                    if (!empty($sFlashType) && !empty($sFlashMessage)) { 
+                    if (!empty($sFlashType) && !empty($sFlashMessage)) {
                         Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
                     }
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));

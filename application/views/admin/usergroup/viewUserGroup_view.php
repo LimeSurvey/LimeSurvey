@@ -91,9 +91,7 @@
                                     <td align='center'>
                                         <div class="row">
                                             <div class="col-lg-8">
-                                                <select name='uid' class="form-control col-lg-4">
-                                                    <?php echo $useraddusers; ?>
-                                                </select>
+                                                <?php echo CHtml::dropDownList('uid','-1',$addableUsers,array('class'=>"form-control col-lg-4")); ?>
                                             </div>
                                             <div class="col-lg-4">
                                                 <input type='submit' value='<?php eT("Add user"); ?>' class="btn btn-default"/>

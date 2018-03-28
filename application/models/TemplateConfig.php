@@ -454,7 +454,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        //Â Save
+        //Ã‚Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';

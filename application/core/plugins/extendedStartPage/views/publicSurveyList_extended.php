@@ -146,5 +146,5 @@
     $data['languagechanger'] = makeLanguageChanger(App()->language);
     /* must register script if template don't do it */
     App()->clientScript->registerScript("ExtendedStartpageToolTip", "$('.surveytitle,.view-stats').tooltip()", CClientScript::POS_READY);
-    $oTemplate = Template::model()->getInstance("default");
+    $oTemplate = Template::getInstance("default");
     echo templatereplace(file_get_contents($oTemplate->pstplPath."/surveylist.pstpl"), $aReplacementData, $data, 'survey['.__LINE__.']');

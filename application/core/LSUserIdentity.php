@@ -84,7 +84,6 @@ class LSUserIdentity extends CUserIdentity
             $this->postLogin();
         } else {
             // Log a failed attempt
-            $userHostAddress = getIPAddress();
             FailedLoginAttempt::model()->addAttempt();
             regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii

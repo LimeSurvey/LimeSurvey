@@ -423,7 +423,7 @@ class Template extends LSActiveRecord
         $oTemplateList->setPagination(false);
 
         foreach ($oTemplateList->getData() as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name] =  (isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
+            $aTemplateList[$oTemplate->template_name] =  (self::isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
         }
         return $aTemplateList;
 

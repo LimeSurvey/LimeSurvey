@@ -11,7 +11,12 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list form-group <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list form-group <?php 
+
+// @todo: Fix me - even and odd should be determined by JS dynamically, not statically here
+// echo ($odd) ? "ls-odd" : "ls-even"; 
+
+?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
         <?php echo $answertext;?>
         <?php

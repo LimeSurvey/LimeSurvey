@@ -14,9 +14,17 @@ echo viewHelper::getViewTestTag('pluginManager');
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
-<div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
-<div style="width: 75%; margin: auto;">
-    <div id="ls_action_changestate_form_container">
+<div class='col-sm-12'>
+    <div>  <!-- Extra funny div -->
+        <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
+        <div class='col-sm-12'>
+            <a href='<?php echo $scanFilesUrl; ?>' class='btn btn-default pull-right' data-toggle='tooltip' title='<?php eT('Scan files for available plugins'); ?>'>
+                <i class='fa fa-file '></i>
+                <i class='fa fa-search '></i>&nbsp;
+                Scan files
+            </a>
+        </div>
+
     <?php
     echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
     /* @var $this ConfigController */
@@ -59,21 +67,41 @@ echo viewHelper::getViewTestTag('pluginManager');
             'name' => 'status',
             //'rowHtmlOptionsExpression' => 'array("data-id" => $data->id)',
             //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
-            'value' => function($data)
-            {
-                if ($data['active'] == 1)
-                {
+            'value' => function ($data) {
+                if ($data['load_error'] == 1) {
+                    return sprintf(
+                        "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
+                        gT('Plugin load error')
+                    );
+                } elseif ($data['active'] == 1) {
                     return "<span class='fa fa-circle'></span>";
-                }
-                else
-                {
+                } else {
                     return "<span class='fa fa-circle-thin'></span>";
                 }
             }
         ),
         array(// display the 'name' attribute
             'header' => gT('Plugin'),
-            'name' => 'name'
+            'name' => 'name',
+            'type' => 'html',
+            'value' => function ($data) {
+                $url = Yii::app()->getController()->createUrl(
+                    '/admin/pluginmanager',
+                    [
+                        'sa' => 'configure',
+                        'id' => $data['id']
+                    ]
+                );
+                if ($data['load_error'] == 0) {
+                    return sprintf(
+                        '<a href="%s">%s</a>',
+                        $url,
+                        $data['name']
+                    );
+                } else {
+                    return $data['name'];
+                }
+            }
         ),
         array(// display the 'description' attribute
             'header' => gT('Description'),
@@ -91,36 +119,35 @@ echo viewHelper::getViewTestTag('pluginManager');
                 $output='';
                 if(Permission::model()->hasGlobalPermission('settings','update'))
                 {
-                    if ($data['active'] == 0)
+                    if ($data['load_error'] == 1) {
+                        $reloadUrl = Yii::app()->createUrl(
+                            'admin/pluginmanager',
+                            [
+                                'sa' => 'resetLoadError',
+                                'pluginId' => $data['id']
+                            ]
+                        );
+                        $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+                    } elseif ($data['active'] == 0)
                     {
-                        $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
-                            . gT('Activate')
+                        $output = "<a data-toggle='tooltip' title='" . gT('Activate'). "' href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
+                            . "<span class='fa fa-power-off'></span>"
                         ."</a>";
                     } else {
-                        $output = "<a href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs'>"
-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
-                            . gT('Deactivate')
+                        $output = "<a data-toggle='tooltip' title='" . gT('Deactivate') . "' href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>"
+                            . "<span class='fa fa-power-off'></span>"
                         ."</a>";
                     }
+
+                    $output .= "
+                        <a href='' data-toggle='tooltip' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'><i class='fa fa-times-circle'></i></a>
+                    ";
                 }
-                if(count($data['settings'])>0)
-                {
-                    $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
-                }
+
                 return $output;
             }
         ),
     );
-
-    /*
-    array(            // display a column with "view", "update" and "delete" buttons
-    'class' => 'CallbackColumn',
-    'label' => function($data) { return ($data->active == 1) ? "deactivate": "activate"; },
-    'url' => function($data) { return array("/plugins/activate", "id"=>$data["id"]); }
-    )
-    );
-    */
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
@@ -135,7 +162,6 @@ echo viewHelper::getViewTestTag('pluginManager');
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         ));
     ?>
-</div>
 <!-- 508 -->
 <a name="activate"></a>
 <a name="deactivate"></a>

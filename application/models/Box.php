@@ -12,7 +12,7 @@
  * @property string $page
  * @property integer $usergroup UserGroup ID
  */
-class Boxes extends CActiveRecord
+class Box extends CActiveRecord
 {
     /** @inheritdoc */
     public function tableName()
@@ -218,7 +218,7 @@ class Boxes extends CActiveRecord
 
     /**
      * @inheritdoc
-     * @return Boxes the static model class
+     * @return Box the static model class
      */
     public static function model($className = __CLASS__)
     {

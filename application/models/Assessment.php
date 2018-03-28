@@ -30,6 +30,17 @@
  */
 class Assessment extends LSActiveRecord
 {
+    public function init()
+    {
+        parent::init();
+        if ($this->isNewRecord) {
+            // default values
+            if (empty($this->scope)) {
+                $this->scope = '0';
+            }
+        }
+    }
+
     /**
      * @inheritdoc
      * @return Assessment
@@ -180,6 +191,7 @@ class Assessment extends LSActiveRecord
     /**
      * @param array $data
      * @return Assessment
+     * @deprecated use model->attributes = $data && $model->save()
      */
     public static function insertRecords($data)
     {

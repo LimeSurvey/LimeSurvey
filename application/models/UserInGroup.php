@@ -51,31 +51,14 @@ class UserInGroup extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            // TODO should be singular
-            'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
+            'user' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
         );
-    }
-
-    /**
-     * @param mixed $condition
-     * @return static[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-            }
-        }
-        $data = $this->findAll($criteria);
-        return $data;
     }
 
     /**
      * @param array $data
      * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
