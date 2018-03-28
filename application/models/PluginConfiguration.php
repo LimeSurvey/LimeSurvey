@@ -18,14 +18,14 @@
 class PluginConfiguration
 {
     /**
-     * @var xml
+     * @var SimpleXMLElement
      */
     public $xml;
 
     /**
      * 
      */
-    public function __construct($xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->xml = $xml;
     }
@@ -46,8 +46,10 @@ class PluginConfiguration
 
         $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
         foreach ($this->xml->compatibility->version as $pluginVersion) {
-            // At least one $v in config.xml must be higher or equal to versionnumber.
-            if (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
+            if (substr($lsVersion['versionnumber'], 0, 1) != substr($pluginVersion, 0, 1)) {
+                // 2 is not compatible with 3, etc.
+                continue;
+            } elseif (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
                 return true;
             }
         }

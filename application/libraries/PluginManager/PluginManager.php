@@ -258,10 +258,11 @@ class PluginManager extends \CApplicationComponent
                                 }
                             }
                         } else {
-                            // TODO: List faulty plugins.
+                            // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
-                                'load_error' => 1
+                                'load_error' => 1,
+                                'isCompatible' => false
                             ];
                         }
                     }
@@ -287,7 +288,7 @@ class PluginManager extends \CApplicationComponent
     {
         $result = array();
         $class = "{$pluginClass}";
-        $config = null;
+        $pluginConfig = null;
 
         if (!class_exists($class, false)) {
             $found = false;
@@ -307,10 +308,11 @@ class PluginManager extends \CApplicationComponent
                         . DIRECTORY_SEPARATOR .'config.xml';
                     if (file_exists($configFile)) {
                         libxml_disable_entity_loader(false);
-                        $config = simplexml_load_file(realpath($configFile));
+                        $xml = simplexml_load_file(realpath($configFile));
                         libxml_disable_entity_loader(true);
+                        $pluginConfig = new \PluginConfiguration($xml);
                     } else {
-                        $config = null;
+                        $pluginConfig = null;
                     }
 
                     $found = true;
@@ -326,11 +328,12 @@ class PluginManager extends \CApplicationComponent
         if (!class_exists($class)) {
             return null;
         } else {
-            $result['description'] = call_user_func(array($class, 'getDescription'));
-            $result['pluginName']  = call_user_func(array($class, 'getName'));
-            $result['pluginClass'] = $class;
-            $result['config']      = $config;
-            $result['load_error']  = 0;
+            $result['description']  = call_user_func(array($class, 'getDescription'));
+            $result['pluginName']   = call_user_func(array($class, 'getName'));
+            $result['pluginClass']  = $class;
+            $result['pluginConfig'] = $pluginConfig;
+            $result['isCompatible']   = $pluginConfig == null ? false : $pluginConfig->isCompatible();
+            $result['load_error']   = 0;
             return $result;
         }
     }
