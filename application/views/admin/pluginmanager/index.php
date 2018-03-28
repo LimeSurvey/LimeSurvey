@@ -138,11 +138,12 @@ echo viewHelper::getViewTestTag('pluginManager');
                             . "<span class='fa fa-power-off'></span>"
                         ."</a>";
                     }
+
+                    $output .= "
+                        <a href='' data-toggle='tooltip' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'><i class='fa fa-times-circle'></i></a>
+                    ";
                 }
-                if(count($data['settings'])>0)
-                {
-                    $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
-                }
+
                 return $output;
             }
         ),

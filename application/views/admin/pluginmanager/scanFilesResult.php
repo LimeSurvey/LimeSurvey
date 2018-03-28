@@ -22,6 +22,11 @@
                 <i class='fa fa-exclamation-triangle text-warning'></i>&nbsp;
                 <span class='text-warning'><?php eT('Load error. Please contact the plugin author.'); ?></span>
             <?php endif; ?>
+
+            <a href='' class='btn btn-danger' data-toggle='tooltip' title='<?php eT('Delete this plugin from the file system'); ?>'>
+                <i class='fa fa-trash'></i>&nbsp;
+                Delete files
+            </a>
         </div>
     <?php endforeach; ?>
 </div>
