@@ -64,6 +64,12 @@ class PluginManagerController extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
+        $aData['scanFilesUrl'] = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'scanFiles',
+            ]
+        );
 
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
@@ -87,6 +93,40 @@ class PluginManagerController extends Survey_Common_Action
         } else if ($type == "deactivate") {
             $this->deactivate($id);
         }
+    }
+
+    /**
+     * Scan files in plugin folder and add them to the database.
+     * @return void
+     */
+    public function scanFiles()
+    {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect(['/admin/pluginmanager']);
+        }
+
+        $oPluginManager = App()->getPluginManager();
+        $result = $oPluginManager->scanPlugins();
+
+        Yii::app()->setFlashMessage(
+            sprintf(
+                gT('Found %s plugins in file system'),
+                count($result)
+            ),
+            'notice'
+        );
+
+        $this->_renderWrappedTemplate(
+            'pluginmanager',
+            'scanFilesResult',
+            [
+                'result' => $result
+            ]
+        );
+
+        //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
+        //$this->getController()->redirect($indexUrl);
     }
 
     /**

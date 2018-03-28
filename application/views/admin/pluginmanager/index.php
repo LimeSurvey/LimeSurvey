@@ -14,9 +14,17 @@ echo viewHelper::getViewTestTag('pluginManager');
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
-<div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
-<div style="width: 75%; margin: auto;">
-    <div id="ls_action_changestate_form_container">
+<div class='col-sm-12'>
+    <div>  <!-- Extra funny div -->
+        <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
+        <div class='col-sm-12'>
+            <a href='<?php echo $scanFilesUrl; ?>' class='btn btn-default pull-right' data-toggle='tooltip' title='<?php eT('Scan files for available plugins'); ?>'>
+                <i class='fa fa-file '></i>
+                <i class='fa fa-search '></i>&nbsp;
+                Scan files
+            </a>
+        </div>
+
     <?php
     echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
     /* @var $this ConfigController */
@@ -153,7 +161,6 @@ echo viewHelper::getViewTestTag('pluginManager');
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         ));
     ?>
-</div>
 <!-- 508 -->
 <a name="activate"></a>
 <a name="deactivate"></a>
