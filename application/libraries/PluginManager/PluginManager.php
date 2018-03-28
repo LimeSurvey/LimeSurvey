@@ -389,7 +389,7 @@ class PluginManager extends \CApplicationComponent
             $records = $pluginModel->findAllByAttributes(array('active'=>1));
 
             foreach ($records as $record) {
-                if ($record->load_error == 0) {
+                if (!isset($record->load_error) || $record->load_error == 0) {
                     $this->loadPlugin($record->name, $record->id);
                 }
             }
