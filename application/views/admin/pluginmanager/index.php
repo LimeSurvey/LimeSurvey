@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('pluginManager');
         </div>
 
     <?php
-    echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
+    //echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
@@ -108,11 +108,11 @@ echo viewHelper::getViewTestTag('pluginManager');
             'name' => 'description'
         ),
         array(// display the activation link
-            'type' => 'html',
+            'type' => 'raw',
             'header' => gT('Action'),
             'name' => 'action',
             'htmlOptions' => array(
-                'style' => 'white-space: nowrap;',
+                //'style' => 'white-space: nowrap;',
             ),
             'value' => function($data) {
 
@@ -139,9 +139,29 @@ echo viewHelper::getViewTestTag('pluginManager');
                         ."</a>";
                     }
 
-                    $output .= "
-                        <a href='' data-toggle='tooltip' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'><i class='fa fa-times-circle'></i></a>
-                    ";
+                    // TODO: Don't use JS native confirm.
+                    if ($data['active'] == 0) {
+                        $uninstallUrl = App()->getController()->createUrl(
+                            '/admin/pluginmanager',
+                            [
+                                'sa' => 'uninstallPlugin'
+                            ]
+                        );
+                        $output .= '&nbsp;' . CHtml::beginForm(
+                            $uninstallUrl,
+                            'post',
+                            [
+                                'style' => 'display: inline-block'
+                            ]
+                        );
+                        $output .= "
+                                <input type='hidden' name='pluginId' value='" . $data['id'] . "' />
+                                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
+                                    <i class='fa fa-times-circle'></i>
+                                </button>
+                            </form>
+                        ";
+                    }
                 }
 
                 return $output;
@@ -168,7 +188,7 @@ echo viewHelper::getViewTestTag('pluginManager');
 
 <input id="ls_action_changestate_type" type="hidden" name="type" value="" />
 <input id="ls_action_changestate_id" type="hidden" name="id" value="" />
-<?php echo CHtml::endForm(); ?>
+<?php //echo CHtml::endForm(); ?>
 <script type="text/javascript">
     var bindActionButtons = function(){
         $('#ls_action_changestate_form').on('click','.ls_action_changestate', function(e){

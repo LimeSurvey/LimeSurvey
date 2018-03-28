@@ -18,6 +18,9 @@ class PluginManagerController extends Survey_Common_Action
 
         $oPluginManager->scanPlugins();
 
+        $jsFile = App()->getConfig('adminscripts') . 'plugin_manager.js';
+        App()->getClientScript()->registerScriptFile($jsFile);
+
         // Scan the plugins folder.
         /*
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
@@ -318,6 +321,58 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
             $this->getController()->redirect($url);
         }
+    }
+
+    /**
+     * Run when user click button to uninstall plugin.
+     * @return void
+     */
+    public function uninstallPlugin()
+    {
+        // Check permissions.
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        // Get plugin id from post.
+        $request = Yii::app()->request;
+        $pluginId = (int) $request->getPost('pluginId');
+
+        $plugin = Plugin::model()->find('id = :id', [':id' => $pluginId]);
+
+        // Check if plugin exists.
+        if (empty($plugin)) {
+            Yii::app()->setFlashMessage(
+                sprintf(
+                    gT('Found no plugin with id %d.'),
+                    $pluginId
+                ),
+                'error'
+            );
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        } else {
+            if ($plugin->delete()) {
+                Yii::app()->setFlashMessage(gT('Plugin uninstalled.'), 'success');
+            } else {
+                Yii::app()->setFlashMessage(gT('Could not uninstall plugin.'), 'error');
+            }
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+    /**
+     * Return URL to plugin manager index..
+     * @return string
+     */
+    protected function getPluginManagerUrl()
+    {
+        return $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'index'
+            ]
+        );
     }
 
     /**
