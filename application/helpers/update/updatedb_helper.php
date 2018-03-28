@@ -2359,9 +2359,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 402) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTokenTables349('utf8_bin');
-            upgradeSurveyTables349('utf8_bin');
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>349),"stg_name='DBVersion'");
+            upgradeTokenTables402('utf8_bin');
+            upgradeSurveyTables402('utf8_bin');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>402),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
       
@@ -2425,7 +2425,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 /**
  * @param string $sMySQLCollation
  */
-function upgradeSurveyTables349($sMySQLCollation)
+function upgradeSurveyTables402($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
@@ -2457,7 +2457,7 @@ function upgradeSurveyTables349($sMySQLCollation)
 /**
  * @param string $sMySQLCollation
  */
-function upgradeTokenTables349($sMySQLCollation)
+function upgradeTokenTables402($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     if (Yii::app()->db->driverName != 'pgsql') {
