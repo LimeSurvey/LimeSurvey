@@ -259,6 +259,10 @@ class PluginManager extends \CApplicationComponent
                             }
                         } else {
                             // TODO: List faulty plugins.
+                            $result[$pluginName] = [
+                                'pluginName' => $pluginName,
+                                'load_error' => 1
+                            ];
                         }
                     }
 
@@ -309,8 +313,9 @@ class PluginManager extends \CApplicationComponent
             return null;
         } else {
             $result['description'] = call_user_func(array($class, 'getDescription'));
-            $result['pluginName'] = call_user_func(array($class, 'getName'));
+            $result['pluginName']  = call_user_func(array($class, 'getName'));
             $result['pluginClass'] = $class;
+            $result['load_error']  = 0;
             return $result;
         }
     }

@@ -117,12 +117,15 @@ class PluginManagerController extends Survey_Common_Action
             'notice'
         );
 
+        $data = [];
+        $data['result'] = $result;
+        $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
+        $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
+
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'scanFilesResult',
-            [
-                'result' => $result
-            ]
+            $data
         );
 
         //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
