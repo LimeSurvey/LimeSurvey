@@ -218,10 +218,10 @@ class PluginManager extends \CApplicationComponent
      * Scans the plugin directory for plugins.
      * This function is not efficient so should only be used in the admin interface
      * that specifically deals with enabling / disabling plugins.
-     * @todo $forceReload not used?
+     * @param boolean $includeInstalledPlugins If set, also return plugins even if already installed in database.
      * @return array
      */
-    public function scanPlugins($forceReload = false)
+    public function scanPlugins($includeInstalledPlugins = false)
     {
         $this->shutdownObject->enable();
 
@@ -237,7 +237,8 @@ class PluginManager extends \CApplicationComponent
                         $this->shutdownObject->setPluginName($pluginName);
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-                        if (empty($plugin) || $plugin->load_error == 0) {
+                        if (empty($plugin) 
+                            || ($includeInstalledPlugins && $plugin->load_error == 0)) {
                             if (file_exists($file)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
@@ -257,13 +258,14 @@ class PluginManager extends \CApplicationComponent
                                     }
                                 }
                             }
-                        } else {
+                        } elseif ($plugin->load_error == 1) {
                             // List faulty plugins in scan files view.
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
                                 'load_error' => 1,
                                 'isCompatible' => false
                             ];
+                        } else {
                         }
                     }
 
@@ -417,7 +419,7 @@ class PluginManager extends \CApplicationComponent
                 }
             }
         } else {
-            // Log it ? tracevar ?
+            // Log it?
         }
         $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
     }
