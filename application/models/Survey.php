@@ -145,10 +145,27 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property string[] $oldResponsesTableNames
+ * @property string[] $oldTokensTableNames
+ * @property string $state survey current state  'inactive', 'expired', 'willRun', 'willExpire' or 'running'
+ * @property bool $canBeAnonymized
+ *
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
 {
+    const OLD = "old";
+    const SURVEY = "survey";
+    const TOKENS = "tokens";
+    const TABLE_DELIMITER = "_";
+
+    const STATE_INACTIVE = 'inactive';
+    const STATE_EXPIRED = 'expired';
+    const STATE_WILL_RUN = 'willRun';
+    const STATE_WILL_EXPIRE = 'willExpire';
+    const STATE_RUNNING = 'running';
+
+
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
@@ -157,8 +174,6 @@ class Survey extends LSActiveRecord
      * @var array $findByPkCache
      */
     protected $findByPkCache = array();
-
-
 
     public $searched_value;
     
@@ -1044,8 +1059,8 @@ class Survey extends LSActiveRecord
      */
     public function getState()
     {
-        if ($this->active == 'N') {
-            return 'inactive';
+        if (!$this->isActive) {
+            return self::STATE_INACTIVE;
         } elseif ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
@@ -1061,23 +1076,25 @@ class Survey extends LSActiveRecord
             $bWillRun = ($oStart > $oNow);
 
             if ($bExpired) {
-                return 'expired';
+                return self::STATE_EXPIRED;
             } elseif ($bWillRun) {
-                return 'willRun';
+                return self::STATE_WILL_RUN;
             } else {
-                return 'willExpire';
+                return self::STATE_WILL_EXPIRE;
             }
         }
         // If it's active, and doesn't have expire date, it's running
         else {
-            return 'running';
+            return self::STATE_RUNNING;
         }
     }
 
 
     /**
      * @todo Document code, please.
+     *
      * @return string
+     * @deprecated seems unused and should not be here anyway 2018-03-20
      */
     public function getRunning()
     {
@@ -1838,7 +1855,7 @@ return $s->hasTokensTable; });
     }
 
     /**
-     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * Get the count of questions that do not need input (skipping text-display etc.)
      * @return integer
      */
     public function getCountNoInputQuestions()
@@ -1935,5 +1952,45 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
-    }    
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getOldResponsesTableNames() {
+        return self::findTableNames(self::OLD.self::TABLE_DELIMITER.self::SURVEY.self::TABLE_DELIMITER.$this->primaryKey.self::TABLE_DELIMITER);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getOldTokensTableNames() {
+
+        return self::findTableNames(self::OLD.self::TABLE_DELIMITER.self::TOKENS.self::TABLE_DELIMITER.$this->primaryKey.self::TABLE_DELIMITER);
+    }
+
+    /**
+     * @param string $like "%LIKE%"
+     * @return string[]
+     */
+    public static function findTableNames($like) {
+        $allTableNames = Yii::app()->db->schema->tableNames;
+        $input = preg_quote($like, '~');
+        $tableNames = preg_grep('~' . $input . '~', $allTableNames);
+        return array_values($tableNames);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCanBeAnonymized() {
+        // allow anonymizing when we can not add any data
+        $allowedStates = [
+            self::STATE_EXPIRED,
+            self::STATE_INACTIVE
+        ];
+        return in_array($this->state, $allowedStates);
+    }
+
 }

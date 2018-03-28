@@ -55,6 +55,13 @@
             <?php eT("Stop this survey"); ?>
         </a>
     <?php endif; ?>
+    <?php if($oSurvey->canBeAnonymized):?>
+        <!-- Anonymize survey -->
+        <a class="btn btn-warning" href="<?php echo $this->createUrl("admin/survey/sa/anonymize/surveyid/$oSurvey->sid"); ?>" role="button">
+            <?php eT("Anonymize survey"); ?>
+        </a>
+    <?php endif; ?>
+
 <?php endif; ?>
 
 
