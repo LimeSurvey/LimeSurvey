@@ -156,7 +156,6 @@
                                                         <?php eT("Default value:")?>
                                                     </label>
                                                     <div class="col-sm-12">
-                                                        <?php echo "<pre>«".htmlspecialchars($langopts[$language][$questionrow['type']][0])."»</pre>"; ?>
                                                         <textarea <?php echo $hasUpdatePermission; ?> cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
                                                             id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php
                                                             echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?></textarea>
