@@ -26,17 +26,17 @@
 
     <!-- Survey Name -->
     <h1 class="{{ aSurveyInfo.class.surveyname }} text-center" {{ aSurveyInfo.attr.surveyname }} >
-        {{ aSurveyInfo.name }}
+        {{ processString(aSurveyInfo.name,1) }}
     </h1>
 
     <!-- Survey description -->
     <div class="{{ aSurveyInfo.class.description }} text-info text-center" {{ aSurveyInfo.attr.description }}>
-        {{ aSurveyInfo.description }}
+        {{ processString(aSurveyInfo.description,1) }}
     </div>
 
     <!-- Welcome text -->
     <div class="{{ aSurveyInfo.class.welcome }} h4 text-primary" {{ aSurveyInfo.attr.welcome }}>
-        {{ aSurveyInfo.welcome }}
+        {{ processString(aSurveyInfo.welcome,1) }}
     </div>
 
     <!-- Question count -->
