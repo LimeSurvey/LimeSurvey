@@ -7,6 +7,7 @@
         <last_update>2017-08-31</last_update>
         <author>Carsten Schmitz</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
+        <license>GNU General Public License version 2 or later</license>
         <version>1.0.0</version>
         <description><![CDATA[Core: Create an audit log of changes]]></description>
     </metadata>
