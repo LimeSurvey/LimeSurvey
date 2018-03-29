@@ -177,40 +177,40 @@ class PluginManagerController extends Survey_Common_Action
     }
 
     /**
-     * Deactivate plugin with $id
-     *
-     * @param int $id
+     * Deactivate plugin.
      * @return void
      */
-    private function deactivate($id)
+    public function deactivate()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
         }
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin)) {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 1) {
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $oPlugin->name);
-                if ($result->get('success', true)) {
-                    $iStatus = 0;
+        $pluginId = Yii::app()->request->getPost('pluginId');
+        $plugin = Plugin::model()->findByPk($pluginId);
+        if ($plugin && $plugin->active) {
+            $result = App()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeDeactivate', $this),
+                $plugin->name
+            );
+            if ($result->get('success', true)) {
+                $plugin->active = 0;
+                $plugin->save();
+                Yii::app()->user->setFlash('success', gT('Plugin was deactivated.'));
+            } else {
+                $customMessage = $result->get('message');
+                if ($customMessage) {
+                    Yii::app()->user->setFlash('error', $customMessage);
                 } else {
-                    $customMessage = $result->get('message');
-                    if ($customMessage) {
-                        Yii::app()->user->setFlash('error', $customMessage);
-                    } else {
-                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
-                    }
-
-                    $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+                    Yii::app()->user->setFlash('error', gT('Failed to deactivate the plugin.'));
                 }
+                $this->getController()->redirect($this->getPluginManagerUrl());
             }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was deactivated.'));
+        } else {
+            Yii::app()->user->setFlash('error', gT('Found no plugin, or plugin not active.'));
         }
-        $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+
+        $this->getController()->redirect($this->getPluginManagerUrl());
     }
 
     /**

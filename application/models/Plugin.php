@@ -151,36 +151,71 @@ class Plugin extends LSActiveRecord
                     . "<span class='fa fa-power-off'></span>"
                     ."</a>";
             } else {
-                $output = "<a data-toggle='tooltip' title='" . gT('Deactivate') . "' href='#deactivate' data-action='deactivate' data-id='".$this->id."' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>"
-                    . "<span class='fa fa-power-off'></span>"
-                    ."</a>";
+                $output = $this->getDeactivateButton();
             }
 
-            // TODO: Don't use JS native confirm.
             if ($this->active == 0) {
-                $uninstallUrl = App()->getController()->createUrl(
-                    '/admin/pluginmanager',
-                    [
-                        'sa' => 'uninstallPlugin'
-                    ]
-                );
-                $output .= '&nbsp;' . CHtml::beginForm(
-                    $uninstallUrl,
-                    'post',
-                    [
-                        'style' => 'display: inline-block'
-                    ]
-                );
-                $output .= "
-                                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
-                                    <i class='fa fa-times-circle'></i>
-                                </button>
-                            </form>
-                        ";
+                $output .= $this->getUninstallButton();
             }
         }
 
+        return $output;
+    }
+
+    /**
+     * @return string HTML
+     */
+    protected function getDeactivateButton()
+    {
+        $deactivateUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'deactivate'
+            ]
+        );
+        $output = '&nbsp;' . CHtml::beginForm(
+            $deactivateUrl,
+            'post',
+            [
+                'style' => 'display: inline-block'
+            ]
+        );
+        $output .= "
+                <input type='hidden' name='pluginId' value='" . $this->id . "' />
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-xs'>
+                    <i class='fa fa-power-off'></i>
+                </button>
+            </form>
+        ";
+        return $output;
+    }
+
+    /**
+     * @todo: Don't use JS native confirm.
+     * @return string HTML
+     */
+    protected function getUninstallButton()
+    {
+        $uninstallUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'uninstallPlugin'
+            ]
+        );
+        $output = '&nbsp;' . CHtml::beginForm(
+            $uninstallUrl,
+            'post',
+            [
+                'style' => 'display: inline-block'
+            ]
+        );
+        $output .= "
+                <input type='hidden' name='pluginId' value='" . $this->id . "' />
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
+                    <i class='fa fa-times-circle'></i>
+                </button>
+            </form>
+        ";
         return $output;
     }
 
