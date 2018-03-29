@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <metadata>
-        <name>AuthLDAP</name>
+        <name>ExportR</name>
         <type>plugin</type>
         <creationDate>2013-07-03</creationDate>
         <last_update>2017-11-23</last_update>
