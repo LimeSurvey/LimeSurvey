@@ -35,6 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.5.4 (build 180320) to 3.6.0 (build 180328) Mar 28, 2018
+-New feature #13511: Allow new attribute in beforeQuestionRender (Denis Chenu)
+-New feature #13537: allow max_execution_time by config (#1026) (Denis Chenu)
+-Fixed issue #13395: queXML PDF export missing comments on "Multiple choice with comments" (Adam Zammit)
+-Fixed issue #13475: cant export numeric column to SPSS with pgsql (#1015) (Denis Chenu)
+-Fixed issue #13488: Not able to save or clear without JavaScript (#1017) (Denis Chenu)
+-Fixed issue #13492: Index usage without JavaScript (Denis Chenu)
+-Fixed issue #13493: Lot of bug with not installed template (Denis Chenu)
+-Fixed issue #13495: Umlauts shown as ? at QueXML-Export (#1023) (Adam Zammit)
+-Fixed issue #13500: Upload file in theme options is weird (markusfluer)
+-Fixed issue #13510: beforeQuestionRender didn't include Class (Denis Chenu)
+-Fixed issue #13524: EM Error on Validation on hidden question and debug (Denis Chenu)
+-Fixed issue #13525: Title are not updated by Expression Manager (Denis Chenu)
+-Fixed issue #13527: Except at first page : survey text expression usage is broken (Denis Chenu)
+-Fixed issue #13541: Error executing admin/checkintegrity (Olle Haerstedt)
+-Fixed issue: Allow to use ComfortUpdate on server with disk_free_space disable (Denis Chenu)
+-Fixed issue: Cpdb attribute view not working (markusfluer)
+-Fixed issue: SQL problem in integrity check (Olle Haerstedt)
+-Fixed issue: Survey logic HTML page broken if error (Denis Chenu)
+-Fixed issue: User interface optimization (markusfluer)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by c_schmitz, arnaud21, b00z00
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Russian by c0der, quarrier, vipgroup
+
 Changes from 3.5.3 (build 180316) to 3.5.4 (build 180320) Mar 20, 2018
 -Fixed issue #13476: Unable to send individual remind and invite mails (markusfluer)
 -Fixed issue #13480: Assessments: wrong windows size and crash after adding a rule (LouisGac)
@@ -60,7 +91,7 @@ Changes from 3.5.3 (build 180316) to 3.5.4 (build 180320) Mar 20, 2018
 #Updated translation: Hungarian by kkd
 #Updated translation: Japanese by nomoto
 #Updated translation: Myanmar by AlexEDGE1
-#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Spanish (Spain) by Dhel210, aesteban

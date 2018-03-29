@@ -714,8 +714,12 @@ class TemplateConfig extends CActiveRecord
         // Clearall Links
         $aClassAndAttributes['class']['clearalllinks'] = ' ls-no-js-hidden ';
         $aClassAndAttributes['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
-
         $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
+        // Clearall Buttons
+        $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
+        $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
+        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
+        $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
 
         // Language changer
         $aClassAndAttributes['id']['lctdropdown'] = 'langs-container';
@@ -815,12 +819,15 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
         $aClassAndAttributes['class']['savelinksli']  = ' ls-no-js-hidden ';
         $aClassAndAttributes['class']['savelinkslia'] = 'ls-link-action ls-link-saveall';
-
         $aClassAndAttributes['attr']['loadlinksli'] = $aClassAndAttributes['attr']['savelinksli'] = $aClassAndAttributes['class']['savelinkslia'] = '';
 
         // Here you can add metas from core
         $aClassAndAttributes['metas'] = '    ';
-
+        // Save/Load buttons
+        $aClassAndAttributes['class']['loadbutton']  = 'ls-saveaction ls-loadall';
+        $aClassAndAttributes['class']['savebutton'] = 'ls-saveaction ls-saveall';
+        $aClassAndAttributes['attr']['loadbutton']  = 'type="submit" value="loadall" name="loadall"';
+        $aClassAndAttributes['attr']['savebutton'] = 'type="submit" value="saveall" name="saveall"';
         // Maybe add a plugin event here?
 
         return $aClassAndAttributes;

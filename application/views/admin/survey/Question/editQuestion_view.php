@@ -208,6 +208,8 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                             ?>
                                         </select> 
                                     <?php elseif($activated == "Y") : ?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                        <!-- TODO : control if we can remove, disable update type must be done by PHP -->
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
