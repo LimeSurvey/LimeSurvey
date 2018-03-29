@@ -18,7 +18,12 @@ echo viewHelper::getViewTestTag('pluginManager');
     <div>  <!-- Extra funny div -->
         <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
         <div class='col-sm-12'>
-            <a href='<?php echo $scanFilesUrl; ?>' class='btn btn-default pull-right' data-toggle='tooltip' title='<?php eT('Scan files for available plugins'); ?>'>
+            <a 
+                href='<?php echo $scanFilesUrl; ?>'
+                class='btn btn-default pull-right'
+                data-toggle='tooltip'
+                title='<?php eT('Scan files for available plugins'); ?>'
+            >
                 <i class='fa fa-file '></i>
                 <i class='fa fa-search '></i>&nbsp;
                 <?php eT('Scan files'); ?>
@@ -82,15 +87,25 @@ echo viewHelper::getViewTestTag('pluginManager');
         ],
     ];
 
-    $this->widget('bootstrap.widgets.TbGridView', array(
-        'dataProvider'=>$dataProvider,
-        'id' => 'plugins-grid',
-        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSize',
-                $pageSize,
-                Yii::app()->params['pageSizeOptions'],
-                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-        'columns'=>$gridColumns,
-        'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-        ));
+    $this->widget(
+        'bootstrap.widgets.TbGridView',
+        [
+            'dataProvider' => $dataProvider,
+            'id'           => 'plugins-grid',
+            'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') .' '
+                . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSize',
+                        $pageSize,
+                        Yii::app()->params['pageSizeOptions'],
+                        [
+                            'class' => 'changePageSize form-control',
+                            'style' => 'display: inline; width: auto'
+                        ]
+                    )
+                ),
+            'columns' => $gridColumns,
+            'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+        ]
+    );
