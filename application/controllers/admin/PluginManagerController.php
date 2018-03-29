@@ -79,23 +79,6 @@ class PluginManagerController extends Survey_Common_Action
     }
 
     /**
-     * Activate or deactivate a plugin
-     *
-     * @return void
-     */
-    public function changestate()
-    {
-        //Yii::app()->request->validateCsrfToken();
-        $id = Yii::app()->request->getPost('id');
-        $type = Yii::app()->request->getPost('type');
-        if ($type == "activate") {
-            $this->activate($id);
-        } else if ($type == "deactivate") {
-            $this->deactivate($id);
-        }
-    }
-
-    /**
      * Scan files in plugin folder and add them to the database.
      * @return void
      */
@@ -145,35 +128,39 @@ class PluginManagerController extends Survey_Common_Action
      * @param int $id Plugin id
      * @return void
      */
-    private function activate($id)
+    public function activate()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->setFlashMessage(gT("No permission"), 'error');
-            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
         }
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin)) {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 0) {
-                // Load the plugin:
-                App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
-                if ($result->get('success', true)) {
-                    $iStatus = 1;
-                } else {
-                    $customMessage = $result->get('message');
-                    if ($customMessage) {
-                        Yii::app()->user->setFlash('error', $customMessage);
-                    } else {
-                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
-                    }
 
-                    $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+        $request = Yii::app()->request;
+        $pluginId = (int) $request->getPost('pluginId');
+
+        $oPlugin = Plugin::model()->findByPk($pluginId);
+        if ($oPlugin && $oPlugin->active == 0) {
+            // Load the plugin:
+            App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId);
+            $result = App()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeActivate', $this),
+                $oPlugin->name
+            );
+            if ($result->get('success', true)) {
+                $oPlugin->active = 1;
+                $oPlugin->save();
+                Yii::app()->user->setFlash('success', gT('Plugin was activated.'));
+            } else {
+                $customMessage = $result->get('message');
+                if ($customMessage) {
+                    Yii::app()->user->setFlash('error', $customMessage);
+                } else {
+                    Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
                 }
+                $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
             }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was activated.'));
+        } else {
+            Yii::app()->user->setFlash('error', gT('Found no plugin, or plugin already active.'));
         }
         $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
@@ -188,7 +175,7 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
         }
-        $pluginId = Yii::app()->request->getPost('pluginId');
+        $pluginId = (int) Yii::app()->request->getPost('pluginId');
         $plugin = Plugin::model()->findByPk($pluginId);
         if ($plugin && $plugin->active) {
             $result = App()->getPluginManager()->dispatchEvent(

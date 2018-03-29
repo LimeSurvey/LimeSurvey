@@ -21,14 +21,11 @@ echo viewHelper::getViewTestTag('pluginManager');
             <a href='<?php echo $scanFilesUrl; ?>' class='btn btn-default pull-right' data-toggle='tooltip' title='<?php eT('Scan files for available plugins'); ?>'>
                 <i class='fa fa-file '></i>
                 <i class='fa fa-search '></i>&nbsp;
-                Scan files
+                <?php eT('Scan files'); ?>
             </a>
         </div>
 
     <?php
-    //echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
-    /* @var $this ConfigController */
-    /* @var $dataProvider CActiveDataProvider */
 
     $sort = new CSort();
     $sort->attributes = array(
@@ -97,38 +94,3 @@ echo viewHelper::getViewTestTag('pluginManager');
         'columns'=>$gridColumns,
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         ));
-    ?>
-<!-- 508 -->
-<a name="activate"></a>
-<a name="deactivate"></a>
-
-<input id="ls_action_changestate_type" type="hidden" name="type" value="" />
-<input id="ls_action_changestate_id" type="hidden" name="id" value="" />
-<?php //echo CHtml::endForm(); ?>
-<script type="text/javascript">
-    var bindActionButtons = function(){
-        $('#ls_action_changestate_form').on('click','.ls_action_changestate', function(e){
-            e.preventDefault();
-            //get the values of the action
-            $('#ls_action_changestate_type').val($(this).attr('href').split('#').pop());
-            $('#ls_action_changestate_id').val($(this).closest('tr').data('id'));
-            //get the form data and create a shadow form
-            //The shadow form is necessary due to a bug/functionality in jQuery to update only the shadowDom values of input elements.
-            //Therefore we need do create a shadowform which is submitted instead.
-            var formData = $('#ls_action_changestate_form').serializeArray();
-            var shadowForm = $('<form method="POST" action="'+$('#ls_action_changestate_form').attr('action')+'"></form>');
-            for(var i in formData){
-                shadowForm.append('<input name="'+formData[i]['name']+'" value="'+formData[i]['value']+'" />');
-            }
-            //Add the shadow form to the body to make it compatible with firefox and older IE browsers
-            shadowForm.css({width: '1px', height: '1px', 'overflow': 'hidden'}).appendTo('body').submit();
-        });
-    };
-    jQuery(function($) {
-        // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function() {
-            $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
-        });
-        bindActionButtons();
-    });
-</script>

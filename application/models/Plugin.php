@@ -147,9 +147,7 @@ class Plugin extends LSActiveRecord
                 );
                 $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
-                $output = "<a data-toggle='tooltip' title='" . gT('Activate'). "' href='#activate' data-action='activate' data-id='".$this->id . "' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
-                    . "<span class='fa fa-power-off'></span>"
-                    ."</a>";
+                $output = $this->getActivateButton();
             } else {
                 $output = $this->getDeactivateButton();
             }
@@ -159,6 +157,34 @@ class Plugin extends LSActiveRecord
             }
         }
 
+        return $output;
+    }
+
+    /**
+     * @return string HTML
+     */
+    protected function getActivateButton()
+    {
+        $activateUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'activate'
+            ]
+        );
+        $output = '&nbsp;' . CHtml::beginForm(
+            $activateUrl,
+            'post',
+            [
+                'style' => 'display: inline-block'
+            ]
+        );
+        $output .= "
+                <input type='hidden' name='pluginId' value='" . $this->id . "' />
+                <button data-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-default btn-xs'>
+                    <i class='fa fa-power-off'></i>
+                </button>
+            </form>
+        ";
         return $output;
     }
 
