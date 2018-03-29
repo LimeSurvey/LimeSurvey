@@ -94,7 +94,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                 <div class="panel-title h4">
                                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                         <span class="fa fa-chevron-left"></span>
-					                    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
+                                        <span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                     </a>
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                         <?php eT("Copy options"); ?>
@@ -151,7 +151,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                             <div class="panel-title h4">
                                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                     <span class="fa fa-chevron-left"></span>
-				                    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
+                                    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                 </a>
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                     <?php eT("General options");?>
@@ -163,9 +163,8 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                             <div class="panel-body">
                                 <!-- Question selector start -->
                                 <div  class="form-group">
-                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-
                                     <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -208,6 +207,8 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                             ?>
                                         </select> 
                                     <?php elseif($activated == "Y") : ?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                        <!-- TODO : control if we can remove, disable update type must be done by PHP -->
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                                 eT("Question type:");
