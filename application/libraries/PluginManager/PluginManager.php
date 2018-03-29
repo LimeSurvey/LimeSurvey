@@ -102,6 +102,20 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * @param string $destdir
+     * @return array [boolean $result, string $errorMessage]
+     */
+    public function installUploadedPlugin($destdir)
+    {
+        if (file_exists($configFile)) {
+            libxml_disable_entity_loader(false);
+            $xml = simplexml_load_file(realpath($configFile));
+            libxml_disable_entity_loader(true);
+            $pluginConfig = new \PluginConfiguration($xml);
+        }
+    }
+
+    /**
      * Install a plugin given a plugin configuration and plugin type (core or user).
      * @param string $pluginName Unique plugin class name/folder name.
      * @param string $pluginType 'user' or 'core', depending on location of folder.

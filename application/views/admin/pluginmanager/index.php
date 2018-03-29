@@ -18,16 +18,31 @@ echo viewHelper::getViewTestTag('pluginManager');
     <div>  <!-- Extra funny div -->
         <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
         <div class='col-sm-12'>
-            <a 
-                href='<?php echo $scanFilesUrl; ?>'
-                class='btn btn-default pull-right'
-                data-toggle='tooltip'
-                title='<?php eT('Scan files for available plugins'); ?>'
-            >
-                <i class='fa fa-file '></i>
-                <i class='fa fa-search '></i>&nbsp;
-                <?php eT('Scan files'); ?>
-            </a>
+            <div class='pull-right'>
+                <a
+                    href=''
+                    class='btn btn-success '
+                    data-toggle='modal'
+                    data-target='#installPluginZipModal'
+                    data-tooltip='true'
+                    title='<?php eT('Install plugin by ZIP archive'); ?>'
+                >
+                    <i class='fa fa-cloud-download '></i>&nbsp;
+                    <?php eT('Install ZIP'); ?>
+                </a>
+                &nbsp;
+                <a 
+                    href='<?php echo $scanFilesUrl; ?>'
+                    class='btn btn-default'
+                    data-toggle='tooltip'
+                    title='<?php eT('Scan files for available plugins'); ?>'
+                >
+                    <i class='fa fa-file '></i>
+                    <i class='fa fa-search '></i>&nbsp;
+                    <?php eT('Scan files'); ?>
+                </a>
+                &nbsp;
+            </div>
         </div>
 
     <?php
@@ -109,3 +124,5 @@ echo viewHelper::getViewTestTag('pluginManager');
             'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         ]
     );
+
+    $this->renderPartial('./pluginmanager/uploadModal', []);

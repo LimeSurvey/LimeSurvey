@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @todo Apply new permission 'extensions' instead of 'settings'.
  */
 class PluginManagerController extends Survey_Common_Action
 {
@@ -214,7 +215,7 @@ class PluginManagerController extends Survey_Common_Action
             }
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
-            foreach ($aSettings as $name => $setting) {
+            foreach (array_keys($aSettings) as $name) {
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
@@ -373,6 +374,148 @@ class PluginManagerController extends Survey_Common_Action
     }
 
     /**
+     * Upload a plugin ZIP file.
+     * @return void
+     */
+    public function upload()
+    {
+        // Check permissions.
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        Yii::app()->loadLibrary('admin.pclzip');
+        $pluginManager = App()->getPluginManager();
+
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+        // TODO: Customize folders from config.php?
+        $uploadDir = Yii::getPathOfAlias($pluginManager->pluginDirs['upload']);
+        $destdir = $uploadDir . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+
+        // Redirect back if $destdir is not writable OR if it already exists.
+        $this->checkDestDir($destdir, $sNewDirectoryName);
+
+        // All OK if we're here.
+        mkdir($destdir);
+
+        $this->extractZipFile($destdir);
+    }
+
+    /**
+     * @param string $destdir
+     * @return void
+     */
+    protected function extractZipFile($destdir)
+    {
+        if (!is_file($_FILES['the_file']['tmp_name'])) {
+            Yii::app()->setFlashMessage(
+                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
+                'error'
+            );
+            rmdirr($destdir);
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        $zip = new PclZip($_FILES['the_file']['tmp_name']);
+        $aExtractResult = $zip->extract(
+            PCLZIP_OPT_PATH,
+            $destdir,
+            PCLZIP_CB_PRE_EXTRACT,
+            'pluginExtractFilter'
+        );
+
+        if ($aExtractResult === 0) {
+            Yii::app()->user->setFlash(
+                'error',
+                gT("This file is not a valid ZIP file archive. Import failed.")
+                . ' ' . $zip->error_string
+            );
+            rmdirr($destdir);
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        } else {
+            $pluginManager = App()->getPluginManager();
+            list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+            Yii::app()->user->setFlash(
+                'success',
+                gT('The plugin was successfully uploaded.')
+            );
+        }
+        $this->getController()->redirect($this->getPluginManagerUrl());
+    }
+
+    /**
+     * Redirect back if $destdir is not writable or already exists.
+     * @param string $destdir
+     * @param string $sNewDirectoryName
+     * @return void
+     * @todo Duplicate from themes.php.
+     */
+    protected function checkDestDir($destdir, $sNewDirectoryName)
+    {
+        if (!is_writeable(dirname($destdir))) {
+            Yii::app()->user->setFlash(
+                'error',
+                sprintf(
+                    gT("Incorrect permissions in your %s folder."),
+                    dirname($destdir)
+                )
+            );
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        if (is_dir($destdir)) {
+            Yii::app()->user->setFlash(
+                'error',
+                sprintf(
+                    gT("Plugin '%s' does already exist."),
+                    $sNewDirectoryName
+                )
+            );
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+    /**
+     * Redirects if demo mode is set.
+     * @return void
+     * @todo Duplicate from themes.php.
+     */
+    protected function checkDemoMode()
+    {
+        if (Yii::app()->getConfig('demoMode')) {
+            Yii::app()->user->setFlash('error', gT("Demo mode: Uploading plugins is disabled."));
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+    /**
+     * Redirect if file size is too big.
+     * @return void
+     * @todo Duplicate from themes.php.
+     */
+    protected function checkFileSizeError()
+    {
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            Yii::app()->setFlashMessage(
+                sprintf(
+                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                    getMaximumFileUploadSize() / 1024 / 1024
+                ),
+                'error'
+            );
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+
+    /**
      * Return URL to plugin manager index..
      * @return string
      */
@@ -393,8 +536,35 @@ class PluginManagerController extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function _renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = [], $aData = [], $sRenderFile = false)
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+}
+
+/**
+ * PCLZip callback for plugin ZIP install.
+ * @param mixed $p_event
+ * @param mixed $p_header
+ * @return int Return 1 for yes (file can be extracted), 0 for no
+ */
+function pluginExtractFilter($p_event, &$p_header)
+{
+    $aAllowExtensions = explode(
+        ',',
+        Yii::app()->getConfig('allowedpluginuploads')
+    );
+    $info = pathinfo($p_header['filename']);
+    // Deny files with multiple extensions in general
+    if (substr_count($info['basename'], '.') > 1) {
+        return 0;
+    }
+
+    if ($p_header['folder']
+        || !isset($info['extension'])
+        || in_array($info['extension'], $aAllowExtensions)) {
+        return 1;
+    } else {
+        return 0;
     }
 }

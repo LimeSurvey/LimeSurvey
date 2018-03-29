@@ -143,4 +143,3 @@ function templateExtractFilter($p_event, &$p_header)
         return 0;
     }
 }
-
