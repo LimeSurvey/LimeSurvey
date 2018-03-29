@@ -268,7 +268,6 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 }
 
-
 /**
  * @param string $fieldname
  * @param string $tablename
