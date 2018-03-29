@@ -47,76 +47,43 @@ echo viewHelper::getViewTestTag('pluginManager');
         ),
     );
     $sort->defaultOrder = array(
-        'name'=>CSort::SORT_ASC,
+        'name' => CSort::SORT_ASC,
     );
 
     $providerOptions = array(
-        'pagination'=>array(
-            'pageSize'=>$pageSize,
+        'pagination' => array(
+            'pageSize' => $pageSize,
         ),
-        'sort'=>$sort,
-        'caseSensitiveSort'=> false,
+        'sort' => $sort,
+        'caseSensitiveSort' => false,
     );
 
     $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
-    $gridColumns = array(
-        array(// display the status
+    $gridColumns = [
+        [
             'header' => gT('Status'),
             'type' => 'html',
             'name' => 'status',
-            //'rowHtmlOptionsExpression' => 'array("data-id" => $data->id)',
-            //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
-            'value' => function ($data) {
-                if ($data['load_error'] == 1) {
-                    return sprintf(
-                        "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
-                        gT('Plugin load error')
-                    );
-                } elseif ($data['active'] == 1) {
-                    return "<span class='fa fa-circle'></span>";
-                } else {
-                    return "<span class='fa fa-circle-thin'></span>";
-                }
-            }
-        ),
-        array(// display the 'name' attribute
+            'value' => '$data->getStatus()'
+        ],
+        [
             'header' => gT('Plugin'),
             'name' => 'name',
             'type' => 'html',
-            'value' => function ($data) {
-                $url = Yii::app()->getController()->createUrl(
-                    '/admin/pluginmanager',
-                    [
-                        'sa' => 'configure',
-                        'id' => $data['id']
-                    ]
-                );
-                if ($data['load_error'] == 0) {
-                    return sprintf(
-                        '<a href="%s">%s</a>',
-                        $url,
-                        $data['name']
-                    );
-                } else {
-                    return $data['name'];
-                }
-            }
-        ),
-        array(// display the 'description' attribute
+            'value' => '$data->getName()'
+        ],
+        [
             'header' => gT('Description'),
             'name' => 'description'
-        ),
-        array(// display the activation link
+        ],
+        [
             'type' => 'raw',
             'header' => gT('Action'),
             'name' => 'action',
-            'htmlOptions' => array(
-                //'style' => 'white-space: nowrap;',
-            ),
             'value' => '$data->getActionButtons()'
-        ),
-    );
+        ],
+    ];
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,

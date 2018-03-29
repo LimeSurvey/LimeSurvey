@@ -88,6 +88,48 @@ class Plugin extends LSActiveRecord
     }
 
     /**
+     * Plugin status as shown in plugin list.
+     * @return string HTML
+     */
+    public function getStatus()
+    {
+        if ($this->load_error == 1) {
+            return sprintf(
+                "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
+                gT('Plugin load error')
+            );
+        } elseif ($this->active == 1) {
+            return "<span class='fa fa-circle'></span>";
+        } else {
+            return "<span class='fa fa-circle-thin'></span>";
+        }
+    }
+
+    /**
+     * Name as shown in plugin list.
+     * @return string
+     */
+    public function getName()
+    {
+        $url = Yii::app()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'configure',
+                'id' => $this->id
+            ]
+        );
+        if ($this->load_error == 0) {
+            return sprintf(
+                '<a href="%s">%s</a>',
+                $url,
+                $this->name
+            );
+        } else {
+            return $this->name;
+        }
+    }
+
+    /**
      * Action buttons in plugin list.
      * @return string HTML
      */
