@@ -32,10 +32,12 @@ class PluginManager extends \CApplicationComponent
      * @var array
      */
     public $pluginDirs = [
-        // User plugins
+        // User plugins installed through command line.
         'user' => 'webroot.plugins',
-        // Core plugins
-        'core' => 'application.core.plugins'
+        // Core plugins.
+        'core' => 'application.core.plugins',
+        // Uploaded plugins installed through ZIP file.
+        'upload' => 'webroot.upload.plugins'
     ];
 
     /**
