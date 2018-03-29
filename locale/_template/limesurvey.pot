@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-03-27 13:51:11+00:00\n"
+"POT-Creation-Date: 2018-03-29 11:43:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -275,7 +275,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/check_view.php:124
 #: application/views/admin/checkintegrity/check_view.php:142
 #: application/views/admin/checkintegrity/check_view.php:160
-#: application/views/admin/checkintegrity/check_view.php:196
+#: application/views/admin/checkintegrity/check_view.php:195
 msgid "Reason:"
 msgstr ""
 
@@ -1061,7 +1061,7 @@ msgstr ""
 #: application/views/admin/token/token_bar.php:237
 #: application/views/admin/usergroup/usergroupbar_view.php:55
 #: application/views/survey/questions/question_help/error-tip.php:12
-#: tmp/twig_translate.php:120 tmp/twig_translate.php:121
+#: tmp/twig_translate.php:125 tmp/twig_translate.php:126
 msgid "Close"
 msgstr ""
 
@@ -1728,8 +1728,8 @@ msgstr ""
 #: tmp/twig_translate.php:28 tmp/twig_translate.php:34
 #: tmp/twig_translate.php:40 tmp/twig_translate.php:46
 #: tmp/twig_translate.php:52 tmp/twig_translate.php:58
-#: tmp/twig_translate.php:64 tmp/twig_translate.php:101
-#: tmp/twig_translate.php:104 tmp/twig_translate.php:127
+#: tmp/twig_translate.php:64 tmp/twig_translate.php:106
+#: tmp/twig_translate.php:109 tmp/twig_translate.php:132
 msgid "Yes"
 msgstr ""
 
@@ -1749,7 +1749,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:460
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/answer_row.php:57
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.php:10
-#: tmp/twig_translate.php:103
+#: tmp/twig_translate.php:108
 msgid "Uncertain"
 msgstr ""
 
@@ -1893,8 +1893,8 @@ msgstr ""
 #: tmp/twig_translate.php:29 tmp/twig_translate.php:35
 #: tmp/twig_translate.php:41 tmp/twig_translate.php:47
 #: tmp/twig_translate.php:53 tmp/twig_translate.php:59
-#: tmp/twig_translate.php:65 tmp/twig_translate.php:102
-#: tmp/twig_translate.php:105 tmp/twig_translate.php:128
+#: tmp/twig_translate.php:65 tmp/twig_translate.php:107
+#: tmp/twig_translate.php:110 tmp/twig_translate.php:133
 msgid "No"
 msgstr ""
 
@@ -1913,7 +1913,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:500
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:46
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:9
-#: tmp/twig_translate.php:106
+#: tmp/twig_translate.php:111
 msgid "Increase"
 msgstr ""
 
@@ -1932,7 +1932,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:505
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:60
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:10
-#: tmp/twig_translate.php:107
+#: tmp/twig_translate.php:112
 msgid "Same"
 msgstr ""
 
@@ -1951,7 +1951,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:510
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:74
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:11
-#: tmp/twig_translate.php:108
+#: tmp/twig_translate.php:113
 msgid "Decrease"
 msgstr ""
 
@@ -1997,7 +1997,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:293
 #: application/views/survey/questions/answer/gender/buttons/answer.php:28
 #: application/views/survey/questions/answer/gender/radio/answer.php:28
-#: tmp/twig_translate.php:100
+#: tmp/twig_translate.php:105
 msgid "Female"
 msgstr ""
 
@@ -2017,7 +2017,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:299
 #: application/views/survey/questions/answer/gender/buttons/answer.php:43
 #: application/views/survey/questions/answer/gender/radio/answer.php:43
-#: tmp/twig_translate.php:99
+#: tmp/twig_translate.php:104
 msgid "Male"
 msgstr ""
 
@@ -2386,8 +2386,8 @@ msgstr ""
 #: application/views/admin/responses/browsemenubar_view.php:153
 #: application/views/admin/responses/listResponses_view.php:278
 #: application/views/admin/super/fullpagebar_view.php:21
-#: application/views/admin/survey/Question/editQuestion_view.php:320
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:193
+#: application/views/admin/survey/Question/editQuestion_view.php:321
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:192
 #: application/views/admin/survey/Question/question_subviews/_modals.php:93
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:125
 #: application/views/admin/survey/Question/questionbar_view.php:227
@@ -3247,7 +3247,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3390
 #: application/helpers/expressions/em_manager_helper.php:3402
 #: application/helpers/expressions/em_manager_helper.php:3800
-#: application/helpers/expressions/em_manager_helper.php:6493
+#: application/helpers/expressions/em_manager_helper.php:3912
+#: application/helpers/expressions/em_manager_helper.php:6501
 #: application/helpers/qanda_helper.php:1184
 #: application/helpers/qanda_helper.php:1414
 #: application/helpers/qanda_helper.php:1936
@@ -3375,7 +3376,7 @@ msgid "Return to question list"
 msgstr ""
 
 #: application/controllers/admin/questions.php:340
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:45
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:44
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:68
 msgid "<No default value>"
 msgstr ""
@@ -3402,7 +3403,7 @@ msgstr ""
 
 #: application/controllers/admin/questions.php:1167
 #: application/views/admin/survey/Question/editQuestion_view.php:39
-#: application/views/admin/survey/Question/editQuestion_view.php:316
+#: application/views/admin/survey/Question/editQuestion_view.php:317
 msgid "Copy question"
 msgstr ""
 
@@ -3973,7 +3974,7 @@ msgstr ""
 #: application/views/survey/frontpage/captchaForm/form.php:39
 #: application/views/survey/frontpage/registerForm/form.php:56
 #: application/views/survey/frontpage/tokenForm/form.php:57
-#: tmp/twig_translate.php:115 tmp/twig_translate.php:118
+#: tmp/twig_translate.php:120 tmp/twig_translate.php:123
 msgid "Continue"
 msgstr ""
 
@@ -4891,7 +4892,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:434
-#: application/helpers/expressions/em_manager_helper.php:9333
+#: application/helpers/expressions/em_manager_helper.php:9329
 #: application/models/Boxes.php:56
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:60
@@ -4913,7 +4914,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:464
-#: application/helpers/expressions/em_manager_helper.php:9347
+#: application/helpers/expressions/em_manager_helper.php:9343
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:196
@@ -5878,7 +5879,7 @@ msgstr ""
 #: application/views/installer/license_view.php:16
 #: application/views/installer/precheck_view.php:147
 #: application/views/survey/system/actionButton/movePrevious.php:11
-#: tmp/twig_translate.php:89 tmp/twig_translate.php:96
+#: tmp/twig_translate.php:89 tmp/twig_translate.php:97
 msgid "Previous"
 msgstr ""
 
@@ -5890,7 +5891,7 @@ msgstr ""
 #: application/views/installer/optconfig_view.php:82
 #: application/views/installer/precheck_view.php:155
 #: application/views/survey/system/actionButton/moveNext.php:11
-#: tmp/twig_translate.php:98
+#: tmp/twig_translate.php:99
 msgid "Next"
 msgstr ""
 
@@ -6685,8 +6686,8 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:64
 #: application/views/admin/labels/editlabel_view.php:106
 #: application/views/admin/survey/Question/advanced_settings_view.php:57
-#: application/views/admin/survey/Question/editQuestion_view.php:249
-#: application/views/admin/survey/Question/editQuestion_view.php:261
+#: application/views/admin/survey/Question/editQuestion_view.php:250
+#: application/views/admin/survey/Question/editQuestion_view.php:262
 #: application/views/admin/survey/Question/importQuestion_view.php:36
 #: application/views/admin/survey/Question/importQuestion_view.php:48
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:21
@@ -6785,8 +6786,8 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:64
 #: application/views/admin/labels/editlabel_view.php:107
 #: application/views/admin/survey/Question/advanced_settings_view.php:58
-#: application/views/admin/survey/Question/editQuestion_view.php:249
-#: application/views/admin/survey/Question/editQuestion_view.php:261
+#: application/views/admin/survey/Question/editQuestion_view.php:250
+#: application/views/admin/survey/Question/editQuestion_view.php:262
 #: application/views/admin/survey/Question/importQuestion_view.php:37
 #: application/views/admin/survey/Question/importQuestion_view.php:49
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:22
@@ -8900,7 +8901,7 @@ msgid "Only integer values may be entered in these fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3392
-#: application/helpers/expressions/em_manager_helper.php:6496
+#: application/helpers/expressions/em_manager_helper.php:6504
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -8912,51 +8913,51 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5430
+#: application/helpers/expressions/em_manager_helper.php:5438
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5536
+#: application/helpers/expressions/em_manager_helper.php:5544
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6466
+#: application/helpers/expressions/em_manager_helper.php:6474
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6481
+#: application/helpers/expressions/em_manager_helper.php:6489
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6522
-#: application/helpers/expressions/em_manager_helper.php:6566
+#: application/helpers/expressions/em_manager_helper.php:6530
+#: application/helpers/expressions/em_manager_helper.php:6574
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6554
+#: application/helpers/expressions/em_manager_helper.php:6562
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6577
+#: application/helpers/expressions/em_manager_helper.php:6585
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9317
+#: application/helpers/expressions/em_manager_helper.php:9313
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9323
+#: application/helpers/expressions/em_manager_helper.php:9319
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9340
+#: application/helpers/expressions/em_manager_helper.php:9336
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:187
 #: application/views/admin/survey/surveySummary_view.php:140
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9354
+#: application/helpers/expressions/em_manager_helper.php:9350
 #: application/views/admin/survey/editLocalSettings_view.php:58
 #: application/views/admin/survey/subview/_create_survey_text.php:115
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:174
@@ -8964,36 +8965,36 @@ msgstr ""
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9361
+#: application/helpers/expressions/em_manager_helper.php:9357
 msgid "Survey policy notice:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9368
+#: application/helpers/expressions/em_manager_helper.php:9364
 msgid "Survey policy error:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9375
+#: application/helpers/expressions/em_manager_helper.php:9371
 msgid "Survey policy label:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9381
+#: application/helpers/expressions/em_manager_helper.php:9377
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9382
+#: application/helpers/expressions/em_manager_helper.php:9378
 msgid "Relevance [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9383
+#: application/helpers/expressions/em_manager_helper.php:9379
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9441
-#: application/helpers/expressions/em_manager_helper.php:9747
+#: application/helpers/expressions/em_manager_helper.php:9437
+#: application/helpers/expressions/em_manager_helper.php:9743
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9465
+#: application/helpers/expressions/em_manager_helper.php:9461
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:57
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:61
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:83
@@ -9004,67 +9005,67 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9467
+#: application/helpers/expressions/em_manager_helper.php:9463
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9485
+#: application/helpers/expressions/em_manager_helper.php:9481
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9485
+#: application/helpers/expressions/em_manager_helper.php:9481
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9642
+#: application/helpers/expressions/em_manager_helper.php:9638
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9654
+#: application/helpers/expressions/em_manager_helper.php:9650
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9817
+#: application/helpers/expressions/em_manager_helper.php:9813
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9855
+#: application/helpers/expressions/em_manager_helper.php:9851
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9861
+#: application/helpers/expressions/em_manager_helper.php:9857
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9864
+#: application/helpers/expressions/em_manager_helper.php:9860
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9867
+#: application/helpers/expressions/em_manager_helper.php:9863
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10365
-#: application/helpers/expressions/em_manager_helper.php:10377
-#: application/helpers/expressions/em_manager_helper.php:10385
-#: application/helpers/expressions/em_manager_helper.php:10396
-#: application/helpers/expressions/em_manager_helper.php:10404
-#: application/helpers/expressions/em_manager_helper.php:10411
-#: application/helpers/expressions/em_manager_helper.php:10418
-#: application/helpers/expressions/em_manager_helper.php:10425
-#: application/helpers/expressions/em_manager_helper.php:10438
-#: application/helpers/expressions/em_manager_helper.php:10445
-#: application/helpers/expressions/em_manager_helper.php:10453
-#: application/helpers/expressions/em_manager_helper.php:10469
-#: application/helpers/expressions/em_manager_helper.php:10476
-#: application/helpers/expressions/em_manager_helper.php:10491
-#: application/helpers/expressions/em_manager_helper.php:10501
-#: application/helpers/expressions/em_manager_helper.php:10514
-#: application/helpers/expressions/em_manager_helper.php:10521
+#: application/helpers/expressions/em_manager_helper.php:10361
+#: application/helpers/expressions/em_manager_helper.php:10373
+#: application/helpers/expressions/em_manager_helper.php:10381
+#: application/helpers/expressions/em_manager_helper.php:10392
+#: application/helpers/expressions/em_manager_helper.php:10400
+#: application/helpers/expressions/em_manager_helper.php:10407
+#: application/helpers/expressions/em_manager_helper.php:10414
+#: application/helpers/expressions/em_manager_helper.php:10421
+#: application/helpers/expressions/em_manager_helper.php:10434
+#: application/helpers/expressions/em_manager_helper.php:10441
+#: application/helpers/expressions/em_manager_helper.php:10449
+#: application/helpers/expressions/em_manager_helper.php:10465
+#: application/helpers/expressions/em_manager_helper.php:10472
+#: application/helpers/expressions/em_manager_helper.php:10487
+#: application/helpers/expressions/em_manager_helper.php:10497
+#: application/helpers/expressions/em_manager_helper.php:10510
+#: application/helpers/expressions/em_manager_helper.php:10517
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10484
+#: application/helpers/expressions/em_manager_helper.php:10480
 msgid "This question only accept 30 digits including 10 decimals."
 msgstr ""
 
@@ -9312,7 +9313,7 @@ msgstr ""
 #: application/views/admin/themes/templatesummary_view.php:205
 #: application/views/admin/token/csvupload.php:122
 #: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:2
-#: tmp/twig_translate.php:72 tmp/twig_translate.php:131
+#: tmp/twig_translate.php:72 tmp/twig_translate.php:136
 msgid "Upload"
 msgstr ""
 
@@ -10771,7 +10772,7 @@ msgstr ""
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:122
+#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:127
 msgid "Your assessment"
 msgstr ""
 
@@ -11251,22 +11252,22 @@ msgid "Config file is malformed or null."
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:101
-#: application/views/admin/survey/Question/editQuestion_view.php:171
-#: application/views/admin/survey/Question/editQuestion_view.php:191
-#: application/views/admin/survey/Question/editQuestion_view.php:213
+#: application/views/admin/survey/Question/editQuestion_view.php:170
+#: application/views/admin/survey/Question/editQuestion_view.php:190
+#: application/views/admin/survey/Question/editQuestion_view.php:214
 msgid "Question type:"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:114
 #: application/views/admin/assessments/assessments_edit.php:39
-#: application/views/admin/survey/Question/editQuestion_view.php:234
+#: application/views/admin/survey/Question/editQuestion_view.php:235
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:93
 #: application/views/admin/survey/Question/question_view.php:11
 msgid "Question group:"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:123
-#: application/views/admin/survey/Question/editQuestion_view.php:266
+#: application/views/admin/survey/Question/editQuestion_view.php:267
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:110
 #: application/views/admin/survey/Question/question_view.php:167
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:77
@@ -12647,79 +12648,79 @@ msgid "All questions meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:172
-msgid "The following surveys have an errorneous question order. Please go to each question respectively, check the question order and save it."
+msgid "The following surveys have an errorneous question order. Please go to each question and group respectively, check the question order and save it."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:186
+#: application/views/admin/checkintegrity/check_view.php:185
 msgid "No issues with question order found."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:192
+#: application/views/admin/checkintegrity/check_view.php:191
 msgid "The following groups should be deleted:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:204
+#: application/views/admin/checkintegrity/check_view.php:203
 msgid "All groups meet consistency standards."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:208
+#: application/views/admin/checkintegrity/check_view.php:207
 msgid "The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:217
+#: application/views/admin/checkintegrity/check_view.php:216
 msgid "No issues with question group order found."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:223
+#: application/views/admin/checkintegrity/check_view.php:222
 msgid "The following old survey tables should be deleted because they contain no records or their parent survey no longer exists:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:235
+#: application/views/admin/checkintegrity/check_view.php:234
 msgid "All old survey tables meet consistency standards."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:241
+#: application/views/admin/checkintegrity/check_view.php:240
 msgid "The following old survey participants tables should be deleted because they contain no records or their parent survey no longer exists:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:253
+#: application/views/admin/checkintegrity/check_view.php:252
 msgid "All old survey participants tables meet consistency standards."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:258
-#: application/views/admin/checkintegrity/check_view.php:276
+#: application/views/admin/checkintegrity/check_view.php:257
+#: application/views/admin/checkintegrity/check_view.php:275
 msgid "No database action required!"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:261
+#: application/views/admin/checkintegrity/check_view.php:260
 msgid "Should we proceed with the delete?"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:263
+#: application/views/admin/checkintegrity/check_view.php:262
 msgid "Yes - Delete Them!"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:272
+#: application/views/admin/checkintegrity/check_view.php:271
 msgid "Data redundancy check"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:273
+#: application/views/admin/checkintegrity/check_view.php:272
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:284
+#: application/views/admin/checkintegrity/check_view.php:283
 msgid "The following old survey response tables exist and may be deleted if no longer required:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:298
+#: application/views/admin/checkintegrity/check_view.php:297
 msgid "The following old token list tables exist and may be deleted if no longer required:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:310
+#: application/views/admin/checkintegrity/check_view.php:309
 msgid "Delete checked items!"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:311
+#: application/views/admin/checkintegrity/check_view.php:310
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
 msgstr ""
 
@@ -12758,7 +12759,7 @@ msgstr ""
 #: application/views/admin/conditions/conditionshead_view.php:72
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/pluginmanager/configure.php:28
-#: application/views/admin/survey/Question/editQuestion_view.php:321
+#: application/views/admin/survey/Question/editQuestion_view.php:322
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:126
 #: application/views/admin/survey/Question/questionbar_view.php:233
 #: application/views/admin/survey/Question/questionbar_view.php:273
@@ -13031,7 +13032,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:38
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
-#: tmp/twig_translate.php:90 tmp/twig_translate.php:97
+#: tmp/twig_translate.php:90 tmp/twig_translate.php:98
 msgid "Submit"
 msgstr ""
 
@@ -13271,7 +13272,7 @@ msgstr ""
 
 #: application/views/admin/emailtemplates/emailtemplates_view.php:93
 #: application/views/admin/survey/Question/answerOptions_view.php:114
-#: application/views/admin/survey/Question/editQuestion_view.php:266
+#: application/views/admin/survey/Question/editQuestion_view.php:267
 msgid "Relevance equation"
 msgstr ""
 
@@ -16069,7 +16070,7 @@ msgid "Add question group"
 msgstr ""
 
 #: application/views/admin/super/sidemenu.php:46
-#: application/views/admin/survey/Question/editQuestion_view.php:312
+#: application/views/admin/survey/Question/editQuestion_view.php:313
 #: application/views/admin/survey/subview/_survey_quickaction.php:119
 #: application/views/admin/survey/subview/_survey_quickaction.php:167
 #: application/views/admin/survey/subview/_survey_quickaction.php:193
@@ -16232,47 +16233,47 @@ msgstr ""
 msgid "General options"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:169
-#: application/views/admin/survey/Question/editQuestion_view.php:189
-#: application/views/admin/survey/Question/editQuestion_view.php:211
+#: application/views/admin/survey/Question/editQuestion_view.php:168
+#: application/views/admin/survey/Question/editQuestion_view.php:188
+#: application/views/admin/survey/Question/editQuestion_view.php:212
 #: application/views/admin/survey/Question/listquestions.php:93
 msgid "Question type"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:234
+#: application/views/admin/survey/Question/editQuestion_view.php:235
 #: application/views/admin/survey/Question/massive_actions/_selector.php:65
 msgid "Set question group"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:246
+#: application/views/admin/survey/Question/editQuestion_view.php:247
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:8
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:100
 #: application/views/admin/survey/Question/question_view.php:133
 msgid "Option 'Other':"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:252
+#: application/views/admin/survey/Question/editQuestion_view.php:253
 msgid "Cannot be changed (survey is active)"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:258
+#: application/views/admin/survey/Question/editQuestion_view.php:259
 #: application/views/admin/survey/Question/massive_actions/_selector.php:78
 #: application/views/admin/survey/Question/massive_actions/_selector.php:87
 msgid "Set \"Mandatory\" state"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:258
+#: application/views/admin/survey/Question/editQuestion_view.php:259
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:8
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:105
 #: application/views/admin/survey/Question/question_view.php:151
 msgid "Mandatory:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:274
+#: application/views/admin/survey/Question/editQuestion_view.php:275
 msgid "Note: You can't edit the relevance equation because there are currently conditions set for this question."
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:280
+#: application/views/admin/survey/Question/editQuestion_view.php:281
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:115
 #: application/views/admin/survey/Question/question_view.php:74
 msgid "Validation:"
@@ -16282,24 +16283,24 @@ msgstr ""
 msgid "Edit default answer values"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:39
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:77
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:38
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:76
 msgid "Default answer for scale %s:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:39
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:38
 msgid "Default answer value:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:60
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:59
 msgid "Default value for option 'Other':"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:157
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:156
 msgid "Default value:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:174
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:173
 msgid "Use same default value across languages:"
 msgstr ""
 
@@ -16365,8 +16366,8 @@ msgstr ""
 #: application/views/survey/system/required.php:6 tmp/twig_translate.php:74
 #: tmp/twig_translate.php:79 tmp/twig_translate.php:80
 #: tmp/twig_translate.php:81 tmp/twig_translate.php:85
-#: tmp/twig_translate.php:86 tmp/twig_translate.php:112
-#: tmp/twig_translate.php:113 tmp/twig_translate.php:116
+#: tmp/twig_translate.php:86 tmp/twig_translate.php:117
+#: tmp/twig_translate.php:118 tmp/twig_translate.php:121
 msgid "Mandatory"
 msgstr ""
 
@@ -18568,7 +18569,7 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:33
 #: application/views/admin/themes/templateeditor_surveylist_view.php:77
-#: tmp/twig_translate.php:123
+#: tmp/twig_translate.php:128
 msgid "Start survey"
 msgstr ""
 
@@ -20455,6 +20456,7 @@ msgstr ""
 #: application/views/survey/frontpage/clearallForm/heading.php:7
 #: application/views/survey/system/actionButton/clearAll.php:16
 #: application/views/survey/system/actionLink/clearAll.php:11
+#: tmp/twig_translate.php:96
 msgid "Exit and clear survey"
 msgstr ""
 
@@ -20476,7 +20478,7 @@ msgstr ""
 #: application/views/survey/frontpage/loadForm/heading.php:7
 #: application/views/survey/system/actionButton/saveLoad.php:11
 #: application/views/survey/system/actionLink/saveLoad.php:11
-#: tmp/twig_translate.php:84
+#: tmp/twig_translate.php:84 tmp/twig_translate.php:101
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -20599,6 +20601,7 @@ msgstr ""
 
 #: application/views/survey/system/actionButton/saveSave.php:11
 #: application/views/survey/system/actionLink/saveSave.php:11
+#: tmp/twig_translate.php:102
 msgid "Resume later"
 msgstr ""
 
@@ -20623,14 +20626,15 @@ msgstr ""
 #: application/views/survey/system/surveyIndex/questionIndex.php:10
 #: application/views/survey/system/surveyIndex/questionIndexMenuLink.php:10
 #: tmp/twig_translate.php:94 tmp/twig_translate.php:95
+#: tmp/twig_translate.php:100 tmp/twig_translate.php:103
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:3 tmp/twig_translate.php:124
+#: tmp/twig_translate.php:3 tmp/twig_translate.php:129
 msgid "Local Server"
 msgstr ""
 
-#: tmp/twig_translate.php:4 tmp/twig_translate.php:125
+#: tmp/twig_translate.php:4 tmp/twig_translate.php:130
 msgid "User browser"
 msgstr ""
 
@@ -20644,11 +20648,11 @@ msgstr ""
 #: tmp/twig_translate.php:36 tmp/twig_translate.php:38
 #: tmp/twig_translate.php:42 tmp/twig_translate.php:48
 #: tmp/twig_translate.php:54 tmp/twig_translate.php:60
-#: tmp/twig_translate.php:66 tmp/twig_translate.php:129
+#: tmp/twig_translate.php:66 tmp/twig_translate.php:134
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:11 tmp/twig_translate.php:126
+#: tmp/twig_translate.php:11 tmp/twig_translate.php:131
 msgid "Survey container"
 msgstr ""
 
@@ -20734,7 +20738,7 @@ msgstr ""
 msgid "Radio button animation"
 msgstr ""
 
-#: tmp/twig_translate.php:69 tmp/twig_translate.php:130
+#: tmp/twig_translate.php:69 tmp/twig_translate.php:135
 msgid "Fruity fonts"
 msgstr ""
 
@@ -20742,8 +20746,8 @@ msgstr ""
 msgid "Fruity variations"
 msgstr ""
 
-#: tmp/twig_translate.php:73 tmp/twig_translate.php:114
-#: tmp/twig_translate.php:117
+#: tmp/twig_translate.php:73 tmp/twig_translate.php:119
+#: tmp/twig_translate.php:122
 msgid "Reload captcha"
 msgstr ""
 
@@ -20751,18 +20755,18 @@ msgstr ""
 msgid "Restart this survey"
 msgstr ""
 
-#: tmp/twig_translate.php:109
+#: tmp/twig_translate.php:114
 msgid "File type"
 msgstr ""
 
-#: tmp/twig_translate.php:110
+#: tmp/twig_translate.php:115
 msgid "PDF export"
 msgstr ""
 
-#: tmp/twig_translate.php:111
+#: tmp/twig_translate.php:116
 msgid "queXMLPDF export"
 msgstr ""
 
-#: tmp/twig_translate.php:119
+#: tmp/twig_translate.php:124
 msgid "Accept"
 msgstr ""
