@@ -100,6 +100,7 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * Install a plugin given a plugin configuration and plugin type.
      * @param string $pluginName Unique plugin class name/folder name.
      * @param string $pluginType 'user' or 'core', depending on location of folder.
      * @return array [boolean $result, string $errorMessage]
