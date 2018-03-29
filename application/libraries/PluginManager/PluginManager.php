@@ -220,6 +220,7 @@ class PluginManager extends \CApplicationComponent
      * that specifically deals with enabling / disabling plugins.
      * @param boolean $includeInstalledPlugins If set, also return plugins even if already installed in database.
      * @return array
+     * @todo Factor out
      */
     public function scanPlugins($includeInstalledPlugins = false)
     {

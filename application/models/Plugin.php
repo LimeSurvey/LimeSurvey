@@ -71,6 +71,7 @@ class Plugin extends LSActiveRecord
 
     /**
      * @return xml
+     * @todo Use PluginConfiguration.
      * @throws Exception if file does not exist.
      */
     public function getConfig()
@@ -84,6 +85,61 @@ class Plugin extends LSActiveRecord
         } else {
             throw new \Exception('Missing configuration file for plugin ' . $this->name);
         }
+    }
+
+    /**
+     * Action buttons in plugin list.
+     * @return string HTML
+     */
+    public function getActionButtons()
+    {
+        $output='';
+        if (Permission::model()->hasGlobalPermission('settings','update')) {
+            if ($this->load_error == 1) {
+                $reloadUrl = Yii::app()->createUrl(
+                    'admin/pluginmanager',
+                    [
+                        'sa' => 'resetLoadError',
+                        'pluginId' => $this->id
+                    ]
+                );
+                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+            } elseif ($this->active == 0) {
+                $output = "<a data-toggle='tooltip' title='" . gT('Activate'). "' href='#activate' data-action='activate' data-id='".$this->id . "' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
+                    . "<span class='fa fa-power-off'></span>"
+                    ."</a>";
+            } else {
+                $output = "<a data-toggle='tooltip' title='" . gT('Deactivate') . "' href='#deactivate' data-action='deactivate' data-id='".$this->id."' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>"
+                    . "<span class='fa fa-power-off'></span>"
+                    ."</a>";
+            }
+
+            // TODO: Don't use JS native confirm.
+            if ($this->active == 0) {
+                $uninstallUrl = App()->getController()->createUrl(
+                    '/admin/pluginmanager',
+                    [
+                        'sa' => 'uninstallPlugin'
+                    ]
+                );
+                $output .= '&nbsp;' . CHtml::beginForm(
+                    $uninstallUrl,
+                    'post',
+                    [
+                        'style' => 'display: inline-block'
+                    ]
+                );
+                $output .= "
+                                <input type='hidden' name='pluginId' value='" . $this->id . "' />
+                                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
+                                    <i class='fa fa-times-circle'></i>
+                                </button>
+                            </form>
+                        ";
+            }
+        }
+
+        return $output;
     }
 
     /**

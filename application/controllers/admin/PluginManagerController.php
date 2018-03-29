@@ -67,6 +67,7 @@ class PluginManagerController extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
+        $aData['plugins'] = $aoPlugins;
         $aData['scanFilesUrl'] = $this->getController()->createUrl(
             '/admin/pluginmanager',
             [
