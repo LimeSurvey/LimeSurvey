@@ -78,7 +78,7 @@
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box">
                     <h2>
-                        <?php eT("Deactivate Survey"); echo "<em>($surveyid)</em>"; ?>
+                        <?php eT("Deactivate Survey"); echo " <em>($surveyid)</em>"; ?>
                     </h2>
                     <p class="lead text-success">
                         <strong>

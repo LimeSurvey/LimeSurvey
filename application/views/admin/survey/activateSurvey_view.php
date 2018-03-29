@@ -3,7 +3,7 @@
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">
-                <h2><?php eT("Activate Survey"); echo "($surveyid)"; ?></h2>
+                <h2><?php eT("Activate Survey"); echo " ($surveyid)"; ?></h2>
                 <p class="lead text-warning"><strong><?php eT("Error"); ?> !</strong></p>
                 <p class="lead text-warning"><strong><?php eT("Survey does not pass consistency check"); ?></strong></p>
                 <p>
