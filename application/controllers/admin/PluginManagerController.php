@@ -17,32 +17,6 @@ class PluginManagerController extends Survey_Common_Action
         $jsFile = App()->getConfig('adminscripts') . 'plugin_manager.js';
         App()->getClientScript()->registerScriptFile($jsFile);
 
-        // Scan the plugins folder.
-        /*
-        $aDiscoveredPlugins = $oPluginManager->scanPlugins();
-        $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(
-            function ($installedPlugin) {
-                return $installedPlugin->name;
-            },
-            $aInstalledPlugins
-        );
-
-        // Install newly discovered plugins.
-        foreach ($aDiscoveredPlugins as $discoveredPlugin) {
-            if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames)) {
-                $oPlugin         = new Plugin();
-                $oPlugin->name   = $discoveredPlugin['pluginClass'];
-                $oPlugin->active = 0;
-                $oPlugin->save();
-                //New plugin registration
-                $event = new PluginEvent('onPluginRegistration');
-                $event->set('pluginName', $oPlugin->name);
-                App()->getPluginManager()->dispatchEvent($event);
-            }
-        }
-         */
-
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = [];
         foreach ($aoPlugins as $oPlugin) {
