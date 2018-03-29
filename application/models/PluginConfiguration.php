@@ -31,6 +31,24 @@ class PluginConfiguration
     }
 
     /**
+     * Check basic properties of the config.xml.
+     * @return boolean
+     * @todo Get detailed error message.
+     */
+    public function validate()
+    {
+        return isset($this->xml->metadata)
+            && isset($this->xml->metadata->name)
+            && isset($this->xml->metadata->description)
+            && isset($this->xml->metadata->author)
+            && isset($this->xml->metadata->license)
+            && isset($this->xml->metadata->version)
+            && isset($this->xml->compatibility)
+            && isset($this->xml->metadata->type)
+            && (string) $this->xml->metadata->type === 'plugin';
+    }
+
+    /**
      * Returns true if this plugin config is compatible with this version of LS.
      * @return boolean
      */

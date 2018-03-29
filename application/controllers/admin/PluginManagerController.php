@@ -14,10 +14,6 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function index()
     {
-        $oPluginManager = App()->getPluginManager();
-
-        $oPluginManager->scanPlugins();
-
         $jsFile = App()->getConfig('adminscripts') . 'plugin_manager.js';
         App()->getClientScript()->registerScriptFile($jsFile);
 
@@ -48,7 +44,7 @@ class PluginManagerController extends Survey_Common_Action
          */
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
-        $data      = array();
+        $data      = [];
         foreach ($aoPlugins as $oPlugin) {
             $data[] = [
                 'id'          => $oPlugin->id,
@@ -107,7 +103,7 @@ class PluginManagerController extends Survey_Common_Action
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('No permission'), 'error');
-            $this->getController()->redirect(['/admin/pluginmanager']);
+            $this->getController()->redirect($this->getPluginManagerUrl());
         }
 
         $oPluginManager = App()->getPluginManager();
@@ -123,6 +119,12 @@ class PluginManagerController extends Survey_Common_Action
 
         $data = [];
         $data['result'] = $result;
+        $data['installUrl'] = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'installPluginFromFile'
+            ]
+        );
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
         $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
 
@@ -322,6 +324,53 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
             $this->getController()->redirect($url);
         }
+    }
+
+    /**
+     * Install a plugin that has been discovered in the file system.
+     * @return void
+     */
+    public function installPluginFromFile()
+    {
+        // Check permissions.
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        $request = Yii::app()->request;
+        $pluginName = $request->getPost('pluginName');
+
+        $pluginManager = App()->getPluginManager();
+        $pluginInfo = $pluginManager->getPluginInfo($pluginName);
+
+        if (empty($pluginInfo)) {
+            Yii::app()->setFlashMessage(
+                sprintf(
+                    gT('Found no plugin with name %s'),
+                    json_encode($pluginName)  // json_encode in case of null.
+                ),
+                'error'
+            );
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        } else {
+            list($result, $errorMessage) = $pluginManager->installPlugin(
+                $pluginInfo['pluginConfig'],
+                $pluginInfo['pluginType']
+            );
+            if ($result) {
+                Yii::app()->setFlashMessage(
+                    gT('Plugin was installed.'),
+                    'success'
+                );
+            } else {
+                Yii::app()->setFlashMessage(
+                    $errorMessage,
+                    'error'
+                );
+            }
+        }
+        $this->getController()->redirect($this->getPluginManagerUrl());
     }
 
     /**

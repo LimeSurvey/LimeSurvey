@@ -100,6 +100,30 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * @param string $pluginName Unique plugin class name/folder name.
+     * @param string $pluginType 'user' or 'core', depending on location of folder.
+     * @return array [boolean $result, string $errorMessage]
+     */
+    public function installPlugin(\PluginConfiguration $pluginConfig, $pluginType)
+    {
+        if (!$pluginConfig->validate()) {
+            return [false, gT('Plugin configuration file is not valid.')];
+        }
+
+        if (!$pluginConfig->isCompatible()) {
+            return [false, gT('Plugin is not compatible with your LimeSurvey version.')];
+        }
+
+        $plugin = new Plugin();
+        $plugin->name        = (string) $pluginConfig->xml->metadata->name;
+        $plugin->version     = (string) $pluginConfig->xml->metadata->version;
+        $plugin->active      = 0;
+        $plugin->plugin_type = $pluginType;
+        $plugin->save();
+        return [true, null];
+    }
+
+    /**
      * Return the status of plugin (true/active or false/desactive)
      *
      * @param string sPluginName Plugin name
@@ -289,9 +313,10 @@ class PluginManager extends \CApplicationComponent
      */
     public function getPluginInfo($pluginClass, $pluginDir = null)
     {
-        $result = array();
-        $class = "{$pluginClass}";
+        $result       = [];
+        $class        = "{$pluginClass}";
         $pluginConfig = null;
+        $pluginType   = null;
 
         if (!class_exists($class, false)) {
             $found = false;
@@ -301,7 +326,7 @@ class PluginManager extends \CApplicationComponent
                 $dirs = $this->pluginDirs;
             }
 
-            foreach ($this->pluginDirs as $pluginDir) {
+            foreach ($this->pluginDirs as $type => $pluginDir) {
                 $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
                 if (file_exists($file)) {
                     Yii::import($pluginDir.".$pluginClass.*");
@@ -314,6 +339,7 @@ class PluginManager extends \CApplicationComponent
                         $xml = simplexml_load_file(realpath($configFile));
                         libxml_disable_entity_loader(true);
                         $pluginConfig = new \PluginConfiguration($xml);
+                        $pluginType = $type;
                     } else {
                         $pluginConfig = null;
                     }
@@ -335,8 +361,9 @@ class PluginManager extends \CApplicationComponent
             $result['pluginName']   = call_user_func(array($class, 'getName'));
             $result['pluginClass']  = $class;
             $result['pluginConfig'] = $pluginConfig;
-            $result['isCompatible']   = $pluginConfig == null ? false : $pluginConfig->isCompatible();
+            $result['isCompatible'] = $pluginConfig == null ? false : $pluginConfig->isCompatible();
             $result['load_error']   = 0;
+            $result['pluginType']   = $pluginType;
             return $result;
         }
     }

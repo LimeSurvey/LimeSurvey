@@ -6,10 +6,13 @@
                 <?php echo $name; ?>
             </label>
             <?php if ($scannedPlugin['isCompatible']): ?>
-                <a href='' class='btn btn-success' data-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
-                    <i class='fa fa-download'></i>&nbsp;
-                    <?php eT('Install'); ?>
-                </a>
+                <?php echo CHtml::beginForm($installUrl, 'post', ['style' => 'display: inline-block;']); ?>
+                    <input type='hidden' name='pluginName' value='<?php echo $name; ?>' />
+                    <button href='' class='btn btn-success' data-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
+                        <i class='fa fa-download'></i>&nbsp;
+                        <?php eT('Install'); ?>
+                    </button>
+                </form>
             <?php elseif ($scannedPlugin['load_error'] == 0
                           && $scannedPlugin['pluginConfig'] != null
                           && !$scannedPlugin['isCompatible']): ?>
