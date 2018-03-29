@@ -219,7 +219,7 @@ class themes extends Survey_Common_Action
                         }
 
                         if (Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            Yii::app()->user->setFlash('error', gT("Can not import theme! The folder for that theme already exists!"));
+                            Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                             rmdirr($destdir);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
                         }
