@@ -35,6 +35,20 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.6.0 (build 180328) to 3.6.1 (build 180329) Mar 29, 2018
+-Fixed issue #13505 : Q_other.shown are difference between PHP and JS (Denis Chenu)
+-Fixed issue #13517: Question adv settings are not updated after update of question type (Denis Chenu)
+-Fixed issue: space added after default value (Denis Chenu)
+-Fixed issue: Images in theme options completely broken (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
+
+
 Changes from 3.5.4 (build 180320) to 3.6.0 (build 180328) Mar 28, 2018
 -New feature #13511: Allow new attribute in beforeQuestionRender (Denis Chenu)
 -New feature #13537: allow max_execution_time by config (#1026) (Denis Chenu)
