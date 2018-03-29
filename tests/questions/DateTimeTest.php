@@ -2,54 +2,27 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
+ * @group date
  */
 class DateTimeTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
+        $_POST = [];
+        $_SESSION = [];
 
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_975622.lss';
+        self::importSurvey($surveyFile);
 
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
     }
 
     /**
@@ -112,9 +85,13 @@ class DateTimeTest extends TestBaseClass
 
     /**
      * Test wrong date input and error message.
+     * @group datewronginput
      */
     public function testWrongInput()
     {
+        $contr = new DummyController('dummyid');
+        \Yii::app()->setController($contr);
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
@@ -142,7 +119,7 @@ class DateTimeTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $this->assertNotEmpty($result);
         $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
-        $this->assertEquals('asd', $result[$sgqa]['value']);
+        $this->assertEquals('INVALID', $result[$sgqa]['value']);
 
         $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
         \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
@@ -199,7 +176,6 @@ class DateTimeTest extends TestBaseClass
 
     /**
      * q1 is hidden question with default answer "now".
-     * @group q1
      */
     public function testQ1()
     {

@@ -3,6 +3,49 @@
  * Footer view
  * Inserted in all pages
  */
+$systemInfos = [
+    gT('LimeSurvey version') => Yii::app()->getConfig('versionnumber'),
+    gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
+    gT('Operating system') => php_uname(),
+    gT('PHP version') => phpversion(),
+    gT('Web server name') => $_SERVER['SERVER_NAME'],
+    gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
+    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
+];
+
+// MSSQL does not support some of these attributes, so much
+// catch possible PDO exception.
+
+try {
+    $systemInfos[gT('Database driver')] = Yii::app()->db->driverName;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database driver version')] = Yii::app()->db->clientVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database driver version')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server info')] = Yii::app()->db->serverInfo;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server info')] = $ex->getMessage();
+}
+
+try {
+    $systemInfos[gT('Database server version')] = Yii::app()->db->serverVersion;
+} catch (Exception $ex) {
+    $systemInfos[gT('Database server version')] = $ex->getMessage();
+}
+
+/* Fix array to string , see #13352 */
+foreach($systemInfos as &$systemInfo) {
+    if(is_array($systemInfo)) {
+        $systemInfo = json_encode($systemInfo, JSON_PRETTY_PRINT);
+    }
+}
 ?>
 <!-- Footer -->
 <footer class='footer'>
@@ -19,17 +62,58 @@
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-sm-4 text-center"  >
                 <a href='http://donate.limesurvey.org' target="_blank">
-                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
+                    <img alt='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
             <div class="col-xs-12 col-sm-4 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
+                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?> 
+                    <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
+                <?php } ?>
+                <?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                    </a> 
+                <?php } ?>
             </div>
         </div>
     </div>
 </footer>
+<div id="bottomScripts">
+    <###end###>
+</div>
+
+<!-- Modal for system information -->
+
+<div id="modalSystemInformation" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="h3 modal-title"><?php eT("System information"); ?></div>
+            </div>
+            <div class="modal-body">
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                    <h4><?php eT("Your system configuration:")?></h4>
+                    <ul class="list-group">
+                        <?php foreach($systemInfos as $name => $systemInfo){ ?>
+                            <li class="list-group-item">
+                                <div class="ls-flex-row">
+                                    <div class="col-4"><?php echo $name ?></div>
+                                    <div class="col-8"><?php echo $systemInfo ?></div>
+                                </div>
+                            </li>   
+                        <?php } ?>
+                    </ul>
+                <?php } else { ?>
+                    <h4><?=gT("We are sorry but this information is only available to superadministrators.")?></h4>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal for confirmation -->
 <?php

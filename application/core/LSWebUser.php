@@ -1,6 +1,9 @@
 <?php
     Yii::import('application.helpers.Hash', true);
 
+    /**
+     * @property integer $id The user ID
+     */
     class LSWebUser extends CWebUser
     {
         protected $sessionVariable = 'LSWebUser';
@@ -9,24 +12,13 @@
         public function __construct()
         {
             $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
-
-            // Try to fix missing language in plugin controller
-            if (empty(Yii::app()->session['adminlang']))
-            {
-                 Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-            }
-
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
 
         public function checkAccess($operation, $params = array(), $allowCaching = true)
         {
-            if ($operation == 'administrator')
-            {
+            if ($operation == 'administrator') {
                 return Permission::model()->hasGlobalPermission('superadmin', 'read');
-            }
-            else
-            {
+            } else {
                 return parent::checkAccess($operation, $params, $allowCaching);
             }
 
@@ -38,15 +30,17 @@
         }
 
 
-        public function setFlash($key, $value, $defaultValue = null) {
+        public function setFlash($key, $value, $defaultValue = null)
+        {
             $this->setState("flash.$key", $value, $defaultValue);
         }
-        public function hasFlash($key) {
+        public function hasFlash($key)
+        {
             $this->hasState("flash.$key");
         }
 
         public function getFlashes($delete = true)
-           {
+        {
             $result = $this->getState('flash', array());
             $this->removeState('flash');
             return $result;
@@ -54,17 +48,14 @@
 
         /**
          * @param string $key
-         * @param string $defaultValue
+         * @param mixed $defaultValue
          * @return mixed|null
          */
         public function getState($key, $defaultValue = null)
         {
-            if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
-            {
+            if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key)) {
                 return $defaultValue;
-            }
-            else
-            {
+            } else {
                 return Hash::get($_SESSION[$this->sessionVariable], $key);
             }
         }
@@ -81,12 +72,9 @@
         public function setState($key, $value, $defaultValue = null)
         {
             $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
-            if($value === $defaultValue)
-            {
+            if ($value === $defaultValue) {
                 $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
-            }
-            else
-            {
+            } else {
                 $_SESSION[$this->sessionVariable] = Hash::insert($current, $key, $value);
             }
 
@@ -108,20 +96,21 @@
             $oUsergroup = UserGroup::model()->findByPk($gid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
-                return false;
+            if (!is_object($oUsergroup)) {
+                            return false;
+            }
 
             $users = $oUsergroup->users;
             $aUids = array();
-            foreach($users as $user)
-            {
-                $aUids[]=$user->uid;
+            foreach ($users as $user) {
+                $aUids[] = $user->uid;
             }
 
-            if (in_array($this->id, $aUids))
-                return true;
-            else
-                return false;
+            if (in_array($this->id, $aUids)) {
+                            return true;
+            } else {
+                            return false;
+            }
         }
 
     }

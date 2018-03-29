@@ -10,7 +10,7 @@
                 data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
                 class='btn btn-warning pull-right condition-header-button'
-                onclick='return false';
+                onclick='return false;'
             >
                 <span class="fa fa-trash"></span>
                 &nbsp;
@@ -52,7 +52,7 @@
 
 
 <?php echo $conditionsoutput_action_error;?>
-<?php echo $javascriptpre;?>
+<?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript", $javascriptpre, LSYii_ClientScript::POS_BEGIN);?>
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">

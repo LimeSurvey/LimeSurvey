@@ -4,6 +4,10 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('createSurvey');
+
 ?>
 <!-- new survey view -->
 <?php
@@ -13,8 +17,8 @@
     $active = (isset($_GET['tab']))?$_GET['tab']:'create';
 ?>
 <script type="text/javascript">
-    standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
+    templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
 
 <div class="pagetitle h3"><?php eT("Create, import, or copy survey"); ?></div>
@@ -42,4 +46,5 @@
         </div>
     </div>
 </div>
+
 

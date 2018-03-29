@@ -16,14 +16,14 @@
 )); ?>
 
 <div class="modal-header">
-	<?php $model->isNewRecord ? eT('Create new surveymenu entry') : eT('Edit surveymenu entry') ?>
+	<?php $model->isNewRecord ? eT('Create new survey menu entry') : eT('Edit survey menu entry') ?>
 </div>
 <div class="modal-body">
 	<div class="container-fluid">
 
 		<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
 		<?php if(!$model->isNewRecord && $model->menu_id == '1'):?>
-			<div class="alert alert-danger" role="alert"><?php printf(gT("You are editing an entry of the main menu! %s Please be very careful."), '<br/>') ?></div>
+			<div class="alert alert-danger" role="alert"><?php echo gT("You are editing an entry of the main menu!").' '.gT("Please be very careful."); ?></div>
 		<?php endif; ?>
 
 		<p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
@@ -107,7 +107,12 @@
 		</div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptions">
-
+            <div class="form-group">
+				<?php echo $form->labelEx($model,'user_id'); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->error($model,'user_id'); ?>
+            </div>
+            
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'action'); ?>
 				<?php echo $form->textField($model,'action',array('size'=>60,'maxlength'=>255)); ?>
@@ -159,8 +164,8 @@
 		
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
-		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"><?=gT('Close')?></button>
 	</div>
 
 <?php $this->endWidget(); ?>

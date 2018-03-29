@@ -20,7 +20,7 @@ function getSurveyDefaultSettings()
     'active'=>'N',
     'questionindex'               => 0,
     'format'                   => 'G', //Group-by-group mode
-    'template'                 => $this->config->item('defaulttemplate'),
+    'template'                 => getGlobalSetting('defaulttheme'),
     'allowsave'                => 'Y',
     'allowprev'                => 'N',
     'nokeyboard'               => 'N',
@@ -46,6 +46,7 @@ function getSurveyDefaultSettings()
     'expires'                  => '',
     'showqnumcode'             => 'X',
     'showwelcome'              => 'Y',
+    'showsurveypolicynotice'       => 0,
     'emailresponseto'          => '',
     'assessments'              => 'N',
     'navigationdelay'          => 0);

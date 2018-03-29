@@ -21,7 +21,7 @@ class questionHelper
     /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
     /* @var array[] The question attribute (settings) by question type*/
-    protected static $questionAttributesSettings=array();
+    protected static $questionAttributesSettings = array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
@@ -29,12 +29,11 @@ class questionHelper
      */
     public static function getAttributesDefinitions()
     {
-        if(self::$attributes)
-        {
+        if (self::$attributes) {
             return self::$attributes;
         }
 
-        self::$attributes=array();
+        self::$attributes = array();
         //For each question attribute include a key:
         // name - the display name
         // types - a string with one character representing each question typy to which the attribute applies
@@ -46,7 +45,7 @@ class questionHelper
 
         // If you need to create a new attribute selector rendering for question advanced attribute
         // Just add it to application/views/admin/survey/Question/advanced_settings_view
-        self::$attributes["alphasort"]=array(
+        self::$attributes["alphasort"] = array(
         "types"=>"!LOWZ",
         'category'=>gT('Display'),
         'sortorder'=>100,
@@ -59,7 +58,7 @@ class questionHelper
         "help"=>gT("Sort the answer options alphabetically"),
         "caption"=>gT('Sort answers alphabetically'));
 
-        self::$attributes["answer_width"]=array(
+        self::$attributes["answer_width"] = array(
             "types"=>"ABCEF1:;",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -70,7 +69,7 @@ class questionHelper
             "caption"=>gT('(Sub-)question width')
         );
 
-        self::$attributes["answer_width_bycolumn"]=array(
+        self::$attributes["answer_width_bycolumn"] = array(
             "types"=>"H",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -81,7 +80,7 @@ class questionHelper
             "caption"=>gT('Answers column width')
         );
 
-        self::$attributes["repeat_headings"]=array(
+        self::$attributes["repeat_headings"] = array(
             "types"=>"F:1;",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -91,7 +90,7 @@ class questionHelper
             "caption"=>gT('Repeat headers')
         );
 
-        self::$attributes["array_filter"]=array(
+        self::$attributes["array_filter"] = array(
             "types"=>"1ABCEF:;MPLKQR",
             'category'=>gT('Logic'),
             'sortorder'=>100,
@@ -100,7 +99,7 @@ class questionHelper
             "caption"=>gT('Array filter')
         );
 
-        self::$attributes["array_filter_exclude"]=array(
+        self::$attributes["array_filter_exclude"] = array(
             "types"=>"1ABCEF:;MPLKQR",
             'category'=>gT('Logic'),
             'sortorder'=>100,
@@ -109,19 +108,19 @@ class questionHelper
             "caption"=>gT('Array filter exclusion')
         );
 
-        self::$attributes["array_filter_style"]=array(
+        self::$attributes["array_filter_style"] = array(
             "types"=>"1ABCEF:;MPLKQR",
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'buttongroup',
-            'options'=>array(0=>gT('Hidden','unescaped'),
-            1=>gT('Disabled','unescaped')),
+            'options'=>array(0=>gT('Hidden', 'unescaped'),
+            1=>gT('Disabled', 'unescaped')),
             'default'=>0,
             "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
             "caption"=>gT('Array filter style')
         );
 
-        self::$attributes["assessment_value"]=array(
+        self::$attributes["assessment_value"] = array(
             "types"=>"MP",
             'category'=>gT('Logic'),
             'sortorder'=>100,
@@ -131,7 +130,7 @@ class questionHelper
             "caption"=>gT('Assessment value')
         );
 
-        self::$attributes["category_separator"]=array(
+        self::$attributes["category_separator"] = array(
             "types"=>"!",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -140,7 +139,7 @@ class questionHelper
             "caption"=>gT('Category separator')
         );
 
-        self::$attributes["code_filter"]=array(
+        self::$attributes["code_filter"] = array(
             "types"=>"WZ",
             'category'=>gT('Logic'),
             'sortorder'=>100,
@@ -149,7 +148,7 @@ class questionHelper
             "caption"=>gT('Code filter')
         );
 
-        self::$attributes["commented_checkbox"]=array(
+        self::$attributes["commented_checkbox"] = array(
             "types"=>"P",
             'category'=>gT('Logic'),
             'sortorder'=>110,
@@ -164,7 +163,7 @@ class questionHelper
             'caption'=>gT('Comment only when')
         );
 
-        self::$attributes["commented_checkbox_auto"]=array(
+        self::$attributes["commented_checkbox_auto"] = array(
             "types"=>"P",
             'category'=>gT('Logic'),
             'sortorder'=>111,
@@ -178,7 +177,7 @@ class questionHelper
             'caption'=>gT('Remove text or uncheck checkbox automatically')
         );
 
-        self::$attributes["display_columns"]=array(
+        self::$attributes["display_columns"] = array(
             "types"=>"LM",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -188,7 +187,7 @@ class questionHelper
             "caption"=>gT('Display columns')
         );
 
-        self::$attributes["display_rows"]=array(
+        self::$attributes["display_rows"] = array(
             "types"=>"QSTU",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -197,7 +196,7 @@ class questionHelper
             "caption"=>gT('Display rows')
         );
 
-        self::$attributes["dropdown_dates"]=array(
+        self::$attributes["dropdown_dates"] = array(
             "types"=>"D",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -209,17 +208,17 @@ class questionHelper
             "caption"=>gT('Display dropdown boxes')
         );
 
-        self::$attributes["date_min"]=array(
+        self::$attributes["date_min"] = array(
             "types"=>"D",
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
-            'expression'=>2,/* What for "tomorrow" etc ....*/
+            'expression'=>2, /* What for "tomorrow" etc ....*/
             "help"=>gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
             "caption"=>gT('Minimum date')
         );
 
-        self::$attributes["date_max"]=array(
+        self::$attributes["date_max"] = array(
             "types"=>"D",
             'category'=>gT('Display'),
             'sortorder'=>111,
@@ -229,7 +228,7 @@ class questionHelper
             "caption"=>gT('Maximum date')
         );
 
-        self::$attributes["dropdown_prepostfix"]=array(
+        self::$attributes["dropdown_prepostfix"] = array(
             "types"=>"1",
             'category'=>gT('Display'),
             'sortorder'=>112,
@@ -239,7 +238,7 @@ class questionHelper
             "caption"=>gT('Dropdown prefix/suffix')
         );
 
-        self::$attributes["dropdown_separators"]=array(
+        self::$attributes["dropdown_separators"] = array(
             "types"=>"1",
             'category'=>gT('Display'),
             'sortorder'=>120,
@@ -248,7 +247,7 @@ class questionHelper
             "caption"=>gT('Dropdown separator')
         );
 
-        self::$attributes["dualscale_headerA"]=array(
+        self::$attributes["dualscale_headerA"] = array(
             "types"=>"1",
             'category'=>gT('Display'),
             'sortorder'=>110,
@@ -259,7 +258,7 @@ class questionHelper
             "caption"=>gT('Header for first scale')
         );
 
-        self::$attributes["dualscale_headerB"]=array(
+        self::$attributes["dualscale_headerB"] = array(
             "types"=>"1",
             'category'=>gT('Display'),
             'sortorder'=>111,
@@ -270,7 +269,7 @@ class questionHelper
             "caption"=>gT('Header for second scale')
         );
 
-        self::$attributes["equation"]=array(
+        self::$attributes["equation"] = array(
             "types"=>"*",
             'category'=>gT('Logic'),
             'sortorder'=>100,
@@ -281,7 +280,7 @@ class questionHelper
             "default"=>""
         );
 
-        self::$attributes["equals_num_value"]=array(
+        self::$attributes["equals_num_value"] = array(
             "types"=>"K",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -291,8 +290,8 @@ class questionHelper
             "caption"=>gT('Equals sum value')
         );
 
-        self::$attributes["em_validation_q"]=array(
-            "types"=>":;ABCDEFKMNOPQRSTU",
+        self::$attributes["em_validation_q"] = array(
+            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer …)
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -301,8 +300,8 @@ class questionHelper
             "caption"=>gT('Question validation equation')
         );
 
-        self::$attributes["em_validation_q_tip"]=array(
-            "types"=>":;ABCDEFKMNOPQRSTU",
+        self::$attributes["em_validation_q_tip"] = array(
+            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with subqs (in EM) and without
             'category'=>gT('Logic'),
             'sortorder'=>210,
             'inputtype'=>'textarea',
@@ -312,7 +311,7 @@ class questionHelper
             "caption"=>gT('Question validation tip')
         );
 
-        self::$attributes["em_validation_sq"]=array(
+        self::$attributes["em_validation_sq"] = array(
             "types"=>";:KQSTUN",
             'category'=>gT('Logic'),
             'sortorder'=>220,
@@ -322,7 +321,7 @@ class questionHelper
             "caption"=>gT('Sub-question validation equation')
         );
 
-        self::$attributes["em_validation_sq_tip"]=array(
+        self::$attributes["em_validation_sq_tip"] = array(
             "types"=>";:KQSTUN",
             'category'=>gT('Logic'),
             'sortorder'=>230,
@@ -333,7 +332,7 @@ class questionHelper
             "caption"=>gT('Sub-question validation tip')
         );
 
-        self::$attributes["exclude_all_others"]=array(
+        self::$attributes["exclude_all_others"] = array(
             "types"=>"ABCEFMPKQ",
             'category'=>gT('Logic'),
             'sortorder'=>130,
@@ -342,7 +341,7 @@ class questionHelper
             "caption"=>gT('Exclusive option')
         );
 
-        self::$attributes["exclude_all_others_auto"]=array(
+        self::$attributes["exclude_all_others_auto"] = array(
             "types"=>"MP",
             'category'=>gT('Logic'),
             'sortorder'=>131,
@@ -355,7 +354,7 @@ class questionHelper
 
         // Map Options
 
-        self::$attributes["location_city"]=array(
+        self::$attributes["location_city"] = array(
             "types"=>"S",
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
@@ -367,7 +366,7 @@ class questionHelper
             "caption"=>gT("Save city")
         );
 
-        self::$attributes["location_state"]=array(
+        self::$attributes["location_state"] = array(
             "types"=>"S",
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
@@ -379,7 +378,7 @@ class questionHelper
             "caption"=>gT("Save state")
         );
 
-        self::$attributes["location_postal"]=array(
+        self::$attributes["location_postal"] = array(
             "types"=>"S",
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
@@ -391,7 +390,7 @@ class questionHelper
             "caption"=>gT("Save postal code")
         );
 
-        self::$attributes["location_country"]=array(
+        self::$attributes["location_country"] = array(
             "types"=>"S",
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
@@ -403,7 +402,7 @@ class questionHelper
             "caption"=>gT("Save country")
         );
 
-        self::$attributes["statistics_showmap"]=array(
+        self::$attributes["statistics_showmap"] = array(
             "types"=>"S",
             'category'=>gT('Statistics'),
             'inputtype'=>'switch',
@@ -414,7 +413,7 @@ class questionHelper
             'default'=>1
         );
 
-        self::$attributes["statistics_showgraph"]=array(
+        self::$attributes["statistics_showgraph"] = array(
             'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
             'category'=>gT('Statistics'),
             'inputtype'=>'switch',
@@ -425,7 +424,7 @@ class questionHelper
             'default'=>1
         );
 
-        self::$attributes["statistics_graphtype"]=array(
+        self::$attributes["statistics_graphtype"] = array(
             "types"=>'15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
             'category'=>gT('Statistics'),
             'inputtype'=>'singleselect',
@@ -443,53 +442,53 @@ class questionHelper
             'default'=>0
         );
 
-        self::$attributes["location_mapservice"]=array(
+        self::$attributes["location_mapservice"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
             'options'=>array(
                 0=>gT('Off'),
-                100=>gT('OpenStreetMap via MapQuest','unescaped'),
-                1=>gT('Google Maps','unescaped')
+                100=>gT('OpenStreetMap via MapQuest', 'unescaped'),
+                1=>gT('Google Maps', 'unescaped')
             ),
             'default' => 0,
             "help"=>gT("Activate this to show a map above the input field where the user can select a location"),
             "caption"=>gT("Use mapping service")
         );
 
-        self::$attributes["location_mapwidth"]=array(
+        self::$attributes["location_mapwidth"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>102,
             'inputtype'=>'text',
             'default'=>'500',
-            "help"=>gT("Width of the map in pixel (for google map)"),
+            "help"=>gT("Map width in pixel"),
             "caption"=>gT("Map width")
         );
 
-        self::$attributes["location_mapheight"]=array(
+        self::$attributes["location_mapheight"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>103,
             'inputtype'=>'text',
             'default'=>'300',
-            "help"=>gT("Height of the map in pixel"),
+            "help"=>gT("Map height in pixel"),
             "caption"=>gT("Map height")
         );
 
-        self::$attributes["location_nodefaultfromip"]=array(
+        self::$attributes["location_nodefaultfromip"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>91,
             'inputtype'=>'singleselect',
-            'options'=>array(0=>gT('Yes'),1=>gT('No')),
+            'options'=>array(0=>gT('Yes'), 1=>gT('No')),
             'default' => 0,
             "help"=>gT("Get the default location using the user's IP address?"),
             "caption"=>gT("IP as default location")
         );
 
-        self::$attributes["location_defaultcoordinates"]=array(
+        self::$attributes["location_defaultcoordinates"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>101,
@@ -498,7 +497,7 @@ class questionHelper
             "caption"=>gT('Default position')
         );
 
-        self::$attributes["location_mapzoom"]=array(
+        self::$attributes["location_mapzoom"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>101,
@@ -510,39 +509,39 @@ class questionHelper
 
         // End Map Options
 
-        self::$attributes["hide_tip"]=array(
+        self::$attributes["hide_tip"] = array(
             "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Hide the tip that is normally shown with a question'),
             "caption"=>gT('Hide tip')
         );
 
-        self::$attributes['hidden']=array(
+        self::$attributes['hidden'] = array(
             'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
             'category'=>gT('Display'),
             'sortorder'=>101,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
             'caption'=>gT('Always hide this question')
         );
 
-        self::$attributes['cssclass']=array(
+        self::$attributes['cssclass'] = array(
             'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
             'category'=>gT('Display'),
             'sortorder'=>102,
             'inputtype'=>'text',
-            'expression'=>1,/* As static */
-            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names. You can use expression, remind this part was static.'),
+            'expression'=>1, /* As static */
+            'help'=>gT('Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.'),
             'caption'=>gT('CSS class(es)')
         );
 
-        self::$attributes["max_answers"]=array(
+        self::$attributes["max_answers"] = array(
             "types"=>"MPR1:;ABCEFKQ",
             'category'=>gT('Logic'),
             'sortorder'=>11,
@@ -552,7 +551,7 @@ class questionHelper
             "caption"=>gT('Maximum answers')
         );
 
-        self::$attributes["max_num_value"]=array(
+        self::$attributes["max_num_value"] = array(
             "types"=>"K",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -562,7 +561,7 @@ class questionHelper
             "caption"=>gT('Maximum sum value')
         );
 
-        self::$attributes["max_num_value_n"]=array(
+        self::$attributes["max_num_value_n"] = array(
             "types"=>"NK",
             'category'=>gT('Input'),
             'sortorder'=>110,
@@ -573,7 +572,7 @@ class questionHelper
         );
 
         /* Ranking specific : max DB answer */
-        self::$attributes["max_subquestions"]=array(
+        self::$attributes["max_subquestions"] = array(
             "types"=>"R",
             'readonly_when_active'=>true,
             'category'=>gT('Logic'),
@@ -584,7 +583,7 @@ class questionHelper
             "caption"=>gT('Maximum columns for answers')
         );
 
-        self::$attributes["maximum_chars"]=array(
+        self::$attributes["maximum_chars"] = array(
             "types"=>"STUNQK:;",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -594,7 +593,7 @@ class questionHelper
             "caption"=>gT('Maximum characters')
         );
 
-        self::$attributes["min_answers"]=array(
+        self::$attributes["min_answers"] = array(
             "types"=>"MPR1:;ABCEFKQ",
             'category'=>gT('Logic'),
             'sortorder'=>10,
@@ -604,7 +603,7 @@ class questionHelper
             "caption"=>gT('Minimum answers')
         );
 
-        self::$attributes["min_num_value"]=array(
+        self::$attributes["min_num_value"] = array(
             "types"=>"K",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -614,7 +613,7 @@ class questionHelper
             "caption"=>gT('Minimum sum value')
         );
 
-        self::$attributes["min_num_value_n"]=array(
+        self::$attributes["min_num_value_n"] = array(
             "types"=>"NK",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -624,27 +623,27 @@ class questionHelper
             "caption"=>gT('Minimum value')
         );
 
-        self::$attributes["multiflexible_max"]=array(
+        self::$attributes["multiflexible_max"] = array(
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>112,
             'inputtype'=>'text',
-            'expression'=>2,// Really ? Only if shown as text then
+            'expression'=>2, // Really ? Only if shown as text then
             "help"=>gT('Maximum value for array(mult-flexible) question type'),
             "caption"=>gT('Maximum value')
         );
 
-        self::$attributes["multiflexible_min"]=array(
+        self::$attributes["multiflexible_min"] = array(
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
-            'expression'=>2,// Really ? Only if shown as text then
+            'expression'=>2, // Really ? Only if shown as text then
             "help"=>gT('Minimum value for array(multi-flexible) question type'),
             "caption"=>gT('Minimum value')
         );
 
-        self::$attributes["multiflexible_step"]=array(
+        self::$attributes["multiflexible_step"] = array(
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>111,
@@ -654,78 +653,78 @@ class questionHelper
             "caption"=>gT('Step value')
         );
 
-        self::$attributes["multiflexible_checkbox"]=array(
+        self::$attributes["multiflexible_checkbox"] = array(
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Use checkbox layout'),
             "caption"=>gT('Checkbox layout')
         );
 
-        self::$attributes["reverse"]=array(
+        self::$attributes["reverse"] = array(
             "types"=>"D:",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Present answer options in reverse order'),
             "caption"=>gT('Reverse answer order')
         );
 
-        self::$attributes["num_value_int_only"]=array(
+        self::$attributes["num_value_int_only"] = array(
             "types"=>"NK",
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Restrict input to integer values'),
             "caption"=>gT('Integer only')
         );
 
-        self::$attributes["numbers_only"]=array(
+        self::$attributes["numbers_only"] = array(
             "types"=>"Q;S*",
             'category'=>gT('Other'),
             'sortorder'=>150,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Allow only numerical input'),
             "caption"=>gT('Numbers only')
         );
 
-        self::$attributes['show_totals']=array(
+        self::$attributes['show_totals'] = array(
             'types' =>    ';',
             'category' =>    gT('Other'),
             'sortorder' =>    151,
             'inputtype'    => 'buttongroup',
             'options' =>    array(
-                'X' =>    gT('Off','unescaped'),
-                'R' =>    gT('Rows','unescaped'),
-                'C' =>    gT('Columns','unescaped'),
-                'B' =>    gT('Rows & columns','unescaped')
+                'X' =>    gT('Off', 'unescaped'),
+                'R' =>    gT('Rows', 'unescaped'),
+                'C' =>    gT('Columns', 'unescaped'),
+                'B' =>    gT('Rows & columns', 'unescaped')
             ),
             'default' =>    'X',
             'help' =>    gT('Show totals for either rows, columns or both rows and columns'),
             'caption' =>    gT('Show totals for')
         );
 
-        self::$attributes['show_grand_total']=array(
+        self::$attributes['show_grand_total'] = array(
             'types' =>    ';',
             'category' =>    gT('Other'),
             'sortorder' =>    152,
             'inputtype' =>    'switch',
-            'options' =>array(0=>gT('No'),1=>gT('Yes')),
+            'options' =>array(0=>gT('No'), 1=>gT('Yes')),
             'default' =>    0,
             'help' =>    gT('Show grand total for either columns or rows'),
             'caption' =>    gT('Show grand total')
         );
 
-        self::$attributes["input_size"]=array(
+        self::$attributes["input_size"] = array(
             "types"=>"STUQNMK:;",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -735,40 +734,40 @@ class questionHelper
             "caption"=>gT("Text input size")
         );
 
-        self::$attributes["input_boxes"]=array(
+        self::$attributes["input_boxes"] = array(
         "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT("Present as text input boxes instead of dropdown lists"),
             "caption"=>gT("Text inputs")
         );
 
-        self::$attributes["other_comment_mandatory"]=array(
+        self::$attributes["other_comment_mandatory"] = array(
             "types"=>"PLW!Z",
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT("Make the 'Other:' comment field mandatory when the 'Other:' option is active"),
             "caption"=>gT("'Other:' comment mandatory")
         );
 
-        self::$attributes["other_numbers_only"]=array(
+        self::$attributes["other_numbers_only"] = array(
             "types"=>"LMP",
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT("Allow only numerical input for 'Other' text"),
             "caption"=>gT("Numbers only for 'Other'")
         );
 
-        self::$attributes["other_replace_text"]=array(
+        self::$attributes["other_replace_text"] = array(
             "types"=>"LMPWZ!",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -779,18 +778,18 @@ class questionHelper
             "caption"=>gT("Label for 'Other:' option")
         );
 
-        self::$attributes["page_break"]=array(
+        self::$attributes["page_break"] = array(
             "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
             'category'=>gT('Other'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Insert a page break before this question in printable view by setting this to Yes.'),
             "caption"=>gT('Insert page break in printable view')
         );
 
-        self::$attributes["prefix"]=array(
+        self::$attributes["prefix"] = array(
             "types"=>"KNQS",
             'category'=>gT('Display'),
             'sortorder'=>10,
@@ -801,7 +800,7 @@ class questionHelper
             "caption"=>gT('Answer prefix')
         );
 
-        self::$attributes["printable_help"]=array(
+        self::$attributes["printable_help"] = array(
             "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
             'category'=>gT('Display'),
             'sortorder'=>201,
@@ -813,23 +812,23 @@ class questionHelper
             "caption"=>gT("Relevance help for printable survey")
         );
 
-        self::$attributes["public_statistics"]=array(
+        self::$attributes["public_statistics"] = array(
             "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
             'category'=>gT('Statistics'),
             'sortorder'=>80,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Show statistics of this question in the public statistics page'),
             "caption"=>gT('Show in public statistics')
         );
 
-        self::$attributes["random_order"]=array(
+        self::$attributes["random_order"] = array(
             "types"=>"!ABCEFHKLMOPQRWZ1:;",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'singleselect',
-            'options'=>array(0=>gT('No'),1=>gT("Yes")),
+            'options'=>array(0=>gT('No'), 1=>gT("Yes")),
             //1=>gT('Randomize on each page load')  // Shnoulle : replace by yes till we have only one solution
             //2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
             'default'=>0,
@@ -837,40 +836,40 @@ class questionHelper
             "caption"=>gT('Random order')
         );
 
-        self::$attributes["showpopups"]=array(
+        self::$attributes["showpopups"] = array(
             "types"=>"R",
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "caption"=>gT('Show javascript alert'),
             "help"=>gT('Show an alert if answers exceeds the number of max answers')
         );
 
-        self::$attributes["samechoiceheight"]=array(
+        self::$attributes["samechoiceheight"] = array(
             "types"=>"R",
             'category'=>gT('Display'),
             'sortorder'=>120,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "caption"=>gT('Same height for all answer options'),
             "help"=>gT('Force each answer option to have the same height')
         );
 
-        self::$attributes["samelistheight"]=array(
+        self::$attributes["samelistheight"] = array(
             "types"=>"R",
             'category'=>gT('Display'),
             'sortorder'=>121,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "caption"=>gT('Same height for lists'),
             "help"=>gT('Force the choice list and the rank list to have the same height')
         );
 
-        self::$attributes["parent_order"]=array(
+        self::$attributes["parent_order"] = array(
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>100,
@@ -879,18 +878,18 @@ class questionHelper
             "help"=>gT('Enter question ID to get subquestion order from a previous question')
         );
 
-        self::$attributes["slider_layout"]=array(
+        self::$attributes["slider_layout"] = array(
         "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>1,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Use slider layout'),
             "caption"=>gT('Use slider layout')
         );
 
-        self::$attributes["slider_min"]=array(
+        self::$attributes["slider_min"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>10,
@@ -900,7 +899,7 @@ class questionHelper
             "caption"=>gT('Slider minimum value')
         );
 
-        self::$attributes["slider_max"]=array(
+        self::$attributes["slider_max"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>11,
@@ -910,7 +909,7 @@ class questionHelper
             "caption"=>gT('Slider maximum value')
         );
 
-        self::$attributes["slider_accuracy"]=array(
+        self::$attributes["slider_accuracy"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>30,
@@ -920,7 +919,7 @@ class questionHelper
             "caption"=>gT('Slider accuracy')
         );
 
-        self::$attributes["slider_default"]=array(
+        self::$attributes["slider_default"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>50,
@@ -930,43 +929,43 @@ class questionHelper
             "caption"=>gT('Slider initial value')
         );
 
-        self::$attributes["slider_middlestart"]=array(
+        self::$attributes["slider_middlestart"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>40,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
             "caption"=>gT('Slider starts at the middle position')
         );
 
-        self::$attributes["slider_default_set"]=array(
+        self::$attributes["slider_default_set"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>51,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1, /* before 3.0 : this is the default behaviour */
-            "help"=>gT('When using slider initial value : did this set the value.'),
+            "help"=>gT('When using slider initial value set this value at survey start.'),
             "caption"=>gT('Slider initial value set at start')
         );
 
-        self::$attributes["slider_orientation"]=array(
+        self::$attributes["slider_orientation"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>2,
             'inputtype'=>'buttongroup',
             'options'=>array(
-                0=>gT('Horizontal','unescaped'),
-                1=>gT('Vertical','unescaped')
+                0=>gT('Horizontal', 'unescaped'),
+                1=>gT('Vertical', 'unescaped')
             ),
             'default'=>0,
             "help"=>gT('Set the orientation.'),
             "caption"=>gT('Orientation')
         );
 
-        self::$attributes["slider_handle"]=array(
+        self::$attributes["slider_handle"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>3,
@@ -982,7 +981,7 @@ class questionHelper
             "caption"=>gT('Handle shape')
         );
 
-        self::$attributes["slider_custom_handle"]=array(
+        self::$attributes["slider_custom_handle"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>4,
@@ -992,55 +991,55 @@ class questionHelper
             "caption"=>gT('Custom handle Unicode code')
         );
 
-        self::$attributes["slider_rating"]=array(
+        self::$attributes["slider_rating"] = array(
             "types"=>"5",
             'category'=>gT('Display'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
             'options'=>array(
-                0=>gT('Off','unescaped'),
-                1=>gT('Stars','unescaped'),
-                2=>gT('Slider with emoticon','unescaped'),
+                0=>gT('Off', 'unescaped'),
+                1=>gT('Stars', 'unescaped'),
+                2=>gT('Slider with emoticon', 'unescaped'),
             ),
             'default'=>0,
             "help"=>gT('Use slider layout'),
             "caption"=>gT('Use slider layout')
         );
 
-        self::$attributes["slider_reversed"]=array(
+        self::$attributes["slider_reversed"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>50,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
-            "help"=>gT('Reverses the slider direction and repositions the min/max text accoringly.'),
+            "help"=>gT('Reverses the slider direction and repositions the min/max text accordingly.'),
             "caption"=>gT('Reverse the slider direction')
         );
 
-        self::$attributes["slider_reset"]=array(
+        self::$attributes["slider_reset"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>50,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
             "caption"=>gT('Allow reset the slider')
         );
 
-        self::$attributes["slider_showminmax"]=array(
+        self::$attributes["slider_showminmax"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>100,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Display min and max value under the slider'),
             "caption"=>gT('Display slider min and max value')
         );
 
-        self::$attributes["slider_separator"]=array(
+        self::$attributes["slider_separator"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
             'sortorder'=>110,
@@ -1050,7 +1049,7 @@ class questionHelper
             "caption"=>gT('Slider left/right text separator')
         );
 
-        self::$attributes["suffix"]=array(
+        self::$attributes["suffix"] = array(
             "types"=>"KNQS",
             'category'=>gT('Display'),
             'sortorder'=>11,
@@ -1061,7 +1060,7 @@ class questionHelper
             "caption"=>gT('Answer suffix')
         );
 
-        self::$attributes["text_input_width"]=array(
+        self::$attributes["text_input_width"] = array(
         "types"=>"KNSTU",
         'category'=>gT('Display'),
         'sortorder'=>100,
@@ -1086,7 +1085,7 @@ class questionHelper
         "caption"=>gT('Text input box width'));
 
         /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
-        self::$attributes["text_input_columns"]=array(
+        self::$attributes["text_input_columns"] = array(
         "types"=>"QP",
         'category'=>gT('Display'),
         'sortorder'=>90,
@@ -1110,7 +1109,7 @@ class questionHelper
         "help"=>gT('Relative width of the text input wrapper element'),
         "caption"=>gT('Text input box width'));
 
-        self::$attributes["label_input_columns"]=array(
+        self::$attributes["label_input_columns"] = array(
         "types"=>"KQ",
         'category'=>gT('Display'),
         'sortorder'=>91,
@@ -1118,7 +1117,7 @@ class questionHelper
         'default'=>'',
         'options'=>array(
             ''=>gT("Default"),
-            'hidden'=>gT("Hidden"),/* can not use 0, sometimes we don't test with === */
+            'hidden'=>gT("Hidden"), /* can not use 0, sometimes we don't test with === */
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -1136,7 +1135,7 @@ class questionHelper
         "caption"=>gT('Label column width'));
 
         /* Same than label_input_columns for multiple choice*/
-        self::$attributes["choice_input_columns"]=array(
+        self::$attributes["choice_input_columns"] = array(
         "types"=>"P",
         'category'=>gT('Display'),
         'sortorder'=>90,
@@ -1160,20 +1159,20 @@ class questionHelper
         "help"=>gT('Relative width of checkbox wrapper element'),
         "caption"=>gT('Choice column width'));
 
-        self::$attributes["use_dropdown"]=array(
+        self::$attributes["use_dropdown"] = array(
             "types"=>"1FO",
             'category'=>gT('Display'),
             'sortorder'=>112,
             'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Present dropdown control(s) instead of list of radio buttons'),
             "caption"=>gT('Use dropdown presentation')
         );
 
 
-        self::$attributes["dropdown_size"]=array(
-            "types"=>"!",   // TODO add these later?  "1F",
+        self::$attributes["dropdown_size"] = array(
+            "types"=>"!", // TODO add these later?  "1F",
             'category'=>gT('Display'),
             'sortorder'=>200,
             'inputtype'=>'text',
@@ -1182,14 +1181,14 @@ class questionHelper
             "caption"=>gT('Height of dropdown')
         );
 
-        self::$attributes["dropdown_prefix"]=array(
-            "types"=>"!",   // TODO add these later?  "1F",
+        self::$attributes["dropdown_prefix"] = array(
+            "types"=>"!", // TODO add these later?  "1F",
             'category'=>gT('Display'),
             'sortorder'=>201,
             'inputtype'=>'buttongroup',
             'options'=>array(
-                0=>gT('None','unescaped'),
-                1=>gT('Order - like 3)','unescaped'),
+                0=>gT('None', 'unescaped'),
+                1=>gT('Order - like 3)', 'unescaped'),
                 // 2=>gT('Code - like A1','unescaped'), // Just an idea ;)
             ),
             'default'=>0,
@@ -1197,7 +1196,7 @@ class questionHelper
             "caption"=>gT('Prefix for list items')
         );
 
-        self::$attributes["scale_export"]=array(
+        self::$attributes["scale_export"] = array(
             "types"=>"CEFGHLMOPWYZ1!:*",
             'category'=>gT('Other'),
             'sortorder'=>100,
@@ -1211,7 +1210,7 @@ class questionHelper
             "caption"=>gT('SPSS export scale type')
         );
 
-        self::$attributes["choice_title"]=array(
+        self::$attributes["choice_title"] = array(
             "types"=>"R",
             'category'=>gT('Other'),
             'sortorder'=>200,
@@ -1219,11 +1218,11 @@ class questionHelper
             'expression'=>1,
             'i18n'=>true,
             'default'=>"",
-            "help"=>sprintf(gT("Replace choice header (default: \"%s\")"),gT("Your choices")),
+            "help"=>sprintf(gT("Replace choice header (default: \"%s\")"), gT("Your choices")),
             "caption"=>gT("Choice header")
         );
 
-        self::$attributes["rank_title"]=array(
+        self::$attributes["rank_title"] = array(
             "types"=>"R",
             'category'=>gT('Other'),
             'sortorder'=>201,
@@ -1231,12 +1230,12 @@ class questionHelper
             'expression'=>1,
             'i18n'=>true,
             'default'=>"",
-            "help"=>sprintf(gT("Replace rank header (default: \"%s\")"),gT("Your ranking")),
+            "help"=>sprintf(gT("Replace rank header (default: \"%s\")"), gT("Your ranking")),
             "caption"=>gT("Rank header")
         );
 
         //Timer attributes
-        self::$attributes["time_limit"]=array(
+        self::$attributes["time_limit"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>90,
@@ -1245,7 +1244,7 @@ class questionHelper
             "caption"=>gT("Time limit")
         );
 
-        self::$attributes["time_limit_action"]=array(
+        self::$attributes["time_limit_action"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>92,
@@ -1260,29 +1259,29 @@ class questionHelper
             "caption"=>gT("Time limit action")
         );
 
-        self::$attributes["time_limit_disable_next"]=array(
+        self::$attributes["time_limit_disable_next"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>94,
             "inputtype"=>"switch",
             'default'=>0,
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             "help"=>gT("Disable the next button until time limit expires"),
             "caption"=>gT("Time limit disable next")
         );
 
-        self::$attributes["time_limit_disable_prev"]=array(
+        self::$attributes["time_limit_disable_prev"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>96,
             "inputtype"=>"switch",
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT("Disable the prev button until the time limit expires"),
             "caption"=>gT("Time limit disable prev")
         );
 
-        self::$attributes["time_limit_countdown_message"]=array(
+        self::$attributes["time_limit_countdown_message"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>98,
@@ -1293,7 +1292,7 @@ class questionHelper
             "caption"=>gT("Time limit countdown message")
         );
 
-        self::$attributes["time_limit_timer_style"]=array(
+        self::$attributes["time_limit_timer_style"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>100,
@@ -1302,7 +1301,7 @@ class questionHelper
             "caption"=>gT("Time limit timer CSS style")
         );
 
-        self::$attributes["time_limit_message_delay"]=array(
+        self::$attributes["time_limit_message_delay"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>102,
@@ -1311,7 +1310,7 @@ class questionHelper
             "caption"=>gT("Time limit expiry message display time")
         );
 
-        self::$attributes["time_limit_message"]=array(
+        self::$attributes["time_limit_message"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>104,
@@ -1322,7 +1321,7 @@ class questionHelper
             "caption"=>gT("Time limit expiry message")
         );
 
-        self::$attributes["time_limit_message_style"]=array(
+        self::$attributes["time_limit_message_style"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>106,
@@ -1331,7 +1330,7 @@ class questionHelper
             "caption"=>gT("Time limit message CSS style")
         );
 
-        self::$attributes["time_limit_warning"]=array(
+        self::$attributes["time_limit_warning"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>108,
@@ -1340,7 +1339,7 @@ class questionHelper
             "caption"=>gT("1st time limit warning message timer")
         );
 
-        self::$attributes["time_limit_warning_display_time"]=array(
+        self::$attributes["time_limit_warning_display_time"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>110,
@@ -1349,7 +1348,7 @@ class questionHelper
             "caption"=>gT("1st time limit warning message display time")
         );
 
-        self::$attributes["time_limit_warning_message"]=array(
+        self::$attributes["time_limit_warning_message"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>112,
@@ -1360,7 +1359,7 @@ class questionHelper
             "caption"=>gT("1st time limit warning message")
         );
 
-        self::$attributes["time_limit_warning_style"]=array(
+        self::$attributes["time_limit_warning_style"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>114,
@@ -1369,7 +1368,7 @@ class questionHelper
             "caption"=>gT("1st time limit warning CSS style")
         );
 
-        self::$attributes["time_limit_warning_2"]=array(
+        self::$attributes["time_limit_warning_2"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>116,
@@ -1378,7 +1377,7 @@ class questionHelper
             "caption"=>gT("2nd time limit warning message timer")
         );
 
-        self::$attributes["time_limit_warning_2_display_time"]=array(
+        self::$attributes["time_limit_warning_2_display_time"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>118,
@@ -1387,7 +1386,7 @@ class questionHelper
             "caption"=>gT("2nd time limit warning message display time")
         );
 
-        self::$attributes["time_limit_warning_2_message"]=array(
+        self::$attributes["time_limit_warning_2_message"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>120,
@@ -1398,7 +1397,7 @@ class questionHelper
             "caption"=>gT("2nd time limit warning message")
         );
 
-        self::$attributes["time_limit_warning_2_style"]=array(
+        self::$attributes["time_limit_warning_2_style"] = array(
             "types"=>"STUXL!",
             'category'=>gT('Timer'),
             'sortorder'=>122,
@@ -1407,7 +1406,7 @@ class questionHelper
             "caption"=>gT("2nd time limit warning CSS style")
         );
 
-        self::$attributes["date_format"]=array(
+        self::$attributes["date_format"] = array(
             "types"=>"D",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -1416,7 +1415,7 @@ class questionHelper
             "caption"=>gT("Date/Time format")
         );
 
-        self::$attributes["dropdown_dates_minute_step"]=array(
+        self::$attributes["dropdown_dates_minute_step"] = array(
             "types"=>"D",
             'category'=>gT('Input'),
             'sortorder'=>100,
@@ -1426,45 +1425,45 @@ class questionHelper
             "caption"=>gT("Minute step interval")
         );
 
-        self::$attributes["dropdown_dates_month_style"]=array(
+        self::$attributes["dropdown_dates_month_style"] = array(
             "types"=>"D",
             'category'=>gT('Display'),
             'sortorder'=>100,
             "inputtype"=>"buttongroup",
             'options'=>array(
-                0=>gT('Short names','unescaped'),
-                1=>gT('Full names','unescaped'),
-                2=>gT('Numbers','unescaped')
+                0=>gT('Short names', 'unescaped'),
+                1=>gT('Full names', 'unescaped'),
+                2=>gT('Numbers', 'unescaped')
             ),
             'default'=>0,
             "help"=>gT("Change the display style of the month when using select boxes"),
             "caption"=>gT("Month display style")
         );
 
-        self::$attributes["show_title"]=array(
+        self::$attributes["show_title"] = array(
             "types"=>"|",
             'category'=>gT('File metadata'),
             'sortorder'=>124,
             "inputtype"=>"switch",
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "help"=>gT("Is the participant required to give a title to the uploaded file?"),
             "caption"=>gT("Show title")
         );
 
-        self::$attributes["show_comment"]=array(
+        self::$attributes["show_comment"] = array(
             "types"=>"|",
             'category'=>gT('File metadata'),
             'sortorder'=>126,
             "inputtype"=>"switch",
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "help"=>gT("Is the participant required to give a comment to the uploaded file?"),
             "caption"=>gT("Show comment")
         );
 
 
-        self::$attributes["max_filesize"]=array(
+        self::$attributes["max_filesize"] = array(
             "types"=>"|",
             'category'=>gT('Other'),
             'sortorder'=>128,
@@ -1474,7 +1473,7 @@ class questionHelper
             "caption"=>gT("Maximum file size allowed (in KB)")
         );
 
-        self::$attributes["max_num_of_files"]=array(
+        self::$attributes["max_num_of_files"] = array(
             "types"=>"|",
             'category'=>gT('Other'),
             'sortorder'=>130,
@@ -1485,7 +1484,7 @@ class questionHelper
             "caption"=>gT("Max number of files")
         );
 
-        self::$attributes["min_num_of_files"]=array(
+        self::$attributes["min_num_of_files"] = array(
             "types"=>"|",
             'category'=>gT('Other'),
             'sortorder'=>132,
@@ -1496,7 +1495,7 @@ class questionHelper
             "caption"=>gT("Min number of files")
         );
 
-        self::$attributes["allowed_filetypes"]=array(
+        self::$attributes["allowed_filetypes"] = array(
             "types"=>"|",
             'category'=>gT('Other'),
             'sortorder'=>134,
@@ -1506,7 +1505,7 @@ class questionHelper
             "caption"=>gT("Allowed file types")
         );
 
-        self::$attributes["random_group"]=array(
+        self::$attributes["random_group"] = array(
             "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
             'category'=>gT('Logic'),
             'sortorder'=>180,
@@ -1519,12 +1518,12 @@ class questionHelper
         // unless those criteria were met.  In later releases of 1.92, the default was changed so that missing values were allowed even if those attributes were set
         // This attribute lets authors control whether missing values should be allowed in those cases without needing to set min_answers
         // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
-        self::$attributes["value_range_allows_missing"]=array(
+        self::$attributes["value_range_allows_missing"] = array(
             "types"=>"K",
             'category'=>gT('Input'),
             'sortorder'=>100,
             "inputtype"=>"switch",
-            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "help"=>gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
             "caption"=>gT("Value range allows missing")
@@ -1546,29 +1545,29 @@ class questionHelper
         );
         */
 
-        self::$attributes["display_type"]=array(
+        self::$attributes["display_type"] = array(
             "types"=>"YG",
             'category'=>gT('Display'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
             'options'=>array(
-                0=>gT('Button group','unescaped'),
-                1=>gT('Radio list','unescaped')
+                0=>gT('Button group', 'unescaped'),
+                1=>gT('Radio list', 'unescaped')
             ),
             'default'=>0,
             "help"=>gT('Use button group or radio list'),
             "caption"=>gT('Display type')
         );
 
-        self::$attributes["question_template"]=array(
+        self::$attributes["question_template"] = array(
             "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'question_template',
             'options'=>array(),
             'default' => "core",
-            "help"=>gT('Use a customed question template for this question'),
-            "caption"=>gT('Question template')
+            "help"=>gT('Use a customized question theme for this question'),
+            "caption"=>gT('Question theme')
         );
 
         /**
@@ -1590,8 +1589,8 @@ class questionHelper
         $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
         /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
-        $questionAttributes =(array) $result->get('questionAttributes');
-        self::$attributes=array_merge(self::$attributes,$questionAttributes);
+        $questionAttributes = (array) $result->get('questionAttributes');
+        self::$attributes = array_merge(self::$attributes, $questionAttributes);
 
         return self::$attributes;
     }
@@ -1603,16 +1602,16 @@ class questionHelper
      */
     public static function getQuestionAttributesSettings($sType)
     {
-        if(!isset(self::$questionAttributesSettings[$sType]))
-        {
-            self::$questionAttributesSettings[$sType]=array();
+        if (!isset(self::$questionAttributesSettings[$sType])) {
+            self::$questionAttributesSettings[$sType] = array();
             self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
-            $aQuestionTypeAttribute=array_filter(self::$attributes,function($attribute) use ($sType){
-                return stripos($attribute['types'],$sType)!==false;
+            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType)
+            {
+                return stripos($attribute['types'], $sType) !== false;
             });
 
-            $default= array(
+            $default = array(
                 "caption"=>'',
                 "inputtype"=>"text",
                 "options"=>'',
@@ -1622,10 +1621,11 @@ class questionHelper
                 "sortorder"=>1000,
                 "i18n"=>false,
                 "readonly"=>false,
+                "readonly_when_active"=>false,
+                "expression"=>null,
             );
-            foreach($aQuestionTypeAttribute as $attribute=>$settings)
-            {
-                self::$questionAttributesSettings[$sType][$attribute]=array_merge(
+            foreach ($aQuestionTypeAttribute as $attribute=>$settings) {
+                self::$questionAttributesSettings[$sType][$attribute] = array_merge(
                     $default,
                     $settings,
                     array("name"=>$attribute)

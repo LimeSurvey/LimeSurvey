@@ -1,5 +1,5 @@
 <?php
-/* @var $this SurveymenuEntriesController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // $this->breadcrumbs=array(
@@ -12,149 +12,131 @@
 // );
 
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyMenuEntries');
+
 ?>
+
 <div class="container-fluid ls-space padding left-50 right-50">
-	<div class="ls-flex-column ls-space padding left-35 right-35">
-		<div class="col-12 h1">
-			<?php eT('Menu entries')?> 
-			<a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" href="#editcreatemenuentry" data-toggle="modal">
-				<span id="createnewmenuentry">
-					<i class="fa fa-plus"></i>&nbsp;<?php eT('New menu entry') ?>
-				</span>
-				<span id="editmenuentry" class="hide">
-					<i class="fa fa-edit"></i>&nbsp;<?php eT('Edit entry') ?>
-				</span>
-			</a>
-			
-		</div>
+    <div class="ls-flex-column ls-space padding left-35 right-35">
+        <div class="col-12 h1 pagetitle">
+            <?php eT('Menu entries')?>
+        </div>
+        <div class="col-12">
+            <a class="btn btn-default pull-left col-xs-12 col-sm-3 col-md-2" id="createnewmenuentry">
+                <i class="icon-add text-success"></i>&nbsp;
+                <?php eT('New') ?>
+            </a>
+            <a class="btn btn-warning pull-right ls-space margin right-10 col-sm-3 col-md-2" id="reorderentries">
+                <i class="fa fa-sort"></i>&nbsp;
+                <?php eT('Reorder') ?>
+            </a>
+            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
+                <a class="btn btn-danger pull-right ls-space margin right-10 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
+                    <i class="fa fa-refresh"></i>&nbsp;
+                    <?php eT('Reset') ?>
+                </a>
+            <?php endif; ?>
+        </div>
 
-		<div class="ls-flex-row">
-			<div class="col-12 ls-flex-item">
-			<?php $this->widget('bootstrap.widgets.TbGridView', array(
-					'dataProvider' => $model->search(),
-					'id' => 'surveymenu-entries-grid',
-					'columns' => $model->getColumns(),
-					'filter' => $model,
-					'emptyText'=>gT('No customizable entries found.'),
-					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-						CHtml::dropDownList(
-							'pageSize',
-							$pageSize,
-							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
-					'itemsCssClass' =>'table table-striped',
-					'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
-					'ajaxType' => 'POST',
-					'ajaxUpdate' => true,
-    				'afterAjaxUpdate'=>'bindAction',
-				));
-			?>
-			</div>
-		</div>
-	</div>
+        <div class="ls-flex-row">
+            <div class="col-12 ls-flex-item">
+                <?php
+                $this->widget('bootstrap.widgets.TbGridView', array(
+                    'dataProvider' => $model->search(),
+                    'id' => 'surveymenu-entries-grid',
+                    'columns' => $model->getColumns(),
+                    'filter' => $model,
+                    'emptyText'=>gT('No customizable entries found.'),
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            Yii::app()->params['pageSizeOptions'],
+                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                        )
+                    ),
+                    'itemsCssClass' =>'table table-striped',
+                    'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
+                    'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
+                    'ajaxType' => 'POST',
+                    'ajaxUpdate' => true,
+                    'afterAjaxUpdate'=>'bindAction',
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                ));
+            ?>
+            </div>
+        </div>
+    </div>
 </div>
 
-<input type="hidden" id="surveymenu_open_url_selected_entry" value="" />
-<!-- modal! -->
+  <input type="hidden" id="surveymenu_open_url_selected_entry" value="" />
+  <!-- modal! -->
 
-<div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
-  	<div class="modal-dialog modal-lg" role="document">
-    	<div class="modal-content">
-		</div>
-	</div>
-</div>
+  <div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
 
-<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
-  	<div class="modal-dialog modal-lg" role="document">
-    	<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title"><?php eT("Really delete this surveymenu?");?></h4>
-			</div>
-			<div class="modal-body">
-				<?php eT("All menuentries of this menu will also be deleted."); ?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-				<button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete now'); ?></button>
-			</div>
-		</div>
-	</div>
-</div>
+  <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><?php eT("Really delete this survey menu entry?");?></h4>
+        </div>
+        <div class="modal-body">
+          <?php eT("Please be careful - if you delete default entries you may not be able access some parts of the application."); ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            <?php eT('Cancel'); ?>
+          </button>
+          <button type="button" id="deletemodal-confirm" class="btn btn-danger">
+            <?php eT('Delete now'); ?>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script>
-function bindAction(){
-	$('.action_selectthisentry').on('click', function(){
-		var checked = $(this).prop('checked') ? true : false;
-		$('.action_selectthisentry').prop('checked', false);
-		$(this).prop('checked', checked);
-		if(checked){ 
-			$('#createnewmenuentry').addClass('hide'); $('#editmenuentry').removeClass('hide'); 
-		} else {
-			$('#createnewmenuentry').removeClass('hide'); $('#editmenuentry').addClass('hide'); 
-		}
-	})
-	$('#editcreatemenuentry').on('show.bs.modal', function(evt){
-		console.log(evt);
-		var loadSurveyEntryFormUrl = "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>";
-		var loadSurveyEntryFormData ={};
-		if($('.action_selectthisentry:checked').length > 0){
-			console.log($('.action_selectthisentry:checked'));
-			loadSurveyEntryFormData.menuentryid = $('.action_selectthisentry:checked').val();
-		}
-		$('#editcreatemenuentry').find('.modal-content').load(loadSurveyEntryFormUrl, loadSurveyEntryFormData, function(){
-			$('#surveymenu-entries-form').on('submit', function(evt){
-					evt.preventDefault();
-					var data = $('#surveymenu-entries-form').serializeArray();
-					var url = $('#surveymenu-entries-form').attr('action');
-					$.ajax({
-						url : url,
-						data: data,
-						method: 'POST',
-						dataType: 'json',
-						success: function(data){
-							console.log(data);
-							$('#editcreatemenuentry').modal('hide');
-							$.fn.yiiGridView.update('surveymenu-entries-grid');
-						},
-						error: function(error){
-							console.log(error);
-						}
-					})
-				});
-		});
-	});
-	$('#editcreatemenuentry').on('hidden.bs.modal', function(){
-		$(this).find('.modal-content').html('');
-	});
-	$('#surveymenu-entries-grid').on('click', 'tr', function(){
-		$(this).find('.action_selectthisentry').trigger('click');
-	});
+  <div class="modal fade" id="restoremodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><?php eT("Really restore the default survey menu entries?");?></h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            <?php eT("All custom menu entries will be lost."); ?>
+          </p>
+          <p>
+            <?php eT("Please do a backup of the menu entries you want to keep."); ?>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            <?php eT('Cancel'); ?>
+          </button>
+          <button type="button" id="reset-menu-entries-confirm" class="btn btn-danger">
+            <?php eT('Yes, restore default'); ?>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	$('.action_surveymenuEntries_deleteModal').on('click',function(){
-		var menuEntryid = $(this).closest('tr').data('surveymenu-entry-id');
-		$('#deletemodal').modal('show');
-		$('#deletemodal').on('shown.bs.modal',function(){
-			$('#deletemodal-confirm').on('click', function(){
-				var url = "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>";
-				$.ajax({
-					url: url,
-					data: {menuEntryid: menuEntryid, ajax: true},
-					method: 'post',
-					success: function(data){
-						console.log(data);
-						window.location.reload();
-					},
-					error: function(err){
-						console.log(err);
-						window.location.reload();
-					}
-				})
-			})
-		});
-	});
-	};
-	$(document).ready(bindAction);
+  <script>
+    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
+      loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
+      restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>",
+      reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
+      deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
+    }),
+    bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
 
-</script>
+    $(document).on('ready pjax:scriptcomplete', bindAction);
+  </script>

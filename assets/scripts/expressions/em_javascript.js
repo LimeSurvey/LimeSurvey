@@ -40,7 +40,6 @@ $(document).on("change",".select-item select:not([onchange]),.dropdown-item sele
 });
 /* radio/button item */
 $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
-    console.log(event);
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
@@ -304,11 +303,22 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
     return null;
 }
 
-function LEMif(a,b,c)
+/**
+ * If $test is true, return $iftrue, else return $iffalse
+ * @param mixed testDone
+ * @param mixed ifTrue
+ * @param mixed ifFalse
+ * @return mixed
+ */
+function LEMif(testDone,ifTrue,ifFalse)
 {
-    // implements conditional logic.  Note double negation of a to ensure it is cast to Boolean
-    if (a === '0') { return c; }    // so consistent with PHP
-    return (!!a) ? b : c;
+    if(testDone && testDone !== '0') { // so consistent with PHP
+        return ifTrue;
+    }
+    if (typeof ifFalse == "undefined") { // Pre ES6 (else, just add ifFalse = '' in function call
+        return '';
+    }
+    return ifFalse;
 }
 
 /**
@@ -598,7 +608,7 @@ function LEMval(alias)
                     }
                     else {
                         which_ans = '0~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             answer = value;
                         }
                         else {
@@ -612,7 +622,7 @@ function LEMval(alias)
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                     which_ans = prefix + '~' + value;
-                    if (typeof attr.answers[which_ans] === 'undefined') {
+                    if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                         answer = '';
                     }
                     else {
@@ -715,7 +725,7 @@ function LEMval(alias)
                         }
                         else {
                             which_ans = '0~' + value;
-                            if (typeof attr.answers[which_ans] === 'undefined') {
+                            if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                                 value = '';
                             }
                             else {
@@ -727,7 +737,7 @@ function LEMval(alias)
                     case '1': //Array (Flexible Labels) dual scale  // need scale
                         prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                         which_ans = prefix + '~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             value = '';
                         }
                         else {

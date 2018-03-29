@@ -1,0 +1,126 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/opt/node/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'bootstrap-popovers' ]
+2 info using npm@2.15.11
+3 info using node@v7.8.0
+4 verbose install initial load of /opt/web/LimeSurvey/assets/packages/lstutorial/package.json
+5 warn package.json lstutorial@1.0.0 No repository field.
+6 warn package.json lstutorial@1.0.0 No README data
+7 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/babel-core/package.json
+8 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/babel-loader/package.json
+9 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/babel-preset-es2015/package.json
+10 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/bootstrap-tour/package.json
+11 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/css-loader/package.json
+12 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint/package.json
+13 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-config-standard/package.json
+14 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-friendly-formatter/package.json
+15 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-loader/package.json
+16 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-plugin-html/package.json
+17 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-plugin-import/package.json
+18 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-plugin-node/package.json
+19 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-plugin-promise/package.json
+20 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/eslint-plugin-standard/package.json
+21 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp/package.json
+22 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-autoprefixer/package.json
+23 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-babel/package.json
+24 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-concat/package.json
+25 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-eslint/package.json
+26 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-sass/package.json
+27 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-sass-lint/package.json
+28 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-sourcemaps/package.json
+29 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-uglify/package.json
+30 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/gulp-webpack/package.json
+31 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/lodash/package.json
+32 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/node-sass/package.json
+33 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/pump/package.json
+34 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/run-sequence/package.json
+35 verbose installManyTop reading scoped package data from /opt/web/LimeSurvey/assets/packages/lstutorial/node_modules/webpack/package.json
+36 info package.json bootstrap-tour@0.12.0 No license field.
+37 verbose readDependencies loading dependencies from /opt/web/LimeSurvey/assets/packages/lstutorial/package.json
+38 silly cache add args [ 'bootstrap-popovers', null ]
+39 verbose cache add spec bootstrap-popovers
+40 silly cache add parsed spec Result {
+40 silly cache add   raw: 'bootstrap-popovers',
+40 silly cache add   scope: null,
+40 silly cache add   name: 'bootstrap-popovers',
+40 silly cache add   rawSpec: '',
+40 silly cache add   spec: 'latest',
+40 silly cache add   type: 'tag' }
+41 silly addNamed bootstrap-popovers@latest
+42 verbose addNamed "latest" is being treated as a dist-tag for bootstrap-popovers
+43 info addNameTag [ 'bootstrap-popovers', 'latest' ]
+44 silly mapToRegistry name bootstrap-popovers
+45 silly mapToRegistry using default registry
+46 silly mapToRegistry registry https://registry.npmjs.org/
+47 silly mapToRegistry data Result {
+47 silly mapToRegistry   raw: 'bootstrap-popovers',
+47 silly mapToRegistry   scope: null,
+47 silly mapToRegistry   name: 'bootstrap-popovers',
+47 silly mapToRegistry   rawSpec: '',
+47 silly mapToRegistry   spec: 'latest',
+47 silly mapToRegistry   type: 'tag' }
+48 silly mapToRegistry uri https://registry.npmjs.org/bootstrap-popovers
+49 verbose addNameTag registry:https://registry.npmjs.org/bootstrap-popovers not in flight; fetching
+50 verbose request uri https://registry.npmjs.org/bootstrap-popovers
+51 verbose request no auth needed
+52 info attempt registry request try #1 at 2:21:28 PM
+53 verbose request id dd26df6371e4f0ea
+54 http request GET https://registry.npmjs.org/bootstrap-popovers
+55 http 404 https://registry.npmjs.org/bootstrap-popovers
+56 verbose headers { 'content-type': 'application/json',
+56 verbose headers   'cache-control': 'max-age=0',
+56 verbose headers   'content-length': '2',
+56 verbose headers   'accept-ranges': 'bytes',
+56 verbose headers   date: 'Fri, 13 Oct 2017 12:21:29 GMT',
+56 verbose headers   via: '1.1 varnish',
+56 verbose headers   age: '0',
+56 verbose headers   connection: 'keep-alive',
+56 verbose headers   'x-served-by': 'cache-hhn1540-HHN',
+56 verbose headers   'x-cache': 'MISS',
+56 verbose headers   'x-cache-hits': '0',
+56 verbose headers   'x-timer': 'S1507897289.527346,VS0,VE525',
+56 verbose headers   vary: 'Accept-Encoding' }
+57 silly get cb [ 404,
+57 silly get   { 'content-type': 'application/json',
+57 silly get     'cache-control': 'max-age=0',
+57 silly get     'content-length': '2',
+57 silly get     'accept-ranges': 'bytes',
+57 silly get     date: 'Fri, 13 Oct 2017 12:21:29 GMT',
+57 silly get     via: '1.1 varnish',
+57 silly get     age: '0',
+57 silly get     connection: 'keep-alive',
+57 silly get     'x-served-by': 'cache-hhn1540-HHN',
+57 silly get     'x-cache': 'MISS',
+57 silly get     'x-cache-hits': '0',
+57 silly get     'x-timer': 'S1507897289.527346,VS0,VE525',
+57 silly get     vary: 'Accept-Encoding' } ]
+58 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/bootstrap-popovers
+58 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+58 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:280:14)
+58 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+58 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:187:22)
+58 verbose stack     at emitTwo (events.js:106:13)
+58 verbose stack     at Request.emit (events.js:194:7)
+58 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1044:10)
+58 verbose stack     at emitOne (events.js:96:13)
+58 verbose stack     at Request.emit (events.js:191:7)
+58 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:965:12)
+59 verbose statusCode 404
+60 verbose pkgid bootstrap-popovers
+61 verbose cwd /opt/web/LimeSurvey/assets/packages/lstutorial
+62 error Linux 4.4.0-93-generic
+63 error argv "/opt/node/bin/node" "/usr/bin/npm" "install" "bootstrap-popovers"
+64 error node v7.8.0
+65 error npm  v2.15.11
+66 error code E404
+67 error 404 Registry returned 404 for GET on https://registry.npmjs.org/bootstrap-popovers
+67 error 404
+67 error 404 'bootstrap-popovers' is not in the npm registry.
+67 error 404 You should bug the author to publish it (or use the name yourself!)
+67 error 404 It was specified as a dependency of 'lstutorial'
+67 error 404
+67 error 404 Note that you can also install from a
+67 error 404 tarball, folder, http url, or git url.
+68 verbose exit [ 1, true ]

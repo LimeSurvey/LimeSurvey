@@ -3,9 +3,12 @@
 /* @var string $lang */
 /* @var Quota $oQuota */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuota');
+
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='col-lg-8'>
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3>

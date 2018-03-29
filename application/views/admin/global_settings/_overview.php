@@ -26,10 +26,10 @@
         <th ><?php eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+        <th ><?php eT("Active survey participants tables"); ?>:</th><td><?php echo $activetokens; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+        <th ><?php eT("Deactivated survey participants tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
     </tr>
     <?php
         if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)

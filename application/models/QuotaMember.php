@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,7 +27,7 @@
  * @property Survey $survey
  * @property Question $question
  * @property Quota $quota
- * @property array $memberinfo
+ * @property array $memberInfo
  */
 class QuotaMember extends LSActiveRecord
 {
@@ -35,7 +37,9 @@ class QuotaMember extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -80,29 +84,27 @@ class QuotaMember extends LSActiveRecord
     {
         $sFieldName = null;
         $sValue = null;
-        if($this->question){
-            switch($this->question->type) {
+        if ($this->question) {
+            switch ($this->question->type) {
                 case "L":
                 case "O":
                 case "!":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                case "I":
+                case "G":
+                case "Y":
+                case "*":
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid;
                     $sValue = $this->code;
                     break;
                 case "M":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
                     $sValue = "Y";
                     break;
                 case "A":
                 case "B":
-                    $temp = explode('-',$this->code);
-                    $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                    $temp = explode('-', $this->code);
+                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
                     $sValue = $temp[1];
-                    break;
-                case "I":
-                case "G":
-                case "Y":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-                    $sValue = $this->code;
                     break;
                 default:
                     // "Impossible" situation.
@@ -130,11 +132,12 @@ class QuotaMember extends LSActiveRecord
 
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $members = new self;
-        foreach ($data as $k => $v)
-            $members->$k = $v;
+        foreach ($data as $k => $v) {
+                    $members->$k = $v;
+        }
         return $members->save();
     }
 }

@@ -1,0 +1,35 @@
+{% extends "./views/basic.twig" %}
+{% block choice %}
+    <div class="col-sm-6 col-xs-12">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
+        <!-- @todo : move htmlblock at the good place -->      
+        <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list ">
+            {% for index, ansrow in  answers %}
+                {% if show_handle is same as('yes') %} 
+                    <div id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button btn btn-default" data-value="{{ansrow.code}}">
+                    <i class="fa fa-bars bigIcons grabable selector__dragHandle "></i>
+                    <span class="icon-divider"></span>
+                {% else %}
+                    <div id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button btn btn-default grabable" data-value="{{ansrow.code}}">
+                {% endif %}
+                {% if show_number is same as('yes') %} 
+                    <b class="selector__index_row">#{{(index+1)}}</b>
+                    &nbsp;
+                {% endif %}
+                    {{ansrow.answer}}
+                    
+                </div>
+            {% endfor %}
+            <div class="hidden ls-remove"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block rank %}
+    <div class="col-sm-6 col-xs-12">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
+        <div id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
+            <div class="hidden ls-remove"></div>
+        </div>
+    </div>
+{% endblock %}

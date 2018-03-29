@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    (¯`·._.·(¯`·._.· Fruity Theme Manifest  ·._.·´¯)·._.·´¯)
+
+    Base configuration for Fruity Theme.
+    The content of this file is imported into DB when you install the template.
+
+-->
+<config>
+    <!-- Those metadata are displayed in the theme configuration page.  -->
+    <metadata>
+        <name>Fruity</name>
+        <title>Fruity Theme</title>
+        <creationDate>08/01/2016</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>3.0</version>
+        <apiVersion>3</apiVersion>
+        <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
+        <last_update>2017-12-04 18:36:02</last_update>
+        <extends>vanilla</extends>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to add to the template package.
+        About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+        "css/variations/sea_green.css" will be updated via the theme variation options
+    -->
+    <files>
+        <css>
+            <add>css/ajaxify.css</add>
+            <add>css/animate.css</add>
+            <add>css/variations/sea_green.css</add>
+            <add>css/theme.css</add>
+            <add>css/custom.css</add>
+        </css>
+        <js>
+            <add>scripts/theme.js</add>
+            <add>scripts/ajaxify.js</add>
+            <add>scripts/custom.js</add>
+        </js>
+        <print_css>
+            <add>css/print_theme.css</add>
+        </print_css>
+    </files>
+
+    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
+    <!-- for animations, see https://daneden.github.io/animate.css/ -->
+    <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
+    <options>
+        <ajaxmode>off</ajaxmode>
+        <brandlogo>on</brandlogo>
+        <brandlogofile>./files/logo.png</brandlogofile>
+        <container>on</container>
+        <backgroundimage>off</backgroundimage>
+        <backgroundimagefile>./files/pattern.png</backgroundimagefile>
+        <animatebody>off</animatebody>
+        <bodyanimation>fadeInRight</bodyanimation>
+        <bodyanimationduration>500</bodyanimationduration>
+        <animatequestion>off</animatequestion>
+        <questionanimation>flipInX</questionanimation>
+        <questionanimationduration>500</questionanimationduration>
+        <animatealert>off</animatealert>
+        <alertanimation>shake</alertanimation>
+        <alertanimationduration>500</alertanimationduration>
+        <font>noto</font>
+        <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+        <fontcolor>#444444</fontcolor>
+        <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+        <questionborder>on</questionborder>
+        <questioncontainershadow>on</questioncontainershadow>
+        <checkicon>f00c</checkicon>
+        <animatecheckbox>on</animatecheckbox>
+        <checkboxanimation>rubberBand</checkboxanimation>
+        <checkboxanimationduration>500</checkboxanimationduration>
+        <animateradio>on</animateradio>
+        <radioanimation>zoomIn</radioanimation>
+        <radioanimationduration>500</radioanimationduration>
+    </options>
+
+    <!-- Engine configuration is the very same as vanilla  -->
+
+
+</config>

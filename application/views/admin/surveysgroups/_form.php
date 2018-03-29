@@ -15,11 +15,10 @@
     'enableAjaxValidation'=>false,
 )); ?>
 
-    <p class="note">Fields with <span class="required">*</span> are required.</p>
+    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
 
     <?php echo $form->errorSummary($model); ?>
-
 
     <?php echo $form->hiddenField($model,'owner_uid'); ?>
     <?php echo $form->hiddenField($model,'gsid'); ?>
@@ -46,7 +45,7 @@
     </div>
 
     <div class="row">
-        <?php $model->sortorder = $model->sortorder ? $model->order : $model->getNextOrderPosition(); ?>
+        <?php $model->sortorder = $model->sortorder ? $model->sortorder : $model->getNextOrderPosition(); ?>
         <?php echo $form->labelEx($model,'sortorder'); ?>
         <?php echo $form->textField($model,'sortorder'); ?>
         <?php echo $form->error($model,'sortorder'); ?>

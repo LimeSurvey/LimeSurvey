@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var $this AdminController
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyResponsesBrowse');
+
+?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
 
@@ -6,31 +15,34 @@
     <div class="text-right in-title">
         <div class="pull-right">
             <div class="form text-right">
-                <div class="form-group">
-
-                    <label for="display-mode">
+                <form action="<?=App()->createUrl('/admin/responses/sa/browse/', ['surveyid' => $surveyid])?>" class="pjax" method="POST" id="change-display-mode-form">
+                    <div class="form-group">
+                        <label for="display-mode">
+                            <?php
+                                eT('Display mode:');
+                            ?>
+                        </label>
                         <?php
-                            eT('Display mode:');
-                        ?>
-                    </label>
-                    <?php
-                        $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
-                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                        array(
-                        'name' => 'display-mode',
-                        'value'=> $state,
-                        'selectOptions'=>array(
-                            'extended'=>gT('Extended'),
-                            'compact'=>gT('Compact')
-                            ),
-                        'htmlOptions' => array(
-                            'data-url'=>App()->createUrl('/admin/responses/sa/set_grid_display/'),
-                            'data-value' => $state
+                            $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
+                            array(
+                            'name' => 'displaymode',
+                            'value'=> $state,
+                            'selectOptions'=>array(
+                                'extended'=>gT('Extended'),
+                                'compact'=>gT('Compact')
+                                ),
+                            'htmlOptions' => array(
+                                'classes' => 'selector__action-change-display-mode'
+                                )
                             )
-                        )
-                    );
-                    ?>
-                </div>
+                        );
+                        ?>
+                        <input type="hidden" name="surveyid" value="<?=$surveyid?>" />
+                        <input type="hidden" name="<?=Yii::app()->request->csrfTokenName?>" value="<?=Yii::app()->request->csrfToken?>" />
+                        <input type="submit" class="hidden" name="submit" value="submit" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -75,7 +87,7 @@
                             'id'=>'action',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-left'),
+                            'htmlOptions' => array('class' => 'text-left response-buttons'),
                             'filter'=>false,
                         ),
 
@@ -200,10 +212,10 @@
                         'columns'       => $aColumns,
                         'itemsCssClass' =>'table-striped',
                         'id'            => 'responses-grid',
-                        'ajaxUpdate'    => true,
+                        'ajaxUpdate'    => 'responses-grid',
                         'ajaxType'      => 'POST',
                         'afterAjaxUpdate'=>'LS.resp.bindScrollWrapper',
-                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
@@ -216,14 +228,21 @@
                 ?>
             </div>
 
-            <!-- To update rows per page via ajax -->
-            <script type="text/javascript">
-                jQuery(function($) {
-                    jQuery(document).on("change", '#pageSize', function(){
-                        $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});
-                    });
+            <!-- To update rows per page via ajax setSession-->
+            <?php
+
+            $scriptVars = '
+                var postUrl = "'.Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")).'"; // For massive export
+                ';
+            $script = '
+                var postUrl = "'.Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")).'"; // For massive export
+                jQuery(document).on("change", "#pageSize", function(){
+                    $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
                 });
-            </script>
+                ';
+            App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);
+            ?>
         </div>
     </div>
 </div>

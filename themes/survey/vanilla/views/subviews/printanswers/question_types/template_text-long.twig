@@ -1,0 +1,11 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-md-8 text-break-pre">
+    {% if (aSurveyInfo.printPdf != 1) %}
+    {{question.answervalue|escape}}
+    {% else %}
+    {{question.answervalue|nl2br}}
+    {% endif %}
+    <br/>
+</div>
+{% endblock %}

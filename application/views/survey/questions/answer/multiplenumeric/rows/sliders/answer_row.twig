@@ -1,0 +1,107 @@
+
+{# <?php
+/**
+ * Multiple short texts question, item input text Html
+ * @var $tip
+ * @var $alert
+ * @var $maxlength
+ * @var $tiwidth
+ * @var $extraclass
+ * @var $sDisplayStyle
+ * @var $prefix
+ * @var $myfname
+ * @var $labelText
+ * @var $prefix
+ * @var $kpclass
+ * @var $rows
+ * @var $checkconditionFunction
+ * @var $dispVal
+ * @var $suffix
+ * @var $sUnformatedValue
+ * @var $slider_min
+ * @var $slider_max
+ * @var $slider_step
+ * @var $slider_default
+ * @var $slider_orientation
+ * @var $slider_handle
+ * @var $slider_reset
+ * @var $slider_reversed
+ * @var $sSeparator
+ */
+?> #}
+
+<li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
+    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ sLabelWidth == 0 ? " hidden":"" }}' for="answer{{myfname}}">
+        {{ labelText }}
+    </label>
+    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
+            {% if sliderleft is not empty %}
+                <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
+            {% elseif sliderWidth < 12 %}
+                <div class='col-xs-12 col-sm-2 slider-left text-right'></div>
+            {% endif %}
+
+            <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
+                    {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
+                            'class': 'form-control answer-item numeric-item',
+                            'id' : "answer" ~ myfname ~ "slid", 
+                            'aria-labelledby' : 'label-' ~ myfname
+                        })
+                    }}                
+                    {{ C.Html.textField( myfname, dispVal ,{
+                            'class': 'form-control answer-item numeric-item hidden slider-untouched',
+                            'id' : "answer" ~ myfname, 
+                        })
+                    }}                
+                {% if slider_showminmax %}
+                    <div class='pull-left help-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
+                    <div class='pull-right help-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                {% endif %}
+                {% if slider_reset %}
+                    <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
+                    <button id="answer{{ myfname }}_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
+                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ gT("Reset") }}</span>
+                    </button>
+                    </div>
+                {% endif %}
+            </div>
+            {% if sliderright is not empty %}
+                <div class='col-xs-12 col-sm-2 slider-right text-left'>{{ sliderright }}</div>
+            {% endif %}
+    </div>
+</li>
+
+{% set script %}
+    window.activeSliders = window.activeSliders || {};
+    if(window.activeSliders.s{{myfname}}){
+        window.activeSliders.s{{myfname}}.unsetSlider();
+        delete window.activeSliders.s{{myfname}};
+    }
+    window.activeSliders.s{{myfname}} = new LSSlider({
+        'qid': "{{qid}}",
+        'element': "{{myfname}}slid",
+        'rootElement': "{{myfname}}",
+        'value' : '{{slider_value}}',
+        'min' : {{slider_min}},
+        'max' : {{slider_max}},
+        'step' : {{slider_step}},
+        'orientation' : "{{slider_orientation}}",
+        'handle' : "{{slider_handle}}",
+        'tooltip' : 'always',
+        'reset' : "{{slider_reset}}",
+        'prefix' : "{{prefix}}",
+        'suffix' : "{{suffix}}",
+        'separator' : "{{sSeparator}}",
+        'number' : true,
+        'integer' : {{integeronly}},
+        'position' : "{{slider_position}}",
+        'custom_handle' : "{{slider_custom_handle}}",
+        'setPosition' : "{{slider_reset_set}}",
+        'reversed' : {{slider_reversed}},
+    });
+    window.activeSliders.s{{myfname}}.init();
+
+{% endset %}
+{{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
+
+<!-- end of answer_row -->

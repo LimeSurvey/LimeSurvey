@@ -3,6 +3,9 @@
  * The welcome page is the home page
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('index');
 ?>
 
 <?php
@@ -17,8 +20,7 @@
     gT('Stay safe and up to date');
     gT('Label sets');
     gT('Edit label sets');
-    gT('Templates');
-    gT('View templates list');
+    gT('Themes');
 ?>
 
 <!-- Welcome view -->
@@ -50,14 +52,23 @@
                       <h4 class="modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
-                        <ol>
-                            <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
-                                        "<span class='icon-add text-success'></span>"); ?></li>
-                            <li><?php eT('Create a new question group inside your survey.'); ?></li>
-                            <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                            <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<span class='icon-do text-success'></span>"); ?></li>
-                        </ol>
+                        <div class="container-fluid">
+                            <div class="row" id="selector__welcome-modal--simplesteps">
+                                <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
+                                <ol>
+                                    <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
+                                                "<i class='icon-add text-success'></i>"); ?></li>
+                                    <li><?php eT('Create a new question group inside your survey.'); ?></li>
+                                    <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
+                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='icon-do text-success'></i>"); ?></li>
+                                </ol>
+                            </div>
+                            <div class="row"><hr/></div>
+                            <div class="row" id="selector__welcome-modal--tutorial">
+                                <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
+                                <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
@@ -146,7 +157,7 @@
             </div>
         </div>
 
-    </div>
+    </>
 </div>
 
 <!-- Notification setting -->

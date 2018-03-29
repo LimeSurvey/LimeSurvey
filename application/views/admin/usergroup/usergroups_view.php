@@ -8,7 +8,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">
-    <div class="pagetitle h3"><?php eT('User groups list'); ?></div>
+    <div class="pagetitle h3"><?php eT('User group list'); ?></div>
     
     <div class="h4"><?php 
             if (!Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -25,7 +25,7 @@
                     'dataProvider' => $model->searchMine(TRUE),
                     'id' => 'usergroups-grid-mine',
                     'emptyText'=>gT('No user groups found.'),
-                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
@@ -106,62 +106,14 @@
                     'dataProvider' => $model->searchMine(FALSE),
                     'id' => 'usergroups-grid-belong-to',
                     'emptyText'=>gT('No user groups found.'),
-                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
                             array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
-                    'columns' => array(
-
-                        array(
-                            'header' => gT('User group ID'),
-                            'name' => 'usergroup_id',
-                            'value'=>'$data->ugid',
-                            'htmlOptions' => array('class' => 'col-md-1'),
-                        ),
-
-                        array(
-                            'header' => gT('Name'),
-                            'name' => 'name',
-                            'value'=>'$data->name',
-                            'htmlOptions' => array('class' => 'col-md-2'),
-                        ),
-
-                        array(
-                            'header' => gT('Description'),
-                            'name' => 'description',
-                            'value'=> '$data->description',
-                            'type' => 'LongText',
-                            'htmlOptions' => array('class' => 'col-md-5'),
-                        ),
-
-                        array(
-                            'header' => gT('Owner'),
-                            'name' => 'owner',
-                            'value'=> '$data->owner->users_name',
-                            'htmlOptions' => array('class' => 'col-md-1'),
-                        ),
-
-                        array(
-                            'header' => gT('Members'),
-                            'name' => 'members',
-                            'value'=> '$data->countUsers',
-                            'htmlOptions' => array('class' => 'col-md-1'),
-                        ),
-                        
-                        array(
-                            'header'=>'',
-                            'name'=>'actions',
-                            'type'=>'raw',
-                            'value'=>'',
-                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-                        ),                            
-
-                    ),
-
+                    'columns' => $model->columns,
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                     'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate' => true,
@@ -173,6 +125,27 @@
 
 </div>
 
+<div class="modal fade" tabindex="-1" id="delete-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?=gT("Delete this user group")?></h4>
+            </div>
+            <div class="modal-body">
+                <?=CHtml::form(array("admin/usergroups/sa/delete"), 'post', array('class'=>'','id'=>'delete-modal-form','name'=>'delete-modal-form'))?>
+                    <p><?=gT('Are you sure you want to delete this user group?')?></p>
+                    <input type="hidden" name="ugid" id="delete-ugid" value="" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=gT('Cancel')?></button>
+                <button type="button" class="btn btn-danger" id="confirm-deletion"><?=gT('Yes')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 jQuery(function($) {
     // To update rows per page via ajax
@@ -182,8 +155,16 @@ jQuery(function($) {
     });
     //Delete button
     $(document).ready(function() {
-        $('a[data-confirm]').click(function() {
-            return confirm($(this).attr('data-confirm'));
+        $('.action__delete-group').on('click', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            $('#delete-modal').modal('show'); 
+            
+            $('#delete-ugid').val($(this).data('ugid'));
+
+            $('#confirm-deletion').on('click', function() {
+                $('#delete-modal-form').submit();
+            });
         });
     });
 });

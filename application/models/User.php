@@ -31,13 +31,15 @@
  * @property string $modified Time modified Time created Time user was modified as 'YYYY-MM-DD hh:mm:ss'
  *
  * @property Permission[] $permissions
+ * @property User $parentUser Parent user
+ * @property string $parentUserName  Parent user's name
  */
 class User extends LSActiveRecord
 {
     /**
-    * @var string $lang Default value for user language
-    */
-    public $lang='auto';
+     * @var string $lang Default value for user language
+     */
+    public $lang = 'auto';
 
 
     /**
@@ -46,7 +48,9 @@ class User extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -60,13 +64,38 @@ class User extends LSActiveRecord
     {
         return 'uid';
     }
+    /** @inheritdoc */
+    public function relations()
+    {
+        return array(
+            'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
+            'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id')),
+            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid')
+        );
+    }
 
     /** @inheritdoc */
     public function rules()
     {
         return array(
             array('users_name, password, email', 'required'),
+            array('users_name', 'unique'),
             array('email', 'email'),
+            array('full_name', 'LSYii_Validators'), // XSS if non super-admin
+            array('parent_id', 'default', 'value'=>0),
+            array('parent_id', 'numerical', 'integerOnly'=>true),
+            array('lang', 'default', 'value'=>Yii::app()->getConfig('defaultlang')),
+            array('lang', 'LSYii_Validators', 'isLanguage'=>true),
+            array('htmleditormode', 'default', 'value'=>'default'),
+            array('htmleditormode', 'in', 'range'=>array('default', 'inline', 'popup', 'none'), 'allowEmpty'=>true),
+            array('questionselectormode', 'default', 'value'=>'default'),
+            array('questionselectormode', 'in', 'range'=>array('default', 'full', 'none'), 'allowEmpty'=>true),
+            array('templateeditormode', 'default', 'value'=>'default'),
+            array('templateeditormode', 'in', 'range'=>array('default', 'full', 'none'), 'allowEmpty'=>true),
+            //array('dateformat', 'default','value'=>????), // What is the default ?
+            array('dateformat', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            // created as datetime default current date in create scenario ?
+            // modifier as datetime default current date ?
         );
     }
 
@@ -75,9 +104,9 @@ class User extends LSActiveRecord
      *
      * @access public
      * @param mixed|boolean $condition
-     * @return string
+     * @return CActiveRecord[]
      */
-    public function getAllRecords($condition=FALSE)
+    public function getAllRecords($condition = false)
     {
         $criteria = new CDbCriteria;
 
@@ -93,40 +122,29 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @param integer $postuserid
-     * @return mixed
-     */
-    public function parentAndUser($postuserid)
-    {
-        $user = Yii::app()->db->createCommand()
-            ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
-            ->limit(1)
-            ->where('a.uid = :postuserid')
-            ->from("{{users}} a")
-            ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
-            ->bindParam(":postuserid", $postuserid, PDO::PARAM_INT)
-            ->queryRow();
-        return $user;
-    }
-
-    /**
-     * TODO via relation
-     * @return mixed
-     */
-    public function getParentUser(){
-        $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['parent'];
-    }
-
-
-    /**
      * @return string
      */
-    public function getSurveysCreated(){
+    public function getSurveysCreated()
+    {
         $noofsurveys = Survey::model()->countByAttributes(array("owner_id" =>$this->uid));
         return $noofsurveys;
     }
 
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
+        return $dateFormat['phpdate'];
+    }    
+
+    public function getFormattedDateCreated()
+    {
+        $dateCreated = $this->created;
+        $date = new DateTime($dateCreated);
+        return $date->format($this->dateFormat);
+    }    
     /**
      * Returns onetime password
      *
@@ -138,8 +156,8 @@ class User extends LSActiveRecord
     {
         // TODO get this via $this instead of param
         $this->db->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
-        $this->db->where('users_name',$username);
-        $data = $this->db->get('users',1);
+        $this->db->where('users_name', $username);
+        $data = $this->db->get('users', 1);
 
         return $data;
     }
@@ -156,8 +174,8 @@ class User extends LSActiveRecord
         $data = array(
             'one_time_pw' => ''
         );
-        $this->db->where('users_name',$username);
-        $this->db->update('users',$data);
+        $this->db->where('users_name', $username);
+        $this->db->update('users', $data);
     }
 
     /**
@@ -171,32 +189,21 @@ class User extends LSActiveRecord
      * @param string $parent_user
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
     {
         $oUser = new self;
         $oUser->users_name = $new_user;
-        $oUser->password = hash('sha256', $new_pass);
+        $oUser->setPassword($new_pass);
         $oUser->full_name = $new_full_name;
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
         if ($oUser->save()) {
             return $oUser->uid;
-        } else{
+        } else {
             return false;
         }
     }
-
-    /** @inheritdoc */
-    public function beforeSave()
-    {
-         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
-        if (gettype($this->password)=='resource') {
-            $this->password=stream_get_contents($this->password,-1,0);
-        }
-        return parent::beforeSave();
-    }
-
 
     /**
      * Delete user
@@ -207,25 +214,10 @@ class User extends LSActiveRecord
     public function deleteUser($iUserID)
     {
         // TODO should be done via $oUser->delete directly
-        $iUserID= (int) $iUserID;
-        $oUser=$this->findByPk($iUserID);
+        $iUserID = (int) $iUserID;
+        $oUser = $this->findByPk($iUserID);
         return (bool) $oUser->delete();
     }
-
-    /**
-     * Returns user share settings
-     * TODO this seems unused, delete? should be done via relation
-     * @access public
-     * @return array
-     */
-    public function getShareSetting()
-    {
-        $this->db->where(array("uid"=>$this->session->userdata('loginID')));
-        $result= $this->db->get('users');
-        return $result->row();
-    }
-
-
 
     /**
      * Finds user by username
@@ -248,22 +240,61 @@ class User extends LSActiveRecord
      * @param string $sPassword The clear text password
      * @return int number of rows updated
      */
-    public function updatePassword($iUserID, $sPassword)
+    public static function updatePassword($iUserID, $sPassword)
     {
-        // TODO should be $oUser->updatePassword($password)
-        return $this->updateByPk($iUserID, array('password' => hash('sha256', $sPassword)));
+        return User::model()->updateByPk($iUserID, array('password'=>password_hash($sPassword, PASSWORD_DEFAULT)));
     }
 
     /**
-    * Adds user record
-    *
-    * @access public
+     * Set user password with hash
+     *
+     * @param string $sPassword The clear text password
+     * @return \User
+     */
+    public function setPassword($sPassword, $save = false)
+    {
+        $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        if ($save) {
+            $this->save();
+        }
+        return $this; // Return current object
+    }
+
+    /**
+     * Check if password is OK for current \User
+     *
+     * @param string $sPassword The clear password
+     * @return boolean
+     */
+    public function checkPassword($sPassword)
+    {
+        // password can not be empty
+        if (empty($this->password)) {
+            return false;
+        }
+        // Password is OK
+        if (password_verify($sPassword, $this->password)) {
+            return true;
+        }
+        // It can be an old password
+        if ($this->password == hash('sha256', $sPassword)) {
+            $this->setPassword($sPassword, true);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds user record
+     *
+     * @access public
      * @param array $data
-    * @return string
-    */
+     * @deprecated : just don't use it
+     * @return string
+     */
     public function insertRecords($data)
     {
-        return $this->db->insert('users',$data);
+        return $this->db->insert('users', $data);
     }
 
     /**
@@ -278,13 +309,6 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
-    /** @inheritdoc */
-	public function relations()
-	{
-		return array(
-			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
-		);
-	}
 
     /**
      * Return all super admins in the system
@@ -305,7 +329,8 @@ class User extends LSActiveRecord
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getButtons(){
+    public function getButtons()
+    {
         $editUser = "";
         $deleteUser = "";
         $setPermissionsUser = "";
@@ -317,26 +342,28 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
 
-
-        if($this->uid == Yii::app()->user->getId())
-        {
+        $oUser = self::model()->findByPK($this->uid);
+        if ($this->uid == Yii::app()->user->getId()) {
+            // Edit self
             $editUser = "<button
             data-toggle='tooltip'
             title='".gT("Edit this user")."'
             data-url='".$editUrl."'
             data-uid='".$this->uid."'
-            data-user='".$this->full_name."'
+            data-user='".htmlspecialchars($oUser['full_name'])."'
             data-action='modifyuser'
             class='btn btn-default btn-xs action_usercontrol_button'>
                 <span class='fa fa-pencil text-success'></span>
             </button>";
-
-            if ($this->parent_id != 0 && Permission::model()->hasGlobalPermission('users','delete') ) {
+            // Can delete himself except is forced superadmin
+            if (!Permission::isForcedSuperAdmin($this->uid) && Permission::model()->hasGlobalPermission('users', 'delete')) {
                 $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
                         "action"=> "deluser"
                     ));
 
-                $deleteUser = "<button
+                $deleteUser = "
+                <span style='mar0;padding:0;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                <button
                 data-toggle='modal'
                 data-href='#'
                 data-onclick='$.post(".$deleteUrl.",{
@@ -350,44 +377,43 @@ class User extends LSActiveRecord
                 data-message='".gT("Delete this user")."'
                 class='btn btn-default btn-xs'>
                     <span class='fa fa-trash  text-danger'></span>
-                </button>";
+                </button></span>";
             }
         } else {
-            if (Permission::model()->hasGlobalPermission('superadmin','read')
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')
                 || $this->uid == Yii::app()->session['loginID']
-                || (Permission::model()->hasGlobalPermission('users','update')
-                && $this->parent_id == Yii::app()->session['loginID'])) {
-
-                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".htmlspecialchars($this->full_name)."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
+                || (Permission::model()->hasGlobalPermission('users', 'update')
+                    && $this->parent_id == Yii::app()->session['loginID']
+                )
+            ) {
+                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
 
-            if (((Permission::model()->hasGlobalPermission('superadmin','read') &&
-                $this->uid != Yii::app()->session['loginID'] ) ||
-                (Permission::model()->hasGlobalPermission('users','update') &&
-                $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) {
-
+            if (((Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+                $this->uid != Yii::app()->session['loginID']) ||
+                (Permission::model()->hasGlobalPermission('users', 'update') &&
+                $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
                 //'admin/user/sa/setuserpermissions'
                     $setPermissionsUser = "<button data-toggle='tooltip' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
                 }
-            if ((Permission::model()->hasGlobalPermission('superadmin','read')
-                || Permission::model()->hasGlobalPermission('templates','read'))
-                && $this->uid!=1) {
-
+            if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
+                || Permission::model()->hasGlobalPermission('templates', 'read'))
+                && !Permission::isForcedSuperAdmin($this->uid)) {
                 //'admin/user/sa/setusertemplates')
                     $setTemplatePermissionUser = "<button type='submit' data-user='".htmlspecialchars($this->full_name)."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
                 }
-                if ((Permission::model()->hasGlobalPermission('superadmin','read')
-                    || (Permission::model()->hasGlobalPermission('users','delete')
-                    && $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) {
-
+                if ((Permission::model()->hasGlobalPermission('superadmin', 'read')
+                    || (Permission::model()->hasGlobalPermission('users', 'delete')
+                    && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)) {
                     $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
                         "action"=> "deluser",
                         "uid"=>$this->uid,
                         "user" => htmlspecialchars(Yii::app()->user->getId())
                     ));
 
-                     //'admin/user/sa/deluser'
-                    $deleteUser = "<button
+                        //'admin/user/sa/deluser'
+                    $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                    <button
                         id='delete_user_".$this->uid."'
                         data-toggle='modal'
                         data-target='#confirmation-modal'
@@ -399,12 +425,14 @@ class User extends LSActiveRecord
                         data-message='".gT("Do you want to delete this user?")."'
                         class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
-                        </button>";
-                }
-
-                if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
-                //'admin/user/sa/setasadminchild'
-                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($this->full_name)."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                        </button>
+                    </span>";
+                    }
+                if (Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])
+                    && $this->parent_id != Yii::app()->session['loginID']
+                ) {
+                    //'admin/user/sa/setasadminchild'
+                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
                 }
         }
         return "<div>"
@@ -416,10 +444,21 @@ class User extends LSActiveRecord
             . "</div>";
     }
 
+    public function getParentUserName()
+    {
+        if ($this->parentUser) {
+            return $this->parentUser->users_name;
+        }
+        // root user, no parent
+        return null;
+    }
+
+
     /**
      * @return array
      */
-    public function getColums(){
+    public function getColums()
+    {
         // TODO should be static
         $cols = array(
             array(
@@ -444,7 +483,7 @@ class User extends LSActiveRecord
                 "header" => gT("Full name")
             )
         );
-        if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols[] = array(
                 "name" => 'surveysCreated',
                 "header" => gT("No of surveys")
@@ -452,8 +491,15 @@ class User extends LSActiveRecord
         }
 
         $cols[] = array(
-            "name" => 'parentUser',
-            "header" => gT("Created by")
+            "name" =>"parentUserName",
+            "header" => gT("Created by"),
+        );
+        
+        $cols[] = array(
+            "name" =>"created",
+            "header" => gT("Created on"),
+            "value" => '$data->formattedDateCreated',
+            
         );
         return $cols;
     }
@@ -462,8 +508,8 @@ class User extends LSActiveRecord
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-        $criteria=new CDbCriteria;
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $criteria = new CDbCriteria;
 
         // $criteria->compare('uid',$this->uid);
         // $criteria->compare('users_name',$this->users_name,true);
@@ -486,5 +532,4 @@ class User extends LSActiveRecord
             )
         ));
     }
-
 }

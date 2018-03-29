@@ -1,7 +1,8 @@
 <?php
     namespace LimeSurvey\PluginManager;
 
-    abstract class QuestionPluginBase extends PluginBase{
+    abstract class QuestionPluginBase extends PluginBase
+    {
 
 
 
@@ -23,7 +24,14 @@
          * @param string $id
          */
 
-        public function __construct(PluginManager $manager, $id) {
+        /**
+         * 
+         *  
+         * @param PluginManager $manager
+         * @param integer $id
+         */
+        public function __construct(PluginManager $manager, $id)
+        {
             parent::__construct($manager, $id);
             $this->subscribe('listQuestionPlugins');
         }
@@ -33,9 +41,8 @@
          */
         public function listQuestionPlugins(PluginEvent $event)
         {
-            if (!empty($this->questionTypes))
-            {
-                $event->set('questionplugins.' . get_class($this), $this->questionTypes);
+            if (!empty($this->questionTypes)) {
+                $event->set('questionplugins.'.get_class($this), $this->questionTypes);
             }
         }
 
@@ -65,4 +72,3 @@
 
 
     }
-?>

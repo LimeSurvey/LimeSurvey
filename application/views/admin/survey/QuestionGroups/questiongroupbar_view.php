@@ -87,7 +87,7 @@
 
                 <!-- Edit button -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
                         <span class="icon-edit"></span>
                         <?php eT("Edit current question group");?>
                     </a>
@@ -95,7 +95,7 @@
 
                 <!-- Check survey logic -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
                         <span class="icon-expressionmanagercheck"></span>
                         <?php eT("Check survey logic for current question group"); ?>
                     </a>
@@ -210,7 +210,7 @@
                         </div>
                     <?php else:?>
                         <!-- Preview/Execute survey -->
-                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php if($oSurvey->active=='N'):?>
                                 <?php eT('Preview survey');?>
@@ -244,25 +244,23 @@
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="fa fa-floppy-o"></span>
+                    <i class="fa fa-floppy-o"></i>
                     <?php eT("Save");?>
                 </a>
                
                 <?php endif; ?>
             <?php endif; ?>
             
-            <?php /*
+
             <!-- Save and close -->
             <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
                 <a id="save-and-close-button" class="btn btn-default" role="button">
-                    <span class="fa fa-saved"></span>
+                    <i class="fa fa-check-square"></i>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
-            */ ?>
             
  
-            <?php /*
             <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
@@ -270,7 +268,6 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
-            */ ?>
 
             <!-- return -->
             <?php if(isset($questiongroupbar['returnbutton']['url'])):?>

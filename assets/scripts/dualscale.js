@@ -21,7 +21,7 @@
  */
 function doDualScaleRadio(qID) {
   // Lauch EM with hidden input
-  $("#question"+qID+" .ls-answers").on(".noanswer-item :radio","click",function(){
+  $("#question"+qID+" .ls-answers .noanswer-item :radio").on("click",function(){
     $(this).closest(".answers-list").find(":radio[value='']").prop("checked", true);
     name=$(this).attr("name");
     name0=name.replace("#1","_0");
@@ -31,7 +31,7 @@ function doDualScaleRadio(qID) {
     ExprMgr_process_relevance_and_tailoring('change',name0,'hidden');
     ExprMgr_process_relevance_and_tailoring('change',name1,'hidden');
   });
-  $("#question"+qID+" .ls-answers").on(".answer-item:not(.noanswer-item)  :radio","click",function(){
+  $("#question"+qID+" .ls-answers .answer-item:not(.noanswer-item) :radio").on("click",function(){
     $(this).closest(".answers-list").find(":radio[value='']").prop("checked", false);
     name=$(this).attr("name");
     name=name.replace('#','_');

@@ -13,7 +13,7 @@
 
 function navigator_countdown(n)
 {
-	$(document).on('ready pjax:complete',function()
+	$(document).on('ready pjax:scriptcomplete',function()
 	{
 		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
 		$(window).data('countdown', n);

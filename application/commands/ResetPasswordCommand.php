@@ -20,10 +20,17 @@
             if (isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1])) {
                 $oUser = User::findByUsername($sArgument[0]);
                 if ($oUser) {
-                    $oUser->updatePassword($oUser->uid,$sArgument[1]);
-                    echo "Password for user {$sArgument[0]} was set.\n";
+                    $oUser->setPassword($sArgument[1]);
+                    if ($oUser->save()) {
+                        echo "Password for user {$sArgument[0]} was set.\n";
+                        return 0;
+                    } else {
+                        echo "An error happen when set password for user {$sArgument[0]}.\n";
+                        return 1;
+                    }
                 } else {
-                    echo "User {$sArgument[0]} not found.\n";
+                    echo "User ".$sArgument[0]." not found.\n";
+                    return 1;
                 }
 
             } else {

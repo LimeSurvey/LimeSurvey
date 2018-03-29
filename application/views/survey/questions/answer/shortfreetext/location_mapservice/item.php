@@ -18,9 +18,13 @@
  */
 ?>
 
-<script type="text/javascript">
-    zoom['<?php echo $name;?>'] = <?php echo $location_mapzoom;?>;
-</script>
+<?php
+App()->getClientScript()->registerScript('MAP_VARS_'.$basename,  
+    " var zoom = zoom || [];
+    zoom['".$name."'] = ".$location_mapzoom.";"
+    , LSYii_ClientScript::POS_END); 
+?>
+
 
 <div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <!-- Input Text Location -->

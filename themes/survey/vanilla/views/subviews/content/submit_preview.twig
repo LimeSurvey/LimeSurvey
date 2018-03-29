@@ -1,0 +1,55 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Submit Preview Content  ·._.·´¯)·._.·´¯)
+
+    TODO: this file should be merged with layout_submit,
+    adding the warning message "Your survey responses have not been recorded. This survey is not yet active." to  aSurveyInfo.errorHtml.messages
+
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+#}
+
+
+
+{# include the form opening tag #}
+<!-- main form -->
+{{ include('./subviews/header/start_form.twig') }}
+
+
+    <div class="{{ aSurveyInfo.class.previewsubmit }}" {{ aSurveyInfo.attr.previewsubmit }}>
+        <div class='{{ aSurveyInfo.class.previewsubmittext }}' {{ aSurveyInfo.attr.previewsubmittext }}>
+            {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
+                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
+            {% else %}
+                {{ aSurveyInfo.aCompleted.sEndText }}
+            {% endif %}
+
+            {# Assessments #}
+            {% if (aSurveyInfo.aAssessments.show) %}
+                {{ include('./subviews/messages/assessments.twig') }}
+            {% endif %}
+
+            <br /><br />
+            {# TODO: rewrite this before master #}
+            <strong >
+                <font size='2' color='red'>
+                    {{ gT("Did Not Save") }}
+                </font>
+            </strong>
+            <br /><br />
+
+            {{ gT("Your survey responses have not been recorded. This survey is not yet active.") }}
+            <br /><br />
+        </div>
+    </div>
+</form> <!-- main form -->

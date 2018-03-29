@@ -31,13 +31,15 @@ class PluginDynamic extends LSActiveRecord
     /** @inheritdoc */
     protected function instantiate($attributes = null)
     {
-        $class=get_class($this);
-        $model=new $class($this->tableName(), null);
+        $class = get_class($this);
+        $model = new $class($this->tableName(), null);
         return $model;
     }
+
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
+     * @param string $sTableName
      * @return Plugin
      */
     public static function model($sTableName = null)
@@ -53,7 +55,8 @@ class PluginDynamic extends LSActiveRecord
     }
 
     /** @inheritdoc */
-    public function tableName() {
+    public function tableName()
+    {
         return $this->tableName;
     }
 
@@ -63,13 +66,12 @@ class PluginDynamic extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if($this->_md!==null){
+        if ($this->_md !== null) {
             return $this->_md;
-        }
-        else{
+        } else {
             /** @var CActiveRecordMetaData $md */
             $md = self::model($this->tableName())->_md;
-            return $this->_md=$md;
+            return $this->_md = $md;
         }
 
     }

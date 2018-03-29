@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,6 +23,7 @@
  * @property string $surveyls_description Survey description in this language
  * @property string $surveyls_welcometext Survey welcome-text in this language
  * @property string $surveyls_endtext Survey end-text in this language
+ * @property string $surveyls_policy_notice The survey data-security notice
  * @property string $surveyls_url Survey end-url for this language
  * @property string $surveyls_urldescription Survey end-url description for this language
  * @property string $surveyls_email_invite_subj Survey inivitation e-mail subject for this language
@@ -64,7 +67,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -82,43 +87,51 @@ class SurveyLanguageSetting extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('surveyls_email_invite_subj','lsdefault'),
-            array('surveyls_email_invite','lsdefault'),
-            array('surveyls_email_remind_subj','lsdefault'),
-            array('surveyls_email_remind','lsdefault'),
-            array('surveyls_email_confirm_subj','lsdefault'),
-            array('surveyls_email_confirm','lsdefault'),
-            array('surveyls_email_register_subj','lsdefault'),
-            array('surveyls_email_register','lsdefault'),
-            array('email_admin_notification_subj','lsdefault'),
-            array('email_admin_notification','lsdefault'),
-            array('email_admin_responses_subj','lsdefault'),
-            array('email_admin_responses','lsdefault'),
+            array('surveyls_email_invite_subj', 'lsdefault'),
+            array('surveyls_email_invite', 'lsdefault'),
+            array('surveyls_email_remind_subj', 'lsdefault'),
+            array('surveyls_email_remind', 'lsdefault'),
+            array('surveyls_email_confirm_subj', 'lsdefault'),
+            array('surveyls_email_confirm', 'lsdefault'),
+            array('surveyls_email_register_subj', 'lsdefault'),
+            array('surveyls_email_register', 'lsdefault'),
+            array('email_admin_notification_subj', 'lsdefault'),
+            array('email_admin_notification', 'lsdefault'),
+            array('email_admin_responses_subj', 'lsdefault'),
+            array('email_admin_responses', 'lsdefault'),
 
-            array('surveyls_email_invite_subj','LSYii_Validators'),
-            array('surveyls_email_invite','LSYii_Validators'),
-            array('surveyls_email_remind_subj','LSYii_Validators'),
-            array('surveyls_email_remind','LSYii_Validators'),
-            array('surveyls_email_confirm_subj','LSYii_Validators'),
-            array('surveyls_email_confirm','LSYii_Validators'),
-            array('surveyls_email_register_subj','LSYii_Validators'),
-            array('surveyls_email_register','LSYii_Validators'),
-            array('email_admin_notification_subj','LSYii_Validators'),
-            array('email_admin_notification','LSYii_Validators'),
-            array('email_admin_responses_subj','LSYii_Validators'),
-            array('email_admin_responses','LSYii_Validators'),
+            array('surveyls_email_invite_subj', 'LSYii_Validators'),
+            array('surveyls_email_invite', 'LSYii_Validators'),
+            array('surveyls_email_remind_subj', 'LSYii_Validators'),
+            array('surveyls_email_remind', 'LSYii_Validators'),
+            array('surveyls_email_confirm_subj', 'LSYii_Validators'),
+            array('surveyls_email_confirm', 'LSYii_Validators'),
+            array('surveyls_email_register_subj', 'LSYii_Validators'),
+            array('surveyls_email_register', 'LSYii_Validators'),
+            array('email_admin_notification_subj', 'LSYii_Validators'),
+            array('email_admin_notification', 'LSYii_Validators'),
+            array('email_admin_responses_subj', 'LSYii_Validators'),
+            array('email_admin_responses', 'LSYii_Validators'),
 
-            array('surveyls_title','LSYii_Validators'),
-            array('surveyls_description','LSYii_Validators'),
-            array('surveyls_welcometext','LSYii_Validators'),
-            array('surveyls_endtext','LSYii_Validators'),
-            array('surveyls_url','LSYii_Validators','isUrl'=>true),
-            array('surveyls_urldescription','LSYii_Validators'),
+            array('surveyls_title', 'LSYii_Validators'),
+            array('surveyls_description', 'LSYii_Validators'),
+            array('surveyls_welcometext', 'LSYii_Validators'),
+            array('surveyls_endtext', 'LSYii_Validators'),
+            array('surveyls_policy_notice', 'LSYii_Validators'),
+            array('surveyls_policy_error', 'LSYii_Validators'),
+            array('surveyls_policy_notice_label', 'LSYii_Validators'),
+            array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
+            array('surveyls_urldescription', 'LSYii_Validators'),
 
             array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
+    
+    public  function defaultScope()
+    {
+        return array('index'=>'surveyls_language');
+    }        
 
     /**
      * Defines the customs validation rule lsdefault
@@ -127,11 +140,11 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function lsdefault($attribute)
     {
-        $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
-        $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
-        $aDefaultTexts=templateDefaultTexts($this->surveyls_language,'unescaped', $sEmailFormat);
+        $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
+        $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
+        $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 
-         $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+            $aDefaultTextData = array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
                 'surveyls_email_invite' => $aDefaultTexts['invitation'],
                 'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
                 'surveyls_email_remind' => $aDefaultTexts['reminder'],
@@ -145,10 +158,12 @@ class SurveyLanguageSetting extends LSActiveRecord
                 'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']
             );
         if ($sEmailFormat == "html") {
-            $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
+            $aDefaultTextData['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
         }
 
-         if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
+        if (empty($this->$attribute)) {
+            $this->$attribute = $aDefaultTextData[$attribute];
+        }
     }
 
 
@@ -160,7 +175,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function getAttributeCaptions()
     {
-        $captions = @json_decode($this->surveyls_attributecaptions,true);
+        $captions = @json_decode($this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
     }
 
@@ -169,13 +184,13 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param bool $return_query
      * @return mixed
      */
-    public function getAllRecords($condition=FALSE, $return_query = TRUE)
+    public function getAllRecords($condition = false, $return_query = true)
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != FALSE) {
+        if ($condition != false) {
             $query->where($condition);
         }
-        return ( $return_query ) ? $query->queryAll() : $query;
+        return ($return_query) ? $query->queryAll() : $query;
     }
 
     /**
@@ -187,7 +202,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         return Yii::app()->db->createCommand()->select('surveyls_dateformat')
             ->from('{{surveys_languagesettings}}')
-            ->join('{{surveys}}','{{surveys}}.sid = {{surveys_languagesettings}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
+            ->join('{{surveys}}', '{{surveys}}.sid = {{surveys_languagesettings}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
             ->where('surveyls_language = :langcode')
             ->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
             ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
@@ -198,11 +213,11 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param bool $hasPermission
      * @return mixed
      */
-    public function getAllSurveys($hasPermission = FALSE)
+    public function getAllSurveys($hasPermission = false)
     {
         $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
         $this->db->from('surveys AS a');
-        $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
+        $this->db->join('surveys_languagesettings', 'surveyls_survey_id=a.sid AND surveyls_language=a.language');
 
         if ($hasPermission) {
             $this->db->where('a.sid IN (SELECT sid FROM {{permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
@@ -211,20 +226,10 @@ class SurveyLanguageSetting extends LSActiveRecord
         return $this->db->get();
     }
 
-    /**
-     * @param integer $sid Survey ID
-     * @param string $lcode Language code
-     * @return mixed
-     */
-    public function getAllData($sid, $lcode)
-    {
-        $query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
-        // FIXME there is no $this->db, is this unused?
-        return $this->db->query($query, array($sid, $sid, $lcode));
-    }
 
     /**
      * @param array $data
+     * @todo : rename and fix this
      * @return bool
      */
     public function insertNewSurvey($data)
@@ -237,11 +242,11 @@ class SurveyLanguageSetting extends LSActiveRecord
      * key/value pairs in the $data array.
      *
      * @param array $data
-     * @param string $condition
+     * @param string|array $condition
      * @param bool $xssfiltering
      * @return bool
      */
-    function updateRecord($data,$condition='', $xssfiltering = false)
+    function updateRecord($data, $condition = '', $xssfiltering = false)
     {
         $record = $this->findByPk($condition);
         foreach ($data as $key => $value) {
@@ -259,8 +264,9 @@ class SurveyLanguageSetting extends LSActiveRecord
     function insertSomeRecords($data)
     {
         $lang = new self;
-        foreach ($data as $k => $v)
+        foreach ($data as $k => $v) {
             $lang->$k = $v;
+        }
         return $lang->save();
     }
 }

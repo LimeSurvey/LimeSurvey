@@ -6,26 +6,25 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-// Module
-$(document).on('ready pjax:complete', function() {
+ /**
+ * Needed to calculate correct pager position at RTL language
+ * @var {number}
+ */
+var initialScrollValue = 0;
 
-    /**
-     * Needed to calculate correct pager position at RTL language
-     * @var {number}
-     */
-    var initialScrollValue = 0;
+/**
+ * True if admin uses an RTL language
+ * @var {boolean}
+ */
+var useRtl = false;
 
-    /**
-     * True if admin uses an RTL language
-     * @var {boolean}
-     */
-    var useRtl = false;
-
+// Return public functions for this module
+LS.resp =  {
     /**
      * Scroll the pager and the footer when scrolling horizontally
      * @return
      */
-    function setListPagerPosition(pager) {
+    setListPagerPosition : function (pager) {
         var $elListPager = $('#ListPager');
 
         if (useRtl) {
@@ -41,81 +40,40 @@ $(document).on('ready pjax:complete', function() {
                 'left': $(pager).scrollLeft()
             });
         }
-    }
-
-    // Return public functions for this module
-    return {
-
-        /**
-         * Bind fixing pager position on scroll event
-         * @return
-         */
-        bindScrollWrapper: function () {
-            setListPagerPosition();
-            $('#bottom-scroller').scroll(function() {
-                setListPagerPosition(this);
-                $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
-            });
-            $('#top-scroller').scroll(function() {
-                setListPagerPosition(this);
-                $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
-            });
-
-            reinstallResponsesFilterDatePicker();
-        },
-
-        /**
-         * Set value of module private variable initialScrollValue
-         * @param {number} val
-         */
-        setInitialScrollValue: function(val) {
-            initialScrollValue = val;
-        },
-
-        /**
-         * @param {boolean} val
-         */
-        setUseRtl: function(val) {
-            useRtl = val;
-        }
-    };
-});
-
-
-var onDocumentReadyListresponse = function(){
-
-    $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
-    $('#top-scroller').height('18px');
-    
-    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
-    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
-
-    LS.resp.bindScrollWrapper();
-
-    $('#display-mode').click(function(event){
-        event.preventDefault();
-
-        var $that        = $(this);
-        var $actionUrl   = $(this).data('url');
-        var $display     = $that.find('input:not(:checked)').val();
-        var $postDatas   = {state:$display};
-
-        $.ajax({
-            url  : encodeURI($actionUrl),
-            type : 'POST',
-            data :  $postDatas,
-
-            // html contains the buttons
-            success : function(html, statut){
-                location.reload();
-            },
-            error :  function(html, statut){
-                console.log(html);
-            }
+    },              
+    /**
+     * Bind fixing pager position on scroll event
+     * @return
+     */
+    bindScrollWrapper: function () {
+        LS.resp.setListPagerPosition();
+        $('#bottom-scroller').scroll(function() {
+            LS.resp.setListPagerPosition(this);
+            $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
+        });
+        $('#top-scroller').scroll(function() {
+            LS.resp.setListPagerPosition(this);
+            $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
         });
 
-    });
+        reinstallResponsesFilterDatePicker();
+        bindListItemclick();
+    },
 
+    /**
+     * Set value of module private variable initialScrollValue
+     * @param {number} val
+     */
+    setInitialScrollValue: function(val) {
+        initialScrollValue = val;
+    },
+
+    /**
+     * @param {boolean} val
+     */
+    setUseRtl: function(val) {
+        useRtl = val;
+    }
 };
 
 /**
@@ -125,23 +83,49 @@ var onDocumentReadyListresponse = function(){
 function reinstallResponsesFilterDatePicker() {
 
     // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+    var $input = $('input[name="dateFormatDetails"]');
+    if ($input.val()) {
+        var dateFormatDetails = JSON.parse($input.val());
 
-    $('#SurveyDynamic_startdate').datetimepicker({
-        format: dateFormatDetails.jsdate
-    });
-    $('#SurveyDynamic_datestamp').datetimepicker({
-        format: dateFormatDetails.jsdate
-    });
+        $('#SurveyDynamic_startdate').datetimepicker({
+            format: dateFormatDetails.jsdate
+        });
+        $('#SurveyDynamic_datestamp').datetimepicker({
+            format: dateFormatDetails.jsdate
+        });
 
-    $('#SurveyDynamic_startdate').on('focusout', function() {
-        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-        $.fn.yiiGridView.update('responses-grid', {data: data});
-    });
+        $('#SurveyDynamic_startdate').on('focusout', function() {
+            var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+            $.fn.yiiGridView.update('responses-grid', {data: data});
+        });
 
-    $('#SurveyDynamic_datestamp').on('focusout', function() {
-        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-        $.fn.yiiGridView.update('responses-grid', {data: data});
+        $('#SurveyDynamic_datestamp').on('focusout', function() {
+            var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+            $.fn.yiiGridView.update('responses-grid', {data: data});
+        });
+    } else {
+        console.ls.log('Internal error? Run reinstallResponsesFilterDatePicker, but find no input with name dateFormatDetails.');
+    }
+}
+
+function onDocumentReadyListresponse() {
+    if($('#bottom-scroller').length > 0)
+        $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
+
+    $('#top-scroller').height('18px');
+
+    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
+    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
+
+    LS.resp.bindScrollWrapper();
+
+    $('#displaymode input').on('change.listresponse', function(event){
+        $('#change-display-mode-form').find('input[type=submit]').trigger('click');
     });
 
 }
+
+$(document).on('ready pjax:scriptcomplete',function(){
+    onDocumentReadyListresponse();
+    reinstallResponsesFilterDatePicker();
+});

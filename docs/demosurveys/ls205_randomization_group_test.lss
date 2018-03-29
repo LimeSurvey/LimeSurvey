@@ -2728,7 +2728,7 @@
     <faxto/>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[Y]]></savetimings>
-    <template><![CDATA[default]]></template>
+    <template><![CDATA[fruity]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages><![CDATA[fr ]]></additional_languages>
     <datestamp><![CDATA[N]]></datestamp>

@@ -65,9 +65,7 @@
                     editor.setHighlightActiveLine(config.highlightActiveLine);
                     editor.clearSelection();
                     session.on('change', function(e) {
-                        console.log('iki');
-                        console.log(e);
-                        textarea.val(e.target.getValue());
+                        textarea.val(editor.getValue());
                     });
 
                 }

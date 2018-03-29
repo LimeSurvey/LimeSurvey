@@ -1,31 +1,39 @@
 <?php
+
 /**
-* General container for create survey action
+ * General container for create survey action
  * @var AdminController $this
  * @var Survey $oSurvey
-*/
-?>
+ */
 
-  <script type="text/javascript">
-    var standardtemplaterooturl = '<?php echo Yii::app()->getConfig('
-    standardtemplaterooturl ');?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('
-    usertemplaterooturl ');?>';
-    var jsonUrl = '';
-    var sAction = '';
-    var sParameter = '';
-    var sTargetQuestion = '';
-    var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'
-    js '); ?>'
-    var sURLParameters = '';
-    var sAddParam = '';
-  </script>
+$standardthemerooturl = Yii::app()->getConfig('standardthemerooturl');
+$templaterooturl      = Yii::app()->getConfig('userthemerooturl');
+$sAdminEmailAddressNeeded = gT("If you are using token functions or notifications emails you need to set an administrator email address.");
 
-<?php
+App()->getClientScript()->registerScript(
+    "createSurveyText-variables",
+    sprintf(
+        "var standardthemerooturl = '%s';
+        var templaterooturl = '%s';
+        var jsonUrl = '';
+        var sAction = '';
+        var sParameter = '';
+        var sTargetQuestion = '';
+        var sNoParametersDefined = '';
+        var sAdminEmailAddressNeeded = '%s'
+        var sURLParameters = '';
+        var sAddParam = '';",
+        $standardthemerooturl,
+        $templaterooturl,
+        $sAdminEmailAddressNeeded
+    ),
+    LSYii_ClientScript::POS_BEGIN
+);
+
 $count = 0;
-if(isset($scripts))
-echo $scripts;
+if (isset($scripts)) {
+    echo $scripts;
+}
 
 $aSurveyLanguageSettings = $aTabContents['aSurveyLanguageSettings'];
 $surveyid = $aTabContents['surveyid'];
@@ -46,23 +54,45 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
+    </div>
+    <hr class="col-sm-12" />
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <!-- Base language -->
+            <div class="form-group">
+
+                <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
+                <div class="" style="padding-top: 7px;">
+                    <?php if($oSurvey->isNewRecord):?>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'asDropDownList' => true,
+                        'data' => getLanguageDataRestricted (false,'short'),
+                        'value' => $oSurvey->language,
+                        'name' => 'language',
+                        'pluginOptions' => array()
+                    ));?>
+                    <?php else:?>
+                    <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
              <div class="form-group">
-                <label for="createsample" class=" control-label"><?php eT("Create example question and question group?") ?></label>
+                <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'createsample',
-                            'value' => 1,
+                            'value' => 0,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                         )); ?>
                 </div>
             </div>
         </div>
-        <hr class="col-sm-12"></hr>
     </div>
-    <div class="row">
+    <div class="row">    
         <div class="col-sm-12 col-md-6">
             <!-- Description -->
             <div class="form-group">

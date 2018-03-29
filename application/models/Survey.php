@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -59,7 +60,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $bounce_email Bounce email address
  * @property string $attributedescriptions
  * @property string $emailresponseto e-mail address to send detailed admin notification email to
- * @property integer $emailnotificationto Email address to send basic admin notification email to
+ * @property string $emailnotificationto Email address to send basic admin notification email to
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
@@ -108,6 +109,9 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+ * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
+ * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
+ * @property integer $countNoInputQuestions Count of questions that DO NOT need input (skipping text-display etc.)
  *
  * All Y/N columns in the model can be accessed as boolean values:
  * @property bool $isActive Whether Survey is active
@@ -135,8 +139,11 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
+ * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
+ * @property SurveyLanguageSetting $defaultlanguage
+ * @method mixed active()
  */
 class Survey extends LSActiveRecord
 {
@@ -152,6 +159,8 @@ class Survey extends LSActiveRecord
 
 
     public $searched_value;
+    
+    public $showsurveypolicynotice = 0; 
 
 
     private $sSurveyUrl;
@@ -168,18 +177,33 @@ class Survey extends LSActiveRecord
         $this->htmlemail = 'Y';
         $this->format = 'G';
 
+        // Default setting is to use the global Google Analytics key If one exists
+        Yii::import('application.helpers.globalsettings_helper', true);
+        $globalKey = getGlobalSetting('googleanalyticsapikey');
+        if ($globalKey != "") {
+            $this->googleanalyticsapikey = "9999useGlobal9999";
+            $this->googleanalyticsapikeysetting = "G";
+        }
 
-        $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
-        $validator= new LSYii_Validators;
+
+        $this->template = Template::templateNameFilter(getGlobalSetting('defaulttheme'));
+        $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
-        $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'running' => gT('running')
         );
+    }
+
+    /** @inheritdoc */
+    public function delete()
+    {
+        return $this->deleteSurvey($this->sid);
     }
 
 
@@ -197,9 +221,35 @@ class Survey extends LSActiveRecord
     }
 
     /**
+     * Return the language of the current survey
+     * It can be:
+     *  - the selected language by user via the language selector (POST then Session)
+     *  - the selected language via URL (GET then Session)
+     *  - the survey default language
+     *
+     * @return string the correct language
+     */
+    public function getLanguageForSurveyTaking()
+    {
+        // Default: the survey language
+        $sLang = $this->language;
+
+        if (Yii::app()->request->getParam('lang', null) !== null) {
+            // POST or GET
+            $sLang = Yii::app()->request->getParam('lang');
+        } else {
+            // SESSION
+            if (isset(Yii::app()->session['survey_'.$this->sid]['s_lang'])) {
+                $sLang = Yii::app()->session['survey_'.$this->sid]['s_lang'];
+            }
+        }
+        return $sLang;
+    }
+
+    /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
-     * @return bool
+     * @return boolean|null
      */
     public function expire($surveyId = null)
     {
@@ -212,7 +262,7 @@ class Survey extends LSActiveRecord
                 return $this->save();
             }
         } else {
-            self::model()->updateByPk($surveyId,array('expires' => $dateTime));
+            self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
 
     }
@@ -242,18 +292,24 @@ class Survey extends LSActiveRecord
     public function relations()
     {
         return array(
-            'permissions'     => array(self::HAS_MANY, 'Permission', array( 'entity_id'=> 'sid'  ), 'together' => true ), //
-            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language', 'together' => true),
-            'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
-            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
-            'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true, 'order'=>'group_order ASC'),
-            'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
+            'permissions'     => array(self::HAS_MANY, 'Permission', array('entity_id'=> 'sid')), //
+            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
+            'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
+            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'group_order ASC'),
+            'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
-            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
-            'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template') )
+            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
+            'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template'))
         );
     }
+
+
+    /*  public function defaultScope()
+    {
+        return array('order'=> $this->getTableAlias().'.sid');
+    }    */
 
     /** @inheritdoc */
     public function scopes()
@@ -278,57 +334,59 @@ class Survey extends LSActiveRecord
     {
         return array(
             array('gsid', 'numerical', 'integerOnly'=>true),
-            array('datecreated', 'default','value'=>date("Y-m-d")),
-            array('startdate', 'default','value'=>NULL),
-            array('expires', 'default','value'=>NULL),
-            array('admin,faxto','LSYii_Validators'),
-            array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
-            array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
+            array('datecreated', 'default', 'value'=>date("Y-m-d")),
+            array('startdate', 'default', 'value'=>null),
+            array('expires', 'default', 'value'=>null),
+            array('admin,faxto', 'LSYii_Validators'),
+            array('adminemail', 'filter', 'filter'=>'trim'),
+            array('bounce_email', 'filter', 'filter'=>'trim'),
+            array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
+            array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('usecookie', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('allowregister', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('allowsave', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('autoredirect', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('allowprev', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('printanswers', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('ipaddr', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('refurl', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('publicstatistics', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('publicgraphs', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('listpublic', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('htmlemail', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('sendconfirmation', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('assessments', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('usetokens', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
+            array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
+            array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('bounceprocessing', 'in', 'range'=>array('L', 'N', 'G'), 'allowEmpty'=>true),
+            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N'), 'allowEmpty'=>true),
+            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X'), 'allowEmpty'=>true),
+            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X'), 'allowEmpty'=>true),
+            array('format', 'in', 'range'=>array('G', 'S', 'A'), 'allowEmpty'=>true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
-            array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
-            array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
-            array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('template', 'filter', 'filter'=>array($this,'filterTemplateSave')),
-            array('language','LSYii_Validators','isLanguage'=>true),
+            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
+            array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('navigationdelay', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('template', 'filter', 'filter'=>array($this, 'filterTemplateSave')),
+            array('language', 'LSYii_Validators', 'isLanguage'=>true),
             array('language', 'required', 'on' => 'insert'),
             array('language', 'filter', 'filter'=>'trim'),
             array('additional_languages', 'filter', 'filter'=>'trim'),
-            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
+            array('additional_languages', 'LSYii_Validators', 'isLanguageMulti'=>true),
             array('running', 'safe', 'on'=>'search'),
             // Date rules currently don't work properly with MSSQL, deactivating for now
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
@@ -339,16 +397,16 @@ class Survey extends LSActiveRecord
 
 
     /**
-    * fixSurveyAttribute to fix and/or add some survey attribute
-    * - Fix template name to be sure template exist
-    */
-    public function fixSurveyAttribute()
+     * afterFindSurvey to fix and/or add some survey attribute
+     * - Fix template name to be sure template exist
+     */
+    public function afterFindSurvey()
     {
         $event = new PluginEvent('afterFindSurvey');
-        $event->set('surveyid',$this->sid);
+        $event->set('surveyid', $this->sid);
         App()->getPluginManager()->dispatchEvent($event);
         // set the attributes we allow to be fixed
-        $allowedAttributes = array( 'template','usecookie', 'allowprev',
+        $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
         foreach ($allowedAttributes as $attribute) {
@@ -356,7 +414,7 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
-        $this->template=Template::templateNameFilter($this->template);
+        $this->template = Template::templateNameFilter($this->template);
     }
 
 
@@ -367,14 +425,16 @@ class Survey extends LSActiveRecord
      */
     public function filterTemplateSave($sTemplateName)
     {
-        if(!Permission::model()->hasTemplatePermission($sTemplateName)) {
+        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
             // Reset to default only if different from actual value
-            if(!$this->isNewRecord){
-                $oSurvey=self::model()->findByPk($this->sid);
-                if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
-                    $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+            if (!$this->isNewRecord) {
+                $oSurvey = self::model()->findByPk($this->sid);
+                if ($oSurvey->template != $sTemplateName) {
+                    // No need to test !is_null($oSurvey)
+                    $sTemplateName = getGlobalSetting('defaulttheme');
+                }
             } else {
-                $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+                $sTemplateName = getGlobalSetting('defaulttheme');
             }
         }
         return Template::templateNameFilter($sTemplateName);
@@ -388,13 +448,14 @@ class Survey extends LSActiveRecord
      * @param int $loginID
      * @return CActiveRecord
      *
-     * TODO: replace this by a correct relation
      */
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        if(Permission::model()->hasGlobalPermission('surveys','read',$loginID))// Test global before adding criteria
+        if (Permission::model()->hasGlobalPermission('surveys', 'read', $loginID)) {
+            // Test global before adding criteria
             return $this;
+        }
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
             'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)
@@ -418,10 +479,11 @@ class Survey extends LSActiveRecord
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
-        if ($sLanguages != '')
-            return explode(' ', $sLanguages);
-        else
-            return array();
+        if ($sLanguages != '') {
+                    return explode(' ', $sLanguages);
+        } else {
+                    return array();
+        }
     }
 
     /**
@@ -433,7 +495,7 @@ class Survey extends LSActiveRecord
     public function getAllLanguages()
     {
         $sLanguages = self::getAdditionalLanguages();
-        array_unshift($sLanguages,$this->language);
+        array_unshift($sLanguages, $this->language);
         return $sLanguages;
     }
 
@@ -447,17 +509,16 @@ class Survey extends LSActiveRecord
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
         // checked for invalid data
-        if($attdescriptiondata == null) {
+        if ($attdescriptiondata == null) {
             return array();
         }
 
         // Catches malformed data
-        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false) {
+        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
             //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
-        }
-        elseif (is_null($attdescriptiondata)) {
-            $attdescriptiondata=array();
+        } elseif (is_null($attdescriptiondata)) {
+            $attdescriptiondata = array();
         }
         // Legacy records support
         if ($attdescriptiondata === false) {
@@ -483,16 +544,18 @@ class Survey extends LSActiveRecord
             $ls->save();
             $attdescriptiondata = $fields;
         }
-        $aCompleteData=array();
+        $aCompleteData = array();
         foreach ($attdescriptiondata as $sKey=>$aValues) {
-            if (!is_array($aValues)) $aValues=array();
-            if(preg_match("/^attribute_[0-9]{1,}$/",$sKey)) {
-                $aCompleteData[$sKey]= array_merge(array(
+            if (!is_array($aValues)) {
+                $aValues = array();
+            }
+            if (preg_match("/^attribute_[0-9]{1,}$/", $sKey)) {
+                $aCompleteData[$sKey] = array_merge(array(
                     'description' => '',
                     'mandatory' => 'N',
                     'show_register' => 'N',
                     'cpdbmap' =>''
-                ),$aValues);
+                ), $aValues);
             }
         }
         return $aCompleteData;
@@ -502,7 +565,8 @@ class Survey extends LSActiveRecord
      * Return the name of survey tokens table
      * @return string
      */
-    public function getTokensTableName(){
+    public function getTokensTableName()
+    {
         return "{{tokens_".$this->primaryKey."}}";
     }
 
@@ -510,7 +574,8 @@ class Survey extends LSActiveRecord
      * Return the name of survey timigs table
      * @return string
      */
-    public function getTimingsTableName(){
+    public function getTimingsTableName()
+    {
         return "{{survey_".$this->primaryKey."_timings}}";
     }
 
@@ -518,16 +583,18 @@ class Survey extends LSActiveRecord
      * Return the name of survey responses (the data) table name
      * @return string
      */
-    public function getResponsesTableName(){
-        return '{{survey_' . $this->primaryKey . '}}';
+    public function getResponsesTableName()
+    {
+        return '{{survey_'.$this->primaryKey.'}}';
     }
 
 
     /**
-     * Returns true in a token table exists for survey
+     * Returns true in a survey participants table exists for survey
      * @return boolean
      */
-    public function getHasTokensTable() {
+    public function getHasTokensTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->tokensTableName);
@@ -537,7 +604,8 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses (data) table exists in DB
      * @return boolean
      */
-    public function getHasResponsesTable() {
+    public function getHasResponsesTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->responsesTableName);
@@ -547,7 +615,8 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses timings exists in DB
      * @return boolean
      */
-    public function getHasTimingsTable() {
+    public function getHasTimingsTable()
+    {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->timingsTableName);
@@ -557,10 +626,11 @@ class Survey extends LSActiveRecord
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
      * @return string
      */
-    public function getGoogleanalyticsapikeysetting(){
-        if($this->googleanalyticsapikey === "9999useGlobal9999") {
+    public function getGoogleanalyticsapikeysetting()
+    {
+        if ($this->googleanalyticsapikey === "9999useGlobal9999") {
             return "G";
-        } else if($this->googleanalyticsapikey == "") {
+        } else if ($this->googleanalyticsapikey == "") {
             return "N";
         } else {
             return "Y";
@@ -570,10 +640,11 @@ class Survey extends LSActiveRecord
     /**
      * @param string $value
      */
-    public function setGoogleanalyticsapikeysetting($value){
-        if($value == "G") {
+    public function setGoogleanalyticsapikeysetting($value)
+    {
+        if ($value == "G") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
-        } else if($value == "N") {
+        } else if ($value == "N") {
             $this->googleanalyticsapikey = "";
         }
     }
@@ -582,16 +653,24 @@ class Survey extends LSActiveRecord
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
      * @return string
      */
-    public function getGoogleanalyticsapikey(){
-        if($this->googleanalyticsapikey === "9999useGlobal9999") {
+    public function getGoogleanalyticsapikey()
+    {
+        if ($this->googleanalyticsapikey === "9999useGlobal9999") {
             return getGlobalSetting('googleanalyticsapikey');
         } else {
             return $this->googleanalyticsapikey;
         }
     }
 
-    public function getSurveyTemplateConfiguration(){
+    public function getSurveyTemplateConfiguration()
+    {
         return TemplateConfiguration::getInstance(null, null, $this->sid);
+    }
+
+    private function __useTranslationForSurveymenu(&$entryData) {
+        $entryData['title']             = gT($entryData['title']);
+        $entryData['menu_title']        = gT($entryData['menu_title']);
+        $entryData['menu_description']  = gT($entryData['menu_description']);
     }
 
     private function _createSurveymenuArray($oSurveyMenuObjects)
@@ -599,23 +678,33 @@ class Survey extends LSActiveRecord
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
         $aResultCollected = [];
-        foreach($oSurveyMenuObjects as $oSurveyMenuObject){
+        foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
             $entries = [];
             $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
             $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
-            foreach($aMenuEntries as $menuEntry){
+            foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
-                if(
-                    (!empty($entry['permission']) && !empty($entry['permission_grade']) 
-                    && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade']))
-                ) {continue;}
+                if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
+                    && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
+                ) {
+                    continue;
+                }
+
+                // Check if a specific user owns this menu.
+                if (!empty($aEntry['user_id'])) {
+                    $userId = Yii::app()->session['loginID'];
+                    if ($userId != $aEntry['user_id']) {
+                        continue;
+                    }
+                }
+
                 //parse the render part of the data attribute
                 $oDataAttribute = new SurveymenuEntryData();
                 $oDataAttribute->apply($menuEntry, $this->sid);
-               
-                if($oDataAttribute->isActive !== null){
-                    if(($oDataAttribute->isActive==true && $this->active == 'N') || ($oDataAttribute->isActive==false && $this->active == 'Y')){
+
+                if ($oDataAttribute->isActive !== null) {
+                    if (($oDataAttribute->isActive == true && $this->active == 'N') || ($oDataAttribute->isActive == false && $this->active == 'Y')) {
                         continue;
                     }
                 }
@@ -624,14 +713,16 @@ class Survey extends LSActiveRecord
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
                 $aEntry['debugData'] = $oDataAttribute->attributes;
                 $aEntry['pjax'] = $oDataAttribute->pjaxed;
+                $this->__useTranslationForSurveymenu($aEntry);
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "id" => $oSurveyMenuObject->id,
-                "title" => $oSurveyMenuObject->title,
+                "title" => gt($oSurveyMenuObject->title),
+                "name" => $oSurveyMenuObject->name,
                 "ordering" => $oSurveyMenuObject->ordering,
                 "level" => $oSurveyMenuObject->level,
-                "description" => $oSurveyMenuObject->description,
+                "description" => gT($oSurveyMenuObject->description),
                 "entries" => $entries,
                 "submenus" => $submenus
             ];
@@ -639,15 +730,16 @@ class Survey extends LSActiveRecord
         return $aResultCollected;
     }
 
-    private function _getSurveymenuSubmenus($oParentSurveymenu){
-        $criteria=new CDbCriteria;
+    private function _getSurveymenuSubmenus($oParentSurveymenu)
+    {
+        $criteria = new CDbCriteria;
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
         $criteria->addCondition('parent_id=:parentid');
         $criteria->addCondition('level=:level');
         $criteria->params = [
             ':surveyid' => $oParentSurveymenu->survey_id,
             ':parentid' =>  $oParentSurveymenu->id,
-            ':level'=> ($oParentSurveymenu->level+1)
+            ':level'=> ($oParentSurveymenu->level + 1)
         ];
 
         $oMenus = Surveymenu::model()->findAll($criteria);
@@ -656,15 +748,14 @@ class Survey extends LSActiveRecord
         return $aResultCollected;
     }
 
-    private function _getDefaultSurveyMenus($position='')
+    private function _getDefaultSurveyMenus($position = '')
     {
-        $criteria=new CDbCriteria;
-        $criteria->condition='survey_id IS NULL AND parent_id IS NULL';
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
 
-        if($position != '')
-        {
-            $criteria->condition.=' AND position=:position';
-            $criteria->params=array(':position'=>$position);
+        if ($position != '') {
+            $criteria->condition .= ' AND position=:position';
+            $criteria->params = array(':position'=>$position);
         }
 
         $oDefaultMenus = Surveymenu::model()->findAll($criteria);
@@ -678,7 +769,8 @@ class Survey extends LSActiveRecord
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
-    public function getSurveyMenus($position=''){
+    public function getSurveyMenus($position = '')
+    {
 
         //Get the default menus
         $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
@@ -694,38 +786,39 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * Creates a new survey - does some basic checks of the suppplied data
+     * Creates a new survey - with a random sid
      *
      * @param array $aData Array with fieldname=>fieldcontents data
-     * @return integer The new survey id
+     * @return \Survey
      */
     public function insertNewSurvey($aData)
     {
+        if (!isset($aData['datecreated'])) {
+            $aData['datecreated'] = date('Y-m-d H:i:s');
+        }
+
         do {
             // if wishSID is set check if it is not taken already
             if (isset($aData['wishSID'])) {
                 $aData['sid'] = $aData['wishSID'];
-                unset($aData['wishSID']);
-            }
-            else{
+            } else {
                 $aData['sid'] = randomChars(6, '123456789');
             }
-
             $isresult = self::model()->findByPk($aData['sid']);
+            unset($aData['wishSID']);
         }
         while (!is_null($isresult));
 
         $survey = new self;
-        foreach ($aData as $k => $v)
+        foreach ($aData as $k => $v) {
             $survey->$k = $v;
-        $sResult= $survey->save();
+        }
+        $sResult = $survey->save();
 
         if (!$sResult) {
-            tracevar($survey->getErrors());
-            tracevar($aData);
-            return false;
+            $survey->sid = null;
         }
-        else return $aData['sid'];
+        return $survey;
     }
 
     /**
@@ -733,13 +826,13 @@ class Survey extends LSActiveRecord
      *
      * @access public
      * @param int $iSurveyID
-     * @param bool @recursive
+     * @param bool $recursive
      * @return boolean
      */
-    public function deleteSurvey($iSurveyID, $recursive=true)
+    public function deleteSurvey($iSurveyID, $recursive = true)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-            if ( Survey::model()->deleteByPk($iSurveyID) ) {
+            if (Survey::model()->deleteByPk($iSurveyID)) {
                 if ($recursive == true) {
                     //delete the survey_$iSurveyID table
                     if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
@@ -757,34 +850,34 @@ class Survey extends LSActiveRecord
                     /* Remove User/global settings part : need Question and QuestionGroup*/
                     // Settings specific for this survey
                     $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name','last_%',true,'AND',false);
-                    $oCriteria->compare('stg_value',$iSurveyID,false,'AND');
+                    $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
+                    $oCriteria->compare('stg_value', $iSurveyID, false, 'AND');
                     SettingGlobal::model()->deleteAll($oCriteria);
                     // Settings specific for this survey, 2nd part
                     $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name','last_%'.$iSurveyID.'%',true,'AND',false);
+                    $oCriteria->compare('stg_name', 'last_%'.$iSurveyID.'%', true, 'AND', false);
                     SettingGlobal::model()->deleteAll($oCriteria);
                     // All Group id from this survey for ALL users
-                    $aGroupId=CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'gid','gid');
+                    $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'gid', 'gid');
                     $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name','last_question_gid_%',true,'AND',false);
+                    $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
                     // pgsql need casting, unsure for mssql
-                    if(Yii::app()->db->getDriverName() == 'pgsql') {
-                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aGroupId);
+                    if (Yii::app()->db->getDriverName() == 'pgsql') {
+                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aGroupId);
                     }
                     //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
                     else {
-                        $oCriteria->addInCondition('stg_value',$aGroupId);
+                        $oCriteria->addInCondition('stg_value', $aGroupId);
                     }
                     SettingGlobal::model()->deleteAll($oCriteria);
                     // All Question id from this survey for ALL users
-                    $aQuestionId=CHtml::listData(Question::model()->findAll(array('select'=>'qid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'qid','qid');
+                    $aQuestionId = CHtml::listData(Question::model()->findAll(array('select'=>'qid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'qid', 'qid');
                     $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name','last_question_%',true,'OR',false);
-                    if(Yii::app()->db->getDriverName() == 'pgsql') {
-                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aQuestionId);
+                    $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
+                    if (Yii::app()->db->getDriverName() == 'pgsql') {
+                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aQuestionId);
                     } else {
-                        $oCriteria->addInCondition('stg_value',$aQuestionId);
+                        $oCriteria->addInCondition('stg_value', $aQuestionId);
                     }
                     SettingGlobal::model()->deleteAll($oCriteria);
 
@@ -806,6 +899,10 @@ class Survey extends LSActiveRecord
                     //Remove any survey_links to the CPDB
                     SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
                     Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
+                    // Remove all related plugin settings
+                    PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $iSurveyID));
+                    // Delete all uploaded files.
+                    rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$iSurveyID);
                 }
                 return true;
             }
@@ -818,7 +915,8 @@ class Survey extends LSActiveRecord
      * @return Survey
      *
      */
-    public function findByPk($pk, $condition = '', $params = array()) {
+    public function findByPk($pk, $condition = '', $params = array())
+    {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
@@ -837,7 +935,8 @@ class Survey extends LSActiveRecord
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache() {
+    public function resetCache()
+    {
         $this->findByPkCache = array();
     }
 
@@ -863,8 +962,8 @@ class Survey extends LSActiveRecord
      */
     private function getDateFormatted($attribute)
     {
-        $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
-        if($this->$attribute){
+        $dateformatdata = getDateFormatData(Yii::app()->session['dateformat']);
+        if ($this->$attribute) {
             return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
         }
         return null;
@@ -928,13 +1027,13 @@ class Survey extends LSActiveRecord
      */
     public function getState()
     {
-        if($this->active == 'N') {
+        if ($this->active == 'N') {
             return 'inactive';
         } elseif ($this->expires != '' || $this->startdate != '') {
             // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
-            $sStop   = ($this->expires != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) ):$sNow;
-            $sStart  =  ($this->startdate != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate)) ):$sNow;
+            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop   = ($this->expires != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+            $sStart  = ($this->startdate != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
@@ -967,15 +1066,15 @@ class Survey extends LSActiveRecord
     {
 
         // If the survey is not active, no date test is needed
-        if($this->active == 'N') {
+        if ($this->active == 'N') {
             $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
         elseif ($this->expires != '' || $this->startdate != '') {
             // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
-            $sStop   = ($this->expires != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) ):$sNow;
-            $sStart  =  ($this->startdate != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate)) ):$sNow;
+            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop   = ($this->expires != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+            $sStart  = ($this->startdate != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
@@ -985,18 +1084,18 @@ class Survey extends LSActiveRecord
             $bExpired = ($oStop < $oNow);
             $bWillRun = ($oStart > $oNow);
 
-            $sStop = convertToGlobalSettingFormat( $sStop );
-            $sStart = convertToGlobalSettingFormat( $sStart );
+            $sStop = convertToGlobalSettingFormat($sStop);
+            $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'),$sStop).'</span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'),$sStop).'</span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'),$sStart).'</span></a>';
+            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'), $sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'), $sStop).'</span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'), $sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'), $sStop).'</span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'), $sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'), $sStart).'</span></a>';
 
             // Icon parsing
-            if ( $bExpired || $bWillRun ) {
+            if ($bExpired || $bWillRun) {
                 // Expire prior to will start
-                $running = ($bExpired)?$sIconExpired:$sIconFuture;
+                $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
                 $running = $sIconRunning;
             }
@@ -1228,12 +1327,9 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        if (isset($this->languagesettings[App()->language]))
-        {
+        if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language]->surveyls_title;
-        }
-        else
-        {
+        } else {
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
@@ -1265,7 +1361,7 @@ class Survey extends LSActiveRecord
     {
         $sResponseTable = $this->responsesTableName;
         Yii::app()->cache->flush();
-        if ($this->active!='Y') {
+        if ($this->active != 'Y') {
             return 0;
         } else {
             $answers = Yii::app()->db->createCommand()
@@ -1284,7 +1380,7 @@ class Survey extends LSActiveRecord
     {
         $table = $this->responsesTableName;
         Yii::app()->cache->flush();
-        if ($this->active!='Y') {
+        if ($this->active != 'Y') {
             return 0;
         } else {
             $answers = Yii::app()->db->createCommand()
@@ -1311,8 +1407,8 @@ class Survey extends LSActiveRecord
     {
         $sEditUrl     = App()->createUrl("/admin/survey/sa/editlocalsettings/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
-        $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid);;
-        $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid);;
+        $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid); ;
+        $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid); ;
 
         $button = '';
 
@@ -1320,14 +1416,14 @@ class Survey extends LSActiveRecord
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="fa fa-cog" ></span><span class="sr-only">'.gT('General settings & texts').'</span></a>';
         }
 
-        if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' ) {
+        if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
             $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
-            if($this->active!='Y') {
+            if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
-                if($groupCount > 0) {
+                if ($groupCount > 0) {
                     $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
                     $button .= '<a class="btn btn-default" href="'.$sAddGroup.'" role="button" data-toggle="tooltip" title="'.gT('Add new group').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new group').'</span></a>';
@@ -1337,7 +1433,7 @@ class Survey extends LSActiveRecord
 
         //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
         //$previewUrl .= '/'.$this->sid;
-        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye-open"  ></span></a> ';
+        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         return $button;
     }
@@ -1347,7 +1443,7 @@ class Survey extends LSActiveRecord
      */
     public function search()
     {
-        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1392,7 +1488,7 @@ class Survey extends LSActiveRecord
         $aWithRelations = array('correct_relation_defaultlanguage');
 
         // Search filter
-        $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
+        $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.sid::varchar' : 't.sid');
         $aWithRelations[] = 'owner';
         $aWithRelations[] = 'surveygroup';
         $criteria->compare($sid_reference, $this->searched_value, true);
@@ -1400,30 +1496,30 @@ class Survey extends LSActiveRecord
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
-        
-        
-        $criteria->compare('t.gsid',[$this->gsid], false, 'AND');
 
+        // Survey group filter
+        if (isset($this->gsid)) {
+            $criteria->compare("t.gsid", $this->gsid, false);
+        }
 
         // Active filter
-        if(isset($this->active)) {
-            if($this->active == 'N' || $this->active == "Y") {
+        if (isset($this->active)) {
+            if ($this->active == 'N' || $this->active == "Y") {
                 $criteria->compare("t.active", $this->active, false);
             } else {
                 // Time adjust
-                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
+                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
 
-                if($this->active == "E") {
-                    $criteria->compare("t.active",'Y');
+                if ($this->active == "E") {
+                    $criteria->compare("t.active", 'Y');
                     $criteria->addCondition("t.expires <'$sNow'");
-                } if($this->active == "S") {
-                    $criteria->compare("t.active",'Y');
+                } if ($this->active == "S") {
+                    $criteria->compare("t.active", 'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
 
-                if($this->active == "R")
-                {
-                    $criteria->compare("t.active",'Y');
+                if ($this->active == "R") {
+                    $criteria->compare("t.active", 'Y');
                     $subCriteria1 = new CDbCriteria;
                     $subCriteria2 = new CDbCriteria;
                     $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
@@ -1438,11 +1534,11 @@ class Survey extends LSActiveRecord
         }
 
 
-        $criteria->with=$aWithRelations;
+        $criteria->with = $aWithRelations;
 
         // Permission
         // Note: reflect Permission::hasPermission
-        if(!Permission::model()->hasGlobalPermission("surveys",'read')) {
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
             $criteriaPerm = new CDbCriteria;
 
             // Multiple ON conditions with string values such as 'survey'
@@ -1454,7 +1550,7 @@ class Survey extends LSActiveRecord
             $criteria->mergeWith($criteriaPerm, 'AND');
         }
         // $criteria->addCondition("t.blabla == 'blub'");
-        $dataProvider=new CActiveDataProvider('Survey', array(
+        $dataProvider = new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(
@@ -1483,7 +1579,9 @@ class Survey extends LSActiveRecord
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function transcribeCaptchaOptions() {
+    public static function transcribeCaptchaOptions()
+    {
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
         $saveandload = App()->request->getPost('usecaptcha_saveandload');
@@ -1523,13 +1621,14 @@ class Survey extends LSActiveRecord
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
-
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    {
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
-        if($surveyaccess === null && $registration === null && $saveandload === null){
+        if ($surveyaccess === null && $registration === null && $saveandload === null) {
             return $oSurvey->usecaptcha;
         }
 
@@ -1558,20 +1657,20 @@ class Survey extends LSActiveRecord
      * Approx is 3 questions each minute.
      * @return double
      */
-    public function calculateEstimatedTime ()
+    public function calculateEstimatedTime()
     {
         //@TODO make the time_per_question variable user configureable
         $time_per_question = 0.5;
         $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
+        $criteria->addCondition('sid = '.$this->sid);
         $criteria->addCondition('parent_qid = 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
+        $criteria->addCondition('language = \''.$this->language.'\'');
         $baseQuestions = Question::model()->count($criteria);
         // Note: An array questions with one sub question is fetched as 1 base question + 1 sub question
         $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = ' . $this->sid);
+        $criteria->addCondition('sid = '.$this->sid);
         $criteria->addCondition('parent_qid != 0');
-        $criteria->addCondition('language = \'' . $this->language . '\'');
+        $criteria->addCondition('language = \''.$this->language.'\'');
         $subQuestions = Question::model()->count($criteria);
         // Subquestions are worth less "time" than base questions
         $subQuestions = intval(($subQuestions - $baseQuestions) / 2);
@@ -1586,7 +1685,9 @@ class Survey extends LSActiveRecord
     public static function getSurveysWithTokenTable()
     {
         $surveys = self::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
-        $surveys = array_filter($surveys, function($s) { return $s->hasTokensTable; });
+        $surveys = array_filter($surveys, function($s)
+        {
+return $s->hasTokensTable; });
         return $surveys;
     }
 
@@ -1599,34 +1700,34 @@ class Survey extends LSActiveRecord
         $validQuestion = Question::model()->findAll(array(
             'select'=>'qid',
             'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
-            'params'=>array('sid' => $this->sid,'language' => $this->language)
+            'params'=>array('sid' => $this->sid, 'language' => $this->language)
         ));
         $criteria = new CDbCriteria;
-        $criteria->compare('sid',$this->sid);
+        $criteria->compare('sid', $this->sid);
         $criteria->addCondition('parent_qid = 0');
-        $criteria->addNotInCondition('qid', CHtml::listData($validQuestion,'qid','qid'));
-        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+        $criteria->addNotInCondition('qid', CHtml::listData($validQuestion, 'qid', 'qid'));
+        Question::model()->deleteAll($criteria); // Must log count of deleted ?
 
         /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
             'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
-            'params'=>array('sid' => $this->sid,'language' => $this->language)
+            'params'=>array('sid' => $this->sid, 'language' => $this->language)
         ));
         $criteria = new CDbCriteria;
-        $criteria->compare('sid',$this->sid);
+        $criteria->compare('sid', $this->sid);
         $criteria->addCondition('parent_qid != 0');
-        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
-        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
+        Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
 
     public function getsSurveyUrl()
     {
-        if ($this->sSurveyUrl==''){
-            if(!in_array(App()->language,$this->getAllLanguages())){
-                $surveylang=$this->language;
-            }else{
-                $surveylang=App()->language;
+        if ($this->sSurveyUrl == '') {
+            if (!in_array(App()->language, $this->getAllLanguages())) {
+                $surveylang = $this->language;
+            } else {
+                $surveylang = App()->language;
             }
             $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
         }
@@ -1648,7 +1749,7 @@ class Survey extends LSActiveRecord
 
         ));
 
-        $criteria->addInCondition('t.type',Question::getQuotableTypes());
+        $criteria->addInCondition('t.type', Question::getQuotableTypes());
 
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
@@ -1659,15 +1760,16 @@ class Survey extends LSActiveRecord
      * Get the DB criteria to get questions as ordered in survey
      * @return CDbCriteria
      */
-    private function getQuestionOrderCriteria(){
-        $criteria=new CDbCriteria;
+    private function getQuestionOrderCriteria()
+    {
+        $criteria = new CDbCriteria;
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with=array(
+        $criteria->with = array(
             'survey.groups',
         );
-        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
+        $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
             .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
+        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
 
     }
@@ -1677,9 +1779,105 @@ class Survey extends LSActiveRecord
     public function getGroupsCount()
     {
         //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-        $condn = array('sid'=>$this->sid,'language'=>$this->language);
+        $condn = array('sid'=>$this->sid, 'language'=>$this->language);
         $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-        return $sumresult3 ;
+        return $sumresult3;
     }
 
+    /**
+     * @return integer
+     */
+    public function getCountTotalQuestions()
+    {
+        $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountNoInputQuestions()
+    {
+        $condn = array(
+            'sid'=>$this->sid,
+            'language'=>$this->language,
+            'parent_qid'=>0,
+            'type'=>['X', '*'],
+        );
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountInputQuestions()
+    {
+        return $this->countTotalQuestions - $this->countNoInputQuestions;
+    }
+
+
+    /**
+     * Returns true if this survey has any question of type $type.
+     * @param string $type Question type, like 'L', 'T', etc.
+     * @param boolean $includeSubquestions If true, will also check the types of subquestions.
+     * @return boolean
+     * @throws CException
+     */
+    public function hasQuestionType($type, $includeSubquestions = false)
+    {
+        if (!is_string($type) || strlen($type) !== 1) {
+            throw new InvalidArgumentException('$type must be a string of length 1');
+        }
+
+        if ($includeSubquestions) {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.type}} = :type';
+        } else {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.parent_qid}} = 0 AND {{questions.type}} = :type';
+        }
+
+        $result = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->join(
+                '{{questions}}',
+                $joinCondition,
+                array(':type' => $type)
+            )
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
+            ->queryRow();
+        return $result !== false;
+    }
+
+    public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId) {
+        
+        $STARTPOLICYLINK = "";
+        $ENDPOLICYLINK = "";
+        
+        if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
+            $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='modal'>";
+            $ENDPOLICYLINK = "</a>";
+        }
+        
+
+        if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
+            $dataSecurityNoticeLabel.= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
+        }
+
+        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
+        
+        $countEndLabel = 0;
+        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel, -1, $countEndLabel);
+        if($countEndLabel == 0){
+            $dataSecurityNoticeLabel .= '</a>';
+        } 
+
+        return $dataSecurityNoticeLabel;
+
+    }
 }

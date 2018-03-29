@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,19 +24,21 @@
  * @property string $value
  *
  * @property Participant $participant
- * @property ParticipantAttributeName $participant_attribute_names //todo this should be singular not plural
+ * @property ParticipantAttributeName $participant_attribute_name
  */
 class ParticipantAttribute extends LSActiveRecord
 {
 
-	/**
+    /**
      * @inheritdoc
-	 * @return ParticipantAttribute
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return ParticipantAttribute
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
     /** @inheritdoc */
     public function tableName()
@@ -55,7 +59,7 @@ class ParticipantAttribute extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Participant', 'participant_id'),
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }
 
@@ -81,10 +85,10 @@ class ParticipantAttribute extends LSActiveRecord
             ->queryAll();
         if (count($query) > 0) {
             Yii::app()->db->createCommand()
-                  ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
+                    ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
         } else {
             Yii::app()->db->createCommand()
-                  ->insert('{{participant_attribute}}', $data);
+                    ->insert('{{participant_attribute}}', $data);
         }
     }
 

@@ -1,0 +1,57 @@
+{# /**
+ * Multiple short texts question, item input text Html
+ * @var $tip
+ * @var $alert
+ * @var $maxlength
+ * @var $tiwidth
+ * @var $extraclass
+ * @var $sDisplayStyle
+ * @var $prefix
+ * @var $myfname
+ * @var $labelText
+ * @var $sufix
+ * @var $kpclass
+ * @var $rows
+ * @var $checkconditionFunction
+ * @var $dispVal
+ * @var $suffix
+ */ #}
+
+<!-- answer_row -->
+
+<li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item form-group{{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}" {{ sDisplayStyle }}>
+    <!--  color code missing mandatory questions red -->
+    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ (sLabelWidth == 0 ? " hidden":"") }}" for="answer{{myfname}}">
+        {{ labelText }}
+    </label>
+
+    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">
+        {% if prefix  or  suffix %}
+            <div class="ls-input-group">
+        {% endif %}
+            {% if prefix %}
+                <div class="ls-input-group-extra prefix-text prefix">
+                    {{ prefix }}
+                </div>
+            {% endif %}
+                {{ C.Html.textField( myfname,dispVal, {
+                    'id' : 'answer'~myfname,
+                    'class' : 'form-control numeric '~kpclass,
+                    'title' : gT('Only numbers may be entered in this field.'),
+                    'size' : (inputsize ? inputsize : null),
+                    'maxlength':  (maxlength ? maxlength : null),
+                    'data-number' : 1,
+                    'data-integer' : integeronly,
+                    })
+                }}
+            {% if suffix %}
+                <div class="ls-input-group-extra suffix-text suffix">
+                    {{ suffix }}
+                </div>
+            {% endif %}
+        {% if prefix or suffix %}
+            </div>
+        {% endif %}
+    </div>
+</li>
+<!-- end of answer_row -->

@@ -2,55 +2,18 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-16
  * @group datetimedefaultanswer
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
-    /**
-     * Import survey in tests/surveys/.
-     */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
-
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
+        parent::setUpBeforeClass();
+        $fileName = self::$surveysFolder . '/limesurvey_survey_454287.lss';
+        self::importSurvey($fileName);
     }
 
     /**
@@ -97,8 +60,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
         );
 
         $correctDate = date('d/m/Y');
@@ -160,8 +122,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1],  // 1 = second question (q2)
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
         );
 
         $correctDate = date('d/m/Y');
@@ -221,8 +182,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2],  // 2 = third question (q3)
-            self::$surveyId
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
         );
 
         // NB: Empty value, since default answer expression is not parsed by qanda.

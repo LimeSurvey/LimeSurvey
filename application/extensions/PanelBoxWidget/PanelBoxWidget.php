@@ -18,6 +18,7 @@ class PanelBoxWidget extends CWidget
 
     public function run()
     {
+        App()->getClientScript()->registerPackage('panelboxes');
         if ($this->display == 'singlebox') {
             if ($this->fromDb) {
                 $this->setValuesFromDb();
@@ -77,7 +78,7 @@ class PanelBoxWidget extends CWidget
                 'ico' => $this->ico,
                 'description' => $this->description,
                 'external' => $this->external,
-                'sizeClass' => "col-sm-".(12/$this->boxesbyrow)
+                'sizeClass' => "col-md-".(12/$this->boxesbyrow)." col-sm-".(floor(24/$this->boxesbyrow))
             ));
         }
     }

@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -36,37 +37,39 @@ class Condition extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /**
-    * Returns the setting's table name to be used by the model
-    *
-    * @access public
-    * @return string
-    */
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
     public function tableName()
     {
         return '{{conditions}}';
     }
 
     /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string
-    */
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
     public function primaryKey()
     {
         return 'cid';
     }
 
     /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+     * Defines the relations for this model
+     *
+     * @access public
+     * @return array
+     */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -83,13 +86,13 @@ class Condition extends LSActiveRecord
      * @param bool|mixed $condition
      * @return int
      */
-    public function deleteRecords($condition=FALSE)
+    public function deleteRecords($condition = false)
     {
         $criteria = new CDbCriteria;
 
-        if( $condition != FALSE ) {
-            if( is_array($condition) ) {
-                foreach($condition as $column=>$value) {
+        if ($condition != false) {
+            if (is_array($condition)) {
+                foreach ($condition as $column=>$value) {
                     $criteria->addCondition("$column='$value'");
                 }
             } else {
@@ -102,31 +105,31 @@ class Condition extends LSActiveRecord
 
 
     /**
-    * Updates the group ID for all conditions
-    *
-    * @param integer $iSurveyID
-    * @param integer $iQuestionID
-    * @param integer $iOldGroupID
-    * @param integer $iNewGroupID
-    */
+     * Updates the group ID for all conditions
+     *
+     * @param integer $iSurveyID
+     * @param integer $iQuestionID
+     * @param integer $iOldGroupID
+     * @param integer $iNewGroupID
+     */
     public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
     {
-        $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
+        $oResults = $this->findAllByAttributes(array('cqid'=>$iQuestionID));
         foreach ($oResults as $oRow) {
-            $cfnregs='';
+            $cfnregs = [];
             if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
+                $sNewCfn = $cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update($this->tableName(), array('cfieldname' => $sNewCfn),
-                    'cid=:cid',array(':cid'=>$oRow->cid));
-                LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID,$oRow->qid);
+                    'cid=:cid', array(':cid'=>$oRow->cid));
+                LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID, $oRow->qid);
             }
         }
     }
 
 
 
-    public function insertRecords($data, $update=FALSE, $condition=FALSE)
+    public function insertRecords($data, $update = false, $condition = false)
     {
         $record = new self;
         foreach ($data as $k => $v) {
@@ -134,18 +137,18 @@ class Condition extends LSActiveRecord
             $record->$k = $v;
         }
 
-        if( $update ) {
+        if ($update) {
             $criteria = new CdbCriteria;
-            if( is_array($condition) ) {
-                foreach($condition as $column=>$value) {
+            if (is_array($condition)) {
+                foreach ($condition as $column=>$value) {
                     $criteria->addCondition("$column='$value'");
                 }
             } else {
                 $criteria->where = $condition;
             }
 
-            return $record->updateAll($data,$criteria);
-        } else{
+            return $record->updateAll($data, $criteria);
+        } else {
             return $record->save();
         }
     }
@@ -156,10 +159,10 @@ class Condition extends LSActiveRecord
      */
     public function getScenarios($qid)
     {
-
-        $scenarioquery = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=".$qid." ORDER BY scenario";
-
-        return Yii::app()->db->createCommand($scenarioquery)->query();
+        $query = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=:qid ORDER BY scenario";
+        $command = Yii::app()->db->createCommand($query);
+        $command->params = [':qid'=>$qid];
+        return $command->query();
     }
 
     /**
@@ -169,25 +172,26 @@ class Condition extends LSActiveRecord
      * @param array $group
      * @return CDbDataReader
      */
-    public function getSomeConditions($fields, $condition, $order, $group){
+    public function getSomeConditions($fields, $condition, $order, $group)
+    {
         $record = Yii::app()->db->createCommand()
         ->select($fields)
         ->from($this->tableName())
         ->where($condition);
 
-        if( $order != NULL ) {
+        if ($order != null) {
             $record->order($order);
         }
-        if( $group != NULL ) {
+        if ($group != null) {
             $record->group($group);
         }
 
         return $record->query();
     }
 
-    public function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
+    public function getConditionsQuestions($distinctrow, $deqrow, $scenariorow, $surveyprintlang)
     {
-        $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
+        $conquery = "SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
         ."FROM {{conditions}} c, {{questions}} q "
         ."WHERE c.cqid=q.qid "
         ."AND c.cqid=:distinctrow "
@@ -220,6 +224,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param string $language
      * @param Condition $scenarionr
      * @return int
      */
@@ -235,7 +240,7 @@ class Condition extends LSActiveRecord
                     ."AND c.qid=:qid "
                     ."AND c.scenario=:scenario "
                     ."AND c.cfieldname NOT LIKE '{%' "; // avoid catching SRCtokenAttr conditions
-        $result=Yii::app()->db->createCommand($query)
+        $result = Yii::app()->db->createCommand($query)
             ->bindValue(":scenario", $scenarionr['scenario'])
             ->bindValue(":qid", $qid, PDO::PARAM_INT)
             ->bindValue(":lang1", $language, PDO::PARAM_STR)
@@ -246,6 +251,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param $language
      * @param Condition $scenarionr
      * @return array
      */
@@ -300,7 +306,7 @@ class Condition extends LSActiveRecord
     /**
      * @param int $qid
      * @param Condition $scenarionr
-     * @return array
+     * @return CDbDataReader
      */
     public function getConditionsToken($qid, Condition $scenarionr)
     {

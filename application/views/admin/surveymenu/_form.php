@@ -15,15 +15,14 @@
 	'htmlOptions' => ['class' =>'form '],
 	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
 )); ?>
-	<p><pre><?=$model->isNewRecord?></pre></p>
 	<div class="modal-header">
-		<?php $model->isNewRecord ? eT('Create new surveymenu') : eT('Edit surveymenu') ?>
+		<?php $model->isNewRecord ? eT('Create new survey menu') : eT('Edit survey menu') ?>
 	</div>
 	<div class="modal-body">
 		<div class="container-fluid">
 			<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
 			<?php if(!$model->isNewRecord && $model->id == '1'):?>
-				<div class="alert alert-danger" role="alert"><?php printf(gT("You are editing the main menu! %s Please be very careful."), '<br/>') ?></div>
+				<div class="alert alert-danger" role="alert"><?php echo gT("You are editing the main menu!").'<br>'.gT("Please be very careful."); ?></div>
 			<?php endif; ?>
 			
 			<p class="note"><?php printf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
@@ -39,6 +38,12 @@
 				<?php echo $form->labelEx($model,'survey_id'); ?>
 				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions()); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
+            </div>
+            
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'user_id'); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->error($model,'user_id'); ?>
 			</div>
 
 			<div class="form-group">
@@ -72,7 +77,7 @@
 		<?php echo $form->hiddenField($model, 'id');?>
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton((empty($model->id) ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
-		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		<?php echo TbHtml::submitButton((empty($model->id) ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT('Close');?></button>
 	</div>
 <?php $this->endWidget(); ?>

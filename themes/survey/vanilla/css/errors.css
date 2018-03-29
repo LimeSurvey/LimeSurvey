@@ -1,0 +1,90 @@
+/*
+    LimeSurvey
+
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.·  Specific CSS for error page   ·._.·´¯)·._.·´¯)
+
+    This will style the error page. It is loaded in layout_errors.twig
+    To see it: just try to preview a survey with an empty group.
+
+*/
+
+html{
+  }
+  body{
+      margin: 0;
+      padding: 0;
+      background: #e7ecf0;
+      font-family: Arial, Helvetica, sans-serif;
+  }
+  *{
+      margin: 0;
+      padding: 0;
+  }
+  p{
+      font-size: 12px;
+      color: #373737;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 18px;
+  }
+  p a{
+      color: #218bdc;
+      font-size: 12px;
+      text-decoration: none;
+  }
+  a{
+      outline: none;
+  }
+  .f-left{
+      float:left;
+  }
+  .f-right{
+      float:right;
+  }
+  .clear{
+      clear: both;
+      overflow: hidden;
+  }
+  #block_error{
+      width: 845px;
+      height: 384px;
+      border: 1px solid #cccccc;
+      margin: 72px auto 0;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      background: #fff url("../files/block.gif") no-repeat 0 51px;
+  }
+  #block_error div{
+      padding: 100px 40px 0 186px;
+  }
+  #block_error div h2{
+      color: #218bdc;
+      font-size: 24px;
+      display: block;
+      padding: 0 0 14px 0;
+      border-bottom: 1px solid #cccccc;
+      margin-bottom: 12px;
+      font-weight: normal;
+  }
+  p.inherit-sizes
+  {
+      font: inherit;
+  }
+  ul.inherit-sizes
+  {
+      font: inherit;
+  }
+  ul.inherit-sizes>li
+  {
+      font: inherit;
+  }

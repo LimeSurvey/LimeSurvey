@@ -4,11 +4,11 @@
  * This is the model class for table "{{boxes}}".
  *
  * The followings are the available columns in table '{{boxes}}':
- * @property integer $id
+ * @property integer $id Primary key
  * @property integer $position
  * @property string $url
  * @property string $title
- * @property string $desc
+ * @property string $desc Description
  * @property string $page
  * @property integer $usergroup UserGroup ID
  */
@@ -75,15 +75,15 @@ class Boxes extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('position',$this->position);
-        $criteria->compare('url',$this->url,true);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('ico',$this->ico,true);
-        $criteria->compare('desc',$this->desc,true);
-        $criteria->compare('page',$this->page,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('position', $this->position);
+        $criteria->compare('url', $this->url, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('ico', $this->ico, true);
+        $criteria->compare('desc', $this->desc, true);
+        $criteria->compare('page', $this->page, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -107,18 +107,19 @@ class Boxes extends CActiveRecord
         $usergroupid = $this->usergroup;
 
         // Can't use switch because of empty case
-        if ( empty($usergroupid) || $usergroupid=='-2'  ) {
+        if (empty($usergroupid) || $usergroupid == '-2') {
             return gT('Only Superadmin');
-        } elseif ( $usergroupid=='-1' ) {
+        } elseif ($usergroupid == '-1') {
             return gT('Everybody');
-        } elseif ( $usergroupid=='-3' ) {
+        } elseif ($usergroupid == '-3') {
             return gT('Nobody');
         } else {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
-                return gT("Can't find user group!");
+            if (!is_object($oUsergroup)) {
+                            return gT("Can't find user group!");
+            }
 
             return $oUsergroup->name;
         }
@@ -143,7 +144,7 @@ class Boxes extends CActiveRecord
     /**
      * List of all icons available for user
      * Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
-     * @return array
+     * @return string[]
      */
     public function getIcons()
     {
@@ -219,8 +220,10 @@ class Boxes extends CActiveRecord
      * @inheritdoc
      * @return Boxes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model = parent::model($className);
+        return $model;
     }
 }

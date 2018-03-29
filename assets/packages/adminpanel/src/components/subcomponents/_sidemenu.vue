@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 import Menuicon from './_menuicon.vue';
@@ -57,12 +56,10 @@ export default {
     mounted(){
         const self = this;
         this.updatePjaxLinks();
-        // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     self.$log.debug('sidemenues',result);
-        //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
+
+        $(document).on('vue-reload-remote', ()=>{
+            this.$forceUpdate();
+        });
     }
 }
 </script>

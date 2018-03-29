@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,41 +13,56 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class SavedControl extends LSActiveRecord {
+
+/**
+ * Class SavedControl
+ * @property integer $scid Primary key
+ * @property integer $sid Survey id
+ * @property integer $srid
+ * @property string $identifier
+ * @property string $access_code
+ * @property string $email
+ * @property string $ip
+ * @property string $saved_thisstep
+ * @property string $status
+ * @property string $saved_date
+ * @property string $refurl
+ */
+class SavedControl extends LSActiveRecord
+{
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{saved_control}}';
-	}
+    public function tableName()
+    {
+        return '{{saved_control}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return 'scid';
-	}
+    public function primaryKey()
+    {
+        return 'scid';
+    }
 
-	/**
+    /**
      * @inheritdoc
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
 
-	function getAllRecords($condition=false)
-	{
-		if ($condition != false)
-		{
-			$this->db->where($condition);
-		}
+    public function getAllRecords($condition = false)
+    {
+        if ($condition != false) {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('saved_control');
+        $data = $this->db->get('saved_control');
 
-		return $data;
-	}
+        return $data;
+    }
 
     /**
      * @param int $sid
@@ -60,27 +77,27 @@ class SavedControl extends LSActiveRecord {
     }
 
     /**
-    * Deletes some records meeting specified condition
-    *
-    * @access public
-    * @param array $condition
-    * @return int (rows deleted)
-    */
+     * Deletes some records meeting specified condition
+     *
+     * @access public
+     * @param array $condition
+     * @return int (rows deleted)
+     */
     public function deleteSomeRecords($condition)
     {
-    	$record = new self;
-    	$criteria = new CDbCriteria;
+        $record = new self;
+        $criteria = new CDbCriteria;
 
-    	if($condition != false) {
-    		foreach($condition as $column=>$value) {
-    			$criteria->addCondition("$column='$value'");
-    		}
-    	}
+        if ($condition != false) {
+            foreach ($condition as $column=>$value) {
+                $criteria->addCondition("$column='$value'");
+            }
+        }
 
-    	return $record->deleteAll($criteria);
+        return $record->deleteAll($criteria);
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data);
     }

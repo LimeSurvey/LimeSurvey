@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
@@ -33,7 +35,9 @@ class Answer extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -45,7 +49,7 @@ class Answer extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'code','language','scale_id');
+        return array('qid', 'code', 'language', 'scale_id');
     }
 
     /** @inheritdoc */
@@ -67,9 +71,9 @@ class Answer extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('qid','numerical', 'integerOnly'=>true),
-            array('code','length', 'min' => 1, 'max'=>5),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+            array('qid', 'numerical', 'integerOnly'=>true),
+            array('code', 'length', 'min' => 1, 'max'=>5),
+            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             // Unicity of key
             array(
                 'code', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
@@ -82,10 +86,10 @@ class Answer extends LSActiveRecord
                 ),
                 'message' => gT('Answer codes must be unique by question.')
             ),
-            array('answer','LSYii_Validators'),
-            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('answer', 'LSYii_Validators'),
+            array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
         );
     }
 
@@ -114,7 +118,7 @@ class Answer extends LSActiveRecord
      * @param integer $iScaleID
      * @return array
      */
-    public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
+    public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID = 0)
     {
         static $answerCache = array();
 
@@ -144,11 +148,11 @@ class Answer extends LSActiveRecord
      * @param integer $oldsid
      * @return static[]
      */
-    public function oldNewInsertansTags($newsid,$oldsid)
+    public function oldNewInsertansTags($newsid, $oldsid)
     {
         $criteria = new CDbCriteria;
-        $criteria->compare('questions.sid',$newsid);
-        $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+        $criteria->compare('questions.sid', $newsid);
+        $criteria->compare('answer', '{INSERTANS::'.$oldsid.'X');
         return $this->with('questions')->findAll($criteria);
     }
 
@@ -157,25 +161,25 @@ class Answer extends LSActiveRecord
      * @param bool|mixed $condition
      * @return int
      */
-    public function updateRecord($data, $condition=FALSE)
+    public function updateRecord($data, $condition = false)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
     /**
      * @param array $data
-     * @return bool
+     * @return boolean|null
      */
     public function insertRecords($data)
-    {    
+    {
         $oRecord = new self;
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;
         }
-        if($oRecord->validate()) {
+        if ($oRecord->validate()) {
             return $oRecord->save();
         }
-        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()),'warning','application.models.Answer.insertRecords');
+        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
     }
 
     /**
@@ -204,7 +208,7 @@ class Answer extends LSActiveRecord
      * @param bool $return_query
      * @return array|CDbCommand
      */
-    public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
+    public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
         $query = Yii::app()->db->createCommand();
         $query->select("{{answers}}.*, {{questions}}.gid");
@@ -213,13 +217,13 @@ class Answer extends LSActiveRecord
         $query->order('qid, code, sortorder');
         $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
         $query->bindParams(":lang", $lang, PDO::PARAM_STR);
-        return ( $return_query ) ? $query->queryAll() : $query;
+        return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order=FALSE)
+    function getAllRecords($condition, $order = false)
     {
-        $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE) {
+        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
+        if ($order != false) {
             $command->order($order);
         }
         return $command->query();

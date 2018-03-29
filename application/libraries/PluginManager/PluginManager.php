@@ -5,9 +5,11 @@ use Plugin;
 
 /**
  * Factory for limesurvey plugin objects.
+ * @method mixed dispatchEvent
  */
-class PluginManager extends \CApplicationComponent {
-   /**
+class PluginManager extends \CApplicationComponent
+{
+    /**
      * Object containing any API that the plugins can use.
      * @var mixed $api The class name of the API class to load, or
      */
@@ -41,7 +43,8 @@ class PluginManager extends \CApplicationComponent {
      *
      * a reference to an already constructed reference.
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         if (!is_object($this->api)) {
             $class = $this->api;
@@ -83,12 +86,9 @@ class PluginManager extends \CApplicationComponent {
     {
         $pluginModel = Plugin::model();
         $record = $pluginModel->findByAttributes(array('name' => $sPluginName, 'active' => '1'));
-        if ($record == false)
-        {
+        if ($record == false) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -101,11 +101,10 @@ class PluginManager extends \CApplicationComponent {
     public function getStore($storageClass)
     {
         if (!class_exists($storageClass)
-                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
-            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+                && class_exists('LimeSurvey\\PluginManager\\'.$storageClass)) {
+            $storageClass = 'LimeSurvey\\PluginManager\\'.$storageClass;
         }
-        if (!isset($this->stores[$storageClass]))
-        {
+        if (!isset($this->stores[$storageClass])) {
             $this->stores[$storageClass] = new $storageClass();
         }
         return $this->stores[$storageClass];
@@ -129,18 +128,15 @@ class PluginManager extends \CApplicationComponent {
      */
     public function subscribe(iPlugin $plugin, $event, $function = null)
     {
-        if (!isset($this->subscriptions[$event]))
-        {
+        if (!isset($this->subscriptions[$event])) {
             $this->subscriptions[$event] = array();
         }
-        if (!$function)
-        {
+        if (!$function) {
             $function = $event;
         }
         $subscription = array($plugin, $function);
         // Subscribe only if not yet subscribed.
-        if (!in_array($subscription, $this->subscriptions[$event]))
-        {
+        if (!in_array($subscription, $this->subscriptions[$event])) {
             $this->subscriptions[$event][] = $subscription;
         }
 
@@ -151,24 +147,17 @@ class PluginManager extends \CApplicationComponent {
      * Unsubscribes a plugin from an event.
      * @param iPlugin $plugin Reference to the plugin being unsubscribed.
      * @param string $event Name of the event. Use '*', to unsubscribe all events for the plugin.
-     * @param string $function Optional function of the plugin that was registered.
      */
     public function unsubscribe(iPlugin $plugin, $event)
     {
         // Unsubscribe recursively.
-        if ($event == '*')
-        {
-            foreach ($this->subscriptions as $event)
-            {
+        if ($event == '*') {
+            foreach ($this->subscriptions as $event) {
                 $this->unsubscribe($plugin, $event);
             }
-        }
-        elseif (isset($this->subscriptions[$event]))
-        {
-            foreach ($this->subscriptions[$event] as $index => $subscription)
-            {
-                if ($subscription[0] == $plugin)
-                {
+        } elseif (isset($this->subscriptions[$event])) {
+            foreach ($this->subscriptions[$event] as $index => $subscription) {
+                if ($subscription[0] == $plugin) {
                     unset($this->subscriptions[$event][$index]);
                 }
             }
@@ -188,13 +177,10 @@ class PluginManager extends \CApplicationComponent {
         if (is_string($target)) {
             $target = array($target);
         }
-        if (isset($this->subscriptions[$eventName]))
-        {
-            foreach($this->subscriptions[$eventName] as $subscription)
-            {
+        if (isset($this->subscriptions[$eventName])) {
+            foreach ($this->subscriptions[$eventName] as $subscription) {
                 if (!$event->isStopped()
-                 && (empty($target) || in_array(get_class($subscription[0]), $target)))
-                {
+                 && (empty($target) || in_array(get_class($subscription[0]), $target))) {
                     $subscription[0]->setEvent($event);
                     call_user_func($subscription);
                 }
@@ -215,16 +201,13 @@ class PluginManager extends \CApplicationComponent {
         foreach ($this->pluginDirs as $pluginDir) {
             $currentDir = Yii::getPathOfAlias($pluginDir);
             if (is_dir($currentDir)) {
-                foreach (new \DirectoryIterator($currentDir) as $fileInfo)
-                {
-                    if (!$fileInfo->isDot() && $fileInfo->isDir())
-                    {
+                foreach (new \DirectoryIterator($currentDir) as $fileInfo) {
+                    if (!$fileInfo->isDot() && $fileInfo->isDir()) {
                         // Check if the base plugin file exists.
                         // Directory name Example most contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
-                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
-                        if (file_exists($file))
-                        {
+                        $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
+                        if (file_exists($file)) {
                             $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                         }
                     }
@@ -241,6 +224,7 @@ class PluginManager extends \CApplicationComponent {
      * static function inside the plugin file.
      *
      * @param string $pluginClass The classname of the plugin
+     * @return array|null
      */
     public function getPluginInfo($pluginClass, $pluginDir = null)
     {
@@ -256,9 +240,9 @@ class PluginManager extends \CApplicationComponent {
             }
 
             foreach ($this->pluginDirs as $pluginDir) {
-                $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
+                $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
                 if (file_exists($file)) {
-                    Yii::import($pluginDir . ".$pluginClass.*");
+                    Yii::import($pluginDir.".$pluginClass.*");
                     $found = true;
                     break;
                 }
@@ -269,10 +253,14 @@ class PluginManager extends \CApplicationComponent {
             }
         }
 
-        $result['description'] = call_user_func(array($class, 'getDescription'));
-        $result['pluginName'] = call_user_func(array($class, 'getName'));
-        $result['pluginClass'] = $class;
-        return $result;
+        if (!class_exists($class)) {
+            return null;
+        } else {
+            $result['description'] = call_user_func(array($class, 'getDescription'));
+            $result['pluginName'] = call_user_func(array($class, 'getName'));
+            $result['pluginClass'] = $class;
+            return $result;
+        }
     }
 
     /**
@@ -286,26 +274,23 @@ class PluginManager extends \CApplicationComponent {
     public function loadPlugin($pluginName, $id = null)
     {
         // If the id is not set we search for the plugin.
-        if (!isset($id))
-        {
-            foreach ($this->plugins as $plugin)
-            {
-                if (get_class($plugin) == $pluginName)
-                {
+        if (!isset($id)) {
+            foreach ($this->plugins as $plugin) {
+                if (get_class($plugin) == $pluginName) {
                     return $plugin;
                 }
             }
-        }
-        else
-        {
-            if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
-            {
+        } else {
+            if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
                 if ($this->getPluginInfo($pluginName) !== false) {
-                    $this->plugins[$id] = new $pluginName($this, $id);
+                    if (class_exists($pluginName)) {
+                        $this->plugins[$id] = new $pluginName($this, $id);
 
-
-                    if (method_exists($this->plugins[$id], 'init')) {
-                        $this->plugins[$id]->init();
+                        if (method_exists($this->plugins[$id], 'init')) {
+                            $this->plugins[$id]->init();
+                        }
+                    } else {
+                        $this->plugins[$id] = null;
                     }
                 } else {
                     $this->plugins[$id] = null;
@@ -325,22 +310,18 @@ class PluginManager extends \CApplicationComponent {
     public function loadPlugins()
     {
         // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
-        $dbVersion=\SettingGlobal::model()->find("stg_name=:name",array(':name'=>'DBVersion'));// Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
-        if($dbVersion && $dbVersion->stg_value >= 165)
-        {
+        $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
+        if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
             $records = $pluginModel->findAllByAttributes(array('active'=>1));
 
-            foreach ($records as $record)
-            {
+            foreach ($records as $record) {
                 $this->loadPlugin($record->name, $record->id);
             }
-        }
-        else
-        {
+        } else {
             // Log it ? tracevar ?
         }
-        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
+        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
     }
 
     /**
@@ -350,8 +331,7 @@ class PluginManager extends \CApplicationComponent {
     public function loadAllPlugins()
     {
         $records = Plugin::model()->findAll();
-        foreach ($records as $record)
-        {
+        foreach ($records as $record) {
             $this->loadPlugin($record->name, $record->id);
         }
     }
@@ -362,16 +342,13 @@ class PluginManager extends \CApplicationComponent {
      */
     public function loadQuestionObjects($forceReload = false)
     {
-        if (empty($this->guidToQuestion) || $forceReload)
-        {
+        if (empty($this->guidToQuestion) || $forceReload) {
             $event = new PluginEvent('listQuestionPlugins');
             $this->dispatchEvent($event);
 
 
-            foreach ($event->get('questionplugins', array()) as $pluginClass => $paths)
-            {
-                foreach ($paths as $path)
-                {
+            foreach ($event->get('questionplugins', array()) as $pluginClass => $paths) {
+                foreach ($paths as $path) {
 
                     Yii::import("webroot.plugins.$pluginClass.$path");
                     $parts = explode('.', $path);
@@ -406,8 +383,7 @@ class PluginManager extends \CApplicationComponent {
     public function constructQuestionFromGUID($guid, $questionId = null, $responseId = null)
     {
         $this->loadQuestionObjects();
-        if (isset($this->guidToQuestion[$guid]))
-        {
+        if (isset($this->guidToQuestion[$guid])) {
             $questionClass = $this->guidToQuestion[$guid]['class'];
             $questionObject = new $questionClass($this->loadPlugin($this->guidToQuestion[$guid]['plugin']), $this->api, $questionId, $responseId);
             return $questionObject;
@@ -423,10 +399,10 @@ class PluginManager extends \CApplicationComponent {
     {
         $this->loadAllPlugins();
         foreach ($this->plugins as $plugin) {
-            if(is_object($plugin)){
+            if (is_object($plugin)) {
                 $plugin->readConfigFile();
             } else {
-              // Do nothing, plugin is deleted next time plugin manager is visited and loadPlugin validate if class exist
+                // Do nothing, plugin is deleted next time plugin manager is visited and loadPlugin validate if class exist
             }
         }
         $this->plugins = array();

@@ -1,6 +1,10 @@
 <?php
-/* @var $this BoxesController */
+/* @var $this AdminController */
 /* @var $model Boxes */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('createNewBox');
+?>
 ?>
 <div class="col-lg-12 list-surveys">
 

@@ -1,14 +1,623 @@
-﻿(function(){function e(a){l.call(this,a);this.hintContainer=this.codeContainer=null}var l=ToolbarConfigurator.AbstractToolbarModifier,g=ToolbarConfigurator.FullToolbarEditor;ToolbarConfigurator.ToolbarTextModifier=e;e.prototype=Object.create(l.prototype);e.prototype._onInit=function(a,d){l.prototype._onInit.call(this,void 0,d);this._createModifier(d?this.actualConfig:void 0);"function"===typeof a&&a(this.mainContainer)};e.prototype._createModifier=function(a){function d(a){var b=c(a);if(null!==b.charsBetween){var d=
-k.getUnusedButtonsArray(k.actualConfig.toolbar,!0,b.charsBetween),e=a.getCursor(),b=CodeMirror.Pos(e.line,e.ch-b.charsBetween.length),h=a.getTokenAt(e);"{"===a.getTokenAt({line:e.line,ch:h.start}).string&&(d=["name"]);if(0!==d.length)return new f(b,e,d)}}function f(a,c,b){this.from=a;this.to=c;this.list=b;this._handlers=[]}function c(a,c){var b={};b.cur=a.getCursor();b.tok=a.getTokenAt(b.cur);b["char"]=c||b.tok.string.charAt(b.tok.string.length-1);var d=a.getRange(CodeMirror.Pos(b.cur.line,0),b.cur).split("").reverse().join(""),
-d=d.replace(/(['|"]\w*['|"])/g,"");b.charsBetween=d.match(/(^\w*)(['|"])/);b.charsBetween&&(b.endChar=b.charsBetween[2],b.charsBetween=b.charsBetween[1].split("").reverse().join(""));return b}function b(a){setTimeout(function(){a.state.completionActive||CodeMirror.showHint(a,d,{hintsClass:"toolbar-modifier",completeSingle:!1})},100);return CodeMirror.Pass}var k=this;this._createToolbar();this.toolbarContainer&&this.mainContainer.append(this.toolbarContainer);l.prototype._createModifier.call(this);
-this._setupActualConfig(a);a=this.actualConfig.toolbar;a=CKEDITOR.tools.isArray(a)?"\tconfig.toolbar \x3d "+("[\n\t\t"+g.map(a,function(a){return l.stringifyJSONintoOneLine(a,{addSpaces:!0,noQuotesOnKey:!0,singleQuotes:!0})}).join(",\n\t\t")+"\n\t]")+";":"config.toolbar \x3d [];";a=["CKEDITOR.editorConfig \x3d function( config ) {\n",a,"\n};"].join("");var e=new CKEDITOR.dom.element("div");e.addClass("codemirror-wrapper");this.modifyContainer.append(e);this.codeContainer=CodeMirror(e.$,{mode:{name:"javascript",
-json:!0},lineNumbers:!1,lineWrapping:!0,viewportMargin:Infinity,value:a,smartIndent:!1,indentWithTabs:!0,indentUnit:4,tabSize:4,theme:"neo",extraKeys:{Left:b,Right:b,"'''":b,"'\"'":b,Backspace:b,Delete:b,"Shift-Tab":"indentLess"}});this.codeContainer.on("endCompletion",function(a,b){var d=c(a);void 0!==b&&a.replaceSelection(d.endChar)});this.codeContainer.on("change",function(){var a=k.codeContainer.getValue(),a=k._evaluateValue(a);null!==a?(k.actualConfig.toolbar=a.toolbar?a.toolbar:k.actualConfig.toolbar,
-k._fillHintByUnusedElements(),k._refreshEditor(),k.mainContainer.removeClass("invalid")):k.mainContainer.addClass("invalid")});this.hintContainer=new CKEDITOR.dom.element("div");this.hintContainer.addClass("toolbarModifier-hints");this._fillHintByUnusedElements();this.hintContainer.insertBefore(e)};e.prototype._fillHintByUnusedElements=function(){var a=this.getUnusedButtonsArray(this.actualConfig.toolbar,!0),a=this.groupButtonNamesByGroup(a),d=g.map(a,function(a){var b=g.map(a.buttons,function(a){return"\x3ccode\x3e"+
-a+"\x3c/code\x3e "}).join("");return["\x3cdt\x3e\x3ccode\x3e",a.name,"\x3c/code\x3e\x3c/dt\x3e\x3cdd\x3e",b,"\x3c/dd\x3e"].join("")}).join(" "),f='\x3cdt class\x3d"list-header"\x3eToolbar group\x3c/dt\x3e\x3cdd class\x3d"list-header"\x3eUnused items\x3c/dd\x3e';a.length||(f="\x3cp\x3eAll items are in use.\x3c/p\x3e");this.codeContainer.refresh();this.hintContainer.setHtml("\x3ch3\x3eUnused toolbar items\x3c/h3\x3e\x3cdl\x3e"+f+d+"\x3c/dl\x3e")};e.prototype.getToolbarGroupByButtonName=function(a){var d=
-this.fullToolbarEditor.buttonNamesByGroup,f;for(f in d)for(var c=d[f],b=c.length;b--;)if(a===c[b])return f;return null};e.prototype.getUnusedButtonsArray=function(a,d,f){d=!0===d?!0:!1;var c=e.mapToolbarCfgToElementsList(a);a=Object.keys(this.fullToolbarEditor.editorInstance.ui.items);a=g.filter(a,function(a){var d="-"===a;a=void 0===f||0===a.toLowerCase().indexOf(f.toLowerCase());return!d&&a});a=g.filter(a,function(a){return-1==CKEDITOR.tools.indexOf(c,a)});d&&a.sort();return a};e.prototype.groupButtonNamesByGroup=
-function(a){var d=[],f=JSON.parse(JSON.stringify(this.fullToolbarEditor.buttonNamesByGroup)),c;for(c in f){var b=f[c],b=g.filter(b,function(b){return-1!==CKEDITOR.tools.indexOf(a,b)});b.length&&d.push({name:c,buttons:b})}return d};e.mapToolbarCfgToElementsList=function(a){function d(a){return"-"!==a}for(var f=[],c=a.length,b=0;b<c;b+=1)a[b]&&"string"!==typeof a[b]&&(f=f.concat(g.filter(a[b].items,d)));return f};e.prototype._setupActualConfig=function(a){a=a||this.editorInstance.config;CKEDITOR.tools.isArray(a.toolbar)||
-(a.toolbarGroups||(a.toolbarGroups=this.fullToolbarEditor.getFullToolbarGroupsConfig(!0)),this._fixGroups(a),a.toolbar=this._mapToolbarGroupsToToolbar(a.toolbarGroups,this.actualConfig.removeButtons),this.actualConfig.toolbar=a.toolbar,this.actualConfig.removeButtons="")};e.prototype._mapToolbarGroupsToToolbar=function(a,d){d=d||this.editorInstance.config.removedBtns;d="string"==typeof d?d.split(","):[];for(var f=a.length;f--;){var c=this._mapToolbarSubgroup(a[f],d);"separator"===a[f].type?a[f]="/":
-CKEDITOR.tools.isArray(c)&&0===c.length?a.splice(f,1):a[f]="string"==typeof c?c:{name:a[f].name,items:c}}return a};e.prototype._mapToolbarSubgroup=function(a,d){if("string"==typeof a)return a;for(var f=a.groups?a.groups.length:0,c=[],b=0;b<f;b+=1){var e=a.groups[b],e=this.fullToolbarEditor.buttonsByGroup["string"===typeof e?e:e.name]||[],e=this._mapButtonsToButtonsNames(e,d),g=e.length,c=c.concat(e);g&&c.push("-")}"-"==c[c.length-1]&&c.pop();return c};e.prototype._mapButtonsToButtonsNames=function(a,
-d){for(var f=a.length;f--;){var c=a[f],c="string"===typeof c?c:this.fullToolbarEditor.getCamelCasedButtonName(c.name);-1!==CKEDITOR.tools.indexOf(d,c)?a.splice(f,1):a[f]=c}return a};e.prototype._evaluateValue=function(a){var d;try{var f={};Function("var CKEDITOR \x3d {}; "+a+"; return CKEDITOR;")().editorConfig(f);d=f;for(var c=d.toolbar.length;c--;)d.toolbar[c]||d.toolbar.splice(c,1)}catch(b){d=null}return d};e.prototype.mapToolbarToToolbarGroups=function(a){function d(a,b){a=a.slice();for(var d=
-b.length;d--;){var c=a.indexOf(b[d]);-1!==c&&a.splice(c,1)}return a}for(var f={},c=[],b=[],c=a.length,e=0;e<c;e++)if("/"===a[e])b.push("/");else{var g=a[e].items,m={};m.name=a[e].name;m.groups=[];for(var l=g.length,p=0;p<l;p++){var n=g[p];if("-"!==n){var h=this.getToolbarGroupByButtonName(n);-1===m.groups.indexOf(h)&&m.groups.push(h);f[h]=f[h]||{};h=f[h].buttons=f[h].buttons||{};h[n]=h[n]||{used:0,origin:m.name};h[n].used++}}b.push(m)}c=function(a,b){var c=[],e;for(e in a)var f=a[e],g=b[e].slice(),
-c=c.concat(d(g,Object.keys(f.buttons)));return c}(f,this.fullToolbarEditor.buttonNamesByGroup);return{toolbarGroups:b,removeButtons:c.join(",")}};return e})();
+/* global CodeMirror, ToolbarConfigurator */
+
+'use strict';
+
+( function() {
+	var AbstractToolbarModifier = ToolbarConfigurator.AbstractToolbarModifier,
+		FullToolbarEditor = ToolbarConfigurator.FullToolbarEditor;
+
+	/**
+	 * @class ToolbarConfigurator.ToolbarTextModifier
+	 * @param {String} editorId An id of modified editor
+	 * @extends AbstractToolbarModifier
+	 * @constructor
+	 */
+	function ToolbarTextModifier( editorId ) {
+		AbstractToolbarModifier.call( this, editorId );
+
+		this.codeContainer = null;
+		this.hintContainer = null;
+	}
+
+	// Expose the class.
+	ToolbarConfigurator.ToolbarTextModifier = ToolbarTextModifier;
+
+	ToolbarTextModifier.prototype = Object.create( AbstractToolbarModifier.prototype );
+
+	/**
+	 * @param {Function} callback
+	 * @param {String} [config]
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._onInit = function( callback, config ) {
+		AbstractToolbarModifier.prototype._onInit.call( this, undefined, config );
+
+		this._createModifier( config ? this.actualConfig : undefined );
+
+		if ( typeof callback === 'function' )
+			callback( this.mainContainer );
+	};
+
+	/**
+	 * Creates HTML main container of modifier.
+	 *
+	 * @param {String} cfg
+	 * @returns {CKEDITOR.dom.element}
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._createModifier = function( cfg ) {
+		var that = this;
+
+		this._createToolbar();
+
+		if ( this.toolbarContainer ) {
+			this.mainContainer.append( this.toolbarContainer );
+		}
+
+		AbstractToolbarModifier.prototype._createModifier.call( this );
+
+		this._setupActualConfig( cfg );
+
+		var toolbarCfg = this.actualConfig.toolbar,
+			cfgValue;
+
+		if ( CKEDITOR.tools.isArray( toolbarCfg ) ) {
+			var stringifiedToolbar = '[\n\t\t' + FullToolbarEditor.map( toolbarCfg, function( json ) {
+					return AbstractToolbarModifier.stringifyJSONintoOneLine( json, {
+						addSpaces: true,
+						noQuotesOnKey: true,
+						singleQuotes: true
+					} );
+				} ).join( ',\n\t\t' ) + '\n\t]';
+
+			cfgValue = '\tconfig.toolbar = ' + stringifiedToolbar + ';';
+		} else {
+			cfgValue = 'config.toolbar = [];';
+		}
+
+		cfgValue = [
+			'CKEDITOR.editorConfig = function( config ) {\n',
+				cfgValue,
+			'\n};'
+		].join( '' );
+
+		function hint( cm ) {
+			var data = setupData( cm );
+
+			if ( data.charsBetween === null ) {
+				return;
+			}
+
+			var unused = that.getUnusedButtonsArray( that.actualConfig.toolbar, true, data.charsBetween ),
+				to = cm.getCursor(),
+				from = CodeMirror.Pos( to.line, ( to.ch - ( data.charsBetween.length ) ) ),
+				token = cm.getTokenAt( to ),
+				prevToken = cm.getTokenAt( { line: to.line, ch: token.start } );
+
+			// determine that we are at beginning of group,
+			// so first key is "name"
+			if ( prevToken.string === '{' )
+				unused = [ 'name' ];
+
+			// preventing close with special character and move cursor forward
+			// when no autocomplete
+			if ( unused.length === 0 )
+				return;
+
+			return new HintData( from, to, unused );
+		}
+
+		function HintData( from, to, list ) {
+			this.from = from;
+			this.to = to;
+			this.list = list;
+			this._handlers = [];
+		}
+
+		function setupData( cm, character ) {
+			var result = {};
+
+			result.cur = cm.getCursor();
+			result.tok = cm.getTokenAt( result.cur );
+
+			result[ 'char' ] = character || result.tok.string.charAt( result.tok.string.length - 1 );
+
+			// Getting string between begin of line and cursor.
+			var curLineTillCur = cm.getRange( CodeMirror.Pos( result.cur.line, 0 ), result.cur );
+
+			// Reverse string.
+			var currLineTillCurReversed = curLineTillCur.split( '' ).reverse().join( '' );
+
+			// Removing proper string definitions :
+			// FROM:
+			// R' ,'odeR' ,'odnU' [ :smeti{
+			//     ^^^^^^  ^^^^^^
+			// TO:
+			// R' , [ :smeti{
+			currLineTillCurReversed = currLineTillCurReversed.replace( /(['|"]\w*['|"])/g, '' );
+
+			// Matching letters till ' or " character and end string char.
+			// R' , [ :smeti{
+			// ^
+			result.charsBetween = currLineTillCurReversed.match( /(^\w*)(['|"])/ );
+
+			if ( result.charsBetween ) {
+				result.endChar = result.charsBetween[ 2 ];
+
+				// And reverse string (bring to original state).
+				result.charsBetween = result.charsBetween[ 1 ].split( '' ).reverse().join( '' );
+			}
+
+			return result;
+		}
+
+		function complete( cm ) {
+			setTimeout( function() {
+				if ( !cm.state.completionActive ) {
+					CodeMirror.showHint( cm, hint, {
+						hintsClass: 'toolbar-modifier',
+						completeSingle: false
+					} );
+				}
+			}, 100 );
+
+			return CodeMirror.Pass;
+		}
+
+		var codeMirrorWrapper = new CKEDITOR.dom.element( 'div' );
+		codeMirrorWrapper.addClass( 'codemirror-wrapper' );
+		this.modifyContainer.append( codeMirrorWrapper );
+		this.codeContainer = CodeMirror( codeMirrorWrapper.$, {
+			mode: { name: 'javascript', json: true },
+			// For some reason (most likely CM's bug) gutter breaks CM's height.
+			// Refreshing CM does not help.
+			lineNumbers: false,
+			lineWrapping: true,
+			// Trick to make CM autogrow. http://codemirror.net/demo/resize.html
+			viewportMargin: Infinity,
+			value: cfgValue,
+			smartIndent: false,
+			indentWithTabs: true,
+			indentUnit: 4,
+			tabSize: 4,
+			theme: 'neo',
+			extraKeys: {
+				'Left': complete,
+				'Right': complete,
+				"'''": complete,
+				"'\"'": complete,
+				Backspace: complete,
+				Delete: complete,
+				'Shift-Tab': 'indentLess'
+			}
+		} );
+
+		this.codeContainer.on( 'endCompletion', function( cm, completionData ) {
+			var data = setupData( cm );
+
+			// preventing close with special character and move cursor forward
+			// when no autocomplete
+			if ( completionData === undefined )
+				return;
+
+			cm.replaceSelection( data.endChar );
+		} );
+
+		this.codeContainer.on( 'change', function() {
+			var value = that.codeContainer.getValue();
+
+			value =  that._evaluateValue( value );
+
+			if ( value !== null ) {
+				that.actualConfig.toolbar = ( value.toolbar ? value.toolbar : that.actualConfig.toolbar );
+
+				that._fillHintByUnusedElements();
+				that._refreshEditor();
+
+				that.mainContainer.removeClass( 'invalid' );
+			} else {
+				that.mainContainer.addClass( 'invalid' );
+			}
+		} );
+
+		this.hintContainer = new CKEDITOR.dom.element( 'div' );
+		this.hintContainer.addClass( 'toolbarModifier-hints' );
+
+		this._fillHintByUnusedElements();
+		this.hintContainer.insertBefore( codeMirrorWrapper );
+	};
+
+	/**
+	 * Create DOM string and set to hint container,
+	 * show proper information when no unused element left.
+	 *
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._fillHintByUnusedElements = function() {
+		var unused = this.getUnusedButtonsArray( this.actualConfig.toolbar, true );
+		unused = this.groupButtonNamesByGroup( unused );
+
+		var unusedElements = FullToolbarEditor.map( unused, function( elem ) {
+			var buttonsList = FullToolbarEditor.map( elem.buttons, function( buttonName ) {
+				return '<code>' + buttonName + '</code> ';
+			} ).join( '' );
+
+			return [
+				'<dt>',
+					'<code>', elem.name, '</code>',
+				'</dt>',
+				'<dd>',
+					buttonsList,
+				'</dd>'
+			].join( '' );
+		} ).join( ' ' );
+
+		var listHeader = [
+			'<dt class="list-header">Toolbar group</dt>',
+			'<dd class="list-header">Unused items</dd>'
+		].join( '' );
+
+		var header = '<h3>Unused toolbar items</h3>';
+
+		if ( !unused.length ) {
+			listHeader = '<p>All items are in use.</p>';
+		}
+
+		this.codeContainer.refresh();
+
+		this.hintContainer.setHtml( header + '<dl>' + listHeader + unusedElements + '</dl>' );
+	};
+
+	/**
+	 * @param {String} buttonName
+	 * @returns {String}
+	 */
+	ToolbarTextModifier.prototype.getToolbarGroupByButtonName = function( buttonName ) {
+		var buttonNames = this.fullToolbarEditor.buttonNamesByGroup;
+
+		for ( var groupName in  buttonNames ) {
+			var buttons = buttonNames[ groupName ];
+
+			var i = buttons.length;
+			while ( i-- ) {
+				if ( buttonName === buttons[ i ] ) {
+					return groupName;
+				}
+			}
+
+		}
+
+		return null;
+	};
+
+	/**
+	 * Filter all available toolbar elements by array of elements provided in first argument.
+	 * Returns elements which are not used.
+	 *
+	 * @param {Object} toolbar
+	 * @param {Boolean} [sorted=false]
+	 * @param {String} prefix
+	 * @returns {Array}
+	 */
+	ToolbarTextModifier.prototype.getUnusedButtonsArray = function( toolbar, sorted, prefix ) {
+		sorted = ( sorted === true ? true : false );
+		var providedElements = ToolbarTextModifier.mapToolbarCfgToElementsList( toolbar ),
+			allElements = Object.keys( this.fullToolbarEditor.editorInstance.ui.items );
+
+		// get rid of "-" elements
+		allElements = FullToolbarEditor.filter( allElements, function( elem ) {
+			var isSeparator = ( elem === '-' ),
+				matchPrefix = ( prefix === undefined || elem.toLowerCase().indexOf( prefix.toLowerCase() ) === 0 );
+
+			return !isSeparator && matchPrefix;
+		} );
+
+		var elementsNotUsed = FullToolbarEditor.filter( allElements, function( elem ) {
+			return CKEDITOR.tools.indexOf( providedElements, elem ) == -1;
+		} );
+
+		if ( sorted )
+			elementsNotUsed.sort();
+
+		return elementsNotUsed;
+	};
+
+	/**
+	 *
+	 * @param {Array} buttons
+	 * @returns {Array}
+	 */
+	ToolbarTextModifier.prototype.groupButtonNamesByGroup = function( buttons ) {
+		var result = [],
+			groupedBtns = JSON.parse( JSON.stringify( this.fullToolbarEditor.buttonNamesByGroup ) );
+
+		for ( var groupName in groupedBtns ) {
+			var currGroup = groupedBtns[ groupName ];
+			currGroup = FullToolbarEditor.filter( currGroup, function( btnName ) {
+				return CKEDITOR.tools.indexOf( buttons, btnName ) !== -1;
+			} );
+
+			if ( currGroup.length ) {
+				result.push( {
+					name: groupName,
+					buttons: currGroup
+				} );
+			}
+
+		}
+
+		return result;
+	};
+
+	/**
+	 * Map toolbar config value to flat items list.
+	 *
+	 * input:
+	 * [
+	 *   { name: "basicstyles", items: ["Bold", "Italic"] },
+	 *   { name: "advancedstyles", items: ["Bold", "Outdent", "Indent"] }
+	 * ]
+	 *
+	 * output:
+	 * ["Bold", "Italic", "Outdent", "Indent"]
+	 *
+	 * @param {Object} toolbar
+	 * @returns {Array}
+	 */
+	ToolbarTextModifier.mapToolbarCfgToElementsList = function( toolbar ) {
+		var elements = [];
+
+		var max = toolbar.length;
+		for ( var i = 0; i < max; i += 1 ) {
+			if ( !toolbar[ i ] || typeof toolbar[ i ] === 'string' )
+				continue;
+
+			elements = elements.concat( FullToolbarEditor.filter( toolbar[ i ].items, checker ) );
+		}
+
+		function checker( elem ) {
+			return elem !== '-';
+		}
+
+		return elements;
+	};
+
+	/**
+	 * @param {String} cfg
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._setupActualConfig = function( cfg ) {
+		cfg = cfg || this.editorInstance.config;
+
+		// if toolbar already exists in config, there is nothing to do
+		if ( CKEDITOR.tools.isArray( cfg.toolbar ) )
+			return;
+
+		// if toolbar group not present, we need to pick them from full toolbar instance
+		if ( !cfg.toolbarGroups )
+			cfg.toolbarGroups = this.fullToolbarEditor.getFullToolbarGroupsConfig( true );
+
+		this._fixGroups( cfg );
+
+		cfg.toolbar = this._mapToolbarGroupsToToolbar( cfg.toolbarGroups, this.actualConfig.removeButtons );
+
+		this.actualConfig.toolbar = cfg.toolbar;
+		this.actualConfig.removeButtons = '';
+	};
+
+	/**
+	 * **Please note:** This method modify element provided in first argument.
+	 *
+	 * @param {Array} toolbarGroups
+	 * @returns {Array}
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._mapToolbarGroupsToToolbar = function( toolbarGroups, removedBtns ) {
+		removedBtns = removedBtns || this.editorInstance.config.removedBtns;
+		removedBtns = typeof removedBtns == 'string' ? removedBtns.split( ',' ) : [];
+
+		// from the end, because array indexes may change
+		var i = toolbarGroups.length;
+		while ( i-- ) {
+			var mappedSubgroup = this._mapToolbarSubgroup( toolbarGroups[ i ], removedBtns );
+
+			if ( toolbarGroups[ i ].type === 'separator' ) {
+				toolbarGroups[ i ] = '/';
+				continue;
+			}
+
+			// don't want empty groups
+			if ( CKEDITOR.tools.isArray( mappedSubgroup ) && mappedSubgroup.length === 0 ) {
+				toolbarGroups.splice( i, 1 );
+				continue;
+			}
+
+			if ( typeof mappedSubgroup == 'string' )
+				toolbarGroups[ i ] = mappedSubgroup;
+			else {
+				toolbarGroups[ i ] = {
+					name: toolbarGroups[ i ].name,
+					items: mappedSubgroup
+				};
+			}
+		}
+
+		return toolbarGroups;
+	};
+
+	/**
+	 *
+	 * @param {String|Object} group
+	 * @param {Array} removedBtns
+	 * @returns {Array}
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._mapToolbarSubgroup = function( group, removedBtns ) {
+		var totalBtns = 0;
+		if ( typeof group == 'string' )
+			return group;
+
+		var max = group.groups ? group.groups.length : 0,
+			result = [];
+		for ( var i = 0; i < max; i += 1 ) {
+			var currSubgroup = group.groups[ i ];
+
+			var buttons = this.fullToolbarEditor.buttonsByGroup[ typeof currSubgroup === 'string' ? currSubgroup : currSubgroup.name ] || [];
+			buttons = this._mapButtonsToButtonsNames( buttons, removedBtns );
+			var currTotalBtns = buttons.length;
+			totalBtns += currTotalBtns;
+			result = result.concat( buttons );
+
+			if ( currTotalBtns )
+				result.push( '-' );
+		}
+
+		if ( result[ result.length - 1 ] == '-' )
+			result.pop();
+
+		return result;
+	};
+
+	/**
+	 *
+	 * @param {Array} buttons
+	 * @param {Array} removedBtns
+	 * @returns {Array}
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._mapButtonsToButtonsNames = function( buttons, removedBtns ) {
+		var i = buttons.length;
+		while ( i-- ) {
+			var currBtn = buttons[ i ],
+				camelCasedName;
+
+			if ( typeof currBtn === 'string' ) {
+				camelCasedName = currBtn;
+			} else {
+				camelCasedName = this.fullToolbarEditor.getCamelCasedButtonName( currBtn.name );
+			}
+
+			if ( CKEDITOR.tools.indexOf( removedBtns, camelCasedName ) !== -1 ) {
+				buttons.splice( i, 1 );
+				continue;
+			}
+
+			buttons[ i ] = camelCasedName;
+		}
+
+		return buttons;
+	};
+
+	/**
+	 * @param {String} val
+	 * @returns {Object}
+	 * @private
+	 */
+	ToolbarTextModifier.prototype._evaluateValue = function( val ) {
+		var parsed;
+
+		try {
+			var config = {};
+			( function() {
+				var CKEDITOR = Function( 'var CKEDITOR = {}; ' + val + '; return CKEDITOR;' )();
+
+				CKEDITOR.editorConfig( config );
+				parsed = config;
+			} )();
+
+			// CKEditor does not handle empty arrays in configuration files
+			// on IE8
+			var i = parsed.toolbar.length;
+			while ( i-- )
+				if ( !parsed.toolbar[ i ] ) parsed.toolbar.splice( i, 1 );
+
+		} catch ( e ) {
+			parsed = null;
+		}
+
+		return parsed;
+	};
+
+	/**
+	 * @param {Array} toolbar
+	 * @returns {{toolbarGroups: Array, removeButtons: string}}
+	 */
+	ToolbarTextModifier.prototype.mapToolbarToToolbarGroups = function( toolbar ) {
+		var usedGroups = {},
+			removeButtons = [],
+			toolbarGroups = [];
+
+		var max = toolbar.length;
+		for ( var i = 0; i < max; i++ ) {
+			if ( toolbar[ i ] === '/' ) {
+				toolbarGroups.push( '/' );
+				continue;
+			}
+
+			var items = toolbar[ i ].items;
+
+			var toolbarGroup = {};
+			toolbarGroup.name = toolbar[ i ].name;
+			toolbarGroup.groups = [];
+
+			var max2 = items.length;
+			for ( var j = 0; j < max2; j++ ) {
+				var item = items[ j ];
+
+				if ( item === '-' ) {
+					continue;
+				}
+
+				var groupName = this.getToolbarGroupByButtonName( item );
+
+				var groupIndex = toolbarGroup.groups.indexOf( groupName );
+				if ( groupIndex === -1 ) {
+					toolbarGroup.groups.push( groupName );
+				}
+
+				usedGroups[ groupName ] = usedGroups[ groupName ] || {};
+
+				var buttons = ( usedGroups[ groupName ].buttons = usedGroups[ groupName ].buttons || {} );
+
+				buttons[ item ] = buttons[ item ] || { used: 0, origin: toolbarGroup.name };
+				buttons[ item ].used++;
+			}
+
+			toolbarGroups.push( toolbarGroup );
+		}
+
+		// Handling removed buttons
+		removeButtons = prepareRemovedButtons( usedGroups, this.fullToolbarEditor.buttonNamesByGroup );
+
+		function prepareRemovedButtons( usedGroups, buttonNames ) {
+			var removed = [];
+
+			for ( var groupName in usedGroups ) {
+				var group = usedGroups[ groupName ];
+				var allButtonsInGroup = buttonNames[ groupName ].slice();
+
+				removed = removed.concat( removeStuffFromArray( allButtonsInGroup, Object.keys( group.buttons ) ) );
+			}
+
+			return removed;
+		}
+
+		function removeStuffFromArray( array, stuff ) {
+			array = array.slice();
+			var i = stuff.length;
+
+			while ( i-- ) {
+				var atIndex = array.indexOf( stuff[ i ] );
+				if ( atIndex !== -1 ) {
+					array.splice( atIndex, 1 );
+				}
+			}
+
+			return array;
+		}
+
+		return { toolbarGroups: toolbarGroups, removeButtons: removeButtons.join( ',' ) };
+	};
+
+	return ToolbarTextModifier;
+} )();

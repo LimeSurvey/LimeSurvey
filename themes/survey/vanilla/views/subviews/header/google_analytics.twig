@@ -1,0 +1,39 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Google Analytics  ·._.·´¯)·._.·´¯)
+
+    This file generates the scripts for Google Analytics, as set by user in survey settings.
+    See: survey settings
+#}
+{% if aSurveyInfo.googleanalyticsapikey  is defined and aSurveyInfo.googleanalyticsapikey and aSurveyInfo.googleanalyticsstyle %}
+    {% if aSurveyInfo.googleanalyticsstyle  is defined and aSurveyInfo.googleanalyticsstyle == 1 %}
+        <script>
+        (function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments) },i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{aSurveyInfo.googleanalyticsapikey}}', 'auto');  // Replace with your property ID.
+        ga('send', 'pageview');
+        </script>
+    {% else %}
+        <script>
+        (function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments) }
+        ,i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ aSurveyInfo.googleanalyticsapikey }}', 'auto');
+        ga('send', 'pageview');
+        ga('send', 'pageview', '{{ aSurveyInfo.trackURL }}');
+        </script>
+    {% endif %}
+{% endif %}

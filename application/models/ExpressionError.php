@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,11 +17,11 @@
 /**
  * Class ExpressionError
  *
- * @property integer $id
+ * @property integer $id Primary key
  * @property string $errortime
- * @property integer $sid
- * @property integer $gid
- * @property integer $qid
+ * @property integer $sid Survey ID
+ * @property integer $gid Group ID
+ * @property integer $qid Question ID
  * @property integer $gseq
  * @property integer $qseq
  * @property string $type
@@ -29,49 +31,51 @@
  */
 class ExpressionError extends LSActiveRecord
 {
-	/**
+    /**
      * @inheritdoc
-	 * @return ExpressionError
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return ExpressionError
+     */
+    public static function model($class = __CLASS__)
+    {
+        /** @var self $model */
+        $model = parent::model($class);
+        return $model;
+    }
 
     /** @inheritdoc */
-	public function tableName()
-	{
-		return '{{expression_errors}}';
-	}
+    public function tableName()
+    {
+        return '{{expression_errors}}';
+    }
 
     /** @inheritdoc */
-	public function primaryKey()
-	{
-		return 'scid';
-	}
+    public function primaryKey()
+    {
+        return 'scid';
+    }
 
     /**
      * @param bool|mixed $condition
      * @return mixed
      */
-	public function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE) {
-			$this->db->where($condition);
-		}
+    public function getAllRecords($condition = false)
+    {
+        if ($condition != false) {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('expression_errors');
+        $data = $this->db->get('expression_errors');
 
-		return $data;
-	}
+        return $data;
+    }
 
     /**
      * @param array $data
      * @return mixed
      */
-	public function insertRecords($data)
+    public function insertRecords($data)
     {
-        return $this->db->insert('expression_errors',$data);
+        return $this->db->insert('expression_errors', $data);
     }
 
 }

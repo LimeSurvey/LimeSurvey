@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /*
    * LimeSurvey
@@ -40,7 +42,7 @@ class Quota extends LSActiveRecord
     const ACTION_CONFIRM_TERMINATE = 2;
 
     /* Default attributes */
-    public $active=1;
+    public $active = 1;
     public $action = self::ACTION_TERMINATE;
 
     /**
@@ -73,7 +75,7 @@ class Quota extends LSActiveRecord
     {
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id','index' => 'quotals_language'),
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id', 'index' => 'quotals_language'),
             'quotaMembers' => array(self::HAS_MANY, 'QuotaMember', 'quota_id'),
         );
     }
@@ -82,8 +84,8 @@ class Quota extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('name,qlimit,action','required'),
-            array('name','LSYii_Validators'),// Maybe more restrictive
+            array('name,qlimit,action', 'required'),
+            array('name', 'LSYii_Validators'), // Maybe more restrictive
             array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true),
             array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
             array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
@@ -111,8 +113,7 @@ class Quota extends LSActiveRecord
         try {
             $quota->save();
             return $quota->id;
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -137,23 +138,24 @@ class Quota extends LSActiveRecord
     /**
      * @return QuotaLanguageSetting
      */
-    public function getMainLanguagesetting(){
-      return $this->languagesettings[ $this->survey->language ];
+    public function getMainLanguagesetting()
+    {
+        return $this->languagesettings[$this->survey->language];
 
     }
 
-    public function getCompleteCount(){
-        if(!tableExists("survey_{$this->sid}")) {
+    public function getCompleteCount()
+    {
+        if (!tableExists("survey_{$this->sid}")) {
             return;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
-        $aExistingColumnName=SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
+        $aExistingColumnName = SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
-            foreach ($this->quotaMembers as $member)
-            {
-                if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
+            foreach ($this->quotaMembers as $member) {
+                if (!in_array($member->memberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member %s",
@@ -168,47 +170,45 @@ class Quota extends LSActiveRecord
             }
 
             $oCriteria = new CDbCriteria;
-            $oCriteria->condition="submitdate IS NOT NULL";
-            foreach ($aQuotaColumns as $sColumn=>$aValue)
-            {
-                if(count($aValue)==1)
-                {
-                    $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
-                }
-                else
-                {
-                    $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
+            $oCriteria->condition = new CDbExpression("submitdate IS NOT NULL");
+            foreach ($aQuotaColumns as $sColumn=>$aValue) {
+                if (count($aValue) == 1) {
+                    $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn), $aValue); // NO need params : compare bind
+                } else {
+                    $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn), $aValue); // NO need params : addInCondition bind
                 }
             }
             $return = SurveyDynamic::model($this->sid)->count($oCriteria);
             return $return;
         } else {
-          return 0;
+            return 0;
         }
     }
 
-    public function getViewArray(){
-      $languageSettings = $this->currentLanguageSetting;
-      $members = array();
-      foreach($this->quotaMembers as $quotaMember){
+    public function getViewArray()
+    {
+        $languageSettings = $this->currentLanguageSetting;
+        $members = array();
+        foreach ($this->quotaMembers as $quotaMember) {
         $members[] = $quotaMember->memberInfo;
-      }
-      $attributes = $this->attributes;
+        }
+        $attributes = $this->attributes;
 
-      return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
+        return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
     }
 
     /**
      * Get the QuotaLanguageSetting for current language
      * @return QuotaLanguageSetting
      */
-    public function getCurrentLanguageSetting(){
-        $oQuotaLanguageSettings=QuotaLanguageSetting::model()
+    public function getCurrentLanguageSetting()
+    {
+        $oQuotaLanguageSettings = QuotaLanguageSetting::model()
             ->findByAttributes(array(
                 'quotals_quota_id' => $this->id,
                 'quotals_language'=>Yii::app()->getLanguage(),
             ));
-        if($oQuotaLanguageSettings){
+        if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
         }
         /* If not exist or found, return the one from survey base languague */

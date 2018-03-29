@@ -63,13 +63,13 @@
                     <?php // When we add a new user, owner is default to current user ?>
                     <?php if ($editType == 'add'): ?>
                         <?php foreach ($users as $user): ?>
-                            <option <?php if (Yii::app()->user->id == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->users_name; ?></option>
+                            <option <?php if (Yii::app()->user->id == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->full_name; ?></option>
                         <?php endforeach; ?>
 
                     <?php // When we add a user, owner is set to current owner ?>
                     <?php else: ?>
                         <?php foreach ($users as $user): ?>
-                            <option <?php if ($model->owner_uid == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->users_name; ?></option>
+                            <option <?php if ($model->owner_uid == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->full_name; ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
 

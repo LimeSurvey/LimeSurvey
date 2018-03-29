@@ -1,0 +1,79 @@
+{#
+!!!! BECAREFUL: ONLY FOR TESTING !!!!!
+!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
+
+!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
+
+/**
+ * Ranking question, item list header Html
+ *
+ * @var $sOptions         : the select options, generated with the view answer_row.php
+ *
+ * @var $name
+ * @var $myfname
+ * @var $labeltext
+ * @var $rankId
+ * @var $rankingName
+ * @var $max_answers
+ * @var $min_answers
+ * @var $qid
+ * @var $choice_title
+ * @var $rank_title
+ * @var $rank_help
+ * @var $showpopups
+ * @var $samechoiceheight
+ * @var $samelistheight
+ **** Additional attributes:
+ * @var question_template_attribute.show_handle
+ * @var question_template_attribute.only_pull
+ * @var question_template_attribute.visualize
+ */
+#}
+
+<!-- answer -->
+<div class="{{coreClass}}">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{basename}}">
+            {# rows/answer_row.twig #}
+            {{sSelects}}
+    </ul>
+    <div class="ls-no-js-hidden answers-list{{ samechoiceheight ? " list-samechoiceheight": "" }} {{ samelistheight ? " list-samelistheight": "" }} row" aria-hidden="true">
+        <div class="col-sm-6 col-xs-6">
+            <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
+            <!-- @todo : move htmlblock at the good place -->
+            <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
+                {% for ansrow in  answers %}
+                    <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item grabable sortable-enable" data-value="{{ansrow.code}}">
+                        {{ansrow.answer}}
+                    </li>
+                {% endfor %}
+                <li class="hidden ls-remove"></li>
+            </ul>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
+            <ul id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
+                <li class="hidden ls-remove"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% set script %}
+try{
+ var ranking{{qId}} = new RankingQuestion({
+        max_answers      : "{{max_answers}}",
+        min_answers      : "{{min_answers}}",
+        showpopups       : "{{showpopups}}",
+        samechoiceheight : "{{samechoiceheight}}",
+        samelistheight   : "{{samelistheight}}",
+        rankingName      : "{{rankingName}}",
+        questionId       : "{{qId}}"
+    });
+ ranking{{qId}}.init()
+} catch(e){}
+{% endset %}
+
+{{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
+
+
+<!-- end of answer -->
