@@ -175,6 +175,7 @@ class themeoptions  extends Survey_Common_Action
             $aData['oSurveyTheme'] = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
+
             $canImport = true;
             $importErrorMessage = null;
 
@@ -190,13 +191,10 @@ class themeoptions  extends Survey_Common_Action
                 $canImport = false;
                 $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
             }
-            else if (!function_exists("zip_open")) {
-                $canImport = false;
-                $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
-            }
 
             $aData['canImport']  = $canImport;
             $aData['importErrorMessage']  = $importErrorMessage;
+
 
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
