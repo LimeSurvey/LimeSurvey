@@ -418,8 +418,8 @@ class LS_Twig_Extension extends Twig_Extension
 
     /**
      * Get html text and remove whole not clean string
-     * @param string
-     * @param boolean encode html entities
+     * @param string $string to flatten
+     * @param boolean $encode html entities
      * @return string
      */
     public static function flatString($string,$encode=false)
@@ -443,7 +443,10 @@ class LS_Twig_Extension extends Twig_Extension
 
     /**
      * get flat and ellipsize string
-     * @param string
+     * @param string $string to ellipsize
+     * @param integer $maxlength of the final string
+     * @param float $position of the ellipsis in string (between 0 and 1)
+     * @param string $ellipsis string to shown in place of removed part
      * @return string
      */
     public static function flatEllipsize($string, $maxlength, $position = 1, $ellipsis = '…')
