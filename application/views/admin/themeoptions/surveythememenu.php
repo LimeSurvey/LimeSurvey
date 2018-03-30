@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var AdminController $this
  * @var bool $canImport
  * @var string $importErrorMessage
  */
@@ -24,4 +25,5 @@
             <?php endif;?>
         </div>
     </div>
+    <?php $this->renderPartial('themeoptions/import_modal',[]); ?>
 <?php endif;?>
