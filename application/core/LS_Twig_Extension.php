@@ -415,4 +415,41 @@ class LS_Twig_Extension extends Twig_Extension
         }
         return LimeExpressionManager::ProcessStepString($string, $aReplacement,$numRecursionLevels, $static);
     }
+
+    /**
+     * Get html text and remove whole not clean string
+     * @param string
+     * @param boolean encode html entities
+     * @return string
+     */
+    public static function flatString($string,$encode=false)
+    {
+        // Remove script before removing tag, no tag : no other script (onload, on error etc …
+        $string = strip_tags(stripJavaScript($string));
+        // Remove new lines
+        if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {
+            $string = preg_replace(array('~\R~u'), array(' '), $string);
+        } else {
+            $string = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $string);
+        }
+        // White space to real space
+        $string = preg_replace('/\s+/', ' ', $string);
+
+        if($encode) {
+            return CHtml::encode($string);
+        }
+        return $string;
+    }
+
+    /**
+     * get flat and ellipsize string
+     * @param string
+     * @return string
+     */
+    public static function flatEllipsize($string, $maxlength, $position = 1, $ellipsis = '…')
+    {
+        $string = self::flatString($string,false);
+        $string = ellipsize($string, $maxlength, $position, $ellipsis);// Use common_helper function
+        return $string;
+    }
 }
