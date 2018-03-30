@@ -175,8 +175,28 @@ class themeoptions  extends Survey_Common_Action
             $aData['oSurveyTheme'] = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
-            $aData['canImport']  = false;
-            $aData['importErrorMessage']  = "kjdsjhdfgfgh";
+            $canImport = true;
+            $importErrorMessage = null;
+
+            if(!is_writable(Yii::app()->getConfig('tempdir'))) {
+                $canImport = false;
+                $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
+            }
+            else if (!is_writable(Yii::app()->getConfig('userthemerootdir'))) {
+                $canImport = false;
+                $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
+            }
+            else if (!function_exists("zip_open")) {
+                $canImport = false;
+                $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
+            }
+            else if (!function_exists("zip_open")) {
+                $canImport = false;
+                $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
+            }
+
+            $aData['canImport']  = $canImport;
+            $aData['importErrorMessage']  = $importErrorMessage;
 
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
