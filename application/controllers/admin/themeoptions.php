@@ -175,6 +175,27 @@ class themeoptions  extends Survey_Common_Action
             $aData['oSurveyTheme'] = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
+
+            $canImport = true;
+            $importErrorMessage = null;
+
+            if(!is_writable(Yii::app()->getConfig('tempdir'))) {
+                $canImport = false;
+                $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
+            }
+            else if (!is_writable(Yii::app()->getConfig('userthemerootdir'))) {
+                $canImport = false;
+                $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
+            }
+            else if (!function_exists("zip_open")) {
+                $canImport = false;
+                $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
+            }
+
+            $aData['canImport']  = $canImport;
+            $aData['importErrorMessage']  = $importErrorMessage;
+
+
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');

@@ -1,6 +1,9 @@
 <?php
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
+/* @var bool $canImport */
+/* @var string $importErrorMessage */
+
 
 // TODO: rename to template_list.php and move to template controller
 
@@ -29,6 +32,7 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                 <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
+                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage]); ?>
                 <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme )); ?>
 
                 <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>

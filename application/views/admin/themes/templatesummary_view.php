@@ -147,7 +147,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
                     <?php endif; ?>
             </p>
-            </form>
+            <?php CHtml::endForm();?>
         </div>
 
 
