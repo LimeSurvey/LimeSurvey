@@ -175,6 +175,9 @@ class themeoptions  extends Survey_Common_Action
             $aData['oSurveyTheme'] = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
+            $aData['canImport']  = false;
+            $aData['importErrorMessage']  = "kjdsjhdfgfgh";
+
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
