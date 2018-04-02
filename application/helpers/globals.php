@@ -34,5 +34,5 @@
         if (isset($trace['file'], $trace['line']) && strpos($trace['file'], YII_PATH) !== 0) {
             $msg = $trace['file'].' ('.$trace['line']."):\n".$msg;
         }
-        Yii::log($msg, 'trace', 'vardump');
+        Yii::log($msg, 'trace','vardump');
     }
