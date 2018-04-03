@@ -6574,7 +6574,7 @@
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please complete all parts').'.';
+                        $sMandatoryText = $LEM->gT('Please complete all parts.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
@@ -6606,7 +6606,7 @@
                                     }
                                 }
                             }
-                            $sMandatoryText = $LEM->gT('Please check at least one box per row').'.';
+                            $sMandatoryText = $LEM->gT('Please check at least one box per row.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
@@ -6618,7 +6618,7 @@
                             {
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
-                            $sMandatoryText = $LEM->gT('Please complete all parts').'.';
+                            $sMandatoryText = $LEM->gT('Please complete all parts.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
@@ -6629,7 +6629,7 @@
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please rank all items').'.';
+                        $sMandatoryText = $LEM->gT('Please rank all items.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
