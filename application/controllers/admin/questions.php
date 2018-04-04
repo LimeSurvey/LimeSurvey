@@ -1206,10 +1206,10 @@ class questions extends Survey_Common_Action
                 $oQuestion->lid1 = 0;
                 $oQuestion->gid = $gid;
                 $oQuestion->other = 'N';
-                $oQuestion->mandatory = 'N';
+                $oQuestion->mandatory = Yii::app()->getConfig('question_mandatory');
                 $oQuestion->preg = '';
                 $oQuestion->relevance = 1;
-                $oQuestion->group_name = '';                
+                $oQuestion->group_name = '';     
             }
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
