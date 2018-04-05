@@ -11,8 +11,8 @@ var ConfirmDeleteModal = function(options){
         confirmText   = options.confirmText   || $item.data('text')           || '',
         confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
         postObject    = options.postObject    || $item.data('post'),
-        buttonNo      = options.buttonNo      || $item.data('button-no')      || 'No',
-        buttonYes     = options.buttonYes     || $item.data('button-yes')     || 'Yes',
+        buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-icon-times"></i>',
+        buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-icon-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
     var closeIcon      = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
