@@ -244,6 +244,7 @@ class themeoptions  extends Survey_Common_Action
 
     public function importManifest($templatename)
     {
+        $templatename = sanitize_paranoid_string($templatename);
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             TemplateManifest::importManifest($templatename);
             $this->getController()->redirect(array("admin/themeoptions"));

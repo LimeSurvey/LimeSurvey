@@ -11,8 +11,8 @@ var ConfirmDeleteModal = function(options){
         confirmText   = options.confirmText   || $item.data('text')           || '',
         confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
         postObject    = options.postObject    || $item.data('post'),
-        buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-icon-times"></i>',
-        buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-icon-check"></i>',
+        buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
+        buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
     var closeIcon      = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
@@ -58,7 +58,17 @@ var ConfirmDeleteModal = function(options){
     addForm = function(){
         var formObject = $('<form name="'+Math.round(Math.random()*1000)+'_'+confirmTitle.replace(/[^a-bA-B0-9]/g,'')+'" method="post" action="'+postUrl+'"></form>');
         for(var key in postObject){
-            formObject.append('<input name="'+key+'" value="'+postObject[key]+'" type="hidden" />');
+            var type = 'hidden';
+            var value = postObject[key];
+            var htmlClass = '';
+
+            if(typeof postObject[key] == 'object') {
+                type = postObject[key].type;
+                value = postObject[key].value;
+                htmlClass = postObject[key].class
+            }
+
+            formObject.append('<input name="'+key+'" value="'+value+'" type="'+type+'" '+(htmlClass ? 'class="'+htmlClass+'"' : '')+ ' />');
         }
         formObject.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" type="hidden" />');
         modalObject.find('.modal-body').append(formObject)
