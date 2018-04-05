@@ -182,6 +182,7 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
+            'js/confirmdeletemodal.js',
             'js/bootstrap-remote-modals.js',
             'js/admin_core.js',
             'js/notifications.js',
