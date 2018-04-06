@@ -44,9 +44,7 @@
                             <?php else: ?>
                                 <li>
                                     <div>
-                                        <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
-                                            <?php echo gT($sSubaction);?>
-                                        </a>
+                                        <?php echo gT($sSubaction);?>
                                     </div>
                                 </li>
                             <?php endif; ?>
