@@ -44,7 +44,9 @@
                             <?php else: ?>
                                 <li>
                                     <div>
-                                        <?php echo gT($sSubaction);?>
+                                        <span id="breadcrumb__survey--subaction-<?=strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" >
+                                            <?php echo $sSubaction; ?>
+                                        </span>
                                     </div>
                                 </li>
                             <?php endif; ?>
