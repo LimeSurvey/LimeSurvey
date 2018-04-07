@@ -32,7 +32,7 @@
 
 {% set fontOptions %}
     {{fontOptions}}
-    <optgroup  label="{{ "Local Server" | t }}">
+    <optgroup  label="{{ gT("Local Server") }}">
             <option class="font-roboto"     value="roboto"     data-font-package="roboto"      >Roboto</option>
             <option class="font-news_cycle" value="news_cycle" data-font-package="news_cycle"  >News Cycle</option>
             <option class="font-lato"       value="lato"       data-font-package="lato"        >Lato</option>
@@ -40,7 +40,7 @@
             <option class="font-ubuntu"     value="ubuntu"     data-font-package="ubuntu"       >Ubuntu</option>
     </optgroup>
 
-    <optgroup  label="{{ "User browser" | t }}">
+    <optgroup  label="{{ gT("User browser") }}">
 
       <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
       <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
@@ -124,22 +124,22 @@
                 {# Container #}
                 <div class='col-sm-12 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_container' class='control-label'> {{ "Survey container" | t }} </label>
+                        <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='container' value='on' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='container' value='off' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                        {{ "Inherit" | t }}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -209,12 +209,12 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ "Fruity Fonts" | t }}</div>
+                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
-                                <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
+                                <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load|json_encode}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>
@@ -244,7 +244,7 @@
                         <label class="btn btn-default col-xs-8" for="upload_image_frontend">
                             <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
                             <i class="fa fa-upload ls-space margin right-10"></i>
-                            {{ "Upload" | t }}
+                            {{ gT("Upload") }}
                         </label>
                     </span>
 
@@ -264,7 +264,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" tabindex="-1" role="dialog" id="lightbox-modal">
     <div class="modal-dialog modal-lg" role="document">

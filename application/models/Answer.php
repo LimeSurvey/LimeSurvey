@@ -21,11 +21,11 @@
  * @property string $answer Answer text
  * @property integer $sortorder Answer sort order
  * @property integer $assessment_value
- * @property string $language Language code
  * @property integer $scale_id
  *
  * @property Question $questions
  * @property Question $groups
+ * @property AnswerL10n[] $answerL10ns
  */
 class Answer extends LSActiveRecord
 {
@@ -208,6 +208,7 @@ class Answer extends LSActiveRecord
      * @param string $lang
      * @param bool $return_query
      * @return array|CDbCommand
+     * @deprecated since 2018-02-05 its not working also (the language change)
      */
     public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {

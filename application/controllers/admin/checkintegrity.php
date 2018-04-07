@@ -820,6 +820,16 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /**********************************************************************/
+        /*     Check group sort order duplicates                              */
+        /**********************************************************************/
+        $aDelete['groupOrderDuplicates'] = $this->checkGroupOrderDuplicates();
+
+        /**********************************************************************/
+        /*     Check question sort order duplicates                           */
+        /**********************************************************************/
+        $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
+
+        /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participants tableS       */
         /**********************************************************************/
         //1: Get distinct list of survey_link survey ids, check if tokens
@@ -841,6 +851,85 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         return $aDelete;
+    }
+
+    /**
+     * Check group order duplicates.
+     * @return array
+     */
+    protected function checkGroupOrderDuplicates()
+    {
+        $sQuery = "
+            SELECT 
+                sid
+            FROM
+                {{groups}}
+            GROUP BY sid
+            HAVING COUNT(DISTINCT group_order) != COUNT(gid)";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$survey) {
+                $survey['organizerLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'organize',
+                        'surveyid' => $survey['sid'],
+                    ]
+                );
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Check question order duplicates.
+     * @return array
+     */
+    protected function checkQuestionOrderDuplicates()
+    {
+        $sQuery = "
+            SELECT
+                q.sid,
+                q.gid,
+                q.parent_qid
+            FROM {{questions}} q
+            JOIN {{groups}} g ON q.gid = g.gid
+            GROUP BY q.sid, q.gid, q.parent_qid
+            HAVING COUNT(DISTINCT question_order) != COUNT(qid);
+            ";
+        $result = Yii::app()->db->createCommand($sQuery)->queryAll();
+        if (!empty($result)) {
+            foreach ($result as &$info) {
+                $info['viewSurveyLink'] = Yii::app()->getController()->createUrl(
+                    'admin/survey',
+                    [
+                        'sa' => 'view',
+                        'surveyid' => $info['sid'],
+                    ]
+                );
+                $info['viewGroupLink'] = Yii::app()->getController()->createUrl(
+                    'admin/questiongroups',
+                    [
+                        'sa' => 'view',
+                        'surveyid' => $info['sid'],
+                        'gid' => $info['gid']
+                    ]
+                );
+                if ($info['parent_qid'] != 0) {
+                    $info['questionSummaryLink'] = Yii::app()->getController()->createUrl(
+                        'admin/questions',
+                        [
+                            'sa' => 'subquestions',
+                            'surveyid' => $info['sid'],
+                            'gid' => $info['gid'],
+                            'qid' => $info['parent_qid']
+                        ]
+                    );
+
+                }
+            }
+        }
+        return $result;
     }
 
     /**

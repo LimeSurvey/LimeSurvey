@@ -68,15 +68,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-sm-12">
+            <?php if(!$oSurvey->isNewRecord):?>
             <!-- Base language -->
             <div class="form-group">
-
                 <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="" style="padding-top: 7px;">
                     <?php if($oSurvey->isNewRecord):?>
                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
-                        'htmlOptions'=>array('style'=>"width: 80%"),
                         'data' => getLanguageDataRestricted (false,'short'),
                         'value' => $oSurvey->language,
                         'name' => 'language',
@@ -87,8 +86,6 @@
                     <?php endif;?>
                 </div>
             </div>
-
-            <?php if(!$oSurvey->isNewRecord):?>
             <!-- Additional Languages -->
             <div class="form-group">
                 <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
@@ -111,7 +108,6 @@
                 </div>
             </div>
             <?php endif;?>
-
             <!-- Survey owner -->
             <?php
             if (Yii::app()->session['loginID']==$oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin','read')):?>

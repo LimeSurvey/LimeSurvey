@@ -246,18 +246,24 @@ function prepareBsSwitchInteger($gridid){
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
-    var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
-    $('.date input').each(function(){
-        $(this).datetimepicker({
-            format: dateTimeFormat,
-            showClear: dateTimeSettings.showClear,
-            allowInputToggle: dateTimeSettings.allowInputToggle,
-        });
+    if (dateTimeSettings) {
+        var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
+        $('.date input').each(function(){
+            $(this).datetimepicker({
+                format: dateTimeFormat,
+                showClear: dateTimeSettings.showClear,
+                allowInputToggle: dateTimeSettings.allowInputToggle,
+            });
     });
-
+    }
 }
+
 // get user session datetimesettings
 function getDefaultDateTimePickerSettings() {
+    // TODO: Code below can't handle if installation is in a subfolder (not web root).
+    // The correct solution is to fetch datetime format from an <input> element.
+    return null;
+
     //Switch between path and get based routing
     if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
         var url = "/index.php?r=admin/survey&sa=datetimesettings";

@@ -1597,6 +1597,7 @@ class questionHelper
                 "i18n"=>false,
                 "readonly"=>false,
                 "readonly_when_active"=>false,
+                "expression"=>null,
             );
             foreach ($aQuestionTypeAttribute as $attribute=>$settings) {
                 self::$questionAttributesSettings[$sType][$attribute] = array_merge(

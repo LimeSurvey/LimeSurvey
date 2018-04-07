@@ -37,12 +37,20 @@
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
+            {% elseif sliderWidth < 12 %}
+                <div class='col-xs-12 col-sm-2 slider-left text-right'></div>
             {% endif %}
+
             <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
-                    {{ C.Html.textField( myfname, dispVal ,{
+                    {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item',
-                            'id' : "answer" ~ myfname, 
+                            'id' : "answer" ~ myfname ~ "slid", 
                             'aria-labelledby' : 'label-' ~ myfname
+                        })
+                    }}                
+                    {{ C.Html.textField( myfname, dispVal ,{
+                            'class': 'form-control answer-item numeric-item hidden slider-untouched',
+                            'id' : "answer" ~ myfname, 
                         })
                     }}                
                 {% if slider_showminmax %}
@@ -52,7 +60,7 @@
                 {% if slider_reset %}
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
                     <button id="answer{{ myfname }}_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
-                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ "Reset" | t }}</span>
+                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ gT("Reset") }}</span>
                     </button>
                     </div>
                 {% endif %}
@@ -71,7 +79,8 @@
     }
     window.activeSliders.s{{myfname}} = new LSSlider({
         'qid': "{{qid}}",
-        'element': "{{myfname}}",
+        'element': "{{myfname}}slid",
+        'rootElement': "{{myfname}}",
         'value' : '{{slider_value}}',
         'min' : {{slider_min}},
         'max' : {{slider_max}},

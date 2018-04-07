@@ -104,6 +104,24 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     /**
+     * @return string
+     */
+    protected function getSurveyUrl($lang = 'en')
+    {
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            [
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => $lang
+            ]
+        );
+        return $url;
+    }
+
+    /**
      * @param string $userName
      * @param string $password
      * @return void

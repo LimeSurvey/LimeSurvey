@@ -40,7 +40,7 @@ class GlobalSettings extends Survey_Common_Action
      */
     public function index()
     {
-        if (!empty($_POST['action'])) {
+        if (!empty(Yii::app()->getRequest()->getPost('action'))) {
             $this->_saveSettings();
         }
         $this->_displaySettings();
@@ -50,6 +50,15 @@ class GlobalSettings extends Survey_Common_Action
     {
         if (!Yii::app()->getConfig('demoMode')) {
             phpinfo();
+        }
+    }
+
+    public function refreshAssets()
+    {
+        // Only people who can create or update themes should be allowed to refresh the assets
+        if (Permission::model()->hasGlobalPermission('templates', 'create')) {
+            SettingGlobal::increaseCustomAssetsversionnumber();
+            $this->getController()->redirect(array("admin/globalsettings"));
         }
     }
 
@@ -183,7 +192,7 @@ class GlobalSettings extends Survey_Common_Action
 
     private function _saveSettings()
     {
-        if ($_POST['action'] !== "globalsettingssave") {
+        if (Yii::app()->getRequest()->getPost('action') !== "globalsettingssave") {
             return;
         }
 
@@ -192,23 +201,23 @@ class GlobalSettings extends Survey_Common_Action
         }
         Yii::app()->loadHelper('surveytranslator');
 
-        $iPDFFontSize = sanitize_int($_POST['pdffontsize']);
+        $iPDFFontSize = sanitize_int(Yii::app()->getRequest()->getPost('pdffontsize'));
         if ($iPDFFontSize < 1) {
             $iPDFFontSize = 9;
         }
 
-        $iPDFLogoWidth = sanitize_int($_POST['pdflogowidth']);
+        $iPDFLogoWidth = sanitize_int(Yii::app()->getRequest()->getPost('pdflogowidth'));
         if ($iPDFLogoWidth < 1) {
             $iPDFLogoWidth = 50;
         }
 
-        $maxemails = $_POST['maxemails'];
-        if (sanitize_int($_POST['maxemails']) < 1) {
+        $maxemails = Yii::app()->getRequest()->getPost('maxemails');
+        if (sanitize_int(Yii::app()->getRequest()->getPost('maxemails')) < 1) {
             $maxemails = 1;
         }
 
-        $defaultlang = sanitize_languagecode($_POST['defaultlang']);
-        $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
+        $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
+        $aRestrictToLanguages = explode(' ', sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
 // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;
@@ -221,8 +230,8 @@ class GlobalSettings extends Survey_Common_Action
 
         setGlobalSetting('defaultlang', $defaultlang);
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
-        setGlobalSetting('sitename', strip_tags($_POST['sitename']));
-        setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
+        setGlobalSetting('sitename', strip_tags(Yii::app()->getRequest()->getPost('sitename')));
+        setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaulthtmleditormode')));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode', 'default')));
         setGlobalSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
         setGlobalSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
@@ -235,13 +244,14 @@ class GlobalSettings extends Survey_Common_Action
                 setGlobalSetting('defaulttheme', $sTemplate);
             }
             setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
+            setGlobalSetting('force_ssl', Yii::app()->getRequest()->getPost('force_ssl'));
         }
 
         // we set the admin theme
-        $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
+        $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         setGlobalSetting('admintheme', $sAdmintheme);
 
-        setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
+        setGlobalSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod')));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
             setGlobalSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
@@ -258,7 +268,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
-        setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
+        setGlobalSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml')));
         $warning = '';
         // make sure emails are valid before saving them
         if (Yii::app()->request->getPost('siteadminbounce', '') == ''
@@ -273,53 +283,52 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
         }
-        setGlobalSetting('siteadminname', strip_tags($_POST['siteadminname']));
-        setGlobalSetting('shownoanswer', sanitize_int($_POST['shownoanswer']));
-        setGlobalSetting('showxquestions', ($_POST['showxquestions']));
-        setGlobalSetting('showgroupinfo', ($_POST['showgroupinfo']));
-        setGlobalSetting('showqnumcode', ($_POST['showqnumcode']));
-        $repeatheadingstemp = (int) ($_POST['repeatheadings']);
+        setGlobalSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
+        setGlobalSetting('shownoanswer', sanitize_int(Yii::app()->getRequest()->getPost('shownoanswer')));
+        setGlobalSetting('showxquestions', (Yii::app()->getRequest()->getPost('showxquestions')));
+        setGlobalSetting('showgroupinfo', (Yii::app()->getRequest()->getPost('showgroupinfo')));
+        setGlobalSetting('showqnumcode', (Yii::app()->getRequest()->getPost('showqnumcode')));
+        $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
         if ($repeatheadingstemp == 0) {
             $repeatheadingstemp = 25;
         }
         setGlobalSetting('repeatheadings', $repeatheadingstemp);
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
-        $iSessionExpirationTime = (int) ($_POST['iSessionExpirationTime']);
+        $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime',7200));
         if ($iSessionExpirationTime == 0) {
             $iSessionExpirationTime = 7200;
         }
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
-        setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
+        setGlobalSetting('ipInfoDbAPIKey', Yii::app()->getRequest()->getPost('ipInfoDbAPIKey'));
         setGlobalSetting('pdffontsize', $iPDFFontSize);
-        setGlobalSetting('pdfshowheader', $_POST['pdfshowheader'] == '1' ? 'Y' : 'N');
+        setGlobalSetting('pdfshowheader', Yii::app()->getRequest()->getPost('pdfshowheader') == '1' ? 'Y' : 'N');
         setGlobalSetting('pdflogowidth', $iPDFLogoWidth);
-        setGlobalSetting('pdfheadertitle', $_POST['pdfheadertitle']);
-        setGlobalSetting('pdfheaderstring', $_POST['pdfheaderstring']);
-        setGlobalSetting('bPdfQuestionFill', sanitize_int($_POST['bPdfQuestionFill']));
-        setGlobalSetting('bPdfQuestionBold', sanitize_int($_POST['bPdfQuestionBold']));
-        setGlobalSetting('bPdfQuestionBorder', sanitize_int($_POST['bPdfQuestionBorder']));
-        setGlobalSetting('bPdfResponseBorder', sanitize_int($_POST['bPdfResponseBorder']));
-        setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
-        setGlobalSetting('googleanalyticsapikey', $_POST['googleanalyticsapikey']);
-        setGlobalSetting('googletranslateapikey', $_POST['googletranslateapikey']);
-        setGlobalSetting('force_ssl', $_POST['force_ssl']);
-        setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
-        setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
-        setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
-        setGlobalSetting('characterset', $_POST['characterset']);
+        setGlobalSetting('pdfheadertitle', Yii::app()->getRequest()->getPost('pdfheadertitle'));
+        setGlobalSetting('pdfheaderstring', Yii::app()->getRequest()->getPost('pdfheaderstring'));
+        setGlobalSetting('bPdfQuestionFill', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionFill')));
+        setGlobalSetting('bPdfQuestionBold', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBold')));
+        setGlobalSetting('bPdfQuestionBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBorder')));
+        setGlobalSetting('bPdfResponseBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfResponseBorder')));
+        setGlobalSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
+        setGlobalSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
+        setGlobalSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
+        setGlobalSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
+        setGlobalSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
+        setGlobalSetting('rpc_publish_api', (bool) Yii::app()->getRequest()->getPost('rpc_publish_api'));
+        setGlobalSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         setGlobalSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
-        $savetime = intval((float) $_POST['timeadjust'] * 60).' minutes'; //makes sure it is a number, at least 0
+        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60).' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+'.$savetime;
         }
         setGlobalSetting('timeadjust', $savetime);
-        setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
+        setGlobalSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
 
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
         // Redirect if user clicked save-and-close-button
-        if (isset($_POST['saveandclose'])) {
+        if (Yii::app()->getRequest()->getPost('saveandclose')) {
             $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
             Yii::app()->getController()->redirect($url);
         } else {

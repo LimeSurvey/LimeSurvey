@@ -168,6 +168,7 @@ class LS_Twig_Extension extends Twig_Extension
      *
      * @param  int      $iQid the question id
      * @return string   the classes
+     * @deprecated must be removed when allow to broke template. Since it was in 3.0 , it was in API (and question.twig are surely be updated).
      */
     public static function getAllQuestionClasses($iQid)
     {
@@ -229,6 +230,11 @@ class LS_Twig_Extension extends Twig_Extension
         return App()->getController()->createUrl($url, $params);
     }
 
+    public static function createAbsoluteUrl($url, $params = array())
+    {
+        return App()->getController()->createAbsoluteUrl($url, $params);
+    }
+
     /**
      * @param string $sRessource
      */
@@ -247,13 +253,16 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
+        $sUrlImgAsset = '';
 
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            $sUrlImgAsset = '';
-            // TODO: publish a default image "not found"
         }
+
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish($sImagePath);
+        }
+        
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -268,15 +277,68 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset = '';
-
+        $sUrlImgAsset =  '';
+        
+        
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            // TODO: publish a default image "not found"
+        } 
+
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').$sImagePath);
         }
 
         return $sUrlImgAsset;
+    }
+
+
+    /**
+     * Get the parsed output of the expression manger for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getExpressionManagerOutput($sInString) {
+        templatereplace(flattenText($sInString));
+        return LimeExpressionManager::GetLastPrettyPrintExpression();
+    }
+
+    /**
+     * Get the textcontrol widget output for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getTextDisplayWidget($sInString, $name) {
+        templatereplace(flattenText($sInString));
+        $fullInString = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+        $widget = App()->getController()->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+            'widgetsJsName' =>  $name,
+            'textToDisplay' => $fullInString,
+            'returnHtml' => true
+        ));
+        return $widget->run();
+    }
+
+
+
+    /**
+     * Checks for a permission on render
+     *
+     * @param String $permission
+     * @param String $permissionGrade
+     * @param Integer|NULL $iSurveyId (default null)
+     * 
+     * @return Boolean
+     */
+    public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
+
+        if ($iSurveyId === null) {
+            return Permission::model()->hasGlobalPermission($permission, $permissionGrade);
+        }
+        return Permission::model()->hasSurveyPermission($iSurveyId, $permission, $permissionGrade);
+
     }
 
     /**
@@ -361,10 +423,10 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
         self::unregisterPackage('decimal');
+        self::unregisterPackage('expressions');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/admin/expression.js');
         self::unregisterScriptFile('/assets/scripts/nojs.js');
-        self::unregisterScriptFile('/assets/scripts/expressions/em_javascript.js');
     }
 
     public static function listCoreScripts()
@@ -388,6 +450,5 @@ class LS_Twig_Extension extends Twig_Extension
 
         }
     }
-
 
 }

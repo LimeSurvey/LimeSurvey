@@ -1,3 +1,7 @@
+<?php
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('editAnswerOptions');
+?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
@@ -170,14 +174,14 @@
                                                     'first'             => $first,
                                                     'assessmentvisible' => $assessmentvisible,
                                                     'scale_id'          => $scale_id,
-                                                    'title'             => $row->code,
+                                                    'title'             => CHtml::encode($row->code),
                                                     'surveyid'          => $surveyid,
                                                     'gid'               => $gid,
                                                     'qid'               => $qid,
                                                     'language'          => $anslang,
-                                                    'assessment_value'  => $row->assessment_value,
+                                                    'assessment_value'  => CHtml::encode($row->assessment_value),
                                                     'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answerL10ns[$anslang]->answer,
+                                                    'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
                                                     'oldCode'   => true,
                                                 ));?>
 
@@ -202,7 +206,7 @@
                                         <br/>
                                     <?php endif;?>
 
-                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' data-scale-id="<?php echo $scale_id; ?>" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                                         <?php eT('Predefined label sets...'); ?>
                                     </button>
 
@@ -246,6 +250,7 @@
                             data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"
+                            data-languages='<?php echo json_encode(Survey::model()->findByPk($surveyid)->getAllLanguages());?>'
                             data-gid="<?php echo $gid;?>"
                             data-qid="<?php echo $qid;?>"
                             data-scale-id="<?php echo $scale_id-1; // -1 : because it's incremented via <  ?>"

@@ -103,7 +103,7 @@ function createDatabase($oDB){
             'defaultvalue' =>  "text",
         ), $options);
 
-        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
+        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid'], true);
 
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(
@@ -289,8 +289,11 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
+            'plugin_type' =>  "string(4) default 'user'",
             'active' =>  "int NOT NULL default 0",
             'version' =>  "string(32) NULL",
+            'load_error' => 'int default 0',
+            'load_error_message' => 'text'
         ), $options);
 
 
@@ -553,6 +556,7 @@ function createDatabase($oDB){
             'ipaddr' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
             'datecreated' => "datetime",
+            'showsurveypolicynotice' => 'int DEFAULT 0',
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
@@ -625,6 +629,9 @@ function createDatabase($oDB){
             'surveyls_description' => "TEXT NULL",
             'surveyls_welcometext' => "TEXT NULL",
             'surveyls_endtext' => "TEXT NULL",
+            'surveyls_policy_notice' => "TEXT NULL",
+            'surveyls_policy_error' => "TEXT NULL",
+            'surveyls_policy_notice_label' => 'string(192) NULL',
             'surveyls_url' => "TEXT NULL",
             'surveyls_urldescription' => "string(255) NULL",
             'surveyls_email_invite_subj' => "string(255) NULL",

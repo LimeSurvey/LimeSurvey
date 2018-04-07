@@ -697,7 +697,17 @@ var createPDFworker = function (tableArray) {
 
         createPDF('getParseHtmlPromise').then(function (resolve) {
             var answerObject = createPDF('exportPdf');
-            var newWindow = window.open(answerObject.msg, 600, 800);
+            console.ls.log(answerObject);
+            var a = document.createElement('a');
+            if(typeof a.download != "undefined") {
+                $('body').append("<a id='exportPdf-download-link' style='display:none;' href='" + answerObject.msg + "' download='pdf-survey.pdf'></a>");// Must add sid and other info
+                $("#exportPdf-download-link").get(0).click();
+                $("#exportPdf-download-link").remove();
+                res('done');
+                return;
+            } 
+            var newWindow = window.open("about:blank", 600, 800);
+            newWindow.document.write("<html style='height:100%;width:100%'><iframe style='width:100%;height:100%;' src='"+answerObject.msg+"' border=0></iframe></html>");
             res('done');
         }, function (reject) {
             rej(arguments);
@@ -750,7 +760,7 @@ var exportImages = function () {
 $(document).on('ready  pjax:scriptcomplete', function () {
     LS.onDocumentReady.Statistics2();
     $('body').addClass('onStatistics');
-    var exportImagesButton = $('<button class="btn btn-info" style="margin: auto;">Export images</button>');
+    var exportImagesButton = $('#statisticsExportImages');
     exportImagesButton.on('click', exportImages);
     exportImagesButton.wrap('<div class="col-md-12 text-center"></div>')
     $('#statisticsview').children('div.row').last().append(exportImagesButton);

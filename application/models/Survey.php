@@ -86,6 +86,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $allQuestions All survey questions including subquestions
+ * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
@@ -139,6 +141,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
+ * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
@@ -158,6 +161,8 @@ class Survey extends LSActiveRecord
 
 
     public $searched_value;
+    
+    public $showsurveypolicynotice = 0; 
 
 
     private $sSurveyUrl;
@@ -200,7 +205,7 @@ class Survey extends LSActiveRecord
     /** @inheritdoc */
     public function delete()
     {
-        return $this->deleteSurvey($this->sid);
+        return $this->deleteSurvey($this->sid, true);
     }
 
 
@@ -342,6 +347,7 @@ class Survey extends LSActiveRecord
             array('bounce_email', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
             array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -364,6 +370,7 @@ class Survey extends LSActiveRecord
             array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
             array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
             array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -412,6 +419,7 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
+        $this->template = Template::templateNameFilter($this->template);
     }
 
 
@@ -716,10 +724,11 @@ class Survey extends LSActiveRecord
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "id" => $oSurveyMenuObject->id,
-                "title" => $oSurveyMenuObject->title,
+                "title" => gt($oSurveyMenuObject->title),
+                "name" => $oSurveyMenuObject->name,
                 "ordering" => $oSurveyMenuObject->ordering,
                 "level" => $oSurveyMenuObject->level,
-                "description" => $oSurveyMenuObject->description,
+                "description" => gT($oSurveyMenuObject->description),
                 "entries" => $entries,
                 "submenus" => $submenus
             ];
@@ -1505,6 +1514,11 @@ class Survey extends LSActiveRecord
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
 
+        // Survey group filter
+        if (isset($this->gsid)) {
+            $criteria->compare("t.gsid", $this->gsid, false);
+        }
+
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1755,6 +1769,40 @@ return $s->hasTokensTable; });
     }
 
     /**
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getBaseQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        $criteria->addColumnCondition(array(
+            'parent_qid' => 0,
+        ));
+
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    private function getSurveyQuestionsCriteria(){
+        $criteria = $this->getQuestionOrderCriteria();
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+        ));
+        return $criteria;
+    }
+
+    /**
      * Get the DB criteria to get questions as ordered in survey
      * @return CDbCriteria
      */
@@ -1767,7 +1815,7 @@ return $s->hasTokensTable; });
         );
         $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
             .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('`groups`.`gid` =`t`.`gid`', 'AND');
+        $criteria->addCondition('groups.gid = t.gid', 'AND');
         return $criteria;
     }
 
@@ -1847,4 +1895,45 @@ return $s->hasTokensTable; });
             ->queryRow();
         return $result !== false;
     }
+
+    public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId) {
+        
+        $STARTPOLICYLINK = "";
+        $ENDPOLICYLINK = "";
+        
+        if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
+            $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='modal'>";
+            $ENDPOLICYLINK = "</a>";
+        }
+        
+
+        if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
+            $dataSecurityNoticeLabel.= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
+        }
+
+        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
+        
+        $countEndLabel = 0;
+        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel, -1, $countEndLabel);
+        if($countEndLabel == 0){
+            $dataSecurityNoticeLabel .= '</a>';
+        } 
+
+        return $dataSecurityNoticeLabel;
+
+    }
+    
+    /**
+     * @param string $type Question->type
+     * @param bool $includeSubquestions
+     * @return Question
+     */
+    public function findQuestionByType($type, $includeSubquestions = false){
+        $criteria = $this->getSurveyQuestionsCriteria();
+        if ($includeSubquestions){
+            $criteria->addColumnCondition(['parent_qid' => 0]);
+        }
+        $criteria->addColumnCondition(['type'=>$type]);
+        return Question::model()->find($criteria);
+    }    
 }

@@ -8,37 +8,56 @@ namespace LimeSurvey\PluginManager;
 abstract class PluginBase implements iPlugin
 {
     /**
-     *
      * @var LimesurveyApi
      */
     protected $api = null;
 
     /**
-     *
      * @var PluginEvent
      */
     protected $event = null;
 
+    /**
+     * @var int
+     */
     protected $id = null;
+
+    /**
+     * @var string
+     */
     protected $storage = 'DummyStorage';
 
+    /**
+     * @var string
+     */
     static protected $description = 'Base plugin object';
+
+    /**
+     * @var string
+     */
     static protected $name = 'PluginBase';
+
+    /**
+     * @var ?
+     */
     private $store = null;
-    protected $settings = array();
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
 
     /**
      * This holds the pluginmanager that instantiated the plugin
-     *
      * @var PluginManager
      */
     protected $pluginManager;
 
     /**
-     * If plugin has a config.json file, it will be parsed into this variable.
-     * @var StdObject
+     * config.xml
+     * @var XML
      */
-    protected $config = null;
+    public $config = null;
 
     /**
      * Constructor for the plugin
@@ -370,20 +389,23 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     * Read JSON config file and store it in $this->config
-     * Assumes config file is config.json and in plugin root folder.
-     * @return void
+     * Read XML config file and store it in $this->config
+     * Assumes config file is config.xml and in plugin root folder.
+     * @todo Could this be moved to plugin model?
+     * @return boolean
      */
     public function readConfigFile()
     {
-        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.json';
+        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            $json = file_get_contents($file);
-            $this->config = json_decode($json);
+            libxml_disable_entity_loader(false);
+            $this->config = simplexml_load_file(realpath($file));
+            libxml_disable_entity_loader(true);
 
             if ($this->config === null) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
+                return false;
             } else if ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
@@ -397,8 +419,10 @@ abstract class PluginBase implements iPlugin
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
+            return true;
         } else {
             $this->log('Found no config file');
+            return false;
         }
     }
 
@@ -410,6 +434,9 @@ abstract class PluginBase implements iPlugin
      */
     protected function checkActive($pluginModel)
     {
+        // TODO: Do we want to support automatically installed plugins?
+        return;
+
         if ($this->config->active == 1) {
             // Activate plugin
             $result = App()->getPluginManager()->dispatchEvent(
@@ -422,15 +449,17 @@ abstract class PluginBase implements iPlugin
                 $pluginModel->update();
             } else {
                 // Failed. Popup error message.
-                $not = new \Notification(array(
-                    'user_id' => App()->user->id,
-                    'title' => gT('Plugin error'),
-                    'message' =>
-                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
-                        gT('Could not activate plugin '.$this->getName()).'. '.
-                        gT('Reason:').' '.$result->get('message'),
-                    'importance' => \Notification::HIGH_IMPORTANCE
-                ));
+                $not = new \Notification(
+                    [
+                        'user_id' => App()->user->id,
+                        'title'   => gT('Plugin error'),
+                        'message' =>
+                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                            gT('Could not activate plugin '.$this->getName()).'. '.
+                            gT('Reason:').' '.$result->get('message'),
+                        'importance' => \Notification::HIGH_IMPORTANCE
+                    ]
+                );
                 $not->save();
             }
         }
@@ -442,15 +471,17 @@ abstract class PluginBase implements iPlugin
      */
     protected function showConfigErrorNotification()
     {
-        $not = new \Notification(array(
+        $not = new \Notification(
+            [
             'user_id' => App()->user->id,
-            'title' => gT('Plugin error'),
+            'title'   => gT('Plugin error'),
             'message' =>
                 '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
                 gT('Could not read config file for plugin '.$this->getName()).'. '.
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
-        ));
+            ]
+        );
         $not->save();
     }
 
@@ -468,18 +499,17 @@ abstract class PluginBase implements iPlugin
         $pluginModel = \Plugin::model()->findByPk($this->id);
 
         return empty($pluginModel->version) ||
-            version_compare($pluginModel->version, $this->config->version) === -1;
+            version_compare($pluginModel->version, (string) $this->config->metadata->version) === -1;
     }
 
     /**
      * Saves the new version from config into database
-     * @return void
+     * @return boolean
      */
     protected function saveNewVersion()
     {
         $pluginModel = \Plugin::model()->findByPk($this->id);
-        $pluginModel->version = $this->config->version;
-        $pluginModel->update();
+        $pluginModel->version = (string) $this->config->metadata->version;
+        return $pluginModel->update();
     }
-
 }

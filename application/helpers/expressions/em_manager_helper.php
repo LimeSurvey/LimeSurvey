@@ -721,7 +721,6 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode=$previewmode;
-            //$_SESSION[$LEM->sessid]['previewmode']=$previewmode;
         }
 
         /**
@@ -821,6 +820,9 @@
         {
             LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
             $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
+            if(!is_array($releqns)) {
+                return NULL;
+            }    
             $num = count($releqns);
             if ($num == 0) {
                 return NULL;
@@ -3920,6 +3922,14 @@
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
+                        // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
+                        if($other == "Y") {
+                            if (isset($qattr[$questionNum]['other_replace_text']) && trim($qattr[$questionNum]['other_replace_text']) != '') {
+                                $question = trim($qattr[$questionNum]['other_replace_text']);
+                            } else {
+                                $question = $this->gT('Other:');
+                            }
+                        }
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                         if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", $sgqa)) {
                             //                            $rowdivid = substr($sgqa,0,-7);
@@ -4271,7 +4281,8 @@
 
                 if ($type == Question::QT_M_MULTIPLE_CHOICE || $type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
                 {
-                    $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'";
+                    $question = htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES);
+                    $this->varNameAttr[$jsVarName] .= ",'question':'" . $question . "'";
                 }
                 $this->varNameAttr[$jsVarName] .= "}";
             }
@@ -4480,7 +4491,6 @@
         * @param string $string - the string to be replaced
         * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
         * @param array|null $replacementFields - optional replacement values
-        * @param boolean $debug - deprecated
         * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
         * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
         * @param boolean $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
@@ -4488,7 +4498,7 @@
         * @param boolean $staticReplacement - return HTML string without the system to update by javascript
         * @return string - the original $string with all replacements done.
         */
-        public  static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
+        public static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
         {
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
@@ -4936,6 +4946,7 @@
             }
             $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
             $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
+            $LEM->surveyOptions['alloweditaftercompletion'] = (isset($aSurveyOptions['alloweditaftercompletion']) ? $aSurveyOptions['alloweditaftercompletion'] : false);
             $LEM->surveyOptions['anonymized'] = (isset($aSurveyOptions['anonymized']) ? $aSurveyOptions['anonymized'] : false);
             $LEM->surveyOptions['assessments'] = (isset($aSurveyOptions['assessments']) ? $aSurveyOptions['assessments'] : false);
             $LEM->surveyOptions['datestamp'] = (isset($aSurveyOptions['datestamp']) ? $aSurveyOptions['datestamp'] : false);
@@ -5545,25 +5556,27 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $response = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
-                    $response->setAttributes($aResponseAttributes, false);
-                    if (!$response->save())
-                    {
-                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
-                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
+                    if ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
+	                    $response->setAttributes($aResponseAttributes, false);
+	                    if (!$response->save())
+	                    {
+	                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
+	                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
 
-                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= $this->gT('Error on response update');  // @todo Add  SQL error?
-                        }
+	                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
+	                            $message .= $this->gT('Error on response update');  // @todo Add  SQL error?
+	                        }
 
-                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+	                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
 
-                    }
-                    // Save Timings if needed
-                    elseif ($this->surveyOptions['savetimings']) {
-                        Yii::import("application.libraries.Save");
-                        $cSave = new Save();
-                        $cSave->set_answer_time();
-                    }
+	                    }
+	                    // Save Timings if needed
+	                    elseif ($this->surveyOptions['savetimings']) {
+	                        Yii::import("application.libraries.Save");
+	                        $cSave = new Save();
+	                        $cSave->set_answer_time();
+	                    }
+	                }
 
                     if ($finished) {
                         // Delete the save control record if successfully finalize the submission
@@ -5594,7 +5607,8 @@
                     }
                     else
                     {
-                        if ($finished) {
+                        if ($finished && ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
@@ -7191,8 +7205,7 @@
             $allJsVarsUsed = array();
             $rowdividList = array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
-
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
+            App()->getClientScript()->registerPackage("expressions"); // Be sure to load, think we can remove ALL other call
             /* Call the function when trigerring event */
             App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
 
@@ -7625,7 +7638,7 @@
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                         // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
                         // This make same than flattenText to be same in JS and in PHP
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text()));\n";
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('change');\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -7847,7 +7860,6 @@
             $jsParts[] = implode("\n",$valEqns);
 
             $allJsVarsUsed = array_unique($allJsVarsUsed);
-
             // Add JavaScript Mapping Arrays
             if (isset($LEM->alias2varName) && count($LEM->alias2varName) > 0)
             {
@@ -8635,20 +8647,19 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         public function getGroupInfoForEM($surveyid,$sLanguage=NULL)
         {
-            if (is_null($sLanguage) && isset($_SESSION['LEMlang']))
-            {
+            $survey = Survey::model()->findByPk($surveyid);
+
+            if (is_null($sLanguage) && isset($_SESSION['LEMlang'])) {
                 $sLanguage = $_SESSION['LEMlang'];
+            } elseif(is_null($sLanguage)) {
+                $sLanguage=$survey->language;
             }
-            elseif(is_null($sLanguage))
-            {
-                $sLanguage=Survey::model()->findByPk($surveyid)->language;
-            }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid",'order'=>'group_order','params'=>array(":sid"=>$surveyid)));
+            $oQuestionGroups=$survey->groups;
+
             $qinfo = array();
             $_order=0;
             $gid = array();
-            foreach ($oQuestionGroups as $oQuestionGroup)
-            {
+            foreach ($oQuestionGroups as $oQuestionGroup) {
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
@@ -8938,12 +8949,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
-                                    {
+                                    if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name)) {
                                         return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         return $_SESSION[$this->sessid][$sgqa];
                                     }
                                 default:
@@ -9033,12 +9041,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 case 'scale_id':
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                 case 'shown':
-                    if (isset($var['shown']))
-                    {
+                    if (isset($var['shown'])) {
                         return $var['shown'];    // for static values like TOKEN
-                    }
-                    else
-                    {
+                    } else {
                         $type = $var['type'];
                         $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
                         $shown = $default;  // Default value to satisfy Scrutinizer
@@ -9113,16 +9118,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 break;
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
-                                {
+                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa)) {
                                     $shown = $var['question'];
-                                }
-                                elseif (preg_match('/comment$/',$sgqa)) {
+                                } elseif (preg_match('/comment$/',$sgqa)) {
                                     $shown=$code; // This one return sgqa.code
-                                }
-                                else
-                                {
-                                    $shown = $default;
                                 }
                                 break;
                             case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
@@ -9366,6 +9365,27 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
+                if ($aSurveyInfo['surveyls_policy_notice'] != '')
+                {
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice'],0);
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                }
+                if ($aSurveyInfo['surveyls_policy_error'] != '')
+                {
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_error'],0);
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                }
+                if ($aSurveyInfo['surveyls_policy_notice_label'] != '')
+                {
+                    $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'],0);
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                }
             }
 
             $out .= "<tr>
@@ -9381,7 +9401,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid = $q['info']['gid'];
                 $qid = $q['info']['qid'];
                 $qseq = $q['info']['qseq'];
-
                 $errorCount=0;
 
                 //////
@@ -9605,7 +9624,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Validation this way so that regex (preg) works
                 $prettyValidEqn = '';
-                if ($q['prettyValidEqn'] != '') {
+                if ($q['validEqn'] != '') {
                     $validationEqn = $q['validEqn'];
                     if (!isset($LEM->ParseResultCache[$validationEqn]))
                     {
@@ -9863,8 +9882,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = '';
                         break;
                 }
-                $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
+                $out = "<p class='LEMheading'>$message</p>\n" . $out;
             }
+            $out .="</div>";
             return array(
                 'errors'=>$allErrors,
                 'html'=>$out

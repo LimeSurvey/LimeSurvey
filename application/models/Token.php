@@ -24,7 +24,7 @@
  *
  * Scopes
  * @method Token incomplete() incomplete() Select only uncompleted tokens
- * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
+ * @method Token usable() usable() Select usable tokens: valid daterange and usesleft > 0
  *
  */
 
@@ -58,6 +58,17 @@ use \LimeSurvey\PluginManager\PluginEvent;
  */
 abstract class Token extends Dynamic
 {
+
+    /**
+     * Set defaults
+     * @inheritdoc
+     */
+    public function init()
+    {
+        // Set the default values
+        $this->usesleft = 1;
+        $this->completed = "N";
+    }
     /** @inheritdoc */
     public function attributeLabels()
     {
@@ -124,7 +135,7 @@ abstract class Token extends Dynamic
             'lastname' => 'string(150)',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(35) {$sCollation}",
+            'token' => "string(36) {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
@@ -344,7 +355,7 @@ abstract class Token extends Dynamic
                 'condition' => "completed = 'N'"
             ),
             'usable' => array(
-                'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
+                'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now' AND usesleft > 0"
             ),
             'editable' => array(
                 'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"

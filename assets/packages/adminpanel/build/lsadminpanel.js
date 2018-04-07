@@ -36345,82 +36345,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
 //Ignore phpunits testing tags
-__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.ignoredElements = ['x-test']
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.ignoredElements = ["x-test"];
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     methods: {
-        updatePjaxLinks: function () {
-            this.$store.commit('updatePjax');
+        updatePjaxLinks: function() {
+            this.$store.commit("updatePjax");
         }
     }
 });
 
-$(document).on('ready', function () {
+$(document).on("ready", function() {
     const AppState = __WEBPACK_IMPORTED_MODULE_4__store_vuex_store_js__["a" /* default */](LS.globalUserId);
-    if (document.getElementById('vue-app-main-container')) {
+    if (document.getElementById("vue-app-main-container")) {
         // eslint-disable-next-line
         const vueGeneralApp = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-            el: '#vue-app-main-container',
+            el: "#vue-app-main-container",
             store: AppState,
             components: {
-                'sidebar': __WEBPACK_IMPORTED_MODULE_1__components_sidebar_vue___default.a,
-                'topbar': __WEBPACK_IMPORTED_MODULE_2__components_topbar_vue___default.a,
-                'lspanelparametertable': __WEBPACK_IMPORTED_MODULE_3__components_parameter_table_vue___default.a,
+                sidebar: __WEBPACK_IMPORTED_MODULE_1__components_sidebar_vue___default.a,
+                topbar: __WEBPACK_IMPORTED_MODULE_2__components_topbar_vue___default.a,
+                lspanelparametertable: __WEBPACK_IMPORTED_MODULE_3__components_parameter_table_vue___default.a
             },
             methods: {
                 controlWindowSize() {
-                    const
-                        adminmenuHeight = $('body').find('nav').first().height(),
-                        footerHeight = $('body').find('footer').last().height(),
-                        menuHeight = $('.menubar').outerHeight(),
-                        inSurveyOffset = adminmenuHeight + footerHeight + menuHeight + 25,
+                    const adminmenuHeight = $("body")
+                            .find("nav")
+                            .first()
+                            .height(),
+                        footerHeight = $("body")
+                            .find("footer")
+                            .last()
+                            .height(),
+                        menuHeight = $(".menubar").outerHeight(),
+                        inSurveyOffset =
+                            adminmenuHeight + footerHeight + menuHeight + 25,
                         windowHeight = window.innerHeight,
-                        inSurveyViewHeight = (windowHeight - inSurveyOffset);
+                        inSurveyViewHeight = windowHeight - inSurveyOffset;
 
-                    this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+                    this.$store.commit(
+                        "changeInSurveyViewHeight",
+                        inSurveyViewHeight
+                    );
                 }
             },
             created() {
                 this.controlWindowSize();
-                window.addEventListener('resize', () => {
+                window.addEventListener("resize", () => {
                     this.controlWindowSize();
                 });
 
-                $(document).on('vue-resize-height',  ()=>{
+                $(document).on("vue-resize-height", () => {
                     this.controlWindowSize();
                 });
 
-                $(document).on('vue-sidebar-collapse',  ()=>{
-                    this.$store.commit('changeIsCollapsed', true);
+                $(document).on("vue-sidebar-collapse", () => {
+                    this.$store.commit("changeIsCollapsed", true);
                 });
             },
             mounted() {
-                const surveyid = $(this.$el).data('surveyid');
+                const surveyid = $(this.$el).data("surveyid");
                 if (surveyid != 0) {
-                    this.$store.commit('updateSurveyId', surveyid);
+                    this.$store.commit("updateSurveyId", surveyid);
                 }
-                const maxHeight = ($('#in_survey_common').height() - 35) || 400;
-                this.$store.commit('changeMaxHeight', maxHeight);
+                const maxHeight = $("#in_survey_common").height() - 35 || 400;
+                this.$store.commit("changeMaxHeight", maxHeight);
                 this.updatePjaxLinks();
-                
-                $(document).on('click', 'ul.pagination>li>a',  ()=>{
+
+                $(document).on("click", "ul.pagination>li>a", () => {
                     this.updatePjaxLinks();
                 });
-                
-                $(document).on('vue-redraw',  ()=>{
+
+                $(document).on("vue-redraw", () => {
                     this.$forceUpdate();
                     this.updatePjaxLinks();
                 });
                 window.singletonPjax();
 
-                $(document).trigger('vue-reload-remote');
-                
-                window.setInterval(function(){
-                    $(document).trigger('vue-reload-remote');
-                }, (60*5*1000));
+                $(document).trigger("vue-reload-remote");
+
+                window.setInterval(function() {
+                    $(document).trigger("vue-reload-remote");
+                }, 60 * 5 * 1000);
             }
         });
         global.vueGeneralApp = vueGeneralApp;
@@ -36429,46 +36437,64 @@ $(document).on('ready', function () {
 
 let reloadcounter = 5;
 
-$(document).off('pjax:send.aploading').on('pjax:send.aploading', (e) => {
-    $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
-    $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
-    $('#pjax-file-load-container').find('div').css({
-        'width': '20%',
-        'display': 'block'
+$(document)
+    .off("pjax:send.aploading")
+    .on("pjax:send.aploading", () => {
+        $('<div id="pjaxClickInhibitor"></div>').appendTo("body");
+        $(
+            ".ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable"
+        ).remove();
+        $("#pjax-file-load-container")
+            .find("div")
+            .css({
+                width: "20%",
+                display: "block"
+            });
+        reloadcounter--;
     });
-    reloadcounter--;
-});
 
-$(document).off('pjax:error.aploading').on('pjax:error.aploading', (event) => {
-    console.log(event);
-});
+$(document)
+    .off("pjax:error.aploading")
+    .on("pjax:error.aploading", event => {
+        // eslint-disable-next-line no-console
+        console.ls.log(event);
+    });
 
-$(document).off('pjax:complete.aploading').on('pjax:complete.aploading', (e) => {
-    if(reloadcounter === 0){
-        location.reload();
-    }
-});
-$(document).off('pjax:scriptcomplete.aploading').on('pjax:scriptcomplete.aploading', (e) => {
-    $('#pjax-file-load-container').find('div').css('width', '100%');
-    $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});     
-    $(document).trigger('vue-resize-height');
-    $(document).trigger('vue-reload-remote');
-    // $(document).trigger('vue-sidemenu-update-link');
-    setTimeout(function () {
-        $('#pjax-file-load-container').find('div').css({
-            'width': '0%',
-            'display': 'none'
+$(document)
+    .off("pjax:complete.aploading")
+    .on("pjax:complete.aploading", () => {
+        if (reloadcounter === 0) {
+            location.reload();
+        }
+    });
+$(document)
+    .off("pjax:scriptcomplete.aploading")
+    .on("pjax:scriptcomplete.aploading", () => {
+        $("#pjax-file-load-container")
+            .find("div")
+            .css("width", "100%");
+        $("#pjaxClickInhibitor").fadeOut(400, function() {
+            $(this).remove();
         });
-    }, 2200);
-});
-
+        $(document).trigger("vue-resize-height");
+        $(document).trigger("vue-reload-remote");
+        // $(document).trigger('vue-sidemenu-update-link');
+        setTimeout(function() {
+            $("#pjax-file-load-container")
+                .find("div")
+                .css({
+                    width: "0%",
+                    display: "none"
+                });
+        }, 2200);
+    });
 
 // const topmenu = new Vue(
-//   {  
+//   {
 //     el: '#vue-top-menu-app',
 //     components: {
 //       'topbar' : Topbar,
-//     } 
+//     }
 // });
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
@@ -36490,7 +36516,7 @@ var Component = __webpack_require__(27)(
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-3ebf670a",
   /* moduleIdentifier (server only) */
   null
 )
@@ -36528,13 +36554,13 @@ var content = __webpack_require__(338);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(45)("0ed5b60e", content, false);
+var update = __webpack_require__(45)("bbba9cfe", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue");
+   module.hot.accept("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3ebf670a\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./sidebar.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -36552,7 +36578,7 @@ exports = module.exports = __webpack_require__(44)(true);
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"sidebar.vue","sourceRoot":""}]);
+exports.push([module.i, "\n.sidebar_loader[data-v-3ebf670a] {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,mBAAmB;EACnB,YAAY;EACZ,qCAAqC;EACrC,cAAc;EACd,kDAAkD;EAClD,OAAO;CAAE","file":"sidebar.vue","sourcesContent":[".sidebar_loader {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -36614,75 +36640,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        'questionexplorer': __WEBPACK_IMPORTED_MODULE_2__subcomponents_questionsgroups_vue___default.a,
-        'sidemenu': __WEBPACK_IMPORTED_MODULE_3__subcomponents_sidemenu_vue___default.a,
-        'quickmenu': __WEBPACK_IMPORTED_MODULE_4__subcomponents_quickmenu_vue___default.a
+        questionexplorer: __WEBPACK_IMPORTED_MODULE_2__subcomponents_questionsgroups_vue___default.a,
+        sidemenu: __WEBPACK_IMPORTED_MODULE_3__subcomponents_sidemenu_vue___default.a,
+        quickmenu: __WEBPACK_IMPORTED_MODULE_4__subcomponents_quickmenu_vue___default.a
     },
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_runAjax_js__["a" /* default */]],
     props: {
-        'user': { type: Number },
-        'translate': { type: Object },
-        'getQuestionsUrl': { type: String },
-        'getMenuUrl': { type: String },
-        'createQuestionGroupLink': { type: String },
-        'createQuestionLink': { type: String },
-        'updateOrderLink': { type: String }
+        user: { type: Number },
+        translate: { type: Object },
+        getQuestionsUrl: { type: String },
+        getMenuUrl: { type: String },
+        createQuestionGroupLink: { type: String },
+        createQuestionLink: { type: String },
+        updateOrderLink: { type: String }
     },
     data: () => {
         return {
-            'currentTab': 'settings',
-            'activeMenuIndex': 0,
-            'openSubpanelId': 0,
-            'questiongroups': [],
-            'menues': [],
-            '$store.state.isCollapsed': false,
-            'sideBarWidth': '315px',
-            'initialPos': { x: 0, y: 0 },
-            'isMouseDown': false,
-            'isMouseDownTimeOut': null,
-            'sidemenus': {},
-            'collapsedmenus': {},
-            'topmenus': {},
-            'bottommenus': {},
-            'sideBarHeight': '400px'
+            currentTab: "settings",
+            activeMenuIndex: 0,
+            openSubpanelId: 0,
+            questiongroups: [],
+            menues: [],
+            "$store.state.isCollapsed": false,
+            sideBarWidth: "315",
+            initialPos: { x: 0, y: 0 },
+            isMouseDown: false,
+            isMouseDownTimeOut: null,
+            sidemenus: {},
+            collapsedmenus: {},
+            topmenus: {},
+            bottommenus: {},
+            sideBarHeight: "400px",
+            showLoader: false
         };
     },
     computed: {
         getSideBarWidth() {
-            return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
+            return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
         },
         sortedMenus() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.menues, a => {
                 return parseInt(a.order || 999999);
-            }, ['asc']);
+            }, ["asc"]);
         },
         showSideMenu() {
-            return !this.$store.state.isCollapsed && this.$store.state.currentTab == 'settings';
+            return !this.$store.state.isCollapsed && this.$store.state.currentTab == "settings";
         },
         showQuestionTree() {
-            return !this.$store.state.isCollapsed && this.$store.state.currentTab == 'questiontree';
+            return !this.$store.state.isCollapsed && this.$store.state.currentTab == "questiontree";
         },
         calculateSideBarMenuHeight() {
-            return this.$store.state.sideBarHeight - 70 + 'px';
+            let currentSideBar = this.$store.state.sideBarHeight;
+            return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.min(currentSideBar, Math.floor(screen.height * 2)) + "px";
+        },
+        getWindowHeight() {
+            return screen.height * 2 + "px";
+        },
+        getloaderHeight() {
+            return $("#sidebar").height();
         }
     },
     methods: {
         calculateHeight(self) {
-            self.$store.commit('changeSideBarHeight', $('#in_survey_common').height());
+            self.$store.commit("changeSideBarHeight", $("#in_survey_common").height());
         },
         changedQuestionGroupOrder() {
             const self = this;
             const onlyGroupsArray = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(this.$store.state.questiongroups, (questiongroup, count) => {
                 const questions = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(questiongroup.questions, (question, i) => {
-                    return { qid: question.qid, question: question.question, gid: question.gid, question_order: question.question_order };
+                    return {
+                        qid: question.qid,
+                        question: question.question,
+                        gid: question.gid,
+                        question_order: question.question_order
+                    };
                 });
-                return { gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions };
+                return {
+                    gid: questiongroup.gid,
+                    group_name: questiongroup.group_name,
+                    group_order: questiongroup.group_order,
+                    questions: questions
+                };
             });
-            this.$log.trace("QuestionGroup order changed");
-            this.post(this.updateOrderLink, { grouparray: onlyGroupsArray, surveyid: this.$store.surveyid }).then(result => {
-                self.$log.debug('questiongroups updated');
+            this.$log.log("QuestionGroup order changed");
+            this.showLoader = true;
+            this.post(this.updateOrderLink, {
+                grouparray: onlyGroupsArray,
+                surveyid: this.$store.surveyid
+            }).then(result => {
+                self.$log.log("questiongroups updated");
+                self.getQuestions().then(() => {
+                    self.showLoader = false;
+                });
             }, error => {
-                self.$log.error('questiongroups updating error!');
+                self.$log.error("questiongroups updating error!");
+                self.getQuestions().then(() => {
+                    self.showLoader = false;
+                });
             });
         },
         controlActiveLink() {
@@ -36708,7 +36762,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.questiongroups, (itm, i) => {
-                let regTest = new RegExp('questiongroups/sa/edit/surveyid/' + itm.sid + '/gid/' + itm.gid);
+                let regTest = new RegExp("questiongroups/sa/edit/surveyid/" + itm.sid + "/gid/" + itm.gid);
                 lastQuestionGroupObject = regTest.test(currentUrl) || __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.endsWith(currentUrl, itm.link) ? itm : lastQuestionGroupObject;
             });
 
@@ -36716,13 +36770,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let lastQuestionObject = false;
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.$store.state.questiongroups, (itm, i) => {
                 __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(itm.questions, (itmm, j) => {
-                    let regTest = new RegExp('editquestion/surveyid/' + itmm.sid + '/gid/' + itmm.gid + '/qid/' + itmm.qid);
+                    let regTest = new RegExp("editquestion/surveyid/" + itmm.sid + "/gid/" + itmm.gid + "/qid/" + itmm.qid);
                     lastQuestionObject = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.endsWith(currentUrl, itmm.link) || regTest.test(currentUrl) ? itmm : lastQuestionObject;
                 });
             });
 
             //unload every selection
-            this.$store.commit('closeAllMenus');
+            this.$store.commit("closeAllMenus");
             // self.$log.debug('setMenuActive', {
             //     lastMenuItemObject : lastMenuItemObject,
             //     lastQuickMenuItemObject : lastQuickMenuItemObject,
@@ -36730,49 +36784,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //     lastQuestionGroupObject : lastQuestionGroupObject
             // });
             //apply selection based on the url
-            if (lastMenuItemObject != false && this.$store.state.isCollapsed != true) this.$store.commit('lastMenuItemOpen', lastMenuItemObject);
-            if (lastQuickMenuItemObject != false && this.$store.state.isCollapsed == true) this.$store.commit('lastMenuItemOpen', lastQuickMenuItemObject);
-            if (lastQuestionObject != false) this.$store.commit('lastQuestionOpen', lastQuestionObject);
+            if (lastMenuItemObject != false && this.$store.state.isCollapsed != true) this.$store.commit("lastMenuItemOpen", lastMenuItemObject);
+            if (lastQuickMenuItemObject != false && this.$store.state.isCollapsed == true) this.$store.commit("lastMenuItemOpen", lastQuickMenuItemObject);
+            if (lastQuestionObject != false) this.$store.commit("lastQuestionOpen", lastQuestionObject);
             if (lastQuestionGroupObject != false) {
-                this.$store.commit('lastQuestionGroupOpen', lastQuestionGroupObject);
-                this.$store.commit('addToQuestionGroupOpenArray', lastQuestionGroupObject);
+                this.$store.commit("lastQuestionGroupOpen", lastQuestionGroupObject);
+                this.$store.commit("addToQuestionGroupOpenArray", lastQuestionGroupObject);
             }
         },
         editEntity() {
-            this.setActiveMenuIndex(null, 'question');
+            this.setActiveMenuIndex(null, "question");
         },
         openEntity() {
-            this.setActiveMenuIndex(null, 'question');
+            this.setActiveMenuIndex(null, "question");
         },
         changeTab(currentTab) {
-            this.$store.commit('changeCurrentTab', currentTab);
+            this.$store.commit("changeCurrentTab", currentTab);
             this.currentTab = currentTab;
         },
         activeTab(currentTab) {
             return this.$store.state.currentTab === currentTab;
         },
         setActiveMenuIndex(index) {
-            this.$store.commit('lastMenuItemOpen', index);
+            this.$store.commit("lastMenuItemOpen", index);
             this.activeMenuIndex = index;
         },
         setOpenSubpanel(sId) {
             this.openSubpanelId = sId;
-            this.$store.commit('lastMenuOpen', sId);
-            this.$emit('menuselected', sId);
+            this.$store.commit("lastMenuOpen", sId);
+            this.$emit("menuselected", sId);
         },
         toggleCollapse() {
             this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
-            this.$store.commit('changeIsCollapsed', this.$store.state.isCollapsed);
+            this.$store.commit("changeIsCollapsed", this.$store.state.isCollapsed);
             if (this.$store.state.isCollapsed) {
-                this.sideBarWidth = '98px';
+                this.sideBarWidth = "98";
             } else {
                 this.sideBarWidth = this.$store.state.sidebarwidth;
             }
         },
         mousedown(e) {
             this.isMouseDown = this.$store.state.isCollapsed ? false : true;
-            $('#sidebar').removeClass('transition-animate-width');
-            $('#pjax-content').removeClass('transition-animate-width');
+            $("#sidebar").removeClass("transition-animate-width");
+            $("#pjax-content").removeClass("transition-animate-width");
         },
         mouseup(e) {
             if (this.isMouseDown) {
@@ -36780,12 +36834,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.$store.state.isCollapsed = false;
                 if (parseInt(this.sideBarWidth) < 250 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
-                    this.$store.commit('changeSidebarwidth', '340px');
+                    this.$store.commit("changeSidebarwidth", "340");
                 } else {
-                    this.$store.commit('changeSidebarwidth', this.sideBarWidth);
+                    this.$store.commit("changeSidebarwidth", this.sideBarWidth);
                 }
-                $('#sidebar').addClass('transition-animate-width');
-                $('#pjax-content').removeClass('transition-animate-width');
+                $("#sidebar").addClass("transition-animate-width");
+                $("#pjax-content").removeClass("transition-animate-width");
             }
         },
         mouseleave(e) {
@@ -36801,67 +36855,67 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // prevent to emit unwanted value on dragend
                 if (e.screenX === 0 && e.screenY === 0) {
                     return;
-                };
+                }
                 if (e.clientX > screen.width / 2) {
-                    this.$store.commit('maxSideBarWidth', true);
+                    this.$store.commit("maxSideBarWidth", true);
                     return;
-                };
-                self.sideBarWidth = e.pageX + 8 + 'px';
-                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
-                this.$store.commit('maxSideBarWidth', false);
+                }
+                self.sideBarWidth = e.pageX + 8 + "px";
+                this.$store.commit("changeSidebarwidth", this.sideBarWidth);
+                this.$store.commit("maxSideBarWidth", false);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
         },
         getQuestions() {
             return this.get(this.getQuestionsUrl).then(result => {
-                this.$log.log('Questions', result);
+                this.$log.log("Questions", result);
                 this.questiongroups = result.data.groups;
-                this.$store.commit('updateQuestiongroups', this.questiongroups);
+                this.$store.commit("updateQuestiongroups", this.questiongroups);
                 this.$forceUpdate();
                 this.updatePjaxLinks();
             });
         },
         getSidemenus() {
-            return this.get(this.getMenuUrl, { position: 'side' }).then(result => {
-                this.$log.log('sidemenues', result);
+            return this.get(this.getMenuUrl, { position: "side" }).then(result => {
+                this.$log.log("sidemenues", result);
                 this.sidemenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
                     return parseInt(a.order || 999999);
-                }, ['desc']);
-                this.$store.commit('updateSidemenus', this.sidemenus);
+                }, ["desc"]);
+                this.$store.commit("updateSidemenus", this.sidemenus);
                 this.$forceUpdate();
                 this.updatePjaxLinks();
             });
         },
         getCollapsedmenus() {
-            return this.get(this.getMenuUrl, { position: 'collapsed' }).then(result => {
-                this.$log.log('quickmenu', result);
+            return this.get(this.getMenuUrl, { position: "collapsed" }).then(result => {
+                this.$log.log("quickmenu", result);
                 this.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
                     return parseInt(a.order || 999999);
-                }, ['desc']);
-                this.$store.commit('updateCollapsedmenus', this.collapsedmenus);
+                }, ["desc"]);
+                this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
                 this.$forceUpdate();
                 this.updatePjaxLinks();
             });
         },
         getTopmenus() {
-            return this.get(this.getMenuUrl, { position: 'top' }).then(result => {
-                this.$log.log('topmenus', result);
+            return this.get(this.getMenuUrl, { position: "top" }).then(result => {
+                this.$log.log("topmenus", result);
                 this.topmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
                     return parseInt(a.order || 999999);
-                }, ['desc']);
-                this.$store.commit('updateTopmenus', this.topmenus);
+                }, ["desc"]);
+                this.$store.commit("updateTopmenus", this.topmenus);
                 this.$forceUpdate();
                 this.updatePjaxLinks();
             });
         },
         getBottommenus() {
-            return this.get(this.getMenuUrl, { position: 'bottom' }).then(result => {
-                this.$log.log('bottommenus', result);
+            return this.get(this.getMenuUrl, { position: "bottom" }).then(result => {
+                this.$log.log("bottommenus", result);
                 this.bottommenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
                     return parseInt(a.order || 999999);
-                }, ['desc']);
-                this.$store.commit('updateBottommenus', this.bottommenus);
+                }, ["desc"]);
+                this.$store.commit("updateBottommenus", this.bottommenus);
                 this.$forceUpdate();
                 this.updatePjaxLinks();
             });
@@ -36873,7 +36927,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.state.isCollapsed) {
-            this.sideBarWidth = '98px';
+            this.sideBarWidth = "98";
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
@@ -36881,10 +36935,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted() {
         const self = this;
 
-        $(document).trigger('sidebar:mounted');
+        $(document).trigger("sidebar:mounted");
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
         //retrieve the current menues via ajax
@@ -36894,11 +36948,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getTopmenus();
         this.getBottommenus();
 
-        $(document).on('vue-sidemenu-update-link', () => {
+        $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
         });
 
-        $(document).on('vue-reload-remote', () => {
+        $(document).on("vue-reload-remote", () => {
             this.getQuestions();
             this.getSidemenus();
             this.getCollapsedmenus();
@@ -36907,7 +36961,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$forceUpdate();
         });
 
-        $(document).on('vue-redraw', () => {
+        $(document).on("vue-redraw", () => {
             this.getQuestions();
             this.getSidemenus();
             this.getCollapsedmenus();
@@ -36921,7 +36975,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.$forceUpdate();
         this.updatePjaxLinks();
-        $('body').on('mousemove', event => {
+        $("body").on("mousemove", event => {
             self.mousemove(event, self);
         });
     }
@@ -37049,36 +37103,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         orderedQuestionGroups() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
                 return parseInt(a.group_order || 999999);
-            }, ['asc']);
+            }, ["asc"]);
         },
         createQuestionAllowed() {
-            return this.$store.state.questiongroups.length > 0;
+            return this.$store.state.questiongroups.length > 0 && this.createQuestionLink != undefined && this.createQuestionLink.length > 1;
+        },
+        createAllowance() {
+            let createGroupAllowed = this.createQuestionGroupLink != undefined && this.createQuestionGroupLink.length > 1 ? "g" : "";
+            let createQuestionAllowed = this.createQuestionAllowed ? "q" : "";
+            return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 95 + 'px';
+            return parseInt(this.$store.state.sidebarwidth) - 95 + "px";
         }
     },
     methods: {
         questionItemClasses(question) {
             let classes = "";
-            classes += this.$store.state.lastQuestionOpen === question.qid ? 'selected' : ' ';
+            classes += this.$store.state.lastQuestionOpen === question.qid ? "selected" : " ";
 
-            if (this.draggedQuestion !== null) classes += this.draggedQuestion.qid === question.qid ? ' dragged' : ' ';
+            if (this.draggedQuestion !== null) classes += this.draggedQuestion.qid === question.qid ? " dragged" : " ";
 
             return classes;
         },
         questionGroupItemClasses(questionGroup) {
             let classes = "";
-            classes += this.isActive(questionGroup.gid) ? 'selected' : ' ';
+            classes += this.isActive(questionGroup.gid) ? "selected" : " ";
 
-            if (this.draggedQuestionGroup !== null) classes += this.draggedQuestionGroup.gid === questionGroup.gid ? ' dragged' : ' ';
+            if (this.draggedQuestionGroup !== null) classes += this.draggedQuestionGroup.gid === questionGroup.gid ? " dragged" : " ";
 
             return classes;
         },
         orderQuestions(questionList) {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(questionList, a => {
                 return parseInt(a.question_order || 999999);
-            }, ['asc']);
+            }, ["asc"]);
         },
         isActive(index) {
             const result = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.indexOf(this.active, index) != -1;
@@ -37096,38 +37155,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.active.push(index);
             }
             this.$forceUpdate();
-            this.$store.commit('questionGroupOpenArray', this.active);
+            this.$store.commit("questionGroupOpenArray", this.active);
             this.updatePjaxLinks();
         },
         addActive(questionGroupId) {
             if (!this.isActive(questionGroupId)) {
                 this.active.push(questionGroupId);
             }
-            this.$store.commit('questionGroupOpenArray', this.active);
+            this.$store.commit("questionGroupOpenArray", this.active);
         },
         openQuestionGroup(questionGroup) {
             this.addActive(questionGroup.gid);
-            this.$store.commit('lastQuestionGroupOpen', questionGroup);
+            this.$store.commit("lastQuestionGroupOpen", questionGroup);
             this.$forceUpdate();
             this.updatePjaxLinks();
         },
         openQuestion(question) {
             this.addActive(question.gid);
-            this.$store.commit('lastQuestionOpen', question);
+            this.$store.commit("lastQuestionOpen", question);
             this.$forceUpdate();
-            $(document).trigger('pjax:load', { url: question.link });
+            $(document).trigger("pjax:load", { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
             this.questiongroupDragging = true;
-            $event.dataTransfer.setData('text/plain', 'node');
+            $event.dataTransfer.setData("text/plain", "node");
         },
         endDraggingGroup($event, questiongroupObject) {
             if (this.draggedQuestionGroup !== null) {
                 this.draggedQuestionGroup = null;
                 this.questiongroupDragging = false;
-                this.$emit('questiongrouporder');
+                this.$emit("questiongrouporder");
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
@@ -37163,7 +37222,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
-            $event.dataTransfer.setData('text/plain', 'node');
+            $event.dataTransfer.setData("text/plain", "node");
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -37173,7 +37232,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.questionDragging = false;
                 this.draggedQuestion = null;
                 this.draggedQuestionsGroup = null;
-                this.$emit('questiongrouporder');
+                this.$emit("questiongrouporder");
             }
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
@@ -37188,7 +37247,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
 
-        $(document).on('vue-reload-remote', () => {
+        $(document).on("vue-reload-remote", () => {
             this.$forceUpdate();
         });
     }
@@ -37204,7 +37263,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "questionexplorer"
     }
-  }, [_c('div', {
+  }, [(_vm.createAllowance != '') ? _c('div', {
     staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar"
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-primary pjax",
@@ -37222,7 +37281,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "ls-flex-row ls-space padding all-0"
   }, [_c('ul', {
     staticClass: "list-group col-12",
@@ -38071,7 +38130,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width",
     style: ({
-      width: _vm.sideBarWidth
+      'max-height': _vm.$store.state.inSurveyViewHeight,
+      width: _vm.$store.getters.sideBarSize
     }),
     attrs: {
       "id": "sidebar"
@@ -38080,7 +38140,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "mouseleave": _vm.mouseleave,
       "mouseup": _vm.mouseup
     }
-  }, [_c('div', {
+  }, [(_vm.showLoader) ? _c('div', {
+    staticClass: "sidebar_loader",
+    style: ({
+      width: _vm.getSideBarWidth,
+      height: _vm.getloaderHeight
+    })
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-12 fill-height ls-space padding all-0",
     staticStyle: {
       "height": "100%"
@@ -38198,9 +38264,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'min-height': _vm.calculateSideBarMenuHeight
     })
   })], 1)], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "resize-handle",
+    staticClass: "resize-handle ls-flex-column",
     style: ({
-      'height': _vm.$store.state.inSurveyViewHeight
+      'height': _vm.calculateSideBarMenuHeight,
+      'max-height': _vm.getWindowHeight
     })
   }, [_c('button', {
     directives: [{
@@ -38222,7 +38289,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-ellipsis-v"
   })])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ls-flex ls-flex-column fill align-content-center align-items-center"
+  }, [_c('i', {
+    staticClass: "fa fa-circle-o-notch fa-2x fa-spin"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -39397,7 +39470,7 @@ const getAppState = function (userid) {
         sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
-        sidebarwidth: '380px',
+        sidebarwidth: 380,
         maximalSidebar: false,
         isCollapsed: false,
         pjax: null,
@@ -39421,9 +39494,14 @@ const getAppState = function (userid) {
         ],
         getters: {
             substractContainer: state => {
-                let bodyWidth = ($('#vue-app-main-container').width() - parseInt(state.sidebarwidth));
-                let collapsedBodyWidth = ($('#vue-app-main-container').width() - parseInt('98px'));
-                return (state.isCollapsed ? collapsedBodyWidth : bodyWidth) + 'px';
+                let bodyWidth = (1 - (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width()))*100;
+                let collapsedBodyWidth = (1 - (parseInt('98px')/$('#vue-app-main-container').width()))*100;
+                return Math.floor(state.isCollapsed ? collapsedBodyWidth : bodyWidth) + '%';
+            },
+            sideBarSize : state => {
+                let sidebarWidth = (parseInt(state.sidebarwidth)/$('#vue-app-main-container').width())*100;
+                let collapsedSidebarWidth = (parseInt(98)/$('#vue-app-main-container').width())*100;
+                return Math.ceil(state.isCollapsed ? collapsedSidebarWidth : sidebarWidth) + '%';
             }
         },
         mutations: {

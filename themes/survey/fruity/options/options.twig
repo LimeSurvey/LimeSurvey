@@ -258,7 +258,7 @@
 
 {% set fontOptions %}
     {{fontOptions}}
-    <optgroup  label="{{ "Local Server" | t }}">
+    <optgroup  label="{{ gT("Local Server") }}">
             <option class="font-roboto"     value="roboto"     data-font-package="roboto"      >Roboto</option>
             <option class="font-news_cycle" value="news_cycle" data-font-package="news_cycle"  >News Cycle</option>
             <option class="font-lato"       value="lato"       data-font-package="lato"        >Lato</option>
@@ -266,7 +266,7 @@
             <option class="font-ubuntu"     value="ubuntu"     data-font-package="ubuntu"       >Ubuntu</option>
     </optgroup>
 
-    <optgroup  label="{{ "User browser" | t }}">
+    <optgroup  label="{{ gT("User browser") }}">
 
       <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
       <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
@@ -297,16 +297,16 @@
             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                 <div class='row' id="general_inherit_active">
                     <div class='form-group row'>
-                        <label for='simple_edit_options_general_inherit' class='control-label'>{{"Inherit everything" | t}}</label>
+                        <label for='simple_edit_options_general_inherit' class='control-label'>{{gT("Inherit everything" )}}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                             </div>
                         </div>
@@ -323,22 +323,22 @@
 
                     {# Ajaxmode setting #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_ajaxmode' class='control-label'> {{ "Ajax mode" | t}} </label>
+                        <label for='simple_edit_options_ajaxmode' class='control-label'> {{ gT("Ajax mode") }} </label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input name='ajaxmode' type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input name='ajaxmode' type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input name='ajaxmode' type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                        {{ "Inherit" | t }}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -349,22 +349,22 @@
                 {# Container #}
                 <div class='col-sm-12 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_container' class='control-label'> {{ "Survey container" | t }} </label>
+                        <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='container' value='on' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='container' value='off' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                        {{ "Inherit" | t }}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -375,23 +375,23 @@
                 {# Question Border #}
                 <div class='col-sm-12 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_questionborder' class='control-label'>{{ "Question borders" | t }}</label>
+                        <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='questionborder' value='on' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='questionborder' value='off' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
 
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='questionborder' value='inherit' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -402,22 +402,22 @@
                 {# Question Shadow #}
                 <div class='col-sm-12 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ "Question shadow" | t }}</label>
+                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='questioncontainershadow' value='on' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                    {{ "Yes" | t }}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='questioncontainershadow' value='off' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                    {{ "No" | t }}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='questioncontainershadow' value='inherit' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -434,15 +434,17 @@
                 {# Background Color #}
                 <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ "Background color" | t }}</label>
+                        <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ gT("Background color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -450,15 +452,17 @@
                 {# Font Color #}
                 <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_fontcolor' class='control-label'>{{ "Font color" | t }}</label>
+                        <label for='simple_edit_options_fontcolor' class='control-label'>{{ gT("Font color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -466,15 +470,17 @@
                 {# Question Background Color #}
                 <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ "Question background color" | t }}</label>
+                        <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ gT("Question background color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
                             </div>
                             <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
-                            <div class="input-group-addon">
-                                <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
-                            </div>
+                            {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                <div class="input-group-addon">
+                                    <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -482,7 +488,7 @@
                 {# Check icon #}
                 <div class='col-sm-6 col-md-3'>
                     <div class='form-group row'>
-                        <label for='simple_edit_options_checkicon' class='control-label'>{{ "Check icon" | t }}</label>
+                        <label for='simple_edit_options_checkicon' class='control-label'>{{ gT("Check icon") }}</label>
                         <div class="input-group">
                             <select name="checkicon" value="" class="selector_option_value_field form-control simple_edit_options_checkicon" data-id="checkicon" >
                                 {{checkIconOptions}}
@@ -505,22 +511,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Background image #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_backgroundimage' class='control-label'>{{ "Background image" | t }}</label>
+                        <label for='simple_edit_options_backgroundimage' class='control-label'>{{ gT("Background image") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='backgroundimage' value='on' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='backgroundimage' value='off' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='backgroundimage' value='inherit' class='selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -531,11 +537,11 @@
                 <div class='col-sm-8 col-md-6'>
                     {#  Background image file selector #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ "Background image file" | t }}</label>
+                        <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ gT("Background image file") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <option value="inherit">{{ "Inherit" | t}}</option>
+                                    <option value="inherit">{{ gT("Inherit") }}</option>
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
@@ -554,22 +560,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Brandlogo #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogo' class='control-label'> {{ "Brand logo" | t }}</label>
+                        <label for='simple_edit_options_brandlogo' class='control-label'> {{ gT("Logo") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' name='brandlogo' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' name='brandlogo' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='brandlogo' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -579,11 +585,11 @@
                 <div class='col-sm-8 col-md-6'>
                     {#  Brandlogo file selector #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ "Brand logo file" | t }}</label>
+                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Logo file") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <option value="inherit">{{ "Inherit" | t }}</option>
+                                    <option value="inherit">{{ gT("Inherit") }}</option>
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
@@ -605,22 +611,22 @@
                 <div class='col-sm-12 col-md-4'>
                     <div class='form-group row'>
                         {# Animate body On/Off #}
-                        <label for='simple_edit_options_animatebody' class='control-label'>{{ "Animate body" | t}}</label>
+                        <label for='simple_edit_options_animatebody' class='control-label'>{{ gT("Animate body") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' value='on' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' value='off' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' value='inherit' class='selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -630,7 +636,7 @@
                 <div class='col-sm-10 col-md-6'>
                     {# Animate body -> Animation type #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_bodyanimation' class='control-label'>{{ "Body animation" | t }}</label>
+                        <label for='simple_edit_options_bodyanimation' class='control-label'>{{ gT("Body animation") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
                                 {{animationOptions}}
@@ -641,7 +647,7 @@
                 <div class='col-sm-2'>
                     {# Animate body -> Animation type duration #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_bodyanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <label for='simple_edit_options_bodyanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-sm-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimationduration' name='bodyanimationduration' />
                         </div>
@@ -652,22 +658,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Animate question -> On/Off #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_animatequestion' class='control-label'>{{ "Animate question" | t }}</label>
+                        <label for='simple_edit_options_animatequestion' class='control-label'>{{ gT("Animate question") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -677,7 +683,7 @@
                 <div class='col-sm-10 col-md-6'>
                     {# Animate question -> Animation type #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_questionanimation' class='control-label'>{{ "Question animation" | t }}</label>
+                        <label for='simple_edit_options_questionanimation' class='control-label'>{{ gT("Question animation") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
                                 {{animationOptions}}
@@ -688,7 +694,7 @@
                 <div class='col-sm-2'>
                     {# Animate question -> Animation type #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_questionanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <label for='simple_edit_options_questionanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-sm-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimationduration' name='questionanimationduration' />
                         </div>
@@ -701,22 +707,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Animate alert -> On/Off #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_animatealert' class='control-label'>{{ "Animate alert" | t }}</label>
+                        <label for='simple_edit_options_animatealert' class='control-label'>{{ gT("Animate alert") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -726,7 +732,7 @@
                 <div class='col-sm-10 col-md-6'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_alertanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                        <label for='simple_edit_options_alertanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
                                 {{animationOptions}}
@@ -737,7 +743,7 @@
                 <div class='col-sm-2'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_alertanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <label for='simple_edit_options_alertanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-sm-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimationduration' name='alertanimationduration'/>
                         </div>
@@ -750,22 +756,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Animate alert -> On/Off #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_animatecheckbox' class='control-label'>{{ "Animate checkbox" | t }}</label>
+                        <label for='simple_edit_options_animatecheckbox' class='control-label'>{{ gT("Animate checkbox") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animatecheckbox' name='animatecheckbox'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -775,7 +781,7 @@
                 <div class='col-sm-10 col-md-6'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ "Alert animation" | t }}</label>
+                        <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
                                 {{animationOptions}}
@@ -786,7 +792,7 @@
                 <div class='col-sm-2'>
                     {# Animate alert -> Animation options #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_checkboxanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <label for='simple_edit_options_checkboxanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-sm-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimationduration' name='checkboxanimationduration' />
                         </div>
@@ -799,22 +805,22 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Animate alert -> On/Off #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_animateradio' class='control-label'>{{ "Animate radio buttons" | t }}</label>
+                        <label for='simple_edit_options_animateradio' class='control-label'>{{ gT("Animate radio buttons") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     <input type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
-                                    {{ "Yes" | t}}
+                                    {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
                                     <input type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
-                                    {{ "No" | t}}
+                                    {{ gT("No") }}
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_animateradio' name='animateradio'/>
-                                        {{ "Inherit" | t}}
+                                        {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
                             </div>
@@ -826,7 +832,7 @@
                 <div class='col-sm-10 col-md-6'>
 
                     <div class='form-group row'>
-                        <label for='simple_edit_options_radioanimation' class='control-label'>{{ "Radio button animation" | t }}</label>
+                        <label for='simple_edit_options_radioanimation' class='control-label'>{{ gT("Radio button animation") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
                                 {{animationOptions}}
@@ -838,7 +844,7 @@
                 <div class='col-sm-2'>
 
                     <div class='form-group row'>
-                        <label for='simple_edit_options_radioanimationduration' class='control-label'>{{ "Duration" | t }}</label>
+                        <label for='simple_edit_options_radioanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-sm-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimationduration' name='radioanimationduration' />
                         </div>
@@ -851,12 +857,12 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ "Fruity fonts" | t }}</div>
+                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
-                                <label for='simple_edit_font' class='control-label'>{{ "Select font:" | t }}</label>
+                                <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>
@@ -869,16 +875,16 @@
             <div class='row ls-space margin top-15 bottom-15 '>
                 <hr/>
             </div>
-
+            {# Fruity variation #}
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ "Fruity variations" | t }} </div>
+                        <div class='panel-heading'>{{ gT("Fruity variations") }} </div>
                         <div class='panel-body'>
                             <div class='form-group row'>
-                                <label for='simple_edit_add_css' class='control-label'>{{ "Select variation:" | t }}</label>
+                                <label for='simple_edit_add_css' class='control-label'>{{ gT("Select variation:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework'>
+                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>
                                         {{fruityOptions}}
                                     </select>
                                 </div>
@@ -889,7 +895,7 @@
             </div>
             <div class='row hidden'>
                 <div class='col-sm-12'>
-                    <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>{{ "Save" | t }} </button>
+                    <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>{{ gT("Save") }} </button>
                 </div>
             </div>
         </form>
@@ -907,7 +913,7 @@
                         <label class="btn btn-default col-xs-8" for="upload_image_frontend">
                             <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
                             <i class="fa fa-upload ls-space margin right-10"></i>
-                            {{ "Upload" | t }}
+                            {{ gT("Upload") }}
                         </label>
                     </span>
 

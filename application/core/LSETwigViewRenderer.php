@@ -24,52 +24,82 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-        public  $sandboxConfig = array();
-        private $_twig;
+    public  $sandboxConfig = array();
+    private $_twig;
 
-        /**
-         * Main method to render a survey.
-         * @param string  $sLayout the name of the layout to render
-         * @param array   $aDatas  the datas needed to fill the layout
-         * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
-         */
-        public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
-        {
-            $oTemplate = Template::getInstance();
-            $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
-            if ($oLayoutTemplate) {
-                $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
-                $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+    /**
+     * Main method to render a survey.
+     * @param string  $sLayout the name of the layout to render
+     * @param array   $aDatas  the datas needed to fill the layout
+     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     */
+    public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
+    {
+        $oTemplate = Template::getInstance();
+        $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
+        if ($oLayoutTemplate) {
+            $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
+            $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
 
-                if ($bReturn) {
-                    return $sHtml;
-                } else {
-                    $this->renderHtmlPage($sHtml, $oTemplate);
-                }
+            if ($bReturn) {
+                return $sHtml;
             } else {
-                $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
-                // A possible solution to this error is to re-install the template.
-                if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
-                    throw new WrongTemplateVersionException(
-                        sprintf(
-                            gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
-                            $sLayout,
-                            $oTemplate->template_name,
-                            $oTemplate->template->version,
-                            $templateDbConf->config->metadata->version
-                        )
-                    );
-                }
-                // TODO: Panic or default to something else?
-                throw new CException(
+                $this->renderHtmlPage($sHtml, $oTemplate);
+            }
+        } else {
+            $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
+            // A possible solution to this error is to re-install the template.
+            if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
+                throw new WrongTemplateVersionException(
                     sprintf(
-                        gT("Can't render layout %s for template %s. Please try to re-install the template."),
+                        gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
                         $sLayout,
-                        $oTemplate->template_name
+                        $oTemplate->template_name,
+                        $oTemplate->template->version,
+                        $templateDbConf->config->metadata->version
                     )
                 );
             }
+            // TODO: Panic or default to something else?
+            throw new CException(
+                sprintf(
+                    gT("Can't render layout %s for template %s. Please try to re-install the template."),
+                    $sLayout,
+                    $oTemplate->template_name
+                )
+            );
         }
+    }
+
+
+    /**
+     * Main method to render a admin page or block.
+     * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
+     * @param string  $sLayout the name of the layout to render
+     * @param array   $aDatas  the datas needed to fill the layout
+     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     */
+    public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false)
+    {
+        $viewFile = Yii::app()->getConfig('rootdir').$sLayoutFilePath;
+        if (file_exists($viewFile)) {
+            $line       = file_get_contents($viewFile);
+            $sHtml      = $this->convertTwigToHtml($line, $aDatas);
+
+            if ($bReturn) {
+                return $sHtml;
+            } else {
+                $this->renderHtmlPage($sHtml, $oTemplate);
+            }
+        } else {
+            throw new CException(
+                sprintf(
+                    gT("Can't render layout %s. Please check the view exists or contact your admin."),
+                    $sLayoutFilePath
+                )
+            );
+        }
+    }
 
     /**
      * This method is called from qanda helper to render a question view file.
@@ -213,19 +243,22 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param TemplateConfiguration $oTemplate
      * @return string
      */
-    public function convertTwigToHtml($sString, $aDatas, $oTemplate)
+    public function convertTwigToHtml($sString, $aDatas, $oTemplate = null)
     {
         // Twig init
         $this->_twig = $twig = parent::getTwig();
 
-        // Get the additional infos for the view, such as language, direction, etc
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        //Run theme related things only if a theme is provided!
+        if ($oTemplate !== null) {
+            // Get the additional infos for the view, such as language, direction, etc
+            $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
 
-        // Add to the loader the path of the template and its parents.
-        $this->addRecursiveTemplatesPath($oTemplate);
+            // Add to the loader the path of the template and its parents.
+            $this->addRecursiveTemplatesPath($oTemplate);
 
-        // Plugin for blocks replacement
-        list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+            // Plugin for blocks replacement
+            list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+        }
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($sString);
@@ -282,9 +315,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
-            if (!empty($_SESSION['survey_'.$surveyid]['srid'])) {
-                $aDatas['aSurveyInfo']['bShowClearAll'] = !SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
+                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            } else {
+                $isCompleted = false;
             }
+
+            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);

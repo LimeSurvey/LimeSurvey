@@ -49,6 +49,7 @@ class UserAction extends Survey_Common_Action
         }
         return $value;
     }
+
     /**
      * Show users table
      */
@@ -76,6 +77,10 @@ class UserAction extends Survey_Common_Action
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
+    /**
+     * @param array $user
+     * @return int
+     */
     private function _getSurveyCountForUser(array $user)
     {
         return Survey::model()->countByAttributes(array('owner_id' => $user['uid']));
@@ -96,7 +101,11 @@ class UserAction extends Survey_Common_Action
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $aViewUrls = array();
         if (empty($new_user)) {
-            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'text-warning');
+            $aViewUrls['message'] = array(
+                'title' => gT("Failed to add user"),
+                'message' => gT("A username was not supplied or the username is invalid."),
+                'class'=> 'text-warning'
+            );
         } elseif (User::model()->find("users_name=:users_name", array(':users_name'=>$new_user))) {
             // TODO: If error, we want to keep the form values. Can't do it nicely without CActiveForm?
             Yii::app()->setFlashMessage(gT("The username already exists."), 'error');
@@ -117,9 +126,9 @@ class UserAction extends Survey_Common_Action
                 $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
+
                 // add new user to userlist
-                $sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
-                $srow = count($sresult);
+                //$sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
 
                 // send Mail
                 $body = sprintf(gT("Hello %s,"), $new_full_name)."<br /><br />\n";
@@ -157,9 +166,15 @@ class UserAction extends Survey_Common_Action
                     $sHeader = gT("Warning");
                 }
 
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Add user"), $sHeader, $classMsg, $extra,
-                $this->getController()->createUrl("admin/user/sa/setuserpermissions"), gT("Set user permissions"),
-                array('action' => 'setuserpermissions', 'user' => $new_user, 'uid' => $iNewUID));
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(
+                    gT("Add user"),
+                    $sHeader,
+                    $classMsg,
+                    $extra,
+                    $this->getController()->createUrl("admin/user/sa/setuserpermissions"),
+                    gT("Set user permissions"),
+                    array('action' => 'setuserpermissions', 'user' => $new_user, 'uid' => $iNewUID)
+                );
             }
         }
 
@@ -172,7 +187,7 @@ class UserAction extends Survey_Common_Action
     public function deluser()
     {
         if (Yii::app()->request->getIsPostRequest()) {
-/* DB action : need post request */
+            /* DB action : need post request */
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && !Permission::model()->hasGlobalPermission('users', 'delete')) {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
@@ -189,7 +204,7 @@ class UserAction extends Survey_Common_Action
             $postuser = flattenText($this->_getPostOrParam("user"));
 
             if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
-// it's the original superadmin !!!
+                // it's the original superadmin !!!
                 Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
                 return;
@@ -271,7 +286,7 @@ class UserAction extends Survey_Common_Action
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
-// it's the original superadmin !!!
+            // it's the original superadmin !!!
             Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"), 'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -284,19 +299,18 @@ class UserAction extends Survey_Common_Action
         $sresult = User::model()->findByAttributes(array('uid' => $postuserid));
         $fields = $sresult;
         if (isset($fields['parent_id'])) {
-            $uresult = User::model()->updateAll(array('parent_id' => $fields['parent_id']), 'parent_id='.$postuserid);
+            User::model()->updateAll(array('parent_id' => $fields['parent_id']), 'parent_id='.$postuserid);
         }
 
         //DELETE USER FROM TABLE
-        $dresult = User::model()->deleteUser($postuserid);
+        User::model()->deleteUser($postuserid);
 
         // Delete user rights
-        $dresult = Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
+        Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
         if ($postuserid == Yii::app()->session['loginID']) {
             session_destroy(); // user deleted himself
             $this->getController()->redirect(array("admin/authentication/sa/logout"));
-            die();
         }
 
         $extra = "<br />".sprintf(gT("User '%s' was successfully deleted."), $postuser)."<br /><br />\n";
@@ -319,8 +333,7 @@ class UserAction extends Survey_Common_Action
     {
         if (Yii::app()->request->getParam('uid') != '') {
             $postuserid = (int) Yii::app()->request->getParam("uid");
-            if (
-                Permission::model()->hasGlobalPermission('superadmin', 'read') // Super admin have all right on user
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read') // Super admin have all right on user
                 || Yii::app()->session['loginID'] == $postuserid // User can edit himself
                 || (Permission::model()->hasGlobalPermission('users', 'update') && User::model()->count("uid=:uid AND parent_id=:parent_id)", array(':uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']))) // User with users update can only update own Users
             ) {
@@ -354,7 +367,6 @@ class UserAction extends Survey_Common_Action
         if (!$oUser) {
             throw new CHttpException(403); // Bad param (and not 404) because it's POST value
         }
-        $user_name = empty($postUser['users_name']) ? null : $postUser['users_name']; // Not updatable
         $newUsermail = empty($postUser['email']) ? null : $postUser['email'];
         $newUserFullName = empty($postUser['full_name']) ? null : $postUser['full_name'];
         $newPassword = empty($postUser['password']) ? null : $postUser['password'];
@@ -590,16 +602,23 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
-            $oUserModel->lang = Yii::app()->request->getPost('lang');
-            $oUserModel->dateformat = Yii::app()->request->getPost('dateformat');
-            $oUserModel->htmleditormode = Yii::app()->request->getPost('htmleditormode');
-            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
-            $oUserModel->templateeditormode = Yii::app()->request->getPost('templateeditormode');
-            $oUserModel->full_name = Yii::app()->request->getPost('fullname');
-            $oUserModel->email = Yii::app()->request->getPost('email');
 
-            if (Yii::app()->request->getPost('password') != '' && !Yii::app()->getConfig('demoMode')) {
+            $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
+            $oUserModel->lang                 = Yii::app()->request->getPost('lang');
+            $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
+            $oUserModel->htmleditormode       = Yii::app()->request->getPost('htmleditormode');
+            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
+            $oUserModel->templateeditormode   = Yii::app()->request->getPost('templateeditormode');
+            $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
+            $oUserModel->email                = Yii::app()->request->getPost('email');
+
+            if (Yii::app()->request->getPost('newpasswordshown') == "1") {
+
+                if (Yii::app()->getConfig('demoMode')) {
+                    Yii::app()->setFlashMessage(gT("You can't change password if demo mode is active."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+
                 $oldPassword = Yii::app()->request->getPost('oldpassword');
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
@@ -607,18 +626,26 @@ class UserAction extends Survey_Common_Action
                 if (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+
                 } elseif (trim($oldPassword) === trim($newPassword)) {
                     //First test if old and new password are identical => no need to save it (or ?)
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 } elseif (trim($newPassword) !== trim($repeatPassword)) {
                     //Then test the new password and the repeat password for identity
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."), 'error');
-                //Now check if the old password matches the old password saved
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                    //Now check if the old password matches the old password saved
+                } elseif (empty(trim($newPassword))) {
+                    Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 } else {
                     // We can update
                     $oUserModel->setPassword($newPassword);
                 }
             }
+
             $uresult = $oUserModel->save();
             if ($uresult) {
                 if (Yii::app()->request->getPost('lang') == 'auto') {
@@ -643,8 +670,6 @@ class UserAction extends Survey_Common_Action
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
-        } else {
-            $aData = array();
         }
 
         // Get user lang
@@ -682,6 +707,10 @@ class UserAction extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param int $uid
+     * @return string|boolean
+     */
     private function _getUserNameFromUid($uid)
     {
         $uid = sanitize_int($uid);
@@ -722,19 +751,6 @@ class UserAction extends Survey_Common_Action
             }
         }
         return true;
-    }
-
-    private function escape($str)
-    {
-        if (is_string($str)) {
-            $str = $this->escape_str($str);
-        } elseif (is_bool($str)) {
-            $str = ($str === true) ? 1 : 0;
-        } elseif (is_null($str)) {
-            $str = 'NULL';
-        }
-
-        return $str;
     }
 
     /**
@@ -813,5 +829,4 @@ class UserAction extends Survey_Common_Action
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
 }

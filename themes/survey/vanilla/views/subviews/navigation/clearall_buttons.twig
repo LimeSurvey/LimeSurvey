@@ -1,0 +1,12 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2007-2018 The LimeSurvey Project Team
+    This file render the exit button accessible without javascript
+#}
+
+<div class="{{ aSurveyInfo.class.clearallwrapper }} form-inline">
+    <label class="form-group ls-js-hidden">
+        <input {{ aSurveyInfo.attr.clearallconfirm }} class="{{ aSurveyInfo.class.clearallconfirm }}"><span class="control-label">{{gT("Please confirm you want to clear your response?")}}</span>
+    </label>
+    <button {{ aSurveyInfo.attr.clearallbutton }} class="{{ aSurveyInfo.class.clearallbutton }} btn btn-link" data-confirmedby="confirm-clearall" title="{{ gT('This action need confirmation.') }}">{{gT("Exit and clear survey")}}</button>
+</div>

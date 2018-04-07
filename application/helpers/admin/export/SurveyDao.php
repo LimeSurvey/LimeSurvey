@@ -114,15 +114,7 @@ class SurveyDao
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
-
-        $aParams = array(
-            'min'=>$iMinimum,
-            'max'=>$iMaximum
-        );
-        $selection = $oSurvey->responsesTableName.'.id >= :min AND '.$oSurvey->responsesTableName.'.id <= :max';
-        $oRecordSet->where($selection, $aParams);
-
-        if (empty($sResponsesId)) {
+        if ( empty($sResponsesId)) {
             $aParams = array(
                 'min'=>$iMinimum,
                 'max'=>$iMaximum

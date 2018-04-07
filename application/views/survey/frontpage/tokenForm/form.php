@@ -24,7 +24,7 @@
     <?php if (isset($bCaptchaEnabled)): ?>
         <div class='form-group captcha-item'>
             <!-- Don't seems aria capable -->
-            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
             <div class='col-sm-7'>
                 <div class='ls-input-group'>
                     <div class='ls-input-group-extra captcha-widget' >

@@ -77,7 +77,6 @@ class AdminViewsTest extends TestBaseClassView
     public function testAdminSurveyViews($name, $view)
     {
         if (isset($view['import_id'])) {
-
             // we'll change the survey in the middle of test
             if(self::$testSurvey){
                 self::$testSurvey->delete();
@@ -85,12 +84,25 @@ class AdminViewsTest extends TestBaseClassView
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
 
+            if(isset($view['activate']) && $view['activate'] ){
+                $activator = new \SurveyActivator(self::$testSurvey);
+                $activator->activate();
+                \Token::createTable(self::$surveyId);
+            }
+
 
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).
             $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
             self::importSurvey($surveyFile);
+        }
+        if (isset($view['questionType'])) {
+            $question = self::$testSurvey->findQuestionByType($view['questionType']);
+            if(empty($question)){
+                throw new \Exception('Question not found');
+            }
+            $view['route'] = ReplaceFields($view['route'], ['{QID}'=> $question->qid,'{GID}'=> $question->gid,'{SID}'=> self::$testSurvey->primaryKey]);
 
         }
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);

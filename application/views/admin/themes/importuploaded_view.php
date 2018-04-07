@@ -82,7 +82,7 @@
                 </ul>
             </p>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" value='<?php eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
+                <input type='submit' class="btn btn-default btn-lg" value='<?php eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
             </p>
         </div>
     </div>

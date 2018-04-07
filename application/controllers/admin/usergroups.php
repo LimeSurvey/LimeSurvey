@@ -296,8 +296,8 @@ class Usergroups extends Survey_Common_Action
                     $userloop[$row]["userid"] = $egurow['uid'];
 
                     //	output users
-                    $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+                    $userloop[$row]["rowclass"] = $bgcc;                                                                                       
+                    if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $egurow['owner_id']==Yii::app()->session['loginID'])  {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;

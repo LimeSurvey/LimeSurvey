@@ -106,6 +106,7 @@ class QuestionGroup extends LSActiveRecord
      *
      * @param array $data
      * @return bool|int
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
@@ -118,23 +119,6 @@ class QuestionGroup extends LSActiveRecord
         } else {
             return $group->gid;
         }
-    }
-
-    /**
-     * @param int $surveyid
-     * @return array
-     */
-    public function getGroups($surveyid)
-    {
-        $language = Survey::model()->findByPk($surveyid)->language;
-        return Yii::app()->db->createCommand()
-            ->select(array('gid', 'group_name'))
-            ->from($this->tableName())
-            ->where(array('and', 'sid=:surveyid', 'language=:language'))
-            ->order('group_order asc')
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
-            ->query()->readAll();
     }
 
     /**
@@ -242,17 +226,33 @@ class QuestionGroup extends LSActiveRecord
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
-                $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
-                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                onclick="'.$confirm.'">
-                <i class="text-danger fa fa-trash"></i>
-                </a>';
+                $sDeleteUrl = Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid");
+                
+                $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
+                    .'<a class="btn btn-default" href="#" '
+                    .' data-href="'.$sDeleteUrl.'" '
+                    .' data-target="#confirmation-modal"'
+                    .' role="button"'
+                    .' data-toggle="modal"'
+                    .' data-message="'.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'"'
+                    .'>'
+                        .'<i class="fa fa-trash text-danger "></i>'
+                        .'<span class="sr-only">'.gT('Delete survey group').'</span>'
+                    .'</a>'
+                    .'</span>';
+
             } else {
-                $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'\'); return false;';
-                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                onclick="'.$alert.'">
-                <i class="text-danger fa fa-trash"></i>
-                </a>';
+                $button .= '<span data-toggle="tooltip" title="'.gT('Group cant be deleted, because of depending conditions').'">'
+                    .'<a class="btn btn-default" href="#" '
+                    .' class="disabled" disabled '
+                    .' role="button"'
+                    .' data-toggle="popover"'
+                    .' data-tooltip="true"'
+                    .' title="'.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'">'
+                        .'<i class="fa fa-trash text-muted "></i>'
+                        .'<span class="sr-only">'.gT('Delete survey group not possible').'</span>'
+                    .'</a>'
+                    .'</span>';
             }
         }
 
@@ -310,9 +310,9 @@ class QuestionGroup extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-/* And for multi lingual, when add a new language ? */
+            $survey = Survey::model()->findByPk($this->sid);
+            if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
+                /* And for multi lingual, when add a new language ? */
                 $this->addError('gid', gT("You can not add a group if survey is active."));
                 return false;
             }

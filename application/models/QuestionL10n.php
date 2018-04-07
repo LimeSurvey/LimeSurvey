@@ -16,7 +16,8 @@
 
 /**
  * Class QuestionL10n
- *
+ * @property integer $id primary key
+ * @property integer $qid question id
  * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
  * @property string $question Question display text. The actual question.
  * @property string $help Question help-text for display
@@ -52,7 +53,8 @@ class QuestionL10n extends LSActiveRecord
     public function relations()
     {
         return array(
-            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
+            // FIXME this conflicts with the attribute "question"
+            //'question' => array(self::BELONGS_TO, 'Question', 'qid'),
         );
     }
     
@@ -71,6 +73,8 @@ class QuestionL10n extends LSActiveRecord
     public function rules()
     {
         return array(
+            ['qid,language', 'required'],
+            ['qid', 'numerical', 'integerOnly'=>true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?

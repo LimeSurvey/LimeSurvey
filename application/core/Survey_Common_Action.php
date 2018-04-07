@@ -395,11 +395,13 @@ class Survey_Common_Action extends CAction
      * Header
      * @param array $aData
      */
-    private function _showHeaders($aData)
+    private function _showHeaders($aData, $sendHTTPHeader = true)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
-            header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+            if ($sendHTTPHeader) {
+                header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+            }
             Yii::app()->getController()->_getAdminHeader();
         }
     }
@@ -426,7 +428,7 @@ class Survey_Common_Action extends CAction
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
-                    'title' => 'Password warning',
+                    'title' => gT('Password warning'),
                     'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
@@ -960,51 +962,51 @@ class Survey_Common_Action extends CAction
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
-        $surveysummary2 = "";
+        $surveysummary2 = [];
         if ($aSurveyInfo['anonymized'] != "N") {
-            $surveysummary2 .= gT("Responses to this survey are anonymized.")."<br />";
+            $surveysummary2[] = gT("Responses to this survey are anonymized.");
         } else {
-            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.")."<br />";
+            $surveysummary2[] = gT("Responses to this survey are NOT anonymized.");
         }
         if ($aSurveyInfo['format'] == "S") {
-            $surveysummary2 .= gT("It is presented question by question.")."<br />";
+            $surveysummary2[] = gT("It is presented question by question.");
         } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2 .= gT("It is presented group by group.")."<br />";
+            $surveysummary2[] = gT("It is presented group by group.");
         } else {
-            $surveysummary2 .= gT("It is presented on one single page.")."<br />";
+            $surveysummary2[] = gT("It is presented on one single page.");
         }
         if ($aSurveyInfo['questionindex'] > 0) {
             if ($aSurveyInfo['format'] == 'A') {
-                $surveysummary2 .= gT("No question index will be shown with this format.")."<br />";
+                $surveysummary2[] = gT("No question index will be shown with this format.");
             } elseif ($aSurveyInfo['questionindex'] == 1) {
-                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.")."<br />";
+                $surveysummary2[] = gT("A question index will be shown; participants will be able to jump between viewed questions.");
             } elseif ($aSurveyInfo['questionindex'] == 2) {
-                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.")."<br />";
+                $surveysummary2[] = gT("A full question index will be shown; participants will be able to jump between relevant questions.");
             }
         }
         if ($oSurvey->isDateStamp) {
-            $surveysummary2 .= gT("Responses will be date stamped.")."<br />";
+            $surveysummary2[] = gT("Responses will be date stamped.");
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2 .= gT("IP Addresses will be logged")."<br />";
+            $surveysummary2[] = gT("IP Addresses will be logged");
         }
         if ($oSurvey->isRefUrl) {
-            $surveysummary2 .= gT("Referrer URL will be saved.")."<br />";
+            $surveysummary2[] = gT("Referrer URL will be saved.");
         }
         if ($oSurvey->isUseCookie) {
-            $surveysummary2 .= gT("It uses cookies for access control.")."<br />";
+            $surveysummary2[] = gT("It uses cookies for access control.");
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2 .= gT("If tokens are used, the public may register for this survey")."<br />";
+            $surveysummary2[] = gT("If tokens are used, the public may register for this survey");
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
-            $surveysummary2 .= gT("Participants can save partially finished surveys")."<br />\n";
+            $surveysummary2[] = gT("Participants can save partially finished surveys");
         }
         if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2 .= gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
+            $surveysummary2[] = gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto']);
         }
         if ($oSurvey->emailresponseto != '') {
-            $surveysummary2 .= gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
+            $surveysummary2[] = gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto']);
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1052,14 +1054,14 @@ class Survey_Common_Action extends CAction
             $aData['surveydb'] = Yii::app()->db->tablePrefix."survey_".$iSurveyID;
         }
 
-        $aData['warnings'] = "";
+        $aData['warnings'] = [];
         if ($activated == "N" && $sumcount3 == 0) {
-            $aData['warnings'] = gT("Survey cannot be activated yet.")."<br />\n";
+            $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span><br />";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[".gT("You need to add questions")."]</span><br />";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -1083,6 +1085,9 @@ class Survey_Common_Action extends CAction
         }
         $aData['quickactionstate'] = $quickactionState !== null ? intval($quickactionState) : 1;
         $aData['subviewData'] = $aData;
+
+        Yii::app()->getClientScript()->registerPackage('surveysummary');
+
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
@@ -1222,13 +1227,12 @@ class Survey_Common_Action extends CAction
     protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
         if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
-                    $dir .= DIRECTORY_SEPARATOR;
+            $dir .= DIRECTORY_SEPARATOR;
         }
 
         do {
             $path = $dir.$prefix.mt_rand(0, 9999999);
-        }
-        while (!mkdir($path, $mode));
+        } while (!mkdir($path, $mode));
 
         return $path;
     }

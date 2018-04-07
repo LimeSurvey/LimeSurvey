@@ -330,6 +330,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
+
         if (!empty($this->aCssFrameworkReplacement)) {
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
@@ -702,13 +703,23 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['privacyhead']      = ' ';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
+        $aClassAndAttributes['class']['privacydatasecmodalbody'] = '';
+        $aClassAndAttributes['class']['privacydatasectextbody'] = '';
+
+        $aClassAndAttributes['class']['privacydataseccheckbox'] = '';
+        $aClassAndAttributes['class']['privacydataseccheckboxlabel'] = '';
+
         $aClassAndAttributes['attr']['privacycontainer'] = $aClassAndAttributes['attr']['privacycol'] = $aClassAndAttributes['attr']['privacyhead'] = $aClassAndAttributes['attr']['privacybody'] = '';
 
         // Clearall Links
         $aClassAndAttributes['class']['clearalllinks'] = ' ls-no-js-hidden ';
         $aClassAndAttributes['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
-
         $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
+        // Clearall Buttons
+        $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
+        $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
+        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
+        $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
 
         // Language changer
         $aClassAndAttributes['id']['lctdropdown'] = 'langs-container';
@@ -808,12 +819,15 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
         $aClassAndAttributes['class']['savelinksli']  = ' ls-no-js-hidden ';
         $aClassAndAttributes['class']['savelinkslia'] = 'ls-link-action ls-link-saveall';
-
         $aClassAndAttributes['attr']['loadlinksli'] = $aClassAndAttributes['attr']['savelinksli'] = $aClassAndAttributes['class']['savelinkslia'] = '';
 
         // Here you can add metas from core
         $aClassAndAttributes['metas'] = '    ';
-
+        // Save/Load buttons
+        $aClassAndAttributes['class']['loadbutton']  = 'ls-saveaction ls-loadall';
+        $aClassAndAttributes['class']['savebutton'] = 'ls-saveaction ls-saveall';
+        $aClassAndAttributes['attr']['loadbutton']  = 'type="submit" value="loadall" name="loadall"';
+        $aClassAndAttributes['attr']['savebutton'] = 'type="submit" value="saveall" name="saveall"';
         // Maybe add a plugin event here?
 
         return $aClassAndAttributes;
@@ -898,6 +912,13 @@ class TemplateConfig extends CActiveRecord
 
 
             if ($oNewTemplateConfiguration->save()) {
+
+                // Find all surveys using this theme (if reinstalling) and create an entry on db for them
+                $aSurveysUsingThisTeme  =  Survey::model()->findAll('template=:template', array(':template'=>$sTemplateName));
+                foreach ($aSurveysUsingThisTeme as $oSurvey) {
+                     TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
+                }
+
                 return true;
             } else {
                 throw new Exception($oNewTemplateConfiguration->getErrors());
@@ -905,27 +926,6 @@ class TemplateConfig extends CActiveRecord
         } else {
             throw new Exception($oNewTemplate->getErrors());
         }
-    }
-
-    /**
-     * Get a string containing the name of the current template and all its parents
-     * Used to inject those names into body classes
-     */
-    public function getTemplateAndMotherNames()
-    {
-        $oRTemplate = $this;
-        $sTemplateNames = $this->sTemplateName;
-
-        while (!empty($oRTemplate->template->extends)) {
-
-            $sTemplateNames .= ' '.$oRTemplate->template->extends;
-            $oRTemplate      = $oRTemplate->oMotherTemplate;
-            if (!($oRTemplate instanceof TemplateConfiguration)) {
-                // Throw alert: should not happen
-                break;
-            }
-        }
-        return $sTemplateNames;
     }
 
     /**
@@ -1015,7 +1015,7 @@ class TemplateConfig extends CActiveRecord
     /*
     protected function getFilesToLoad($oTemplate, $sType)
     {
-    }  
+    }
     */
 
     /**
@@ -1049,6 +1049,6 @@ class TemplateConfig extends CActiveRecord
     }
     protected function setThisTemplate()
     {
-    } 
+    }
     */
 }

@@ -1,6 +1,6 @@
 <?php
 /* @var $this AdminController */
-/* @var $model TemplateOptions */
+/* @var $model TemplateConfiguration  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
@@ -8,7 +8,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 $gsid = Yii::app()->request->getQuery('gsid', null);
 $sid = Yii::app()->request->getQuery('surveyid', null);
 ?>
-
 <?php if (empty($model->sid)): ?>
 <!-- This is only visible when we're not in survey view. -->
 <div class='container-fluid'>
@@ -177,7 +176,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                     'htmlOptions' => ['class' => 'form '],
                                     'action' => $actionUrl
                                 )); ?>
-                                <p class="note">Fields with <span class="required">*</span> are required.</p>
+                                <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                                 <?php echo $form->errorSummary($model); ?>
 
 
@@ -265,6 +264,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
             var $progressBar = $(options.progress);
 
             var onSuccess = options.onSuccess || function(){};
+            var onBeforeSend = options.onBeforeSend || function(){};
 
             var progressHandling = function(event){
                 var percent = 0;
@@ -295,6 +295,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
                         }
                         return myXhr;
                     },
+                    beforeSend : onBeforeSend,
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){

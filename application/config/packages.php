@@ -22,6 +22,17 @@ if (isset($_GET['isAjax'])) {
     return array();
 }
 return array(
+    /* expressions manager function and system */
+    'expressions'=>array(
+        'devBaseUrl'  => 'assets/packages/expressions/',
+        'basePath' => 'core.expressions',
+        'js'=>array(
+            'em_javascript.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
     /* For public template functionnality */
     'limesurvey-public'=>array(
         'devBaseUrl'  => 'assets/packages/limesurvey/',
@@ -34,6 +45,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'expressions',
             'fontawesome',
         )
     ),
@@ -106,13 +118,8 @@ return array(
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
-            array(
-                'pjax.js',
-            ) 
-            : array(
-                'min/pjax.min.js',
-            )
+        'js' => array(
+            $debug > 0 ? 'pjax.js' : 'min/pjax.min.js',
         ),
         'depends' => array(
             'lslog',
@@ -138,7 +145,7 @@ return array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
         'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '.debug' : '.min').'.js',
+            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
             'build/surveysettings'.$minVersion.'.js',
             'build/hammer'.$minVersion.'.js'
         ),
@@ -169,6 +176,14 @@ return array(
         'js' => array(
             // 'build/lslog'.$minVersion.'.js',
             'build/lslog.js',
+        )
+    ),
+    'lshelp' => array(
+        'devBaseUrl' => 'assets/packages/lshelp/',
+        'basePath' => 'core.lshelp',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'build/lshelper'.$minVersion.'.js',
         )
     ),
     'panelboxes' => array(
@@ -262,7 +277,23 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+    ),
+
+    'surveysummary' => array(
+        'devBaseUrl' => 'assets/packages/surveysummary/',
+        'basePath' => 'core.surveysummary',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'surveysummary.css'
         ),
+        'js' => array(
+            'surveysummary.js',
+            'qrcode.js'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',

@@ -461,7 +461,8 @@ class remotecontrol_handle
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
                 Yii::app()->loadHelper('admin/activate');
-                $aActivateResults = activateSurvey($iSurveyID);
+                $surveyActivator = new SurveyActivator($oSurvey);
+                $aActivateResults = $surveyActivator->activate();
                 if (isset($aActivateResults['error'])) {
                     return array('status' => 'Error: '.$aActivateResults['error']);
                 } else {
@@ -2335,7 +2336,7 @@ class remotecontrol_handle
                 $command->addCondition("(completed ='N') or (completed='')");
                 $command->addCondition("validfrom is null OR validfrom < '{$sNow}'");
                 $command->addCondition("validuntil is null OR validuntil > '{$sNow}'");
-                $command->addCondition('emailstatus = "OK"');
+                $command->addCondition("emailstatus = 'OK'");
             }
             $command->order = 'tid';
 
@@ -2912,7 +2913,7 @@ class remotecontrol_handle
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue('$sToken'));
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue("$sToken"));
         return new BigFile($sTempFile, true, 'base64');
 
     }
@@ -2990,7 +2991,7 @@ class remotecontrol_handle
         $event->set('password', $sPassword);
         App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
-            if($identity->errorMessage) {
+            if ($identity->errorMessage) {
                 // don't return an empty string
                 return $identity->errorMessage;
             }

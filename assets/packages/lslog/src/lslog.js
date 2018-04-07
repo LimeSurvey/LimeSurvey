@@ -38,9 +38,9 @@ class ConsoleShim {
             return err;
         }
     }
-    _insertParamToArguments(){
+    _insertParamToArguments(rawArgs){
         if(this.param !== ''){
-            let args = Array.from(arguments);
+            let args = [...rawArgs];
             args.unshift(this.param);
             return args;
         }
@@ -79,7 +79,7 @@ class ConsoleShim {
         if(this.silencer) { return; }
         const args = this._insertParamToArguments(arguments);
         if (typeof console.group === 'function') {
-            console.log.call(console, ...args);
+            console.log.apply(console, args);
             return;
         }
         args.shift();
@@ -133,7 +133,7 @@ class ConsoleShim {
     error() {
         const args = this._insertParamToArguments(arguments);
         if (typeof console.error === 'function') {
-            console.error.apply(args);
+            console.error.apply(console,args);
             return;
         }
 
@@ -145,7 +145,7 @@ class ConsoleShim {
     warn() {
         const args = this._insertParamToArguments(arguments);
         if (typeof console.warn === 'function') {
-            console.warn.apply(args);
+            console.warn.apply(console,args);
             return;
         }
 

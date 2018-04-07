@@ -18,7 +18,7 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
-                                        <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title); ?>
+                                    <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title); ?>
                                         (<?php echo flattenText($oSurvey->sid); ?>)
                                     </a>
                                 </div>
@@ -27,12 +27,12 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'.$oSurvey->sid); ?>">
-                                        <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title); ?>
+                                    <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title); ?>
                                     </a>
                                 </div>
                             </li>
                             <li class="marks_as_active">
-                                <?php echo $active;?>
+                                <?=gT($active);?>
                             </li>
                         <?php endif; ?>
 
@@ -45,7 +45,7 @@
                                 <li>
                                     <div>
                                         <a id="breadcrumb__survey--subaction-<?=strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
-                                            <?php echo $sSubaction; ?>
+                                            <?=gT($sSubaction);?>
                                         </a>
                                     </div>
                                 </li>
@@ -71,14 +71,14 @@
                             </li>
                             <?php if(!isset($oQuestion)): ?>
                                 <li class="marks_as_active">
-                                    <?php echo $active;?>
+                                    <?=gT($active)?>
                                 </li>
                             <?php endif; ?>
 
                     
                             <?php if(!isset($oQuestion) && isset($sSubaction)): ?>
                                 <li class="marks_as_active">
-                                    <?php echo $sSubaction;?>
+                                    <?=gT($sSubaction)?>
                                 </li>
                             <?php endif; ?>
 
@@ -101,7 +101,7 @@
                                 </div>
                             </li>
                             <li class="marks_as_active">
-                                <?php echo $active;?>
+                                <?=gT($active)?>
                             </li>
                         <?php endif; ?>
 
@@ -109,7 +109,7 @@
                         <?php //If a subaction is defined, display it ?>
                         <?php if(isset($sSubaction)): ?>
                             <li class="marks_as_active">
-                                <?php echo $sSubaction;?>
+                                <?=gT($sSubaction)?>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -123,7 +123,7 @@
                             </a>
                         </li>
                         <li class="marks_as_active">
-                            <?php echo $active;?>
+                            <?=gT($active)?>
                         </li>
                     <?php endif; ?>
 

@@ -31,11 +31,17 @@
 
     {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
     {{ include('./subviews/messages/welcome.twig') }}
+    
 
-    {% if(aSurveyInfo.anonymized) == "Y" %}
-        {{ include('./subviews/privacy/privacy.twig') }}
-    {% endif %}
+    {{ include('./subviews/privacy/privacy.twig') }}
 
     {# Presents the navigator #}
     {{ include('./subviews/navigation/navigator.twig') }}
 </form> <!-- main form -->
+
+{{ registerScript("BasicFirstPageThemeScripts", "
+    if(window.basicThemeScripts === undefined){ 
+        window.basicThemeScripts = new ThemeScripts(); 
+    } 
+    basicThemeScripts.initWelcomePage(); 
+", 'POS_POSTSCRIPT') }}

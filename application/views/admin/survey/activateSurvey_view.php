@@ -32,11 +32,46 @@
                 </p>
 
                 <p>
+                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Solve all issues")?></button>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>
                 </p>
             </div>
+
+        <?php 
+        App()->getClientScript()->registerScript('FixSolvableErrors', "
+        $('#ajaxAllConsistency').on('click', function(e){
+            e.preventDefault();
+            var items = $('.selector__fixConsistencyProblem').map(function(i,item){
+                return function(){
+                    return $.ajax({
+                        url: $(item).attr('href'),
+                        beforeSend: function(){
+                            $(item).prop('disabled',true).append('<i class=\"fa fa-spinner fa-pulse\"></i>');
+                        },
+                        complete: function(jqXHR, status){
+                            if(status == 'success')
+                                $(item).remove();
+                            else 
+                                console.log(jqXHR);
+                        }
+                    });
+                };
+            });
+            var runIteration = function (arrayOfLinks, iterator){
+                iterator = iterator || 0;
+                if(iterator < arrayOfLinks.length){
+                    arrayOfLinks[iterator]().then(function(){
+                        iterator++;
+                        runIteration(arrayOfLinks, iterator);
+                    });
+                }
+            };
+            runIteration(items);
+        });
+        ", LSYii_ClientScript::POS_POSTSCRIPT);
+        ?>
 </div>
 <?php else:?>
 

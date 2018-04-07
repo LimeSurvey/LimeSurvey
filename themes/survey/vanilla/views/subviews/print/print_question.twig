@@ -1,6 +1,6 @@
 <div id="question{{question.qid}}" class="{{question.class}} question-wrapper">
     <div class="q-text">
-        <h3>{{question.number}} [{{question.code}}]{{question.text}}
+        <h3>{{question.number}} {{question.code ? '[' ~ question.code ~ ']' : ''}}{{question.text}}
             <span class="mandatory">{{question.mandatory}}</span>
         </h3>
         <p class="q-scenaria">{{question.scenario}}</p>

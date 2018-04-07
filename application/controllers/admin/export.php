@@ -142,7 +142,6 @@ class export extends Survey_Common_Action
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'/expressions/em_javascript.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
@@ -231,7 +230,7 @@ class export extends Survey_Common_Action
                 'code'=>array('label'=>gT("Question code"), 'help'=>null, 'checked'=>false),
                 'abbreviated'=>array('label'=>gT("Abbreviated question text"), 'help'=>null, 'checked'=>false),
                 'full'=>array('label'=>gT("Full question text"), 'help'=>null, 'checked'=>true),
-                'codetext'=>array('label'=>gT("Question code and question text"), 'help'=>null, 'checked'=>false),
+                'codetext'=>array('label'=>gT("Question code & question text"), 'help'=>null, 'checked'=>false),
             );
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
             $aLanguagesCode = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
@@ -970,7 +969,7 @@ class export extends Survey_Common_Action
             unlink($sLSTFileName);
         }
 
-        if (isset($survey->hasTimingsTable)) {
+        if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
             getXMLDataSingleTable($iSurveyID, 'survey_'.$iSurveyID.'_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_'.$iSurveyID.'_timings.lsi');
             unlink($sLSIFileName);

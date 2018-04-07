@@ -82,10 +82,14 @@ $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist 
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2'; // File types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+
+// File types allowed to be uploaded as plugin
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig,php,html';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -679,8 +683,17 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+// Dev part
+// 1 : looking for errors, 2 : PHP STRICT error messages
+$config['debug'] = 0;
+//1 to enable sql logging, only active when debug = 2
+$config['debugsql'] = 0;
+//Try to set if able PHP max_execution_time
+$config['max_execution_time'] = 1200;
+
+// When this parameter is true, the configuration of the XML file will be used instead of the database to display the themes (default behavior in 2.50+).
+// This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
-$config['force_dbsettings_for_survey_rendering'] = false;
 
 return $config;
 //settings deleted

@@ -84,7 +84,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             unset($insertdata['language']);
         }
         if (!isset($aGIDReplacements[$oldgid])) {
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            $questionGroup = new QuestionGroup();
+            $questionGroup->attributes = $insertdata;
+            if(!$questionGroup->save()) {
+                safeDie(gT("Error").": Failed to insert data [3]<br />");
+            }
+
+            $newgid = $questionGroup->gid;
+
             $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
             $results['groups']++;
         }
@@ -1038,94 +1045,97 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     } else {
         $sExtension = "";
     }
-
-    if ($sExtension == 'lss') {
-        $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
-        if ($aImportResults && $aImportResults['newsid']) {
-            TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
-        }
-        return $aImportResults;
-    } elseif ($sExtension == 'txt' || $sExtension == 'tsv') {
-        $aImportResults = TSVImportSurvey($sFullFilePath);
-        if ($aImportResults && $aImportResults['newsid']) {
-            TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
-        }
-        return $aImportResults;
-    } elseif ($sExtension == 'lsa') {
+    switch ($sExtension) {
+        case 'lss':
+            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+            if (!empty($aImportResults['newsid'])) {
+                TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+            }
+            return $aImportResults;
+        case 'txt':
+        case 'tsv':
+            $aImportResults = TSVImportSurvey($sFullFilePath);
+            if ($aImportResults && $aImportResults['newsid']) {
+                TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+            }
+            return $aImportResults;
+        case 'lsa':
             // Import a survey archive
-        Yii::import("application.libraries.admin.pclzip.pclzip", true);
-        $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
-        $aFiles = $pclzip->listContent();
+            Yii::import("application.libraries.admin.pclzip.pclzip", true);
+            $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
+            $aFiles = $pclzip->listContent();
 
-        if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0) {
-            unset($pclzip);
-        }
-        $aImportResults = [];
-        // Step 1 - import the LSS file and activate the survey
-        foreach ($aFiles as $aFile) {
+            if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0) {
+                unset($pclzip);
+            }
+            $aImportResults = [];
+            // Step 1 - import the LSS file and activate the survey
+            foreach ($aFiles as $aFile) {
 
-            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
-                //Import the LSS file
-                $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], null, null, null, true, false);
-                if ($aImportResults && $aImportResults['newsid']) {
-                    TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
+                    //Import the LSS file
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], null, null, null, true, false);
+                    if ($aImportResults && $aImportResults['newsid']) {
+                        TemplateConfiguration::checkAndcreateSurveyConfig($aImportResults['newsid']);
+                    }
+                    // Activate the survey
+                    Yii::app()->loadHelper("admin/activate");
+                $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                $surveyActivator = new SurveyActivator($survey);
+                $surveyActivator->activate();
+                    unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                    break;
                 }
-                // Activate the survey
-                Yii::app()->loadHelper("admin/activate");
-                activateSurvey($aImportResults['newsid']);
-                unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
-                break;
             }
-        }
 
-        // Step 2 - import the responses file
-        foreach ($aFiles as $aFile) {
+            // Step 2 - import the responses file
+            foreach ($aFiles as $aFile) {
 
-            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsr') {
-                //Import the LSS file
-                $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
-                $aImportResults = array_merge($aResponseImportResults, $aImportResults);
-                unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
-                break;
-            }
-        }
-
-        // Step 3 - import the tokens file - if exists
-        foreach ($aFiles as $aFile) {
-
-            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lst') {
-                Yii::app()->loadHelper("admin/token");
-                $aTokenImportResults = [];
-                if (Token::createTable($aImportResults['newsid'])) {
-                    $aTokenCreateResults = array('tokentablecreated' => true);
-                    $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
-                    $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid']);
-                } else {
-                    $aTokenImportResults['warnings'][] = gT("Unable to create survey participants table");
-
+                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsr') {
+                    //Import the LSS file
+                    $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+                    $aImportResults = array_merge($aResponseImportResults, $aImportResults);
+                    unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                    break;
                 }
+            }
 
-                $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
-                $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
-                unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
-                break;
+            // Step 3 - import the tokens file - if exists
+            foreach ($aFiles as $aFile) {
+
+                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lst') {
+                    Yii::app()->loadHelper("admin/token");
+                    $aTokenImportResults = [];
+                    if (Token::createTable($aImportResults['newsid'])) {
+                        $aTokenCreateResults = array('tokentablecreated' => true);
+                        $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
+                        $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid']);
+                    } else {
+                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participants table");
+
+                    }
+
+                    $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
+                    $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
+                    unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                    break;
+                }
             }
-        }
-        // Step 4 - import the timings file - if exists
-        Yii::app()->db->schema->refresh();
-        foreach ($aFiles as $aFile) {
-            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
-                $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
-                $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
-                unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
-                break;
+            // Step 4 - import the timings file - if exists
+            Yii::app()->db->schema->refresh();
+            foreach ($aFiles as $aFile) {
+                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
+                    $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+                    $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
+                    unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                    break;
+                }
             }
-        }
-        return $aImportResults;
-    } else {
-        return null;
+            return $aImportResults;
+        default:
+            // Unknow file , return null why not throw error ?
+            return null;
     }
-
 }
 
 /**
@@ -1180,9 +1190,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // Import surveys table ====================================================
     
     foreach ($xml->surveys->rows->row as $row) {
+
         $insertdata = array();
 
         foreach ($row as $key=>$value) {
+            // Set survey group id to 1. Makes no sense to import it without the actual survey group.
+            if ($key == 'gsid') {
+                $value = 1;
+            }
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
@@ -1248,7 +1263,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             return $results;
         }
     }
-
 
     // Import survey languagesettings table ===================================================================================
     foreach ($xml->surveys_languagesettings->rows->row as $row) {
@@ -1332,7 +1346,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($insertdata['language']);
             }
             if (!isset($aGIDReplacements[$oldgid])) {
-                $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+                $questionGroup->sid = $iNewSID;
+                if(!$questionGroup->save()) {
+                    safeDie(gT("Error").": Failed to insert data [3]<br />");
+                }
+
+                $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
             }
@@ -1357,7 +1378,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             // now translate any links
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-            $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+
+            if (isset($insertdata['description'])) {
+                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            }
+
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             } else {
@@ -1713,7 +1738,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     }
                     $questionAttribute = new QuestionAttribute();
                     $questionAttribute->attributes = $insertdata;
-                    if(!$questionAttribute->save()){
+                    if (!$questionAttribute->save()) {
                         safeDie(gT("Error").": Failed to insert data[7]<br />");
                     }
 
@@ -1721,7 +1746,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 $questionAttribute = new QuestionAttribute();
                 $questionAttribute->attributes = $insertdata;
-                if(!$questionAttribute->save()){
+                if (!$questionAttribute->save()) {
                     safeDie(gT("Error").": Failed to insert data[8]<br />");
                 }
             }
@@ -1734,7 +1759,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     if (isset($xml->defaultvalues)) {
 
         $results['defaultvalues'] = 0;
-
         foreach ($xml->defaultvalues->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1742,15 +1766,21 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-// remap the subquestion id   
+                // remap the subquestion id
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
             }
             if ($insertdata) {
-                            XSSFilterArray($insertdata);
+                XSSFilterArray($insertdata);
             }
+            
             // now translate any links
-            $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
+            $defaultValue = new DefaultValue();
+            $defaultValue->setAttributes($insertdata, false);
+            if (!$defaultValue->save()) {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            }
             $results['defaultvalues']++;
+            
         }
     }
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
@@ -1884,7 +1914,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['id']);
             // now translate any links
             $quotaMember->attributes = $insertdata;
-            if(!$quotaMember->save()){
+            if (!$quotaMember->save()) {
                 safeDie(gT("Error").": Failed to insert data[13]<br />");
             }
             $results['quotamembers']++;
@@ -1901,7 +1931,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result = QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
+            $quotaLanguagesSetting = new QuotaLanguageSetting();
+            $quotaLanguagesSetting->attributes = $insertdata;
+            if (!$quotaLanguagesSetting->save()) {
+                safeDie(gT("Error").": Failed to insert data<br />");
+            }
             $results['quotals']++;
         }
     }
@@ -2029,7 +2063,9 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable($survey->tokensTableName, true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);
-        Yii::app()->loadHelper('update/updatedb');
+        if (!function_exists('db_upgrade_all')) {
+            Yii::app()->loadHelper('update/updatedb');
+        }
 
         foreach ($aFieldsToCreate as $sField) {
             if (strpos($sField, 'attribute') !== false) {
@@ -2121,6 +2157,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
         }
     }
+    $oXMLReader->close();
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, false);
     if (Yii::app()->db->getDriverName() == 'pgsql') {
@@ -2476,8 +2513,6 @@ function XSSFilterArray(&$array)
 */
 function TSVImportSurvey($sFullFilePath)
 {
-
-
     $results = array();
     $results['error'] = false;
     $baselang = 'en'; // TODO set proper default
@@ -2578,6 +2613,10 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate'] = null;
     $surveyinfo['active'] = 'N';
     // unset($surveyinfo['datecreated']);
+
+    // Set survey group id to 1. Makes no sense to import it without the actual survey group.
+    $surveyinfo['gsid'] = 1;
+
     $newSurvey = Survey::model()->insertNewSurvey($surveyinfo); //or safeDie(gT("Error").": Failed to insert survey<br />");
 
     if (!$newSurvey->sid) {
@@ -2663,11 +2702,14 @@ function TSVImportSurvey($sFullFilePath)
                 } else {
                     $insertdata['group_order'] = $gseq;
                 }
-                $newgid = QuestionGroup::model()->insertRecords($insertdata);
-                if (!$newgid) {
+                $questionGroup = new QuestionGroup();
+                $questionGroup->attributes = $insertdata;
+
+                if (!$questionGroup->save()) {
                     $results['error'][] = gT("Error")." : ".gT("Failed to insert group").". ".gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
+                $newgid = $questionGroup->gid;
                 if (!isset($ginfo[$sGroupseq])) {
                     $results['groups']++;
                     $gid = $newgid;
@@ -2765,8 +2807,9 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['qid'] = $qid;
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['defaultvalue'] = $row['default'];
-                    $result = DefaultValue::model()->insertRecords($insertdata);
-                    if (!$result) {
+                    $defaultValue = new DefaultValue();
+                    $defaultValue->attributes = $insertdata;
+                    if (!$defaultValue->save()) {
                         $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                         break;
                     }
@@ -2789,8 +2832,9 @@ function TSVImportSurvey($sFullFilePath)
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
-                            $result = DefaultValue::model()->insertRecords($insertdata);
-                            if (!$result) {
+                            $defaultValue = new DefaultValue();
+                            $defaultValue->attributes = $insertdata;
+                            if (!$defaultValue->save()) {
                                 $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                                 break;
                             }
@@ -2845,8 +2889,9 @@ function TSVImportSurvey($sFullFilePath)
                         $insertdata['scale_id'] = $scale_id;
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
-                        $result = DefaultValue::model()->insertRecords($insertdata);
-                        if (!$result) {
+                        $defaultValue = new DefaultValue();
+                        $defaultValue->attributes = $insertdata;
+                        if (!$defaultValue->save()) {
                             $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                             break;
                         }

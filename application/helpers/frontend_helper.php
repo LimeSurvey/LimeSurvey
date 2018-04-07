@@ -526,7 +526,7 @@ function sendSubmitNotifications($surveyid)
     $sResponseData = "";
 
     if (!empty($thissurvey['emailnotificationto'])) {
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", ReplaceFields($thissurvey['emailnotificationto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -541,7 +541,7 @@ function sendSubmitNotifications($surveyid)
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
         //Make an array of email addresses to send to
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailresponseto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", ReplaceFields($thissurvey['emailresponseto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -554,15 +554,16 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText = "\n\n";
         $oldgid = 0;
         $oldqid = 0;
+        Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname) {
             if (substr($sFieldname, 0, 4) == 'gid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n\n";
             } elseif (substr($sFieldname, 0, 4) == 'qid_') {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true, 0)."</td></tr>\n";
                 $ResultTableText .= "\n{$fname[0]}\n";
             } else {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".strip_tags("{$fname[0]} {$fname[1]}")."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0)."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -1244,9 +1245,7 @@ function getRenderWay($renderToken, $renderCaptcha)
 function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
 {
     switch ($renderWay) {
-
         case "main": //Token required, maybe Captcha required
-
             // Datas for the form
             $aForm                    = array();
             $aForm['sType']           = ($scenarios['tokenRequired']) ? 'token' : 'captcha';
@@ -1256,12 +1255,15 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
+            $oSurvey = Survey::model()->findByPk($surveyid);
             // Rendering layout_user_forms.twig
+            $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
             $thissurvey['include_content']  = 'userforms';
             
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user

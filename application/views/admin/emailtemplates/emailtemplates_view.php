@@ -22,7 +22,7 @@ var LS = LS || {};  // namespace
 ", LSYii_ClientScript::POS_BEGIN );
 
 ?>        
-        <div class="side-body <?php echo getSideBodyClass(false); ?>" style="max-height: 75vh;">
+        <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">
@@ -49,9 +49,6 @@ var LS = LS || {};  // namespace
                     $bplang = $bplangs[$key];
                     $esrow = $attrib[$key];
                     $aDefaultTexts = $defaulttexts[$key];
-                    if ($ishtml == true) {
-                        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'],$ishtml);
-                    }
 
                     $this->renderPartial('/admin/emailtemplates/email_language_tab', compact( 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
 

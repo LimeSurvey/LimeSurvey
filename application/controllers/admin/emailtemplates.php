@@ -33,6 +33,11 @@ class emailtemplates extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
 
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'read')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyId));
+        }
+
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
@@ -71,7 +76,7 @@ class emailtemplates extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update')) {
                 unset($aData['surveybar']['savebutton']);
                 unset($aData['surveybar']['saveandclosebutton']);
             }
@@ -151,6 +156,121 @@ class emailtemplates extends Survey_Common_Action
         self::index($iSurveyId);
     }
 
+    public static function getTemplateTypes(){
+        return [
+        'invitation',
+        'reminder',
+        'confirmation',
+        'registration',
+        'admin_notification',
+        'admin_detailed_notification'
+        ];
+    }
+
+    public static function getTabTypeArray($language=null){
+        if($language==null) { $language = App()->getLanguage(); }
+        $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('html', $language);
+        return array(
+            'invitation' => array(
+                'title' => gT("Invitation"),
+                'subject' => gT("Invitation email subject:"),
+                'body' => gT("Invitation email body:"),
+                'attachments' => gT("Invitation attachments:"),
+                'field' => array(
+                    'subject' => 'surveyls_email_invite_subj',
+                    'body' => 'surveyls_email_invite'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['invitation_subject'],
+                    'body' => $aDefaultTexts['invitation']
+                )
+            ),
+            'reminder' => array(
+                'title' => gT("Reminder"),
+                'subject' => gT("Reminder email subject:"),
+                'body' => gT("Reminder email body:"),
+                'attachments' => gT("Reminder attachments:"),
+                'field' => array(
+                    'subject' => 'surveyls_email_remind_subj',
+                    'body' => 'surveyls_email_remind'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['reminder_subject'],
+                    'body' => $aDefaultTexts['reminder']
+                )
+            ),
+            'confirmation' => array(
+                'title' => gT("Confirmation"),
+                'subject' => gT("Confirmation email subject:"),
+                'body' => gT("Confirmation email body:"),
+                'attachments' => gT("Confirmation attachments:"),
+                'field' => array(
+                    'subject' => 'surveyls_email_confirm_subj',
+                    'body' => 'surveyls_email_confirm'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['confirmation_subject'],
+                    'body' => $aDefaultTexts['confirmation']
+                )
+            ),
+            'registration' => array(
+                'title' => gT("Registration"),
+                'subject' => gT("Registration email subject:"),
+                'body' => gT("Registration email body:"),
+                'attachments' => gT("Registration attachments:"),
+                'field' => array(
+                    'subject' => 'surveyls_email_register_subj',
+                    'body' => 'surveyls_email_register'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['registration_subject'],
+                    'body' => $aDefaultTexts['registration']
+                )
+            ),
+            'admin_notification' => array(
+                'title' => gT("Basic admin notification"),
+                'subject' => gT("Basic admin notification subject:"),
+                'body' => gT("Basic admin notification email body:"),
+                'attachments' => gT("Basic notification attachments:"),
+                'field' => array(
+                    'subject' => 'email_admin_notification_subj',
+                    'body' => 'email_admin_notification'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['admin_notification_subject'],
+                    'body' => $aDefaultTexts['admin_notification']
+                )
+            ),
+            'admin_detailed_notification' => array(
+                'title' => gT("Detailed admin notification"),
+                'subject' => gT("Detailed admin notification subject:"),
+                'body' => gT("Detailed admin notification email body:"),
+                'attachments' => gT("Detailed notification attachments:"),
+                'field' => array(
+                    'subject' => 'email_admin_responses_subj',
+                    'body' => 'email_admin_responses'
+                ),
+                'default' => array(
+                    'subject' => $aDefaultTexts['admin_detailed_notification_subject'],
+                    'body' => $aDefaultTexts['admin_detailed_notification']
+                )
+            )
+        );
+    }
+
+    public function getTemplateOfType($type, $language=null, $survey=0){
+        $language = $language===null ? App()->getLanguage() : $language;
+        $oSurvey = Survey::model()->findByPk($survey);
+        $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('unescaped', $language);
+
+        $out = $aDefaultTexts[$type];
+        if($oSurvey->htmlemail=='Y') {
+            $out = nl2br($out);
+        }
+        echo $out;
+        App()->end();
+
+    }
 
     /**
      * Renders template(s) wrapped in header and footer

@@ -406,7 +406,7 @@ class ExpressionManager
                 break;
             case '*':
                 if ($bBothNumeric) {
-                    $result = array(($arg1[0] * $arg2[0]), $token[1], 'NUMBER');
+                    $result = array((doubleVal($arg1[0]) * doubleVal($arg2[0])), $token[1], 'NUMBER');
                 } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
@@ -1466,7 +1466,7 @@ class ExpressionManager
                 ++$errIndex;
             }
         }
-        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
+        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
         }
@@ -1668,11 +1668,22 @@ class ExpressionManager
         $prettyPrint = '';
         $errors = array();
 
+        $prettyPrintIterationDone = false;
         for ($i = 1; $i <= $numRecursionLevels; ++$i) {
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
+            $prevResult = $result;
             $result = $this->sProcessStringContainingExpressionsHelper($result, $questionNum, $staticReplacement);
+            if($result === $prevResult) {
+                // No update during process : can exit of iteration
+                if(!$prettyPrintIterationDone) {
+                    $prettyPrint = $this->prettyPrintSource;
+                }
+                // No need errors : already done
+                break;
+            }
             if ($i == $whichPrettyPrintIteration) {
                 $prettyPrint = $this->prettyPrintSource;
+                $prettyPrintIterationDone = true;
             }
             $errors = array_merge($errors, $this->RDP_errs);
         }
@@ -1962,9 +1973,19 @@ class ExpressionManager
      */
     public function asSplitStringOnExpressions($src)
     {
+        // Empty string, return an array
+        if($src === "") {
+            return array();
+        }
+        // No replacement to do, preg_split get more time than strpos
+        if(strpos($src, "{") === false || $src==="{"  || $src==="}") { 
+            return array (
+                0 => array ($src,0,'STRING')
+            );
+        };
 
+        // Seems to need split and replacement
         $parts = preg_split($this->RDP_ExpressionRegex, $src, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-
 
         $count = count($parts);
         $tokens = array();

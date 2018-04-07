@@ -720,6 +720,9 @@ function getSurveyInfo($surveyid, $languagecode = '')
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             $thissurvey['description'] = $thissurvey['surveyls_description'];
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
+            $thissurvey['datasecurity_notice_label'] = $thissurvey['surveyls_policy_notice_label'];
+            $thissurvey['datasecurity_error'] = $thissurvey['surveyls_policy_error'];
+            $thissurvey['datasecurity_notice'] = $thissurvey['surveyls_policy_notice'];
             $thissurvey['templatedir'] = $thissurvey['template'];
             $thissurvey['adminname'] = $thissurvey['admin'];
             $thissurvey['tablename'] = $oSurvey->responsesTableName;
@@ -758,8 +761,8 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-
-    $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode);
+    
+    $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode, $sLanguage);
     
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
@@ -1985,8 +1988,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     }
 
 
-    require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
-    $mail = new PHPMailer;
+    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
+    $mail = new PHPMailer\PHPMailer\PHPMailer;
     $mail->SMTPAutoTLS = false;
     if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
         $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
@@ -2836,7 +2839,8 @@ function stripJavaScript($sContent)
 function showJavaScript($sContent)
 {
     $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
-        function($matches) {
+        function($matches)
+        {
             return htmlspecialchars($matches[0]);
         }, $sContent);
     return $text;
@@ -3215,7 +3219,9 @@ function includeKeypad()
 */
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
-    uksort($fieldnames, function($a, $b) {return strlen($a) < strlen($b); });
+    uksort($fieldnames, function($a, $b)
+    {
+return strlen($a) < strlen($b); });
 
     Yii::app()->loadHelper('database');
     $newsid = (int) $newsid;
@@ -4419,27 +4425,22 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function returns the real IP address under all configurations
-*
+* This function tries to returns the 'real' IP address under all configurations
+* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
 */
 function getIPAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-//check ip from share internet
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)!==false) {
+        //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-//to check ip is pass from proxy
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)!==false) {
+        //Check IP address passed from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)!==false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
-    } else {
-        $sIPAddress = '127.0.0.1';
     }
-    if (!filter_var($sIPAddress, FILTER_VALIDATE_IP)) {
-        return 'Invalid';
-    } else {
-        return $sIPAddress;
-    }
+    return $sIPAddress;
 }
 
 

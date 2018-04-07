@@ -6,7 +6,7 @@
 
 
 <!-- Import Failed -->
-<?php if ($bFailed):?>
+<?php if ($bFailed===true):?>
 
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo $sHeader;?></h2>

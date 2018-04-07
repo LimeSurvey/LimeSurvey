@@ -106,7 +106,7 @@ var QuestionFunctions = function () {
 
             updatequestionattributes();
             $('#question_type').on('change', updatequestionattributes);
-            if(selectormodeclass == 'default'){
+            if(selectormodeclass == 'default' || selectormodeclass == 'full'){
                 //bind advanced selector
                 $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
                 $('#selector__modal_select-question-type').on('show.bs.modal', function () {
@@ -181,32 +181,7 @@ function updatequestionattributes() {
         success: function (data) {
             $('.loader-advancedquestionsettings').before(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
-            $('label[title]').qtip({
-                style: {
-                    name: 'cream',
-                    tip: true,
-                    color: '#111111',
-                    border: {
-                        width: 1,
-                        radius: 5,
-                        color: '#EADF95'
-                    }
-                },
-                position: {
-                    adjust: {
-                        screen: true,
-                        scroll: true
-                    },
-                    corner: {
-                        target: 'bottomRight'
-                    }
-                },
-                show: {
-                    effect: {
-                        length: 50
-                    }
-                }
-            });
+            $('label[data-help]').limeHelper('init', {onHover: false, helpIcon: '<i class="fa fa-question-circle text-primary selector__lshelp lshelp-help-icon"></i>'});
             renderBootstrapSwitch();
         }
     });

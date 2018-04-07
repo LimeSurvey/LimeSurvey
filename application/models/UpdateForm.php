@@ -259,7 +259,7 @@ class UpdateForm extends CFormModel
      */
     public function downloadUpdateUpdaterFile($tobuild)
     {
-        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild;
+        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild.'&frombuild='.$this->build;
         $file = $this->_performDownload($getters, 'update_updater');
         return $file;
     }
@@ -553,7 +553,6 @@ class UpdateForm extends CFormModel
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
             setGlobalSetting('AssetsVersion', $iAssetVersionNumber);
-            App()->getController()->redirect(array("admin/"));
         }
         return false;
     }
@@ -813,9 +812,8 @@ class UpdateForm extends CFormModel
         } else {
             $check->writable = 'pass';
         }
-
         if ($obj->freespaceCheck) {
-            $check->freespace = (disk_free_space($obj->name) > $obj->minfreespace);
+            $check->freespace = (@disk_free_space($obj->name) > $obj->minfreespace);
         } else {
             $check->freespace = 'pass';
         }

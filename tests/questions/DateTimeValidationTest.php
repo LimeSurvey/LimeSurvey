@@ -5,7 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\TimeOutException;;
+use Facebook\WebDriver\Exception\TimeOutException;
 
 /**
  * @since 2017-10-27
@@ -59,8 +59,8 @@ class DateTimeValidationTest extends TestBaseClassWeb
         $this->assertNotEmpty($submit);
         self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-		WebDriverBy::id('ls-button-submit')
-	    )
+                WebDriverBy::id('ls-button-submit')
+            )
         );
         $submit->click();
 
@@ -85,14 +85,14 @@ class DateTimeValidationTest extends TestBaseClassWeb
             );
         } catch (TimeOutException $ex) {
             $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-	    var_dump($body->getText());
-	    $reflect = new \ReflectionClass($this);
-	    //if ($reflect->getShortName() === 'Name') {
+            var_dump($body->getText());
+            $reflect = new \ReflectionClass($this);
+            //if ($reflect->getShortName() === 'Name') {
             self::$testHelper->takeScreenshot(self::$webDriver, $reflect->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-	}
+        }
     }
 }

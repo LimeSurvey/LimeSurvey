@@ -3,7 +3,7 @@
     //All paths relative from /application/views
 
 //headers will be generated with the template file /admin/super/header.php
-$this->_showHeaders($aData);
+$this->_showHeaders($aData, false);
     //The adminmenu bar will be generated from /admin/super/adminmenu.php
     $this->_showadminmenu($aData);
 

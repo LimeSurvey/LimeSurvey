@@ -311,7 +311,9 @@ class LSYii_Application extends CWebApplication
                 // If run from phpunit, die with exception message.
                 die($event->exception->getMessage());
             } else {
-                if ($event->exception->statusCode == '404') {
+                if (isset($event->exception)
+                    && isset($event->exception->statusCode)
+                    && $event->exception->statusCode == '404') {
                     Yii::app()->setComponent('errorHandler', array(
                         'errorAction'=>'surveys/error',
                     ));

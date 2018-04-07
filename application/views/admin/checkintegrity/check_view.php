@@ -168,6 +168,23 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <li><?php eT("All questions meet consistency standards."); ?></li><?php
                 } ?>
 
+                <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)): ?>
+                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question and group respectively, check the question order and save it."); ?>
+                        <ul>
+                            <?php foreach ($questionOrderDuplicates as $info): ?>
+                            <li>
+                                SID: <a href="<?php echo $info['viewSurveyLink']; ?>"><?php echo $info['sid']; ?></a>
+                                GID: <a href="<?php echo $info['viewGroupLink']; ?>"><?php echo $info['gid']; ?></a>
+                                <?php if ($info['parent_qid'] != 0): ?>
+                                    Parent QID: <a href="<?php echo $info['questionSummaryLink']; ?>"><?php echo $info['parent_qid']; ?></a>
+                                <?php endif; ?>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                <?php else: ?>
+                    <li><?php eT("No issues with question order found."); ?></li>
+                <?php endif; ?>
+
                 <?php
                     if (isset($groups))
                     {?>
@@ -185,6 +202,19 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     { ?>
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
+
+                <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)): ?>
+                    <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
+                        <ul>
+                            <?php foreach ($groupOrderDuplicates as $info): ?>
+                            <li>
+                                SID: <a href="<?php echo $info['organizerLink']; ?>"><?php echo $info['sid']; ?></a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                <?php else: ?>
+                    <li><?php eT("No issues with question group order found."); ?></li>
+                <?php endif; ?>
 
                 <?php
                     if (isset($orphansurveytables))

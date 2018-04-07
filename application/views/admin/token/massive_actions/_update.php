@@ -18,14 +18,14 @@
 
                     <!-- Common  -->
                     <li role="presentation" class="active">
-                        <a data-toggle="tab" href="#general" aria-expanded="true">
+                        <a data-toggle="tab" href="#massive-general" aria-expanded="true">
                             <?php eT('General'); ?>
                         </a>
                         </li>
 
                         <!-- Custom attibutes -->
                         <li role="presentation" class="">
-                            <a data-toggle="tab" href="#custom" aria-expanded="false">
+                            <a data-toggle="tab" href="#massive-custom" aria-expanded="false">
                                 <?php eT('Additional attributes'); ?>
                             </a>
                         </li>
@@ -34,7 +34,7 @@
 
             <!-- Tabs content-->
             <div class="tab-content">
-            <div id="general" class="tab-pane active fade in">
+            <div id="massive-general" class="tab-pane active fade in">
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
@@ -372,7 +372,7 @@
             </div>
 
             <!-- Custom attibutes -->
-            <div id="custom" class="tab-pane fade in">
+            <div id="massive-custom" class="tab-pane fade in">
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >

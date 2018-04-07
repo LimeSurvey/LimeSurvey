@@ -41,6 +41,7 @@ if (!defined('BASEPATH')) {
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
+ * @property Answer[] $answers
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -210,7 +211,10 @@ class Question extends LSActiveRecord
      */
     public static function updateSortOrder($gid, $surveyid)
     {
-        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, array('order'=>'question_order')));
+        $questions = self::model()->findAllByAttributes(
+            array('gid' => $gid, 'sid' => $surveyid, 'parent_qid'=>0, 'language' => Survey::model()->findByPk($surveyid)->language),
+            array('order'=>'question_order')
+        );
         $p = 0;
         foreach ($questions as $question) {
             $question->question_order = $p;
@@ -756,10 +760,7 @@ class Question extends LSActiveRecord
      */
     public function getAllGroups()
     {
-        return QuestionGroup::model()->findAll("sid=:sid",
-            array(':sid'=>$this->sid)
-        );
-        //return QuestionGroup::model()->getGroups($this->sid);
+        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
     }
 
     public function getbuttons()
