@@ -11,6 +11,8 @@ php:
 addons:
   artifacts:
     s3_region: "eu-west-1"
+    paths:
+    - $(ls /tests/tmp/screenshots | tr "\n" ":")
 
 before_script:
     # Test
@@ -84,4 +86,3 @@ after_script:
     - mysql -uroot -e "Show  variables like '%large%';"
     - mysql -uroot -e "Show  variables like '%innodb_file%';"
     - mysql -uroot -e "Show  table status;" limesurvey
-    - "travis-artifacts upload --path tests/tmp/"
