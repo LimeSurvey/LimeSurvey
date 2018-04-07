@@ -11,9 +11,6 @@ php:
 addons:
   artifacts:
     s3_region: "eu-west-1"
-    paths:
-    - $(ls /tests/log/*.log | tr "\n" ":")
-    - $HOME/some/other/thing.log
 
 before_script:
     # Test
