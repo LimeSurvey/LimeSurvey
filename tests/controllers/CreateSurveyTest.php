@@ -126,7 +126,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             // Remove notification.
-            $save = self::$webDriver->findElement(WebDriverBy::cssSelector('button.close.limebutton'));
+            $addgroup = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('button.close.limebutton')
+                )
+            );
             $save->click();
 
             sleep(1);
