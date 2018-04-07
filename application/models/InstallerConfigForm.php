@@ -95,6 +95,11 @@ class InstallerConfigForm extends CFormModel
                 $this->supported_db_types[$driver] = $this->db_names[$driver];
             }
         }
+
+        if (isset($this->supported_db_types[self::DB_TYPE_MYSQL])) {
+            $this->dbengine = self::ENGINE_TYPE_MYISAM;
+        }
+
         // FIXME this is for testing only!!! REMOVE THIS IF READY
         //$this->supported_db_types = $this->db_names;
 
