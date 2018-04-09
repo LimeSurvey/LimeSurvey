@@ -226,6 +226,9 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/runtime/')), -4) != '0777'
 if (substr(sprintf('%o', fileperms(BASEPATH . '../upload/')), -4) != '0777') {
     die('upload folder not set to 777');
 }
+if (substr(sprintf('%o', fileperms(BASEPATH . '../tests/tmp/')), -4) != '0777') {
+    die('tests/tmp folder not set to 777');
+}
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
