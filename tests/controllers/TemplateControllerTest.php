@@ -114,20 +114,17 @@ class TemplateControllerTest extends TestBaseClassWeb
 
         sleep(1);
 
-        try {
-            // If not clickable, dismiss modal.
-            $button = $w->findElement(WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn'));
-            $button->click();
-
-            sleep(1);
-        } catch (\Exception $ex) {
-            // Do nothing.
-        }
+        $this->dismissModal();
 
         try {
             // Click "Theme editor" for vanilla theme.
             $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
             $button->click();
+
+            sleep(1);
+
+            // Unpredictable modal is unpredictable.
+            $this->dismissModal();
 
             $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
             $button->click();
@@ -140,13 +137,34 @@ class TemplateControllerTest extends TestBaseClassWeb
             sleep(1);
 
             $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
-            $this->assertEquals($header->getText(), 'Theme editor: vanilla_version_1');
+            $this->assertEquals(
+                $header->getText(),
+                'Theme editor: vanilla_version_1',
+                $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
+            );
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
+        }
+    }
+
+    /**
+     * Click "Close" on notification modal.
+     * @return void
+     */
+    protected function dismissModal()
+    {
+        try {
+            // If not clickable, dismiss modal.
+            $w = self::$webDriver;
+            $button = $w->findElement(WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn'));
+            $button->click();
+            sleep(1);
+        } catch (\Exception $ex) {
+            // Do nothing.
         }
     }
 }
