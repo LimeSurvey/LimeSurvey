@@ -3,14 +3,44 @@
 namespace ls\tests\controllers;
 
 use ls\tests\TestBaseClass;
+use ls\tests\TestBaseClassWeb;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\StaleElementReferenceException;
+use Facebook\WebDriver\Exception\UnknownServerException;
+use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\ElementNotVisibleException;
 
 /**
  * @since 2017-10-15
  * @group tempcontr
- * @group template
+ * @group theme1
  */
-class TemplateControllerTest extends TestBaseClass
+class TemplateControllerTest extends TestBaseClassWeb
 {
+    /**
+     * Login etc.
+     */
+    public static function setupBeforeClass()
+    {
+        parent::setupBeforeClass();
+        $username = getenv('ADMINUSERNAME');
+        if (!$username) {
+            $username = 'admin';
+        }
+
+        $password = getenv('PASSWORD');
+        if (!$password) {
+            $password = 'password';
+        }
+
+        // Permission to everything.
+        \Yii::app()->session['loginID'] = 1;
+
+        // Browser login.
+        self::adminLogin($username, $password);
+    }
 
     /**
      * Test copy a template.
@@ -62,11 +92,51 @@ class TemplateControllerTest extends TestBaseClass
     }
 
     /**
-     * @todo Copy template folder that does not exist.
+     * @group extendtheme
      */
-    /*
-    public function testCopyWrongFolder()
+    public function testExtendTheme()
     {
+        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.helpers.globalsettings_helper', true);
+
+        // Delete theme vanilla_version_1 if present.
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $contr->delete('vanilla_version_1');
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl('admin/themeoptions');
+
+        // NB: Less typing.
+        $w = self::$webDriver;
+
+        $w->get($url);
+
+        sleep(1);
+
+        try {
+            // If not clickable, dismiss modal.
+            $button = $w->findElement(WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn'));
+            $button->click();
+
+            sleep(1);
+        } catch (\Exception $ex) {
+            // Do nothing.
+        }
+
+        // Click "Theme editor" for vanilla theme.
+        $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
+        $button->click();
+
+        $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
+        $button->click();
+
+        $w->switchTo()->alert()->sendKeys('vanilla_version_1');
+        $w->switchTo()->alert()->accept();
+
+        sleep(1);
+
+        $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
+        $this->assertEquals($header->getText(), 'Theme editor: vanilla_version_1');
     }
-     */
 }
