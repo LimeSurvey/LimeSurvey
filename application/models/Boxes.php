@@ -27,6 +27,7 @@ class Boxes extends CActiveRecord
         // will receive user inputs.
         return array(
             array('url, title, ico, desc, page', 'required'),
+            array('url', 'match', 'pattern'=>'/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly'=>true),
             array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
             // The following rule is used by search().
