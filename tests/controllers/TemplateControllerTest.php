@@ -124,21 +124,29 @@ class TemplateControllerTest extends TestBaseClassWeb
             // Do nothing.
         }
 
-        // Click "Theme editor" for vanilla theme.
-        $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
-        $button->click();
+        try {
+            // Click "Theme editor" for vanilla theme.
+            $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
+            $button->click();
 
-        $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
-        $button->click();
+            $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
+            $button->click();
 
-        sleep(1);
+            sleep(1);
 
-        $w->switchTo()->alert()->sendKeys('vanilla_version_1');
-        $w->switchTo()->alert()->accept();
+            $w->switchTo()->alert()->sendKeys('vanilla_version_1');
+            $w->switchTo()->alert()->accept();
 
-        sleep(1);
+            sleep(1);
 
-        $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
-        $this->assertEquals($header->getText(), 'Theme editor: vanilla_version_1');
+            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
+            $this->assertEquals($header->getText(), 'Theme editor: vanilla_version_1');
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
     }
 }
