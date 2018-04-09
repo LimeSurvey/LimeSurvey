@@ -320,6 +320,10 @@ class TestHelper extends TestCase
      */
     public function takeScreenshot($webDriver, $name)
     {
+        // Strip away namespace.
+        $nameParts = explode('\\', $name);
+        $name = $nameParts[count($nameParts) - 1];
+
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
         $screenshot = $webDriver->takeScreenshot();
