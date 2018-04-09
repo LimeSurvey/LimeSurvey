@@ -103,6 +103,10 @@ class TemplateControllerTest extends TestBaseClassWeb
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $contr->delete('vanilla_version_1');
 
+        // ...and the renamed theme.
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $contr->delete('vanilla_version_renamed');
+
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('admin/themeoptions');
@@ -155,6 +159,28 @@ class TemplateControllerTest extends TestBaseClassWeb
             $button = $w->findElement(WebDriverBy::id('button-save-changes'));
             $value  = $button->getAttribute('value');
             $this->assertEquals($value, 'Save changes', 'Button text is ' . $value);
+
+            // Test rename the theme.
+            $button = $w->findElement(WebDriverBy::id('button-rename-theme'));
+            $button->click();
+
+            sleep(1);
+
+            // Write new theme name.
+            $w->switchTo()->alert()->sendKeys('vanilla_version_renamed');
+            $w->switchTo()->alert()->accept();
+
+            sleep(1);
+
+            // Check that we have the renamed page header.
+            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
+            $this->assertEquals(
+                $header->getText(),
+                'Theme editor: vanilla_version_renamed',
+                $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
+            );
+
+            sleep(3);
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
