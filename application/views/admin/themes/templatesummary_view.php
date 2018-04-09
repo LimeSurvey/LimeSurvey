@@ -14,7 +14,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             <?php if (!is_writable($templates[$templatename])) { ?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php eT("You can't save changes because the template directory is not writable."); ?>
+                    <?php eT("You can't save changes because the theme directory is not writable."); ?>
                 </div>
             <?php } ?>
         </div>
@@ -110,9 +110,9 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')) {
                     $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)
                         ? gT("Save changes")
-                        : gT("Copy to local template and save changes");
+                        : gT("Copy to local theme and save changes");
                     if (is_writable($templates[$templatename])) { ?>
-                        <input type='submit' class='btn btn-default' value='<?php echo $sSaveText; ?>' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard template."). "'" : "")?> />
+                        <input type='submit' class='btn btn-default' id='button-save-changes' value='<?php echo $sSaveText; ?>' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
                     <?php } ?>
                 <?php } ?>
             </p>
@@ -219,7 +219,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             <div style='width:90%; margin:0 auto;'>
                 <?php if(isset($filenotwritten) && $filenotwritten==true) { ?>
                     <p>
-                        <span class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview templates."), $tempdir); ?></span>
+                        <span class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview themes."), $tempdir); ?></span>
                     </p>
                 <?php } else { ?>
                     <p>

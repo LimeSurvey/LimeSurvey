@@ -71,7 +71,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         </a>
                         <?php else:
                         if (function_exists("zip_open")){
-                            $sMessage=gT("The template upload directory doesn't exist or is not writable.");
+                            $sMessage=gT("The theme upload directory doesn't exist or is not writable.");
                         }
                         else{
                             $sMessage=gT("You do not have the required ZIP library installed in PHP.");
@@ -104,12 +104,12 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <!-- Copy -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <?php if (is_writable($userthemerootdir)):?>
-                        <a class="btn btn-default" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new template:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                        <a class="btn btn-default" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
                             <?php eT("Extend"); ?>
                         </a>
                         <?php else: ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
@@ -127,7 +127,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
                 if (!function_exists("zip_open"))
                 {
-                    $sMessage=gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
+                    $sMessage=gT("You cannot upload themes because you do not have the required ZIP library installed in PHP.");
                 }
                 else
                 {
@@ -167,14 +167,14 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <?php if(is_template_editable($templatename)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
+                    <a class="btn btn-default" id="button-rename-theme" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                         <span class="fa fa-pencil  text-success"></span>
                         <?php eT("Rename"); ?>
                     </a>
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
+                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
                         <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
@@ -185,7 +185,7 @@ echo viewHelper::getViewTestTag('themeEditor');
         <!-- Right Menu -->
         <div class="col-md-7 text-right form-inline">
             <div class="form-group">
-                <label for='templatedir'><?php eT("Template:"); ?></label>
+                <label for='templatedir'><?php eT("Theme:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
@@ -221,7 +221,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/themeoptions"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("Return to template list"); ?>
+                    <?php eT("Return to theme list"); ?>
                 </a>
                 <?php endif;?>
         </div>
@@ -244,7 +244,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             </strong>
             <?php
             printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend theme")."\""
-                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
+                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new theme:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
     <?php endif;?>
