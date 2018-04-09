@@ -233,8 +233,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 <?php endif;?>
 
 <div class="col-lg-12 templateeditor">
-    <div class="h3"><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></div>
-
+    <div class="h3 theme-editor-header"><?php eT("Theme editor:"); ?> <i><?php echo $templatename; ?></i></div>
 
     <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">
