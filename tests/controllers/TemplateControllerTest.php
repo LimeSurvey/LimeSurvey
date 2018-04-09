@@ -131,17 +131,31 @@ class TemplateControllerTest extends TestBaseClassWeb
 
             sleep(1);
 
+            // Write new theme name.
             $w->switchTo()->alert()->sendKeys('vanilla_version_1');
             $w->switchTo()->alert()->accept();
 
             sleep(1);
 
+            // Check that we have the correct page header.
             $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
             $this->assertEquals(
                 $header->getText(),
                 'Theme editor: vanilla_version_1',
                 $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
             );
+
+            // Try to save to local theme.
+            $button = $w->findElement(WebDriverBy::id('button-save-changes'));
+            $button->click();
+
+            sleep(1);
+
+            // Button text should have changed to "Save changes".
+            $button = $w->findElement(WebDriverBy::id('button-save-changes'));
+            $value  = $button->getAttribute('value');
+            $this->assertEquals($value, 'Save changes', 'Button text is ' . $value);
+
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
