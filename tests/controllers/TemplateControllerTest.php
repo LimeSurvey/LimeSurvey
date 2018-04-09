@@ -131,6 +131,8 @@ class TemplateControllerTest extends TestBaseClassWeb
         $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
         $button->click();
 
+        sleep(1);
+
         $w->switchTo()->alert()->sendKeys('vanilla_version_1');
         $w->switchTo()->alert()->accept();
 
