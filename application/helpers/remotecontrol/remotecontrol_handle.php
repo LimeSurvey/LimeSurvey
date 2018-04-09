@@ -3066,4 +3066,100 @@ class remotecontrol_handle
         }
         return false;
     }
+
+    /**
+     * Create a copy of a template
+     *
+     * @param int $sSessionKey
+     * @param  string $copydir Template to copy
+     * @param  string $newname New template name
+     * @return array with status
+     */
+    public function template_copy($sSessionKey, $copydir, $newname)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+        // Check permission
+        if (!Permission::model()->hasGlobalPermission('templates','create'))
+        {
+            return array('status' => 'No permission');
+        }
+
+        // Init Params
+        $newname=sanitize_dirname($newname);
+        $copydir=sanitize_dirname($copydir);
+        if (! ($newname && $copydir))
+        {
+            return array('status' => 'Invallid parameters');
+        }
+
+        // Compose new directory name
+        Yii::app()->loadHelper('admin/template');
+        $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
+        $copydirname = getTemplatePath($copydir);
+
+        // Create directory
+        $mkdirresult = mkdir_p($newdirname);
+        if ($mkdirresult == 2)
+        {
+            return array('status' => 'Target directory already exists');
+        }
+        elseif ($mkdirresult != 1)
+        {
+            return array('status' => 'Unable to create directory');
+        }
+
+
+        // Copies all the files from one template directory to a new one
+        $oFileHelper=new CFileHelper;
+        $oFileHelper->copyDirectory($copydirname,$newdirname);
+        $templatename = $newname;
+
+        // Return
+        return array('templatename' => $newname);
+    }
+
+    /**
+     * Sets template permission
+     *
+     * @param  int $uid             User id for which to set the permissions
+     * @param  string $templateName Template Name for which to assign the permission
+     * @param  string $value        Allow (1) or not allow (0) access
+     * @return array with status
+     */
+    function set_template_permission($sSessionKey, $uid, $templateName, $value= '1')
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+        // Check Permission
+        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize data
+        $iUserID = sanitize_int($uid);
+
+
+        // Setup permissions
+        $oPermission = Permission::model()->findByAttributes(array('permission' => $templateName, 'uid' => $iUserID, 'entity'=>'template'));
+        if (empty($oPermission))
+        {
+            $oPermission = new Permission;
+            $oPermission->uid = $iUserID;
+            $oPermission->permission = $templateName;
+            $oPermission->entity='template';
+            $oPermission->entity_id=0;
+        }
+        $oPermission->read_p = $value;
+        $uresult = $oPermission->save();
+
+        // Update permissions
+        if ($uresult === false)
+        {
+            return array('status' => 'Error: Operation failed.');
+        }
+
+        return array('status' => 'Success');
+    }
 }
