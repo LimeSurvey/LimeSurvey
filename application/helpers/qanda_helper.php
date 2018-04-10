@@ -1075,28 +1075,10 @@ function do_date($ia)
         $hideCalendar = strpos($dateformatdetails['jsdate'], 'Y') === false
         && strpos($dateformatdetails['jsdate'], 'D') === false
         && strpos($dateformatdetails['jsdate'], 'M') === false;
-
-        // HTML for date question using datepicker
-        $answer = doRender('/survey/questions/answer/date/selector/answer', array(
-            'name'                   => $ia[1],
-            'basename'               => $ia[1],
-            'coreClass'              => $coreClass,
-            'iLength'                => $iLength,
-            'mindate'                => $mindate,
-            'maxdate'                => $maxdate,
-            'dateformatdetails'      => $dateformatdetails['dateformat'],
-            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
-            'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
-            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'language'               => App()->language,
-            'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,
-            'dateoutput'             => $dateoutput,
-            'qid'                    => $ia[0],
-            'hideCalendar'           => $hideCalendar
-            ), true);
+        /* Global datepicker configuration, muts be done before view (and twig from template can extend it then :) */
         if (!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption", LSYii_ClientScript::POS_POSTSCRIPT)) {
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
-            /* Global datepicker configuration */
+            
             $aDefaultDatePicker = array(
                 'locale'=>convertLStoDateTimePickerLocale(App()->language),
                 'tooltips' => array(
@@ -1131,6 +1113,24 @@ function do_date($ia)
             );
             App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", LSYii_ClientScript::POS_POSTSCRIPT);
         }
+        // HTML for date question using datepicker
+        $answer = doRender('/survey/questions/answer/date/selector/answer', array(
+            'name'                   => $ia[1],
+            'basename'               => $ia[1],
+            'coreClass'              => $coreClass,
+            'iLength'                => $iLength,
+            'mindate'                => $mindate,
+            'maxdate'                => $maxdate,
+            'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'               => App()->language,
+            'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,
+            'dateoutput'             => $dateoutput,
+            'qid'                    => $ia[0],
+            'hideCalendar'           => $hideCalendar
+            ), true);
         App()->getClientScript()->registerScript('doPopupDate'.$ia[0], "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     }
     $inputnames[] = $ia[1];
