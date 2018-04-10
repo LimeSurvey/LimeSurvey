@@ -137,8 +137,8 @@ class questionIndexHelper
                 /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step] = array(
                     'gid'=>$groupInfo['gid'],
-                    'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
-                    'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
+                    'text'=>$groupInfo['group_name'],
+                    'description'=>$groupInfo['description'],
                     'step'=>$groupInfo['step'],
                     'url'=>Yii::app()->getController()->createUrl("survey/index", array('sid'=>$this->iSurveyId, 'move'=>$groupInfo['step'])),
                     'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
@@ -197,8 +197,8 @@ class questionIndexHelper
                         $groupInfo = $groupList[$questionFieldmap['groupSeq']];
                         $actualGroup = array(
                             'gid'=>$groupInfo['gid'],
-                            'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
-                            'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
+                            'text'=>$groupInfo['group_name'],
+                            'description'=>$groupInfo['description'],
                         );
                         /* The 'show' question in this group */
                         $questionInGroup = array();
@@ -207,7 +207,7 @@ class questionIndexHelper
                     $questionInfo = array(
                         'qid'=>$questionFieldmap['qid'],
                         'code'=>$questionFieldmap['title'], /* @todo : If survey us set to show question code : we must show it */
-                        'text'=>LimeExpressionManager::ProcessString($questionFieldmap['question']),
+                        'text'=>$questionFieldmap['question'],
                         'step'=>$questionStep,
                         'url'=>Yii::app()->getController()->createUrl("survey/index", array('sid'=>$this->iSurveyId, 'move'=>$questionStep)),
                         'submit'=>ls_json_encode(array('move'=>$questionStep)),

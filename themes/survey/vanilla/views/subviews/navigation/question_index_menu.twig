@@ -73,32 +73,28 @@
 
             <!-- TODO: Remove this when support is added -->
             <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
-                <li>
-                    {{ gT("Question by question mode not yet supported.") }}
-                </li>
 
-            {% for group in aSurveyInfo.indexItems %}
-                {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
+            {% for group in aSurveyInfo.aQuestionIndex.items %}
                 <li>
-                    <div class="{{ aSurveyInfo.class.indexmenusddh }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddh }}>
-                        {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) }}
+                    <div class="{{ aSurveyInfo.class.indexmenusddh }} dropdown-header" {{ aSurveyInfo.attr.indexmenusddh }}>
+                        {{ flatEllipsize(processString(group.text,1),30, 0.6 ) }}
                         <span class="{{ aSurveyInfo.class.indexmenusddspan }} caret" {{ aSurveyInfo.class.indexmenusddspan }}></span>
                     </div>
                     <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
-                        {% for  step, indexItem in group.questions %}
-                            {% set statusClass = ''  %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
-                                {% set statusClass = statusClass ~ ' bg-warning'  %}
+                        {% for  step, indexQuestion in group.questions %}
+                            {% set templateClass = ''  %}
+                            {% if attribute(indexQuestion.stepStatus, 'index-item-unanswered') is defined and attribute(indexQuestion.stepStatus, 'index-item-unanswered') == true  %}
+                                {% set templateClass = templateClass ~ ' bg-warning'  %}
                             {% endif %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
-                                {% set statusClass = statusClass ~ ' bg-danger'  %}
+                            {% if attribute(indexQuestion.stepStatus, 'index-item-error') is defined and attribute(indexQuestion.stepStatus, 'index-item-error') == true   %}
+                                {% set templateClass = templateClass ~ ' bg-danger'  %}
                             {% endif %}
-                            {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
-                                {% set statusClass = statusClass ~  ' disabled'  %}
+                            {% if attribute(indexQuestion.stepStatus, 'index-item-current') is defined and attribute(indexQuestion.stepStatus, 'index-item-current') == true %}
+                                {% set templateClass = statusClass ~  ' disabled'  %}
                             {% endif %}
-                            <li class="{{ indexItem.coreClass }} {{statusClass}}"  {{ aSurveyInfo.attr.indexmenussli }}>
-                                <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}' class='animate'>
-                                    {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
+                            <li class=" {{ indexQuestion.coreClass }} {{ templateClass }}"  {{ aSurveyInfo.attr.indexmenussli }}>
+                                <a href='{{ indexQuestion.url }}' data-limesurvey-submit='{{ indexQuestion.submit }}' class='animate'>
+                                    {{ flatEllipsize(processString(indexQuestion.text,1),30, 0.6 ) }}
                                 </a>
                             </li>
                         {% endfor %}

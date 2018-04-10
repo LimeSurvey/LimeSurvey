@@ -18,6 +18,6 @@
     {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
         {% set templateClass = statusClass ~  ' disabled'  %}
     {% endif %}
-    <button type="submit" name="move" value="{{ indexItem.step }}" class="list-group-item {{ indexItem.coreClass }} {{ templateClass }}" >{{ indexItem.text }}</button>
+    <button type="submit" name="move" value="{{ indexItem.step }}" class="list-group-item {{ indexItem.coreClass }} {{ templateClass }}" >{{ processString(indexItem.text) }}</button>
   {% endfor %}
 </div>
