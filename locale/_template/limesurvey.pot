@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-04-06 08:42:14+00:00\n"
+"POT-Creation-Date: 2018-04-10 10:28:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -650,7 +650,7 @@ msgstr ""
 #: application/views/admin/surveymenu/massive_action/_selector.php:20
 #: application/views/admin/surveymenu_entries/massive_action/_selector.php:20
 #: application/views/admin/themes/templateeditorbar_view.php:179
-#: application/views/admin/themes/templatesummary_view.php:175
+#: application/views/admin/themes/templatesummary_view.php:137
 #: application/views/admin/token/massive_actions/_selector.php:46
 #: application/views/admin/update/manage/manage_key.php:47
 #: application/views/admin/user/setuserpermissions.php:29
@@ -1041,7 +1041,7 @@ msgstr ""
 #: application/views/admin/super/footer.php:202
 #: application/views/admin/super/footer.php:224
 #: application/views/admin/super/fullpagebar_view.php:37
-#: application/views/admin/super/welcome.php:74
+#: application/views/admin/super/welcome.php:76
 #: application/views/admin/survey/Question/listquestions.php:172
 #: application/views/admin/survey/Question/question_subviews/_question_type_select.php:65
 #: application/views/admin/survey/Question/questionbar_view.php:240
@@ -1053,11 +1053,11 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/_form.php:168
 #: application/views/admin/surveysgroups/index.php:12
 #: application/views/admin/surveysgroups/update.php:13
-#: application/views/admin/themeoptions/import_modal.php:30
+#: application/views/admin/themeoptions/import_modal.php:35
 #: application/views/admin/themeoptions/index.php:17
 #: application/views/admin/themeoptions/update.php:28
 #: application/views/admin/themes/templateeditorbar_view.php:216
-#: application/views/admin/themes/templatesummary_view.php:241
+#: application/views/admin/themes/templatesummary_view.php:194
 #: application/views/admin/token/browse.php:97
 #: application/views/admin/token/token_bar.php:237
 #: application/views/admin/usergroup/usergroupbar_view.php:55
@@ -2807,7 +2807,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2389
 #: application/views/admin/labels/_labelviewtabcontent_view.php:86
 #: application/views/admin/survey/Question/answerOptions_view.php:232
-#: application/views/admin/themes/templatesummary_view.php:136
+#: application/views/admin/themes/templatesummary_view.php:112
 msgid "Save changes"
 msgstr ""
 
@@ -2946,8 +2946,7 @@ msgstr ""
 #: application/views/admin/survey/subview/import_ressources_modal.php:20
 #: application/views/admin/survey/subview/tabImport_view.php:10
 #: application/views/admin/survey/subview/tabImport_view.php:58
-#: application/views/admin/themeoptions/import_modal.php:14
-#: application/views/admin/themeoptions/import_modal.php:28
+#: application/views/admin/themeoptions/import_modal.php:10
 #: application/views/admin/themes/importform_view.php:4
 #: application/views/admin/themes/importform_view.php:16
 msgid "Please select a file to import!"
@@ -3308,7 +3307,7 @@ msgstr ""
 #: application/views/admin/responses/browsemenubar_view.php:107
 #: application/views/admin/responses/browsemenubar_view.php:173
 #: application/views/admin/survey/subview/tab_survey_view.php:38
-#: application/views/admin/themeoptions/import_modal.php:28
+#: application/views/admin/themeoptions/import_modal.php:32
 #: application/views/admin/themeoptions/surveythememenu.php:15
 #: application/views/admin/themeoptions/surveythememenu.php:22
 #: application/views/admin/themes/importform_view.php:16
@@ -3798,7 +3797,7 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1767
 #: application/views/admin/labels/_labelviewrightcontent_view.php:76
-#: application/views/admin/themeoptions/import_modal.php:26
+#: application/views/admin/themeoptions/import_modal.php:30
 #: application/views/admin/themes/importform_view.php:14
 msgid "The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled."
 msgstr ""
@@ -4095,8 +4094,6 @@ msgid "Theme options saved."
 msgstr ""
 
 #: application/controllers/admin/themeoptions.php:184
-#: application/views/admin/themes/templateeditorbar_view.php:74
-#: application/views/admin/themes/templateeditorbar_view.php:112
 msgid "The template upload directory doesn't exist or is not writable."
 msgstr ""
 
@@ -4241,7 +4238,7 @@ msgid "Load"
 msgstr ""
 
 #: application/controllers/admin/themes.php:836
-#: application/views/admin/super/welcome.php:121
+#: application/views/admin/super/welcome.php:123
 #: application/views/admin/survey/breadcrumb.php:12
 #: application/views/admin/survey/listSurveys_view.php:16
 #: application/views/admin/survey/listSurveys_view.php:29
@@ -4912,7 +4909,7 @@ msgstr ""
 
 #: application/controllers/admin/translate.php:434
 #: application/helpers/expressions/em_manager_helper.php:9407
-#: application/models/Boxes.php:56
+#: application/models/Boxes.php:57
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:60
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:36
@@ -5818,7 +5815,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:149
 #: application/views/admin/super/adminmenu.php:82
 #: application/views/admin/super/welcome.php:14
-#: application/views/admin/super/welcome.php:75
+#: application/views/admin/super/welcome.php:77
 #: application/views/admin/survey/listSurveys_view.php:25
 msgid "Create a new survey"
 msgstr ""
@@ -5827,9 +5824,9 @@ msgstr ""
 #: application/views/admin/super/adminmenu.php:44
 #: application/views/admin/super/adminmenu.php:105
 #: application/views/admin/super/welcome.php:15
-#: application/views/admin/super/welcome.php:136
-#: application/views/admin/super/welcome.php:141
+#: application/views/admin/super/welcome.php:138
 #: application/views/admin/super/welcome.php:143
+#: application/views/admin/super/welcome.php:145
 msgid "List surveys"
 msgstr ""
 
@@ -5847,9 +5844,9 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:151
 #: application/views/admin/super/welcome.php:18
-#: application/views/admin/super/welcome.php:149
-#: application/views/admin/super/welcome.php:154
+#: application/views/admin/super/welcome.php:151
 #: application/views/admin/super/welcome.php:156
+#: application/views/admin/super/welcome.php:158
 msgid "Edit global settings"
 msgstr ""
 
@@ -6876,7 +6873,7 @@ msgid "Off"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:565
-#: application/helpers/qanda_helper.php:1103
+#: application/helpers/qanda_helper.php:1085
 #: application/views/admin/dataentry/content_view.php:75
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:21
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:55
@@ -6890,7 +6887,7 @@ msgid "Clear selection"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:566
-#: application/helpers/qanda_helper.php:1104
+#: application/helpers/qanda_helper.php:1086
 #: application/views/admin/dataentry/content_view.php:76
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:22
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:56
@@ -6904,7 +6901,7 @@ msgid "Previous month"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:567
-#: application/helpers/qanda_helper.php:1105
+#: application/helpers/qanda_helper.php:1087
 #: application/views/admin/dataentry/content_view.php:77
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:23
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:57
@@ -6918,7 +6915,7 @@ msgid "Next month"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:568
-#: application/helpers/qanda_helper.php:1106
+#: application/helpers/qanda_helper.php:1088
 #: application/views/admin/dataentry/content_view.php:78
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:24
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:58
@@ -6932,7 +6929,7 @@ msgid "Select year"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:569
-#: application/helpers/qanda_helper.php:1107
+#: application/helpers/qanda_helper.php:1089
 #: application/views/admin/dataentry/content_view.php:79
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:25
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:59
@@ -6946,7 +6943,7 @@ msgid "Previous year"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:570
-#: application/helpers/qanda_helper.php:1108
+#: application/helpers/qanda_helper.php:1090
 #: application/views/admin/dataentry/content_view.php:80
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:26
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:60
@@ -6960,7 +6957,7 @@ msgid "Next year"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:571
-#: application/helpers/qanda_helper.php:1109
+#: application/helpers/qanda_helper.php:1091
 #: application/views/admin/dataentry/content_view.php:81
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:27
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:61
@@ -6974,7 +6971,7 @@ msgid "Select decade"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:572
-#: application/helpers/qanda_helper.php:1110
+#: application/helpers/qanda_helper.php:1092
 #: application/views/admin/dataentry/content_view.php:82
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:28
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:62
@@ -6988,7 +6985,7 @@ msgid "Previous decade"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:573
-#: application/helpers/qanda_helper.php:1111
+#: application/helpers/qanda_helper.php:1093
 #: application/views/admin/dataentry/content_view.php:83
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:29
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:63
@@ -7002,7 +6999,7 @@ msgid "Next decade"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:574
-#: application/helpers/qanda_helper.php:1112
+#: application/helpers/qanda_helper.php:1094
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:30
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:64
@@ -7016,7 +7013,7 @@ msgid "Previous century"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:575
-#: application/helpers/qanda_helper.php:1113
+#: application/helpers/qanda_helper.php:1095
 #: application/views/admin/dataentry/content_view.php:85
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:31
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:65
@@ -7030,7 +7027,7 @@ msgid "Next century"
 msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:576
-#: application/helpers/qanda_helper.php:1114
+#: application/helpers/qanda_helper.php:1096
 #: application/views/admin/dataentry/content_view.php:86
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:32
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:66
@@ -7154,7 +7151,7 @@ msgstr ""
 #: application/views/admin/global_settings/_general.php:234
 #: application/views/admin/global_settings/_general.php:254
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:45
-#: application/views/admin/themes/templatesummary_view.php:263
+#: application/views/admin/themes/templatesummary_view.php:213
 msgid "Full"
 msgstr ""
 
@@ -7318,7 +7315,7 @@ msgstr ""
 #: application/extensions/admin/survey/question/PositionWidget/views/form_group.php:12
 #: application/extensions/admin/survey/question/PositionWidget/views/no_group.php:2
 #: application/extensions/admin/survey/question/PositionWidget/views/unknown_view.php:2
-#: application/models/Boxes.php:52
+#: application/models/Boxes.php:53
 msgid "Position:"
 msgstr ""
 
@@ -9333,7 +9330,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2386
 #: application/views/admin/participants/importCSV_view.php:89
 #: application/views/admin/themeoptions/update.php:150
-#: application/views/admin/themes/templatesummary_view.php:205
+#: application/views/admin/themes/templatesummary_view.php:159
 #: application/views/admin/token/csvupload.php:122
 #: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:2
 #: tmp/twig_translate.php:72 tmp/twig_translate.php:136
@@ -11366,63 +11363,63 @@ msgstr ""
 msgid "Delete this assessment rule"
 msgstr ""
 
-#: application/models/Boxes.php:53
+#: application/models/Boxes.php:54
 msgid "Destination URL:"
 msgstr ""
 
-#: application/models/Boxes.php:54
+#: application/models/Boxes.php:55
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:49
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:29
 msgid "Title:"
 msgstr ""
 
-#: application/models/Boxes.php:55
+#: application/models/Boxes.php:56
 msgid "Icon:"
 msgstr ""
 
-#: application/models/Boxes.php:57
+#: application/models/Boxes.php:58
 msgid "Name of the page where the box should be shown"
 msgstr ""
 
-#: application/models/Boxes.php:58
+#: application/models/Boxes.php:59
 msgid "Display this box to:"
 msgstr ""
 
-#: application/models/Boxes.php:111
+#: application/models/Boxes.php:112
 msgid "Only Superadmin"
 msgstr ""
 
-#: application/models/Boxes.php:113 application/models/ParticipantShare.php:103
+#: application/models/Boxes.php:114 application/models/ParticipantShare.php:103
 #: application/models/ParticipantShare.php:123
 #: application/views/admin/homepagesettings/_form.php:135
 msgid "Everybody"
 msgstr ""
 
-#: application/models/Boxes.php:115
+#: application/models/Boxes.php:116
 #: application/views/admin/homepagesettings/_form.php:137
 msgid "Nobody"
 msgstr ""
 
-#: application/models/Boxes.php:121
+#: application/models/Boxes.php:122
 msgid "Can't find user group!"
 msgstr ""
 
-#: application/models/Boxes.php:141
+#: application/models/Boxes.php:142
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:34
 msgid "No, cancel"
 msgstr ""
 
-#: application/models/Boxes.php:142
+#: application/models/Boxes.php:143
 #: application/views/admin/assessments/assessments_delete.php:27
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:35
 msgid "Yes, delete"
 msgstr ""
 
-#: application/models/Boxes.php:144
+#: application/models/Boxes.php:145
 msgid "Delete Box"
 msgstr ""
 
-#: application/models/Boxes.php:146
+#: application/models/Boxes.php:147
 msgid "Are you sure you want to delete this box ?"
 msgstr ""
 
@@ -14071,7 +14068,6 @@ msgid "Simple"
 msgstr ""
 
 #: application/views/admin/global_settings/_general.php:246
-#: application/views/admin/themes/templateeditorbar_view.php:236
 msgid "Template editor:"
 msgstr ""
 
@@ -14557,7 +14553,7 @@ msgstr ""
 #: application/views/admin/labels/editlabel_view.php:94
 #: application/views/admin/survey/Question/importQuestion_view.php:15
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:21
-#: application/views/admin/themeoptions/import_modal.php:21
+#: application/views/admin/themeoptions/import_modal.php:25
 msgid "(Maximum file size: %01.2f MB)"
 msgstr ""
 
@@ -16149,19 +16145,19 @@ msgstr ""
 msgid "Done. Test your survey using the %s icon."
 msgstr ""
 
-#: application/views/admin/super/welcome.php:68
+#: application/views/admin/super/welcome.php:69
 msgid "Or, try out our interactive tutorial tour"
 msgstr ""
 
-#: application/views/admin/super/welcome.php:69
+#: application/views/admin/super/welcome.php:70
 msgid "Start the tour"
 msgstr ""
 
-#: application/views/admin/super/welcome.php:93
+#: application/views/admin/super/welcome.php:95
 msgid "Last visited survey:"
 msgstr ""
 
-#: application/views/admin/super/welcome.php:100
+#: application/views/admin/super/welcome.php:102
 #: application/views/admin/survey/subview/_survey_quickaction.php:321
 msgid "Last visited question:"
 msgstr ""
@@ -17553,7 +17549,6 @@ msgid "Question by Question"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:273
-#: application/views/admin/themes/templateeditorbar_view.php:188
 msgid "Template:"
 msgstr ""
 
@@ -18024,6 +18019,7 @@ msgid "Survey general settings"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:269
+#: application/views/admin/themes/templateeditorbar_view.php:188
 msgid "Theme:"
 msgstr ""
 
@@ -18427,14 +18423,18 @@ msgstr ""
 msgid "Surveys in this group:"
 msgstr ""
 
-#: application/views/admin/themeoptions/import_modal.php:12
+#: application/views/admin/themeoptions/import_modal.php:14
 #: application/views/admin/themes/importform_view.php:3
 msgid "Upload template file"
 msgstr ""
 
-#: application/views/admin/themeoptions/import_modal.php:19
+#: application/views/admin/themeoptions/import_modal.php:22
 #: application/views/admin/themes/importform_view.php:8
 msgid "Select template ZIP file:"
+msgstr ""
+
+#: application/views/admin/themeoptions/import_modal.php:32
+msgid " Please select a file to import! "
 msgstr ""
 
 #: application/views/admin/themeoptions/index.php:25
@@ -18616,22 +18616,27 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:107
-#: application/views/admin/themes/templateeditorbar_view.php:248
-msgid "Please enter the name for the new template:"
+#: application/views/admin/themes/templateeditorbar_view.php:74
+#: application/views/admin/themes/templateeditorbar_view.php:112
+msgid "The theme upload directory doesn't exist or is not writable."
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:107
-#: application/views/admin/themes/templateeditorbar_view.php:248
+#: application/views/admin/themes/templateeditorbar_view.php:247
+msgid "Please enter the name for the new theme:"
+msgstr ""
+
+#: application/views/admin/themes/templateeditorbar_view.php:107
+#: application/views/admin/themes/templateeditorbar_view.php:247
 msgid "extends_"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:130
-msgid "You cannot upload templates because you do not have the required ZIP library installed in PHP."
+msgid "You cannot upload themes because you do not have the required ZIP library installed in PHP."
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:170
-msgid "Rename this template to:"
+msgid "Rename this theme to:"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:172
@@ -18639,7 +18644,7 @@ msgid "Rename"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:177
-msgid "Are you sure you want to delete this template?"
+msgid "Are you sure you want to delete this theme?"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:197
@@ -18647,26 +18652,30 @@ msgid "Screen:"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:224
-msgid "Return to template list"
+msgid "Return to theme list"
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:244
+#: application/views/admin/themes/templateeditorbar_view.php:236
+msgid "Theme editor:"
+msgstr ""
+
+#: application/views/admin/themes/templateeditorbar_view.php:243
 msgid "Note: This is a standard theme."
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:247
+#: application/views/admin/themes/templateeditorbar_view.php:246
 msgid "If you want to modify it %s you can extend it%s."
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:247
+#: application/views/admin/themes/templateeditorbar_view.php:246
 msgid "Extend theme"
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:257
+#: application/views/admin/themes/templateeditorbar_view.php:256
 msgid "This theme is out of date."
 msgstr ""
 
-#: application/views/admin/themes/templateeditorbar_view.php:260
+#: application/views/admin/themes/templateeditorbar_view.php:259
 msgid "We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."
 msgstr ""
 
@@ -18674,77 +18683,77 @@ msgstr ""
 msgid "Viewing file '%s'"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:16
-msgid "You can't save changes because the template directory is not writable."
+#: application/views/admin/themes/templatesummary_view.php:17
+msgid "You can't save changes because the theme directory is not writable."
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:25
+#: application/views/admin/themes/templatesummary_view.php:26
 msgid "Screen part files:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:40
-#: application/views/admin/themes/templatesummary_view.php:70
-#: application/views/admin/themes/templatesummary_view.php:100
+#: application/views/admin/themes/templatesummary_view.php:37
+#: application/views/admin/themes/templatesummary_view.php:59
+#: application/views/admin/themes/templatesummary_view.php:80
 msgid "local"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:44
-#: application/views/admin/themes/templatesummary_view.php:74
-#: application/views/admin/themes/templatesummary_view.php:104
-#: application/views/admin/themes/templatesummary_view.php:184
+#: application/views/admin/themes/templatesummary_view.php:39
+#: application/views/admin/themes/templatesummary_view.php:61
+#: application/views/admin/themes/templatesummary_view.php:82
+#: application/views/admin/themes/templatesummary_view.php:145
 msgid "inherited"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:54
+#: application/views/admin/themes/templatesummary_view.php:47
 msgid "JavaScript files:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:84
+#: application/views/admin/themes/templatesummary_view.php:69
 msgid "CSS files:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:136
-msgid "Copy to local template and save changes"
+#: application/views/admin/themes/templatesummary_view.php:113
+msgid "Copy to local theme and save changes"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:143
-msgid "Changes cannot be saved to a standard template."
+#: application/views/admin/themes/templatesummary_view.php:115
+msgid "Changes cannot be saved to a standard theme."
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:157
+#: application/views/admin/themes/templatesummary_view.php:123
 msgid "Other files:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:175
-msgid "Are you sure you want to delete this file?"
+#: application/views/admin/themes/templatesummary_view.php:137
+msgid " Are you sure you want to delete this file? "
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:202
+#: application/views/admin/themes/templatesummary_view.php:156
 msgid "Upload a file (maximum size: %d MB):"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:222
+#: application/views/admin/themes/templatesummary_view.php:170
 msgid "Tip: How to embed a picture in your theme?"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:233
+#: application/views/admin/themes/templatesummary_view.php:182
 msgid "Tip: How to display a picture in your theme?"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:236
+#: application/views/admin/themes/templatesummary_view.php:186
 msgid "To use a picture in a .twig file:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:256
+#: application/views/admin/themes/templatesummary_view.php:206
 msgid "Preview:"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:259
+#: application/views/admin/themes/templatesummary_view.php:209
 msgid "Mobile"
 msgstr ""
 
-#: application/views/admin/themes/templatesummary_view.php:270
-msgid "Please change the directory permissions of the folder %s in order to preview templates."
+#: application/views/admin/themes/templatesummary_view.php:222
+msgid "Please change the directory permissions of the folder %s in order to preview themes."
 msgstr ""
 
 #: application/views/admin/token/actions.php:1
