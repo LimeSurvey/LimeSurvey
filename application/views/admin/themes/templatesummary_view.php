@@ -223,7 +223,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                     </p>
                 <?php } else { ?>
                     <p>
-                        <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/themes/sa/tmp/',array('id '=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
+                        <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/themes/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
                     </p>
                 <?php } ?>
             </div>
