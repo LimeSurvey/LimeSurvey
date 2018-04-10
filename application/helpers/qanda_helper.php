@@ -1094,7 +1094,7 @@ function do_date($ia)
             'qid'                    => $ia[0],
             'hideCalendar'           => $hideCalendar
             ), true);
-        if (!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption")) {
+        if (!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption", LSYii_ClientScript::POS_POSTSCRIPT)) {
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             /* Global datepicker configuration */
             $aDefaultDatePicker = array(
