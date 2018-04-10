@@ -116,6 +116,7 @@ class TemplateControllerTest extends TestBaseClassWeb
 
         $w->get($url);
 
+        // Wait for modal to appear.
         sleep(1);
 
         $this->dismissModal();
@@ -125,9 +126,9 @@ class TemplateControllerTest extends TestBaseClassWeb
             $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
             $button->click();
 
+            // Wait for possible modal.
             sleep(1);
 
-            // Unpredictable modal is unpredictable.
             $this->dismissModal();
 
             $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
@@ -179,8 +180,6 @@ class TemplateControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_version_renamed',
                 $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
             );
-
-            sleep(3);
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
