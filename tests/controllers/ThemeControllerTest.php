@@ -150,6 +150,12 @@ class TemplateControllerTest extends TestBaseClassWeb
                 $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
             );
 
+            // Check that the preview is working.
+            $w->switchTo()->frame('previewiframe');
+            $p = $w->findElement(WebDriverBy::tagName('p'));
+            $this->assertEquals($p->getText(), 'This is a sample survey description. It could be quite long.');
+            $w->switchTo()->defaultContent();
+
             // Try to save to local theme.
             $button = $w->findElement(WebDriverBy::id('button-save-changes'));
             $button->click();
