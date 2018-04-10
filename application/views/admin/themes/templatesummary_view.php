@@ -122,10 +122,10 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         <div>
             <?php eT("Other files:"); ?>
             <br/>
-            <div class="col-sm-12 well">
+            <div class="col-sm-12 well other-files-list">
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-sm-9 other-files-name">
                             <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                         </div>
                         <div class="col-sm-3">
@@ -134,7 +134,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                 if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
                                     <?=CHtml::form(array('admin/themes/sa/templatefiledelete'), 'post'); ?>
                                         <input type='hidden' name="otherfile" value="<?php echo $file; ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js "); ?>')"/>
+                                        <input type='submit' class='btn btn-default btn-xs' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
