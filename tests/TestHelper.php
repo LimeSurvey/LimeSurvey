@@ -404,6 +404,21 @@ class TestHelper extends TestCase
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
                 // Open target="_blank" in new tab.
                 $profile->setPreference('browser.link.open_newwindow', 3);
+
+                // When set to 2, the location specified for the most recent download is utilized again.
+                $profile->setPreference('browser.download.folderList', 2);
+
+                // Further settings to automatically download exported theme files.
+                // Test testExportAndImport() in ThemeControllerTest depends on these lines.
+                $profile->setPreference('browser.download.dir', BASEPATH . '../tmp/');
+                $profile->setPreference('browser.download.panel.shown', false);
+                $profile->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
+
+                $profile->setPreference('browser.download.manager.showAlertOnComplete', false);
+                $profile->setPreference('browser.download.manager.closeWhenDone', false);
+                $profile->setPreference('browser.download.manager.showAlertInterval', 100);
+                $profile->setPreference('browser.download.manager.resumeOnWakeDelay', 0);
+
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;
