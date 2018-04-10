@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <?php if (is_writable($userthemerootdir) && function_exists("zip_open")):?>
                         <?php $importModal=true;?>
-                        <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
+                        <a class="btn btn-default" id="button-import" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </a>
@@ -78,7 +78,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         }
                         ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-import text-success"></span>
                                 <?php eT("Import"); ?>
                             </button>
@@ -86,7 +86,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         <?php endif;?>
                     <?php else: ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </button>
@@ -95,7 +95,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                    <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
@@ -174,7 +174,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
+                    <a class="btn btn-default" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
                         <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
