@@ -1123,6 +1123,7 @@ function do_date($ia)
             'maxdate'                => $maxdate,
             'dateformatdetails'      => $dateformatdetails['dateformat'],
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            'dateformatdetailsphp'    => $dateformatdetails['phpdate'],
             'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'language'               => App()->language,
