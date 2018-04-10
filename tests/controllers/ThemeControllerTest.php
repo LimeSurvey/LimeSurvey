@@ -11,7 +11,7 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
-
+use Facebook\WebDriver\Remote\LocalFileDetector;
 /**
  * @since 2017-10-15
  * @group tempcontr
@@ -186,6 +186,80 @@ class TemplateControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_version_renamed',
                 $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
             );
+
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
+    }
+
+    /**
+     * Test upload and delete file.
+     * @group themeuploadfile
+     */
+    public function testUploadFile()
+    {
+        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.helpers.globalsettings_helper', true);
+
+        // Delete theme vanilla_version_1 if present.
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $_POST['copydir'] = 'vanilla';
+        $_POST['newname'] = 'vanilla_version_1';
+        $contr->templatecopy();
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'admin/themes',
+            [
+                'sa'           => 'view',
+                'editfile'     => 'layout_global.twig',
+                'screenname'   => 'welcome',
+                'templatename' => 'vanilla_version_1'
+            ]
+        );
+
+        // NB: Less typing.
+        $w = self::$webDriver;
+
+        try {
+            $w->get($url);
+
+            // Wait for possible modal to appear.
+            sleep(1);
+
+            $this->dismissModal();
+
+            // Test upload file.
+            $fileInput = $w->findElement(WebDriverBy::id('upload_file'));
+            $fileInput->setFileDetector(new LocalFileDetector());
+            $file = BASEPATH . '../tests/data/file_upload/dalahorse.jpg';
+            $this->assertTrue(file_exists($file));
+            $fileInput->sendKeys($file)->submit();
+
+            sleep(1);
+
+            // Check that file is last in list.
+            $files = $w->findElements(WebDriverBy::className('other-files-filename'));
+            $this->assertEquals($files[count($files) - 1]->getText(), 'dalahorse.jpg');
+
+            // Delete file.
+            $deleteButtons = $w->findElements(WebDriverBy::className('other-files-delete-button'));
+            $deleteButton  = $deleteButtons[count($deleteButtons) - 1];
+            $deleteButton->click();
+            $w->switchTo()->alert()->accept();
+
+            sleep(1);
+
+            // Check that file does not exist in list anymore.
+            $files = $w->findElements(WebDriverBy::className('other-files-filename'));
+            foreach ($files as $file) {
+                $this->assertNotEquals($file->getText(), 'dalahorse.jpg');
+            }
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
