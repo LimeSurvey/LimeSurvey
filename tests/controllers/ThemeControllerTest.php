@@ -17,7 +17,7 @@ use Facebook\WebDriver\Remote\LocalFileDetector;
  * @group tempcontr
  * @group theme1
  */
-class TemplateControllerTest extends TestBaseClassWeb
+class ThemeControllerTest extends TestBaseClassWeb
 {
     /**
      * Login etc.
@@ -93,6 +93,7 @@ class TemplateControllerTest extends TestBaseClassWeb
 
     /**
      * @group extendtheme
+     * @todo Split up in separate tests.
      */
     public function testExtendTheme()
     {
@@ -205,7 +206,7 @@ class TemplateControllerTest extends TestBaseClassWeb
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
-        // Delete theme vanilla_version_1 if present.
+        // Extend vanilla.
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $_POST['copydir'] = 'vanilla';
         $_POST['newname'] = 'vanilla_version_1';
@@ -260,6 +261,98 @@ class TemplateControllerTest extends TestBaseClassWeb
             foreach ($files as $file) {
                 $this->assertNotEquals($file->getText(), 'dalahorse.jpg');
             }
+
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
+    }
+
+    /**
+     * @group themeexport
+     */
+    public function testExportAndImport()
+    {
+        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.helpers.globalsettings_helper', true);
+
+        // Extend vanilla.
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $_POST['copydir'] = 'vanilla';
+        $_POST['newname'] = 'vanilla_version_1';
+        $contr->templatecopy();
+
+        //$contr->templatezip('vanilla_version_1');
+        //return;
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'admin/themes',
+            [
+                'sa'           => 'view',
+                'editfile'     => 'layout_global.twig',
+                'screenname'   => 'welcome',
+                'templatename' => 'vanilla_version_1'
+            ]
+        );
+
+        // NB: Less typing.
+        $w = self::$webDriver;
+
+        try {
+            $w->get($url);
+
+            $w->clickButton('button-export');
+
+            sleep(1);
+
+            $this->assertTrue(file_exists(BASEPATH . '../tmp/vanilla_version_1.zip'));
+
+            $w->clickButton('button-delete');
+            $w->switchTo()->alert()->accept();
+
+            sleep(1);
+
+            $url = $urlMan->createUrl(
+                'admin/themes',
+                [
+                    'sa'           => 'view',
+                    'editfile'     => 'layout_global.twig',
+                    'screenname'   => 'welcome',
+                    'templatename' => 'vanilla'
+                ]
+            );
+
+            $w->get($url);
+
+            $w->clickButton('button-import');
+
+            sleep(1);
+
+            // Test upload file.
+            $fileInput = $w->findElement(WebDriverBy::id('the_file'));
+            $fileInput->setFileDetector(new LocalFileDetector());
+            $file = BASEPATH . '../tmp/vanilla_version_1.zip';
+            $this->assertTrue(file_exists($file));
+            $fileInput->sendKeys($file)->submit();
+
+            sleep(1);
+
+            $w->clickButton('button-open-theme');
+
+            sleep(1);
+
+            // Check that we have the correct page header.
+            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
+            $this->assertEquals(
+                $header->getText(),
+                'Theme editor: vanilla_version_1',
+                $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
+            );
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
