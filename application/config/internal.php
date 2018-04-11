@@ -210,10 +210,11 @@ $internalConfig = array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'flatEllipsizeText'       => 'viewHelper::flatEllipsizeText',
                 'getLanguageData'         => 'viewHelper::getLanguageData',
                 'array_flip'              => 'array_flip',
                 'array_intersect_key'     => 'array_intersect_key',
+
+                /* clientScript */
                 'registerPublicCssFile'   => 'LS_Twig_Extension::registerPublicCssFile',
                 'registerTemplateCssFile' => 'LS_Twig_Extension::registerTemplateCssFile',
                 'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
@@ -227,7 +228,13 @@ $internalConfig = array(
                 'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
                 'listScriptFiles'         => 'LS_Twig_Extension::listScriptFiles',
+                /* String management */
                 'processString'           => 'LS_Twig_Extension::processString',
+                'flatString'              => 'LS_Twig_Extension::flatString',
+                'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
+                'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText',
+                'str_replace'             => 'str_replace',
+
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -238,7 +245,6 @@ $internalConfig = array(
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
                 'isset'                   => 'isset',
-                'str_replace'             => 'str_replace',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
@@ -257,7 +263,21 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include', 'macro', 'import'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date', 'format','nl2br','split','trim','json_encode'),
+                'filters' => array(
+                    'escape',
+                    'raw',
+                    't',
+                    'merge',
+                    'length',
+                    'gT',
+                    'keys',
+                    'date',
+                    'format',
+                    'nl2br',
+                    'split',
+                    'trim',
+                    'json_encode'
+                ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
@@ -272,7 +292,55 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'processString', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createUrl', 'json_decode', 'json_encode'),
+                'functions' => array(
+                    'getLanguageData',
+                    'array_flip',
+                    'array_intersect_key',
+
+                    'registerPublicCssFile',
+                    'registerTemplateCssFile',
+                    'registerGeneralScript',
+                    'registerTemplateScript',
+                    'registerScript',
+                    'registerPackage',
+                    'unregisterPackage',
+                    'registerCssFile',
+                    'registerScriptFile',
+                    'unregisterScriptFile',
+                    'unregisterScriptForAjax',
+                    'listCoreScripts',
+                    'listScriptFiles',
+                    'processString',
+
+                    'flatEllipsizeText',
+                    'flatString',
+                    'ellipsizeString',
+                    'flatEllipsizeText',
+                    'str_replace',
+
+                    'getAllQuestionClasses',
+                    'intval',
+                    'empty',
+                    'count',
+                    'reset',
+                    'renderCaptcha',
+                    'getPost',
+                    'getParam',
+                    'getQuery',
+                    'isset',
+                    'assetPublish',
+                    'image',
+                    'imageSrc',
+                    'sprintf',
+                    'gT',
+                    'ngT',
+                    'createUrl',
+                    'json_decode',
+                    'json_encode',
+                    /* Not in twigRenderer[functions] */
+                    'include',
+                    'dump',
+                ),
             ),
 
         ),
