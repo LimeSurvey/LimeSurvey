@@ -5465,7 +5465,7 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
             $message = '';
-            if (!$this->surveyOptions['active'] || $this->sPreviewMode)
+            if ($this->surveyOptions['active'] != 'Y' || $this->sPreviewMode)
             {
                 return $message;
             }
