@@ -232,6 +232,7 @@ $internalConfig = array(
                 'getAllQuestionClasses'      => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',
+                'processString'              => 'LS_Twig_Extension::processString',
                 'checkPermission'            => 'LS_Twig_Extension::checkPermission',
                 'intval'                     => 'intval',
                 'empty'                      => 'empty',
