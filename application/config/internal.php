@@ -210,6 +210,7 @@ $internalConfig = array(
             'globals' => array(
                 'html' => 'CHtml'
             ),
+            'functions' => array(
                 'getLanguageData'         => 'viewHelper::getLanguageData',
                 'array_flip'              => 'array_flip',
                 'array_intersect_key'     => 'array_intersect_key',
@@ -331,7 +332,7 @@ $internalConfig = array(
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
 
-                    'getLanguageNameFromCode'
+                    'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
                     'intval',
@@ -358,7 +359,6 @@ $internalConfig = array(
                     'dump',
                 ),
             ),
-
         ),
     )
 );
