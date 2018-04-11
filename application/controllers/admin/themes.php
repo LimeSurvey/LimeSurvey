@@ -543,7 +543,7 @@ class themes extends Survey_Common_Action
 
                 if (!Template::hasInheritance($templatename)) {
 
-                    if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename) == true) {
+                    if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)) {
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                         // The default template could be the same as the one we're trying to remove
@@ -570,7 +570,7 @@ class themes extends Survey_Common_Action
                 }
 
             } else {
-                // Throw an error 500 ?
+                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' does not exist."), $templatename), 'error');
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');

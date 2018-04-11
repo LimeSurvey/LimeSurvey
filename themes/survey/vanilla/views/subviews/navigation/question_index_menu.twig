@@ -70,17 +70,12 @@
                 {{ gT("Question index") }}
                 <span class="{{ aSurveyInfo.class.indexmenusspan }} caret" {{ aSurveyInfo.attr.indexmenusspan }}></span>
             </a>
-
             <!-- TODO: Remove this when support is added -->
             <ul class="{{ aSurveyInfo.class.indexmenusddul }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddul }}>
-                <li>
-                    {{ gT("Question by question mode not yet supported.") }}
-                </li>
-
-            {% for group in aSurveyInfo.indexItems %}
+            {% for group in aSurveyInfo.aQuestionIndex.items %}
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 <li>
-                    <div class="{{ aSurveyInfo.class.indexmenusddh }} dropdown-menu" {{ aSurveyInfo.attr.indexmenusddh }}>
+                    <div class="{{ aSurveyInfo.class.indexmenusddh }} dropdown-header" {{ aSurveyInfo.attr.indexmenusddh }}>
                         {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) }}
                         <span class="{{ aSurveyInfo.class.indexmenusddspan }} caret" {{ aSurveyInfo.class.indexmenusddspan }}></span>
                     </div>
@@ -105,7 +100,11 @@
                     </ul>
                 </li>
             {% endfor %}
-
+            {% if aSurveyInfo.aQuestionIndex.type == 'full' %}
+                <li> 
+                    {{ gT("Question by question mode not yet supported.") }}
+                </li>
+            {% endif %}
             </ul>
         </li>
     {% endif %}
