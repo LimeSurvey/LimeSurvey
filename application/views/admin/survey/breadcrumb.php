@@ -59,13 +59,13 @@
                         <?php //If the questiongroup view is active right now, don't link it?>
                         <?php if(!isset($active) && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
-                                <?php echo flattenText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name);?>
+                                <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1);?>
                             </li>                                                                     
                         <?php else: ?>
                             <li>
                                 <div>
                                     <a id="breadcrumb__group--detail" class="pjax animate" href="<?php echo App()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $oQuestionGroup->sid, 'gid'=>$oQuestionGroup->gid]); ?>">
-                                        <?php echo flattenText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name);?>
+                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1, 60, '...');?>
                                     </a>
                                 </div>
                             </li>
