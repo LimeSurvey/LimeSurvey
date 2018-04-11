@@ -26,7 +26,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
     }
 
     /**
-     * 
+     * Test date question with default answer and maximum date today.
      */
     public function testBasic()
     {
