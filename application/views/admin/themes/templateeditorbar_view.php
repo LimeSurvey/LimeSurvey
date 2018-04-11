@@ -65,20 +65,20 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <?php if (is_writable($userthemerootdir) && function_exists("zip_open")):?>
                         <?php $importModal=true;?>
-                        <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
+                        <a class="btn btn-default" id="button-import" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </a>
                         <?php else:
                         if (function_exists("zip_open")){
-                            $sMessage=gT("The template upload directory doesn't exist or is not writable.");
+                            $sMessage=gT("The theme upload directory doesn't exist or is not writable.");
                         }
                         else{
                             $sMessage=gT("You do not have the required ZIP library installed in PHP.");
                         }
                         ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-import text-success"></span>
                                 <?php eT("Import"); ?>
                             </button>
@@ -86,7 +86,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         <?php endif;?>
                     <?php else: ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </button>
@@ -95,7 +95,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                    <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
@@ -104,12 +104,12 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <!-- Copy -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <?php if (is_writable($userthemerootdir)):?>
-                        <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new template:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                        <a class="btn btn-default" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
                             <?php eT("Extend"); ?>
                         </a>
                         <?php else: ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
@@ -127,7 +127,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
                 if (!function_exists("zip_open"))
                 {
-                    $sMessage=gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
+                    $sMessage=gT("You cannot upload themes because you do not have the required ZIP library installed in PHP.");
                 }
                 else
                 {
@@ -167,14 +167,14 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <?php if(is_template_editable($templatename)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
+                    <a class="btn btn-default" id="button-rename-theme" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                         <span class="fa fa-pencil  text-success"></span>
                         <?php eT("Rename"); ?>
                     </a>
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
+                    <a class="btn btn-default" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
                         <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
@@ -185,7 +185,7 @@ echo viewHelper::getViewTestTag('themeEditor');
         <!-- Right Menu -->
         <div class="col-md-7 text-right form-inline">
             <div class="form-group">
-                <label for='templatedir'><?php eT("Template:"); ?></label>
+                <label for='templatedir'><?php eT("Theme:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
@@ -221,7 +221,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/themeoptions"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("Return to template list"); ?>
+                    <?php eT("Return to theme list"); ?>
                 </a>
                 <?php endif;?>
         </div>
@@ -229,40 +229,11 @@ echo viewHelper::getViewTestTag('themeEditor');
 </div>
 
 <?php if($importModal):?>
-    <div class="modal fade" tabindex="-1" role="dialog" id="importModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-title h4"><?php eT("Upload template file") ?></div>
-                </div>
-                <?php echo CHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
-                <div class="modal-body">
-                    <input type='hidden' name='lid' value='$lid' />
-                    <input type='hidden' name='action' value='templateupload' />
-                    <div  class="form-group">
-                        <label for='the_file'><?php eT("Select template ZIP file:") ?></label>
-                        <input id='the_file' name='the_file' type="file" accept='.zip' />
-                        <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <?php if (!function_exists("zip_open")) {?>
-                        <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
-                        <?php } else {?>
-                        <input class="btn btn-success" type='button' value='<?php eT("Import") ?>' onclick='if (validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
-                        <?php }?>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
-                </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <?php endif;?>
+    <?php $this->renderPartial('themeoptions/import_modal',[]); ?>
+<?php endif;?>
 
 <div class="col-lg-12 templateeditor">
-    <div class="h3"><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></div>
-
+    <div class="h3 theme-editor-header"><?php eT("Theme editor:"); ?> <i><?php echo $templatename; ?></i></div>
 
     <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">
@@ -273,7 +244,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             </strong>
             <?php
             printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend theme")."\""
-                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
+                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new theme:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
     <?php endif;?>

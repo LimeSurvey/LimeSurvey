@@ -30,7 +30,7 @@
     {{ aSurveyInfo.metas }}
 
     <title>
-        {{ aSurveyInfo.surveyls_title }}
+        {{ processString(aSurveyInfo.surveyls_title,1) }}
     </title>
 
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}files/favicon.ico" />

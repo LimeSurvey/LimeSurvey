@@ -1469,17 +1469,26 @@ function getNavigatorDatas()
  */
 function doAssessment($surveyid)
 {
+    /* Default : show nothing */
+    $assessment = array(
+        'show' => false,
+        'total' => array(
+            'show' => false,
+        ),
+        'subtotal' => array(
+            'show' => false,
+        ),
+    );
     $survey = Survey::model()->findByPk($surveyid);
-    $baselang = $survey->language;
-    if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
-        return array('show'=>false);
-    }
 
-    $total = 0;
+    if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
+        return $assessment;
+    }
+    $baselang = $survey->language;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
         $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
-
+    $total = 0;
     $aAssessmentCount = Assessment::model()->count("sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'");
     if ($aAssessmentCount > 0) {
 
@@ -1492,6 +1501,7 @@ function doAssessment($surveyid)
                     "message" => $row['message']
                 );
             } else {
+                    $assessment['total']['show'] = true;
                 $assessment['total'][] = array("name"=>$row['name'],
                     "min"     => $row['minimum'],
                     "max"     => $row['maximum'],
@@ -1590,27 +1600,24 @@ function doAssessment($surveyid)
                     }
                 }
             }
-
             $subtotal[$group] = $grouptotal;
         }
     }
-    $assessment['subtotal']['show'] = false;
+        $assessment['subtotal']['show'] = false;
 
-    if (isset($subtotal) && is_array($subtotal)) {
+        if (isset($subtotal) && is_array($subtotal)) {
         $assessment['subtotal']['show']  = true;
         $assessment['subtotal']['datas'] = $subtotal;
     }
 
-    $assessment['total']['show'] = false;
-
-    if (isset($assessment['total'])) {
-        $assessment['total']['show'] = true;
-    }
-
+        $assessment['total']['show'] = false;
+        if (isset($assessment['total'])) {
+            $assessment['total']['show'] = true;
+        }
     $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
     $assessment['total_score']    = (isset($total)) ? $total : '';
     //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
-    return array('show'=>true, 'datas' => $assessment);
+        return array('show'=>($assessment['subtotal']['show'] || $assessment['total']['show']), 'datas' => $assessment);
 }
 
 

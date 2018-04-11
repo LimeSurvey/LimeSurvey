@@ -22,7 +22,7 @@
     {% if aGroup.description != '' %}
         <!-- Group description -->
         <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
-            {{ aGroup.description }}
+            {{ processString(aGroup.description) }}
         </div>
     {% endif %}
 {% endif %}

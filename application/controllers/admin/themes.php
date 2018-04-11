@@ -218,8 +218,8 @@ class themes extends Survey_Common_Action
                             }
                         }
 
-                        if (!Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            Yii::app()->user->setFlash('error', gT("This ZIP archive did not contain a template. Import failed."));
+                        if (Template::checkIfTemplateExists($sNewDirectoryName)) {
+                            Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                             rmdirr($destdir);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
                         }

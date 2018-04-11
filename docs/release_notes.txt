@@ -35,6 +35,64 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
+-Fixed issue #13519: No import button in Template listing - add menu view (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing - clean controller (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing - fix error messages (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing - import_modal as separate view (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing - prerequisite checking in controller (Tõnis Ormisson)
+-Fixed issue #13520: Unable to import theme (Tõnis Ormisson)
+-Fixed issue #13520: Unable to import theme, adjust text (Tõnis Ormisson)
+-Fixed issue #13368: Favicon transparent background (#1033) (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing  (#1031) (Tõnis Ormisson)
+-Fixed issue #13520: Unable to import theme (#1030) (Tõnis Ormisson)
+-Fixed issue #13526: When renaming a template : some parts are fixed, some are not (#1029) (Tõnis Ormisson)
+-Fixed issue #13529: Survey texts are not updated via EM javascript (Denis Chenu)
+-Fixed issue #13533: Unable to use Expression Manager inside template (Denis Chenu)
+-Fixed issue #13534: Language selection does not work in survey-list page (#1028) (Tõnis Ormisson)
+-Fixed issue #13539: Hide progress bar on "thank you" page in vanilla theme (#1034) (Tõnis Ormisson)
+-Fixed issue #13540: Panel integration add url parameter doesn't show any target question (#1035) (Tõnis Ormisson)
+-Fixed issue #13555: Long survey name + Long Group name : breadcumb seems unusuable (Denis Chenu)
+-Fixed issue #13562: CSRF in box deletion (markusfluer)
+-Fixed issue #13565: Remove punctuation points from PHP (Kai Ravesloot)
+-Fixed issue #13565: Remove punctuation points from php (#1036) (Kai Ravesloot)
+-Fixed issue #13569: Final assesments are shown even if no assessemnt is set (Denis Chenu)
+-Fixed issue: Import old survey table HTML broken (Denis Chenu)
+-Fixed issue: AuthLDAP doesn't work with multiple search bases. (#998) (ecraven)
+-Fixed issue: Couldn't change password (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: French (France) by b00z00
+#Updated translation: German (Informal) by KRav, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from 3.6.0 (build 180328) to 3.6.1 (build 180329) Mar 29, 2018
+-Fixed issue #13505 : Q_other.shown are difference between PHP and JS (Denis Chenu)
+-Fixed issue #13517: Question adv settings are not updated after update of question type (Denis Chenu)
+-Fixed issue: space added after default value (Denis Chenu)
+-Fixed issue: Images in theme options completely broken (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
+
+
 Changes from 3.5.4 (build 180320) to 3.6.0 (build 180328) Mar 28, 2018
 -New feature #13511: Allow new attribute in beforeQuestionRender (Denis Chenu)
 -New feature #13537: allow max_execution_time by config (#1026) (Denis Chenu)

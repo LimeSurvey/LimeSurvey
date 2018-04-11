@@ -16,7 +16,7 @@
     <div class="row welcome survey-action">
         <div class="col-lg-12 content-right">
             <div class='jumbotron message-box'>
-                <h3><?php eT("Activate Survey");?>(<?php echo $iSurveyID; ?>)</h3>
+                <h3><?php eT("Activate Survey");?> (<?php echo $iSurveyID; ?>)</h3>
                 <p class='lead'>
                     <?php eT("Survey has been activated. Results table has been successfully created."); ?>
                 </p>

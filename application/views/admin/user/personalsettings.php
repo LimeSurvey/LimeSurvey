@@ -65,10 +65,10 @@
                                 </button>
                                 
                                 <br/>
-                                <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                             </div>
                         </div>
                         <div class="row selector__password-row hidden">
+                            <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <?php echo CHtml::label(gT("Current password:"), 'lang', array('class'=>"control-label")); ?>
@@ -228,17 +228,12 @@
 <?php App()->getClientScript()->registerScript("personalSettings", "
 $('#selector__showChangePassword').on('click', function(e){
     e.preventDefault();
+    $('#newpasswordshown').val('1');
     $('.selector__password-row').removeClass('hidden').find('input').each(
         function(i,item){
             $(item).prop('disabled', false);
         }
     );
-    $(this).find('i').addClass('fa-unlock').removeClass('fa-lock');
-    if ( $('#newpasswordshown').val() == '0' ){
-        $('#newpasswordshown').val('1');
-    }else{
-        $('#newpasswordshown').val('0');
-    }
     $(this).closest('div').remove();
 });
 ", LSYii_ClientScript::POS_POSTSCRIPT);

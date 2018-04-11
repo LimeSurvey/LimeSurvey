@@ -122,8 +122,9 @@ class homepagesettings extends Survey_Common_Action
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function delete($id)
+    public function delete($id=null)
     {
+        $id = App()->request->getPost('id',$id);
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));

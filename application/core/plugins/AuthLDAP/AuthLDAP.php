@@ -260,7 +260,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $userentry = false;
         // try each semicolon-separated search base in order
         foreach (explode(";", $usersearchbase) as $usb) {
-            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute, $fullnameattribute));
+            $dnsearchres = ldap_search($ldapconn, $usb, $usersearchfilter, array($mailattribute, $fullnameattribute));
             $rescount = ldap_count_entries($ldapconn, $dnsearchres);
             if ($rescount == 1) {
                 $userentry = ldap_get_entries($ldapconn, $dnsearchres);
@@ -504,12 +504,15 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $usersearchfilter = "($searchuserattribute=$username)";
             }
             // Search for the user
-            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($searchuserattribute));
-            $rescount = ldap_count_entries($ldapconn, $dnsearchres);
-            if ($rescount == 1) {
-                $userentry = ldap_get_entries($ldapconn, $dnsearchres);
-                $userdn = $userentry[0]["dn"];
-            } else {
+            foreach (explode(";", $usersearchbase) as $usb) {
+                $dnsearchres = ldap_search($ldapconn, $usb, $usersearchfilter, array($searchuserattribute));
+                $rescount = ldap_count_entries($ldapconn, $dnsearchres);
+                if ($rescount == 1) {
+                    $userentry = ldap_get_entries($ldapconn, $dnsearchres);
+                    $userdn = $userentry[0]["dn"];
+                }
+            }
+            if(!$userentry) {
                 // if no entry or more than one entry returned
                 // then deny authentication
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);

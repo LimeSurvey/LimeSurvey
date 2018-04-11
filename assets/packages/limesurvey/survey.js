@@ -179,10 +179,11 @@ function activateLanguageChanger(){
                     location.href = target;
                     return false;
                 }else{
+                    var lang = $(this).data('limesurvey-lang');
                     /* No form, not targeturl : just see what happen */
                     $("<form>", {
                         "class":'ls-js-hidden',
-                        "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
+                        "html": '<input type="hidden" name="lang" value="' + lang + '" />',
                         "action": target,
                         "method": 'get'
                     }).appendTo(document.body).submit();

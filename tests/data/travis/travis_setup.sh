@@ -11,7 +11,8 @@
 # cd LimeSurvey/LimeSurvey
 # chmod +x tests/data/travis/travis_setup.sh
 # ./tests/data/travis/travis_setup.sh
-# DOMAIN=localhost phpunit
+# sudo -u <your-web-user> DOMAIN=localhost phpunit
+# (You might want to use the switch --stop-on-failure.)
 
 phpenv global 7.0 2>/dev/null
 phpenv global 7.0

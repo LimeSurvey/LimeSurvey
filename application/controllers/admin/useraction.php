@@ -71,7 +71,6 @@ class UserAction extends Survey_Common_Action
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
         $aData['title_bar']['title'] = gT('User administration');
-        $aData['fullpagebar']['closebutton']['url'] = true;
         $model = new User();
         $aData['model'] = $model;
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
