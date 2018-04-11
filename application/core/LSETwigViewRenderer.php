@@ -76,11 +76,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
 
     /**
-     * Main method to render a admin page or block.
+     * Main method to render an admin page or block.
      * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
      * @param string  $sLayout the name of the layout to render
      * @param array   $aDatas  the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     * @return string HTML
      */
     public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false)
     {
