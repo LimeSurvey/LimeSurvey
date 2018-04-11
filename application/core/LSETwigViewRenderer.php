@@ -24,55 +24,55 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-        public  $sandboxConfig = array();
-        private $_twig;
+    public  $sandboxConfig = array();
+    private $_twig;
 
-        /**
-         * Main method to render a survey.
-         * @param string  $sLayout the name of the layout to render
-         * @param array   $aDatas  the datas needed to fill the layout
-         * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
-         */
-        public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
-        {
-            $oTemplate = Template::model()->getInstance();
-            $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
-            if ($oLayoutTemplate) {
-                $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
-                $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-                $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage();
-                if($sEmHiddenInputs) {
-                    $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
-                }
-                if ($bReturn) {
-                    return $sHtml;
-                } else {
-                    $this->renderHtmlPage($sHtml, $oTemplate);
-                }
+    /**
+     * Main method to render a survey.
+     * @param string  $sLayout the name of the layout to render
+     * @param array   $aDatas  the datas needed to fill the layout
+     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     */
+    public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
+    {
+        $oTemplate = Template::model()->getInstance();
+        $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
+        if ($oLayoutTemplate) {
+            $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
+            $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage();
+            if($sEmHiddenInputs) {
+                $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
+            }
+            if ($bReturn) {
+                return $sHtml;
             } else {
-                $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
-                // A possible solution to this error is to re-install the template.
-                if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
-                    throw new WrongTemplateVersionException(
-                        sprintf(
-                            gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
-                            $sLayout,
-                            $oTemplate->template_name,
-                            $oTemplate->template->version,
-                            $templateDbConf->config->metadata->version
-                        )
-                    );
-                }
-                // TODO: Panic or default to something else?
-                throw new CException(
+                $this->renderHtmlPage($sHtml, $oTemplate);
+            }
+        } else {
+            $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
+            // A possible solution to this error is to re-install the template.
+            if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
+                throw new WrongTemplateVersionException(
                     sprintf(
-                        gT("Can't render layout %s for template %s. Please try to re-install the template."),
+                        gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
                         $sLayout,
-                        $oTemplate->template_name
+                        $oTemplate->template_name,
+                        $oTemplate->template->version,
+                        $templateDbConf->config->metadata->version
                     )
                 );
             }
+            // TODO: Panic or default to something else?
+            throw new CException(
+                sprintf(
+                    gT("Can't render layout %s for template %s. Please try to re-install the template."),
+                    $sLayout,
+                    $oTemplate->template_name
+                )
+            );
         }
+    }
 
     /**
      * This method is called from qanda helper to render a question view file.
