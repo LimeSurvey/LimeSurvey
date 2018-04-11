@@ -229,6 +229,7 @@ $internalConfig = array(
                 'unregisterScriptForAjax'    => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'            => 'LS_Twig_Extension::listCoreScripts',
                 'listScriptFiles'            => 'LS_Twig_Extension::listScriptFiles',
+                'processString'              => 'LS_Twig_Extension::processString',
                 'getAllQuestionClasses'      => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',
