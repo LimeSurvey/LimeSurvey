@@ -3079,8 +3079,8 @@ function do_shortfreetext($ia)
             if (!isset($currentLatLong) || $currentLatLong == false) {
                 $floatLat = 0;
                 $floatLng = 0;
-                $LatLong  = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
-
+                $sDefaultcoordinates=trim(LimeExpressionManager::ProcessStepString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+                $LatLong = explode(" ", $sDefaultcoordinates);
                 if (isset($LatLong[0]) && isset($LatLong[1])) {
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
@@ -3125,7 +3125,7 @@ function do_shortfreetext($ia)
             'coreClass'              => $coreClass,
             'freeTextId'             => 'answer'.$ia[1],
             'name'                   => $ia[1],
-            'qid'=>$ia[0],
+            'qid'                    => $ia[0],
             'basename'               => $ia[1],
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
@@ -3145,7 +3145,6 @@ function do_shortfreetext($ia)
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
-
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) {
             $currentLatLong = explode(';', $currentLocation);
@@ -3157,7 +3156,8 @@ function do_shortfreetext($ia)
         // If it's not set : set the center to the default position, but don't set the marker
         if (!$currentLatLong) {
             $currentLatLong = array("", "");
-            $currentCenter = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
+            $sDefaultcoordinates=trim(LimeExpressionManager::ProcessStepString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+            $currentCenter = explode(" ", $sDefaultcoordinates);
             if (count($currentCenter) != 2) {
                 $currentCenter = array("", "");
             }
