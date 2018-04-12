@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-04-11 14:47:50+00:00\n"
+"POT-Creation-Date: 2018-04-12 09:32:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4215,6 +4215,10 @@ msgstr ""
 
 #: application/controllers/admin/themes.php:569
 msgid "You can't delete template '%s' because one or more templates inherit from it."
+msgstr ""
+
+#: application/controllers/admin/themes.php:573
+msgid "Theme '%s' does not exist."
 msgstr ""
 
 #: application/controllers/admin/themes.php:633
