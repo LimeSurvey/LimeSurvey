@@ -137,7 +137,12 @@ class CreateSurveyTest extends TestBaseClassWeb
             $addgroup->click();
 
             // Fill in group title.
-            $groupname = self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
+            $groupname = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('group_name_en--selectorCreateQuestionGroup')
+                )
+            );
+            self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
             $groupname->clear()->sendKeys('group1');
 
             sleep(1);
