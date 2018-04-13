@@ -113,7 +113,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             $link->click();
 
             // Fill in title.
-            $title = self::$webDriver->findElement(WebDriverBy::id('surveyls_title'));
+            $title = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('surveyls_title')
+                )
+            );
             $title->clear()->sendKeys('test survey 1');
 
             // Click save.
