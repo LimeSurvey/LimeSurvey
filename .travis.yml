@@ -65,4 +65,4 @@ before_script:
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
 script:
-    - DOMAIN=localhost phpunit --testdox
+    - DOMAIN=localhost phpunit
