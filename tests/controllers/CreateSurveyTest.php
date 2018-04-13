@@ -76,9 +76,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             // Ignore welcome modal.
             try {
-                $button = self::$webDriver->wait(5)->until(
+                $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#welcomeModal button.close')
+                        WebDriverBy::cssSelector('#welcomeModal button.btn-default')
                     )
                 );
                 $button->click();
@@ -88,12 +88,13 @@ class CreateSurveyTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
+            sleep(1);
 
             // Ignore password warning.
             try {
-                $button = self::$webDriver->wait(5)->until(
+                $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#admin-notification-modal button.close')
+                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
                     )
                 );
                 $button->click();
@@ -103,6 +104,8 @@ class CreateSurveyTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
+
+            sleep(1);
 
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
@@ -113,11 +116,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $link->click();
 
             // Fill in title.
-            $title = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('surveyls_title')
-                )
-            );
+            $title = self::$webDriver->findElement(WebDriverBy::id('surveyls_title'));
             $title->clear()->sendKeys('test survey 1');
 
             // Click save.
@@ -126,6 +125,19 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            // Remove notification.
+            try {
+                $addgroup = self::$webDriver->wait(10)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('button.close.limebutton')
+                    )
+                );
+                $save->click();
+            } catch (\Exception $e){
+                //nothing
+            }
+
+            sleep(1);
 
             // Go to structure sidebar
             $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorStructureButton'));
@@ -141,12 +153,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $addgroup->click();
 
             // Fill in group title.
-            $groupname = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('group_name_en--selectorCreateQuestionGroup')
-                )
-            );
-            self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
+            $groupname = self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
             $groupname->clear()->sendKeys('group1');
 
             sleep(1);
