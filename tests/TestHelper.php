@@ -401,7 +401,7 @@ class TestHelper extends TestCase
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
                 // Open target="_blank" in new tab.
-                $profile->setPreference('browser.link.open_newwindow', 3);
+                //$profile->setPreference('browser.link.open_newwindow', 3);
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;
