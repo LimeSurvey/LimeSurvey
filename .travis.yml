@@ -35,15 +35,12 @@ before_script:
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
-
+    # InnoDb needs large_file_prefix & Barracuda file format
+    # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
     - mysql -uroot -e "Show  variables like '%large%';"
     - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
-    - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
-    - mysql -uroot -e "SET @@global.innodb_file_format_max =  Barracuda;"
 
     - mysql -uroot -e "Show  variables like '%large%';"
-    - mysql -uroot -e "Show  variables like '%innodb_file%';"
-    - mysql -uroot -e "Show  variables like '%innodb_default%';"
 
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
@@ -84,7 +81,3 @@ before_script:
 
 script:
     - DOMAIN=localhost phpunit #--stop-on-failure # Stop so we can see errors.
-after_script:
-    - mysql -uroot -e "Show  variables like '%large%';"
-    - mysql -uroot -e "Show  variables like '%innodb_file%';"
-    - mysql -uroot -e "Show  table status;" limesurvey
