@@ -911,7 +911,11 @@ class Survey extends LSActiveRecord
      */
     public function deleteSurvey($iSurveyID, $recursive = true)
     {
-        return $this->findByPk($iSurveyID)->delete($recursive);
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) {
+            return false;
+        }
+        return $oSurvey->delete($recursive);
     }
 
     /**
