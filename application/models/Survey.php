@@ -214,30 +214,30 @@ class Survey extends LSActiveRecord
         }
         if ($recursive) {
             //delete the survey_$iSurveyID table
-            if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
+            if (tableExists("{{survey_".$this->sid."}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{survey_".$this->sid."}}");
             }
             //delete the survey_$iSurveyID_timings table
-            if (tableExists("{{survey_".intval($iSurveyID)."_timings}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
+            if (tableExists("{{survey_".$this->sid."_timings}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{survey_".$this->sid."_timings}}");
             }
             //delete the tokens_$iSurveyID table
-            if (tableExists("{{tokens_".intval($iSurveyID)."}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
+            if (tableExists("{{tokens_".$this->sid."}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{tokens_".$this->sid."}}");
             }
 
             /* Remove User/global settings part : need Question and QuestionGroup*/
             // Settings specific for this survey
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
-            $oCriteria->compare('stg_value', $iSurveyID, false, 'AND');
+            $oCriteria->compare('stg_value', $this->sid, false, 'AND');
             SettingGlobal::model()->deleteAll($oCriteria);
             // Settings specific for this survey, 2nd part
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_%'.$iSurveyID.'%', true, 'AND', false);
+            $oCriteria->compare('stg_name', 'last_%'.$this->sid.'%', true, 'AND', false);
             SettingGlobal::model()->deleteAll($oCriteria);
             // All Group id from this survey for ALL users
-            $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'gid', 'gid');
+            $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$this->sid))), 'gid', 'gid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
             // pgsql need casting, unsure for mssql
@@ -250,7 +250,7 @@ class Survey extends LSActiveRecord
             }
             SettingGlobal::model()->deleteAll($oCriteria);
             // All Question id from this survey for ALL users
-            $aQuestionId = CHtml::listData(Question::model()->findAll(array('select'=>'qid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'qid', 'qid');
+            $aQuestionId = CHtml::listData(Question::model()->findAll(array('select'=>'qid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$this->sid))), 'qid', 'qid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
             if (Yii::app()->db->getDriverName() == 'pgsql') {
@@ -260,7 +260,7 @@ class Survey extends LSActiveRecord
             }
             SettingGlobal::model()->deleteAll($oCriteria);
 
-            $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
+            $oResult = Question::model()->findAllByAttributes(array('sid' => $this->sid));
             foreach ($oResult as $aRow) {
                 Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
@@ -268,20 +268,20 @@ class Survey extends LSActiveRecord
                 DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 
-            Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
-            SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $this->sid));
+            Permission::model()->deleteAllByAttributes(array('entity_id' => $this->sid, 'entity'=>'survey'));
+            SavedControl::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $this->sid));
             //Remove any survey_links to the CPDB
-            SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-            Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
+            SurveyLink::model()->deleteLinksBySurvey($this->sid);
+            Quota::model()->deleteQuota(array('sid' => $this->sid), true);
             // Remove all related plugin settings
-            PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $iSurveyID));
+            PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $this->sid));
             // Delete all uploaded files.
-            rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$iSurveyID);
+            rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid);
         }
         return true;
     }
