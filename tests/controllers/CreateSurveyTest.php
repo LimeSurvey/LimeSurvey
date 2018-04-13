@@ -76,9 +76,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             // Ignore welcome modal.
             try {
-                $button = self::$webDriver->wait(1)->until(
+                $button = self::$webDriver->wait(5)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                        WebDriverBy::cssSelector('#welcomeModal button.close')
                     )
                 );
                 $button->click();
@@ -88,13 +88,12 @@ class CreateSurveyTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
-            sleep(1);
 
             // Ignore password warning.
             try {
-                $button = self::$webDriver->wait(1)->until(
+                $button = self::$webDriver->wait(5)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                        WebDriverBy::cssSelector('#admin-notification-modal button.close')
                     )
                 );
                 $button->click();
@@ -104,8 +103,6 @@ class CreateSurveyTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
-
-            sleep(1);
 
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
