@@ -421,6 +421,10 @@ class TestHelper extends TestCase
                 $profile->setPreference('browser.download.manager.showAlertInterval', 100);
                 $profile->setPreference('browser.download.manager.resumeOnWakeDelay', 0);
 
+                // This two lines are necessary to avoid issue https://github.com/SeleniumHQ/docker-selenium/issues/388.
+                $profile->setPreference('browser.tabs.remote.autostart', false);
+                $profile->setPreference('browser.tabs.remote.autostart.2', false);
+
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;

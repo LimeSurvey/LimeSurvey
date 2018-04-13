@@ -148,6 +148,7 @@ $internalConfig = array(
                 'vardump' => array(
                     'class' => 'CWebLogRoute',
                     'categories' => 'vardump', // tracevar function
+                    'enabled' => isset($userConfig['config']['debug']) && $userConfig['config']['debug'] >= 1,
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
