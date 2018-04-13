@@ -919,9 +919,7 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * @inheritdoc
-     * @return Survey
-     *
+     * @inheritdoc . But use a static var because can be used a lot of time.
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
