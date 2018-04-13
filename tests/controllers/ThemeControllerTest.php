@@ -104,9 +104,17 @@ class ThemeControllerTest extends TestBaseClassWeb
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $contr->delete('vanilla_version_1');
 
+        //foreach (App()->session['aFlashMessage'] as $flash) {
+            //var_dump($flash['message']);
+        //}
+
         // ...and the renamed theme.
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $contr->delete('vanilla_version_renamed');
+
+        //foreach (App()->session['aFlashMessage'] as $flash) {
+            //var_dump($flash['message']);
+        //}
 
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
