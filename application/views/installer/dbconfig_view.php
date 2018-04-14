@@ -8,9 +8,15 @@
 Yii::app()->clientScript->registerScript('dbType', "
 $( document ).ready(function() {
     checkDbType();
+    checkDbEngine();
 });
+
 $('#InstallerConfigForm_dbtype').change(function(){
     checkDbType();
+});
+
+$('#InstallerConfigForm_dbengine').change(function(){
+    checkDbEngine();
 });
 
 function checkDbType(){
@@ -22,6 +28,15 @@ function checkDbType(){
         $('#InstallerConfigForm_dbengine_row').hide();
     }
 }
+
+function checkDbEngine(){
+    if($('#InstallerConfigForm_dbengine').val() == '".InstallerConfigForm::ENGINE_TYPE_INNODB."') {
+        $('#InstallerConfigForm_dbengine_row .alert').show();
+    } else {
+        $('#InstallerConfigForm_dbengine_row .alert').hide();
+    }
+}
+
 ");
 ?>
 
@@ -47,7 +62,7 @@ function checkDbType(){
         <div id="InstallerConfigForm_dbengine_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbengine'); ?>
             <?= CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt'=>gT("Select"), 'autocomplete'=>'off', 'class' => 'form-control')); ?>
-            <div class="alert alert-danger">blaah</div>
+            <div class="alert alert-warning"><?= gT('NB! Note that using InnoDb as your database engine will limit the number of columns in survey data tables significantly! Using InnoDb instead of MyIsam will reduce the possible maximum number of questions in your surveys. Please read more about MyIsam vs InnoDB table column limitations before choosing this option.'); ?></div>
         </div>
 
         <div id="InstallerConfigForm_dblocation_row" class="form-group">
@@ -82,7 +97,7 @@ function checkDbType(){
 
         <div class="row">
             <div class="col-md-4" >
-                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="col-md-4" style="text-align: center;">
             </div>
