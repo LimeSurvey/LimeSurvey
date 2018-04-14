@@ -97,8 +97,11 @@ class InstallerConfigForm extends CFormModel
         }
 
         if (isset($this->supported_db_types[self::DB_TYPE_MYSQL])) {
-            $this->dbengine = self::ENGINE_TYPE_MYISAM;
-            $this->dbengine = self::ENGINE_TYPE_INNODB;
+            if (getenv('DBENGINE')) {
+                $this->dbengine = getenv('DBENGINE');
+            } else {
+                $this->dbengine = self::ENGINE_TYPE_MYISAM;
+            }
         }
 
         // FIXME this is for testing only!!! REMOVE THIS IF READY

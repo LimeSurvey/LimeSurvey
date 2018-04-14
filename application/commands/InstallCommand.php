@@ -117,7 +117,7 @@ class InstallCommand extends CConsoleCommand
         }
 
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
-        $dbEngine = InstallerConfigForm::ENGINE_TYPE_INNODB;
+        $dbEngine = getenv('DBENGINE');
 
         if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
             $this->connection
