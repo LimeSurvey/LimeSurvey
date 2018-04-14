@@ -243,10 +243,9 @@ class InstallerController extends CController
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
-                Yii::app()->session['dbengine'] = $oModel->dbengine;
 
                 //saving the form data to session
-                foreach (array('dblocation','dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation','dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -254,10 +253,10 @@ class InstallerController extends CController
                 $bTablesDoNotExist = false;
 
                 // Check if the surveys table exists or not
-                if ($bDBExists === true) {
+                if ($oModel->dbExists === true) {
                     try {
                         // We do the following check because DBLIB does not throw an exception on a missing table
-                        if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
+                        if ($oModel->db->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
                             $bTablesDoNotExist = true;
                         }
                     } catch (Exception $e) {
@@ -265,14 +264,14 @@ class InstallerController extends CController
                     }
                 }
 
-                $bDBExistsButEmpty = ($bDBExists && $bTablesDoNotExist);
+                $bDBExistsButEmpty = ($oModel->dbExists && $bTablesDoNotExist);
 
                 //store them in session
-                Yii::app()->session['databaseexist'] = $bDBExists;
+                Yii::app()->session['databaseexist'] = $oModel->dbExists;
                 Yii::app()->session['tablesexist'] = !$bTablesDoNotExist;
 
                 // If database is up to date, redirect to administration screen.
-                if ($bDBExists && !$bTablesDoNotExist) {
+                if ($oModel->dbExists && !$bTablesDoNotExist) {
                     Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
                     Yii::app()->session['step3'] = true;
 
@@ -289,20 +288,20 @@ class InstallerController extends CController
                 if ($oModel->isMysql) {
                     //for development - use mysql in the strictest mode
                     if (Yii::app()->getConfig('debug') > 1) {
-                        $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
+                        $oModel->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
                     }
-                    $sMySQLVersion = $this->connection->getServerVersion();
+                    $sMySQLVersion = $oModel->db->getServerVersion();
                     if (version_compare($sMySQLVersion, '4.1', '<')) {
                         die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                     }
-                        /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();
-                        /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
+                        /** @scrutinizer ignore-unhandled */ @$oModel->db->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();
+                        /** @scrutinizer ignore-unhandled */ @$oModel->db->createCommand("SET NAMES 'utf8mb4'")->execute();
                 }
 
                 // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
                 if ($oModel->isMSSql) {
-                    @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
-                    @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
+                    @$oModel->db->createCommand('SET DATEFORMAT ymd;')->execute();
+                    @$oModel->db->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
                 }
 
                 //$aData array won't work here. changing the name
@@ -318,7 +317,7 @@ class InstallerController extends CController
                 $aValues['adminoutputForm'] = '';
 
                 //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                if (!$bDBExists) {
+                if (!$oModel->dbExists) {
                     Yii::app()->session['databaseDontExist'] = true;
 
                     $aValues['dbname'] = $oModel->dbname;
@@ -366,27 +365,26 @@ class InstallerController extends CController
             $this->redirect(array('installer/welcome'));
         }
         $aData = [];
-        $aData['model'] = new InstallerConfigForm;
+        $oModel = $this->getModelFromSession();
+        $oModel->dbConnect();
+        $aData['model'] = $oModel;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
 
-        $aDbConfig = $this->_getDatabaseConfig();
-        extract($aDbConfig);
         // unset database name for connection, since we want to create it and it doesn't already exists
         $aDbConfig['sDatabaseName'] = '';
-        $this->_dbConnect($aDbConfig, $aData);
 
 
         $aData['adminoutputForm'] = '';
         // Yii doesn't have a method to create a database
         $bCreateDB = true; // We are thinking positive
-        switch ($sDatabaseType) {
+        switch ($oModel->db) {
             case 'mysqli':
             case 'mysql':
             try {
-                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
+                $oModel->db->createCommand("CREATE DATABASE `{$oModel->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
             } catch (Exception $e) {
                 $bCreateDB = false;
             }
@@ -395,21 +393,21 @@ class InstallerController extends CController
             case 'mssql':
             case 'odbc':
             try {
-                $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+                $oModel->db->createCommand("CREATE DATABASE [{$oModel->dbname}];")->execute();
             } catch (Exception $e) {
                 $bCreateDB = false;
             }
             break;
             case 'pgsql':
             try {
-                $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
+                $oModel->db->createCommand("CREATE DATABASE \"{$oModel->dbname}\" ENCODING 'UTF8'")->execute();
             } catch (Exception $e) {
                 $bCreateDB = false;
             }
             break;
             default:
             try {
-                $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+                $oModel->db->createCommand("CREATE DATABASE {$oModel->dbname}")->execute();
             } catch (Exception $e) {
                 $bCreateDB = false;
             }
@@ -419,8 +417,6 @@ class InstallerController extends CController
         //$this->load->dbforge();
         if ($bCreateDB) {
             //Database has been successfully created
-            $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-            $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
@@ -437,12 +433,6 @@ class InstallerController extends CController
             );
         } else {
             $this->loadHelper('surveytranslator');
-            $oModel = new InstallerConfigForm;
-            $oModel->dbtype = $aDbConfig['sDatabaseType'];
-            $oModel->dblocation = $aDbConfig['sDatabaseLocation'];
-            $oModel->dbuser = $aDbConfig['sDatabaseUser'];
-            //$oModel->dbpwd$aDbConfig['sDatabasePwd']; Don't set password for security issue
-            $oModel->dbprefix = $aDbConfig['sDatabasePrefix'];
             $oModel->addError('dbname', gT('Try again! Creation of database failed.'));
 
             $aData['title'] = gT('Database configuration');
@@ -515,7 +505,7 @@ class InstallerController extends CController
         Yii::app()->session['optconfig_message'] = $sConfirmation;
         unset(Yii::app()->session['populatedatabase']);
 
-        $this->redirect(array('installer/optional'));
+            $this->redirect(array('installer/optional'));
     }
 
     /**
@@ -530,7 +520,7 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'on');
         $aData['progressValue'] = 80;
         $this->loadHelper('surveytranslator');
-        $aData['model'] = $model = new InstallerConfigForm('optional');
+        $aData['model'] = $model = $this->getModelFromSession('optional');
         // Backup the default, needed only for $sDefaultAdminPassword
         $sDefaultAdminPassword = $model->adminLoginPwd;
         if (!is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
@@ -538,12 +528,6 @@ class InstallerController extends CController
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($model->validate()) {
-                $sAdminUserName = $model->adminLoginName;
-                $sAdminPassword = $model->adminLoginPwd;
-                $sAdminRealName = $model->adminName;
-                $sSiteName = $model->siteName;
-                $sSiteLanguage = $model->surveylang;
-                $sAdminEmail = $model->adminEmail;
 
                 $aData['title'] = gT("Database configuration");
                 $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -559,9 +543,8 @@ class InstallerController extends CController
 
 
 
-                $db = \Yii::app()->getDb();
-                $db->setActive(true);
-                $this->connection = $db;
+                $this->connection = $model->db;
+                $this->connection->setActive(true);
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
@@ -577,12 +560,12 @@ class InstallerController extends CController
                         if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
                             $user->uid = 1;
                         }
-                        $user->users_name = $sAdminUserName;
-                        $user->setPassword($sAdminPassword);
-                        $user->full_name = $sAdminRealName;
+                        $user->users_name = $model->adminLoginName;
+                        $user->setPassword($model->adminLoginPwd);
+                        $user->full_name = $model->adminName;
                         $user->parent_id = 0;
-                        $user->lang = $sSiteLanguage;
-                        $user->email = $sAdminEmail;
+                        $user->lang = $model->surveylang;
+                        $user->email = $model->adminEmail;
                         $user->save();
 
                         // Save permissions
@@ -596,11 +579,11 @@ class InstallerController extends CController
 
                         // Save  global settings
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $model->siteName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $model->adminName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $model->adminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
 
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
@@ -609,9 +592,9 @@ class InstallerController extends CController
                         $aData['descp'] = gT("LimeSurvey has been installed successfully.");
                         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'off');
                         $aData['progressValue'] = 100;
-                        $aData['user'] = $sAdminUserName;
-                        if ($sDefaultAdminPassword == $sAdminPassword) {
-                            $aData['pwd'] = $sAdminPassword;
+                        $aData['user'] = $model->adminLoginName;
+                        if ($sDefaultAdminPassword == $model->adminLoginPwd) {
+                            $aData['pwd'] = $model->adminLoginPwd;
                         } else {
                             $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
                         }
@@ -1192,6 +1175,23 @@ class InstallerController extends CController
         $sDatabaseEngine = Yii::app()->session['dbengine'];
 
         return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser','sDatabaseEngine');
+    }
+
+    /**
+     * @param $scenario
+     * @return InstallerConfigForm
+     */
+    private function getModelFromSession($scenario = null) {
+        $model = new InstallerConfigForm($scenario);
+        $model->dbtype = Yii::app()->session['dbtype'];
+        $model->dbengine = Yii::app()->session['dbengine'];
+        $model->dbname = Yii::app()->session['dbname'];
+        $model->dbuser = Yii::app()->session['dbuser'];
+        $model->dbpwd = Yii::app()->session['dbpwd'];
+        $model->dbprefix = Yii::app()->session['dbprefix'];
+        $model->dblocation = Yii::app()->session['dblocation'];
+        $model->dbExists = Yii::app()->session['databaseexist'];
+        return $model;
     }
 
     /**

@@ -248,14 +248,14 @@ class InstallerConfigForm extends LSCFormModel
             }
             $this->db->active = true;
             $this->db->tablePrefix = $this->dbprefix;
-            if($this->dbengine === InstallerConfigForm::ENGINE_TYPE_INNODB){
-                $sDatabaseEngine = $this->dbengine;
-            }
-            $this->setMySQLDefaultEngine($sDatabaseEngine);
+            $this->setMySQLDefaultEngine($this->dbengine);
 
         } catch (\Exception $e) {
             $this->addError('dblocation', gT('Try again! Connection with database failed.'));
             $this->addError('dblocation', gT('Reason:').' '.$e->getMessage());
+        }
+        if ($this->useDbName){
+            $this->dbExists = true;
         }
         return true;
     }
