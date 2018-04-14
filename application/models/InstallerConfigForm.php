@@ -21,7 +21,7 @@
  * @property boolean $isMysql whether the db type is mysql or mysqli
  * @property boolean $isMSSql whether the db type is one of MS Sql types
  */
-class InstallerConfigForm extends CFormModel
+class InstallerConfigForm extends LSCFormModel
 {
     const ENGINE_TYPE_MYISAM = 'MYISAM';
     const ENGINE_TYPE_INNODB = 'INNODB';
@@ -139,14 +139,25 @@ class InstallerConfigForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'dbtype' => Yii::t('app','Database type'),
-            'dblocation' => Yii::t('app','Database location'),
-            'dbname' => Yii::t('app','Database name'),
-            'dbuser' => Yii::t('app','Database user'),
-            'dbpwd' => Yii::t('app','Database password'),
-            'dbprefix' => Yii::t('app','Table prefix'),
-            'dbengine' => Yii::t('app','MySQL databse engine type'),
+            'dbtype' => gT('Database type'),
+            'dblocation' => gT('Database location'),
+            'dbname' => gT('Database name'),
+            'dbuser' => gT('Database user'),
+            'dbpwd' => gT('Database password'),
+            'dbprefix' => gT('Table prefix'),
+            'dbengine' => gT('MySQL databse engine type'),
         );
+    }
+
+    public function attributeHints() {
+        return [
+            'dbtype' => gT("The type of your database management system"),
+            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.').' '.gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431'),
+            'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."),
+            'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
+            'dbpwd' => gT("Your database server password."),
+            'dbprefix' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'),
+        ];
     }
 
     public function validateDBEngine($attribute,$params)
