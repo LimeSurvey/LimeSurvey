@@ -45,7 +45,7 @@ class InstallerController extends CController
      *
      * @access public
      * @param string $action
-     * @return boolean|null
+     * @return void
      */
     public function run($action = 'index')
     {
@@ -230,6 +230,7 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
+
         if (isset(Yii::app()->session['populateerror'])) {
             $oModel->addError('dblocation', Yii::app()->session['populateerror']);
             $oModel->addError('dbpwd', '');

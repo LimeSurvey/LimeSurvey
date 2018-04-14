@@ -40,6 +40,10 @@ class InstallerConfigForm extends LSCFormModel
     public $dblocation = 'localhost';
     /** @var  string $dbname */
     public $dbname;
+
+    /** @var  boolean $useDbName */
+    public $useDbName = true;
+
     /** @var  string $dbuser */
     public $dbuser;
     /** @var string $dbpwd  */
@@ -103,10 +107,6 @@ class InstallerConfigForm extends LSCFormModel
                 $this->dbengine = self::ENGINE_TYPE_MYISAM;
             }
         }
-
-        // FIXME this is for testing only!!! REMOVE THIS IF READY
-        //$this->supported_db_types = $this->db_names;
-
         asort($this->supported_db_types);
 
         parent::__construct();
@@ -114,6 +114,7 @@ class InstallerConfigForm extends LSCFormModel
         // Default is database
         $this->setScenario($scenario);
     }
+
 
     /** @inheritdoc */
     public function rules()
@@ -160,13 +161,50 @@ class InstallerConfigForm extends LSCFormModel
         ];
     }
 
+    public function validate($attributes = null, $clearErrors = true)
+    {
+        $this->dbConnect();
+        return parent::validate($attributes, $clearErrors);
+
+    }
+
     public function validateDBEngine($attribute,$params)
     {
         if($this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine,array_keys(self::getDbEngines()))) ){
-
             $this->addError($attribute, Yii::t('app','The database engine type must be set for MySQL'));
         }
+
+        if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
+            if (!$this->isInnoDbLargeFilePrefixEnabled()) {
+                $this->addError($attribute, Yii::t('app','You need to enable large_file_prefix setting in your database configuration in order to use InooDb engine for LimeSurvey!'));
+            }
+            if (!$this->isInnoDbBarracudaFileFormat()) {
+                $this->addError($attribute, Yii::t('app','Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InooDb engine for LimeSurvey!'));
+            }
+        }
+    }
+
+    public function isInnoDbLargeFilePrefixEnabled(){
+        return $this->getMySqlConfigValue('innodb_large_prefix') == '1';
+    }
+
+    private function getMySqlConfigValue($itemName) {
+        $item = "@@".$itemName;
+        try {
+            $query = "SELECT ".$item.";";
+            $result = $this->db->createCommand($query)->queryRow();
+            return isset($result[$item]) ? $result[$item] : null;
+        } catch (\Exception $e) {
+            // ignore
+        }
+        return null;
+    }
+
+    private function isInnoDbBarracudaFileFormat(){
+        $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda';
+        $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda';
+        return $check1 && $check2;
     }
 
     /**
@@ -177,6 +215,187 @@ class InstallerConfigForm extends LSCFormModel
             self::ENGINE_TYPE_MYISAM => Yii::t('app','MyISAM'),
             self::ENGINE_TYPE_INNODB => Yii::t('app','InnoDB'),
         ];
+    }
+
+
+    /**
+     * Connect to the database
+     * @return bool
+     */
+    public function dbConnect()
+    {
+
+        $sDsn = $this->getDsn();
+
+        if (!$this->dbTest()) {
+            // the db does not exist yet
+            $this->useDbName = false;
+            $sDsn = $this->getDsn();
+        }
+        try {
+            $this->db = new DbConnection($sDsn, $this->dbuser, $this->dbpwd);
+            if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
+                $this->db->emulatePrepare = true;
+            }
+            $this->db->active = true;
+            $this->db->tablePrefix = $this->dbprefix;
+            if($this->dbengine === InstallerConfigForm::ENGINE_TYPE_INNODB){
+                $sDatabaseEngine = $this->dbengine;
+            }
+            $this->setMySQLDefaultEngine($sDatabaseEngine);
+
+        } catch (\Exception $e) {
+            $this->addError('dblocation', gT('Try again! Connection with database failed.'));
+            $this->addError('dblocation', gT('Reason:').' '.$e->getMessage());
+        }
+        return true;
+    }
+
+    /**
+     * @return bool if connection is done
+     */
+    private function dbTest()
+    {
+        $sDsn = $this->getDsn();
+        try {
+            new PDO($sDsn, $this->dbuser, $this->dbpwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+
+    private function setMySQLDefaultEngine($dbEngine){
+        if(!empty($this->db) && $this->db->driverName === self::DB_TYPE_MYSQL){
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
+    }
+
+    /**
+     * Get the dsn for the database connection
+     *
+     * @return string
+     * @throws Exception
+     */
+    private function getDsn($dbName = null)
+    {
+        switch ($this->dbtype) {
+            case self::DB_TYPE_MYSQL:
+            case self::DB_TYPE_MYSQLI:
+                $sDSN = $this->getMysqlDsn();
+                break;
+            case self::DB_TYPE_PGSQL:
+                $sDSN = $this->getPgsqlDsn();
+                break;
+            case self::DB_TYPE_DBLIB:
+                $sDSN = $this->dbtype.":host={$this->dblocation};dbname={$this->dbname}";
+                break;
+            case self::DB_TYPE_MSSQL:
+            case self::DB_TYPE_SQLSRV:
+                $sDSN = $this->getMssqlDsn();
+                break;
+            default:
+                throw new Exception(sprintf('Unknown database type "%s".', $this->dbtype));
+        }
+        return $sDSN;
+    }
+
+    /**
+     * @return string
+     */
+    private function getMysqlDsn(){
+
+        $port = $this->getDbPort();
+        if (!$this->useDbName) {
+            $dbName = '';
+        } else {
+            $dbName = $this->dbname;
+        }
+
+        // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
+        if (substr($this->dblocation, 0, 1) == "/") {
+            $sDSN = "mysql:unix_socket={$this->dblocation};dbname={$dbName};";
+        } else {
+            $sDSN = "mysql:host={$this->dblocation};port={$port};dbname={$dbName};";
+        }
+        return $sDSN;
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getPgsqlDsn() {
+        $port = $this->getDbPort();
+        if (!$this->useDbName) {
+            $dbName = '';
+        } else {
+            $dbName = $this->dbname;
+        }
+        if (empty($this->dbpwd)) {
+            // If there's no password, we need to write password=""; instead of password=;,
+            // or PostgreSQL's libpq will consider the DSN string part after "password="
+            // (including the ";" and the potential dbname) as part of the password definition.
+            $this->dbpwd = '""';
+        }
+        $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
+        if ($this->dbname != '') {
+            $sDSN .= "dbname={$dbName};";
+        }
+        return $sDSN;
+    }
+
+    /**
+     * @return string
+     */
+    private function getMssqlDsn(){
+        $port = $this->getDbPort();
+        if (!$this->useDbName) {
+            $dbName = '';
+        } else {
+            $dbName = $this->dbname;
+        }
+        if ($port != '') {
+            $sDatabaseLocation = $this->dblocation.','.$port;
+        }
+        $sDSN = $this->dbtype.":Server={$sDatabaseLocation};Database={$dbName}";
+        return $sDSN;
+    }
+
+    /**
+     * Get the default port if database port is not set
+     * @return string
+     */
+    private function getDbPort()
+    {
+        $sDatabasePort = '';
+        if (strpos($this->dblocation, ':') !== false) {
+            list($sDatabaseLocation, $sDatabasePort) = explode(':', $this->dblocation, 2);
+            if (is_numeric($sDatabasePort)) {
+                return $sDatabasePort;
+            }
+        }
+
+        switch ($this->dbtype) {
+            case self::DB_TYPE_MYSQL:
+            case self::DB_TYPE_MYSQLI:
+                $sDatabasePort = '3306';
+                break;
+            case self::DB_TYPE_PGSQL:
+                $sDatabasePort = '5432';
+                break;
+            case self::DB_TYPE_DBLIB:
+            case self::DB_TYPE_MSSQL:
+            case self::DB_TYPE_SQLSRV:
+            default:
+                $sDatabasePort = '';
+        }
+
+        return $sDatabasePort;
     }
 
     /**
