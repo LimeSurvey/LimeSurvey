@@ -83,6 +83,12 @@ class InstallerConfigForm extends LSCFormModel
     /** @var DbConnection */
     public $db;
 
+    /** @var bool $tablesExist */
+    public $tablesExist = false;
+
+    /** @var bool dbExists */
+    public $dbExists = false;
+
 
     /**
      * InstallerConfigForm constructor.
@@ -165,6 +171,9 @@ class InstallerConfigForm extends LSCFormModel
     {
         $this->dbConnect();
         return parent::validate($attributes, $clearErrors);
+    }
+
+    public function checkStatus() {
 
     }
 
@@ -370,7 +379,7 @@ class InstallerConfigForm extends LSCFormModel
      * Get the default port if database port is not set
      * @return string
      */
-    private function getDbPort()
+    public function getDbPort()
     {
         $sDatabasePort = '';
         if (strpos($this->dblocation, ':') !== false) {

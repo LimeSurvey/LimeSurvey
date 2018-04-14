@@ -243,148 +243,114 @@ class InstallerController extends CController
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
-                $sDatabaseType = $oModel->dbtype;
-                $sDatabaseName = $oModel->dbname;
-                $sDatabaseUser = $oModel->dbuser;
-                $sDatabasePwd = $oModel->dbpwd;
-                $sDatabasePrefix = $oModel->dbprefix;
-                $sDatabaseLocation = $oModel->dblocation;
-                $sDatabaseEngine = $oModel->dbengine;
-                $sDatabasePort = '';
                 Yii::app()->session['dbengine'] = $oModel->dbengine;
-                if (strpos($sDatabaseLocation, ':') !== false) {
-                    list($sDatabaseLocation, $sDatabasePort) = explode(':', $sDatabaseLocation, 2);
-                } else {
-                    $sDatabasePort = $this->_getDbPort($sDatabaseType, $sDatabasePort);
-                }
-                $bDBConnectionWorks = false;
-                $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort','sDatabaseEngine');
-                $bDBExists = $this->dbTest($aDbConfig, $aData);
-                if ($this->_dbConnect($aDbConfig, $aData)) {
-                    $bDBConnectionWorks = true;
 
-                } else {
-                    $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
-                    $oModel->addError('dbpwd', '');
-                    $oModel->addError('dbuser', '');
+                //saving the form data to session
+                foreach (array('dblocation','dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                    Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
-                //if connection with database fail
-                if ($bDBConnectionWorks) {
-                    //saving the form data
-                    foreach (array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
-                        Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
-                    }
-                    Yii::app()->session['dbport'] = $sDatabasePort;
-                    Yii::app()->session['dblocation'] = $sDatabaseLocation;
+                //check if table exists or not
+                $bTablesDoNotExist = false;
 
-                    //check if table exists or not
-                    $bTablesDoNotExist = false;
-
-                    // Check if the surveys table exists or not
-                    if ($bDBExists === true) {
-                        try {
-                            // We do the following check because DBLIB does not throw an exception on a missing table
-                            if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
-                                $bTablesDoNotExist = true;
-                            }
-                        } catch (Exception $e) {
+                // Check if the surveys table exists or not
+                if ($bDBExists === true) {
+                    try {
+                        // We do the following check because DBLIB does not throw an exception on a missing table
+                        if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
                             $bTablesDoNotExist = true;
                         }
+                    } catch (Exception $e) {
+                        $bTablesDoNotExist = true;
                     }
-
-                    $bDBExistsButEmpty = ($bDBExists && $bTablesDoNotExist);
-
-                    //store them in session
-                    Yii::app()->session['databaseexist'] = $bDBExists;
-                    Yii::app()->session['tablesexist'] = !$bTablesDoNotExist;
-
-                    // If database is up to date, redirect to administration screen.
-                    if ($bDBExists && !$bTablesDoNotExist) {
-                        Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
-                        Yii::app()->session['step3'] = true;
-
-                        //Write config file as we no longer redirect to optional view
-                        $this->_writeConfigFile();
-
-                        header("refresh:5;url=".$this->createUrl("/admin"));
-                        $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
-                        $aData['text'] = sprintf(gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='".$this->createUrl("/admin")."'>", "</a>");
-                        $this->render('/installer/redirectmessage_view', $aData);
-                        exit();
-                    }
-
-                    if ($oModel->isMysql) {
-                        //for development - use mysql in the strictest mode  
-                        if (Yii::app()->getConfig('debug') > 1) {
-                            $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
-                        }
-                        $sMySQLVersion = $this->connection->getServerVersion();
-                        if (version_compare($sMySQLVersion, '4.1', '<')) {
-                            die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
-                        }
-                            /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); 
-                            /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
-                    }
-
-                    // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if ($oModel->isMSSql) {
-                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
-                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
-                    }
-
-                    //$aData array won't work here. changing the name
-                    $aValues = [];
-                    $aValues['title'] = gT('Database settings');
-                    $aValues['descp'] = gT('Database settings');
-                    $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
-                    $aValues['progressValue'] = 60;
-
-                    //it store text content
-                    $aValues['adminoutputText'] = '';
-                    //it store the form code to be displayed
-                    $aValues['adminoutputForm'] = '';
-
-                    //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                    if (!$bDBExists) {
-                        Yii::app()->session['databaseDontExist'] = true;
-
-                        $aValues['dbname'] = $oModel->dbname;
-
-                        // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
-                        $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
-
-                        $aValues['next'] = array(
-                            'action' => 'installer/createdb',
-                            'label' => gT('Create database'),
-                            'name' => '',
-                        );
-                    } elseif ($bDBExistsButEmpty) {
-                        Yii::app()->session['populatedatabase'] = true;
-
-                        //$this->connection->database = $model->dbname;
-                        //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
-                        $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
-                        .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
-
-                        $aValues['next'] = array(
-                            'action' => 'installer/populatedb',
-                            'label' => gT("Populate database", 'unescaped'),
-                            'name' => 'createdbstep2',
-                        );
-                    } elseif (!$bDBExistsButEmpty) {
-                        $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
-                    }
-                    $this->render('/installer/dbsettings_view', $aValues);
-                } else {
-                    $this->render('/installer/dbconfig_view', $aData);
                 }
-            } else {
-                $this->render('/installer/dbconfig_view', $aData);
-            }
-        } else {
-            $this->render('/installer/dbconfig_view', $aData);
+
+                $bDBExistsButEmpty = ($bDBExists && $bTablesDoNotExist);
+
+                //store them in session
+                Yii::app()->session['databaseexist'] = $bDBExists;
+                Yii::app()->session['tablesexist'] = !$bTablesDoNotExist;
+
+                // If database is up to date, redirect to administration screen.
+                if ($bDBExists && !$bTablesDoNotExist) {
+                    Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
+                    Yii::app()->session['step3'] = true;
+
+                    //Write config file as we no longer redirect to optional view
+                    $this->_writeConfigFile();
+
+                    header("refresh:5;url=".$this->createUrl("/admin"));
+                    $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
+                    $aData['text'] = sprintf(gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='".$this->createUrl("/admin")."'>", "</a>");
+                    $this->render('/installer/redirectmessage_view', $aData);
+                    exit();
+                }
+
+                if ($oModel->isMysql) {
+                    //for development - use mysql in the strictest mode
+                    if (Yii::app()->getConfig('debug') > 1) {
+                        $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
+                    }
+                    $sMySQLVersion = $this->connection->getServerVersion();
+                    if (version_compare($sMySQLVersion, '4.1', '<')) {
+                        die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
+                    }
+                        /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();
+                        /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
+                }
+
+                // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
+                if ($oModel->isMSSql) {
+                    @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
+                    @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
+                }
+
+                //$aData array won't work here. changing the name
+                $aValues = [];
+                $aValues['title'] = gT('Database settings');
+                $aValues['descp'] = gT('Database settings');
+                $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
+                $aValues['progressValue'] = 60;
+
+                //it store text content
+                $aValues['adminoutputText'] = '';
+                //it store the form code to be displayed
+                $aValues['adminoutputForm'] = '';
+
+                //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
+                if (!$bDBExists) {
+                    Yii::app()->session['databaseDontExist'] = true;
+
+                    $aValues['dbname'] = $oModel->dbname;
+
+                    // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
+                    $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
+
+                    $aValues['next'] = array(
+                        'action' => 'installer/createdb',
+                        'label' => gT('Create database'),
+                        'name' => '',
+                    );
+                } elseif ($bDBExistsButEmpty) {
+                    Yii::app()->session['populatedatabase'] = true;
+
+                    //$this->connection->database = $model->dbname;
+                    //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
+                    $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
+                    .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
+
+                    $aValues['next'] = array(
+                        'action' => 'installer/populatedb',
+                        'label' => gT("Populate database", 'unescaped'),
+                        'name' => 'createdbstep2',
+                    );
+                } elseif (!$bDBExistsButEmpty) {
+                    $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
+                }
+                $this->render('/installer/dbsettings_view', $aValues);
+           }
         }
+        $this->render('/installer/dbconfig_view', $aData);
     }
 
     /**
