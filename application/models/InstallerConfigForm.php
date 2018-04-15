@@ -175,6 +175,7 @@ class InstallerConfigForm extends LSCFormModel
 
     public function checkStatus() {
 
+
     }
 
     public function validateDBEngine($attribute,$params)
@@ -419,6 +420,48 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function getIsMSSql(){
         return in_array($this->dbtype,[self::DB_TYPE_MSSQL, self::DB_TYPE_DBLIB, self::DB_TYPE_SQLSRV]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function createDatabase() {
+        $bCreateDB = true; // We are thinking positive
+        switch ($this->dbtype) {
+            case 'mysqli':
+            case 'mysql':
+                try {
+                    $this->db->createCommand("CREATE DATABASE `{$this->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
+                } catch (Exception $e) {
+                    $bCreateDB = false;
+                }
+                break;
+            case 'dblib':
+            case 'mssql':
+            case 'odbc':
+                try {
+                    $this->db->createCommand("CREATE DATABASE [{$this->dbname}];")->execute();
+                } catch (Exception $e) {
+                    $bCreateDB = false;
+                }
+                break;
+            case 'pgsql':
+                try {
+                    $this->db->createCommand("CREATE DATABASE \"{$this->dbname}\" ENCODING 'UTF8'")->execute();
+                } catch (Exception $e) {
+                    $bCreateDB = false;
+                }
+                break;
+            default:
+                try {
+                    $this->db->createCommand("CREATE DATABASE {$this->dbname}")->execute();
+                } catch (Exception $e) {
+                    $bCreateDB = false;
+                }
+                break;
+        }
+        return $bCreateDB;
+
     }
 
 }

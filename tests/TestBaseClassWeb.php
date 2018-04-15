@@ -73,7 +73,6 @@ class TestBaseClassWeb extends TestBaseClass
     {
         parent::tearDownAfterClass();
         self::$webDriver->quit();
-        self::$webDriver->close();
     }
 
     /**

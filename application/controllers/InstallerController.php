@@ -100,7 +100,7 @@ class InstallerController extends CController
      *
      * Based on existance of 'sample_installer_file.txt' file, check if
      * installation should proceed further or not.
-     * @return
+     * @return void
      */
     private function _checkInstallation()
     {
@@ -376,46 +376,10 @@ class InstallerController extends CController
         // unset database name for connection, since we want to create it and it doesn't already exists
         $aDbConfig['sDatabaseName'] = '';
 
-
         $aData['adminoutputForm'] = '';
-        // Yii doesn't have a method to create a database
-        $bCreateDB = true; // We are thinking positive
-        switch ($oModel->db) {
-            case 'mysqli':
-            case 'mysql':
-            try {
-                $oModel->db->createCommand("CREATE DATABASE `{$oModel->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
-            } catch (Exception $e) {
-                $bCreateDB = false;
-            }
-            break;
-            case 'dblib':
-            case 'mssql':
-            case 'odbc':
-            try {
-                $oModel->db->createCommand("CREATE DATABASE [{$oModel->dbname}];")->execute();
-            } catch (Exception $e) {
-                $bCreateDB = false;
-            }
-            break;
-            case 'pgsql':
-            try {
-                $oModel->db->createCommand("CREATE DATABASE \"{$oModel->dbname}\" ENCODING 'UTF8'")->execute();
-            } catch (Exception $e) {
-                $bCreateDB = false;
-            }
-            break;
-            default:
-            try {
-                $oModel->db->createCommand("CREATE DATABASE {$oModel->dbname}")->execute();
-            } catch (Exception $e) {
-                $bCreateDB = false;
-            }
-            break;
-        }
 
         //$this->load->dbforge();
-        if ($bCreateDB) {
+        if ($oModel->createDatabase()) {
             //Database has been successfully created
 
             Yii::app()->session['populatedatabase'] = true;
