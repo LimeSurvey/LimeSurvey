@@ -428,8 +428,8 @@ class InstallerConfigForm extends LSCFormModel
     public function createDatabase() {
         $bCreateDB = true; // We are thinking positive
         switch ($this->dbtype) {
-            case 'mysqli':
-            case 'mysql':
+            case self::DB_TYPE_MYSQL:
+            case self::DB_TYPE_MYSQLI:
                 try {
                     $this->db->createCommand("CREATE DATABASE `{$this->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
                 } catch (Exception $e) {
@@ -445,7 +445,7 @@ class InstallerConfigForm extends LSCFormModel
                     $bCreateDB = false;
                 }
                 break;
-            case 'pgsql':
+            case self::DB_TYPE_PGSQL:
                 try {
                     $this->db->createCommand("CREATE DATABASE \"{$this->dbname}\" ENCODING 'UTF8'")->execute();
                 } catch (Exception $e) {
@@ -463,5 +463,28 @@ class InstallerConfigForm extends LSCFormModel
         return $bCreateDB;
 
     }
+
+    /**
+     * Function that actually modify the database.
+     * @param string $sFileName
+     * @return string|boolean True if everything was okay, otherwise error message.
+     */
+    public function setupTables($sFileName)
+    {
+        try {
+            switch ($this->dbtype) {
+                case self::DB_TYPE_MYSQL:
+                case self::DB_TYPE_MYSQLI:
+                    $this->db->createCommand("ALTER DATABASE ".$this->db->quoteTableName($this->dbname)." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")
+                        ->execute();
+                    break;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        require_once($sFileName);
+        createDatabase($this->connection);
+    }
+
 
 }

@@ -41,10 +41,11 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
         $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->_setup_tables($filename);
+        $result = $inst->setupTables($filename);
         if ($result) {
             print_r($result);
         }

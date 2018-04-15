@@ -418,7 +418,7 @@ class InstallerController extends CController
     /**
      * Installer::stepPopulateDb()
      * Function to populate the database.
-     * @return
+     * @return void
      */
     public function stepPopulateDb()
     {
@@ -427,49 +427,35 @@ class InstallerController extends CController
         }
 
         $aData = [];
-        $aData['model'] = $model = new InstallerConfigForm;
+        $model = $this->getModelFromSession();
+        $model->dbConnect();
+
+        $aData['model'] = $model;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
 
-        $aDbConfig = $this->_getDatabaseConfig();
-        extract($aDbConfig);
-        $this->_dbConnect($aDbConfig, $aData);
-
-        if (!in_array($sDatabaseType, ['mysqli', 'mysql', 'dblib', 'sqlsrv', 'mssql', 'pgsql'])) {
-            throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
-        }
-
         //checking DB Connection
-        $aErrors = $this->_setup_tables(dirname(APPPATH).'/installer/create-database.php');
-        if ($aErrors === false) {
-            $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
-            $this->render('/installer/dbconfig_view', $aData);
-        } elseif ($aErrors === true) {
-            //$data1['adminoutput'] = '';
-            //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
-            //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
+        $fileName = dirname(APPPATH).'/installer/create-database.php';
+        $result = $model->setupTables($fileName);
+        if ($result === true) {
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
-        } elseif (is_array($aErrors) && count($aErrors) > 0) {
+        } else if (is_string($result)) {
             $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
-            foreach ($aErrors as $sError) {
-                $sConfirmation .= '<li>'.htmlspecialchars($sError).'</li>';
-            }
+            $sConfirmation .= '<li>'.htmlspecialchars($result).'</li>';
             $sConfirmation .= '</ul>';
             Yii::app()->session['populateerror'] = $sConfirmation;
-
             $this->redirect(array('installer/database'));
         } else {
-            throw new UnexpectedValueException('_setup_tables is expected to return true, false or an array of strings');
+            throw new UnexpectedValueException('_setup_tables is expected to return true or an array of strings');
         }
 
         Yii::app()->session['tablesexist'] = true;
         Yii::app()->session['step3'] = true;
         Yii::app()->session['optconfig_message'] = $sConfirmation;
         unset(Yii::app()->session['populatedatabase']);
-
-            $this->redirect(array('installer/optional'));
+        $this->redirect(array('installer/optional'));
     }
 
     /**
@@ -506,12 +492,10 @@ class InstallerController extends CController
                 \Yii::app()->setComponent('db', $aDbConfigArray, false);
 
 
-
-                $this->connection = $model->db;
-                $this->connection->setActive(true);
+                $model->db->setActive(true);
 
                 //checking DB Connection
-                if ($this->connection->getActive() == true) {
+                if ($model->db->getActive() == true) {
                     try {
 
                         if (User::model()->count() > 0) {
@@ -521,7 +505,7 @@ class InstallerController extends CController
                         // Save user
                         $user = new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
-                        if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
+                        if ($model->isMysql) {
                             $user->uid = 1;
                         }
                         $user->users_name = $model->adminLoginName;
@@ -542,12 +526,12 @@ class InstallerController extends CController
                         $permission->save();
 
                         // Save  global settings
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $model->siteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $model->adminName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $model->adminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $model->siteName));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $model->adminName));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $model->adminEmail));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
 
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
@@ -621,6 +605,7 @@ class InstallerController extends CController
 
     /**
      * @param string $sDirectory
+     * @return boolean
      */
     public function is_writable_recursive($sDirectory)
     {
@@ -811,31 +796,6 @@ class InstallerController extends CController
         return $bProceed;
     }
 
-    /**
-     * Installer::_setup_tables()
-     * Function that actually modify the database.
-     * @param string $sFileName
-     * @param array $aDbConfig
-     * @return string[]|true True if everything was okay, otherwise array of error messages.
-     */
-    public function _setup_tables($sFileName, $aDbConfig = array())
-    {
-        $aDbConfig = empty($aDbConfig) ? $this->_getDatabaseConfig() : $aDbConfig;
-        extract($aDbConfig);
-        try {
-            switch ($sDatabaseType) {
-                case 'mysql':
-                case 'mysqli':
-                $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($sDatabaseName)." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                break;
-            }
-        } catch (Exception $e) {
-            return array($e->getMessage());
-        }
-        require_once($sFileName);
-        createDatabase($this->connection);
-        return true;
-    }
 
     /**
      * Executes an SQL file

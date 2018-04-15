@@ -34,10 +34,11 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
         $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->_setup_tables($filename);
+        $result = $inst->setupTables($filename);
         if ($result) {
             print_r($result);
         }
@@ -170,12 +171,12 @@ class UpdateDbHelperTest extends TestBaseClass
         $connection->schema->refresh();
 
         // Get InstallerController.
-        $db = \Yii::app()->getDb();
-        $inst = new \InstallerController('foobar');
-        $inst->connection = $db;
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
         $filename = dirname(APPPATH).'/installer/create-database.php';
         try {
-            $result = $inst->_setup_tables($filename);
+            $result = $inst->setupTables($filename);
         } catch (\CHttpException $ex) {
             $this->assertTrue(
                 false,
