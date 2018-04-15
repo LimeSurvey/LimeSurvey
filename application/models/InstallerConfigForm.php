@@ -483,7 +483,7 @@ class InstallerConfigForm extends LSCFormModel
             return $e->getMessage();
         }
         require_once($sFileName);
-        createDatabase($this->connection);
+        createDatabase($this->db);
     }
 
 
