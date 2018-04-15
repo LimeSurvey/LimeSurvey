@@ -802,6 +802,7 @@ class InstallerController extends CController
      *
      * @param string $sFileName
      * @param string $sDatabasePrefix
+     * @return array|bool
      */
     public function _executeSQLFile($sFileName, $sDatabasePrefix)
     {
@@ -845,9 +846,9 @@ class InstallerController extends CController
 
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist']) {
-
-            extract($this->_getDatabaseConfig());
-            $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+            $model = $this->getModelFromSession();
+            $model->dbConnect();
+            $sDsn = $model->db->connectionString;
 
             // mod_rewrite existence check
             // Section commented out until a better method of knowing whether the mod_rewrite actually
@@ -864,15 +865,15 @@ class InstallerController extends CController
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
                 $sURLFormat = 'path';
             } else {
-// Apache
+                // Apache
                 $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
             }
             $sCharset = 'utf8';
-            if (in_array($sDatabaseType, array('mysql', 'mysqli'))) {
+            if ($model->isMysql) {
                 $sCharset = 'utf8mb4';
             }
 
-            if ($sDatabaseType) {
+            if ($model->dbtype) {
                             $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"
                 ."/*"."\n"
                 ."| -------------------------------------------------------------------"."\n"
@@ -916,16 +917,16 @@ class InstallerController extends CController
                 ."\t\t"."'db' => array("."\n"
                 ."\t\t\t"."'connectionString' => '$sDsn',"."\n";
             }
-            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
+            if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB ) {
                 $sConfig .= "\t\t\t"."'emulatePrepare' => true,"."\n";
 
             }
-            $sConfig .= "\t\t\t"."'username' => '".addcslashes($sDatabaseUser, "'")."',"."\n"
-            ."\t\t\t"."'password' => '".addcslashes($sDatabasePwd, "'")."',"."\n"
+            $sConfig .= "\t\t\t"."'username' => '".addcslashes($model->dbuser, "'")."',"."\n"
+            ."\t\t\t"."'password' => '".addcslashes($model->dbpwd, "'")."',"."\n"
             ."\t\t\t"."'charset' => '{$sCharset}',"."\n"
-            ."\t\t\t"."'tablePrefix' => '{$sDatabasePrefix}',"."\n";
+            ."\t\t\t"."'tablePrefix' => '{$model->dbprefix}',"."\n";
 
-            if (in_array($sDatabaseType, array('mssql', 'sqlsrv', 'dblib'))) {
+            if ($model->isMSSql) {
                 $sConfig .= "\t\t\t"."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"."\n";
             }
 
@@ -1005,101 +1006,7 @@ class InstallerController extends CController
         return $sResult;
     }
 
-    /**
-     * Get the dsn for the database connection
-     *
-     * @param string $sDatabaseType
-     * @param string $sDatabasePort
-     * @return string
-     */
-    private function _getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd)
-    {
-        switch ($sDatabaseType) {
-            case 'mysql':
-            case 'mysqli':
-                // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-                if (substr($sDatabaseLocation, 0, 1) == "/") {
-                    $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
-                } else {
-                    $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
-                }
-                break;
-            case 'pgsql':
-                if (empty($sDatabasePwd)) {
-                    // If there's no password, we need to write password=""; instead of password=;,
-                    // or PostgreSQL's libpq will consider the DSN string part after "password="
-                    // (including the ";" and the potential dbname) as part of the password definition.
-                    $sDatabasePwd = '""';
-                }
-                $sDSN = "pgsql:host={$sDatabaseLocation};port={$sDatabasePort};user={$sDatabaseUser};password={$sDatabasePwd};";
-                if ($sDatabaseName != '') {
-                    $sDSN .= "dbname={$sDatabaseName};";
-                }
-                break;
 
-            case 'dblib' :
-                $sDSN = $sDatabaseType.":host={$sDatabaseLocation};dbname={$sDatabaseName}";
-                break;
-            case 'mssql' :
-            case 'sqlsrv':
-                if ($sDatabasePort != '') {$sDatabaseLocation = $sDatabaseLocation.','.$sDatabasePort; }
-                $sDSN = $sDatabaseType.":Server={$sDatabaseLocation};Database={$sDatabaseName}";
-                break;
-            default:
-                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
-        }
-        return $sDSN;
-    }
-
-    /**
-     * Get the default port if database port is not set
-     *
-     * @param string $sDatabaseType
-     * @param string $sDatabasePort
-     * @return string
-     */
-    private function _getDbPort($sDatabaseType, $sDatabasePort = '')
-    {
-        if (is_numeric($sDatabasePort)) {
-                return $sDatabasePort;
-        }
-
-        switch ($sDatabaseType) {
-            case 'mysql':
-            case 'mysqli':
-                $sDatabasePort = '3306';
-                break;
-            case 'pgsql':
-                $sDatabasePort = '5432';
-                break;
-            case 'dblib' :
-            case 'mssql' :
-            case 'sqlsrv':
-            default:
-                $sDatabasePort = '';
-        }
-
-        return $sDatabasePort;
-    }
-
-    /**
-     * Gets the database configuration from the session
-     *
-     * @return array Database Config
-     */
-    private function _getDatabaseConfig()
-    {
-        $sDatabaseType = Yii::app()->session['dbtype'];
-        $sDatabasePort = Yii::app()->session['dbport'];
-        $sDatabaseName = Yii::app()->session['dbname'];
-        $sDatabaseUser = Yii::app()->session['dbuser'];
-        $sDatabasePwd = Yii::app()->session['dbpwd'];
-        $sDatabasePrefix = Yii::app()->session['dbprefix'];
-        $sDatabaseLocation = Yii::app()->session['dblocation'];
-        $sDatabaseEngine = Yii::app()->session['dbengine'];
-
-        return compact('sDatabaseLocation', 'sDatabaseName', 'sDatabasePort', 'sDatabasePrefix', 'sDatabasePwd', 'sDatabaseType', 'sDatabaseUser','sDatabaseEngine');
-    }
 
     /**
      * @param $scenario
@@ -1124,22 +1031,16 @@ class InstallerController extends CController
      */
     private function _getDatabaseConfigArray()
     {
-        $sDatabaseType = Yii::app()->session['dbtype'];
-        $sDatabasePort = Yii::app()->session['dbport'];
-        $sDatabaseName = Yii::app()->session['dbname'];
-        $sDatabaseUser = Yii::app()->session['dbuser'];
-        $sDatabasePwd = Yii::app()->session['dbpwd'];
-        $sDatabasePrefix = Yii::app()->session['dbprefix'];
-        $sDatabaseLocation = Yii::app()->session['dblocation'];
+        $model = $this->getModelFromSession();
 
         $sCharset = 'utf8';
-        if (in_array($sDatabaseType, array('mysql', 'mysqli'))) {
+        if ($model->isMysql) {
             $sCharset = 'utf8mb4';
         }
 
-        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        $sDsn = $model->getDsn();
 
-        if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
+        if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB ) {
             $emulatePrepare = true;
         } else {
             $emulatePrepare = null;
@@ -1148,104 +1049,15 @@ class InstallerController extends CController
         $db = array(
             'connectionString' => $sDsn,
             'emulatePrepare' => $emulatePrepare,
-            'username' => $sDatabaseUser,
-            'password' => $sDatabasePwd,
+            'username' => $model->dbuser,
+            'password' => $model->dbpwd,
             'charset' => $sCharset,
-            'tablePrefix' => $sDatabasePrefix
+            'tablePrefix' => $model->dbprefix
         );
 
         return $db;
     }
 
-    /**
-     * Connect to the database
-     * @param array $aDbConfig : The config to be tested
-     * @param array $aData
-     * @return bool
-     */
-    private function _dbConnect($aDbConfig = array(), $aData = array())
-    {
-        $aDbConfig = empty($aDbConfig) ? $this->_getDatabaseConfig() : $aDbConfig;
-        extract($aDbConfig);
-        $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
-        $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
-
-        $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        if (!$this->dbTest($aDbConfig, $aData)) {
-            // Remove sDatabaseName from the connexion is not exist
-            $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
-        }
-        try {
-            $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
-                $this->connection->emulatePrepare = true;
-            }
-            $this->connection->active = true;
-            $this->connection->tablePrefix = $sDatabasePrefix;
-            if($sDatabaseEngine === InstallerConfigForm::ENGINE_TYPE_INNODB){
-                $sDatabaseEngine = $sDatabaseEngine;
-            }
-            $this->setMySQLDefaultEngine($sDatabaseEngine);
-
-
-            return true;
-        } catch (Exception $e) {
-            throw $e;
-            return false;
-        }
-    }
-    /**
-     * Trye a connexion to the DB and add error in model if exist
-     * @param array $aDbConfig : The config to be tested
-     * @param array $aData
-     * @return bool if connection is done
-     */
-    private function dbTest($aDbConfig = array(), $aData = array())
-    {
-        $aDbConfig = empty($aDbConfig) ? $this->_getDatabaseConfig() : $aDbConfig;
-        extract($aDbConfig);
-        $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
-        $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
-        $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        try {
-            $testPdo = new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        } catch (Exception $e) {
-            if ($sDatabaseType == 'mysql' && $e->getCode() == 1049) {
-                return false;
-            }
-            if ($sDatabaseType == 'pgsql' && $e->getCode() == 7) {
-                return false;
-            }
-            /* @todo : find the good error code for dblib and sqlsrv in exactly same situation : user can read the DB but DB don't exist*/
-            /* using same behaviuor than before : test without dbname : db creation can break */
-            $sDsn = $this->_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
-            try {
-                new PDO($sDsn, $sDatabaseUser, $sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            } catch (Exception $e) {
-                /* With pgsql : sending "" to tablename => tablename==username , we are unsure if this must be OK */
-                /* But Yii sedn exception in same condition : the show this error */
-                if (!empty($aData['model'])) {
-                    $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
-                    $aData['model']->addError('dblocation', gT('Reason:').' '.$e->getMessage());
-                    $this->render('/installer/dbconfig_view', $aData);
-                    Yii::app()->end();
-                } else {
-                    // Use same exception than Yii ? unclear
-                    throw new Exception('CDbConnection failed to open the DB connection.', (int) $e->getCode(), $e->errorInfo);
-                }
-            }
-            return false;
-        }
-        $sMinimumMySQLVersion = '5.5.3';
-        if ($sDatabaseType == 'mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")), $sMinimumMySQLVersion) == -1) {
-            if (!empty($aData['model'])) {
-                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s). Found version: %s'), $sMinimumMySQLVersion, $testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION"))));
-                $this->render('/installer/dbconfig_view', $aData);
-                Yii::app()->end();
-            }
-        }
-        return true;
-    }
 
     /**
      * Contains a number of extensions that can be expected
@@ -1267,17 +1079,6 @@ class InstallerController extends CController
             if (!extension_loaded($extension)) {
                 safeDie('You\'re missing default PHP extension '.$extension);
             }
-        }
-
-    }
-    /**
-     * @throws CDbException
-     */
-    private function setMySQLDefaultEngine($dbEngine){
-        if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
-            $this->connection
-                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
-                ->execute();
         }
 
     }

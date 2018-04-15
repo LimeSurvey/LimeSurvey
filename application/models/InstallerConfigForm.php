@@ -291,7 +291,7 @@ class InstallerConfigForm extends LSCFormModel
      * @return string
      * @throws Exception
      */
-    private function getDsn($dbName = null)
+    public function getDsn($dbName = null)
     {
         switch ($this->dbtype) {
             case self::DB_TYPE_MYSQL:
