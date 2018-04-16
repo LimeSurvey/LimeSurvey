@@ -35,6 +35,35 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.6.2 (build 180406) to 3.6.3 (build 180416) Apr 16, 2018
+-Fixed issue #13542: Question index (head) show diable even if work (Denis Chenu)
+-Fixed issue #13544: Unable to use flatEllipsizeText function in (some) twig file (Denis Chenu)
+-Fixed issue #13560: Stored XSS in Boxes (markusfluer)
+-Fixed issue #13579: First calendar are always in English (Denis Chenu)
+-Fixed issue #13587: Date control show always as error (Denis Chenu)
+-Fixed issue: Could not save changes in theme editor (markusfluer)
+-Fixed issue: Preview not working in theme editor (Olle Haerstedt)
+-Fixed issue: Unsupported escape method when deleting uploaded theme file (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by c_schmitz, Han, tammo
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, HonkXL
+#Updated translation: German by c_schmitz
+#Updated translation: German by sebuin, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Spanish (Argentina) by Eescudero, c_schmitz
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by namphuong
+
+
 Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
 -Fixed issue #13519: No import button in Template listing - add menu view (Tõnis Ormisson)
 -Fixed issue #13519: No import button in Template listing - clean controller (Tõnis Ormisson)
@@ -166,10 +195,10 @@ Changes from 3.5.1 (build 180312) to 3.5.2 (build 180315) March 15, 2018
 -Fixed issue: Sporadic update error message on login right after upgrade (Carsten Schmitz)
 -Fixed issue: Relay on surveymodel rather than on inherited setting (markusfluer)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
 #Updated translation: French (France) by b00z00, arnaud21
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
 #Updated translation: Norwegian (Bokmål) by pmonsta
@@ -245,7 +274,7 @@ Changes from 3.4.3 (build 180227) to 3.4.4 (build 180305) Mar 5, 2018
 -New translation: Myanmar (Burmese) (Carsten Schmitz)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: French (France) by arnaud21
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
 #Updated translation: Japanese by nomoto
@@ -349,11 +378,11 @@ Changes from 3.3.1 (build 180214) to 3.4.0 (build 180219) Feb 19, 2018
 -Fixed issue: Question selector not working after change in global settings (markusfluer)
 -Fixed issue: Some options not loaded on uninheriting the parent theme (markusfluer)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
 #Updated translation: German (Informal) by c_schmitz
 #Updated translation: German by c_schmitz
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
 #Updated translation: Norwegian (Bokmål) by pmonsta
@@ -460,9 +489,9 @@ Changes from 3.1.0 (build 180124) to 3.1.1 (build 180130) Jan 30, 2018
 -Fixed issue: Slider not working on new Firefox (Markus flür
 -Fixed issue: Group ordering doesn't work (markusfluer)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
-#Updated translation: Hungarian by kkd 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Hungarian by kkd
 #Updated translation: Norwegian (Bokmål) by pmonsta
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Polish by elissa
@@ -532,9 +561,9 @@ Changes from 3.0.4 (build 180116) to 3.0.5 (build 180118) Jan 18, 2018
 -Fixed issue: More fixes to theme configuration in database after update (Olle Haerstedt)
 -Fixed issue: Slow performance on every admininstration page if you have alot of surveys (Carsten Schmitz)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
-#Updated translation: Hungarian by kkd 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Hungarian by kkd
 #Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Polish by elissa
