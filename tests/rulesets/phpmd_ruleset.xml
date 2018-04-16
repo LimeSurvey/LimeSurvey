@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="LimeSurvey PHPMD Extension ruleset">
+    <rule ref="rulesets/unusedcode.xml" />
+    <rule ref="rulesets/cleancode.xml" />
+    <rule ref="rulesets/codesize.xml">
+        <properties>
+        </properties>
+    </rule>
+</ruleset>
