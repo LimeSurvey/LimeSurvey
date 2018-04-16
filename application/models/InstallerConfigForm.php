@@ -525,14 +525,20 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function getDbPort()
     {
-        $sDatabasePort = '';
         if (strpos($this->dblocation, ':') !== false) {
             list($sDatabaseLocation, $sDatabasePort) = explode(':', $this->dblocation, 2);
             if (is_numeric($sDatabasePort)) {
                 return $sDatabasePort;
             }
         }
+        return $this->getDbDefaultPort();
+    }
 
+    /**
+     * @return string
+     */
+    private function getDbDefaultPort() {
+        $sDatabasePort = '';
         switch ($this->dbtype) {
             case self::DB_TYPE_MYSQL:
             case self::DB_TYPE_MYSQLI:
@@ -547,7 +553,6 @@ class InstallerConfigForm extends LSCFormModel
             default:
                 $sDatabasePort = '';
         }
-
         return $sDatabasePort;
     }
 
