@@ -569,48 +569,6 @@ class InstallerController extends CController
         $this->render('/installer/optconfig_view', $aData);
     }
 
-
-    /**
-     * Executes an SQL file
-     *
-     * @param string $sFileName
-     * @param string $sDatabasePrefix
-     * @return array|bool
-     */
-    public function _executeSQLFile($sFileName, $sDatabasePrefix)
-    {
-        $aMessages = array();
-        $sCommand = '';
-
-        if (!is_readable($sFileName)) {
-            return false;
-        } else {
-            $aLines = file($sFileName);
-        }
-        foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
-            $iLineLength = strlen($sLine);
-
-            if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
-                if (substr($sLine, $iLineLength - 1, 1) == ';') {
-                    $sCommand .= $sLine;
-                    $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
-
-                    try {
-                        $this->connection->createCommand($sCommand)->execute();
-                    } catch (Exception $e) {
-                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
-                    }
-
-                    $sCommand = '';
-                } else {
-                    $sCommand .= $sLine;
-                }
-            }
-        }
-        return $aMessages;
-    }
-
     /**
      * Function to write given database settings in APPPATH.'config/config.php'
      */

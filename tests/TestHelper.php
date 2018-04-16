@@ -248,8 +248,8 @@ class TestHelper extends TestCase
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile' . print_r($result, true));
+        $result = self::executeSQLFile($file);
+        $this->assertEquals([], $result, 'No error messages from executeSQLFile' . print_r($result, true));
 
         // Run upgrade.
         $result = \db_upgrade_all($version);
@@ -413,4 +413,46 @@ class TestHelper extends TestCase
 
         return $webDriver;
     }
+
+    /**
+     * Executes an SQL file
+     *
+     * @param string $sFileName
+     * @return array|bool
+     */
+    private static function executeSQLFile($sFileName)
+    {
+        $aMessages = array();
+        $sCommand = '';
+
+        if (!is_readable($sFileName)) {
+            return false;
+        } else {
+            $aLines = file($sFileName);
+        }
+        foreach ($aLines as $sLine) {
+            $sLine = rtrim($sLine);
+            $iLineLength = strlen($sLine);
+
+            if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
+                if (substr($sLine, $iLineLength - 1, 1) == ';') {
+                    $sCommand .= $sLine;
+                    $sDatabasePrefix = \Yii::app()->db->tablePrefix;
+                    $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
+
+                    try {
+                        \Yii::app()->db->createCommand($sCommand)->execute();
+                    } catch (\Exception $e) {
+                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                    }
+
+                    $sCommand = '';
+                } else {
+                    $sCommand .= $sLine;
+                }
+            }
+        }
+        return $aMessages;
+    }
+
 }
