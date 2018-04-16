@@ -498,7 +498,6 @@ class InstallerConfigForm extends LSCFormModel
     public function getDataBaseName() {
         if ($this->db) {
             preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
-            $this->assertEquals(2, count($matches));
             $databaseName = $matches[1];
             return $databaseName;
         }
