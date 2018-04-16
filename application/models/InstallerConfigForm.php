@@ -471,6 +471,11 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function setupTables($sFileName)
     {
+
+        if (empty($this->dbname)) {
+            $this->dbname = $this->getDataBaseName();
+        }
+
         try {
             switch ($this->dbtype) {
                 case self::DB_TYPE_MYSQL:
@@ -484,6 +489,19 @@ class InstallerConfigForm extends LSCFormModel
         }
         require_once($sFileName);
         createDatabase($this->db);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataBaseName() {
+        if ($this->db) {
+            preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
+            $this->assertEquals(2, count($matches));
+            $databaseName = $matches[1];
+            return $databaseName;
+        }
+
     }
 
 
