@@ -279,7 +279,7 @@ class InstallerConfigForm extends LSCFormModel
     public function validateDBEngine($attribute,$params)
     {
         if($this->isMysql
-            && ($this->dbengine === null or !in_array($this->dbengine,array_keys(self::getDbEngines()))) ){
+            && ($this->dbengine === null or !in_array($this->dbengine,array_keys($this->dbEngines))) ){
             $this->addError($attribute, Yii::t('app','The database engine type must be set for MySQL'));
         }
 
@@ -420,7 +420,7 @@ class InstallerConfigForm extends LSCFormModel
 
     private function setMySQLDefaultEngine($dbEngine){
         if(!empty($this->db) && $this->db->driverName === self::DB_TYPE_MYSQL){
-            $this->connection
+            $this->db
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
         }
@@ -506,6 +506,7 @@ class InstallerConfigForm extends LSCFormModel
      */
     private function getMssqlDsn(){
         $port = $this->getDbPort();
+        $sDatabaseLocation = '';
         if (!$this->useDbName) {
             $dbName = '';
         } else {
