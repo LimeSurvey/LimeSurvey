@@ -239,16 +239,12 @@ class TestHelper extends TestCase
             $this->assertNotEmpty($connection, 'Could connect to new database');
         }
 
-        // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = $connection;
-
         // Check SQL file.
         $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
-        $result = self::executeSQLFile($file);
+        $result = self::executeSQLFile($file,$connection);
         $this->assertEquals([], $result, 'No error messages from executeSQLFile' . print_r($result, true));
 
         // Run upgrade.
@@ -262,7 +258,8 @@ class TestHelper extends TestCase
         $this->assertEmpty($flashes, 'No flash error messages');
         $this->assertTrue($result, 'Upgrade successful');
 
-        return $inst->connection;
+        return $connection;
+
     }
 
     /**
@@ -418,9 +415,10 @@ class TestHelper extends TestCase
      * Executes an SQL file
      *
      * @param string $sFileName
+     * @param \CDbConnection $connection
      * @return array|bool
      */
-    private static function executeSQLFile($sFileName)
+    private static function executeSQLFile($sFileName, $connection)
     {
         $aMessages = array();
         $sCommand = '';
@@ -441,7 +439,7 @@ class TestHelper extends TestCase
                     $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
 
                     try {
-                        \Yii::app()->db->createCommand($sCommand)->execute();
+                        $connection->createCommand($sCommand)->execute();
                     } catch (\Exception $e) {
                         $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
                     }
