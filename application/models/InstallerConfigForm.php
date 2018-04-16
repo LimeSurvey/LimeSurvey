@@ -244,10 +244,13 @@ class InstallerConfigForm extends LSCFormModel
             or !$this->isPhpMbStringPresent
             or !$this->isPhpZlibPresent
             or !$this->isPhpJsonPresent) {
-
             return false;
+
         }
 
+        if (count($this->supported_db_types) == 0) {
+            return false;
+        }
 
         return true;
     }

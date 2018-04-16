@@ -195,13 +195,13 @@ class InstallerController extends CController
         $aData['descp'] = gT('Pre-installation check for LimeSurvey ').Yii::app()->getConfig('versionnumber');
         $aData['classesForStep'] = array('off', 'off', 'on', 'off', 'off', 'off');
         $aData['progressValue'] = 20;
-        $aData['phpVersion'] = phpversion();
         // variable storing next button link.initially null
         $aData['next'] = '';
 
+        // Silently check some default PHP extensions
+        $this->checkDefaultExtensions();
 
         $bProceed = $oModel->hasMinimumRequirements;
-
 
         $sessionWritable = (Yii::app()->session->get('saveCheck', null) === 'save');
         $aData['sessionWritable'] = $sessionWritable;
@@ -211,19 +211,11 @@ class InstallerController extends CController
             $bProceed = false;
         }
 
-        // Silently check some default PHP extensions
-        $this->checkDefaultExtensions();
-
-        if (count($oModel->supported_db_types) == 0) {
-            $bProceed = false;
-        }
-
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed) {
             $aData['next'] = true;
             Yii::app()->session['step2'] = true;
         }
-
         $this->render('/installer/precheck_view', $aData);
     }
 
