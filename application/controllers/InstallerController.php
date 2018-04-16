@@ -126,11 +126,11 @@ class InstallerController extends CController
      */
     private function stepWelcome()
     {
+        Yii::import('application.helpers.surveytranslator_helper', true);
         if (!is_null(Yii::app()->request->getPost('installerLang'))) {
             Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
         }
-        $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
         $aData = [];
         $aData['title'] = gT('Welcome');
@@ -224,7 +224,7 @@ class InstallerController extends CController
      */
     private function stepDatabaseConfiguration()
     {
-        $this->loadHelper('surveytranslator');
+        Yii::import('application.helpers.surveytranslator_helper', true);
 
         // usual data required by view
         $aData = [];
@@ -363,6 +363,7 @@ class InstallerController extends CController
      */
     public function stepCreateDb()
     {
+        Yii::import('application.helpers.surveytranslator_helper', true);
         // check status. to be called only when database don't exist else redirect to proper link.
         if (!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
@@ -399,7 +400,6 @@ class InstallerController extends CController
                 'name' => 'createdbstep2',
             );
         } else {
-            $this->loadHelper('surveytranslator');
             $oModel->addError('dbname', gT('Try again! Creation of database failed.'));
 
             $aData['title'] = gT('Database configuration');
@@ -466,13 +466,14 @@ class InstallerController extends CController
      */
     private function stepOptionalConfiguration()
     {
+        Yii::import('application.helpers.surveytranslator_helper', true);
+
         $aData = [];
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
         $aData['title'] = gT("Administrator settings");
         $aData['descp'] = gT("Further settings for application administrator");
         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'off', 'on');
         $aData['progressValue'] = 80;
-        $this->loadHelper('surveytranslator');
         $aData['model'] = $model = $this->getModelFromSession('optional');
         // Backup the default, needed only for $sDefaultAdminPassword
         $sDefaultAdminPassword = $model->adminLoginPwd;
@@ -567,31 +568,6 @@ class InstallerController extends CController
         }
         $this->render('/installer/optconfig_view', $aData);
     }
-
-    /**
-     * Loads a helper
-     *
-     * @access public
-     * @param string $helper
-     * @return void
-     */
-    public function loadHelper($helper)
-    {
-        Yii::import('application.helpers.'.$helper.'_helper', true);
-    }
-
-    /**
-     * Loads a library
-     *
-     * @access public
-     * @return void
-     */
-    public function loadLibrary($library)
-    {
-        Yii::import('application.libraries.'.$library, true);
-    }
-
-
 
 
     /**
