@@ -54,8 +54,8 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $result = \db_upgrade_all($version['dbversionnumber']);
 
         // Check JSON.
-        $this->checkMenuEntriesJson($inst->connection);
-        $this->checkTemplateConfigurationJson($inst->connection);
+        $this->checkMenuEntriesJson($inst->db);
+        $this->checkTemplateConfigurationJson($inst->db);
 
         // Connect to old database.
         $db->setActive(false);

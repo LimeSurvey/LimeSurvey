@@ -186,8 +186,8 @@ class UpdateDbHelperTest extends TestBaseClass
         if ($result) {
             print_r($result);
         }
-        $inst->connection->schema->refresh();
-        $freshInstallTables = $inst->connection->schema->getTables();
+        $inst->db->schema->refresh();
+        $freshInstallTables = $inst->db->schema->getTables();
 
         $this->assertEquals(count($upgradeTables), count($freshInstallTables), 'Same number of tables');
         $this->assertEquals(array_keys($upgradeTables), array_keys($freshInstallTables), 'Same number of tables');
