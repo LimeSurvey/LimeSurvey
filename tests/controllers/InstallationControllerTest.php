@@ -175,32 +175,4 @@ class InstallationControllerTest extends TestBaseClassWeb
         }
     }
 
-    /**
-     * Check that upload/tmp folders are writable.
-     * @todo Does not work.
-     */
-    public function checkFolders()
-    {
-        $instContr = new \InstallerController('dummyvalue');
-        $data = [];
-        $folder = \Yii::app()->getConfig('tempdir') . '/';
-        $tempdirIsWritable = $instContr->checkDirectoryWriteable(
-            $folder,
-            $data,
-            'tmpdir',
-            'tperror',
-            true
-        );
-        $this->assertTrue($tempdirIsWritable, 'Can write to tmp/');
-
-        $folder = \Yii::app()->getConfig('uploaddir') . '/';
-        $uploadIsWritable = $instContr->checkDirectoryWriteable(
-            $folder,
-            $data,
-            'uploaddir',
-            'uerror',
-            true
-        );
-        $this->assertTrue($uploadIsWritable, 'Can write to upload/');
-    }
 }

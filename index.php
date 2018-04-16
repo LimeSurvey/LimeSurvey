@@ -178,13 +178,17 @@
     require_once __DIR__ . '/third_party/autoload.php';
 
 /*
- * --------------------------------------------------------------------
- * LOAD THE BOOTSTRAP FILE
- * --------------------------------------------------------------------
- *
- * And away we go...
- *
- */
+* --------------------------------------------------------------------
+* LOAD THE BOOTSTRAP FILE
+* --------------------------------------------------------------------
+*
+* And away we go...
+*
+*/
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+define('YII_DEBUG', true);
+
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 

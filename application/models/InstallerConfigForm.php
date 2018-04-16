@@ -20,6 +20,11 @@
  * @property array $dbEngines the MySQL database engines as [value=>'label']
  * @property boolean $isMysql whether the db type is mysql or mysqli
  * @property boolean $isMSSql whether the db type is one of MS Sql types
+ * @property float|integer $memoryLimit
+ * @property boolean $hasMinimumRequirements
+ * @property boolean $isConfigDirWriteable
+ * @property boolean $isUploadDirWriteable
+ * @property boolean $isTmpDirWriteable
  */
 class InstallerConfigForm extends LSCFormModel
 {
@@ -33,6 +38,9 @@ class InstallerConfigForm extends LSCFormModel
     const DB_TYPE_DBLIB = 'dblib';
     const DB_TYPE_PGSQL = 'pgsql';
     const DB_TYPE_ODBC = 'odbc';
+
+    const MINIMUM_MEMORY_LIMIT = 128;
+    const MINIMUM_PHP_VERSION = '5.5.9';
 
     // Database
     /** @var string $dbtype */
@@ -54,7 +62,7 @@ class InstallerConfigForm extends LSCFormModel
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
     /** @var array $supported_db_types */
-    public $supported_db_types = array();
+    public $supported_db_types = [];
     /** @var array $db_names */
     public $db_names = array(
         self::DB_TYPE_MYSQL => 'MySQL',
@@ -64,6 +72,7 @@ class InstallerConfigForm extends LSCFormModel
         self::DB_TYPE_DBLIB => 'Microsoft SQL Server (dblib)',
         self::DB_TYPE_PGSQL => 'PostgreSQL',
     );
+
 
     // Optional
     /** @var string $adminLoginPwd */
@@ -89,6 +98,36 @@ class InstallerConfigForm extends LSCFormModel
 
     /** @var bool dbExists */
     public $dbExists = false;
+
+    /** @var bool */
+    public $isPhpMbStringPresent = false;
+
+    /** @var bool */
+    public $isPhpZlibPresent = false;
+
+    /** @var bool */
+    public $isPhpJsonPresent = false;
+
+    /** @var bool */
+    public $isMemoryLimitOK = false;
+
+    /** @var bool */
+    public $isPhpGdPresent = false;
+
+    /** @var bool */
+    public $isPhpLdapPresent = false;
+
+    /** @var bool */
+    public $isPhpZipPresent = false;
+
+    /** @var bool */
+    public $isPhpImapPresent = false;
+
+    /** @var bool */
+    public $isPhpVersionOK = false;
+
+    /** @var bool */
+    public $isConfigPresent = false;
 
 
     /**
@@ -120,6 +159,7 @@ class InstallerConfigForm extends LSCFormModel
 
         // Default is database
         $this->setScenario($scenario);
+        $this->checkStatus();
     }
 
 
@@ -174,9 +214,63 @@ class InstallerConfigForm extends LSCFormModel
         return parent::validate($attributes, $clearErrors);
     }
 
-    public function checkStatus() {
+    private function checkStatus() {
+        $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
+        $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
+        $this->isPhpJsonPresent = function_exists('json_encode');
+        $this->isMemoryLimitOK = $this->checkMemoryLimit();
+        $this->isPhpLdapPresent = function_exists('ldap_connect');
+        $this->isPhpImapPresent = function_exists('imap_open');
+        $this->isPhpZipPresent = function_exists('zip_open');
+
+        if (function_exists('gd_info')) {
+            $this->isPhpGdPresent = array_key_exists('FreeType Support', gd_info());
+        }
+        $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
+
+    }
+
+    /**
+     * Chek whether system meets minimum requirements
+     * @return bool
+     */
+    public function getHasMinimumRequirements() {
+
+        if (!$this->isMemoryLimitOK
+            or !$this->isUploadDirWriteable
+            or !$this->isTmpDirWriteable
+            or !$this->isConfigDirWriteable
+            or !$this->isPhpVersionOK
+            or !$this->isPhpMbStringPresent
+            or !$this->isPhpZlibPresent
+            or !$this->isPhpJsonPresent) {
+
+            return false;
+        }
 
 
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    private function checkMemoryLimit() {
+        if ($this->memoryLimit >= self::MINIMUM_MEMORY_LIMIT) {
+            return true;
+        }
+        if (ini_get('memory_limit') == -1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Memory limit in MB
+     * @return float|int
+     */
+    public function getMemoryLimit() {
+        return convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024;
     }
 
     public function validateDBEngine($attribute,$params)
@@ -194,6 +288,50 @@ class InstallerConfigForm extends LSCFormModel
                 $this->addError($attribute, Yii::t('app','Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InooDb engine for LimeSurvey!'));
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsConfigDirWriteable(){
+        return is_writable(Yii::app()->getConfig('rootdir').'/application/config');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsTmpDirWriteable(){
+        return self::is_writable_recursive(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsUploadDirWriteable(){
+        return self::is_writable_recursive(Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR);
+    }
+
+
+    /**
+     * @param string $sDirectory
+     * @return boolean
+     */
+    public static function is_writable_recursive($sDirectory)
+    {
+        $sFolder = opendir($sDirectory);
+        if ($sFolder === false) {
+            return false; // Dir does not exist
+        }
+        while ($sFile = readdir($sFolder)) {
+            if ($sFile != '.' && $sFile != '..' &&
+                (!is_writable($sDirectory.DIRECTORY_SEPARATOR.$sFile) ||
+                    (is_dir($sDirectory.DIRECTORY_SEPARATOR.$sFile) && !self::is_writable_recursive($sDirectory.DIRECTORY_SEPARATOR.$sFile)))) {
+                closedir($sFolder);
+                return false;
+            }
+        }
+        closedir($sFolder);
+        return true;
     }
 
     public function isInnoDbLargeFilePrefixEnabled(){
