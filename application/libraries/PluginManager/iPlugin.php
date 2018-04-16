@@ -1,5 +1,7 @@
 <?php
+
 namespace LimeSurvey\PluginManager;
+
 interface iPlugin
 {
 
