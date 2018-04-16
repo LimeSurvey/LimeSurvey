@@ -25,3 +25,5 @@ Yii::createApplication('LSYii_Application', $config);
 
 //Yii::import('application.helpers.common_helper', true);
 Yii::app()->loadHelper('common');
+Yii::import('application.helpers.common_helper', true);
+Yii::import('application.libraries.PluginManager.PluginManager' true);

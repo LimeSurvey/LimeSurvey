@@ -279,7 +279,7 @@ class PluginManager extends \CApplicationComponent
                         $this->shutdownObject->setPluginName($pluginName);
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-                        if (empty($plugin) 
+                        if (empty($plugin)
                             || ($includeInstalledPlugins && $plugin->load_error == 0)) {
                             if (file_exists($file)) {
                                 try {
