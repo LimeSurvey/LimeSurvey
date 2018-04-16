@@ -8,6 +8,9 @@
  * Usage:
  *   php tests/rulesets/run_checkers.php <file to check>
  *
+ * Before running this file, you need to install phpmd, phpcs and psalm (composer install
+ * should be enough for psalm). TODO: More instructions.
+ *
  * @author Olle Haerstedt
  * @since 2018-04-16
  */
