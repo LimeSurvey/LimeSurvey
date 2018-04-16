@@ -1,8 +1,15 @@
 <?php
 
 /**
- * #!/bin/sh
- * phpmd $1 text tests/rulesets/phpmd_ruleset.xml
+ * Run this command to check a file for problems.
+ * If this file doesn't work or the listed errors are weird, please
+ * contact author.
+ *
+ * Usage:
+ *   php tests/rulesets/run_checkers.php <file to check>
+ *
+ * @author Olle Haerstedt
+ * @since 2018-04-16
  */
 
 if (empty($argv[1])) {
