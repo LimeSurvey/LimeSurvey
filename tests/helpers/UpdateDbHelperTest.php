@@ -37,8 +37,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $inst = new \InstallerConfigForm();
         $inst->db = \Yii::app()->db;
         $inst->dbtype = $inst->db->driverName;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->setupTables($filename);
+        $result = $inst->setupTables();
         if ($result) {
             print_r($result);
         }
@@ -174,9 +173,8 @@ class UpdateDbHelperTest extends TestBaseClass
         $inst = new \InstallerConfigForm();
         $inst->db = \Yii::app()->db;
         $inst->dbtype = $inst->db->driverName;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
         try {
-            $result = $inst->setupTables($filename);
+            $result = $inst->setupTables();
         } catch (\CHttpException $ex) {
             $this->assertTrue(
                 false,

@@ -613,10 +613,9 @@ class InstallerConfigForm extends LSCFormModel
 
     /**
      * Function that actually modify the database.
-     * @param string $sFileName
      * @return string|boolean True if everything was okay, otherwise error message.
      */
-    public function setupTables($sFileName)
+    public function setupTables()
     {
 
         if (empty($this->dbname)) {
@@ -634,7 +633,8 @@ class InstallerConfigForm extends LSCFormModel
         } catch (Exception $e) {
             return $e->getMessage();
         }
-        require_once($sFileName);
+        $fileName = dirname(APPPATH).'/installer/create-database.php';
+        require_once($fileName);
         return createDatabase($this->db);
     }
 

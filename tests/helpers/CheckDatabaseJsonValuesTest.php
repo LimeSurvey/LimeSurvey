@@ -44,8 +44,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $inst = new \InstallerConfigForm();
         $inst->db = \Yii::app()->db;
         $inst->dbtype = $inst->db->driverName;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->setupTables($filename);
+        $result = $inst->setupTables();
         if ($result) {
             print_r($result);
         }

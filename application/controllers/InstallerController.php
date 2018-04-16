@@ -441,8 +441,7 @@ class InstallerController extends CController
         $aData['progressValue'] = 40;
 
         //checking DB Connection
-        $fileName = dirname(APPPATH).'/installer/create-database.php';
-        $result = $model->setupTables($fileName);
+        $result = $model->setupTables();
         if ($result === true) {
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
         } else if (is_string($result)) {
