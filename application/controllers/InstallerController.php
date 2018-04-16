@@ -346,10 +346,11 @@ class InstallerController extends CController
                         'label' => gT("Populate database", 'unescaped'),
                         'name' => 'createdbstep2',
                     );
+                    $this->render('/installer/populatedb_view', $aValues);
+                    return;
                 } elseif (!$bDBExistsButEmpty) {
                     $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                 }
-                $this->render('/installer/dbsettings_view', $aValues);
            }
         }
         $this->render('/installer/dbconfig_view', $aData);
@@ -415,7 +416,7 @@ class InstallerController extends CController
         $aData['descp'] = gT("Database settings");
         $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
         $aData['progressValue'] = 60;
-        $this->render('/installer/dbsettings_view', $aData);
+        $this->render('/installer/populatedb_view', $aData);
     }
 
     /**
