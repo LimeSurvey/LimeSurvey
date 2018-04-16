@@ -1,6 +1,7 @@
 <?php
 
 // Code below copied from index.php.
+// File also used for Psalm checker.
 
 $system_path = "framework";
 $application_folder = dirname(__FILE__) . "/../../application";
