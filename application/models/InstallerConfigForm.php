@@ -383,7 +383,12 @@ class InstallerConfigForm extends LSCFormModel
             // the db does not exist yet
             $this->useDbName = false;
             $sDsn = $this->getDsn();
+            $this->dbExists = false;
+        } else {
+            $this->dbExists = true;
+            $this->useDbName = true;
         }
+
         try {
             $this->db = new DbConnection($sDsn, $this->dbuser, $this->dbpwd);
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
@@ -396,9 +401,6 @@ class InstallerConfigForm extends LSCFormModel
         } catch (\Exception $e) {
             $this->addError('dblocation', gT('Try again! Connection with database failed.'));
             $this->addError('dblocation', gT('Reason:').' '.$e->getMessage());
-        }
-        if ($this->useDbName){
-            $this->dbExists = true;
         }
         return true;
     }
@@ -607,6 +609,12 @@ class InstallerConfigForm extends LSCFormModel
                 }
                 break;
         }
+        if ($bCreateDB) {
+            $this->useDbName = true;
+            // reconnect to set database name & status
+            $this->dbConnect();
+
+        }
         return $bCreateDB;
 
     }
@@ -617,6 +625,7 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function setupTables()
     {
+
 
         if (empty($this->dbname)) {
             $this->dbname = $this->getDataBaseName();

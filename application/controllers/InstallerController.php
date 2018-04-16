@@ -256,7 +256,7 @@ class InstallerController extends CController
                 $bTablesDoNotExist = false;
 
                 // Check if the surveys table exists or not
-                if ($oModel->dbExists === true) {
+                if ($oModel->dbExists) {
                     try {
                         // We do the following check because DBLIB does not throw an exception on a missing table
                         if ($oModel->db->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
@@ -333,6 +333,7 @@ class InstallerController extends CController
                     );
                     $this->render('/installer/populatedb_view', $aValues);
                     return;
+
                 } elseif ($bDBExistsButEmpty) {
                     Yii::app()->session['populatedatabase'] = true;
 
@@ -433,6 +434,7 @@ class InstallerController extends CController
         $aData = [];
         $model = $this->getModelFromSession();
         $model->dbConnect();
+
 
         $aData['model'] = $model;
         $aData['title'] = gT("Database configuration");
