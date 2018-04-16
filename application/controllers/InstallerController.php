@@ -232,7 +232,7 @@ class InstallerController extends CController
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
-        $aData['model'] = $oModel = new InstallerConfigForm;
+        $aData['model'] = $oModel = $this->getModelFromSession();
 
         if (isset(Yii::app()->session['populateerror'])) {
             $oModel->addError('dblocation', Yii::app()->session['populateerror']);
@@ -309,6 +309,7 @@ class InstallerController extends CController
 
                 //$aData array won't work here. changing the name
                 $aValues = [];
+                $aValues['model'] = $oModel;
                 $aValues['title'] = gT('Database settings');
                 $aValues['descp'] = gT('Database settings');
                 $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
@@ -325,14 +326,13 @@ class InstallerController extends CController
 
                     $aValues['dbname'] = $oModel->dbname;
 
-                    // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
-                    $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
-
                     $aValues['next'] = array(
                         'action' => 'installer/createdb',
                         'label' => gT('Create database'),
                         'name' => '',
                     );
+                    $this->render('/installer/populatedb_view', $aValues);
+                    return;
                 } elseif ($bDBExistsButEmpty) {
                     Yii::app()->session['populatedatabase'] = true;
 
