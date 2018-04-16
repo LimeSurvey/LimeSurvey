@@ -276,7 +276,7 @@ class InstallerConfigForm extends LSCFormModel
         return convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024;
     }
 
-    public function validateDBEngine($attribute,$params)
+    public function validateDBEngine($attribute)
     {
         if($this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine,array_keys($this->dbEngines))) ){
@@ -433,7 +433,7 @@ class InstallerConfigForm extends LSCFormModel
      * @return string
      * @throws Exception
      */
-    public function getDsn($dbName = null)
+    public function getDsn()
     {
         switch ($this->dbtype) {
             case self::DB_TYPE_MYSQL:
@@ -526,9 +526,9 @@ class InstallerConfigForm extends LSCFormModel
     public function getDbPort()
     {
         if (strpos($this->dblocation, ':') !== false) {
-            list($sDatabaseLocation, $sDatabasePort) = explode(':', $this->dblocation, 2);
-            if (is_numeric($sDatabasePort)) {
-                return $sDatabasePort;
+            $pieces = explode(':', $this->dblocation, 2);
+            if (isset($pieces[1]) && is_numeric($pieces[1])) {
+                return $pieces[1];
             }
         }
         return $this->getDbDefaultPort();
@@ -538,7 +538,6 @@ class InstallerConfigForm extends LSCFormModel
      * @return string
      */
     private function getDbDefaultPort() {
-        $sDatabasePort = '';
         switch ($this->dbtype) {
             case self::DB_TYPE_MYSQL:
             case self::DB_TYPE_MYSQLI:
@@ -648,7 +647,7 @@ class InstallerConfigForm extends LSCFormModel
             $databaseName = $matches[1];
             return $databaseName;
         }
-
+        return null;
     }
 
 
