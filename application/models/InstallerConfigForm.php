@@ -32,6 +32,7 @@ class InstallerConfigForm extends LSCFormModel
     const DB_TYPE_MSSQL = 'mssql';
     const DB_TYPE_DBLIB = 'dblib';
     const DB_TYPE_PGSQL = 'pgsql';
+    const DB_TYPE_ODBC = 'odbc';
 
     // Database
     /** @var string $dbtype */
@@ -436,9 +437,9 @@ class InstallerConfigForm extends LSCFormModel
                     $bCreateDB = false;
                 }
                 break;
-            case 'dblib':
-            case 'mssql':
-            case 'odbc':
+            case self::DB_TYPE_DBLIB:
+            case self::DB_TYPE_MSSQL:
+            case self::DB_TYPE_ODBC:
                 try {
                     $this->db->createCommand("CREATE DATABASE [{$this->dbname}];")->execute();
                 } catch (Exception $e) {
