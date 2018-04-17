@@ -31,3 +31,5 @@ exec(sprintf('./third_party/bin/psalm -m --output-format=emacs %s', $argv[1]), $
 $output = array_merge($phpmd_output, $phpcs_output, $psalm_output);
 
 echo implode(PHP_EOL, $output);
+
+exit (count($output) == 0 ? 0 : 1);
