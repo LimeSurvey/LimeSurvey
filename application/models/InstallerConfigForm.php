@@ -25,6 +25,7 @@
  * @property boolean $isConfigDirWriteable
  * @property boolean $isUploadDirWriteable
  * @property boolean $isTmpDirWriteable
+ * @property string[] $supportedDbTypes
  */
 class InstallerConfigForm extends LSCFormModel
 {
@@ -61,8 +62,7 @@ class InstallerConfigForm extends LSCFormModel
     public $dbprefix = 'lime_';
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
-    /** @var array $supported_db_types */
-    public $supported_db_types = [];
+
     /** @var array $db_names */
     public $db_names = array(
         self::DB_TYPE_MYSQL => 'MySQL',
@@ -136,29 +136,8 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function __construct($scenario = 'database')
     {
-        $drivers = array();
-        if (extension_loaded('pdo')) {
-            $drivers = CDbConnection::getAvailableDrivers();
-        }
-        foreach ($drivers as $driver) {
-            if (isset($this->db_names[$driver])) {
-                $this->supported_db_types[$driver] = $this->db_names[$driver];
-            }
-        }
-
-        if (isset($this->supported_db_types[self::DB_TYPE_MYSQL])) {
-            if (getenv('DBENGINE')) {
-                $this->dbengine = getenv('DBENGINE');
-            } else {
-                $this->dbengine = self::ENGINE_TYPE_MYISAM;
-            }
-        }
-        asort($this->supported_db_types);
-
-        parent::__construct();
-
-        // Default is database
-        $this->setScenario($scenario);
+        parent::__construct($scenario);
+        $this->setInitialEngine();
         $this->checkStatus();
     }
 
@@ -171,7 +150,7 @@ class InstallerConfigForm extends LSCFormModel
             array('dbname', 'match', 'pattern' => '/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/'), // Check that database name is a single word with options underscores not starting with a number
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
-            array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
+            array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys(self::getDbEngines()), 'on' => 'database'),
             //Optional
@@ -248,7 +227,7 @@ class InstallerConfigForm extends LSCFormModel
 
         }
 
-        if (count($this->supported_db_types) == 0) {
+        if (count($this->supportedDbTypes) == 0) {
             return false;
         }
 
@@ -289,6 +268,33 @@ class InstallerConfigForm extends LSCFormModel
             }
             if (!$this->isInnoDbBarracudaFileFormat()) {
                 $this->addError($attribute, Yii::t('app','Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InooDb engine for LimeSurvey!'));
+            }
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupportedDbTypes(){
+        $drivers = [];
+        if (extension_loaded('pdo')) {
+            $drivers = CDbConnection::getAvailableDrivers();
+        }
+        foreach ($drivers as $driver) {
+            if (isset($this->db_names[$driver])) {
+                $result[$driver] = $this->db_names[$driver];
+            }
+        }
+        asort($result);
+        return $result;
+    }
+
+    private function setInitialEngine(){
+        if (isset($this->supportedDbTypes[self::DB_TYPE_MYSQL])) {
+            if (getenv('DBENGINE')) {
+                $this->dbengine = getenv('DBENGINE');
+            } else {
+                $this->dbengine = self::ENGINE_TYPE_MYISAM;
             }
         }
     }

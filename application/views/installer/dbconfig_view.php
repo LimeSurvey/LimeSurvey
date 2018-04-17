@@ -56,7 +56,7 @@ function checkDbEngine(){
 
         <div id="InstallerConfigForm_dbtype_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbtype'); ?>
-            <?= CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, ['required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus']); ?>
+            <?= CHtml::activeDropDownList($model, 'dbtype', $model->supportedDbTypes, ['required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus']); ?>
             <div class="help-block"><?= $model->getAttributeHint('dbtype') ?></div>
         </div>
 

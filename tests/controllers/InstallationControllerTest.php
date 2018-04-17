@@ -89,7 +89,7 @@ class InstallationControllerTest extends TestBaseClassWeb
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
         $installerForm = new \InstallerConfigForm();
-
+        $installerForm->dbtype = \InstallerConfigForm::DB_TYPE_MYSQL;
 
         try {
 

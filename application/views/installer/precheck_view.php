@@ -52,10 +52,10 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                        <td><?php eT("PHP PDO driver library"); ?></td>
                        <td><?php eT("At least one installed"); ?></td>
                        <td>
-                           <?php if(empty($model->supported_db_types)):?>
+                           <?php if(empty($model->supportedDbTypes)):?>
                                <span style='font-weight:bold; color: red'><?php eT("None found"); ?></span>
                            <?php else:?>
-                               <?= implode(', ',$model->supported_db_types); ?>
+                               <?= implode(', ',$model->supportedDbTypes); ?>
                            <?php endif;?>
                        </td>
                 </tr>
