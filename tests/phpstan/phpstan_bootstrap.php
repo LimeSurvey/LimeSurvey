@@ -27,14 +27,17 @@ require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
 Yii::$enableIncludePath = false;
-Yii::createApplication('LSYii_Application', $config);
+$app = Yii::createApplication('LSYii_Application', $config);
+$app->init();
 
 Yii::setPathOfAlias('webroot', __DIR__ . '/../../');
 
 Yii::app()->loadHelper('common');
+Yii::import('application.core.*', true);
 Yii::import('application.helpers.common_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
+Yii::import('application.third_party.Twig.*', true);
 
 /** @var PluginManager */
 $pluginManager = Yii::app()->getComponent('pluginManager');

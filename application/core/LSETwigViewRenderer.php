@@ -24,14 +24,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-    public  $sandboxConfig = array();
+    public $sandboxConfig = array();
+
+    /**
+     * @var Twig_Environment|null
+     */
     private $_twig;
 
     /**
      * Main method to render a survey.
      * @param string  $sLayout the name of the layout to render
      * @param array   $aDatas  the datas needed to fill the layout
-     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     * @param boolean $bReturn if true, it will return the html string without
+     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
      */
     public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
     {
