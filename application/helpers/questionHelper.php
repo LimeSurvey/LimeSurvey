@@ -493,6 +493,7 @@ class questionHelper
             'category'=>gT('Location'),
             'sortorder'=>101,
             'inputtype'=>'text',
+            'expression'=>1,/* As static */
             "help"=>gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
             "caption"=>gT('Default position')
         );
