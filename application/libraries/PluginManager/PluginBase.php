@@ -55,7 +55,7 @@ abstract class PluginBase implements iPlugin
 
     /**
      * config.xml
-     * @var XML
+     * @var \SimpleXMLElement|null
      */
     public $config = null;
 
@@ -82,7 +82,12 @@ abstract class PluginBase implements iPlugin
      */
     protected function setLocaleComponent()
     {
-        $basePath = $this->getDir().DIRECTORY_SEPARATOR.'locale';
+        $dir = $this->getDir();
+        if ($dir) {
+            $basePath = $dir . DIRECTORY_SEPARATOR . 'locale';
+        } else {
+            throw new \Exception('Found no dir for locale component');
+        }
 
         // No need to load a component if there is no locale files
         if (!file_exists($basePath)) {
@@ -90,13 +95,16 @@ abstract class PluginBase implements iPlugin
         }
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages'.$this->id, array(
-            'class' => 'LSCGettextMessageSource',
-            'cachingDuration' => 3600,
-            'forceTranslation' => true,
-            'useMoFile' => true,
-            'basePath' => $basePath
-        ));
+        \Yii::app()->setComponent(
+            'pluginMessages'.$this->id,
+            [
+                'class'            => 'LSCGettextMessageSource',
+                'cachingDuration'  => 3600,
+                'forceTranslation' => true,
+                'useMoFile'        => true,
+                'basePath'         => $basePath
+            ]
+        );
     }
 
     /**
@@ -299,13 +307,17 @@ abstract class PluginBase implements iPlugin
      * To find the plugin locale file, we need late runtime result of __DIR__.
      * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
      *
-     * @return string
+     * @return string|null
      */
     protected function getDir()
     {
         $reflObj = new \ReflectionObject($this);
         $fileName = $reflObj->getFileName();
-        return dirname($fileName);
+        if ($fileName) {
+            return dirname($fileName);
+        } else {
+            null;
+        }
     }
 
     /**

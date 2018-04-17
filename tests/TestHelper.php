@@ -319,6 +319,10 @@ class TestHelper extends TestCase
      */
     public function takeScreenshot($webDriver, $name)
     {
+        // Strip away namespace.
+        $nameParts = explode('\\', $name);
+        $name = $nameParts[count($nameParts) - 1];
+
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
         $screenshot = $webDriver->takeScreenshot();
@@ -398,7 +402,26 @@ class TestHelper extends TestCase
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
                 // Open target="_blank" in new tab.
-                //$profile->setPreference('browser.link.open_newwindow', 3);
+                $profile->setPreference('browser.link.open_newwindow', 3);
+
+                // When set to 2, the location specified for the most recent download is utilized again.
+                $profile->setPreference('browser.download.folderList', 2);
+
+                // Further settings to automatically download exported theme files.
+                // Test testExportAndImport() in ThemeControllerTest depends on these lines.
+                $profile->setPreference('browser.download.dir', BASEPATH . '../tmp/');
+                $profile->setPreference('browser.download.panel.shown', false);
+                $profile->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
+
+                $profile->setPreference('browser.download.manager.showAlertOnComplete', false);
+                $profile->setPreference('browser.download.manager.closeWhenDone', false);
+                $profile->setPreference('browser.download.manager.showAlertInterval', 100);
+                $profile->setPreference('browser.download.manager.resumeOnWakeDelay', 0);
+
+                // This two lines are necessary to avoid issue https://github.com/SeleniumHQ/docker-selenium/issues/388.
+                $profile->setPreference('browser.tabs.remote.autostart', false);
+                $profile->setPreference('browser.tabs.remote.autostart.2', false);
+
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
                 $success = true;

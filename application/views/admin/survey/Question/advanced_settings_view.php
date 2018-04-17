@@ -46,7 +46,7 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                $readonly = $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive);
+                $readonly = $aAttribute['readonly'] || (isset($aAttribute['readonly_when_active']) && $aAttribute['readonly_when_active'] && $bIsActive);
                 switch ($aAttribute['inputtype'])
                 {
                     // Switch

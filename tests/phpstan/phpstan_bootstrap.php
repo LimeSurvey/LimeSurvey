@@ -1,6 +1,7 @@
 <?php
 
 // Code below copied from index.php.
+// File also used for Psalm checker.
 
 $system_path = "framework";
 $application_folder = dirname(__FILE__) . "/../../application";
@@ -23,5 +24,8 @@ $config = require_once(APPPATH . 'config/internal' . EXT);
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
 
-//Yii::import('application.helpers.common_helper', true);
 Yii::app()->loadHelper('common');
+Yii::import('application.helpers.common_helper', true);
+Yii::import('application.libraries.PluginManager.PluginManager', true);
+
+error_reporting(E_ALL);

@@ -26,7 +26,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
     }
 
     /**
-     * 
+     * Test date question with default answer and maximum date today.
      */
     public function testBasic()
     {
@@ -41,32 +41,13 @@ class DateTimeValidationTest extends TestBaseClassWeb
             ]
         );
 
-        self::$webDriver->get($url);
-
         try {
-            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-        } catch (NoSuchElementException $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
-            file_put_contents($filename, $screenshot);
-            $this->assertFalse(
-                true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
-            );
-        }
+            self::$webDriver->get($url);
 
-        $this->assertNotEmpty($submit);
-        self::$webDriver->wait(5)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id('ls-button-submit')
-            )
-        );
-        $submit->click();
+            // Submit the page with default answer.
+            self::$webDriver->submit('ls-button-submit');
 
-        // After submit we should see the complete page.
-        try {
-            // Wait max 10 second to find this div.
+            // Wait max 5 second to find this div.
             self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::className('completed-text')
@@ -74,7 +55,8 @@ class DateTimeValidationTest extends TestBaseClassWeb
             );
             $div = self::$webDriver->findElement(WebDriverBy::className('completed-text'));
             $this->assertNotEmpty($div);
-        } catch (NoSuchElementException $ex) {
+
+        } catch (\Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
             file_put_contents($filename, $screenshot);
@@ -82,16 +64,6 @@ class DateTimeValidationTest extends TestBaseClassWeb
                 true,
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
-            );
-        } catch (TimeOutException $ex) {
-            $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-            var_dump($body->getText());
-            $reflect = new \ReflectionClass($this);
-            //if ($reflect->getShortName() === 'Name') {
-            self::$testHelper->takeScreenshot(self::$webDriver, $reflect->getShortName() . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
             );
         }
     }

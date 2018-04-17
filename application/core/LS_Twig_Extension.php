@@ -259,8 +259,8 @@ class LS_Twig_Extension extends Twig_Extension
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         }
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish($sImagePath);
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
         }
         
 
@@ -277,17 +277,17 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset =  '';
+        $sUrlImgAsset =  $sImagePath;
         
         
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         } 
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').$sImagePath);
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
         }
-
+        $myTemplateAsset = $sUrlImgAsset;
         return $sUrlImgAsset;
     }
 
@@ -451,4 +451,85 @@ class LS_Twig_Extension extends Twig_Extension
         }
     }
 
+    /**
+     * Process any string with current page
+     * @param string to be processed
+     * @param boolean $static return static string (or not)
+     * @param integer $numRecursionLevels recursion (max) level to do
+     * @param array $aReplacement replacement out of EM
+     * @return string
+     */
+    public static function processString($string,$static=false,$numRecursionLevels=3,$aReplacement = array())
+    {
+        if(!is_string($string)) {
+            /* Add some errors in template editor , see #13532 too */
+            if(Yii::app()->getController()->getId() == 'admin' && Yii::app()->getController()->getAction()->getId() == 'themes') {
+                Yii::app()->setFlashMessage(gT("Usage of processString without a string in your template"),'error');
+            }
+            return;
+        }
+        return LimeExpressionManager::ProcessStepString($string, $aReplacement,$numRecursionLevels, $static);
+    }
+
+    /**
+     * Get html text and remove whole not clean string
+     * @param string $string to flatten
+     * @param boolean $encode html entities
+     * @return string
+     */
+    public static function flatString($string,$encode=false)
+    {
+        // Remove script before removing tag, no tag : no other script (onload, on error etc …
+        $string = strip_tags(stripJavaScript($string));
+        // Remove new lines
+        if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {
+            $string = preg_replace(array('~\R~u'), array(' '), $string);
+        } else {
+            $string = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $string);
+        }
+        // White space to real space
+        $string = preg_replace('/\s+/', ' ', $string);
+
+        if($encode) {
+            return \CHtml::encode($string);
+        }
+        return $string;
+    }
+
+    /**
+     * get flat and ellipsize string
+     * @param string $string to ellipsize
+     * @param integer $maxlength of the final string
+     * @param float $position of the ellipsis in string (between 0 and 1)
+     * @param string $ellipsis string to shown in place of removed part
+     * @return string
+     */
+    public static function ellipsizeString($string, $maxlength, $position = 1, $ellipsis = '…')
+    {
+        $string = self::flatString($string,false);
+        $string = ellipsize($string, $maxlength, $position, $ellipsis);// Use common_helper function
+        return $string;
+    }
+
+    /**
+     * flat and ellipsize text, for template compatibility
+     * @deprecated (4.0)
+     * @param string $sString :the string
+     * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
+     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
+     * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
+     * @return string
+     */
+    public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
+    {
+        if (!$bFlat && !$iAbbreviated) {
+            return $sString;
+        }
+        $sString = self::flatString($sString);
+        if ($iAbbreviated > 0) {
+            $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
+        }
+        return $sString;
+    }
 }

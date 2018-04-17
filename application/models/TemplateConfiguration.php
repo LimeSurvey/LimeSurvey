@@ -514,6 +514,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
 
+        $sExtendUrl = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
+
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
             href='".$sEditorUrl."'
@@ -539,24 +541,58 @@ class TemplateConfiguration extends TemplateConfig
 
         $sUninstallLink = '<a
             id="remove_fromdb_link_'.$this->template_name.'"
-            data-ajax-url="'.$sUninstallUrl.'"
+            href="'.$sUninstallUrl.'"
             data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-            data-gridid = "yw0"
-            data-target="#confirmation-modal"
-            data-toggle="modal"
-            data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
-            data-tooltip="true"
-            data-title="'.gT('Uninstall this theme').'"
-            class="btn btn-danger btn-block">
+            data-text="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
+            title="'.gT('Uninstall this theme').'"
+            class="btn btn-danger btn-block selector--ConfirmModal">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
+            </a>';
+
+    /*   
+    javascript: copyprompt(
+        text => 'Please enter the name for the new template:', 
+        defvalue => 'extends_bootswatch', 
+        copydirectory => 'bootswatch', 
+        action=> 'copy'
+
+    function copyprompt(text, defvalue, copydirectory, action)
+     {
+         if (newtemplatename=window.prompt(text, defvalue))
+         {
+             sendPost(
+                 '<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action
+                 ,'',
+                 'action'         ,'newname'      ,'copydir'),
+                 'templatecopy',newtemplatename,copydirectory)
+                );
+         }
+     } 
+     */
+
+         $sExtendLink = '<a
+            id="extendthis_'.$this->template_name.'"
+            href="'.$sExtendUrl.'"
+            data-post=\''
+            .json_encode([
+                "copydir" => $this->template_name,
+                "action" => "templatecopy", 
+                "newname" => ["value"=> "extends_".$this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
+            ])
+            .'\'
+            data-text="'.gT('Please type in the new theme name above.').'"
+            title="'.sprintf(gT('Type in the new name to extend %s'), $this->template_name).'"
+            class="btn btn-primary btn-block selector--ConfirmModal">
+                <i class="fa fa-copy"></i>
+                '.gT('Extend').'
             </a>';
 
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
-            $sButtons = $sEditorLink.$OptionLink;
+            $sButtons = $sEditorLink.$OptionLink.$sExtendLink;
 
             if ($this->template_name != getGlobalSetting('defaulttheme')) {
                 $sButtons .= $sUninstallLink;
@@ -603,17 +639,17 @@ class TemplateConfiguration extends TemplateConfig
     private function _filterImages($file)
     {
         if(file_exists($this->filesPath.$file['name'])) {
-            $imagePath = $this->filesPath.$file['name'];
-            $fileRoot = './files';
+            $imagePath = $this->filesPath.'/'.$file['name'];
+            $fileRoot = '/files';
         } else {
             $imagePath = $this->generalFilesPath.$file['name'] ;
-            $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles/';
+            $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles';
         }
 
         
         $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
-                    return ['filepath' => $fileRoot.$file['name'], 'filename'=>$file['name']];
+                return ['filepath' => $fileRoot.'/'.$file['name'], 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
         }
     }
 

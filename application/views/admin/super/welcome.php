@@ -64,10 +64,12 @@ echo viewHelper::getViewTestTag('index');
                                 </ol>
                             </div>
                             <div class="row"><hr/></div>
-                            <div class="row" id="selector__welcome-modal--tutorial">
-                                <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
-                                <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
-                            </div>
+                            <?php if(Permission::model()->hasGlobalPermission('surveys','create')) { ?>
+                                <div class="row" id="selector__welcome-modal--tutorial">
+                                    <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
+                                    <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="modal-footer">

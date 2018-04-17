@@ -263,15 +263,14 @@ class questions extends Survey_Common_Action
         $gid = (int) $gid;
         $qid = (int) $qid;
 
-
         Yii::app()->loadHelper('surveytranslator');
 
-
-        $oQuestion = Question::model()->findByAttributes(array(
-            'qid' => $qid,
-            'gid' => $gid,
-            'language' => $survey->language
-        ));
+        $oQuestion = Question::model()->findByAttributes(
+            [
+                'qid' => $qid,
+                'gid' => $gid,
+            ]
+        );
 
         $questionrow = $oQuestion->attributes;
 

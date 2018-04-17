@@ -32,7 +32,7 @@ class Index extends Survey_Common_Action
         if ($lastsurvey != null && $survey) {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
-            $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title."(".gT("ID").":".$iSurveyID.")";
+            $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
         } else {
             $aData['showLastSurvey'] = false;

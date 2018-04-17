@@ -4538,6 +4538,53 @@
             return $result;
         }
 
+        /**
+        * Translate all Expressions, Macros, registered variables, etc. in $string for current step
+        * @param string $string - the string to be replaced
+        * @param array $replacementFields - optional replacement values
+        * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+        * @param boolean $static - return static string (without any javascript)
+        * @return string - the original $string with all replacements done.
+        */
+        public static function ProcessStepString($string, $replacementFields=array(), $numRecursionLevels=3, $static=false)
+        {
+            if((strpos($string, "{") === false)){
+                return $string;
+            }
+            $LEM =& LimeExpressionManager::singleton();
+
+            // Fill tempVars if needed
+            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0) {
+                $replaceArray = array();
+                foreach ($replacementFields as $key => $value) {
+                    $replaceArray[$key] = array(
+                    'code'=>$value,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    );
+                }
+                $LEM->tempVars = $replaceArray;
+            }
+            // Get current seq for question and group*/
+            $questionSeq = $LEM->currentQuestionSeq;
+            $groupSeq = $LEM->currentGroupSeq;
+            // Group by group : need find questionSeq  */
+            if($groupSeq > -1 && $questionSeq == -1 && isset($LEM->groupSeqInfo[$groupSeq]['qend'])) {
+                $questionSeq = $LEM->groupSeqInfo[$groupSeq]['qend'];
+            }
+            // EM core need questionSeq + question id … */
+            $qid = 0;
+            if($questionSeq > -1 && !is_null($questionSeq)) {
+                $aQid=array_keys($LEM->questionId2questionSeq,$questionSeq);
+                if(isset($aQid[0])) {
+                    $qid = $aQid[0];
+                }
+            }
+            // Replace in string
+            $string = $LEM->em->sProcessStringContainingExpressions($string,$qid, $numRecursionLevels, 1, $groupSeq, $questionSeq,$static);
+            return $string;
+        }
 
         /**
         * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
@@ -5418,7 +5465,7 @@
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
             $message = '';
-            if (!$this->surveyOptions['active'] || $this->sPreviewMode)
+            if ($this->surveyOptions['active'] != 'Y' || $this->sPreviewMode)
             {
                 return $message;
             }
@@ -6549,7 +6596,7 @@
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please complete all parts').'.';
+                        $sMandatoryText = $LEM->gT('Please complete all parts.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
@@ -6581,7 +6628,7 @@
                                     }
                                 }
                             }
-                            $sMandatoryText = $LEM->gT('Please check at least one box per row').'.';
+                            $sMandatoryText = $LEM->gT('Please check at least one box per row.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
@@ -6593,7 +6640,7 @@
                             {
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
-                            $sMandatoryText = $LEM->gT('Please complete all parts').'.';
+                            $sMandatoryText = $LEM->gT('Please complete all parts.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
@@ -6604,7 +6651,7 @@
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please rank all items').'.';
+                        $sMandatoryText = $LEM->gT('Please rank all items.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
@@ -7161,6 +7208,15 @@
         }
 
         /**
+         * Did LEM is currently initialized
+         * @return boolean
+         */
+        public static function isInitialized ()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            return $LEM->initialized;
+        }
+        /**
         * Should be called at end of each page
         * @return void
         */
@@ -7189,6 +7245,28 @@
             $_SESSION['LEMsingleton']=serialize($LEM);
         }
 
+        /**
+         * End public HTML
+         * @return string|null : hidden inputs needed for relevance
+         * @todo : add directly hidden input in page without return it.
+         */
+        public static function FinishProcessPublicPage()
+        {
+            if(self::isInitialized()) {
+                $LEM =& LimeExpressionManager::singleton();
+                /* Replace FinishProcessingGroup directly : always needed (in all in one too, and needed at end only (after all html are processed for Expression)) */
+                $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
+                $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
+                $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+                $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+                $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
+                $LEM->FinishProcessingPage();
+                return $sHiddenInputs;
+            }
+        }
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared

@@ -10,7 +10,7 @@
     {% for indexGroup in aSurveyInfo.aQuestionIndex.items %}
     <div class="list-group" data-gid="{{ indexGroup.gid }}">
         <div class="list-group-item">
-            <div class="h5 list-group-item-heading">{{ indexGroup.text }}</div>
+            <div class="h5 list-group-item-heading">{{ flatString(indexGroup.text) }}</div>
         </div>
         {% for indexQuestion in indexGroup.questions %}
         {% set templateClass = ''  %}
@@ -24,8 +24,7 @@
             {% set templateClass = statusClass ~  ' disabled'  %}
         {% endif %}
             <button type="submit" name="move" value="{{ indexQuestion.step }}" class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
-                {{ indexQuestion.text }}
-                {# flatEllipsizeText(indexQuestion.text, true, 30, " &hellip; ", 0.6 ) broken currently : class 'viewHelper' not found  #}
+                {{ ellipsizeString(indexQuestion.text, 80, "…", 0.6 ) }}
             </button>
         {% endfor %}
     </div>

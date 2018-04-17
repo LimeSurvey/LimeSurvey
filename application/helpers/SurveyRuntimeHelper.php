@@ -16,7 +16,6 @@
 
 class SurveyRuntimeHelper
 {
-
     /**
      * In the 2.x version of LimeSurvey and priors, the main run method  was using a variable called redata fed via get_defined_vars. It was making hard to move piece of code to subfuntions.
      * Those private variables are just a step to make easier refactorisation of this file, to have a global overview about what is set in this helper, and to move easely piece of code to new methods:
@@ -121,8 +120,6 @@ class SurveyRuntimeHelper
 
         $this->fixMaxStep();
 
-        /* Update Survey text after move : get current (static) value (TODO : find the solution to get javascripted EM) */
-        $this->processSurveyText();
         //******************************************************************************************************
         //PRESENT SURVEY
         //******************************************************************************************************
@@ -305,12 +302,6 @@ class SurveyRuntimeHelper
 
             $gid              = $gl['gid'];
             $aGroup           = array();
-            $groupname        = $gl['group_name'];
-            // TODO: Add standard replacement fields to group name and description?
-            $groupname        = LimeExpressionManager::ProcessString($groupname, null, null, 3, 1, false, true, false);
-            $groupdescription = $gl['description'];
-            $groupdescription = LimeExpressionManager::ProcessString($groupdescription, null, null, 3, 1, false, true, false);
-
             if ($this->sSurveyMode != 'survey') {
                 $onlyThisGID = $this->aStepInfo['gid'];
                 if ($onlyThisGID != $gid) {
@@ -328,7 +319,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1, false, true, false);
+            $aGroup['name']        = $gl['group_name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -343,8 +334,8 @@ class SurveyRuntimeHelper
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
-            $aGroup['showdescription']  = (!$this->previewquestion && trim($redata['groupdescription']) != "" && $showgroupdesc_);
-            $aGroup['description']      = $redata['groupdescription'];
+            $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
+            $aGroup['description']      = $gl['description'];
 
             // one entry per QID
             foreach ($qanda as $qa) {
@@ -425,15 +416,7 @@ class SurveyRuntimeHelper
          *  Expression Manager Scrips and inputs
          */
         $step = isset($_SESSION[$this->LEMsessid]['step']) ? $_SESSION[$this->LEMsessid]['step'] : '';
-        LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
-        $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
-        $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-        Yii::app()->clientScript->registerScript('lemscripts_'.$step, $sScripts, CClientScript::POS_BEGIN);
-        $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = implode('', $aScriptsAndHiddenInputs['inputs']);
-        Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
-        Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
-        LimeExpressionManager::FinishProcessingPage();
-
+        $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
         /**
          * Navigator
          */
@@ -472,7 +455,12 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
+        Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
+            'oSurvey'=> Survey::model()->findByPk($this->iSurveyid),
+            'aSurveyInfo'=>$this->aSurveyInfo,
+            'step'=>$step,
+            'LEMskipReprocessing'=>$this->LEMskipReprocessing,
+        ), false);
     }
 
     public function getShowNumAndCode()
@@ -540,7 +528,6 @@ class SurveyRuntimeHelper
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
-        $this->processSurveyText(); // Basic replacement (can be need to be updated)
         if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota') {
             $this->checkPrevStep(); // Check if prev step is set, else set it
             $this->setMoveResult();
@@ -952,6 +939,7 @@ class SurveyRuntimeHelper
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
                 $this->aSurveyInfo['datasecurity_error'] = gT("You will have to accept our survey policy!");
             }
+            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
         }
 
         if ($bDisplayFirstPage) {
@@ -959,20 +947,6 @@ class SurveyRuntimeHelper
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
-    }
-
-    /**
-     * process Expression on Survey Text
-     */
-    private function processSurveyText()
-    {
-            $this->aSurveyInfo['name']                      = $this->processString($this->aSurveyInfo['name']);
-            $this->aSurveyInfo['description']               = $this->processString($this->aSurveyInfo['description']);
-            $this->aSurveyInfo['welcome']                   = $this->processString($this->aSurveyInfo['welcome']) ;
-            $this->aSurveyInfo['datasecurity_notice']       = $this->processString($this->aSurveyInfo['datasecurity_notice']) ;
-            $this->aSurveyInfo['datasecurity_error']        = $this->processString($this->aSurveyInfo['datasecurity_error']) ;
-            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
-            $this->aSurveyInfo['datasecurity_notice_label'] = $this->processString($this->aSurveyInfo['datasecurity_notice_label']) ;
     }
 
     private function checkForDataSecurityAccepted(){
@@ -1091,25 +1065,25 @@ class SurveyRuntimeHelper
     {
         if ($this->sMove == "movesubmit") {
 
+            // Parts needed for active and unactive
+            //Check for assessments
+            $this->aSurveyInfo['aAssessments']['show'] = false;
+            if ($this->aSurveyInfo['assessments'] == "Y") {
+                $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
+            }
+            // End text
+            if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+                $this->aSurveyInfo['aCompleted']['showDefault'] = true;
+            } else {
+                $this->aSurveyInfo['aCompleted']['showDefault'] = false;
+                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
+                //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
+                $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
+            }
+
             if ($this->aSurveyInfo['active'] != "Y") {
 
                 sendCacheHeaders();
-
-                //Check for assessments
-                if ($this->aSurveyInfo['assessments'] == "Y") {
-                    $this->aSurveyInfo['aAssessments']['show'] = true;
-                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
-                }
-
-                // End text
-                if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
-                    $this->aSurveyInfo['aCompleted']['showDefault'] = true;
-                } else {
-                    $this->aSurveyInfo['aCompleted']['showDefault'] = false;
-                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
-                }
 
                 $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
@@ -1127,23 +1101,6 @@ class SurveyRuntimeHelper
 
                 //Send notifications
                 sendSubmitNotifications($this->iSurveyid);
-
-                //Check for assessments
-                $this->aSurveyInfo['aAssessments']['show'] = false;
-                if ($this->aSurveyInfo['assessments'] == "Y") {
-                    $this->aSurveyInfo['aAssessments']['show'] = true;
-                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
-                }
-
-                // End text
-                if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
-                    $this->aSurveyInfo['aCompleted']['showDefault'] = true;
-                } else {
-                    $this->aSurveyInfo['aCompleted']['showDefault'] = false;
-                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    //$this->aSurveyInfo['aCompleted']['sEndText'] = templatereplace($this->aSurveyInfo['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, null, array(), true);
-                    $this->aSurveyInfo['aCompleted']['sEndText'] = $this->processString($this->aSurveyInfo['surveyls_endtext'], 2);
-                }
 
                 // Link to Print Answer Preview  **********
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show'] = false;
