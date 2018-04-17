@@ -347,6 +347,10 @@ class InstallerConfigForm extends LSCFormModel
         return $this->getMySqlConfigValue('innodb_large_prefix') == '1';
     }
 
+    /**
+     * @param $itemName
+     * @return string
+     */
     private function getMySqlConfigValue($itemName) {
         $item = "@@".$itemName;
         try {
@@ -359,6 +363,9 @@ class InstallerConfigForm extends LSCFormModel
         return null;
     }
 
+    /**
+     * @return bool
+     */
     private function isInnoDbBarracudaFileFormat(){
         $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda';
         $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda';
@@ -426,6 +433,10 @@ class InstallerConfigForm extends LSCFormModel
     }
 
 
+    /**
+     * @param string $dbEngine
+     * @throws CDbException
+     */
     private function setMySQLDefaultEngine($dbEngine){
         if(!empty($this->db) && $this->db->driverName === self::DB_TYPE_MYSQL){
             $this->db
@@ -470,17 +481,16 @@ class InstallerConfigForm extends LSCFormModel
     private function getMysqlDsn(){
 
         $port = $this->getDbPort();
-        if (!$this->useDbName) {
-            $dbName = '';
-        } else {
-            $dbName = $this->dbname;
-        }
 
         // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
         if (substr($this->dblocation, 0, 1) == "/") {
-            $sDSN = "mysql:unix_socket={$this->dblocation};dbname={$dbName};";
+            $sDSN = "mysql:unix_socket={$this->dblocation}";
         } else {
-            $sDSN = "mysql:host={$this->dblocation};port={$port};dbname={$dbName};";
+            $sDSN = "mysql:host={$this->dblocation};port={$port};";
+        }
+
+        if ($this->useDbName) {
+            $sDSN .= "dbname={$this->dbname};";
         }
         return $sDSN;
     }
@@ -491,11 +501,6 @@ class InstallerConfigForm extends LSCFormModel
      */
     private function getPgsqlDsn() {
         $port = $this->getDbPort();
-        if (!$this->useDbName) {
-            $dbName = '';
-        } else {
-            $dbName = $this->dbname;
-        }
         if (empty($this->dbpwd)) {
             // If there's no password, we need to write password=""; instead of password=;,
             // or PostgreSQL's libpq will consider the DSN string part after "password="
@@ -503,8 +508,8 @@ class InstallerConfigForm extends LSCFormModel
             $this->dbpwd = '""';
         }
         $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
-        if ($this->dbname != '') {
-            $sDSN .= "dbname={$dbName};";
+        if ($this->useDbName) {
+            $sDSN .= "dbname={$this->dbname};";
         }
         return $sDSN;
     }
@@ -514,16 +519,14 @@ class InstallerConfigForm extends LSCFormModel
      */
     private function getMssqlDsn(){
         $port = $this->getDbPort();
-        $sDatabaseLocation = '';
-        if (!$this->useDbName) {
-            $dbName = '';
-        } else {
-            $dbName = $this->dbname;
-        }
+        $sDatabaseLocation = $this->dblocation;
         if ($port != '') {
             $sDatabaseLocation = $this->dblocation.','.$port;
         }
-        $sDSN = $this->dbtype.":Server={$sDatabaseLocation};Database={$dbName}";
+        $sDSN = $this->dbtype.":Server={$sDatabaseLocation};";
+        if ($this->useDbName) {
+            $sDSN .= "Database={$this->dbname}";
+        }
         return $sDSN;
     }
 
@@ -546,19 +549,12 @@ class InstallerConfigForm extends LSCFormModel
      * @return string
      */
     private function getDbDefaultPort() {
-        switch ($this->dbtype) {
-            case self::DB_TYPE_MYSQL:
-            case self::DB_TYPE_MYSQLI:
-                $sDatabasePort = '3306';
-                break;
-            case self::DB_TYPE_PGSQL:
-                $sDatabasePort = '5432';
-                break;
-            case self::DB_TYPE_DBLIB:
-            case self::DB_TYPE_MSSQL:
-            case self::DB_TYPE_SQLSRV:
-            default:
-                $sDatabasePort = '';
+        $sDatabasePort = '';
+        if ($this->isMysql) {
+            $sDatabasePort = '3306';
+        }
+        if ($this->dbtype === self::DB_TYPE_PGSQL) {
+            $sDatabasePort = '5432';
         }
         return $sDatabasePort;
     }
@@ -582,47 +578,39 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function createDatabase() {
         $bCreateDB = true; // We are thinking positive
-        switch ($this->dbtype) {
-            case self::DB_TYPE_MYSQL:
-            case self::DB_TYPE_MYSQLI:
-                try {
-                    $this->db->createCommand("CREATE DATABASE `{$this->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
-                } catch (Exception $e) {
-                    $bCreateDB = false;
-                }
-                break;
-            case self::DB_TYPE_DBLIB:
-            case self::DB_TYPE_MSSQL:
-            case self::DB_TYPE_ODBC:
-                try {
-                    $this->db->createCommand("CREATE DATABASE [{$this->dbname}];")->execute();
-                } catch (Exception $e) {
-                    $bCreateDB = false;
-                }
-                break;
-            case self::DB_TYPE_PGSQL:
-                try {
-                    $this->db->createCommand("CREATE DATABASE \"{$this->dbname}\" ENCODING 'UTF8'")->execute();
-                } catch (Exception $e) {
-                    $bCreateDB = false;
-                }
-                break;
-            default:
-                try {
-                    $this->db->createCommand("CREATE DATABASE {$this->dbname}")->execute();
-                } catch (Exception $e) {
-                    $bCreateDB = false;
-                }
-                break;
+        $query = $this->createDbQuery();
+        try {
+            $this->db->createCommand($query)->execute();
+        } catch (Exception $e) {
+            $bCreateDB = false;
         }
+
         if ($bCreateDB) {
             $this->useDbName = true;
             // reconnect to set database name & status
             $this->dbConnect();
-
         }
+
         return $bCreateDB;
 
+    }
+
+
+    /**
+     * @return string
+     */
+    private function createDbQuery() {
+        $query = "CREATE DATABASE {$this->dbname}";
+        if ($this->isMysql) {
+            $query = "CREATE DATABASE `{$this->dbname}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+        }
+        else if ($this->isMSSql) {
+            $query = "CREATE DATABASE [{$this->dbname}];";
+        }
+        if ($this->dbtype === self::DB_TYPE_PGSQL) {
+            $query = "CREATE DATABASE \"{$this->dbname}\" ENCODING 'UTF8'";
+        }
+        return $query;
     }
 
     /**
@@ -631,8 +619,6 @@ class InstallerConfigForm extends LSCFormModel
      */
     public function setupTables()
     {
-
-
         if (empty($this->dbname)) {
             $this->dbname = $this->getDataBaseName();
         }
