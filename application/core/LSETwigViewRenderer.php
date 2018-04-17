@@ -85,12 +85,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
      * @param string  $sLayout the name of the layout to render
      * @param array   $aDatas  the datas needed to fill the layout
-     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. 
+     *                         Usefull for debuging, and used for Print Answers
+     * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
      * @return string HTML
      */
-    public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false)
+    public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false, $bUseRootDir = true)
     {
-        $viewFile = Yii::app()->getConfig('rootdir').$sLayoutFilePath;
+        if ($bUseRootDir) {
+            $viewFile = Yii::app()->getConfig('rootdir').$sLayoutFilePath;
+        } else {
+            $viewFile = $sLayoutFilePath;
+        }
+
         if (file_exists($viewFile)) {
             $line       = file_get_contents($viewFile);
             $sHtml      = $this->convertTwigToHtml($line, $aDatas);
@@ -104,7 +111,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             throw new CException(
                 sprintf(
                     gT("Can't render layout %s. Please check the view exists or contact your admin."),
-                    $sLayoutFilePath
+                    $viewFile
                 )
             );
         }
