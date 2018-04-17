@@ -152,7 +152,7 @@ class InstallerConfigForm extends LSCFormModel
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
-            array('dbengine', 'in', 'range' => array_keys(self::getDbEngines()), 'on' => 'database'),
+            array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
