@@ -111,11 +111,15 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-            
+            $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.\InstallerConfigForm::ENGINE_TYPE_INNODB.'"]'));
+
             $dbuserDbType->click();
+            $dbEngine->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
+
+            self::$testHelper->takeScreenshot(self::$webDriver,'tyest4');
 
             // Click next.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));

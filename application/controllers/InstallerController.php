@@ -259,7 +259,7 @@ class InstallerController extends CController
                 if ($oModel->dbExists) {
                     try {
                         // We do the following check because DBLIB does not throw an exception on a missing table
-                        if ($oModel->db->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
+                        if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
                             $bTablesDoNotExist = true;
                         }
                     } catch (Exception $e) {
@@ -747,14 +747,13 @@ class InstallerController extends CController
      */
     private function getModelFromSession($scenario = null) {
         $model = new InstallerConfigForm($scenario);
-        $model->dbtype = Yii::app()->session['dbtype'];
-        $model->dbengine = Yii::app()->session['dbengine'];
-        $model->dbname = Yii::app()->session['dbname'];
-        $model->dbuser = Yii::app()->session['dbuser'];
-        $model->dbpwd = Yii::app()->session['dbpwd'];
-        $model->dbprefix = Yii::app()->session['dbprefix'];
-        $model->dblocation = Yii::app()->session['dblocation'];
-        $model->dbExists = Yii::app()->session['databaseexist'];
+        isset(Yii::app()->session['dbtype']) ? $model->dbtype = Yii::app()->session['dbtype']:null;
+        isset(Yii::app()->session['dbengine']) ? $model->dbengine = Yii::app()->session['dbengine']:null;
+        isset(Yii::app()->session['dbname']) ? $model->dbname = Yii::app()->session['dbname']:null;
+        isset(Yii::app()->session['dbuser']) ? $model->dbuser = Yii::app()->session['dbuser']:null;
+        isset(Yii::app()->session['dbpwd']) ? $model->dbpwd = Yii::app()->session['dbpwd']:null;
+        isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation']:null;
+        isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist']:null;
         return $model;
     }
 
