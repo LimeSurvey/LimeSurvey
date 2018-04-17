@@ -276,11 +276,7 @@ class InstallerConfigForm extends LSCFormModel
      * @return mixed
      */
     public function getSupportedDbTypes(){
-        $drivers = [];
-        if (extension_loaded('pdo')) {
-            $drivers = CDbConnection::getAvailableDrivers();
-        }
-        foreach ($drivers as $driver) {
+        foreach (CDbConnection::getAvailableDrivers() as $driver) {
             if (isset($this->db_names[$driver])) {
                 $result[$driver] = $this->db_names[$driver];
             }

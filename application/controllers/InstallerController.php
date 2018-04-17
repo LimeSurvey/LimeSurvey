@@ -804,7 +804,8 @@ class InstallerController extends CController
             'filter',
             'ctype',
             'session',
-            'hash'
+            'hash',
+            'pdo'
         );
 
         foreach ($extensions as $extension) {
