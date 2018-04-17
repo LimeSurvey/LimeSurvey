@@ -241,7 +241,8 @@ abstract class PluginBase implements iPlugin
 
     /**
      *
-     * @param type $settings
+     * @param array<string, mixed> $settings
+     * @return void
      */
     public function saveSettings($settings)
     {
