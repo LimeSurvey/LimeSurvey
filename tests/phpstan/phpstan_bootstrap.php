@@ -35,6 +35,7 @@ Yii::setPathOfAlias('webroot', __DIR__ . '/../../');
 Yii::app()->loadHelper('common');
 Yii::import('application.core.*', true);
 Yii::import('application.helpers.common_helper', true);
+Yii::import('application.helpers.globalsettings_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.third_party.Twig.*', true);
