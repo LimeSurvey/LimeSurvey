@@ -88,6 +88,8 @@ class InstallationControllerTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
+        $installerForm = new \InstallerConfigForm();
+
 
         try {
 
@@ -107,11 +109,11 @@ class InstallationControllerTest extends TestBaseClassWeb
             $next->click();
 
             // Fill in database form.
-            $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="mysql"]'));
+            $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="'.$installerForm->dbtype.'"]'));
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-            $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.\InstallerConfigForm::ENGINE_TYPE_INNODB.'"]'));
+            $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.$installerForm->dbengine.'"]'));
 
             $dbuserDbType->click();
             $dbEngine->click();
@@ -119,7 +121,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
 
-            self::$testHelper->takeScreenshot(self::$webDriver,'tyest4');
 
             // Click next.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
