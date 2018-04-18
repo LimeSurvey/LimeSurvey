@@ -8715,37 +8715,36 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             {
                 $lang=Survey::model()->findByPk($surveyid)->language;
             }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
-            $qinfo = array();
-            $_order=0;
-            $gid = array();
+
+            $oQuestionGroups=QuestionGroup::model()->findAll(array(
+                'condition' => 'sid=:sid and language=:language',
+                'order'     => 'group_order',
+                'params'    => array(':sid' => $surveyid,':language' => $lang)));
+
+            $aGroupInfoList = array();
             foreach ($oQuestionGroups as $oQuestionGroup)
             {
-                $gid[$oQuestionGroup->gid] = array(
-                    'group_order' => $_order,
-                    'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->group_name,
-                    'description' =>  $oQuestionGroup->description,
-                    'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
-                    'randomization_group' =>  $oQuestionGroup->randomization_group
+                $aGroupInfoList[] = array(
+                    'gid'                   => $oQuestionGroup->gid,
+                    'group_name'            => $oQuestionGroup->group_name,
+                    'group_order'           => $oQuestionGroup->group_order,
+                    'description'           => $oQuestionGroup->description,
+                    'grelevance'            => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
+                    'randomization_group'   => $oQuestionGroup->randomization_group
                 );
-                $qinfo[$_order] = $gid[$oQuestionGroup->gid];
-                ++$_order;
             }
+
+            $aSurveySession =& $_SESSION['survey_'.$surveyid];
+            
             // Needed for Randomization group.
-            $groupRemap= (!$this->sPreviewMode && !empty($_SESSION['survey_'.$surveyid]['groupReMap']) && !empty($_SESSION['survey_'.$surveyid]['grouplist']));
-            if ($groupRemap)
+            if (!$this->sPreviewMode && isset($aSurveySession['groupReMap']))
             {
-                $_order=0;
-                $qinfo = array();
-                foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $info)
-                {
-                    $gid[$info['gid']]['group_order'] = $_order;
-                    $qinfo[$_order] = $gid[$info['gid']];
-                    ++$_order;
-                }
+                $aGroupInfoMap = array_combine(array_column($aGroupInfoList, 'gid'), $aGroupInfoList);
+                $aGroupReMap = $aSurveySession['groupReMap'];
+                $remap = function($info) use ($aGroupInfoMap, $aGroupReMap) { return $aGroupInfoMap[$aGroupReMap[$info['gid']]]; };
+                $aGroupInfoList = array_map($remap, $aGroupInfoList);
             }
-            return $qinfo;
+            return $aGroupInfoList;
         }
 
         /**

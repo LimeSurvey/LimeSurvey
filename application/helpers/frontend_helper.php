@@ -983,25 +983,48 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
     $aRandomGroups   = array();
     $aGIDCompleteMap = array();
 
+    $aSurveySession =& $_SESSION['survey_'.$surveyid];
+    $aGroupOrder = array();
+
+    if (($groupOrderFieldName = array_search('grouporder', array_column($fieldmap, 'title', 'fieldname'))) !== false) {
+        if (isset($aSurveySession['startingValues']) && isset($aSurveySession['startingValues'][$groupOrderFieldName])) {
+            $aGroupOrder = array_map('intval', explode(',', $aSurveySession['startingValues'][$groupOrderFieldName]));
+        }
+    }
+
+    $overrideGroupOrder = (count($aGroupOrder) == count($aSurveySession['grouplist']));
+
     // First find all groups and their groups IDS
     $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
-    $criteria->addCondition("randomization_group != ''");
+    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $aSurveySession['s_lang']));
+
+    if ($overrideGroupOrder) {
+        $criteria->order = 'group_order ASC';
+    } else {
+        $criteria->addCondition("randomization_group != ''");
+    }
 
     $oData = QuestionGroup::model()->findAll($criteria);
 
-    foreach ($oData as $aGroup) {
-        $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
-    }
+    if ($overrideGroupOrder) {
+        $aGIDs = array_column($oData, 'gid');
+        $aRandomGroups['overriddenorder'] = $aGIDs;
+        $gidAtIndex = function(int $index) use(&$aGIDs) { return $aGIDs[$index]; };
+        $aGIDCompleteMap = array_combine($aGIDs, array_map($gidAtIndex, $aGroupOrder));
+    } else {
+        foreach ($oData as $aGroup) {
+            $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
+        }
 
-    // Shuffle each group and create a map for old GID => new GID
-    foreach ($aRandomGroups as $sGroupName=>$aGIDs) {
-        $aShuffledIDs    = $aGIDs;
-        $aShuffledIDs    = ls\mersenne\shuffle($aShuffledIDs);
-        $aGIDCompleteMap = $aGIDCompleteMap + array_combine($aGIDs, $aShuffledIDs);
+        // Shuffle each group and create a map for old GID => new GID
+        foreach ($aRandomGroups as $sGroupName=>$aGIDs) {
+            $aShuffledIDs    = $aGIDs;
+            $aShuffledIDs    = ls\mersenne\shuffle($aShuffledIDs);
+            $aGIDCompleteMap = $aGIDCompleteMap + array_combine($aGIDs, $aShuffledIDs);
+        }
     }
-
-    $_SESSION['survey_'.$surveyid]['groupReMap'] = $aGIDCompleteMap;
+   
+    $aSurveySession['groupReMap'] = $aGIDCompleteMap;
 
     $randomized = false; // So we can trigger reorder once for group and question randomization
 
@@ -1012,7 +1035,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
 
         // Now adjust the grouplist
         Yii::import('application.helpers.frontend_helper', true); // make sure frontend helper is loaded ???? We are inside frontend_helper..... TODO: check if it can be removed
-        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        UpdateGroupList($surveyid, $aSurveySession['s_lang']);
         // ... and the fieldmap
 
         // First create a fieldmap with GID as key
@@ -1638,38 +1661,30 @@ function doAssessment($surveyid)
 */
 function UpdateGroupList($surveyid, $language)
 {
+    $aSurveySession =& $_SESSION['survey_'.$surveyid];
 
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
+    unset ($aSurveySession['grouplist']);
 
     // TODO: replace by group model method
     $query     = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result    = dbExecuteAssoc($query) or safeDie("Couldn't get group list<br />$query<br />"); //Checked
-    $groupList = array();
+    $aGroupInfoList = array();
 
     foreach ($result->readAll() as $row) {
-        $group = array(
+        $aGroupInfoList[] = array(
             'gid'         => $row['gid'],
             'group_name'  => $row['group_name'],
-            'description' =>  $row['description']);
-        $groupList[] = $group;
-        $gidList[$row['gid']] = $group;
+            'description' => $row['description']);
     }
 
-    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap']) > 0) {
-        // Now adjust the grouplist
-        $groupRemap    = $_SESSION['survey_'.$surveyid]['groupReMap'];
-        $groupListCopy = $groupList;
-
-        foreach ($groupList as $gseq => $info) {
-            $gid = $info['gid'];
-            if (isset($groupRemap[$gid])) {
-                $gid = $groupRemap[$gid];
-            }
-            $groupListCopy[$gseq] = $gidList[$gid];
-        }
-        $groupList = $groupListCopy;
-        }
-        $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
+    if (!Yii::app()->getConfig('previewmode') && isset($aSurveySession['groupReMap']) && count($aSurveySession['groupReMap']) > 0) {
+        $aGroupInfoMap = array_combine(array_column($aGroupInfoList, 'gid'), $aGroupInfoList);
+        $aGroupReMap = $aSurveySession['groupReMap'];
+        $remap = function($info) use ($aGroupInfoMap, $aGroupReMap) { return $aGroupInfoMap[$aGroupReMap[$info['gid']]]; };
+        $aGroupInfoList = array_map($remap, $aGroupInfoList);
+    }
+    
+    $aSurveySession['grouplist'] = $aGroupInfoList;
 }
 
 /**
