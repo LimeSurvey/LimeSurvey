@@ -35,6 +35,10 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.6.3 (build 180406) to 3.7.0 (build 180418) Apr 18, 2018
+-New feature #13471: Allow expression in default location (map) (Denis Chenu)
+-Fixed issue: No questions in panel integration (Markus Flür)
+
 Changes from 3.6.2 (build 180406) to 3.6.3 (build 180416) Apr 16, 2018
 -Fixed issue #13542: Question index (head) show diable even if work (Denis Chenu)
 -Fixed issue #13544: Unable to use flatEllipsizeText function in (some) twig file (Denis Chenu)
