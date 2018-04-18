@@ -119,7 +119,7 @@ class InstallCommand extends CConsoleCommand
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
         $dbEngine = getenv('DBENGINE');
 
-        if(!empty($this->connection) && $this->connection->driverName == 'mysql'){
+        if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
             $this->connection
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
