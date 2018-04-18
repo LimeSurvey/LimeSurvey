@@ -276,8 +276,7 @@
                     <?php
                     $aTemplateList = Template::getTemplateListWithPreviews();
                     foreach ($aTemplateList as $templateName => $preview) {
-
-                        if (Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
+                        if (Permission::model()->hasGlobalPermission('templates','read') || Permission::model()->hasTemplatePermission($templateName) || $oSurvey->template==htmlspecialchars($templateName) ) { ?>
                             <option value='<?php echo $templateName; ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($templateName) == $oSurvey->template) { ?>
                                     selected='selected'
