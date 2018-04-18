@@ -554,6 +554,7 @@ class InstallerController extends CController
                         }
 
                         $this->_writeConfigFile();
+                        $this->clearSession();
 
                         $this->render('/installer/success_view', $aData);
 
@@ -755,6 +756,19 @@ class InstallerController extends CController
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation']:null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist']:null;
         return $model;
+    }
+
+    /**
+     * clear the session from installation information
+     */
+    private function clearSession() {
+        unset(Yii::app()->session['dbtype']);
+        unset(Yii::app()->session['dbengine']);
+        unset(Yii::app()->session['dbname']);
+        unset(Yii::app()->session['dbuser']);
+        unset(Yii::app()->session['dbpwd']);
+        unset(Yii::app()->session['dblocation']);
+        unset(Yii::app()->session['dbExists']);
     }
 
     /**
