@@ -1683,7 +1683,7 @@ class SurveyRuntimeHelper
             /* Got to use static expression */
             $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the last one ...*/
             if ($emCssClass != "") {
-                $aQuestionClass .= " ".Chtml::encode($emCssClass);
+                $aQuestionClass .= " ".CHtml::encode($emCssClass);
             }
         }
 
