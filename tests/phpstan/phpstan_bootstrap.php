@@ -34,6 +34,8 @@ Yii::setPathOfAlias('webroot', __DIR__ . '/../../');
 
 Yii::app()->loadHelper('common');
 Yii::import('application.core.*', true);
+Yii::import('application.models.Template', true);
+Yii::import('application.models.Token', true);
 Yii::import('application.helpers.common_helper', true);
 Yii::import('application.helpers.globalsettings_helper', true);
 Yii::import('application.helpers.expressions.*', true);
