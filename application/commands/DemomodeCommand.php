@@ -36,7 +36,7 @@ class DemomodeCommand extends CConsoleCommand
         Yii::import('application.helpers.database_helper', true);
 
         //Truncate most of the tables 
-        $truncatableTables = ['{{assessments}}', '{{answers}}', '{{conditions}}', '{{defaultvalues}}', '{{labels}}', '{{labelsets}}', '{{groups}}', '{{questions}}', '{{surveys}}', '{{surveys_languagesettings}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{user_groups}}', '{{user_in_groups}}', '{{templates}}', '{{template_configuration}}', '{{participants}}', '{{participant_attribute_names}}', '{{participant_attribute_names_lang}}', '{{participant_attribute_values}}', '{{participant_shares}}', '{{settings_user}}', '{{failed_login_attempts}}', '{{saved_control}}', '{{survey_links}}'];
+        $truncatableTables = ['{{assessments}}', '{{answers}}','{{boxes}}', '{{conditions}}', '{{defaultvalues}}', '{{labels}}', '{{labelsets}}', '{{groups}}', '{{questions}}', '{{surveys}}', '{{surveys_languagesettings}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{user_groups}}', '{{user_in_groups}}', '{{templates}}', '{{template_configuration}}', '{{participants}}', '{{participant_attribute_names}}', '{{participant_attribute_names_lang}}', '{{participant_attribute_values}}', '{{participant_shares}}', '{{settings_user}}', '{{failed_login_attempts}}', '{{saved_control}}', '{{survey_links}}'];
         foreach ($truncatableTables as $table) {
             $actquery = "truncate table ".$table;
             Yii::app()->db->createCommand($actquery)->execute();
@@ -82,6 +82,10 @@ class DemomodeCommand extends CConsoleCommand
             }
         }
 
+        //Add the general boxes again
+        foreach ($templateData = LsDefaultDataSets::getBoxesData() as $boxes) {
+            Yii::app()->db->createCommand()->insert("{{boxes}}", $boxes);
+        }
         // At last reset the basic themes       
         foreach ($templateData = LsDefaultDataSets::getTemplatesData() as $template) {
             Yii::app()->db->createCommand()->insert("{{templates}}", $template);
