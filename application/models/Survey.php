@@ -202,10 +202,90 @@ class Survey extends LSActiveRecord
         );
     }
 
-    /** @inheritdoc */
-    public function delete()
+    /**
+     * @inheritdoc With allow to delete all related models and data and test Permission.
+     * @param bool $recursive
+     **/
+    public function delete($recursive=true)
     {
-        return $this->deleteSurvey($this->sid, true);
+        if (!Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete')) {
+            return false;
+        }
+        if(!parent::delete()) {
+            return false;
+        }
+        if ($recursive) {
+            //delete the survey_$iSurveyID table
+            if (tableExists("{{survey_".$this->sid."}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{survey_".$this->sid."}}");
+            }
+            //delete the survey_$iSurveyID_timings table
+            if (tableExists("{{survey_".$this->sid."_timings}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{survey_".$this->sid."_timings}}");
+            }
+            //delete the tokens_$iSurveyID table
+            if (tableExists("{{tokens_".$this->sid."}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{tokens_".$this->sid."}}");
+            }
+
+            /* Remove User/global settings part : need Question and QuestionGroup*/
+            // Settings specific for this survey
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
+            $oCriteria->compare('stg_value', $this->sid, false, 'AND');
+            SettingGlobal::model()->deleteAll($oCriteria);
+            // Settings specific for this survey, 2nd part
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('stg_name', 'last_%'.$this->sid.'%', true, 'AND', false);
+            SettingGlobal::model()->deleteAll($oCriteria);
+            // All Group id from this survey for ALL users
+            $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$this->sid))), 'gid', 'gid');
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
+            // pgsql need casting, unsure for mssql
+            if (Yii::app()->db->getDriverName() == 'pgsql') {
+                $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aGroupId);
+            }
+            //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
+            else {
+                $oCriteria->addInCondition('stg_value', $aGroupId);
+            }
+            SettingGlobal::model()->deleteAll($oCriteria);
+            // All Question id from this survey for ALL users
+            $aQuestionId = CHtml::listData(Question::model()->findAll(array('select'=>'qid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$this->sid))), 'qid', 'qid');
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
+            if (Yii::app()->db->getDriverName() == 'pgsql') {
+                $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aQuestionId);
+            } else {
+                $oCriteria->addInCondition('stg_value', $aQuestionId);
+            }
+            SettingGlobal::model()->deleteAll($oCriteria);
+
+            $oResult = Question::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oResult as $aRow) {
+                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+            }
+
+            Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $this->sid));
+            Permission::model()->deleteAllByAttributes(array('entity_id' => $this->sid, 'entity'=>'survey'));
+            SavedControl::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $this->sid));
+            //Remove any survey_links to the CPDB
+            SurveyLink::model()->deleteLinksBySurvey($this->sid);
+            Quota::model()->deleteQuota(array('sid' => $this->sid), true);
+            // Remove all related plugin settings
+            PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $this->sid));
+            // Delete all uploaded files.
+            rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid);
+        }
+        return true;
     }
 
 
@@ -837,98 +917,15 @@ class Survey extends LSActiveRecord
      */
     public function deleteSurvey($iSurveyID, $recursive = true)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-            if (Survey::model()->deleteByPk($iSurveyID)) {
-                if ($recursive == true) {
-                    //delete the survey_$iSurveyID table
-                    if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
-                    }
-                    //delete the survey_$iSurveyID_timings table
-                    if (tableExists("{{survey_".intval($iSurveyID)."_timings}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
-                    }
-                    //delete the tokens_$iSurveyID table
-                    if (tableExists("{{tokens_".intval($iSurveyID)."}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
-                    }
-
-                    /* Remove User/global settings part : need Question and QuestionGroup*/
-                    // Settings specific for this survey
-                    $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
-                    $oCriteria->compare('stg_value', $iSurveyID, false, 'AND');
-                    SettingGlobal::model()->deleteAll($oCriteria);
-                    // Settings specific for this survey, 2nd part
-                    $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name', 'last_%'.$iSurveyID.'%', true, 'AND', false);
-                    SettingGlobal::model()->deleteAll($oCriteria);
-                    // All Group id from this survey for ALL users
-                    $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'gid', 'gid');
-                    $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
-                    // pgsql need casting, unsure for mssql
-                    if (Yii::app()->db->getDriverName() == 'pgsql') {
-                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aGroupId);
-                    }
-                    //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
-                    else {
-                        $oCriteria->addInCondition('stg_value', $aGroupId);
-                    }
-                    SettingGlobal::model()->deleteAll($oCriteria);
-                    // All Question id from this survey for ALL users
-                    $aQuestionId = CHtml::listData(Question::model()->findAll(array('select'=>'qid', 'condition'=>'sid=:sid', 'params'=>array(':sid'=>$iSurveyID))), 'qid', 'qid');
-                    $oCriteria = new CDbCriteria();
-                    $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
-                    if (Yii::app()->db->getDriverName() == 'pgsql') {
-                        $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aQuestionId);
-                    } else {
-                        $oCriteria->addInCondition('stg_value', $aQuestionId);
-                    }
-                    SettingGlobal::model()->deleteAll($oCriteria);
-
-                    $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
-                    foreach ($oResult as $aRow) {
-                        $aoAnswers = Answer::model()->findAllByAttributes(array('qid' => $aRow->qid));
-                        foreach ($aoAnswers as $aAnswerRow) {
-                            AnswerL10n::model()->deleteAllByAttributes(array('aid' => $aAnswerRow['aid']));
-                        }                        
-                        Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                        Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                        QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                        DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                        QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                    }
-
-                    Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-                    Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-                    $oResult = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
-                    foreach ($oResult as $aRow) {
-                        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $aRow['gid']));
-                    }
-                    QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-                    SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-                    Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
-                    SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-                    SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-                    //Remove any survey_links to the CPDB
-                    SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-                    Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
-                    // Remove all related plugin settings
-                    PluginSetting::model()->deleteAllByAttributes(array("model" =>'Survey', "model_id" => $iSurveyID));
-                    // Delete all uploaded files.
-                    rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$iSurveyID);
-                }
-                return true;
-            }
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) {
+            return false;
         }
-        return false;
+        return $oSurvey->delete($recursive);
     }
 
     /**
-     * @inheritdoc
-     * @return Survey
-     *
+     * @inheritdoc . But use a static var because can be used a lot of time.
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
@@ -944,7 +941,6 @@ class Survey extends LSActiveRecord
                 return $model;
             }
         }
-
         $model = parent::findByPk($pk, $condition, $params);
         return $model;
     }
