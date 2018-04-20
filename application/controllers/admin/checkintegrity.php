@@ -134,6 +134,10 @@ class CheckIntegrity extends Survey_Common_Action
                 $aData = $this->_deleteGroups($aDelete['groups'], $aData);
             }
 
+            if (isset($aDelete['user_in_groups'])) {
+                $aData = $this->_deleteUserInGroups($aDelete['user_in_groups'], $aData);
+            }
+
             if (isset($aDelete['orphansurveytables'])) {
                 $aData = $this->_dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
             }
@@ -179,6 +183,23 @@ class CheckIntegrity extends Survey_Common_Action
         }
         $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($groups));
 
+        return $aData;
+    }
+
+    private function _deleteUserInGroups(array $userInGroups, array $aData)
+    {
+        $gids = array();
+        foreach ($userInGroups as $group) {
+            $gids[] = $group['ugid'];
+        }
+
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition('ugid', $gids);
+        $model = UserInGroup::model();
+        $deletedRows = UserInGroup::model()->deleteAll($criteria);
+        if ($deletedRows === count($userInGroups)) {
+            $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($userInGroups));
+        }
         return $aData;
     }
 
@@ -357,7 +378,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
-     * @returns Array with all found issues.
+     * @returns array Array with all found issues.
      */
     protected function _checkintegrity()
     {
@@ -667,6 +688,18 @@ class CheckIntegrity extends Survey_Common_Action
         /** @var QuestionGroup $group */
         foreach ($groups as $group) {
             $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.').' SID:'.$group['sid']);
+        }
+
+        /**********************************************************************/
+        /*     Check orphan user_in_groups                                    */
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria;
+        $oCriteria->join = 'LEFT JOIN {{user_groups}} ug ON t.ugid=ug.ugid';
+        $oCriteria->condition = '(ug.ugid IS NULL)';
+        $userInGroups = UserInGroup::model()->findAll($oCriteria);
+        /** @var UserInGroup[] $userInGroups */
+        foreach ($userInGroups as $userInGroup) {
+            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid, 'reason' => gT('There is no matching user group.').' ID:'.$userInGroup->ugid);
         }
 
         /**********************************************************************/
