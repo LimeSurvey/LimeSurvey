@@ -197,7 +197,7 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria->addInCondition('ugid', $ugids);
         $deletedRows = UserInGroup::model()->deleteAll($criteria);
         if ($deletedRows === count($userInGroups)) {
-            $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($userInGroups));
+            $aData['messages'][] = sprintf(gT('Deleting orphaned user group assignments: %u assignments deleted'), count($userInGroups));
         }
         return $aData;
     }
