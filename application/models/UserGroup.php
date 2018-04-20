@@ -231,6 +231,7 @@ class UserGroup extends LSActiveRecord
      * @param integer $ugId
      * @param integer $ownerId
      * @return bool
+     * @deprecated since 2018-04-21 use $this->delete and do the permissions check in controller!!
      */
     public function deleteGroup($ugId, $ownerId)
     {
@@ -246,9 +247,9 @@ class UserGroup extends LSActiveRecord
         $group->delete();
 
         if ($group->getErrors()) {
-                    return false;
+            return false;
         } else {
-                    return true;
+            return true;
         }
     }
 
