@@ -698,7 +698,7 @@ class CheckIntegrity extends Survey_Common_Action
         $userInGroups = UserInGroup::model()->findAll($oCriteria);
         /** @var UserInGroup[] $userInGroups */
         foreach ($userInGroups as $userInGroup) {
-            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid, 'reason' => gT('There is no matching user group.').' ID:'.$userInGroup->ugid);
+            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid,'uid' => $userInGroup->uid, 'reason' => sprintf(gT('There is no matching user %s in group %s.'),$userInGroup->uid,$userInGroup->ugid));
         }
 
         /**********************************************************************/
