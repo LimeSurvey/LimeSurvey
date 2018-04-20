@@ -252,6 +252,15 @@ class UserGroup extends LSActiveRecord
         }
     }
 
+    public function delete()
+    {
+        if (parent::delete()) {
+            UserInGroup::model()->deleteAllByAttributes(['ugid'=>$this->primaryKey]);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @return int
      */
