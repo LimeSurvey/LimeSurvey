@@ -999,9 +999,9 @@ class database extends Survey_Common_Action
         $oSurvey->refresh();
 
         // Url params in json
-        $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
-        SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
-        if (!empty($aURLParams)) {
+        if (Yii::app()->request->getPost('allurlparams',false)!==false) {
+            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             foreach ($aURLParams as $aURLParam) {
                 $aURLParam['parameter'] = trim($aURLParam['parameter']);
                 if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
