@@ -21,8 +21,7 @@ before_script:
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
-    - composer remove vimeo/psalm  # Does not work on PHP 5.6.
-    - composer install
+    - composer install --no-dev
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
