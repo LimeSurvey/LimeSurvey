@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-04-12 09:32:03+00:00\n"
+"POT-Creation-Date: 2018-04-18 09:29:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1062,7 +1062,7 @@ msgstr ""
 #: application/views/admin/token/token_bar.php:237
 #: application/views/admin/usergroup/usergroupbar_view.php:55
 #: application/views/survey/questions/question_help/error-tip.php:12
-#: tmp/twig_translate.php:125 tmp/twig_translate.php:126
+#: tmp/twig_translate.php:94 tmp/twig_translate.php:97
 msgid "Close"
 msgstr ""
 
@@ -1625,34 +1625,34 @@ msgstr ""
 #: application/helpers/questionHelper.php:410
 #: application/helpers/questionHelper.php:421
 #: application/helpers/questionHelper.php:485
-#: application/helpers/questionHelper.php:517
-#: application/helpers/questionHelper.php:528
-#: application/helpers/questionHelper.php:661
-#: application/helpers/questionHelper.php:672
-#: application/helpers/questionHelper.php:683
-#: application/helpers/questionHelper.php:694
-#: application/helpers/questionHelper.php:721
-#: application/helpers/questionHelper.php:742
-#: application/helpers/questionHelper.php:753
-#: application/helpers/questionHelper.php:764
-#: application/helpers/questionHelper.php:786
-#: application/helpers/questionHelper.php:820
-#: application/helpers/questionHelper.php:831
-#: application/helpers/questionHelper.php:844
-#: application/helpers/questionHelper.php:855
-#: application/helpers/questionHelper.php:866
-#: application/helpers/questionHelper.php:886
-#: application/helpers/questionHelper.php:937
-#: application/helpers/questionHelper.php:948
-#: application/helpers/questionHelper.php:1014
-#: application/helpers/questionHelper.php:1025
-#: application/helpers/questionHelper.php:1036
-#: application/helpers/questionHelper.php:1167
-#: application/helpers/questionHelper.php:1268
-#: application/helpers/questionHelper.php:1278
-#: application/helpers/questionHelper.php:1448
-#: application/helpers/questionHelper.php:1459
-#: application/helpers/questionHelper.php:1526
+#: application/helpers/questionHelper.php:518
+#: application/helpers/questionHelper.php:529
+#: application/helpers/questionHelper.php:662
+#: application/helpers/questionHelper.php:673
+#: application/helpers/questionHelper.php:684
+#: application/helpers/questionHelper.php:695
+#: application/helpers/questionHelper.php:722
+#: application/helpers/questionHelper.php:743
+#: application/helpers/questionHelper.php:754
+#: application/helpers/questionHelper.php:765
+#: application/helpers/questionHelper.php:787
+#: application/helpers/questionHelper.php:821
+#: application/helpers/questionHelper.php:832
+#: application/helpers/questionHelper.php:845
+#: application/helpers/questionHelper.php:856
+#: application/helpers/questionHelper.php:867
+#: application/helpers/questionHelper.php:887
+#: application/helpers/questionHelper.php:938
+#: application/helpers/questionHelper.php:949
+#: application/helpers/questionHelper.php:1015
+#: application/helpers/questionHelper.php:1026
+#: application/helpers/questionHelper.php:1037
+#: application/helpers/questionHelper.php:1168
+#: application/helpers/questionHelper.php:1269
+#: application/helpers/questionHelper.php:1279
+#: application/helpers/questionHelper.php:1449
+#: application/helpers/questionHelper.php:1460
+#: application/helpers/questionHelper.php:1527
 #: application/helpers/userstatistics_helper.php:1215
 #: application/helpers/userstatistics_helper.php:1337
 #: application/models/Participant.php:331
@@ -1724,13 +1724,13 @@ msgstr ""
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.php:9
 #: application/views/survey/questions/answer/yesno/buttons/item.php:24
 #: application/views/survey/questions/answer/yesno/radio/item.php:26
-#: tmp/twig_translate.php:5 tmp/twig_translate.php:8 tmp/twig_translate.php:12
-#: tmp/twig_translate.php:16 tmp/twig_translate.php:20
-#: tmp/twig_translate.php:28 tmp/twig_translate.php:34
-#: tmp/twig_translate.php:40 tmp/twig_translate.php:46
-#: tmp/twig_translate.php:52 tmp/twig_translate.php:58
-#: tmp/twig_translate.php:64 tmp/twig_translate.php:106
-#: tmp/twig_translate.php:109 tmp/twig_translate.php:132
+#: tmp/twig_translate.php:4 tmp/twig_translate.php:7 tmp/twig_translate.php:11
+#: tmp/twig_translate.php:15 tmp/twig_translate.php:19
+#: tmp/twig_translate.php:27 tmp/twig_translate.php:33
+#: tmp/twig_translate.php:39 tmp/twig_translate.php:45
+#: tmp/twig_translate.php:51 tmp/twig_translate.php:57
+#: tmp/twig_translate.php:63 tmp/twig_translate.php:76
+#: tmp/twig_translate.php:87 tmp/twig_translate.php:89
 msgid "Yes"
 msgstr ""
 
@@ -1750,7 +1750,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:460
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/answer_row.php:57
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.php:10
-#: tmp/twig_translate.php:108
+#: tmp/twig_translate.php:91
 msgid "Uncertain"
 msgstr ""
 
@@ -1792,34 +1792,34 @@ msgstr ""
 #: application/helpers/questionHelper.php:410
 #: application/helpers/questionHelper.php:421
 #: application/helpers/questionHelper.php:485
-#: application/helpers/questionHelper.php:517
-#: application/helpers/questionHelper.php:528
-#: application/helpers/questionHelper.php:661
-#: application/helpers/questionHelper.php:672
-#: application/helpers/questionHelper.php:683
-#: application/helpers/questionHelper.php:694
-#: application/helpers/questionHelper.php:721
-#: application/helpers/questionHelper.php:742
-#: application/helpers/questionHelper.php:753
-#: application/helpers/questionHelper.php:764
-#: application/helpers/questionHelper.php:786
-#: application/helpers/questionHelper.php:820
-#: application/helpers/questionHelper.php:831
-#: application/helpers/questionHelper.php:844
-#: application/helpers/questionHelper.php:855
-#: application/helpers/questionHelper.php:866
-#: application/helpers/questionHelper.php:886
-#: application/helpers/questionHelper.php:937
-#: application/helpers/questionHelper.php:948
-#: application/helpers/questionHelper.php:1014
-#: application/helpers/questionHelper.php:1025
-#: application/helpers/questionHelper.php:1036
-#: application/helpers/questionHelper.php:1167
-#: application/helpers/questionHelper.php:1268
-#: application/helpers/questionHelper.php:1278
-#: application/helpers/questionHelper.php:1448
-#: application/helpers/questionHelper.php:1459
-#: application/helpers/questionHelper.php:1526
+#: application/helpers/questionHelper.php:518
+#: application/helpers/questionHelper.php:529
+#: application/helpers/questionHelper.php:662
+#: application/helpers/questionHelper.php:673
+#: application/helpers/questionHelper.php:684
+#: application/helpers/questionHelper.php:695
+#: application/helpers/questionHelper.php:722
+#: application/helpers/questionHelper.php:743
+#: application/helpers/questionHelper.php:754
+#: application/helpers/questionHelper.php:765
+#: application/helpers/questionHelper.php:787
+#: application/helpers/questionHelper.php:821
+#: application/helpers/questionHelper.php:832
+#: application/helpers/questionHelper.php:845
+#: application/helpers/questionHelper.php:856
+#: application/helpers/questionHelper.php:867
+#: application/helpers/questionHelper.php:887
+#: application/helpers/questionHelper.php:938
+#: application/helpers/questionHelper.php:949
+#: application/helpers/questionHelper.php:1015
+#: application/helpers/questionHelper.php:1026
+#: application/helpers/questionHelper.php:1037
+#: application/helpers/questionHelper.php:1168
+#: application/helpers/questionHelper.php:1269
+#: application/helpers/questionHelper.php:1279
+#: application/helpers/questionHelper.php:1449
+#: application/helpers/questionHelper.php:1460
+#: application/helpers/questionHelper.php:1527
 #: application/helpers/userstatistics_helper.php:1216
 #: application/helpers/userstatistics_helper.php:1338
 #: application/models/Participant.php:331
@@ -1889,13 +1889,13 @@ msgstr ""
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.php:11
 #: application/views/survey/questions/answer/yesno/buttons/item.php:37
 #: application/views/survey/questions/answer/yesno/radio/item.php:40
-#: tmp/twig_translate.php:6 tmp/twig_translate.php:9 tmp/twig_translate.php:13
-#: tmp/twig_translate.php:17 tmp/twig_translate.php:21
-#: tmp/twig_translate.php:29 tmp/twig_translate.php:35
-#: tmp/twig_translate.php:41 tmp/twig_translate.php:47
-#: tmp/twig_translate.php:53 tmp/twig_translate.php:59
-#: tmp/twig_translate.php:65 tmp/twig_translate.php:107
-#: tmp/twig_translate.php:110 tmp/twig_translate.php:133
+#: tmp/twig_translate.php:5 tmp/twig_translate.php:8 tmp/twig_translate.php:12
+#: tmp/twig_translate.php:16 tmp/twig_translate.php:20
+#: tmp/twig_translate.php:28 tmp/twig_translate.php:34
+#: tmp/twig_translate.php:40 tmp/twig_translate.php:46
+#: tmp/twig_translate.php:52 tmp/twig_translate.php:58
+#: tmp/twig_translate.php:64 tmp/twig_translate.php:77
+#: tmp/twig_translate.php:88 tmp/twig_translate.php:90
 msgid "No"
 msgstr ""
 
@@ -1914,7 +1914,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:500
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:46
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:9
-#: tmp/twig_translate.php:111
+#: tmp/twig_translate.php:84
 msgid "Increase"
 msgstr ""
 
@@ -1933,7 +1933,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:505
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:60
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:10
-#: tmp/twig_translate.php:112
+#: tmp/twig_translate.php:85
 msgid "Same"
 msgstr ""
 
@@ -1952,7 +1952,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:510
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.php:74
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.php:11
-#: tmp/twig_translate.php:113
+#: tmp/twig_translate.php:86
 msgid "Decrease"
 msgstr ""
 
@@ -1998,7 +1998,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:293
 #: application/views/survey/questions/answer/gender/buttons/answer.php:28
 #: application/views/survey/questions/answer/gender/radio/answer.php:28
-#: tmp/twig_translate.php:105
+#: tmp/twig_translate.php:83
 msgid "Female"
 msgstr ""
 
@@ -2018,7 +2018,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:299
 #: application/views/survey/questions/answer/gender/buttons/answer.php:43
 #: application/views/survey/questions/answer/gender/radio/answer.php:43
-#: tmp/twig_translate.php:104
+#: tmp/twig_translate.php:82
 msgid "Male"
 msgstr ""
 
@@ -2042,17 +2042,17 @@ msgstr ""
 #: application/helpers/export_helper.php:1198
 #: application/helpers/export_helper.php:1215
 #: application/helpers/qanda_helper.php:2228
-#: application/helpers/questionHelper.php:691
-#: application/helpers/questionHelper.php:702
-#: application/helpers/questionHelper.php:718
-#: application/helpers/questionHelper.php:783
-#: application/helpers/questionHelper.php:1201
-#: application/helpers/questionHelper.php:1215
-#: application/helpers/questionHelper.php:1227
-#: application/helpers/questionHelper.php:1468
-#: application/helpers/questionHelper.php:1478
-#: application/helpers/questionHelper.php:1489
-#: application/helpers/questionHelper.php:1500
+#: application/helpers/questionHelper.php:692
+#: application/helpers/questionHelper.php:703
+#: application/helpers/questionHelper.php:719
+#: application/helpers/questionHelper.php:784
+#: application/helpers/questionHelper.php:1202
+#: application/helpers/questionHelper.php:1216
+#: application/helpers/questionHelper.php:1228
+#: application/helpers/questionHelper.php:1469
+#: application/helpers/questionHelper.php:1479
+#: application/helpers/questionHelper.php:1490
+#: application/helpers/questionHelper.php:1501
 #: application/helpers/userstatistics_helper.php:618
 #: application/helpers/userstatistics_helper.php:1439
 #: application/helpers/userstatistics_helper.php:1544
@@ -2349,7 +2349,7 @@ msgstr ""
 #: application/helpers/common_helper.php:763
 #: application/helpers/common_helper.php:4493
 #: application/helpers/common_helper.php:4542
-#: application/helpers/questionHelper.php:1190
+#: application/helpers/questionHelper.php:1191
 #: application/views/admin/dataentry/content_view.php:253
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:201
 #: application/views/admin/token/bounce.php:30
@@ -2410,7 +2410,7 @@ msgstr ""
 #: application/views/admin/user/editusers.php:106
 #: application/views/admin/user/modifyuser.php:62
 #: application/views/admin/user/setuserpermissions.php:82
-#: tmp/twig_translate.php:71
+#: tmp/twig_translate.php:70
 msgid "Save"
 msgstr ""
 
@@ -3534,7 +3534,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:136
 #: application/views/admin/themes/templateeditor_register_view.php:3
 #: application/views/admin/token/dummytokenform.php:40
-#: tmp/twig_translate.php:75
+#: tmp/twig_translate.php:132
 msgid "First name"
 msgstr ""
 
@@ -3547,7 +3547,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:147
 #: application/views/admin/themes/templateeditor_register_view.php:7
 #: application/views/admin/token/dummytokenform.php:48
-#: tmp/twig_translate.php:76
+#: tmp/twig_translate.php:133
 msgid "Last name"
 msgstr ""
 
@@ -3694,7 +3694,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:407
 #: application/helpers/questionHelper.php:418
 #: application/helpers/questionHelper.php:429
-#: application/helpers/questionHelper.php:817
+#: application/helpers/questionHelper.php:818
 #: application/helpers/userstatistics_helper.php:2660
 #: application/models/Permission.php:102 application/models/Survey.php:1420
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
@@ -3976,7 +3976,7 @@ msgstr ""
 #: application/views/survey/frontpage/captchaForm/form.php:39
 #: application/views/survey/frontpage/registerForm/form.php:56
 #: application/views/survey/frontpage/tokenForm/form.php:57
-#: tmp/twig_translate.php:120 tmp/twig_translate.php:123
+#: tmp/twig_translate.php:127 tmp/twig_translate.php:130
 msgid "Continue"
 msgstr ""
 
@@ -4056,7 +4056,7 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:504
 #: application/views/survey/frontpage/saveForm/form.php:72
-#: tmp/twig_translate.php:82
+#: tmp/twig_translate.php:102
 msgid "Save Now"
 msgstr ""
 
@@ -5903,7 +5903,7 @@ msgstr ""
 #: application/views/installer/license_view.php:16
 #: application/views/installer/precheck_view.php:147
 #: application/views/survey/system/actionButton/movePrevious.php:11
-#: tmp/twig_translate.php:89 tmp/twig_translate.php:97
+#: tmp/twig_translate.php:107 tmp/twig_translate.php:121
 msgid "Previous"
 msgstr ""
 
@@ -5915,7 +5915,7 @@ msgstr ""
 #: application/views/installer/optconfig_view.php:82
 #: application/views/installer/precheck_view.php:155
 #: application/views/survey/system/actionButton/moveNext.php:11
-#: tmp/twig_translate.php:99
+#: tmp/twig_translate.php:123
 msgid "Next"
 msgstr ""
 
@@ -6775,8 +6775,8 @@ msgstr ""
 
 #: application/extensions/SettingsWidget/SettingsWidget.php:333
 #: application/helpers/questionHelper.php:451
-#: application/helpers/questionHelper.php:706
-#: application/helpers/questionHelper.php:1000
+#: application/helpers/questionHelper.php:707
+#: application/helpers/questionHelper.php:1001
 #: application/views/admin/export/exportresult_panels/_headings.php:36
 #: application/views/admin/export/exportresult_panels/_headings.php:52
 #: application/views/admin/export/exportresult_panels/_headings.php:68
@@ -8109,7 +8109,7 @@ msgstr ""
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/saved/savedlist_view.php:22
 #: application/views/admin/themes/templateeditor_register_view.php:11
-#: tmp/twig_translate.php:77
+#: tmp/twig_translate.php:134
 msgid "Email address"
 msgstr ""
 
@@ -9106,7 +9106,7 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:659 tmp/twig_translate.php:93
+#: application/helpers/frontend_helper.php:659 tmp/twig_translate.php:106
 msgid "Did Not Save"
 msgstr ""
 
@@ -9323,7 +9323,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:2300
 #: application/views/admin/survey/activateSurvey_view.php:36
-#: tmp/twig_translate.php:83 tmp/twig_translate.php:88
+#: tmp/twig_translate.php:103 tmp/twig_translate.php:113
 msgid "Return to survey"
 msgstr ""
 
@@ -9336,8 +9336,8 @@ msgstr ""
 #: application/views/admin/themeoptions/update.php:150
 #: application/views/admin/themes/templatesummary_view.php:159
 #: application/views/admin/token/csvupload.php:122
-#: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:2
-#: tmp/twig_translate.php:72 tmp/twig_translate.php:136
+#: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:71
+#: tmp/twig_translate.php:72 tmp/twig_translate.php:80
 msgid "Upload"
 msgstr ""
 
@@ -9432,36 +9432,36 @@ msgstr ""
 #: application/helpers/questionHelper.php:243
 #: application/helpers/questionHelper.php:252
 #: application/helpers/questionHelper.php:263
-#: application/helpers/questionHelper.php:514
-#: application/helpers/questionHelper.php:525
-#: application/helpers/questionHelper.php:536
-#: application/helpers/questionHelper.php:628
-#: application/helpers/questionHelper.php:638
-#: application/helpers/questionHelper.php:648
-#: application/helpers/questionHelper.php:658
-#: application/helpers/questionHelper.php:669
-#: application/helpers/questionHelper.php:729
-#: application/helpers/questionHelper.php:739
-#: application/helpers/questionHelper.php:772
-#: application/helpers/questionHelper.php:794
-#: application/helpers/questionHelper.php:805
-#: application/helpers/questionHelper.php:828
-#: application/helpers/questionHelper.php:841
-#: application/helpers/questionHelper.php:852
-#: application/helpers/questionHelper.php:863
-#: application/helpers/questionHelper.php:874
-#: application/helpers/questionHelper.php:996
-#: application/helpers/questionHelper.php:1054
-#: application/helpers/questionHelper.php:1065
-#: application/helpers/questionHelper.php:1090
-#: application/helpers/questionHelper.php:1114
-#: application/helpers/questionHelper.php:1140
-#: application/helpers/questionHelper.php:1164
-#: application/helpers/questionHelper.php:1176
-#: application/helpers/questionHelper.php:1186
-#: application/helpers/questionHelper.php:1430
-#: application/helpers/questionHelper.php:1550
-#: application/helpers/questionHelper.php:1564
+#: application/helpers/questionHelper.php:515
+#: application/helpers/questionHelper.php:526
+#: application/helpers/questionHelper.php:537
+#: application/helpers/questionHelper.php:629
+#: application/helpers/questionHelper.php:639
+#: application/helpers/questionHelper.php:649
+#: application/helpers/questionHelper.php:659
+#: application/helpers/questionHelper.php:670
+#: application/helpers/questionHelper.php:730
+#: application/helpers/questionHelper.php:740
+#: application/helpers/questionHelper.php:773
+#: application/helpers/questionHelper.php:795
+#: application/helpers/questionHelper.php:806
+#: application/helpers/questionHelper.php:829
+#: application/helpers/questionHelper.php:842
+#: application/helpers/questionHelper.php:853
+#: application/helpers/questionHelper.php:864
+#: application/helpers/questionHelper.php:875
+#: application/helpers/questionHelper.php:997
+#: application/helpers/questionHelper.php:1055
+#: application/helpers/questionHelper.php:1066
+#: application/helpers/questionHelper.php:1091
+#: application/helpers/questionHelper.php:1115
+#: application/helpers/questionHelper.php:1141
+#: application/helpers/questionHelper.php:1165
+#: application/helpers/questionHelper.php:1177
+#: application/helpers/questionHelper.php:1187
+#: application/helpers/questionHelper.php:1431
+#: application/helpers/questionHelper.php:1551
+#: application/helpers/questionHelper.php:1565
 msgid "Display"
 msgstr ""
 
@@ -9511,12 +9511,12 @@ msgstr ""
 #: application/helpers/questionHelper.php:326
 #: application/helpers/questionHelper.php:337
 #: application/helpers/questionHelper.php:346
-#: application/helpers/questionHelper.php:546
-#: application/helpers/questionHelper.php:578
-#: application/helpers/questionHelper.php:598
-#: application/helpers/questionHelper.php:750
-#: application/helpers/questionHelper.php:761
-#: application/helpers/questionHelper.php:1510
+#: application/helpers/questionHelper.php:547
+#: application/helpers/questionHelper.php:579
+#: application/helpers/questionHelper.php:599
+#: application/helpers/questionHelper.php:751
+#: application/helpers/questionHelper.php:762
+#: application/helpers/questionHelper.php:1511
 msgid "Logic"
 msgstr ""
 
@@ -9537,7 +9537,7 @@ msgid "Array filter exclusion"
 msgstr ""
 
 #: application/helpers/questionHelper.php:116
-#: application/helpers/questionHelper.php:1120
+#: application/helpers/questionHelper.php:1121
 msgid "Hidden"
 msgstr ""
 
@@ -9688,15 +9688,15 @@ msgid "Equation"
 msgstr ""
 
 #: application/helpers/questionHelper.php:285
-#: application/helpers/questionHelper.php:556
-#: application/helpers/questionHelper.php:566
-#: application/helpers/questionHelper.php:588
-#: application/helpers/questionHelper.php:608
-#: application/helpers/questionHelper.php:618
-#: application/helpers/questionHelper.php:680
-#: application/helpers/questionHelper.php:1411
-#: application/helpers/questionHelper.php:1420
-#: application/helpers/questionHelper.php:1523
+#: application/helpers/questionHelper.php:557
+#: application/helpers/questionHelper.php:567
+#: application/helpers/questionHelper.php:589
+#: application/helpers/questionHelper.php:609
+#: application/helpers/questionHelper.php:619
+#: application/helpers/questionHelper.php:681
+#: application/helpers/questionHelper.php:1412
+#: application/helpers/questionHelper.php:1421
+#: application/helpers/questionHelper.php:1524
 msgid "Input"
 msgstr ""
 
@@ -9765,7 +9765,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:472
 #: application/helpers/questionHelper.php:482
 #: application/helpers/questionHelper.php:493
-#: application/helpers/questionHelper.php:502
+#: application/helpers/questionHelper.php:503
 msgid "Location"
 msgstr ""
 
@@ -9898,473 +9898,473 @@ msgstr ""
 msgid "IP as default location"
 msgstr ""
 
-#: application/helpers/questionHelper.php:496
+#: application/helpers/questionHelper.php:497
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr ""
 
-#: application/helpers/questionHelper.php:497
+#: application/helpers/questionHelper.php:498
 msgid "Default position"
 msgstr ""
 
-#: application/helpers/questionHelper.php:506
+#: application/helpers/questionHelper.php:507
 msgid "Map zoom level"
 msgstr ""
 
-#: application/helpers/questionHelper.php:507
+#: application/helpers/questionHelper.php:508
 msgid "Zoom level"
 msgstr ""
 
-#: application/helpers/questionHelper.php:519
+#: application/helpers/questionHelper.php:520
 msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:520
+#: application/helpers/questionHelper.php:521
 msgid "Hide tip"
 msgstr ""
 
-#: application/helpers/questionHelper.php:530
+#: application/helpers/questionHelper.php:531
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
-#: application/helpers/questionHelper.php:531
+#: application/helpers/questionHelper.php:532
 msgid "Always hide this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:540
+#: application/helpers/questionHelper.php:541
 msgid "Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static."
 msgstr ""
 
-#: application/helpers/questionHelper.php:541
+#: application/helpers/questionHelper.php:542
 msgid "CSS class(es)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:550
+#: application/helpers/questionHelper.php:551
 msgid "Limit the number of possible answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:551
+#: application/helpers/questionHelper.php:552
 msgid "Maximum answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:560
+#: application/helpers/questionHelper.php:561
 msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
-#: application/helpers/questionHelper.php:561
+#: application/helpers/questionHelper.php:562
 msgid "Maximum sum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:570
+#: application/helpers/questionHelper.php:571
 msgid "Maximum value of the numeric input"
 msgstr ""
 
-#: application/helpers/questionHelper.php:571
-#: application/helpers/questionHelper.php:633
+#: application/helpers/questionHelper.php:572
+#: application/helpers/questionHelper.php:634
 msgid "Maximum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:582
+#: application/helpers/questionHelper.php:583
 msgid "Limit the number of possible answers fixed by number of columns in database"
 msgstr ""
 
-#: application/helpers/questionHelper.php:583
+#: application/helpers/questionHelper.php:584
 msgid "Maximum columns for answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:592
+#: application/helpers/questionHelper.php:593
 msgid "Maximum characters allowed"
 msgstr ""
 
-#: application/helpers/questionHelper.php:593
+#: application/helpers/questionHelper.php:594
 msgid "Maximum characters"
 msgstr ""
 
-#: application/helpers/questionHelper.php:602
+#: application/helpers/questionHelper.php:603
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:603
+#: application/helpers/questionHelper.php:604
 msgid "Minimum answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:612
+#: application/helpers/questionHelper.php:613
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:613
+#: application/helpers/questionHelper.php:614
 msgid "Minimum sum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:622
+#: application/helpers/questionHelper.php:623
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: application/helpers/questionHelper.php:623
-#: application/helpers/questionHelper.php:643
+#: application/helpers/questionHelper.php:624
+#: application/helpers/questionHelper.php:644
 msgid "Minimum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:632
+#: application/helpers/questionHelper.php:633
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr ""
 
-#: application/helpers/questionHelper.php:642
+#: application/helpers/questionHelper.php:643
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
-#: application/helpers/questionHelper.php:652
 #: application/helpers/questionHelper.php:653
+#: application/helpers/questionHelper.php:654
 msgid "Step value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:663
+#: application/helpers/questionHelper.php:664
 msgid "Use checkbox layout"
 msgstr ""
 
-#: application/helpers/questionHelper.php:664
+#: application/helpers/questionHelper.php:665
 msgid "Checkbox layout"
 msgstr ""
 
-#: application/helpers/questionHelper.php:674
+#: application/helpers/questionHelper.php:675
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:675
+#: application/helpers/questionHelper.php:676
 msgid "Reverse answer order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:685
+#: application/helpers/questionHelper.php:686
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: application/helpers/questionHelper.php:686
+#: application/helpers/questionHelper.php:687
 msgid "Integer only"
 msgstr ""
 
-#: application/helpers/questionHelper.php:696
+#: application/helpers/questionHelper.php:697
 msgid "Allow only numerical input"
 msgstr ""
 
-#: application/helpers/questionHelper.php:697
+#: application/helpers/questionHelper.php:698
 msgid "Numbers only"
 msgstr ""
 
-#: application/helpers/questionHelper.php:707
+#: application/helpers/questionHelper.php:708
 msgid "Rows"
 msgstr ""
 
-#: application/helpers/questionHelper.php:708
+#: application/helpers/questionHelper.php:709
 #: application/views/admin/export/exportresult_panels/_columns-control.php:5
 msgid "Columns"
 msgstr ""
 
-#: application/helpers/questionHelper.php:709
+#: application/helpers/questionHelper.php:710
 msgid "Rows & columns"
 msgstr ""
 
-#: application/helpers/questionHelper.php:712
+#: application/helpers/questionHelper.php:713
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: application/helpers/questionHelper.php:713
+#: application/helpers/questionHelper.php:714
 msgid "Show totals for"
 msgstr ""
 
-#: application/helpers/questionHelper.php:723
+#: application/helpers/questionHelper.php:724
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: application/helpers/questionHelper.php:724
+#: application/helpers/questionHelper.php:725
 msgid "Show grand total"
 msgstr ""
 
-#: application/helpers/questionHelper.php:733
+#: application/helpers/questionHelper.php:734
 msgid "Set the size to the input or textarea, the input will be displayed with approximately this size in width."
 msgstr ""
 
-#: application/helpers/questionHelper.php:734
+#: application/helpers/questionHelper.php:735
 msgid "Text input size"
 msgstr ""
 
-#: application/helpers/questionHelper.php:744
+#: application/helpers/questionHelper.php:745
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: application/helpers/questionHelper.php:745
+#: application/helpers/questionHelper.php:746
 msgid "Text inputs"
 msgstr ""
 
-#: application/helpers/questionHelper.php:755
+#: application/helpers/questionHelper.php:756
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
-#: application/helpers/questionHelper.php:756
+#: application/helpers/questionHelper.php:757
 msgid "'Other:' comment mandatory"
 msgstr ""
 
-#: application/helpers/questionHelper.php:766
+#: application/helpers/questionHelper.php:767
 msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
-#: application/helpers/questionHelper.php:767
+#: application/helpers/questionHelper.php:768
 msgid "Numbers only for 'Other'"
 msgstr ""
 
-#: application/helpers/questionHelper.php:777
+#: application/helpers/questionHelper.php:778
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
-#: application/helpers/questionHelper.php:778
+#: application/helpers/questionHelper.php:779
 msgid "Label for 'Other:' option"
 msgstr ""
 
-#: application/helpers/questionHelper.php:788
+#: application/helpers/questionHelper.php:789
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
-#: application/helpers/questionHelper.php:789
+#: application/helpers/questionHelper.php:790
 msgid "Insert page break in printable view"
 msgstr ""
 
-#: application/helpers/questionHelper.php:799
+#: application/helpers/questionHelper.php:800
 msgid "Add a prefix to the answer field"
 msgstr ""
 
-#: application/helpers/questionHelper.php:800
+#: application/helpers/questionHelper.php:801
 msgid "Answer prefix"
 msgstr ""
 
-#: application/helpers/questionHelper.php:811
+#: application/helpers/questionHelper.php:812
 msgid "In the printable version replace the relevance equation with this explanation text."
 msgstr ""
 
-#: application/helpers/questionHelper.php:812
+#: application/helpers/questionHelper.php:813
 msgid "Relevance help for printable survey"
 msgstr ""
 
-#: application/helpers/questionHelper.php:822
+#: application/helpers/questionHelper.php:823
 msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
-#: application/helpers/questionHelper.php:823
+#: application/helpers/questionHelper.php:824
 msgid "Show in public statistics"
 msgstr ""
 
-#: application/helpers/questionHelper.php:835
+#: application/helpers/questionHelper.php:836
 #: application/views/admin/survey/Question/massive_actions/_selector.php:176
 #: application/views/admin/survey/Question/massive_actions/_selector.php:185
 msgid "Present subquestions/answer options in random order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:836
+#: application/helpers/questionHelper.php:837
 msgid "Random order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:846
+#: application/helpers/questionHelper.php:847
 msgid "Show javascript alert"
 msgstr ""
 
-#: application/helpers/questionHelper.php:847
+#: application/helpers/questionHelper.php:848
 msgid "Show an alert if answers exceeds the number of max answers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:857
+#: application/helpers/questionHelper.php:858
 msgid "Same height for all answer options"
 msgstr ""
 
-#: application/helpers/questionHelper.php:858
+#: application/helpers/questionHelper.php:859
 msgid "Force each answer option to have the same height"
 msgstr ""
 
-#: application/helpers/questionHelper.php:868
+#: application/helpers/questionHelper.php:869
 msgid "Same height for lists"
 msgstr ""
 
-#: application/helpers/questionHelper.php:869
+#: application/helpers/questionHelper.php:870
 msgid "Force the choice list and the rank list to have the same height"
 msgstr ""
 
-#: application/helpers/questionHelper.php:877
+#: application/helpers/questionHelper.php:878
 msgid "Get order from previous question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:878
+#: application/helpers/questionHelper.php:879
 msgid "Enter question ID to get subquestion order from a previous question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:883
-#: application/helpers/questionHelper.php:894
-#: application/helpers/questionHelper.php:904
-#: application/helpers/questionHelper.php:914
-#: application/helpers/questionHelper.php:924
-#: application/helpers/questionHelper.php:934
-#: application/helpers/questionHelper.php:945
-#: application/helpers/questionHelper.php:956
-#: application/helpers/questionHelper.php:970
-#: application/helpers/questionHelper.php:986
-#: application/helpers/questionHelper.php:1011
-#: application/helpers/questionHelper.php:1022
-#: application/helpers/questionHelper.php:1033
-#: application/helpers/questionHelper.php:1044
+#: application/helpers/questionHelper.php:884
+#: application/helpers/questionHelper.php:895
+#: application/helpers/questionHelper.php:905
+#: application/helpers/questionHelper.php:915
+#: application/helpers/questionHelper.php:925
+#: application/helpers/questionHelper.php:935
+#: application/helpers/questionHelper.php:946
+#: application/helpers/questionHelper.php:957
+#: application/helpers/questionHelper.php:971
+#: application/helpers/questionHelper.php:987
+#: application/helpers/questionHelper.php:1012
+#: application/helpers/questionHelper.php:1023
+#: application/helpers/questionHelper.php:1034
+#: application/helpers/questionHelper.php:1045
 msgid "Slider"
 msgstr ""
 
-#: application/helpers/questionHelper.php:888
 #: application/helpers/questionHelper.php:889
-#: application/helpers/questionHelper.php:1005
+#: application/helpers/questionHelper.php:890
 #: application/helpers/questionHelper.php:1006
+#: application/helpers/questionHelper.php:1007
 msgid "Use slider layout"
 msgstr ""
 
-#: application/helpers/questionHelper.php:898
+#: application/helpers/questionHelper.php:899
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used."
 msgstr ""
 
-#: application/helpers/questionHelper.php:899
+#: application/helpers/questionHelper.php:900
 msgid "Slider minimum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:908
+#: application/helpers/questionHelper.php:909
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used."
 msgstr ""
 
-#: application/helpers/questionHelper.php:909
+#: application/helpers/questionHelper.php:910
 msgid "Slider maximum value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:918
+#: application/helpers/questionHelper.php:919
 msgid "You can use Expression manager, but this must be a number before showing the page else set to 1."
 msgstr ""
 
-#: application/helpers/questionHelper.php:919
+#: application/helpers/questionHelper.php:920
 msgid "Slider accuracy"
 msgstr ""
 
-#: application/helpers/questionHelper.php:928
+#: application/helpers/questionHelper.php:929
 msgid "Slider start as this value. You can use Expression manager, but this must be a number before showing the page."
 msgstr ""
 
-#: application/helpers/questionHelper.php:929
+#: application/helpers/questionHelper.php:930
 msgid "Slider initial value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:939
+#: application/helpers/questionHelper.php:940
 msgid "The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value)."
 msgstr ""
 
-#: application/helpers/questionHelper.php:940
+#: application/helpers/questionHelper.php:941
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: application/helpers/questionHelper.php:950
+#: application/helpers/questionHelper.php:951
 msgid "When using slider initial value set this value at survey start."
 msgstr ""
 
-#: application/helpers/questionHelper.php:951
+#: application/helpers/questionHelper.php:952
 msgid "Slider initial value set at start"
 msgstr ""
 
-#: application/helpers/questionHelper.php:960
+#: application/helpers/questionHelper.php:961
 msgid "Horizontal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:961
+#: application/helpers/questionHelper.php:962
 msgid "Vertical"
 msgstr ""
 
-#: application/helpers/questionHelper.php:964
+#: application/helpers/questionHelper.php:965
 msgid "Set the orientation."
 msgstr ""
 
-#: application/helpers/questionHelper.php:965
+#: application/helpers/questionHelper.php:966
 msgid "Orientation"
 msgstr ""
 
-#: application/helpers/questionHelper.php:974
+#: application/helpers/questionHelper.php:975
 msgid "Circle"
 msgstr ""
 
-#: application/helpers/questionHelper.php:975
+#: application/helpers/questionHelper.php:976
 msgid "Square"
 msgstr ""
 
-#: application/helpers/questionHelper.php:976
+#: application/helpers/questionHelper.php:977
 msgid "Triangle"
 msgstr ""
 
-#: application/helpers/questionHelper.php:977
+#: application/helpers/questionHelper.php:978
 msgid "Custom"
 msgstr ""
 
-#: application/helpers/questionHelper.php:980
+#: application/helpers/questionHelper.php:981
 msgid "Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."
 msgstr ""
 
-#: application/helpers/questionHelper.php:981
+#: application/helpers/questionHelper.php:982
 msgid "Handle shape"
 msgstr ""
 
-#: application/helpers/questionHelper.php:990
+#: application/helpers/questionHelper.php:991
 msgid "Accepts Font Awesome Unicode characters."
 msgstr ""
 
-#: application/helpers/questionHelper.php:991
+#: application/helpers/questionHelper.php:992
 msgid "Custom handle Unicode code"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1001
+#: application/helpers/questionHelper.php:1002
 msgid "Stars"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1002
+#: application/helpers/questionHelper.php:1003
 msgid "Slider with emoticon"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1016
+#: application/helpers/questionHelper.php:1017
 msgid "Reverses the slider direction and repositions the min/max text accordingly."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1017
+#: application/helpers/questionHelper.php:1018
 msgid "Reverse the slider direction"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1027
+#: application/helpers/questionHelper.php:1028
 msgid "Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer."
 msgstr ""
 
-#: application/helpers/questionHelper.php:1028
+#: application/helpers/questionHelper.php:1029
 msgid "Allow reset the slider"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1038
+#: application/helpers/questionHelper.php:1039
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1039
+#: application/helpers/questionHelper.php:1040
 msgid "Display slider min and max value"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1047
+#: application/helpers/questionHelper.php:1048
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1049
+#: application/helpers/questionHelper.php:1050
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1059
+#: application/helpers/questionHelper.php:1060
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1060
+#: application/helpers/questionHelper.php:1061
 msgid "Answer suffix"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1070
-#: application/helpers/questionHelper.php:1095
-#: application/helpers/questionHelper.php:1119
-#: application/helpers/questionHelper.php:1145
-#: application/helpers/questionHelper.php:1204
+#: application/helpers/questionHelper.php:1071
+#: application/helpers/questionHelper.php:1096
+#: application/helpers/questionHelper.php:1120
+#: application/helpers/questionHelper.php:1146
+#: application/helpers/questionHelper.php:1205
 #: application/models/QuestionTemplate.php:396
 #: application/views/admin/authentication/ajaxLogin.php:74
 #: application/views/admin/authentication/login.php:91
@@ -10376,402 +10376,402 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1084
-#: application/helpers/questionHelper.php:1109
+#: application/helpers/questionHelper.php:1085
+#: application/helpers/questionHelper.php:1110
 msgid "Relative width of the text input wrapper element"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1085
-#: application/helpers/questionHelper.php:1110
+#: application/helpers/questionHelper.php:1086
+#: application/helpers/questionHelper.php:1111
 msgid "Text input box width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1134
+#: application/helpers/questionHelper.php:1135
 msgid "Relative width of the labels"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1135
+#: application/helpers/questionHelper.php:1136
 msgid "Label column width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1159
+#: application/helpers/questionHelper.php:1160
 msgid "Relative width of checkbox wrapper element"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1160
+#: application/helpers/questionHelper.php:1161
 msgid "Choice column width"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1169
+#: application/helpers/questionHelper.php:1170
 msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1170
+#: application/helpers/questionHelper.php:1171
 msgid "Use dropdown presentation"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1180
+#: application/helpers/questionHelper.php:1181
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1181
+#: application/helpers/questionHelper.php:1182
 msgid "Height of dropdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1191
+#: application/helpers/questionHelper.php:1192
 msgid "Order - like 3)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1195
+#: application/helpers/questionHelper.php:1196
 msgid "Accelerator keys for list items"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1196
+#: application/helpers/questionHelper.php:1197
 msgid "Prefix for list items"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1205
+#: application/helpers/questionHelper.php:1206
 msgid "Nominal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1206
+#: application/helpers/questionHelper.php:1207
 msgid "Ordinal"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1207
+#: application/helpers/questionHelper.php:1208
 msgid "Scale"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1209
+#: application/helpers/questionHelper.php:1210
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1210
+#: application/helpers/questionHelper.php:1211
 msgid "SPSS export scale type"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1221
+#: application/helpers/questionHelper.php:1222
 msgid "Replace choice header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1221
+#: application/helpers/questionHelper.php:1222
 msgid "Your choices"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1222
+#: application/helpers/questionHelper.php:1223
 msgid "Choice header"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1233
+#: application/helpers/questionHelper.php:1234
 msgid "Replace rank header (default: \"%s\")"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1233
+#: application/helpers/questionHelper.php:1234
 msgid "Your ranking"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1234
+#: application/helpers/questionHelper.php:1235
 msgid "Rank header"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1240
-#: application/helpers/questionHelper.php:1249
-#: application/helpers/questionHelper.php:1264
-#: application/helpers/questionHelper.php:1275
-#: application/helpers/questionHelper.php:1286
-#: application/helpers/questionHelper.php:1297
-#: application/helpers/questionHelper.php:1306
-#: application/helpers/questionHelper.php:1315
-#: application/helpers/questionHelper.php:1326
-#: application/helpers/questionHelper.php:1335
-#: application/helpers/questionHelper.php:1344
-#: application/helpers/questionHelper.php:1353
-#: application/helpers/questionHelper.php:1364
-#: application/helpers/questionHelper.php:1373
-#: application/helpers/questionHelper.php:1382
-#: application/helpers/questionHelper.php:1391
-#: application/helpers/questionHelper.php:1402
+#: application/helpers/questionHelper.php:1241
+#: application/helpers/questionHelper.php:1250
+#: application/helpers/questionHelper.php:1265
+#: application/helpers/questionHelper.php:1276
+#: application/helpers/questionHelper.php:1287
+#: application/helpers/questionHelper.php:1298
+#: application/helpers/questionHelper.php:1307
+#: application/helpers/questionHelper.php:1316
+#: application/helpers/questionHelper.php:1327
+#: application/helpers/questionHelper.php:1336
+#: application/helpers/questionHelper.php:1345
+#: application/helpers/questionHelper.php:1354
+#: application/helpers/questionHelper.php:1365
+#: application/helpers/questionHelper.php:1374
+#: application/helpers/questionHelper.php:1383
+#: application/helpers/questionHelper.php:1392
+#: application/helpers/questionHelper.php:1403
 msgid "Timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1243
+#: application/helpers/questionHelper.php:1244
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1244
+#: application/helpers/questionHelper.php:1245
 msgid "Time limit"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1253
+#: application/helpers/questionHelper.php:1254
 msgid "Warn and move on"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1254
+#: application/helpers/questionHelper.php:1255
 msgid "Move on without warning"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1255
+#: application/helpers/questionHelper.php:1256
 msgid "Disable only"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1258
+#: application/helpers/questionHelper.php:1259
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1259
+#: application/helpers/questionHelper.php:1260
 msgid "Time limit action"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1269
+#: application/helpers/questionHelper.php:1270
 msgid "Disable the next button until time limit expires"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1270
+#: application/helpers/questionHelper.php:1271
 msgid "Time limit disable next"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1280
+#: application/helpers/questionHelper.php:1281
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1281
+#: application/helpers/questionHelper.php:1282
 msgid "Time limit disable prev"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1291
+#: application/helpers/questionHelper.php:1292
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1292
+#: application/helpers/questionHelper.php:1293
 msgid "Time limit countdown message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1300
+#: application/helpers/questionHelper.php:1301
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1301
+#: application/helpers/questionHelper.php:1302
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1309
+#: application/helpers/questionHelper.php:1310
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1310
+#: application/helpers/questionHelper.php:1311
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1320
+#: application/helpers/questionHelper.php:1321
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1321
+#: application/helpers/questionHelper.php:1322
 msgid "Time limit expiry message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1329
+#: application/helpers/questionHelper.php:1330
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1330
+#: application/helpers/questionHelper.php:1331
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1338
+#: application/helpers/questionHelper.php:1339
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1339
+#: application/helpers/questionHelper.php:1340
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1347
+#: application/helpers/questionHelper.php:1348
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1348
+#: application/helpers/questionHelper.php:1349
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1358
+#: application/helpers/questionHelper.php:1359
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1359
+#: application/helpers/questionHelper.php:1360
 msgid "1st time limit warning message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1367
+#: application/helpers/questionHelper.php:1368
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1368
+#: application/helpers/questionHelper.php:1369
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1376
+#: application/helpers/questionHelper.php:1377
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1377
+#: application/helpers/questionHelper.php:1378
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1385
+#: application/helpers/questionHelper.php:1386
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1386
+#: application/helpers/questionHelper.php:1387
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1396
+#: application/helpers/questionHelper.php:1397
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1397
+#: application/helpers/questionHelper.php:1398
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1405
+#: application/helpers/questionHelper.php:1406
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1406
+#: application/helpers/questionHelper.php:1407
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1414
+#: application/helpers/questionHelper.php:1415
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1415
+#: application/helpers/questionHelper.php:1416
 msgid "Date/Time format"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1424
+#: application/helpers/questionHelper.php:1425
 msgid "Minute step interval when using select boxes"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1425
+#: application/helpers/questionHelper.php:1426
 msgid "Minute step interval"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1434
+#: application/helpers/questionHelper.php:1435
 msgid "Short names"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1435
+#: application/helpers/questionHelper.php:1436
 msgid "Full names"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1436
+#: application/helpers/questionHelper.php:1437
 msgid "Numbers"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1439
+#: application/helpers/questionHelper.php:1440
 msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1440
+#: application/helpers/questionHelper.php:1441
 msgid "Month display style"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1445
-#: application/helpers/questionHelper.php:1456
+#: application/helpers/questionHelper.php:1446
+#: application/helpers/questionHelper.php:1457
 msgid "File metadata"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1450
+#: application/helpers/questionHelper.php:1451
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1451
+#: application/helpers/questionHelper.php:1452
 msgid "Show title"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1461
+#: application/helpers/questionHelper.php:1462
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1462
+#: application/helpers/questionHelper.php:1463
 msgid "Show comment"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1472
+#: application/helpers/questionHelper.php:1473
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1473
+#: application/helpers/questionHelper.php:1474
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1483
+#: application/helpers/questionHelper.php:1484
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1484
+#: application/helpers/questionHelper.php:1485
 msgid "Max number of files"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1494
+#: application/helpers/questionHelper.php:1495
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1495
+#: application/helpers/questionHelper.php:1496
 msgid "Min number of files"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1504
+#: application/helpers/questionHelper.php:1505
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1505
+#: application/helpers/questionHelper.php:1506
 msgid "Allowed file types"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1513
+#: application/helpers/questionHelper.php:1514
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1514
+#: application/helpers/questionHelper.php:1515
 msgid "Randomization group name"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1528
+#: application/helpers/questionHelper.php:1529
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1529
+#: application/helpers/questionHelper.php:1530
 msgid "Value range allows missing"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1554
+#: application/helpers/questionHelper.php:1555
 msgid "Button group"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1555
+#: application/helpers/questionHelper.php:1556
 msgid "Radio list"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1558
+#: application/helpers/questionHelper.php:1559
 msgid "Use button group or radio list"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1559
+#: application/helpers/questionHelper.php:1560
 msgid "Display type"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1569
+#: application/helpers/questionHelper.php:1570
 msgid "Use a customized question theme for this question"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1570
+#: application/helpers/questionHelper.php:1571
 msgid "Question theme"
 msgstr ""
 
-#: application/helpers/questionHelper.php:1618
+#: application/helpers/questionHelper.php:1619
 #: application/views/admin/survey/subview/tab_survey_view.php:69
 msgid "Plugins"
 msgstr ""
@@ -10792,11 +10792,11 @@ msgstr ""
 msgid "Note: Print will not include items on this page"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:297 tmp/twig_translate.php:91
+#: application/helpers/replacements_helper.php:297 tmp/twig_translate.php:104
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:127
+#: application/helpers/replacements_helper.php:298 tmp/twig_translate.php:95
 msgid "Your assessment"
 msgstr ""
 
@@ -13080,7 +13080,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:38
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
-#: tmp/twig_translate.php:90 tmp/twig_translate.php:98
+#: tmp/twig_translate.php:108 tmp/twig_translate.php:122
 msgid "Submit"
 msgstr ""
 
@@ -16410,11 +16410,11 @@ msgid "Question order"
 msgstr ""
 
 #: application/views/admin/survey/Question/listquestions.php:105
-#: application/views/survey/system/required.php:6 tmp/twig_translate.php:74
-#: tmp/twig_translate.php:79 tmp/twig_translate.php:80
-#: tmp/twig_translate.php:81 tmp/twig_translate.php:85
-#: tmp/twig_translate.php:86 tmp/twig_translate.php:117
-#: tmp/twig_translate.php:118 tmp/twig_translate.php:121
+#: application/views/survey/system/required.php:6 tmp/twig_translate.php:99
+#: tmp/twig_translate.php:100 tmp/twig_translate.php:101
+#: tmp/twig_translate.php:110 tmp/twig_translate.php:111
+#: tmp/twig_translate.php:124 tmp/twig_translate.php:125
+#: tmp/twig_translate.php:128 tmp/twig_translate.php:135
 msgid "Mandatory"
 msgstr ""
 
@@ -18616,7 +18616,7 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:33
 #: application/views/admin/themes/templateeditor_surveylist_view.php:77
-#: tmp/twig_translate.php:128
+#: tmp/twig_translate.php:136
 msgid "Start survey"
 msgstr ""
 
@@ -20495,7 +20495,7 @@ msgstr ""
 #: application/views/survey/frontpage/clearallForm/heading.php:7
 #: application/views/survey/system/actionButton/clearAll.php:16
 #: application/views/survey/system/actionLink/clearAll.php:11
-#: tmp/twig_translate.php:96
+#: tmp/twig_translate.php:116
 msgid "Exit and clear survey"
 msgstr ""
 
@@ -20510,14 +20510,14 @@ msgid "Security question:"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/form.php:35
-#: tmp/twig_translate.php:87
+#: tmp/twig_translate.php:112
 msgid "Load now"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/heading.php:7
 #: application/views/survey/system/actionButton/saveLoad.php:11
 #: application/views/survey/system/actionLink/saveLoad.php:11
-#: tmp/twig_translate.php:84 tmp/twig_translate.php:101
+#: tmp/twig_translate.php:109 tmp/twig_translate.php:114
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -20562,7 +20562,7 @@ msgid "Your email address:"
 msgstr ""
 
 #: application/views/survey/frontpage/saveForm/heading.php:7
-#: tmp/twig_translate.php:78
+#: tmp/twig_translate.php:98
 msgid "Save your unfinished survey"
 msgstr ""
 
@@ -20640,7 +20640,7 @@ msgstr ""
 
 #: application/views/survey/system/actionButton/saveSave.php:11
 #: application/views/survey/system/actionLink/saveSave.php:11
-#: tmp/twig_translate.php:102
+#: tmp/twig_translate.php:115
 msgid "Resume later"
 msgstr ""
 
@@ -20664,148 +20664,148 @@ msgstr ""
 #: application/views/survey/system/surveyIndex/groupIndexMenuLink.php:10
 #: application/views/survey/system/surveyIndex/questionIndex.php:10
 #: application/views/survey/system/surveyIndex/questionIndexMenuLink.php:10
-#: tmp/twig_translate.php:94 tmp/twig_translate.php:95
-#: tmp/twig_translate.php:100 tmp/twig_translate.php:103
+#: tmp/twig_translate.php:117 tmp/twig_translate.php:118
+#: tmp/twig_translate.php:119 tmp/twig_translate.php:120
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:3 tmp/twig_translate.php:129
+#: tmp/twig_translate.php:2 tmp/twig_translate.php:73
 msgid "Local Server"
 msgstr ""
 
-#: tmp/twig_translate.php:4 tmp/twig_translate.php:130
+#: tmp/twig_translate.php:3 tmp/twig_translate.php:74
 msgid "User browser"
 msgstr ""
 
-#: tmp/twig_translate.php:7
+#: tmp/twig_translate.php:6
 msgid "Ajax mode"
 msgstr ""
 
-#: tmp/twig_translate.php:10 tmp/twig_translate.php:14
-#: tmp/twig_translate.php:18 tmp/twig_translate.php:22
-#: tmp/twig_translate.php:30 tmp/twig_translate.php:32
-#: tmp/twig_translate.php:36 tmp/twig_translate.php:38
-#: tmp/twig_translate.php:42 tmp/twig_translate.php:48
-#: tmp/twig_translate.php:54 tmp/twig_translate.php:60
-#: tmp/twig_translate.php:66 tmp/twig_translate.php:134
+#: tmp/twig_translate.php:9 tmp/twig_translate.php:13 tmp/twig_translate.php:17
+#: tmp/twig_translate.php:21 tmp/twig_translate.php:29
+#: tmp/twig_translate.php:31 tmp/twig_translate.php:35
+#: tmp/twig_translate.php:37 tmp/twig_translate.php:41
+#: tmp/twig_translate.php:47 tmp/twig_translate.php:53
+#: tmp/twig_translate.php:59 tmp/twig_translate.php:65
+#: tmp/twig_translate.php:78
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:11 tmp/twig_translate.php:131
+#: tmp/twig_translate.php:10 tmp/twig_translate.php:75
 msgid "Survey container"
 msgstr ""
 
-#: tmp/twig_translate.php:15
+#: tmp/twig_translate.php:14
 msgid "Question borders"
 msgstr ""
 
-#: tmp/twig_translate.php:19
+#: tmp/twig_translate.php:18
 msgid "Question shadow"
 msgstr ""
 
-#: tmp/twig_translate.php:23
+#: tmp/twig_translate.php:22
 msgid "Background color"
 msgstr ""
 
-#: tmp/twig_translate.php:24
+#: tmp/twig_translate.php:23
 msgid "Font color"
 msgstr ""
 
-#: tmp/twig_translate.php:25
+#: tmp/twig_translate.php:24
 msgid "Question background color"
 msgstr ""
 
-#: tmp/twig_translate.php:26
+#: tmp/twig_translate.php:25
 msgid "Check icon"
 msgstr ""
 
-#: tmp/twig_translate.php:27
+#: tmp/twig_translate.php:26
 msgid "Background image"
 msgstr ""
 
-#: tmp/twig_translate.php:31
+#: tmp/twig_translate.php:30
 msgid "Background image file"
 msgstr ""
 
-#: tmp/twig_translate.php:33
+#: tmp/twig_translate.php:32
 msgid "Logo"
 msgstr ""
 
-#: tmp/twig_translate.php:37
+#: tmp/twig_translate.php:36
 msgid "Logo file"
 msgstr ""
 
-#: tmp/twig_translate.php:39
+#: tmp/twig_translate.php:38
 msgid "Animate body"
 msgstr ""
 
-#: tmp/twig_translate.php:43
+#: tmp/twig_translate.php:42
 msgid "Body animation"
 msgstr ""
 
-#: tmp/twig_translate.php:44 tmp/twig_translate.php:50
-#: tmp/twig_translate.php:56 tmp/twig_translate.php:62
-#: tmp/twig_translate.php:68
+#: tmp/twig_translate.php:43 tmp/twig_translate.php:49
+#: tmp/twig_translate.php:55 tmp/twig_translate.php:61
+#: tmp/twig_translate.php:67
 msgid "Duration"
 msgstr ""
 
-#: tmp/twig_translate.php:45
+#: tmp/twig_translate.php:44
 msgid "Animate question"
 msgstr ""
 
-#: tmp/twig_translate.php:49
+#: tmp/twig_translate.php:48
 msgid "Question animation"
 msgstr ""
 
-#: tmp/twig_translate.php:51
+#: tmp/twig_translate.php:50
 msgid "Animate alert"
 msgstr ""
 
-#: tmp/twig_translate.php:55 tmp/twig_translate.php:61
+#: tmp/twig_translate.php:54 tmp/twig_translate.php:60
 msgid "Alert animation"
 msgstr ""
 
-#: tmp/twig_translate.php:57
+#: tmp/twig_translate.php:56
 msgid "Animate checkbox"
 msgstr ""
 
-#: tmp/twig_translate.php:63
+#: tmp/twig_translate.php:62
 msgid "Animate radio buttons"
 msgstr ""
 
-#: tmp/twig_translate.php:67
+#: tmp/twig_translate.php:66
 msgid "Radio button animation"
 msgstr ""
 
-#: tmp/twig_translate.php:69 tmp/twig_translate.php:135
+#: tmp/twig_translate.php:68 tmp/twig_translate.php:79
 msgid "Fruity fonts"
 msgstr ""
 
-#: tmp/twig_translate.php:70
+#: tmp/twig_translate.php:69
 msgid "Fruity variations"
 msgstr ""
 
-#: tmp/twig_translate.php:73 tmp/twig_translate.php:119
-#: tmp/twig_translate.php:122
-msgid "Reload captcha"
-msgstr ""
-
-#: tmp/twig_translate.php:92
-msgid "Restart this survey"
-msgstr ""
-
-#: tmp/twig_translate.php:114
+#: tmp/twig_translate.php:81
 msgid "File type"
 msgstr ""
 
-#: tmp/twig_translate.php:115
+#: tmp/twig_translate.php:92
 msgid "PDF export"
 msgstr ""
 
-#: tmp/twig_translate.php:116
+#: tmp/twig_translate.php:93
 msgid "queXMLPDF export"
 msgstr ""
 
-#: tmp/twig_translate.php:124
+#: tmp/twig_translate.php:96
 msgid "Accept"
+msgstr ""
+
+#: tmp/twig_translate.php:105
+msgid "Restart this survey"
+msgstr ""
+
+#: tmp/twig_translate.php:126 tmp/twig_translate.php:129
+#: tmp/twig_translate.php:131
+msgid "Reload captcha"
 msgstr ""

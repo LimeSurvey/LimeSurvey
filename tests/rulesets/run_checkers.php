@@ -23,8 +23,17 @@ if (!is_dir($argv[1])) {
     die($argv[1] . ' is not a folder');
 }
 
+$numberOfFiles = 0;
+
+/**
+ * @param string $file
+ * @return array
+ */
 function checkFile($file)
 {
+    global $numberOfFiles;
+    $numberOfFiles++;
+
     $phpmd_output = [];
     exec(sprintf('phpmd %s text tests/rulesets/phpmd_ruleset.xml', $file), $phpmd_output);
 
@@ -36,12 +45,26 @@ function checkFile($file)
 
     $output = array_merge($phpmd_output, $phpcs_output, $psalm_output);
 
-    echo implode(PHP_EOL, $output);
+    return $output;
 }
 
-// TODO: Loop all PHP files in folder.
-function checkDir($dirname)
+/**
+ * @param string $dirname
+ * @param string[] $output
+ * @return array
+ */
+function checkDir($dirname, $output = [])
 {
+    // Simple delete for a file
+    if (is_file($dirname)) {
+        $parts = pathinfo($dirname);
+        if (isset($parts['extension']) && $parts['extension'] == 'php') {
+            return checkFile($dirname);
+        } else {
+            return [];
+        }
+    }
+
     $dir = dir($dirname);
     while (false !== $entry = $dir->read()) {
         // Skip pointers
@@ -49,11 +72,18 @@ function checkDir($dirname)
             continue;
         }
 
-        // Recurse
-        checkDir($dirname.DIRECTORY_SEPARATOR.$entry);
+        $output = array_merge(checkDir($dirname . DIRECTORY_SEPARATOR . $entry), $output);
     }
     // Clean up
     $dir->close();
+
+    return $output;
 }
+
+$output = checkDir($argv[1]);
+
+echo implode(PHP_EOL, $output) . PHP_EOL;
+
+printf('Found %d errors or warnings in %d PHP files.' . PHP_EOL, count($output), $numberOfFiles);
 
 exit (count($output) == 0 ? 0 : 1);

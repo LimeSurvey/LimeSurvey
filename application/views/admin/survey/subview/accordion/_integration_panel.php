@@ -54,6 +54,6 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
     var sAddParam = '".gT('Add URL parameter','js')."';  
     var sEditParam = '".gT('Edit URL parameter','js')."';  
     var iSurveyId = '".$surveyid."';  
-    var questionArray = JSON.parse('".str_replace('\"',"\\\\\"",json_encode($questions))."');  
+    var questionArray = ".json_encode($questions).";  
     ", LSYii_ClientScript::POS_BEGIN ); 
 ?> 

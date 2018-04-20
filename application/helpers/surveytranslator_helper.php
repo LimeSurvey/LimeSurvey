@@ -311,7 +311,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     // Greek
     $supportedLanguages['el']['description'] = gT('Greek');
-    $supportedLanguages['el']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
+    $supportedLanguages['el']['nativedescription'] = '&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
     $supportedLanguages['el']['rtl'] = false;
     $supportedLanguages['el']['dateformat'] = 8;
     $supportedLanguages['el']['radixpoint'] = 1;

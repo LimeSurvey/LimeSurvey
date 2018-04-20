@@ -21,6 +21,15 @@ echo viewHelper::getViewTestTag('pluginManager');
             <div class='pull-right'>
                 <a
                     href=''
+                    class='btn btn-default '
+                    data-tooltip='true'
+                    title='<?php eT('Install plugins from the extension shop'); ?>'
+                >
+                    <i class='fa fa-shopping-cart'></i>&nbsp;
+                    <?php eT('Browse the shop'); ?>
+                </a>
+                <a
+                    href=''
                     class='btn btn-success '
                     data-toggle='modal'
                     data-target='#installPluginZipModal'
