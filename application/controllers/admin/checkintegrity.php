@@ -178,6 +178,7 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addInCondition('gid', $gids);
         QuestionGroup::model()->deleteAll($criteria);
+        // TODO all this type of checks is meaningless since the code above will a) not put errors in model and b) its not the same model instance anyway
         if (QuestionGroup::model()->hasErrors()) {
             safeDie(join('<br>', QuestionGroup::model()->getErrors()));
         }
