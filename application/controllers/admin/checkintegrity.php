@@ -188,14 +188,13 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteUserInGroups(array $userInGroups, array $aData)
     {
-        $gids = array();
+        $ugids = array();
         foreach ($userInGroups as $group) {
-            $gids[] = $group['ugid'];
+            $ugids[] = $group['ugid'];
         }
 
         $criteria = new CDbCriteria;
-        $criteria->addInCondition('ugid', $gids);
-        $model = UserInGroup::model();
+        $criteria->addInCondition('ugid', $ugids);
         $deletedRows = UserInGroup::model()->deleteAll($criteria);
         if ($deletedRows === count($userInGroups)) {
             $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($userInGroups));
