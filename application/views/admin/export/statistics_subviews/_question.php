@@ -338,7 +338,7 @@
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get answers
-                $result[$key1] = Question::model()->findAll( "parent_qid=:qid AND language = :language", [':qid'=>$flt[0],'language' => $language]);
+                $result[$key1] = Question::model()->findAll( "parent_qid=:qid AND language = :language", [':qid'=>$flt[0],':language' => $language]);
                 //$counter2=0;
 
                 //check all the results
