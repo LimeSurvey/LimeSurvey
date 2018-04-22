@@ -100,7 +100,8 @@
             case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get subqestions
-                $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]'", 'question_order');
+                $result[$key1] = Question::model()->findAll( "parent_qid=:qid", [':qid'=>$flt[0]]);
+
                 //$counter2=0;
 
                 //loop through all answers
@@ -337,7 +338,7 @@
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get answers
-                $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
+                $result[$key1] = Question::model()->findAll( "parent_qid=:qid AND language = :language", [':qid'=>$flt[0],'language' => $language]);
                 //$counter2=0;
 
                 //check all the results

@@ -377,17 +377,6 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
     }
 
-    /**
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
-     * @param string $fields
-     * @param mixed $condition
-     * @param string $orderby
-     * @return array
-     */
-    public function getQuestionsForStatistics($fields, $condition, $orderby = false)
-    {
-        return Question::model()->findAll($condition);
-    }
 
     /**
      * @param integer $surveyid

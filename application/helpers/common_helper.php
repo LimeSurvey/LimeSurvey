@@ -1082,10 +1082,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             $sLanguage = $oSurvey->language;
         }
         switch ($flt['type']) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 //get answers
-                $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
@@ -1093,14 +1093,14 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                 //get answers
-                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
@@ -1108,26 +1108,26 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-                // all "free text" types (T, U, S)  get the same prefix ("T")
-                case Question::QT_T_LONG_FREE_TEXT: // Long free text
-                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
-                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            // all "free text" types (T, U, S)  get the same prefix ("T")
+            case Question::QT_T_LONG_FREE_TEXT:
+            case Question::QT_U_HUGE_FREE_TEXT:
+            case Question::QT_S_SHORT_FREE_TEXT:
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
-                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 0", [':qid'=>$flt['qid'],'language' => $sLanguage]);
 
                 foreach ($result as $row) {
-                    $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
+                    $fresult = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 1", [':qid'=>$flt['qid'],'language' => $sLanguage]);
                     foreach ($fresult as $frow) {
                         $myfield2 = $myfield.reset($row)."_".$frow['title'];
                         $allfields[] = $myfield2;
                     }
                 }
                 break;
-                case Question::QT_R_RANKING_STYLE: //RANKING
+            case Question::QT_R_RANKING_STYLE:
                 //get some answers
                 $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
                 //get number of answers
@@ -1140,12 +1140,12 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 }
 
                 break;
-                //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+            //Boilerplate questions are only used to put some text between other questions -> no analysis needed
+            case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
                 break;
-                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+            case Question::QT_1_ARRAY_MULTISCALE:
                 //get answers
-                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
                 //loop through answers
                 foreach ($result as $row) {
                     //----------------- LABEL 1 ---------------------
@@ -1157,18 +1157,18 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 }   //end WHILE -> loop through all answers
                 break;
 
-                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
-                case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
-                case Question::QT_N_NUMERICAL:  //N - Numerical input
-                case Question::QT_D_DATE:  //D - Date
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+            case Question::QT_M_MULTIPLE_CHOICE:
+            case Question::QT_N_NUMERICAL:
+            case Question::QT_D_DATE:
                 $myfield2 = $flt['type'].$myfield;
                 $allfields[] = $myfield2;
                 break;
-            default:   //Default settings
+            default:
                 $allfields[] = $myfield;
                 break;
 
-        } //end switch
+        }
     }
 
     return $allfields;

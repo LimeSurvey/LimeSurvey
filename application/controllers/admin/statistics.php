@@ -299,68 +299,22 @@ class statistics extends Survey_Common_Action
 
             //let's switch through the question type for each question
             switch ($flt[2]) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
-                    $aData['result'][$key1]['key1'] = $result;
-                    break;
-
-
-
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
-
-                    //get subqestions
-                    $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] ", 'question_order');
+                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+                    $result = Question::model()->findAll( "parent_qid=:qid",[':qid'=>$flt[0]]);
                     $aData['result'][$key1] = $result;
                     break;
 
-                    //----------------------- ARRAYS --------------------------
-
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                    //just like above only a different loop
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0]", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                    //similiar to the above one
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0]  AND scale_id = 0", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    foreach ($result as $key => $row) {
-                        $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND scale_id = 1", 'question_order');
-                        $aData['fresults'][$key1][$key] = $fresult;
-                    }
-                    break;
-
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND scale_id = 0", 'question_order');
+                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                    $result = Question::model()->findAll( "parent_qid=:qid AND scale_id = 0",[':qid'=>$flt[0]]);
                     $aData['result'][$key1] = $result;
                     foreach ($result as $row) {
-                        $fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid=$flt[0] AND scale_id = 1", 'question_order, title');
+                        $fresult = Question::model()->findAll( "parent_qid=:qid AND scale_id = 1",[':qid'=>$flt[0]]);
                         $aData['fresults'][$key1] = $fresult;
                     }
                     break;
@@ -369,10 +323,10 @@ class statistics extends Survey_Common_Action
                      * The only difference is that the labels are applied to column heading
                      * or rows respectively
                      */
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+                case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0]", 'question_order');
+                    $result = Question::model()->findAll( "parent_qid=:qid ", [':qid'=>$flt[0]]);
                     $aData['result'][$key1] = $result;
 
                     //check all the answers
@@ -396,7 +350,7 @@ class statistics extends Survey_Common_Action
                 case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
 
                     //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
+                    $result = Question::model()->findAll( "parent_qid=:qid ", [':qid'=>$flt[0]]);
                     $aData['result'][$key1] = $result;
                     //loop through answers
                     foreach ($result as $key => $row) {
@@ -420,7 +374,7 @@ class statistics extends Survey_Common_Action
                 case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
 
                     //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid = $flt[0]", 'question_order');
+                    $result = Question::model()->findAll( "parent_qid=:qid ", [':qid'=>$flt[0]]);
                     $aData['result'][$key1] = $result;
                     break;
 
@@ -681,8 +635,8 @@ class statistics extends Survey_Common_Action
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
                     if (!$qidattributes['input_boxes']) {
                         $qid = $row['qid'];
-                        $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 0", 'question_order, title');
-                        $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 1", 'question_order, title');
+                        $results = Question::model()->findAll( "parent_qid=:qid AND scale_id = 0", [':qid'=>$qid]);
+                        $fresults = Question::model()->findAll( "parent_qid=:qid AND scale_id = 1", [':qid'=>$qid]);
                         foreach ($results as $row1) {
                             foreach ($fresults as $row2) {
                                 $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
@@ -693,7 +647,7 @@ class statistics extends Survey_Common_Action
 
                 case Question::QT_1_ARRAY_MULTISCALE:
                     $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
+                    $results = Question::model()->findAll( "parent_qid=:qid", [':qid'=>$qid]);
                     foreach ($results as $row1) {
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#0';
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#1';
@@ -703,7 +657,7 @@ class statistics extends Survey_Common_Action
 
                 case Question::QT_R_RANKING_STYLE: //RANKING
                     $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' ", 'question_order');
+                    $results = Question::model()->findAll( "parent_qid=:qid", [':qid'=>$qid]);
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
@@ -720,7 +674,7 @@ class statistics extends Survey_Common_Action
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' ", 'question_order');
+                    $results = Question::model()->findAll( "parent_qid=:qid", [':qid'=>$qid]);
                     foreach ($results as $row1) {
                         $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
                     }
