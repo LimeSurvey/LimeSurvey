@@ -253,6 +253,10 @@ class UserGroup extends LSActiveRecord
         }
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete()
     {
         if (parent::delete()) {
