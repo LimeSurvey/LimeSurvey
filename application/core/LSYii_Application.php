@@ -96,6 +96,17 @@ class LSYii_Application extends CWebApplication
         }
 
         $this->config = array_merge($this->config, $lsConfig);
+        /* Load the database settings : if available */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if (is_object($settingsTableExist)) {
+                $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config, $dbConfig);
+            }
+        } catch (Exception $exception) {
+            // Allow exception (install for example)
+            App()->log("Table settings_global not found"); // Log it as LEVEL_INFO ?
+        }
     }
 
     public function init()
