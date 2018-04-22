@@ -222,16 +222,5 @@ class Answer extends LSActiveRecord
         return ($return_query) ? $query->queryAll() : $query;
     }
 
-    /**
-     * @param string $fields
-     * @param string $orderby
-     * @param mixed $condition
-     * @return array
-     */
-    public function getAnswersForStatistics($fields, $condition, $orderby)
-    {
-        return Answer::model()->findAll($condition);
-    }
-    
     
 }

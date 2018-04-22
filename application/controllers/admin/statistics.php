@@ -331,7 +331,7 @@ class statistics extends Survey_Common_Action
 
                     //check all the answers
                     foreach ($result as $row) {
-                        $fresult = Answer::model()->getAnswersForStatistics('*', "qid=$flt[0]", 'sortorder, code');
+                        $fresult = Answer::model()->findAll("qid=:qid", [':qid' => $flt[0]]);
                         $aData['fresults'][$key1] = $fresult;
                     }
 
@@ -343,7 +343,7 @@ class statistics extends Survey_Common_Action
 
                 case Question::QT_R_RANKING_STYLE: //RANKING
                     //get some answers
-                    $result = Answer::model()->getAnswersForStatistics('code, answer', "qid=$flt[0]", 'sortorder, answer');
+                    $result = Answer::model()->findAll("qid=:qid", [':qid' => $flt[0]]);
                     $aData['result'][$key1] = $result;
                     break;
 
@@ -359,8 +359,7 @@ class statistics extends Survey_Common_Action
                         $dshresult = QuestionAttribute::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
                         $aData['dshresults'][$key1][$key] = $dshresult;
 
-
-                        $fresult = Answer::model()->getAnswersForStatistics('*', "qid=$flt[0]  AND scale_id = 0", 'sortorder, code');
+                        $fresult = Answer::model()->findAll("qid=:qid AND scale_id = 0", [':qid' => $flt[0]]);
 
                         $aData['fresults'][$key1][$key] = $fresult;
 
