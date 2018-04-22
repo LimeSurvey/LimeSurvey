@@ -510,6 +510,29 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Reset assets for this template
+     * Using a new file and not touch, seems some winows version didn't work with touch (?)
+     * @throw Exception in case we can not find a new random file name in 10 attempt
+     * @return void
+     */
+    public function resetAsset()
+    {
+        /* Add a test for directory writable ? Break before this is needed, then not need */
+        $templatePathWithDirSeparator = self::getTemplatePath($this->name).DIRECTORY_SEPARATOR;// Unsure directory separator is needed but … windows …
+        $fileToTouch= App()->securityManager->generateRandomString(42);
+        $counter = 0;
+        while (is_file($templatePathWithDirSeparator.$fileToTouch)) {
+            $counter++;
+            // This is extremely unlikely.
+            if ($counter > 10) {
+                throw new CHttpException(500, 'Failed to reset template asset with new file.');
+            }
+            $fileToTouch= App()->securityManager->generateRandomString(42);
+        }
+        touch($templatePathWithDirSeparator.$fileToTouch);
+        unlink($templatePathWithDirSeparator.$fileToTouch);
+    }
+    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception
