@@ -1085,7 +1085,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 //get answers
-                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],':language' => $sLanguage]);
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
@@ -1100,7 +1100,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_F_ARRAY_FLEXIBLE_ROW:
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                 //get answers
-                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],':language' => $sLanguage]);
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
@@ -1117,10 +1117,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 break;
             case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 0", [':qid'=>$flt['qid'],'language' => $sLanguage]);
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 0", [':qid'=>$flt['qid'],':language' => $sLanguage]);
 
                 foreach ($result as $row) {
-                    $fresult = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 1", [':qid'=>$flt['qid'],'language' => $sLanguage]);
+                    $fresult = Question::model()->findAll( "parent_qid=:qid  AND language = :language AND scale_id = 1", [':qid'=>$flt['qid'],':language' => $sLanguage]);
                     foreach ($fresult as $frow) {
                         $myfield2 = $myfield.reset($row)."_".$frow['title'];
                         $allfields[] = $myfield2;
@@ -1145,7 +1145,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 break;
             case Question::QT_1_ARRAY_MULTISCALE:
                 //get answers
-                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],'language' => $sLanguage]);
+                $result = Question::model()->findAll( "parent_qid=:qid  AND language = :language", [':qid'=>$flt['qid'],':language' => $sLanguage]);
                 //loop through answers
                 foreach ($result as $row) {
                     //----------------- LABEL 1 ---------------------
