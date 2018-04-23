@@ -78,7 +78,8 @@ class QuotaLanguageSetting extends LSActiveRecord
     }
     public function urlValidator()
     {
-        if ($this->quota->autoload_url == 1 && !$this->quotals_url) {
+        // $quota might be still empty while doing an import
+        if (!empty($this->quota) && $this->quota->autoload_url == 1 && !$this->quotals_url) {
             $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
         }
     }
