@@ -9,7 +9,7 @@
  */
 ?>
 <label for="othertext<?php echo $name; ?>" class="sr-only">
-    <?php echo $label; ?>
+    <?php echo LimeExpressionManager::ProcessStepString($label); ?>
 </label>
 <div class="form-group text-item other-text-item">
 <?php

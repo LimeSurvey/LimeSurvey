@@ -11,7 +11,7 @@
 <optgroup class="dropdowncategory" label="<?php echo $categoryname;?>">
     <?php
         // rows/option.php
-        echo $sOptGroupOptions;
+        echo LimeExpressionManager::ProcessStepString($sOptGroupOptions,array(),3,true);
     ?>
 </optgroup>
 <!-- end of optgroup -->

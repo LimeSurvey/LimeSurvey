@@ -21,7 +21,7 @@
         onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
      />
     <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label">
-        <?php echo $answer; ?>
+        <?php echo LimeExpressionManager::ProcessStepString($answer); ?>
     </label>
 </li>
 <!-- end of answer_row -->
