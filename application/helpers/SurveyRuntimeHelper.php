@@ -487,7 +487,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
                     $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
