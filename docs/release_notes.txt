@@ -37,11 +37,11 @@ CHANGE LOG
 
 Changes from 3.7.0 (build 180418) to 3.7.1 (build 180424) Apr 24, 2018
 -Fixed issue: [security] Password reset email doesn't always use the saved email. Found and reported by Hongkun Zeng from VULNSPY.com (https://blog.vulnspy.com/)'. Thank you!
--Fixed issue #13497: Editor sreen loads without css when creating/opdating custom css (LouisGac)
+-Fixed issue #13497: Editor screen loads without CSS when creating/updating custom CSS (LouisGac)
 -Fixed issue #13590: Check data integrity shows 'errorneous question group order' for all surveys (Olle Haerstedt)
 -Fixed issue #13604: beforeSurveyDelete didn't happen when delete a survey (Denis Chenu)
 -Fixed issue #13609: {QUEXMLPDF} Placeholder in template for Save to PDF triggers error if shown on welcome page (Adam Zammit)
--Fixed issue #13611: Adding custom css class to question causes error (Denis Chenu)
+-Fixed issue #13611: Adding custom CSS class to question causes error (Denis Chenu)
 -Fixed issue #13621: Panel integration param not passed to END URL (LouisGac)
 -Fixed issue: Empty template list if user don't have global rights on template (Denis Chenu)
 -Fixed issue: Panel integration parameters are deleted on saving survey settings (Carsten Schmitz)
@@ -56,8 +56,7 @@ Changes from 3.7.0 (build 180418) to 3.7.1 (build 180424) Apr 24, 2018
 #Updated translation: Hungarian by kkd
 #Updated translation: Japanese by nomoto
 #Updated translation: Norwegian (Bokmål) by pmonstad
-#Updated translation: Polish by elissa
-#Updated translation: Polish by tomasz
+#Updated translation: Polish by elissa, tomasz
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Romanian by cdorin
 
@@ -95,13 +94,8 @@ Changes from 3.6.2 (build 180406) to 3.6.3 (build 180416) Apr 16, 2018
 
 
 Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
--Fixed issue #13519: No import button in Template listing - add menu view (Tõnis Ormisson)
--Fixed issue #13519: No import button in Template listing - clean controller (Tõnis Ormisson)
--Fixed issue #13519: No import button in Template listing - fix error messages (Tõnis Ormisson)
--Fixed issue #13519: No import button in Template listing - import_modal as separate view (Tõnis Ormisson)
--Fixed issue #13519: No import button in Template listing - prerequisite checking in controller (Tõnis Ormisson)
+-Fixed issue #13519: No import button in Template listing (Tõnis Ormisson)
 -Fixed issue #13520: Unable to import theme (Tõnis Ormisson)
--Fixed issue #13520: Unable to import theme, adjust text (Tõnis Ormisson)
 -Fixed issue #13368: Favicon transparent background (#1033) (Tõnis Ormisson)
 -Fixed issue #13519: No import button in Template listing  (#1031) (Tõnis Ormisson)
 -Fixed issue #13520: Unable to import theme (#1030) (Tõnis Ormisson)
@@ -114,7 +108,6 @@ Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
 -Fixed issue #13555: Long survey name + Long Group name : breadcumb seems unusuable (Denis Chenu)
 -Fixed issue #13562: CSRF in box deletion (markusfluer)
 -Fixed issue #13565: Remove punctuation points from PHP (Kai Ravesloot)
--Fixed issue #13565: Remove punctuation points from php (#1036) (Kai Ravesloot)
 -Fixed issue #13569: Final assesments are shown even if no assessemnt is set (Denis Chenu)
 -Fixed issue: Import old survey table HTML broken (Denis Chenu)
 -Fixed issue: AuthLDAP doesn't work with multiple search bases. (#998) (ecraven)
@@ -139,7 +132,7 @@ Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
 #Updated translation: Spanish (Spain) by aesteban
 
 Changes from 3.6.0 (build 180328) to 3.6.1 (build 180329) Mar 29, 2018
--Fixed issue #13505 : Q_other.shown are difference between PHP and JS (Denis Chenu)
+-Fixed issue #13505: Q_other.shown are difference between PHP and JS (Denis Chenu)
 -Fixed issue #13517: Question adv settings are not updated after update of question type (Denis Chenu)
 -Fixed issue: space added after default value (Denis Chenu)
 -Fixed issue: Images in theme options completely broken (markusfluer)
@@ -257,20 +250,20 @@ Changes from 3.4.4 (build 180305) to 3.5.0 (build 180309) Mar 9, 2018
  -Fixed issue #13444: Exclusive Option in Multiple Choice question makes not exclusive options invisible instead of non selectable (markusfluer)
  -Fixed issue #13445: Out of Bound error when exporting marked responses from response list (Carsten Schmitz)
  -Fixed issue #13446: Unable to see "simple plugin" (markusfluer)
+ -Fixed issue #13450: DateTimePicker interface design problem (markusfluer)
  -Fixed issue #13453: Small display issue in email global settings (Carsten Schmitz)
- -Fixed issue: 13450: DateTimePicker interface design problem (markusfluer)
  -Fixed issue: Installation broken (markusfluer)
  -Fixed issue: Session lifetime setting visible in global settings even though it is only supported for DB sessions (Carsten Schmitz)
  -Fixed issue: Slider left-/right labels not being set correctly (markusfluer)
  -Fixed issue: Theme Editor Broken after #13357 fix (LouisGac)
- -Fixed issue: automatic abbreviation in survey overview not working for data security error (markusfluer)
- -Fixed issue: hyphens in translation string (markusfluer)
- -Fixed issue: top bar touching survey (markusfluer)
+ -Fixed issue: Automatic abbreviation in survey overview not working for data security error (markusfluer)
+ -Fixed issue: Hyphens in translation string (markusfluer)
+ -Fixed issue: Top bar touching survey (markusfluer)
  -New feature: Added data security policy settings (markusfluer)
  -New feature: Check for group sort order duplicates in data integrity check (Olle Haerstedt)
  -New feature: Check question order during integrity check (Olle Haerstedt)
  -New feature: Data security settings have to be accepted to take a survey (markusfluer)
- -New feature: added a js based filter on the data security acceptance (markusfluer)
+ -New feature: Added a js based filter on the data security acceptance (markusfluer)
  #Updated translation: Catalan by qualitatuvic
  #Updated translation: Dutch (Informal) by Han
  #Updated translation: Dutch by Han
@@ -439,7 +432,7 @@ Changes from 3.2.1 (build 180207) to 3.3.0 (build 180209) Feb 09, 2018
 -Fixed issue #13315: Make it possible to submit mandatory multiple choice with empty comment (Olle Haerstedt)
 -Fixed issue #13324: Limesurvey crash after activating webserver authentication plugin (Denis Chenu)
 -Fixed issue: Can't save token attributes that have no description (Olle Haerstedt)
--Fixed issue: Custom css/js not loaded on extended themes (LouisGac)
+-Fixed issue: Custom CSS/JS not loaded on extended themes (LouisGac)
 -Fixed issue: Welcome text and description not visible (Olle Haerstedt)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Dutch by Han
