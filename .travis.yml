@@ -21,6 +21,7 @@ before_script:
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
+    - composer remove --dev vimeo/psalm
     - composer install
     - chmod -R 777 tmp
     - chmod -R 777 upload
