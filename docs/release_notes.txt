@@ -35,6 +35,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.7.0 (build 180418) to 3.7.1 (build 180424) Apr 24, 2018
+-Fixed issue: [security] Password reset email doesn't always use the saved email. Found and reported by Hongkun Zeng from VULNSPY.com (https://blog.vulnspy.com/)'. Thank you!
+-Fixed issue #13497: Editor sreen loads without css when creating/opdating custom css (LouisGac)
+-Fixed issue #13590: Check data integrity shows 'errorneous question group order' for all surveys (Olle Haerstedt)
+-Fixed issue #13604: beforeSurveyDelete didn't happen when delete a survey (Denis Chenu)
+-Fixed issue #13609: {QUEXMLPDF} Placeholder in template for Save to PDF triggers error if shown on welcome page (Adam Zammit)
+-Fixed issue #13611: Adding custom css class to question causes error (Denis Chenu)
+-Fixed issue #13621: Panel integration param not passed to END URL (LouisGac)
+-Fixed issue: Empty template list if user don't have global rights on template (Denis Chenu)
+-Fixed issue: Panel integration parameters are deleted on saving survey settings (Carsten Schmitz)
+-Fixed issue: Spelling mistake in greek language description (Markus Flür)
+-Fixed issue: Tutorial menu shown even if empty (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish by tomasz
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Romanian by cdorin
+
 Changes from 3.6.3 (build 180406) to 3.7.0 (build 180418) Apr 18, 2018
 -New feature #13471: Allow expression in default location (map) (Denis Chenu)
 -Fixed issue: No questions in panel integration (Markus Flür)
