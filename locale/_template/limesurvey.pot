@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-04-23 07:47:04+00:00\n"
+"POT-Creation-Date: 2018-04-24 12:58:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15975,7 +15975,7 @@ msgstr ""
 msgid "No question group in this survey"
 msgstr ""
 
-#: application/views/admin/super/_tutorial_menu.php:9
+#: application/views/admin/super/_tutorial_menu.php:8
 #: application/views/admin/tutorials/index.php:23
 msgid "Tutorials"
 msgstr ""
