@@ -3966,8 +3966,20 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
         case 'pgsql':
             $sType = $sFieldType;
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute(); } catch (Exception $e) {};
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute(); } catch (Exception $e) {};
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
 
             if ($bAllowNull != true) {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
