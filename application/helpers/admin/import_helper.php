@@ -2113,10 +2113,10 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $results = [];
     $results['responses'] = 0;
 
-    libxml_disable_entity_loader( false ); // fixing #13628
-
+    libxml_disable_entity_loader( false );
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
+    libxml_disable_entity_loader( true );
     $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
     while ($oXMLReader->read()) {
         if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
