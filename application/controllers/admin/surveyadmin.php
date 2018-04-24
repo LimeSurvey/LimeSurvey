@@ -1173,7 +1173,7 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
+        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $iSurveyID]);
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
@@ -1187,13 +1187,13 @@ class SurveyAdmin extends Survey_Common_Action
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid'], $sBaseLanguage);
+            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid']);
 
             $qs = array();
 
             foreach ($oQuestionData->readAll() as $q) {
                 $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
-                $question = '[{'.$relevance.'}] '.$q['question'];
+                $question = '[{'.$relevance.'}] '.$q['title'];
                 LimeExpressionManager::ProcessString($question, $q['qid']);
                 $q['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                 $q['gid'] = $aGroup['gid'];

@@ -340,19 +340,18 @@ class Question extends LSActiveRecord
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
      * @param integer $sid
      * @param integer $gid
-     * @param string $language
      * @return CDbDataReader
      */
-    public function getQuestions($sid, $gid, $language)
+    public function getQuestions($sid, $gid)
     {
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
+            ->where(array('and', 'sid=:sid', 'gid=:gid', 'parent_qid=0'))
             ->order('question_order asc')
             ->bindParam(":sid", $sid, PDO::PARAM_INT)
             ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            ->bindParam(":language", $language, PDO::PARAM_STR)
+            //->bindParam(":language", $language, PDO::PARAM_STR)
             ->query();
     }
 
