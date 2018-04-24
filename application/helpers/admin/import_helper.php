@@ -2112,6 +2112,9 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, true);
     $results = [];
     $results['responses'] = 0;
+
+    libxml_disable_entity_loader( false ); // fixing #13628
+
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
     $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
