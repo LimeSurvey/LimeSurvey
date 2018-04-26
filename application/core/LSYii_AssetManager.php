@@ -13,22 +13,23 @@
 
 class LSYii_AssetManager extends CAssetManager
 {
-    /* inheritdoc */
+    /* @inheritdoc */
     protected function hash($path)
     {
-        $assetsVersionNumber       = Yii::app()->getConfig('assetsversionnumber');
-        $versionNumber             = Yii::app()->getConfig('versionnumber');
-        $dbVersion                 = Yii::app()->getConfig('dbversionnumber');
-        $iCustomassetversionnumber = Yii::app()->getConfig('customassetversionnumber',1);/* This always get by order : from db, from config, from config-default */
+        return sprintf('%x',crc32($path.Yii::app()->getConfig('globalAssetsVersion')));
+    }
 
-        if (empty($assetsVersionNumber)
-            || empty($versionNumber)
-            || empty($dbVersion)) {
-            throw new Exception(
-                'Could not create asset manager path hash: One of these configs are empty: assetsversionnumber/versionnumber/dbversionnumber.'
-            );
+    /**
+     * @inheritdoc
+     * With db asset version used
+     */
+    protected function generatePath($file,$hashByName=false)
+    {
+        if (is_file($file)) {
+            $pathForHashing=$hashByName ? dirname($file) : dirname($file).".".filemtime($file).".".AssetVersion::getAssetVersion($file);
+        } else {
+            $pathForHashing=$hashByName ? $file : $file.".".filemtime($file).".".AssetVersion::getAssetVersion($file);
         }
-        $lsVersion = $assetsVersionNumber.$versionNumber.$dbVersion.$iCustomassetversionnumber;
-        return sprintf('%x',crc32($path.$lsVersion));
+        return $this->hash($pathForHashing);
     }
 }

@@ -2208,7 +2208,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
+        /**
+         * Adding asset version to allow to reset asset without write inside
+         */
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->dropTable('{{asset_version}}');
+            $oDB->createCommand()->createTable('{{asset_version}}',array(
+                'id' => 'pk',
+                'path' => 'text NOT NULL',
+                'version' => 'integer NOT NULL',
+            ));
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
