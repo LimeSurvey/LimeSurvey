@@ -55,7 +55,7 @@ LS.CPDB = (function() {
             data: data,
             method: 'POST',
             success: firstSuccess,
-            error: console.ls.log
+            error: function(){ console.ls.log(arguments) }
         });
     },
 

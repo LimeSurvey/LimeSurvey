@@ -1690,7 +1690,7 @@ class Participant extends LSActiveRecord
                     'lastname' => $participant['lastname'],
                     'email' => $participant['email'],
                     'emailstatus' => 'OK',
-                    'language' => $participant['language']
+                    'language' => isset($participant['language']) ? $participant['language'] : App()->language
                 );
 
                 Yii::app()->db
