@@ -13,7 +13,7 @@
 
 class LSYii_AssetManager extends CAssetManager
 {
-    /* inheritdoc */
+    /* @inheritdoc */
     protected function hash($path)
     {
         $assetsVersionNumber       = Yii::app()->getConfig('assetsversionnumber');
@@ -30,5 +30,20 @@ class LSYii_AssetManager extends CAssetManager
         }
         $lsVersion = $assetsVersionNumber.$versionNumber.$dbVersion.$iCustomassetversionnumber;
         return sprintf('%x',crc32($path.$lsVersion));
+    }
+
+    /**
+     * @inheritdoc
+     * With db asset version used
+     */
+    protected function generatePath($file,$hashByName=false)
+    {
+        if (is_file($file)) {
+            $pathForHashing=$hashByName ? dirname($file) : dirname($file).filemtime($file).AssetVersion::getAssetVersion($file);
+        } else {
+            $pathForHashing=$hashByName ? $file : $file.filemtime($file).AssetVersion::getAssetVersion($file);
+        }
+        tracevar($pathForHashing);
+        return $this->hash($pathForHashing);
     }
 }
