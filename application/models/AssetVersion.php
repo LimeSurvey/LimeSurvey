@@ -13,7 +13,7 @@
 */
 
 /**
- * Class DefaultValue
+ * Class AssetVersion
  *
  * @property string $hash identifier of path
  * @property string $path for reminder
@@ -67,6 +67,9 @@ class AssetVersion extends LSActiveRecord
      */
     public static function getAssetVersion($path)
     {
+        if(Yii::app()->getConfig('DBVersion') < 349) {
+            return 0;
+        }
         $hash = hash('sha256', $path);
         $oAssetVersion = self::model()->findByPk($hash);
         if(!$oAssetVersion) {
@@ -82,6 +85,9 @@ class AssetVersion extends LSActiveRecord
      */
     public static function incrementAssetVersion($path)
     {
+        if(Yii::app()->getConfig('DBVersion') < 349) {
+            return 0;
+        }
         $hash = hash('sha256', $path);
         $oAssetVersion = self::model()->findByPk($hash);
         if(!$oAssetVersion) {
