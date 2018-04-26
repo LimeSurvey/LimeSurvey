@@ -2213,7 +2213,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 349) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->dropTable('{{asset_version}}');
             $oDB->createCommand()->createTable('{{asset_version}}',array(
                 'hash' => 'string(64)',
                 'path' => 'text',
