@@ -2399,7 +2399,11 @@ input[type="file"].form-control {
     margin: 0;
   }
 }
-//custom margin and padding
+.currentQuestionTypeImageContainer img {
+  max-width: 100%;
+}
+/*custom margin and padding*/
+
 .custom.custom-no-padding {
   padding: 0;
 }
