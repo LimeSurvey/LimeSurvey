@@ -302,6 +302,7 @@ class themes extends Survey_Common_Action
                         $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     } else {
                         $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+                        Template::model()->findByPk($templatename)->resetAssetVersion(); // Upload a files, asset need to be resetted (maybe)
                         $status = 'success';
                     }
                 }
@@ -420,6 +421,7 @@ class themes extends Survey_Common_Action
 
             if (@unlink($the_full_file_path)) {
                 Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+                Template::model()->findByPk($sTemplateName)->resetAssetVersion(); // Delete a files, asset need to be resetted (maybe)
             } else {
                 Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), htmlspecialchars($sFileToDelete)));
             }
@@ -542,8 +544,8 @@ class themes extends Survey_Common_Action
             if (Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename)) {
 
                 if (!Template::hasInheritance($templatename)) {
-
                     if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)) {
+                        Template::model()->findByPk($templatename)->deleteAssetVersion();
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                         // The default template could be the same as the one we're trying to remove
@@ -658,7 +660,7 @@ class themes extends Survey_Common_Action
                         // If the file is an asset file, we refresh asset number
                         if (in_array($relativePathEditfile, $cssfiles) || in_array($relativePathEditfile, $jsfiles)){
                             //SettingGlobal::increaseCustomAssetsversionnumber();
-                            Template::model()->findByPk($sTemplateName)->resetAsset();
+                            Template::model()->findByPk($sTemplateName)->resetAssetVersion();
                         }
 
                         fclose($handle);

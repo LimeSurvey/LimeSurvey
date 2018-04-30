@@ -92,4 +92,17 @@ class AssetVersion extends LSActiveRecord
         $oAssetVersion->save(); // Not need to test : can not break rules. DB error can happen ?
         return $oAssetVersion->version;
     }
+
+    /**
+     * delete assets version related to path
+     * @param string $path
+     * @return integer (0|1)
+     */
+    public static function deleteAssetVersion($path)
+    {
+        if(Yii::app()->getConfig('DBVersion') < 349) {
+            return 0;
+        }
+        return self::model()->deleteAll('path = :path',array(":path"=>$path));
+    }
 }

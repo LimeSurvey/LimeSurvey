@@ -84,8 +84,6 @@ class themeoptions  extends Survey_Common_Action
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    /* If one TemplateConfiguration_files_* updated, we need to update asset */
-                    Template::model()->findByPk($model->template_name)->resetAsset();
                     $this->getController()->redirect(array('admin/themeoptions/sa/update/id/'.$model->id));
                 }
             }
