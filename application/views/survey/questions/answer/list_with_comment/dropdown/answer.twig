@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * List with comment, dropdown layout, Html
  *
@@ -18,41 +18,39 @@
  * @var sgq : basename for input
  * @todo : control if dropdown need labelledby or if labelledby in group is OK. Think automatic system return needed ...
  */
-?>
+#}
 
-<div class="ls-answers row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
+<div class="ls-answers row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
 
     <div class="answer-item dropdown-item col-sm-6 col-xs-12">
         <select
                 class="select form-control"
-                name="<?php echo $name;?>"
-                id="<?php echo $id;?>"
-                <?php if($show_noanswer):?>
+                name="{{ name }}"
+                id="{{ id }}"
+                {% if show_noanswer %}
                     <option class="noanswer-item" value="" SELECTED>
-                        <?php eT('Please choose...');?>
+                        {{ gT('Please choose...') }}
                     </option>
-                <?php endif;?>
-
-                <?php
-                    // rows/option.php
-                    echo $sOptions;
-                ?>
+                {% endif %}
+                
+                    {# rows/option.php #}
+                    {{ sOptions }}
         </select>
         <!-- Input copy for EM : default is radio and EM use id -->
-        <input type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value;?>" disabled />
+        <input type="hidden" name="java{{ name }}" id="java{{ name }}" value="{{ value }}" disabled />
     </div>
 
     <div class="answer-item text-item col-sm-6 col-xs-12">
-        <label for="answer<?php echo $name ;?>comment">
-            <?php echo $label_text;?>:
+        <label for="answer{{ name  }}comment">
+            {{ label_text }}:
         </label>
         <textarea
-            class="form-control textarea <?php echo $kpclass; ?>"
-            name="<?php echo $name;?>comment"
-            id="answer<?php echo $name ;?>comment"
-            rows="<?php echo $tarows; ?>"
-            cols="<?php echo $maxoptionsize; ?>"
-        ><?php echo $comment_saved; ?></textarea>
+            class="form-control textarea {{ kpclass }}"
+            name="{{ name }}comment"
+            id="answer{{ name  }}comment"
+            rows="{{ tarows }}"
+            cols="{{ maxoptionsize }}"
+        >{{ comment_saved }}</textarea>
 
     </div>
 </div>

@@ -256,6 +256,7 @@ $internalConfig = array(
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
                 'getLanguageNameFromCode' => 'getLanguageNameFromCode',
+                'checkconditionFunction'  => 'checkconditionFunction'  
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -281,7 +282,7 @@ $internalConfig = array(
                     'json_encode'
                 ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut")
@@ -343,6 +344,7 @@ $internalConfig = array(
                     'include',
                     'dump',
                     'getLanguageNameFromCode',
+                    'checkconditionFunction'
                 ),
             ),
 
