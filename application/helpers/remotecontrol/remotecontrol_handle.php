@@ -2056,43 +2056,46 @@ class remotecontrol_handle
         Yii::app()->loadHelper("surveytranslator");
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (!isset($oSurvey)) {
-                        return array('status' => 'Error: Invalid survey ID');
+        if (empty($oSurvey)) {
+            return ['status' => 'Error: Invalid survey ID'];
         }
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
             if (is_null($sLanguage)) {
-                                $sLanguage = $oSurvey->language;
+                $sLanguage = $oSurvey->language;
             }
-
-            if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                                return array('status' => 'Error: Invalid language');
+            if (!array_key_exists($sLanguage, getLanguageDataRestricted()) or !in_array($sLanguage, $oSurvey->allLanguages)) {
+                return ['status' => 'Error: Invalid language'];
             }
-
             if ($iGroupID != null) {
                 $iGroupID = (int) $iGroupID;
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                $sGroupSurveyID = $oGroup['sid'];
-
-                if ($sGroupSurveyID != $iSurveyID) {
-                                        return array('status' => 'Error: IMissmatch in surveyid and groupid');
+                $oGroup = QuestionGroup::model()->findByPk($iGroupID);
+                if (empty($oGroup)) {
+                    return ['status' => 'Error: group not found'];
+                }
+                if ($oGroup->sid != $oSurvey->sid) {
+                    return ['status' => 'Error: Mismatch in surveyid and groupid'];
                 } else {
-                                        $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID, "language"=>$sLanguage));
+                    $aQuestionList = $oGroup->questions;
                 }
             } else {
-                                $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "language"=>$sLanguage));
+                $aQuestionList = $oSurvey->baseQuestions;
             }
-
             if (count($aQuestionList) == 0) {
-                                return array('status' => 'No questions found');
+                return ['status' => 'No questions found'];
             }
-
             foreach ($aQuestionList as $oQuestion) {
-                $aData[] = array('id'=>$oQuestion->primaryKey) + $oQuestion->attributes;
+                $L10ns = $oQuestion->questionL10ns[$sLanguage];
+                $aData[] = array_merge([
+                    'id' => $oQuestion->primaryKey,
+                    'question' => $L10ns->question,
+                    'help' => $L10ns->help,
+                    'language' => $sLanguage,
+                ],
+                    $oQuestion->attributes);
             }
             return $aData;
         } else {
-                        return array('status' => 'No permission');
+            return ['status' => 'No permission'];
         }
     }
 
