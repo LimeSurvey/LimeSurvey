@@ -866,7 +866,6 @@ class CheckIntegrity extends Survey_Common_Action
             JOIN {{surveys}} s ON s.sid = g.sid
             GROUP BY g.sid
             HAVING COUNT(DISTINCT g.group_order) != COUNT(g.gid)";
-            HAVING COUNT(DISTINCT g.group_order) != COUNT(g.gid)";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
         if (!empty($result)) {
             foreach ($result as &$survey) {
@@ -896,7 +895,6 @@ class CheckIntegrity extends Survey_Common_Action
             FROM {{questions}} q
             JOIN {{groups}} g ON q.gid = g.gid
             JOIN {{surveys}} s ON s.sid = q.sid
-            WHERE q.language = s.language AND g.language = s.language
             GROUP BY q.sid, q.gid, q.parent_qid
             HAVING COUNT(DISTINCT question_order) != COUNT(qid);
             ";
