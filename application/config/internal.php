@@ -255,6 +255,7 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
+                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -341,6 +342,7 @@ $internalConfig = array(
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
+                    'getLanguageNameFromCode',
                 ),
             ),
 
