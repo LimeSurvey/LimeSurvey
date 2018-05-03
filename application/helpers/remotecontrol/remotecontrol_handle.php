@@ -2056,7 +2056,7 @@ class remotecontrol_handle
             $oSurvey = Survey::model()->findByPk($iSurveyID);
 
             if (empty($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return ['status' => 'Error: Invalid survey ID'];
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
@@ -2065,7 +2065,7 @@ class remotecontrol_handle
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted()) or !in_array($sLanguage, $oSurvey->allLanguages)) {
-                    return array('status' => 'Error: Invalid language');
+                    return ['status' => 'Error: Invalid language'];
                 }
 
                 if ($iGroupID != null) {
@@ -2095,6 +2095,8 @@ class remotecontrol_handle
                     $aData[] = array_merge([
                         'id' => $oQuestion->primaryKey,
                         'question' => $L10ns->question,
+                        'help' => $L10ns->help,
+                        'language' => $sLanguage,
                     ],
                     $oQuestion->attributes);
                 }
