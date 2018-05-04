@@ -256,7 +256,8 @@ $internalConfig = array(
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
                 'getLanguageNameFromCode' => 'getLanguageNameFromCode',
-                'checkconditionFunction'  => 'checkconditionFunction'  
+                'checkconditionFunction'  => 'checkconditionFunction',
+                'doRender'                => 'doRender'
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -344,7 +345,8 @@ $internalConfig = array(
                     'include',
                     'dump',
                     'getLanguageNameFromCode',
-                    'checkconditionFunction'
+                    'checkconditionFunction',
+                    'doRender'
                 ),
             ),
 
