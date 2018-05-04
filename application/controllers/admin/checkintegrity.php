@@ -894,12 +894,13 @@ class CheckIntegrity extends Survey_Common_Action
             SELECT
                 q.sid,
                 q.gid,
-                q.parent_qid
+                q.parent_qid,
+                q.scale_id
             FROM {{questions}} q
             JOIN {{groups}} g ON q.gid = g.gid
             JOIN {{surveys}} s ON s.sid = q.sid
             WHERE q.language = s.language AND g.language = s.language
-            GROUP BY q.sid, q.gid, q.parent_qid
+            GROUP BY q.sid, q.gid, q.parent_qid, q.scale_id
             HAVING COUNT(DISTINCT question_order) != COUNT(qid);
             ";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
