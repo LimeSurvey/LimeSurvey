@@ -29,7 +29,7 @@
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
         />
 
-        <label for="SOTH<?php echo $name; ?>" class="control-label label-radio" id="label-id-<?php echo $name; ?>"><?php echo $othertext; ?></label>
+        <label for="SOTH<?php echo $name; ?>" class="control-label label-radio" id="label-id-<?php echo $name; ?>"><?php echo LimeExpressionManager::ProcessStepString($othertext); ?></label>
     </div>
 
     <!-- comment -->

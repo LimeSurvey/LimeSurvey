@@ -10,6 +10,6 @@
 
 <!-- option -->
 <option value='<?php echo $value?>' <?php echo $opt_select;?> <?php if(isset($classes)):?> class="<?php echo $classes;?>" <?php endif;?> >
-    <?php echo $answer;?>
+    <?php echo flattenText(LimeExpressionManager::ProcessStepString($answer,array(),3,true)); // Using static and flat ?>
 </option>
 <!-- end of option -->
