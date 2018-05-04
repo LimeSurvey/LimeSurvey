@@ -222,7 +222,6 @@ class export extends Survey_Common_Action
                 $exportData[$key] = array(
                     'onclick' => $event->get('onclick'),
                     'label'   => $event->get('label'),
-                    'checked' => $event->get('default', false),
                     'tooltip' => $event->get('tooltip', null)
                 );
                 if($event->get('default', false)) {
