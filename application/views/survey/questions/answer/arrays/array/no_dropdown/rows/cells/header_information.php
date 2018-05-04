@@ -7,5 +7,5 @@
 ?>
 
 <?php
-  echo doRender('/survey/questions/answer/global/table/cell/head_information', array('class'=>$class,'content'=>$content,true));
+  echo doRender('/survey/questions/answer/global/table/cell/head_information', array('class'=>$class,'content'=>$content));
 ?>
