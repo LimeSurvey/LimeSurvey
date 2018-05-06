@@ -756,7 +756,7 @@
                     echo "<!-- $myfield2 - ";
                     if (isset($_POST[$myfield2]))
                     {
-                        echo htmlspecialchars($_POST[$myfield2]);
+                        echo htmlspecialchars(implode(',',$_POST[$myfield2]));
                     }
                     echo " -->\n";
 
@@ -803,7 +803,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{0}[]' multiple='multiple' class='form-control'>\n";
+                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#0[]' multiple='multiple' class='form-control'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
@@ -828,7 +828,7 @@
                     echo "<!-- $myfield2 - ";
                     if (isset($_POST[$myfield2]))
                     {
-                        echo htmlspecialchars($_POST[$myfield2]);
+                        echo htmlspecialchars(implode(',',$_POST[$myfield2]));
                     }
 
                     echo " -->\n";
@@ -865,7 +865,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{1}[]' multiple='multiple' class='form-control'>\n";
+                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#1[]' multiple='multiple' class='form-control'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
