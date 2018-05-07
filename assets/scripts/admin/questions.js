@@ -179,7 +179,7 @@ function updatequestionattributes() {
         data: postData,
         method: 'POST',
         success: function (data) {
-            $('.loader-advancedquestionsettings').before(data);
+            $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
             $('label[title]').qtip({
                 style: {
