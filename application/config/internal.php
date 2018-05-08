@@ -257,7 +257,8 @@ $internalConfig = array(
                 'json_encode'             => 'CJSON::encode',
                 'getLanguageNameFromCode' => 'getLanguageNameFromCode',
                 'checkconditionFunction'  => 'checkconditionFunction',
-                'doRender'                => 'doRender'
+                'doRender'                => 'doRender',
+                'flattenText'             => 'flattenText'
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -280,10 +281,11 @@ $internalConfig = array(
                     'nl2br',
                     'split',
                     'trim',
-                    'json_encode'
+                    'json_encode',
+                    'replace',
                 ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut")
@@ -346,7 +348,9 @@ $internalConfig = array(
                     'dump',
                     'getLanguageNameFromCode',
                     'checkconditionFunction',
-                    'doRender'
+                    'doRender',
+                    'flattenText',
+                    'range'
                 ),
             ),
 
